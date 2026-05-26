@@ -9,10 +9,11 @@ python3 scripts/lint/check_skill.py skills/ --report > scripts/lint/compliance-r
 
 ## Summary
 
-Baseline at the standalone repo: 0/62 skills v2-compliant. Migration to
-the v2 template is the W2–W5 work of the master plan. The advisory CI
-workflow (`.github/workflows/skill-lint.yml`) surfaces this table on
-every push but does **not** fail the build.
+Latest standalone-repo baseline: **6/62** v2-compliant (W2 partial:
+`lean-proof`, `lean-setup`, `lean-zettelkasten`, `lean-blueprint`,
+`epistemic-mapping`, `lean-doc-feedback`). The advisory CI workflow
+(`.github/workflows/skill-lint.yml`) surfaces this table on every push
+but does **not** fail the build.
 
 ## Skills table
 
@@ -21,8 +22,8 @@ every push but does **not** fail the build.
 | lean-bisect | ✗ | ✗ | ✗ | ✗ | ! | ✗ |
 | lean-mwe | ✗ | ✗ | ✗ | ✗ | ! | ✗ |
 | lean-pr | ✗ | ✗ | ✗ | ✗ | — | ✗ |
-| lean-proof | ✗ | ✗ | ✗ | ✗ | — | ✗ |
-| lean-setup | ✗ | ✗ | ✗ | ✗ | — | ✗ |
+| lean-proof | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| lean-setup | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | mathlib-build | ✗ | ✗ | ✗ | ✗ | — | ✗ |
 | mathlib-pr | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
 | mathlib-review | ✗ | ✗ | ✗ | ✗ | — | ✗ |
@@ -38,12 +39,12 @@ every push but does **not** fail the build.
 | applied-legal-reasoning | ✗ | ✗ | ✗ | ✗ | — | ✗ |
 | applied-strategy-analysis | ✗ | ✗ | ✗ | ✗ | — | ✗ |
 | epistemic-discovery-engine | ✗ | ✗ | ✗ | ✗ | — | ✗ |
-| epistemic-mapping | ✗ | ✗ | ✗ | ✗ | — | ✗ |
+| epistemic-mapping | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | lean-ai-formalization | ✗ | ✗ | ✗ | ✗ | — | ✗ |
 | lean-applied-reasoning | ✗ | ✗ | ✗ | ✗ | — | ✗ |
-| lean-blueprint | ✗ | ✗ | ✗ | ✗ | — | ✗ |
+| lean-blueprint | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | lean-causal-reasoning | ✗ | ✗ | ✗ | ✗ | — | ✗ |
-| lean-doc-feedback | ✗ | ✗ | ✗ | ✗ | — | ✗ |
+| lean-doc-feedback | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | lean-doc-improvement | ✗ | ✗ | ✗ | ✗ | — | ✗ |
 | lean-doc-requirements | ✗ | ✗ | ✗ | ✗ | — | ✗ |
 | lean-enforcement | ✗ | ✗ | ✗ | ✗ | — | ✗ |
@@ -67,7 +68,7 @@ every push but does **not** fail the build.
 | lean-review-council | ✗ | ✗ | ✗ | ✗ | — | ✗ |
 | lean-security-formalization | ✗ | ✗ | ✗ | ✗ | — | ✗ |
 | lean-specification | ✗ | ✗ | ✗ | ✗ | — | ✗ |
-| lean-zettelkasten | ✗ | ✗ | ✗ | ✗ | — | ✗ |
+| lean-zettelkasten | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | math-algebra-category | ✗ | ✗ | ✗ | ✗ | — | ✗ |
 | math-graph-knowledge | ✗ | ✗ | ✗ | ✗ | — | ✗ |
 | math-measure-probability | ✗ | ✗ | ✗ | ✗ | — | ✗ |

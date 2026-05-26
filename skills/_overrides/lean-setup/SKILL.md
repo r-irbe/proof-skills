@@ -1,82 +1,86 @@
 ---
-name: lean-setup
-description: Set up a lean4 repository clone with proper elan toolchains, stage0/stage1 links, tests, and Lake/elan environment hygiene. Use when cloning Lean itself, repairing toolchains, or verifying that commands run against the intended local Lean build.
+name: "lean-setup"
+description: |
+  USE FOR: bootstrapping a fresh leanprover/lean4 clone, repairing elan toolchains, linking stage0/stage1 builds, verifying that `lean` and `lake env lean` agree, cleaning up linked toolchains when done.
+  DO NOT USE FOR: building Mathlib or downstream Lake projects (use @mathlib-build), bisecting a behavioural regression (use @lean-bisect), authoring a reproducer (use @lean-mwe), writing proofs (use @lean-proof), creating new lakefiles for downstream projects (use @lean-blueprint).
+  TRIGGERS: elan, lean-toolchain, cmake preset, stage0, stage1.
+tier: "hot"
+runtime_targets: [copilot-cli, claude-code]
+dispatch_targets: []
+handoffs:
+  predecessors: []
+  successors:
+    - "skill:lean-proof"
+    - "skill:lean-bisect"
+    - "skill:mathlib-build"
+    - "skill:lean-mwe"
+metadata:
+  version: "0.2.0"
+  source_spec: "specs/lean/setup/requirements.md"
+  last_reviewed: "2026-05-30"
+r_caveats: [F1]
 ---
 
-# Lean 4 Repository Setup
+# lean-setup
 
-The first time you build in a lean4 repository clone, you need to run
-```
-cmake --preset release
-make -j -C build/release
-```
+> ⚠️ **MANDATORY** (hot-tier): the gates in §Behavioural rules and the Persist
+> step in §Workflow are enforced. There is no CI in this repo — the gates are
+> enforced by the setup agent itself and reflected in the `lean-toolchain`
+> files committed to the clone. Skipping Persist = incomplete, regardless of
+> whether the build succeeded (FSIA-R-11-09).
 
-The `cmake` command is not needed on subsequent builds.
+## Routing
 
-## Tests
+- **USE FOR:** running the first-time `cmake --preset release` + `make -j -C build/release` bootstrap; choosing a toolchain name (`lean4` or `lean4-XYZ`); linking `build/release/stage1` and `build/release/stage0` with `elan toolchain link`; pinning the four `lean-toolchain` files; verifying `lean --version` and `lake env lean --version` agree; uninstalling linked toolchains when the clone is retired.
+- **DO NOT USE FOR:** building Mathlib or downstream Lake projects (use `@mathlib-build`); bisecting which commit changed behaviour (use `@lean-bisect`); minimising an error into a reproducer (use `@lean-mwe`); writing proofs against an existing toolchain (use `@lean-proof`); scaffolding new lakefiles for downstream projects (use `@lean-blueprint`).
+- **TRIGGERS:** elan, lean-toolchain, cmake preset, stage0, stage1.
 
-### Running a Single Test
+## Behavioural rules (G-*)
 
-```bash
-cd tests/lean/run
-./test_single.sh example_test.lean
-```
+- **G-1** (MUST): On a fresh clone the skill MUST run `cmake --preset release` exactly once before any `make` invocation. [Trace: AC-01]
+- **G-2** (MUST NOT): The skill MUST NOT re-run `cmake --preset release` on subsequent builds of the same clone. [Trace: AC-02]
+- **G-3** (MUST): When the host already has a `lean4` toolchain linked, the skill MUST pick a disambiguated name `lean4-XYZ` rather than overwriting. [Trace: AC-03]
+- **G-4** (MUST): The skill MUST link **both** `lean4-XYZ → build/release/stage1` and `lean4-XYZ-stage0 → build/release/stage0`. [Trace: AC-04]
+- **G-5** (MUST): The skill MUST write all four toolchain pins together: `lean-toolchain`, `script/lean-toolchain`, `tests/lean-toolchain` (= stage1 name), and `src/lean-toolchain` (= stage0 name). [Trace: AC-05]
+- **G-6** (MUST): After linking, the skill MUST verify `lean --version` resolves to the clone's commit hash, not a release tag. [Trace: AC-06]
+- **G-7** (MUST): For any Lake project depending on the clone, the skill MUST additionally run `lake env lean --version` and confirm it agrees with `lean --version`. [Trace: AC-07]
+- **G-8** (MUST NOT): If `lean --version` and `lake env lean --version` disagree, the skill MUST NOT hand off to `@lean-proof`; it MUST fix the override first. [Trace: AC-08]
+- **G-9** (SHOULD): When the clone is being retired, the skill SHOULD run `elan toolchain uninstall` for both linked toolchains. [Trace: AC-09]
+- **G-10** (MUST): The skill MUST persist (commit toolchain pins + state-tracker tick) before declaring setup complete. [Trace: AC-10]
 
-### Running the Full Test Suite
+## Workflow
 
-```bash
-make -j -C build/release test ARGS="-j$(nproc)"
-```
+1. **Discover** [discover] — inspect clone state: presence of `build/release/`, existing toolchain pins, `elan list`. Identify whether this is first-time bootstrap or repair.
+2. **Plan** [discover] — choose toolchain name (`lean4` vs `lean4-XYZ`); enumerate which `lean-toolchain` files need writing. STOP if confidence < 80 % on naming or scope.
+3. **Execute** [execute] — run `cmake --preset release` (first time only, G-2); `make -j -C build/release`; `elan toolchain link` for both stage0 and stage1; write the four `lean-toolchain` files.
+4. **Verify** [validate] — `lean --version` shows commit hash (G-6); for any Lake project, `lake env lean --version` agrees (G-7). On disagreement, fix the override and re-verify; max 3 attempts then escalate.
+5. **Persist** [persist] *(MANDATORY, FSIA-R-11-09)* — commit the toolchain pins, record the chosen name in the state tracker, tick `tasks.md`. If the clone is being retired, also `elan toolchain uninstall` and record the deletion. **Skipping Persist = incomplete.**
 
-### Writing Tests
+## Recovery & STOP
 
-- All new tests should go in `tests/lean/run/`
-- These tests don't have expected output files — they run on a success/failure basis
-- Use `#guard_msgs` to check for specific messages
+- `make -j -C build/release` fails ×3 → STOP, escalate to human; do not retry blindly.
+- `lean --version` and `lake env lean --version` disagree after 3 fix attempts → STOP, escalate (G-8 forbids handing off).
+- Scope drift (edit files outside the clone's `lean-toolchain` family, `build/`, or its lakefile overrides) → immediate STOP, re-anchor.
+- Confidence < 80 % on toolchain naming (e.g. multiple existing `lean4-*` toolchains, unclear which is canonical) → STOP, ask.
+- Context degradation signals (≥2 from AGENTS.md) → recommend a fresh session and re-read clone state.
 
-## Lean 4 repositories for interactive use
+## Handoffs
 
-If you are cloning or repairing the leanprover/lean4 repository for a user to work in, you need to do further set up. First, do an initial build according to the instructions above. Then you'll need to pick a toolchain name. If this is the only clone of `lean4` on the machine, just use `lean4`. Otherwise you might use something like `lean4-XYZ`.
+- **Predecessors / successors**: see FM `handoffs`. `lean-setup` is a root node — no predecessors. Typical outbound: `@lean-proof` (once `lean --version` and `lake env lean --version` agree), `@lean-bisect` (once toolchains are linked), `@mathlib-build` (for downstream builds), `@lean-mwe` (when the agent immediately needs to reproduce an issue against the new toolchain).
+- **Source spec**: `specs/lean/setup/requirements.md` — every G-rule traces to an AC there.
+- **Related ADRs**: ADR-0076 (skill-as-contract), ADR-0080 (handoff DAG), ADR-0028 (packaging — clone layout assumed).
 
-Then run the following commands:
-```bash
-elan toolchain link lean4-XYZ build/release/stage1
-elan toolchain link lean4-XYZ-stage0 build/release/stage0
-echo lean4-XYZ > lean-toolchain
-echo lean4-XYZ > script/lean-toolchain
-echo lean4-XYZ > tests/lean-toolchain
-echo lean4-XYZ-stage0 > src/lean-toolchain
-```
+## Common failure modes
 
-After setting up the toolchains, verify it worked:
-
-```bash
-cd tests/lean/run
-lean --version  # Should show the commit hash from your clone, not a release version
-```
-
-For Lake projects that depend on this clone, verify through Lake as well:
-
-```bash
-lake env lean --version
-lake env lean SomeFile.lean
-```
-
-If `lean --version` and `lake env lean --version` disagree, fix the
-`lean-toolchain` or elan override before debugging proofs.
-
-When done with the clone, remove the toolchains:
-
-```bash
-elan toolchain uninstall lean4-XYZ
-elan toolchain uninstall lean4-XYZ-stage0
-```
-
-- The `tests/` directory needs stage1 because tests run against the full Lean system
-- The `src/` directory needs stage0 because it's rebuilding the stdlib itself
-
----
+> AI agents commonly: re-run `cmake --preset release` on every build; link
+> only stage1 and forget stage0; pin only `lean-toolchain` and forget the
+> three sibling files; declare success on a green `lean --version` without
+> checking `lake env lean --version`; hand off to `@lean-proof` while the
+> two `--version` commands disagree. Full registry:
+> `GUARDRAILS.md §Agent failure taxonomy`.
 
 ## See also
 
-- [`../../templates/Template_Lakefile.md`](../../templates/Template_Lakefile.md) — Template: Annotated lakefile reference
+- [`../../skills/skills/lean-setup/SKILL.md`](../../../skills/lean-setup/SKILL.md) — pre-v2 source skill (this is the migration).
+- [`../../templates/Template_Lakefile.md`](../../../templates/Template_Lakefile.md) — annotated lakefile reference.
+- [`../lean-proof/SKILL.md`](../lean-proof/SKILL.md) — v2 sibling, the typical successor in the DAG.

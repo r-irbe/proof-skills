@@ -1,180 +1,83 @@
 ---
-name: lean-zettelkasten
-description: Manage Zettelkasten knowledge notes for Lean 4 proof review. Use when creating, linking, synthesizing, or searching review knowledge. Covers note types (fleeting, literature, permanent), linking conventions, synthesis workflows, disconnected-note detection, and index maintenance.
+name: "lean-zettelkasten"
+description: |
+  USE FOR: creating fleeting/literature/permanent ZK notes during Lean proof reviews, linking notes bidirectionally, running synthesis after a council session, detecting orphan and island notes, maintaining `_index.md` and `_tags.md`.
+  DO NOT USE FOR: running the review council itself (use @lean-review-council), reviewing a single proof (use @lean-proof-review), updating external papers from results (use @lean-doc-improvement), authoring the review methodology retro (use @lean-retro-methodology), generating a project blueprint (use @lean-blueprint).
+  TRIGGERS: zettel, ZK-, fleeting note, permanent note, synthesis.
+tier: "cold"
+runtime_targets: [copilot-cli, claude-code]
+dispatch_targets: []
+handoffs:
+  predecessors:
+    - "skill:lean-proof-review"
+    - "skill:lean-review-council"
+    - "skill:lean-retro-methodology"
+    - "skill:lean-proof"
+  successors:
+    - "skill:lean-doc-improvement"
+    - "skill:lean-quality-engine"
+metadata:
+  version: "0.2.0"
+  source_spec: "specs/lean/zettelkasten/requirements.md"
+  last_reviewed: "2026-05-30"
+r_caveats: [F1, F6]
 ---
 
-# Lean 4 Zettelkasten Knowledge Management
+# lean-zettelkasten
 
-Persistent knowledge system for accumulating, connecting, and synthesizing insights across Lean 4 proof reviews. All notes stored in `docs/project/lean/docs/zettelkasten/`.
+> Cold-tier skill — invoked explicitly by name (`@lean-zettelkasten`) from
+> review and synthesis flows. No MANDATORY preamble: the gates in §Behavioural
+> rules are advisory and reviewed at synthesis time rather than per-note.
+> Persist is still required (FSIA-R-11-09) but is local to the
+> `docs/project/lean/docs/zettelkasten/` tree.
 
-## Directory Structure
+## Routing
 
-```
-docs/project/lean/docs/zettelkasten/
-  _index.md              — Master index (auto-maintained)
-  _tags.md               — Tag index
-  fleeting/              — Session-scoped raw observations
-  literature/            — Reference facts from external sources
-  permanent/             — Synthesized, proven insights
-    tactics/             — Tactic patterns and anti-patterns
-    pitfalls/            — Recurring pitfall patterns
-    conventions/         — Convention insights
-    cross-module/        — Cross-module relationship insights
-    proofs/              — Proof strategy patterns
-```
+- **USE FOR:** creating a fleeting note from a council observation; creating a literature note when citing lean-pitfalls / Mathlib docs / a paper; promoting a cluster of ≥3 notes to a permanent note via the Synthesizer; bidirectional linking (`Related`, `Contradicts`, `Supports`, `Supersedes`); running orphan / island / contradiction / staleness / coverage scans; updating `_index.md` and `_tags.md`.
+- **DO NOT USE FOR:** running the review council itself (use `@lean-review-council`); reviewing a specific proof (use `@lean-proof-review`); updating external papers from Lean results (use `@lean-doc-improvement`); authoring the council retro / methodology (use `@lean-retro-methodology`); generating a project blueprint (use `@lean-blueprint`).
+- **TRIGGERS:** zettel, ZK-, fleeting note, permanent note, synthesis.
 
-## Note Types
+## Behavioural rules (G-*)
 
-| Type | Lifetime | Created by | Promoted to |
-|---|---|---|---|
-| **Fleeting** | Single review session | Any council member during RALPH Review | Literature or Permanent |
-| **Literature** | Permanent | Any agent citing external source (lean-pitfalls, Mathlib docs, papers) | Permanent (after synthesis) |
-| **Permanent** | Permanent | Synthesizer agent after pattern accumulation | — (terminal) |
+- **G-1** (MUST): Every note MUST use the `ZK-YYYYMMDD-NNN` ID grammar, with `NNN` sequential within that date. [Trace: AC-01]
+- **G-2** (MUST): Every note MUST declare `Type`, `Created`, `Author`, `Source`, and at least one tag. [Trace: AC-02]
+- **G-3** (SHOULD): Fleeting notes SHOULD remain minimal — capture the observation; do not perfect prose. [Trace: AC-03]
+- **G-4** (MUST): A permanent note MUST link to all source fleeting/literature notes it synthesises, and the sources MUST be marked `superseded`. [Trace: AC-04]
+- **G-5** (MUST NOT): The skill MUST NOT promote a cluster to a permanent note unless ≥3 source notes converge on the pattern. [Trace: AC-05]
+- **G-6** (SHOULD): The skill SHOULD propose a downstream `@lean-proof-review` or `@lean-quality-engine` skill update when a permanent note implies a methodology change. [Trace: AC-06]
 
-## Note Format
+## Workflow
 
-Every note follows this template:
+1. **Discover** [discover] — read the triggering event (council session, new literature citation, scheduled scan). Locate `_index.md`, current note counts, recent tag activity.
+2. **Plan** [discover] — pick note type (fleeting / literature / permanent) or scan type (orphan / island / contradiction / staleness / coverage). For permanent promotion, verify ≥3 source notes (G-5). STOP if cluster size < 3 and downgrade to literature note.
+3. **Execute** [execute] — write the note(s) under the correct directory (`fleeting/`, `literature/`, or `permanent/<category>/`); establish bidirectional links; flag contradictions for SDR.
+4. **Verify** [validate] — re-check ID uniqueness, link reciprocity, tag presence (G-1, G-2). Max 3 re-checks then escalate.
+5. **Persist** [persist] — commit the new/updated notes, update `_index.md` and `_tags.md`, and (if applicable) open a skill-update proposal for `@lean-proof-review` or `@lean-quality-engine` (G-6). Persist is local to `docs/project/lean/docs/zettelkasten/`.
 
-```markdown
-# [ZK-YYYYMMDD-NNN]: [Title]
-## Type: [fleeting / literature / permanent]
-## Created: [ISO-8601]
-## Updated: [ISO-8601]
-## Author: [Σ / Φ / Ν / Λ / Ω / SYN / member-name]
-## Source: [theorem / module / review session / external URL]
+## Recovery & STOP
 
-### Content
-[The insight, pattern, or fact. Keep concise — one idea per note.]
+- Permanent-note promotion attempted with < 3 source notes → STOP, downgrade to literature note (G-5).
+- Contradiction detected during synthesis → STOP this synthesis pass; emit a fleeting note flagging both sides for SDR.
+- Orphan scan returns > 10 % of notes orphaned → STOP, hand off to `@lean-retro-methodology` for a knowledge-coverage retro.
+- Confidence < 80 % on which category a permanent note belongs in (`tactics/`, `pitfalls/`, `conventions/`, `cross-module/`, `proofs/`) → STOP, ask.
 
-### Evidence
-[Lean diagnostic output, axiom trace, code snippet, or citation]
+## Handoffs
 
-### Links
-- Related: [[ZK-ID-1]], [[ZK-ID-2]]
-- Contradicts: [[ZK-ID-3]]
-- Supports: [[ZK-ID-4]]
-- Supersedes: [[ZK-ID-5]]
+- **Predecessors / successors**: see FM `handoffs`. Inbound: `@lean-proof-review`, `@lean-review-council`, `@lean-retro-methodology`, and `@lean-proof` (post-proof pattern capture) seed fleeting notes. Outbound: `@lean-doc-improvement` consumes permanent notes that imply paper updates; `@lean-quality-engine` consumes permanent notes that imply skill or methodology changes.
+- **Source spec**: `specs/lean/zettelkasten/requirements.md` — every G-rule traces to an AC there.
+- **Related ADRs**: ADR-0076 (skill-as-contract), ADR-0080 (handoff DAG), ADR-0079 (cold-tier loading rationale).
 
-### Tags
-[lean, tactic, pitfall, pattern, convention, omega, simplex, ...]
+## Common failure modes
 
-### Status
-[active / superseded / disputed / archived]
-```
+> AI agents commonly: over-polish fleeting notes (defeats the speed of
+> capture); promote 1–2-note clusters to permanent notes; create permanent
+> notes without back-linking the sources or marking them `superseded`;
+> silently resolve a contradiction instead of flagging it for SDR; skip
+> `_index.md` and `_tags.md` updates so the graph view rots. Full registry:
+> `GUARDRAILS.md §Agent failure taxonomy`.
 
-## ID Convention
+## See also
 
-`ZK-YYYYMMDD-NNN` where:
-- `YYYYMMDD` = creation date
-- `NNN` = sequential number within that date (001, 002, ...)
-
-## Creating Notes
-
-### Fleeting Notes (during review)
-
-When a council member observes something during RALPH Review/Analyze:
-
-1. Create `fleeting/ZK-YYYYMMDD-NNN.md` with the observation
-2. Tag minimally (the key concept + `fleeting`)
-3. Link to the theorem/module being reviewed
-4. Do NOT spend time perfecting — capture the raw insight
-
-### Literature Notes (from external sources)
-
-When citing lean-pitfalls, Mathlib docs, or papers:
-
-1. Create `literature/ZK-YYYYMMDD-NNN.md`
-2. Include the exact citation with URL or section reference
-3. Paraphrase the key insight in your own words
-4. Link to any related fleeting or permanent notes
-5. Tag with source category + concept
-
-### Permanent Notes (synthesized insights)
-
-When the Synthesizer agent detects a pattern across 3+ notes:
-
-1. Create `permanent/<category>/ZK-YYYYMMDD-NNN.md`
-2. Synthesize the pattern into a clear, actionable statement
-3. Link back to all source notes (fleeting + literature)
-4. Mark source fleeting notes as `superseded`
-5. Assess if the insight warrants a skill update (lean-proof-review improvement)
-
-## Synthesis Protocol
-
-The Synthesizer agent (`SYN_*`) runs after each council session:
-
-1. **Scan** all new fleeting notes from the session
-2. **Cluster** by tag similarity and link proximity
-3. **Check** if any cluster has 3+ notes → candidate for permanent note
-4. **Draft** permanent note with synthesized insight
-5. **Link** to all sources, establish bidirectional references
-6. **Detect contradictions** — if two notes disagree, flag for SDR
-7. **Update** `_index.md` and `_tags.md`
-8. **Propose** skill updates if the insight affects review methodology
-
-## Connection Discovery
-
-Periodically (every project-level RALPH iteration):
-
-1. **Orphan scan:** Notes with 0 outgoing links → attempt connection or archive
-2. **Island scan:** Clusters of notes disconnected from the main graph → investigate
-3. **Contradiction scan:** Notes with `contradicts` links → verify both are still valid
-4. **Staleness scan:** Notes not updated in 5+ sessions → verify still relevant
-5. **Coverage scan:** Map Zettelkasten coverage against Lean module structure → find gaps
-
-## Searching Notes
-
-### By tag
-```bash
-grep -rl "Tags:.*simplex" docs/project/lean/docs/zettelkasten/
-```
-
-### By link
-```bash
-grep -rl "ZK-20260327-005" docs/project/lean/docs/zettelkasten/
-```
-
-### By content
-```bash
-grep -rl "omega fails" docs/project/lean/docs/zettelkasten/
-```
-
-## Integration with Review Council
-
-| Council event | Zettelkasten action |
-|---|---|
-| RALPH Review phase | Create fleeting notes for observations |
-| RALPH Analyze phase | Link new notes to existing knowledge |
-| RALPH Learn phase | Synthesizer promotes patterns to permanent notes |
-| Council vote | Record decision rationale as fleeting note |
-| SDR (disagreement) | Record all positions as linked literature/fleeting notes |
-| Skill update | Create permanent note documenting what changed and why |
-| AGENT.md update | Create permanent note documenting the change |
-
-## Index Maintenance
-
-### `_index.md` format:
-```markdown
-# Zettelkasten Index
-## Last updated: [ISO-8601]
-## Total notes: [N] (fleeting: [N], literature: [N], permanent: [N])
-
-### Recent
-- [[ZK-YYYYMMDD-NNN]]: [Title] ([type])
-
-### By Module
-- Project/Tactics: [[ZK-...]], [[ZK-...]]
-- Project/LyapunovStability: [[ZK-...]]
-
-### By Category
-- Tactics: [[ZK-...]], [[ZK-...]]
-- Pitfalls: [[ZK-...]]
-```
-
-### `_tags.md` format:
-```markdown
-# Tag Index
-- `omega`: [[ZK-...]], [[ZK-...]]
-- `simplex`: [[ZK-...]]
-- `contraction`: [[ZK-...]]
-```
+- [`../../skills/skills/lean-zettelkasten/SKILL.md`](../../../skills/lean-zettelkasten/SKILL.md) — pre-v2 source skill (this is the migration).
+- [`../../zettelkasten/_index.md`](../../../zettelkasten/_index.md) — live ZK index this skill maintains.
+- [`../lean-doc-feedback/SKILL.md`](../lean-doc-feedback/SKILL.md) — v2 sibling on the documentation side of the DAG.
