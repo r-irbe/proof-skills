@@ -9,9 +9,11 @@ python3 scripts/lint/check_skill.py skills/ --report > scripts/lint/compliance-r
 
 ## Summary
 
-Latest standalone-repo baseline: **6/62** v2-compliant (W2 partial:
-`lean-proof`, `lean-setup`, `lean-zettelkasten`, `lean-blueprint`,
-`epistemic-mapping`, `lean-doc-feedback`). The advisory CI workflow
+Latest standalone-repo baseline: **10/53** v2-compliant. W2 complete:
+hot-tier targets `lean-proof`, `lean-setup`, `lean-quality-engine`,
+`lean-enforcement`, `lean-proof-review`, `lean-gateway` plus the
+earlier prototypes `lean-zettelkasten`, `lean-blueprint`,
+`epistemic-mapping`, `lean-doc-feedback`. The advisory CI workflow
 (`.github/workflows/skill-lint.yml`) surfaces this table on every push
 but does **not** fail the build.
 
@@ -47,8 +49,8 @@ but does **not** fail the build.
 | lean-doc-feedback | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | lean-doc-improvement | ✗ | ✗ | ✗ | ✗ | — | ✗ |
 | lean-doc-requirements | ✗ | ✗ | ✗ | ✗ | — | ✗ |
-| lean-enforcement | ✗ | ✗ | ✗ | ✗ | — | ✗ |
-| lean-gateway | ✗ | ✗ | ✗ | ✗ | — | ✗ |
+| lean-enforcement | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| lean-gateway | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | lean-integration-protocol | ✗ | ✗ | ✗ | ✗ | — | ✗ |
 | lean-knowledge-formalization | ✗ | ✗ | ✗ | ✗ | — | ✗ |
 | lean-math-analysis | ✗ | ✗ | ✗ | ✗ | — | ✗ |
@@ -58,8 +60,8 @@ but does **not** fail the build.
 | lean-math-optimization | ✗ | ✗ | ✗ | ✗ | — | ✗ |
 | lean-math-stochastic | ✗ | ✗ | ✗ | ✗ | — | ✗ |
 | lean-nested-learning | ✗ | ✗ | ✗ | ✗ | — | ✗ |
-| lean-proof-review | ✗ | ✗ | ✗ | ✗ | — | ✗ |
-| lean-quality-engine | ✗ | ✗ | ✗ | ✗ | — | ✗ |
+| lean-proof-review | ✓ | ✓ | ✓ | ✓ | ! | ✓ |
+| lean-quality-engine | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | lean-report | ✗ | ✗ | ✗ | ✗ | — | ✗ |
 | lean-research | ✗ | ✗ | ✗ | ✗ | — | ✗ |
 | lean-research-types | ✗ | ✗ | ✗ | ✗ | — | ✗ |
