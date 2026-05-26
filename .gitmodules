@@ -1,0 +1,3 @@
+[submodule "vendor/leanprover-skills"]
+	path = vendor/leanprover-skills
+	url = https://github.com/leanprover/skills.git
