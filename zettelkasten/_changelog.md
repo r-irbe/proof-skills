@@ -20,6 +20,6 @@ YYYY-MM-DD  ACTION  zk-NNN-slug                    notes
 2026-05-27  ADD     permanent/zk-005-tdad-methodology    Seed note 5 of 10. Promoted.
 2026-05-27  ADD     permanent/zk-006-eval-4-targets      Seed note 6 of 10. Promoted.
 2026-05-27  ADD     permanent/zk-007-elo-for-agents      Seed note 7 of 10. Promoted.
-2026-05-27  ADD     permanent/zk-008-lean-tactic-hierarchy Seed note 8 of 10. Promoted; EASCI references swept to generic placeholders.
-2026-05-27  ADD     permanent/zk-009-skill-consolidation-rubric Seed note 9 of 10. Promoted; EASCI references swept.
+2026-05-27  ADD     permanent/zk-008-lean-tactic-hierarchy Seed note 8 of 10. Promoted; project-specific references swept to generic placeholders.
+2026-05-27  ADD     permanent/zk-009-skill-consolidation-rubric Seed note 9 of 10. Promoted; project-specific references swept.
 2026-05-27  ADD     permanent/zk-010-multi-model-pareto  Seed note 10 of 10. Promoted.
