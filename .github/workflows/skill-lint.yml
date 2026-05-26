@@ -31,3 +31,25 @@ jobs:
       - name: Lint skills/_overrides/
         run: python scripts/lint/check_skill.py skills/_overrides/ --report
         continue-on-error: true
+
+  apm-validate:
+    name: APM manifest + skill-collection validation
+    runs-on: ubuntu-latest
+    # Hard-gating: package MUST stay APM-installable.
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install PyYAML
+        run: python -m pip install --upgrade pip pyyaml
+
+      - name: Validate apm.yml + skills/<name>/SKILL.md
+        run: python scripts/lint/apm_validate.py --report
+
+      - name: Emit JSON summary
+        run: python scripts/lint/apm_validate.py --json

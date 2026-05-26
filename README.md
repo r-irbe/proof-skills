@@ -65,6 +65,29 @@ authoritative rule.
 
 ## Install
 
+### Option 1 — APM (recommended)
+
+`proof-skills` is published as an [APM](https://github.com/microsoft/apm)
+**skill collection** (53 skills, each with its own `SKILL.md`). One
+command pulls them into any Copilot / Claude Code / Cursor / OpenCode /
+Codex / Gemini / Windsurf project:
+
+```bash
+apm install r-irbe/proof-skills                # entire bundle
+apm install r-irbe/proof-skills --skill lean-proof  # single skill
+apm install r-irbe/proof-skills#v0.1.0         # pinned to a release
+```
+
+APM writes the resolved tree to `apm_modules/`, copies each skill to
+your harness's runtime directory (e.g. `.agents/skills/`), and pins
+sources + content hashes in `apm.lock.yaml`. See [`apm.yml`](./apm.yml)
+for the manifest and `apm view r-irbe/proof-skills` for the schema.
+
+### Option 2 — git submodule
+
+Use this when you need the source tree on disk (templates,
+references, scripts) and do not want APM as a dependency.
+
 ```bash
 git clone --recurse-submodules https://github.com/r-irbe/proof-skills.git
 cd proof-skills

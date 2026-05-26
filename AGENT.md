@@ -31,16 +31,36 @@ A toolkit of [Agent Skills](https://agentskills.io) for working with
 `leanprover/skills` as a vendor git submodule for transparent
 re-dispatch (see §3).
 
+Distribution model: **[APM](https://github.com/microsoft/apm) skill
+collection** (per the
+[package-types reference](https://microsoft.github.io/apm/reference/package-types/)).
+The root [`apm.yml`](apm.yml) makes the bundle installable with one
+command in any Copilot / Claude Code / Cursor / OpenCode / Codex /
+Gemini / Windsurf project:
+
+```bash
+apm install r-irbe/proof-skills                     # entire bundle
+apm install r-irbe/proof-skills --skill lean-proof  # single skill
+apm install r-irbe/proof-skills#v0.1.0              # version-pinned
+```
+
+APM auto-discovers every `skills/<name>/SKILL.md`, hoists each to the
+consumer's harness runtime directory, and pins the resolved tree
+(source + content hashes) in `apm.lock.yaml`. No `apm install` step is
+needed if you clone the repo directly — the same `skills/` tree is
+the on-disk format.
+
 Top-level surfaces:
 
 | Path | Purpose | Lifecycle |
 |---|---|---|
-| `skills/` | One folder per skill; each has a `SKILL.md` agent-loadable contract. | Migrating to v2 template (see `scripts/lint/check_skill.py`). |
+| `apm.yml` | APM manifest (name, version, deps, scripts). | Bump `version` on releases. |
+| `skills/` | One folder per skill; each has a `SKILL.md` agent-loadable contract. Auto-discovered by APM. | Migrating to v2 template (see `scripts/lint/check_skill.py`). |
 | `skills/_overrides/` | Local overrides for upstream skill slugs (audit-modified copies of `leanprover/skills` entries). | Stable; dispatched per §3. |
-| `templates/` | Copy-pasteable Lean module / proof / refactor templates. | Stable; v2 in progress. |
+| `templates/` | Copy-pasteable Lean module / proof / refactor templates. v1 (12) + v2 production (12, incl. `00-CONVENTIONS.md`). | Stable. |
 | `references/` | Background knowledge an agent can `view` when a skill `## See also`s it. | Append-only. |
 | `scripts/lean/` | Generic Lean-4 helper scripts (axiom audit, DAG checks, bridge validators, etc.) callable from any project. | Project-agnostic; no host-project paths. |
-| `vendor/leanprover-skills/` | Upstream `leanprover/skills` referenced as a git submodule (read-only; do not edit in place). | Pinned commit; bump deliberately. |
+| `vendor/leanprover-skills/` | Upstream `leanprover/skills` referenced as a git submodule (read-only; do not edit in place). | Pinned commit; bump deliberately. NOT yet an APM dep — see `apm.yml` note. |
 | `zettelkasten/` | Reserved for the canonical Luhmann-tier ZK. Currently empty pending W7 of the master plan. | Bootstrapping. |
 
 This repo is **standalone** and has **no runtime dependency** on any

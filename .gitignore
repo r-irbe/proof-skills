@@ -5,3 +5,9 @@ __pycache__/
 *.swo
 *~
 .vscode/
+
+# APM consumer artefacts — present only when this repo is *consumed*
+# as a dependency. Always gitignored for producers per
+# https://microsoft.github.io/apm/quickstart.
+apm_modules/
+apm.lock.yaml
