@@ -1,7 +1,15 @@
 # Lean 4 Template Reference
 
-This directory contains **12 best-practice template files** for Lean 4 module
-development (validated against Lean v4.28.0 + Mathlib v4.28.0 + cslib).
+This directory contains:
+
+* **[`00-CONVENTIONS.md`](./00-CONVENTIONS.md)** — cross-template
+  conventions (file-doc top block, unified section skeleton, anti-patterns
+  checklist, module-size signals, decision tree). **Read this first.**
+* **12 v1 best-practice template files** for Lean 4 module
+  development (validated against Lean v4.28.0 + Mathlib v4.28.0 + cslib).
+* **12 v2 production templates** (4 proof-side + 8 workflow-side)
+  extracted from the v2 proposals (`_v2-proposals/`) — see the
+  [v2 production templates](#v2-production-templates) section below.
 
 Use these as copy-paste starting points for new modules and as a reference for
 patterns, pitfalls, and performance tips. Pair with the [Lean 4 Proof
@@ -36,24 +44,50 @@ Hierarchy](../references/lean4-tactic-hierarchy.md) guides.
 
 ---
 
-## v2 design proposals
+## v2 production templates
 
-Three substantial design docs for a future v2 template overhaul live
+Twelve new production templates extracted from `_v2-proposals/`.
+Each is fully generic (no project-specific content) and ships with a
+"How to instantiate in your project" checklist, a copy-paste body, an
+anti-patterns block, and a worked example.
+
+### Proof-side templates (Lean source modules)
+
+| File                                                             | Use for                                                  | Replaces / augments         |
+|------------------------------------------------------------------|----------------------------------------------------------|-----------------------------|
+| [`Template_Theorem.md`](./Template_Theorem.md)                   | Proof-heavy modules (≥ 2 publicly-cited theorems)        | `Template_Analysis.md` (v1) |
+| [`Template_DataModule.md`](./Template_DataModule.md)             | Leaf carrier-type modules (structures, inductives)       | `Template_Foundation.md` (v1) |
+| [`Template_TacticHelper.md`](./Template_TacticHelper.md)         | Central tactic-helper module (`<Project>.Tactics`)       | `Template_Automation.md` (v1) |
+| [`Template_Bridge.md`](./Template_Bridge.md)                     | Upstream re-export façade (Mathlib / Cslib / Batteries)  | *(NEW — no v1 predecessor)* |
+
+### Workflow-side templates (Markdown artefacts with YAML frontmatter)
+
+| File                                                              | Use for                                                          | Pairs with skill                              |
+|-------------------------------------------------------------------|------------------------------------------------------------------|-----------------------------------------------|
+| [`Template_MWE.md`](./Template_MWE.md)                            | Minimal Working Example for upstream bug reports                 | `lean-mwe`                                    |
+| [`Template_PR.md`](./Template_PR.md)                              | Pull-request side-car artefact (linked from PR description)      | `lean-pr` / `mathlib-pr`                      |
+| [`Template_Blueprint.md`](./Template_Blueprint.md)                | `leanblueprint` regeneration run-record                          | `lean-blueprint`                              |
+| [`Template_Zettelkasten.md`](./Template_Zettelkasten.md)          | Any zettelkasten note (fleeting / literature / permanent)        | `lean-zettelkasten`                           |
+| [`Template_Spec.md`](./Template_Spec.md)                          | Theorem specification (what + why + how) before implementation   | `lean-specification`                          |
+| [`Template_Bisect.md`](./Template_Bisect.md)                      | Regression-bisect record (consumes an MWE)                       | `lean-bisect`                                 |
+| [`Template_Council.md`](./Template_Council.md)                    | Council review / design critique (single-critic or full-council) | `lean-review-council`                         |
+| [`Template_RetroLog.md`](./Template_RetroLog.md)                  | Wave / sprint close-out + lessons learned                        | `lean-retro-methodology`                      |
+
+### v2 design proposals (full gap analysis)
+
+The complete proposals — including gap analyses, file evidence
+tables, diff summaries, and cross-template recommendations — live
 under [`_v2-proposals/`](./_v2-proposals/):
 
-- `proof-templates-v2.md` — re-shapes the proof-side templates
-  (Theorem, DataModule, TacticHelper) and adds `Template_Bridge`.
-- `workflow-templates-v2.md` — adds 8 workflow templates currently
-  embedded in `lean-*` SKILL.md files (MWE, PR, Blueprint,
-  Zettelkasten, Spec, Bisect, Council, RetroLog).
-- `all-templates.md` — comprehensive review of all 12 existing
-  templates + 9 proposed new domain templates (Probability, Measure,
-  InfoGeom, Bridge, Fractal/IFS, Consensus/BFT, Calculus, Tests,
-  Graph).
+* `proof-templates-v2.md` — proof-side templates
+* `workflow-templates-v2.md` — workflow-side templates
+* `all-templates.md` — review of all 12 v1 templates + 9 proposed new
+  domain templates (Probability, Measure, InfoGeom, Bridge, Fractal/IFS,
+  Consensus/BFT, Calculus, Tests, Graph) — domain templates remain
+  on the editorial backlog.
 
-Extraction into production `Template_*.md` files is editorial work
-(HITL-gated per `AGENT.md §1.2 #1`). See
-[`_v2-proposals/README.md`](./_v2-proposals/README.md).
+See [`_v2-proposals/README.md`](./_v2-proposals/README.md) for the
+extraction guide.
 
 ---
 
