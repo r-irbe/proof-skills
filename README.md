@@ -1,196 +1,94 @@
 # proof-skills
 
-A standalone toolkit of [Agent Skills](https://agentskills.io) for
-working with [Lean 4](https://github.com/leanprover/lean4) and
-[Mathlib4](https://github.com/leanprover-community/mathlib4): formal-
-verification helpers, math-domain skills, doc/review/research workflows,
-zettelkasten patterns, and generic Lean tooling — all callable from any
-Lean 4 project.
-
-> **For AI agents.** Read [`AGENT.md`](AGENT.md) before touching any
-> file. It defines the HITL gating contract (belief < 0.90 ⇒ ask),
-> reversibility tiers, layout invariants, and the skill-dispatch
-> precedence rule.
-
----
-
-## Status
-
-- Standalone repository — not a fork.
-- License: Apache-2.0 (see [`LICENSE`](LICENSE) and [`NOTICE`](NOTICE)).
-- Upstream `leanprover/skills` is referenced read-only as a git
-  submodule at `vendor/leanprover-skills/`; local overrides live under
-  `skills/_overrides/`.
-
----
-
-## Layout
-
-```
-proof-skills/
-├── AGENT.md                # agent contract (HITL, dispatch, governance)
-├── LICENSE                 # Apache-2.0
-├── NOTICE                  # upstream attribution per Apache-2.0 §4
-├── README.md               # this file
-├── skills/                 # first-party skills (53+ folders, one SKILL.md each)
-│   └── _overrides/         # local overrides of upstream slugs
-├── templates/              # copy-pasteable Lean module / proof / refactor templates
-├── references/             # background knowledge (theorem search, Mathlib idioms, etc.)
-├── scripts/                # tooling
-│   ├── lean/               # generic Lean-4 helpers (axiom audit, DAG checks, bridge validators)
-│   ├── lint/               # check_skill.py — SKILL.md v2 linter
-│   ├── eval/               # run_eval.py — v0 advisory skill eval harness
-│   ├── elo/                # elo.py — model A/B ELO calculator (stdlib only)
-│   └── check-structure     # repo layout check
-├── zettelkasten/           # reserved for canonical ZK (W7 of master plan)
-└── vendor/
-    └── leanprover-skills/  # git submodule → leanprover/skills (read-only)
-```
-
----
-
-## Skill-dispatch quickstart
-
-When an agent or loader asks for a skill by slug `<X>`, resolve in
-this order (first hit wins):
-
-1. `skills/<X>/` — first-party.
-2. `skills/_overrides/<X>/` — local overrides of upstream slugs.
-3. `vendor/leanprover-skills/skills/<X>/` — upstream fallback.
-
-See [`AGENT.md` §3.1](AGENT.md#31-skill-dispatch-precedence) for the
-authoritative rule.
-
----
-
-## Install
-
-### Option 1 — APM (recommended)
-
-`proof-skills` is published as an [APM](https://github.com/microsoft/apm)
-**skill collection** (53 skills, each with its own `SKILL.md`). One
-command pulls them into any Copilot / Claude Code / Cursor / OpenCode /
-Codex / Gemini / Windsurf project:
+A bundle of [Agent Skills](https://agentskills.io) for writing
+[Lean 4](https://github.com/leanprover/lean4) proofs against
+[Mathlib4](https://github.com/leanprover-community/mathlib4). Installs
+into any coding-agent harness via [APM](https://github.com/microsoft/apm).
 
 ```bash
-apm install r-irbe/proof-skills                # entire bundle
-apm install r-irbe/proof-skills --skill lean-proof  # single skill
-apm install r-irbe/proof-skills#v0.1.0         # pinned to a release
+apm install r-irbe/proof-skills
 ```
 
-APM writes the resolved tree to `apm_modules/`, copies each skill to
-your harness's runtime directory (e.g. `.agents/skills/`), and pins
-sources + content hashes in `apm.lock.yaml`. See [`apm.yml`](./apm.yml)
-for the manifest and `apm view r-irbe/proof-skills` for the schema.
+After install, each skill is hoisted into the harness's runtime
+directory (Copilot, Claude Code, Cursor, OpenCode, Codex, Gemini, or
+Windsurf) and becomes invocable by name. Pinning, single-skill
+selection, and lockfile reproducibility work the same way they do
+for any other APM package; the manifest is [`apm.yml`](apm.yml) and
+the layout is APM's *skill collection* type.
 
-### Option 2 — git submodule
-
-Use this when you need the source tree on disk (templates,
-references, scripts) and do not want APM as a dependency.
+If you would rather have the source tree on disk than depend on APM,
+clone the repo with submodules:
 
 ```bash
-git clone --recurse-submodules https://github.com/r-irbe/proof-skills.git
-cd proof-skills
+git clone --recurse-submodules https://github.com/r-irbe/proof-skills
 ```
 
-If you already cloned without `--recurse-submodules`:
+## What is in here
 
-```bash
-git submodule update --init --recursive
-```
+The repo collects three kinds of material that turn out to be useful
+together when an agent is doing real proof work.
 
----
+**Skills** (`skills/`, 53 folders) cover Lean toolchain setup, proof
+tactics, MWE extraction, bisection, PR hygiene, Mathlib review,
+domain-specific math reasoning, applied verticals, and end-to-end
+process workflows like blueprint regeneration and retrospective
+audits. Each folder ships a single `SKILL.md` that the runtime loads
+on demand. A handful of folders under `skills/_overrides/` shadow
+upstream [`leanprover/skills`](https://github.com/leanprover/skills)
+entries that we needed to audit-modify; the dispatch order
+(first-party → override → upstream vendor) is documented in
+[`AGENT.md`](AGENT.md) §3.
 
-## Skill catalogue (highlights)
+**Templates** (`templates/`) are copy-pasteable Lean module
+skeletons. Twelve v1 templates cover the common shapes (foundation,
+analysis, dynamics, automation, performance, refactoring, …) and
+twelve v2 production templates extracted in W6 (theorem, data module,
+tactic helper, bridge, plus eight workflow artefacts: MWE, PR,
+blueprint, zettelkasten, spec, bisect, council, retro log). The
+cross-template conventions — file-doc header, section skeleton,
+proof-comment tags, anti-patterns checklist — live in
+[`templates/00-CONVENTIONS.md`](templates/00-CONVENTIONS.md).
 
-The `skills/` tree contains 50+ skills across these themes
-(see each folder's `SKILL.md` for the agent-loadable contract):
-
-- **Lean 4 / Mathlib**: `lean-proof`, `lean-bisect`, `lean-mwe`,
-  `lean-pr`, `lean-setup`, `mathlib-build`, `mathlib-pr`,
-  `mathlib-review`, `nightly-testing` (upstream + overrides).
-- **Math domains**: `math-measure-probability`,
-  `math-nonlinear-dynamics`, `math-time-series`, `math-topology-analysis`,
-  `math-algebra-category`, `math-graph-knowledge`,
-  `math-optimization-game`, `math-strategy-studio`, etc.
-- **AI / reasoning**: `ai-causal-deontic`, `ai-symbolic-neuro`,
-  `ai-agentic-evolving`, `ai-commonsense-reasoning`,
-  `ai-high-stakes-verifiable`.
-- **Lean-domain formalisations**: `lean-math-foundations`,
-  `lean-math-analysis`, `lean-math-stochastic`, `lean-math-dynamical`,
-  `lean-math-optimization`, `lean-math-discrete`,
-  `lean-causal-reasoning`, `lean-ai-formalization`,
-  `lean-security-formalization`.
-- **Process / research**: `lean-research`, `lean-research-types`,
-  `research-council`, `research-synthesis-engine`,
-  `lean-review-council`, `lean-proof-review`, `lean-report`,
-  `lean-blueprint`, `lean-retro-methodology`, `lean-retroactive-audit`,
-  `lean-zettelkasten`, `epistemic-mapping`,
-  `epistemic-discovery-engine`.
-- **Applied verticals**: `applied-legal-reasoning`,
-  `applied-data-information-security`,
-  `applied-engineering-disciplines`, `applied-strategy-analysis`,
-  `applied-intelligence-analysis`.
-- **Docs / governance**: `lean-doc-improvement`,
-  `lean-doc-requirements`, `lean-doc-feedback`,
-  `lean-integration-protocol`, `lean-knowledge-formalization`,
-  `lean-enforcement`, `lean-gateway`, `lean-specification`,
-  `lean-nested-learning`.
-
----
-
-## Templates and references
-
-- `templates/` ships Lean module headers, proof-skeleton patterns, and
-  refactor templates. Drop into any Lean 4 project; substitute the
-  obvious placeholders (`MyProject`, `Foo`, etc.).
-- `references/` is browsable background knowledge that individual
-  skills link to from their `## See also` footers. Topics include
-  theorem search (Loogle, Moogle, LeanSearch, Mathlib doc-gen 4),
-  Mathlib refactor playbooks, proof strategy, etc.
-
----
+**References and scripts** are background material a skill points at
+when it needs to. `references/` collects theorem-search idioms
+(Loogle, Moogle, LeanSearch, Mathlib doc-gen 4), proof-strategy
+notes, and refactor playbooks. `scripts/lean/` ships project-agnostic
+helpers: axiom audits, DAG layer checks, bridge validators,
+zettelkasten linters. None of them hardcode a host project; they take
+the project root as an argument.
 
 ## Tooling
 
-- `scripts/lint/check_skill.py` — validates `SKILL.md` against the v2
-  template (frontmatter, sections, link integrity). Advisory in CI;
-  baseline compliance report at `scripts/lint/compliance-report.md`.
-- `scripts/eval/run_eval.py` — v0 advisory skill eval harness. Case
-  YAML lives under `scripts/eval/cases/`; graders under
-  `scripts/eval/graders/`.
-- `scripts/elo/elo.py` — single-file ELO calculator (stdlib only) for
-  cross-model skill A/B benchmarking. Sample CSV + bootstrap script
-  included.
-- `scripts/lean/` — generic Lean-4 helpers (axiom audit, DAG
-  validators, bridge sanity checks, etc.). All take CLI flags or env
-  vars for project paths — none hardcode a host project.
-- `scripts/check-structure` — quick repo layout sanity check.
-- CI: `.github/workflows/skill-lint.yml` runs the linter on every push
-  and PR. Advisory only (`continue-on-error: true`); see
-  [`AGENT.md` §4](AGENT.md#4-workflow-defaults).
+`scripts/lint/check_skill.py` validates a `SKILL.md` against the v2
+template. `scripts/lint/apm_validate.py` (hard-gated in CI) checks
+that the package stays a valid APM skill collection: manifest keys
+present, each `SKILL.md` has the agentskills.io-required `name` and
+`description`, directory names match, no duplicates.
+`scripts/eval/run_eval.py` is a v0 advisory eval harness;
+`scripts/elo/elo.py` is a stdlib-only ELO calculator for cross-model
+A/B benchmarks. The full eval/ELO production hardening is on the
+roadmap (W8/W9 of the master plan).
 
-Further eval/ELO production hardening lands in W8/W9 of the master plan.
+## Project-specific overrides
 
----
+The toolkit is deliberately project-agnostic — templates and skills
+use `<Project>` / `<proj>` placeholders. Downstream projects encode
+their concrete values in a thin override layer rather than forking
+the templates. The reference implementation lives in this repo's
+parent project at `docs/easci/lean/skills-overrides/`; the rule is
+that an override file links back to the generic source and lists
+only the deltas.
 
-## Contributing
+## Status
 
-The HITL contract in `AGENT.md` governs both AI agents and human
-contributors making structural changes. Specifically:
+Apache-2.0, standalone repository (not a fork). Upstream
+`leanprover/skills` is vendored as a read-only git submodule at
+`vendor/leanprover-skills/` so its slugs remain dispatchable.
+Structural changes (`AGENT.md`, top-level layout, license,
+this README, submodule pin) trigger the HITL gate in
+[`AGENT.md`](AGENT.md) §1; history rewrites and force-pushes are
+explicitly off-limits.
 
-- Any change to `AGENT.md`, top-level layout, license, NOTICE, or this
-  README is a **Governance** trigger (hard HITL gate — ask first).
-- History rewrites, force-pushes, and submodule pin bumps are
-  `irreversible_data` (hard HITL gate).
-
-PRs that add or modify a skill should keep example identifiers
-obviously synthetic — no real downstream project names, no internal
-ADR numbers, no internal directory paths. See `AGENT.md` §2.
-
----
-
-## License
-
-[Apache License 2.0](LICENSE). See [`NOTICE`](NOTICE) for upstream
-attribution per Apache-2.0 §4.
+See [`AGENT.md`](AGENT.md) for the full contract — belief threshold,
+reversibility tiers, dispatch precedence, confidentiality rules — and
+[`apm.yml`](apm.yml) for the package metadata.
