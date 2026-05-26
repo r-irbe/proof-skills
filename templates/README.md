@@ -36,6 +36,27 @@ Hierarchy](../references/lean4-tactic-hierarchy.md) guides.
 
 ---
 
+## v2 design proposals
+
+Three substantial design docs for a future v2 template overhaul live
+under [`_v2-proposals/`](./_v2-proposals/):
+
+- `proof-templates-v2.md` — re-shapes the proof-side templates
+  (Theorem, DataModule, TacticHelper) and adds `Template_Bridge`.
+- `workflow-templates-v2.md` — adds 8 workflow templates currently
+  embedded in `lean-*` SKILL.md files (MWE, PR, Blueprint,
+  Zettelkasten, Spec, Bisect, Council, RetroLog).
+- `all-templates.md` — comprehensive review of all 12 existing
+  templates + 9 proposed new domain templates (Probability, Measure,
+  InfoGeom, Bridge, Fractal/IFS, Consensus/BFT, Calculus, Tests,
+  Graph).
+
+Extraction into production `Template_*.md` files is editorial work
+(HITL-gated per `AGENT.md §1.2 #1`). See
+[`_v2-proposals/README.md`](./_v2-proposals/README.md).
+
+---
+
 ## Reference Templates
 
 Templates 9–12 (`ProofStrategy`, `Verification`, `Refactoring`, `Performance`)
