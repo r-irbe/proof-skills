@@ -410,3 +410,52 @@ For domain-specific research, delegate to the appropriate specialized skill:
 | No domain skill consultation | Always check if a specialized domain skill covers the topic (Part 7) |
 | Ignoring Research Council for complex questions | Multi-domain or deep questions need council, not solo research |
 | Not tracking UU discoveries | Unknown unknowns found during research must be logged immediately |
+
+---
+
+## Part 9 — Typed Research Protocols (M / T / L / S / D / X / E)
+
+This skill absorbs the 7-type dispatch matrix previously hosted in
+the standalone `lean-research-types` skill (now a redirect stub).  Use
+the matrix when classifying an incoming research question; each type
+has its own protocol headline, output template, and council routing.
+
+### 9.1 Dispatch Matrix
+
+| Research Type | Primary Skill | Council Member | Domain Skills |
+|---|---|---|---|
+| Type M (Mathematical) | `lean-research` | Γ (Methods) | math + domain clusters |
+| Type T (Tactic / API) | `lean-proof-review` | Ν (Novelty) | — |
+| Type L (Literature) | `lean-research` | Ε (Applications) | math + domain clusters |
+| Type S (Safety / Soundness) | `lean-enforcement` | Σ (Soundness) | safety-relevant clusters |
+| Type D (Design / Architecture) | `lean-specification` | Λ (Quality) | — |
+| Type X (Cross-Domain) | domain skills | Β (Structure) | all domain clusters |
+| Type E (Epistemic) | `epistemic-mapping` | Α (Foundations) | all |
+
+### 9.2 Protocol Headlines
+
+| Type | When | Protocol headline |
+|---|---|---|
+| M | Proving a theorem needing non-trivial mathematical insight | FORMALIZE → DECOMPOSE → SEARCH (internal/Mathlib/literature) → SYNTHESIZE → IMPLEMENT → VERIFY |
+| T | Need the right tactic, lemma, or API for a specific goal | CLASSIFY goal type → TRY automated (`exact?` / `apply?` / `simp?` / `auto` / `duper`) → SEARCH Mathlib API → CHECK project custom tactics → REPORT |
+| L | Need to understand what's known in formal-verification literature | DEFINE scope → SEARCH (Zettelkasten / Mathlib / Zulip / arXiv / Coq+Isabelle) → SYNTHESIZE → ZK OUTPUT |
+| S | Verifying soundness, axiom-cleanliness, or safety relevance | AXIOM check → VACUITY check → FAITHFULNESS (delegate to Φ) → BOUNDARY check → CROSS-MODULE check |
+| D | Deciding how to structure definitions, modules, or architecture | UNDERSTAND requirements → SURVEY patterns → EVALUATE options → PROTOTYPE → RECOMMEND |
+| X | Connecting Lean formalization to domain knowledge | IDENTIFY domain → CONSULT domain skill → BRIDGE analysis → CROSS-REFERENCE → DOMAIN expert input |
+| E | Probing for unknown unknowns or mapping knowledge coverage | RUN epistemic audit → DISPATCH targeted M/T/L for each KU → PROBE for UU (analogy / boundary / negation / counterexample) → UPDATE epistemic map |
+
+### 9.3 Outputs
+
+All seven types emit a structured deliverable using the per-type
+template from
+[`references/research-output-templates.md`](../../references/research-output-templates.md).
+The Type-T entry also references the
+[`theorem-search`](../../references/theorem-search.md) loop.
+
+### 9.4 Queue & Budget
+
+Multi-task scheduling (priority bands, parallelisation rules, budget
+overrun handling) lives in
+[`references/research-queue.md`](../../references/research-queue.md).
+Budget overruns are a Trigger 1 (Confidence) signal under the HITL
+contract.
