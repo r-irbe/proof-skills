@@ -82,12 +82,33 @@ under [`_v2-proposals/`](./_v2-proposals/):
 * `proof-templates-v2.md` — proof-side templates
 * `workflow-templates-v2.md` — workflow-side templates
 * `all-templates.md` — review of all 12 v1 templates + 9 proposed new
-  domain templates (Probability, Measure, InfoGeom, Bridge, Fractal/IFS,
-  Consensus/BFT, Calculus, Tests, Graph) — domain templates remain
-  on the editorial backlog.
+  domain templates
+
+The 9 domain templates listed in `all-templates.md` have now been
+added; see [`### Domain templates`](#domain-templates) just below.
 
 See [`_v2-proposals/README.md`](./_v2-proposals/README.md) for the
 extraction guide.
+
+### Domain templates
+
+Domain-specific starters that complement the generic 12 + the v2
+production set.  Each uses the same `<Project>` / `<proj>`
+placeholders and `# How to instantiate` slot.
+
+| File                                                              | Use for                                                                | Companion v1               |
+|-------------------------------------------------------------------|------------------------------------------------------------------------|----------------------------|
+| [`Template_Probability.md`](./Template_Probability.md)            | Doob / Robbins-Siegmund / condExp / martingale-diff noise              | `Template_Dynamics.md`     |
+| [`Template_Measure.md`](./Template_Measure.md)                    | MeasurePreserving / Ergodic / AEStronglyMeasurable / sigma-finite      | `Template_Foundation.md`   |
+| [`Template_InfoGeom.md`](./Template_InfoGeom.md)                  | Fisher / KL / Bregman / exponential family (whitelisted-axiom slot)    | `Template_Analysis.md`     |
+| [`Template_Fractal_IFS.md`](./Template_Fractal_IFS.md)            | Hutchinson op / similarity dimension / `LipschitzWith` (axiom slot)    | `Template_Analysis.md`     |
+| [`Template_Consensus_BFT.md`](./Template_Consensus_BFT.md)        | Quorum intersection / view-change / safety+liveness                    | `Template_Application.md`  |
+| [`Template_Calculus.md`](./Template_Calculus.md)                  | `HasDerivAt` / chain rule via `.comp` / polynomial derivatives         | `Template_Analysis.md`     |
+| [`Template_Tests.md`](./Template_Tests.md)                        | `Tests/` subtree, smoke aggregator, `#print axioms` audit driver       | `Template_Lakefile.md`     |
+| [`Template_Graph.md`](./Template_Graph.md)                        | Hamilton cycles, DAG layering, SCC partition, `Fin n` `decide` witness | `Template_Foundation.md`   |
+
+`Template_Bridge.md` (already in the v2 set) is the 9th item from
+`all-templates.md` and covers the upstream-façade `abbrev` pattern.
 
 ---
 
