@@ -1,0 +1,26 @@
+id: lean-mwe-minimize
+title: "Reduce a failing tactic block to a single-file MWE"
+skill: lean-mwe
+difficulty: medium
+input:
+  prompt: |
+    Given a large Lean file that fails with `unknown identifier 'foo'`,
+    produce a single-file minimal working example (MWE) that reproduces
+    just that error.
+  expected_output_substring: |
+    -- MWE: reproduces `unknown identifier 'foo'`
+    import Mathlib
+
+    example : True := by
+      exact foo
+expected:
+  contains:
+    - "(?i)MWE"
+    - "^import\\s+Mathlib"
+    - "example\\s*:"
+    - "exact\\s+foo"
+  not_contains:
+    - "sorry"
+    - "TODO"
+grader: deterministic
+tags: [lean, debugging, mwe]

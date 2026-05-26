@@ -1,0 +1,22 @@
+id: lean-proof-omega
+title: "Prove ∀ n : ℕ, n + 0 = n by simp"
+skill: lean-proof
+difficulty: easy
+input:
+  prompt: |
+    Write a Lean 4 proof that `∀ n : ℕ, n + 0 = n`.
+  # Placeholder for what a real model would emit. The prototype runner
+  # echoes this back so the deterministic grader has something to bite on.
+  expected_output_substring: |
+    theorem add_zero (n : Nat) : n + 0 = n := by
+      simp
+expected:
+  contains:
+    - "theorem\\s+\\w+"
+    - "\\bNat\\b"
+    - "by\\s+simp"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [lean, mathlib, proof]

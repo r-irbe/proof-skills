@@ -202,9 +202,8 @@ under `vendor/`; update the submodule pin instead.
   layout moves) follow the **master plan** under
   `lab/MASTER-PLAN.md` *if accessible*; the lab lives outside this
   repo. If you are working without the lab, defer the change and ask.
-- Linter (`scripts/lint/check_skill.py` once promoted) is **advisory**
-  in CI; do not silently regress the pass-rate of v2-compliant
-  skills.
+- Linter (`scripts/lint/check_skill.py`) is **advisory** in CI; do
+  not silently regress the pass-rate of v2-compliant skills.
 
 ---
 
@@ -215,8 +214,9 @@ under `vendor/`; update the submodule pin instead.
 - Upstream attribution: [`NOTICE`](NOTICE)
 - Skill dispatch precedence: §3.1 above
 - Generic Lean scripts: [`scripts/lean/`](scripts/lean/)
-- Tooling scripts (eval / linter / ELO — populated by W1):
-  [`scripts/`](scripts/)
+- Tooling: [`scripts/lint/`](scripts/lint/) ·
+  [`scripts/eval/`](scripts/eval/) ·
+  [`scripts/elo/`](scripts/elo/)
 - Upstream submodule: [`vendor/leanprover-skills/`](vendor/leanprover-skills)
 - Master plan (private superrepo only): `lab/MASTER-PLAN.md`
 

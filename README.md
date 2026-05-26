@@ -38,7 +38,9 @@ proof-skills/
 ├── references/             # background knowledge (theorem search, Mathlib idioms, etc.)
 ├── scripts/                # tooling
 │   ├── lean/               # generic Lean-4 helpers (axiom audit, DAG checks, bridge validators)
-│   ├── check_skill.py      # SKILL.md v2 linter
+│   ├── lint/               # check_skill.py — SKILL.md v2 linter
+│   ├── eval/               # run_eval.py — v0 advisory skill eval harness
+│   ├── elo/                # elo.py — model A/B ELO calculator (stdlib only)
 │   └── check-structure     # repo layout check
 ├── zettelkasten/           # reserved for canonical ZK (W7 of master plan)
 └── vendor/
@@ -128,17 +130,24 @@ The `skills/` tree contains 50+ skills across these themes
 
 ## Tooling
 
-- `scripts/check_skill.py` — validates `SKILL.md` against the v2
-  template (frontmatter, sections, link integrity).
+- `scripts/lint/check_skill.py` — validates `SKILL.md` against the v2
+  template (frontmatter, sections, link integrity). Advisory in CI;
+  baseline compliance report at `scripts/lint/compliance-report.md`.
+- `scripts/eval/run_eval.py` — v0 advisory skill eval harness. Case
+  YAML lives under `scripts/eval/cases/`; graders under
+  `scripts/eval/graders/`.
+- `scripts/elo/elo.py` — single-file ELO calculator (stdlib only) for
+  cross-model skill A/B benchmarking. Sample CSV + bootstrap script
+  included.
+- `scripts/lean/` — generic Lean-4 helpers (axiom audit, DAG
+  validators, bridge sanity checks, etc.). All take CLI flags or env
+  vars for project paths — none hardcode a host project.
 - `scripts/check-structure` — quick repo layout sanity check.
-- `scripts/lean/` — generic Lean-4 helpers (axiom audit, DAG validators,
-  bridge sanity checks, etc.). All take CLI flags or env vars for
-  project paths — none hardcode a host project.
+- CI: `.github/workflows/skill-lint.yml` runs the linter on every push
+  and PR. Advisory only (`continue-on-error: true`); see
+  [`AGENT.md` §4](AGENT.md#4-workflow-defaults).
 
-Eval / ELO scaffolding (advisory linter CI, skill eval harness, ELO
-runner for cross-model skill benchmarking) lands in the W1 wave of the
-master plan; the public scaffold will appear under `scripts/eval/` and
-`scripts/elo/` once promoted from prototype.
+Further eval/ELO production hardening lands in W8/W9 of the master plan.
 
 ---
 

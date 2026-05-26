@@ -1,0 +1,20 @@
+id: mathlib-lookup-finset
+title: "Identify a Mathlib lemma about Finset.card_union_le"
+skill: mathlib-lookup
+difficulty: medium
+input:
+  prompt: |
+    Name a Mathlib lemma bounding `(s ∪ t).card` by `s.card + t.card`
+    and show its type signature.
+  expected_output_substring: |
+    theorem Finset.card_union_le (s t : Finset α) :
+        (s ∪ t).card ≤ s.card + t.card
+expected:
+  contains:
+    - "Finset\\.card_union_le"
+    - "Finset\\s+\\w+"
+    - "≤"
+  not_contains:
+    - "sorry"
+grader: deterministic
+tags: [lean, mathlib, lookup, finset]

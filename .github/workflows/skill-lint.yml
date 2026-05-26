@@ -1,0 +1,33 @@
+name: skill-lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-skills:
+    name: SKILL.md v2 advisory lint
+    runs-on: ubuntu-latest
+    # Advisory mode (Scope Y): surface failures, never block merge.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install PyYAML
+        run: python -m pip install --upgrade pip pyyaml
+
+      - name: Lint skills/
+        run: python scripts/lint/check_skill.py skills/ --report
+        continue-on-error: true
+
+      - name: Lint skills/_overrides/
+        run: python scripts/lint/check_skill.py skills/_overrides/ --report
+        continue-on-error: true

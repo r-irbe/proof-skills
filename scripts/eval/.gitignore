@@ -1,0 +1,4 @@
+# Run output goes here; not checked in.
+out/
+__pycache__/
+*.pyc
