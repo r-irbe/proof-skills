@@ -151,22 +151,12 @@ theorem cusp_potential_deriv (x a b : ℝ) :
 
 ### 4.2 Contraction Mapping Theorem
 
-```lean
--- Mathlib's version:
--- ContractingWith K f : Prop
--- where K : ℝ≥0, K < 1, dist (f x) (f y) ≤ K * dist x y
-
--- Fixed point existence + uniqueness:
--- ContractingWith.fixedPoint (complete metric space required)
--- ContractingWith.tendsto_iterate_fixedPoint → convergence
-
--- Project pattern for trust contraction:
-theorem trust_contraction (α : ℝ) (hα : 0 ≤ α) (hα1 : α < 1)
-    (target : ℝ) (x : ℝ) :
-    |α * x + (1 - α) * target - target| = α * |x - target| := by
-  ring_nf
-  rw [abs_mul, abs_of_nonneg hα]
-```
+Extracted to single canonical reference:
+[`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md).
+That file owns the `ContractingWith` API, fixed-point lemma list, the
+affine trust-contraction pattern, and the project contraction-theorem
+index.  When citing a Banach lemma, link there rather than restating
+the API in this file.
 
 ### 4.3 Normed and Banach Spaces
 
@@ -256,15 +246,10 @@ theorem convex_in_simplex (hλ : 0 ≤ λ) (hλ1 : λ ≤ 1)
 
 ## Part 7 — Research Council Integration
 
-| Analysis Topic | Research Council Member |
-|---|---|
-| Filter/topology formulation | Β (Structure Strategist) |
-| Derivative computation | Γ (Methods Scholar) |
-| Contraction bound tightness | Δ (Bounds Analyst) |
-| Measure-theoretic formulation | Β (Structure Strategist) |
-| Convexity arguments | Γ (Methods Scholar) |
-| Spectral analysis | Δ (Bounds Analyst) + literature search |
-| Functional analysis (Banach) | Α (Foundations Architect) |
+Consolidated into the single canonical routing matrix:
+[`references/research-council-skill-map.md`](../../references/research-council-skill-map.md)
+(see the "Analysis" section).  When dispatching a question to a
+council member, cite that table rather than restating the rows here.
 
 ---
 
@@ -278,42 +263,18 @@ theorem convex_in_simplex (hλ : 0 ≤ λ) (hλ1 : λ ≤ 1)
 
 ### 8.2 IVT Patterns
 
-```lean
--- Import: Mathlib.Topology.Order.IntermediateValue
--- Key theorem: IsPreconnected.intermediate_value₂
-
--- For continuous f : ℝ → ℝ with f a ≤ 0 ≤ f b (with hab : a ≤ b):
-isPreconnected_Icc.intermediate_value₂
-  (left_mem_Icc.mpr hab) (right_mem_Icc.mpr hab)
-  hf.continuousOn continuous_const.continuousOn
-  (le_of_lt ha) (le_of_lt hb)
--- → ∃ c ∈ Set.Icc a b, f c = 0
-
--- Alternative:
--- intermediate_value_uIcc: for Set.uIcc (unordered interval)
--- intermediate_value_Icc:  gives Set.Icc (f a) (f b) ⊆ f '' Set.Icc a b
-```
+Extracted to single canonical reference:
+[`references/lean4-ivt-patterns.md`](../../references/lean4-ivt-patterns.md).
+That file owns the full incantation, polynomial-continuity prerequisite,
+project `asymmetric_three_roots_ivt` application, and the pitfall table.
 
 ### 8.3 Contraction Theorem Library
 
-Key contraction theorems in the project's analysis layer:
-
-| Theorem | Location | Description |
-|---|---|---|
-| `trust_L1_contraction` | AgenticSafety | L1 trust contraction bound |
-| `trust_L1_exact` | AgenticSafety (line 2075) | Exact L1 trust equality |
-| `okdStep_L1_contraction` | StochasticCCV | L1 contraction for OKD step |
-| `ContractingWith.fixedPoint` | Mathlib | Banach fixed point (complete metric space) |
-
-```lean
--- Project pattern: geometric decay from contraction factor
--- After n steps: ‖x_n - x*‖ ≤ α^n * ‖x_0 - x*‖
--- Key lemma: tendsto_pow_atTop_nhds_zero_of_lt_one (for α < 1)
-theorem convergence_from_contraction (hα : α < 1) (hα0 : 0 ≤ α) :
-    Filter.Tendsto (fun n => α^n * d₀) Filter.atTop (nhds 0) :=
-  (tendsto_pow_atTop_nhds_zero_of_lt_one hα0 hα).const_mul d₀ |>.congr
-    (fun n => (mul_comm _ _))
-```
+Extracted to single canonical reference:
+[`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md).
+That file owns the `ContractingWith` API, geometric-decay lemma, the
+affine trust-contraction pattern, the project contraction-theorem
+index, and the Lyapunov direct-method bridge.
 
 ---
 

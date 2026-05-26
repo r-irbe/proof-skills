@@ -308,13 +308,9 @@ structure CausalModel (V : Type) (Val : V → Type) where
 
 ## Part 8 — Research Council Integration
 
-| AI Formalization Topic | Research Council Member |
-|---|---|
-| Safety envelope design | Δ (Bounds Analyst) + Ε (Applications Bridge) |
-| Trust dynamics analysis | Γ (Methods Scholar) + Δ (Bounds Analyst) |
-| Compliance property extraction | Ε (Applications Bridge) |
-| Multi-agent composition | Β (Structure Strategist) |
-| Neural network properties | Δ (Bounds Analyst) + Γ (Methods Scholar) |
-| Causal reasoning formalization | Α (Foundations Architect) + Β (Structure Strategist) |
-| Alignment verification | Ε (Applications Bridge) + Α (Foundations Architect) |
-| Evolving agent safety | Γ (Methods Scholar) + Δ (Bounds Analyst) |
+Consolidated into the single canonical routing matrix:
+[`references/research-council-skill-map.md`](../../references/research-council-skill-map.md)
+(see the "AI formalisation" section).  When dispatching a question to
+a council member, cite that table rather than restating the rows here.
+
+---

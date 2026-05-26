@@ -101,22 +101,15 @@ def IsMinOn (f : α → ℝ) (S : Set α) (x : α) : Prop :=
 
 ### 3.2 Banach Fixed Point Theorem in Lean
 
-```lean
--- ContractingWith (K : ℝ≥0) (f : α → α) :=
---   K < 1 ∧ ∀ x y, edist (f x) (f y) ≤ K * edist x y
+Consolidated into single canonical reference:
+[`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md)
+(§1 Mathlib API, §4 project contraction-theorem index — `BellmanOperator.contracting` row).
 
--- Given CompleteSpace α:
--- ContractingWith.fixedPoint : α (the unique fixed point)
--- ContractingWith.tendsto_iterate_fixedPoint : iterates converge
-
--- Project Bellman operator:
-def bellmanOp (γ : ℝ) (R : State → ℝ) (P : State → State → ℝ) (V : State → ℝ)
-    (s : State) : ℝ :=
-  R s + γ * ∑ s', P s s' * V s'
-
--- Contraction: ‖T[V] - T[W]‖∞ ≤ γ * ‖V - W‖∞
--- Use: unfold bellmanStep; omega  (proj_bellman is DEPRECATED — 0 uses)
-```
+Project Bellman operator one-liner: the Bellman operator on bounded
+value functions is a `γ`-contraction in the sup-norm; see the catalog
+§4 index entry.  The deprecated `proj_bellman` tactic is gone — use
+`unfold bellmanStep; omega` or the underlying `ContractingWith`
+machinery directly.
 
 ---
 
@@ -258,16 +251,10 @@ def IsParetoOptimal (fs : Fin k → α → ℝ) (S : Set α) (x : α) : Prop :=
 
 ## Part 8 — Research Council Integration
 
-| Optimization Topic | Research Council Member |
-|---|---|
-| Convexity verification | Β (Structure Strategist) |
-| Convergence rate analysis | Δ (Bounds Analyst) |
-| Fixed-point existence | Α (Foundations Architect) |
-| Game-theoretic formulation | Ε (Applications Bridge) |
-| RL algorithm selection | Γ (Methods Scholar) |
-| Multi-objective tradeoffs | Ε (Applications Bridge) + Δ (Bounds Analyst) |
-| Decision-theoretic framing | Ε (Applications Bridge) |
-| Bellman equation structure | Β (Structure Strategist) + Γ (Methods Scholar) |
+Consolidated into the single canonical routing matrix:
+[`references/research-council-skill-map.md`](../../references/research-council-skill-map.md)
+(see the "Optimization" section).  When dispatching a question to a
+council member, cite that table rather than restating the rows here.
 
 ---
 

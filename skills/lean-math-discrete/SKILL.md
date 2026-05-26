@@ -1,6 +1,6 @@
 ---
 name: lean-math-discrete
-description: Graph theory, lattice theory, combinatorics, DAG analysis, knowledge graphs, and discrete structures in Lean 4. Use when formalizing directed acyclic graphs, provenance chains, dependency orders, posets, lattice operations, combinatorial bounds, or finite structures. Core skill for the project's ProvenanceChain and dependency graph modules.
+description: Graph theory, applied lattice theory, combinatorics, DAG analysis, knowledge graphs, and discrete structures in Lean 4. Use when formalizing directed acyclic graphs, provenance chains, dependency orders, posets, lattice operations (severity lattices, quality-gate lattices, trust-vector orders, information-flow security levels), combinatorial bounds, or finite structures. Owns all applied lattice instances (typeclass tower lives in `lean-math-foundations`). Core skill for the project's ProvenanceChain and dependency graph modules.
 ---
 
 # Lean 4 Discrete Mathematics & Graph Theory
@@ -269,16 +269,10 @@ def KnowledgeGraph (E R : Type) := Set (Triple E R)
 
 ## Part 8 — Research Council Integration
 
-| Discrete Math Topic | Research Council Member |
-|---|---|
-| DAG structure design | Β (Structure Strategist) |
-| Lattice formulation | Β (Structure Strategist) |
-| Combinatorial bounds | Δ (Bounds Analyst) |
-| Graph algorithm selection | Γ (Methods Scholar) |
-| Knowledge graph modeling | Ε (Applications Bridge) |
-| State machine verification | Γ (Methods Scholar) |
-| Well-foundedness proofs | Α (Foundations Architect) |
-| Ontological reasoning | Ε (Applications Bridge) + Α (Foundations Architect) |
+Consolidated into the single canonical routing matrix:
+[`references/research-council-skill-map.md`](../../references/research-council-skill-map.md)
+(see the "Discrete" section).  When dispatching a question to a
+council member, cite that table rather than restating the rows here.
 
 ---
 

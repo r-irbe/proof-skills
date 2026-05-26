@@ -1,6 +1,6 @@
 ---
 name: lean-math-foundations
-description: Foundational mathematics in Lean 4 — logic, set theory, algebra, order theory, type theory, and category theory basics. Use when formalizing core mathematical structures, when Mathlib API conventions are unclear, when building algebraic hierarchies, or when the proof requires foundational reasoning about types, propositions, or universes. Covers Lean's type system, Prop vs Type, classical vs constructive choices, and Mathlib's algebraic typeclasses.
+description: Foundational mathematics in Lean 4 — logic, set theory, algebra, order-theory typeclasses, type theory, and category theory basics. Use when formalizing core mathematical structures, when Mathlib API conventions are unclear, when building algebraic hierarchies, or when the proof requires foundational reasoning about types, propositions, or universes. Covers Lean's type system, Prop vs Type, classical vs constructive choices, and Mathlib's algebraic typeclasses. For applied lattice instances (severity/gate/quality lattices), see `lean-math-discrete`.
 ---
 
 # Lean 4 Mathematical Foundations
@@ -140,19 +140,25 @@ example [LinearOrder α] (a b : α) : a ≤ b ∨ b ≤ a := le_total a b
 
 ### 4.1 Key Structures
 
-| Structure | Definition | Project usage |
+| Structure | Definition | Typical project usage |
 |---|---|---|
 | `Preorder` | Reflexive + transitive | (Rarely needed directly) |
-| `PartialOrder` | + antisymmetric | Quality gate lattice |
+| `PartialOrder` | + antisymmetric | General ≤ infrastructure |
 | `LinearOrder` | Total order | Threshold comparisons |
-| `Lattice` | Sup + inf | Severity lattice, gate composition |
+| `Lattice` | Sup + inf | See `lean-math-discrete` §3 for applied lattices |
 | `CompleteLattice` | Arbitrary sup/inf | (Lyapunov sublevel sets) |
-| `BoundedOrder` | Has ⊤ and ⊥ | Quality score bounds |
+| `BoundedOrder` | Has ⊤ and ⊥ | Bounded score types |
 | `WellFoundedRelation` | No infinite descending chains | Induction on DAGs, provenance depth |
+
+Applied / project lattice instances (severity lattices, gate
+composition, quality-gate lattice, trust-vector componentwise order,
+information-flow security levels) are owned by
+[`lean-math-discrete §3 Lattice Theory`](../lean-math-discrete/SKILL.md).
+This file keeps only the typeclass tower.
 
 ### 4.2 Monotonicity
 
-the project's gate monotonicity theorems use:
+Project monotonicity theorems use:
 
 ```lean
 -- Monotone: preserves ≤
@@ -168,17 +174,15 @@ theorem gate_monotone : Monotone gateFunction := by
 
 ### 4.3 Fixed Points
 
-Knaster-Tarski and Banach fixed-point theorems in Mathlib:
+Knaster-Tarski (lattice fixed points) and Banach (metric / contraction
+fixed points) are consolidated into:
 
-```lean
--- Lattice fixed points
-import Mathlib.Order.FixedPoints
--- CompleteLattice.fixedPoint_lfp, CompleteLattice.fixedPoint_gfp
-
--- Metric fixed points (contraction mapping)
-import Mathlib.Topology.MetricSpace.Contracting
--- ContractingWith.fixedPoint
-```
+- Lattice side: `Mathlib.Order.FixedPoints` —
+  `CompleteLattice.fixedPoint_lfp`, `CompleteLattice.fixedPoint_gfp`.
+- Metric / contraction side: see
+  [`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md)
+  for the full `ContractingWith` API, geometric-decay lemma, and
+  project contraction-theorem index.
 
 ---
 
@@ -265,15 +269,10 @@ import Mathlib.CategoryTheory.Functor.Basic
 
 ## Part 7 — Research Council Integration
 
-| Math Foundations Topic | Research Council Member to Consult |
-|---|---|
-| Universe level issues | Α (Foundations Architect) |
-| Typeclass inference failures | Α (Foundations Architect) + Lean community |
-| Algebraic hierarchy choice | Β (Structure Strategist) |
-| Order-theoretic formulation | Β (Structure Strategist) |
-| Proof technique selection | Γ (Methods Scholar) |
-| Induction schema choice | Γ (Methods Scholar) |
-| Constructive vs classical choice | Α (Foundations Architect) |
+Consolidated into the single canonical routing matrix:
+[`references/research-council-skill-map.md`](../../references/research-council-skill-map.md)
+(see the "Foundations" section).  When dispatching a question to a
+council member, cite that table rather than restating the rows here.
 
 ---
 

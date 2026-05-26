@@ -38,56 +38,20 @@ Nat model (primary)          Real model (secondary)
 
 ## Part 2 — Lyapunov Stability Theory
 
-### 2.1 Lyapunov's Direct Method
+The Lyapunov direct method, the project Lyapunov-function inventory,
+and the deprecation note for `proj_lyapunov` are consolidated into:
+[`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md)
+(§5 Lyapunov direct method, §6 Project Lyapunov-function inventory).
+This section keeps only the dispatch-relevant *taxonomy* — actual
+proof patterns live in the catalog.
 
-For a system `x_{n+1} = f(x_n)` with equilibrium `x* = 0`:
-
-1. **Find** a Lyapunov function `V : State → ℝ` such that:
-   - `V(0) = 0`
-   - `V(x) > 0` for `x ≠ 0`
-   - `V(f(x)) - V(x) ≤ 0` (stability) or `< 0` (asymptotic stability)
-   - `V(f(x)) ≤ c * V(x)` with `c < 1` (exponential stability)
-
-2. **Formalize** in Lean:
-
-```lean
--- Lyapunov function structure
-structure LyapunovFn (State : Type) where
-  V : State → ℝ
-  V_nonneg : ∀ x, 0 ≤ V x
-  V_zero : V equilibrium = 0
-  V_pos : ∀ x, x ≠ equilibrium → 0 < V x
-  V_decrease : ∀ x, V (f x) ≤ V x  -- stability
-  -- or: V_contract : ∃ c < 1, ∀ x, V (f x) ≤ c * V x  -- exponential
-
--- Proving V_nonneg for quadratic V(x) = x²:
--- Use: sq_nonneg, mul_self_nonneg  (proj_lyapunov is DEPRECATED — 0 uses; use positivity + nlinarith directly)
-```
-
-### 2.2 Project Lyapunov Patterns
-
-| Module | Lyapunov function | Key property | Proof technique |
-|---|---|---|---|
-| LyapunovStability | `V(q) = (q - q*)²` | Quadratic, `V ≥ 0` | `sq_nonneg` + `nlinarith` |
-| LyapunovStability | Cusp energy `E(x;a,b)` | Critical point analysis | `HasDerivAt` + calculus |
-| AgenticSafety | Trust distance `|t - t*|` | Contraction by `α` | `abs_mul` + geometric decay |
-| ReinforcementLearning | Bellman residual `‖V - V*‖` | Contraction by `γ` | Banach fixed point |
-| StochasticCCV | L¹ distance to stationary | Spectral gap decay | Matrix analysis |
-
-### 2.3 The `proj_lyapunov` Tactic **(DEPRECATED — 0 cross-module uses)**
-
-~~Custom Project tactic in `Tactics.lean` for non-negativity goals.~~
-Use the underlying tactics directly instead:
-
-```lean
--- Replace proj_lyapunov with:
--- 1. positivity           (for 0 ≤ e goals)
--- 2. nlinarith [sq_nonneg x, ...]   (for quadratic bounds)
--- 3. ring                (for algebraic identities)
--- 4. norm_num            (for numeric evaluations)
-
--- Use for: V(x) ≥ 0, V(f(x)) ≤ V(x), contraction factor bounds
-```
+| Module | Lyapunov function (one-liner) |
+|---|---|
+| LyapunovStability | Quadratic `V(q) = (q - q*)²` |
+| LyapunovStability | Cusp energy `E(x;a,b)` |
+| AgenticSafety | Trust distance `|t - t*|` |
+| ReinforcementLearning | Bellman residual `‖V - V*‖` |
+| StochasticCCV | L¹ distance to stationary |
 
 ---
 
@@ -266,62 +230,20 @@ When exact solutions don't exist, use:
 
 ## Part 7 — Research Council Integration
 
-| Dynamical Systems Topic | Research Council Member |
-|---|---|
-| Lyapunov function construction | Γ (Methods Scholar) + Δ (Bounds Analyst) |
-| Bifurcation classification | Β (Structure Strategist) |
-| Cusp catastrophe analysis | Γ (Methods Scholar) + literature search |
-| Phase portrait topology | Β (Structure Strategist) |
-| Contraction factor computation | Δ (Bounds Analyst) |
-| Stability margin estimation | Δ (Bounds Analyst) |
-| Nonlinear tactic selection | Γ (Methods Scholar) |
-| Control-theoretic formulation | Ε (Applications Bridge) |
+Consolidated into the single canonical routing matrix:
+[`references/research-council-skill-map.md`](../../references/research-council-skill-map.md)
+(see the "Dynamical" section).  When dispatching a question to a
+council member, cite that table rather than restating the rows here.
 
 ---
 
 ## Part 8 — IVT Sign-Change Pattern
 
-### 8.1 Equilibrium Existence via IVT
-
-For proving equilibria exist in Lean 4 / Mathlib:
-
-```lean
--- Import: Mathlib.Topology.Order.IntermediateValue
--- Key theorem: IsPreconnected.intermediate_value₂ (for f vs g = const pattern)
-
--- For continuous f : ℝ → ℝ with f a ≤ 0 ≤ f b  (with hab : a ≤ b):
-isPreconnected_Icc.intermediate_value₂
-  (left_mem_Icc.mpr hab) (right_mem_Icc.mpr hab)
-  hf.continuousOn continuous_const.continuousOn
-  (le_of_lt ha) (le_of_lt hb)
--- → ∃ c ∈ Set.Icc a b, f c = 0
-
--- Alternative (gives Set inclusion form):
--- intermediate_value_Icc hab hf :
---   Set.Icc (f a) (f b) ⊆ f '' Set.Icc a b
-```
-
-### 8.2 Project application: `asymmetric_three_roots_ivt`
-
-```lean
--- CuspCatastrophe: IVT sign-change for a = -3, b = 1
--- Proves three distinct real roots of x³ - 3x + 1 = 0
--- Sign analysis constructs the three intervals:
---   f(-2) = -8 + 6 + 1 = -1 < 0
---   f(-1) = -1 + 3 + 1 =  3 > 0  → root in (-2, -1)
---   f( 0) =           1 > 0
---   f( 1) = 1 - 3 + 1 = -1 < 0   → root in (0, 1)
---   f( 2) = 8 - 6 + 1 =  3 > 0   → root in (1, 2)
-```
-
-### 8.3 Polynomial Continuity
-
-```lean
--- For polynomial f: Continuous by fun_prop after unfold
-example (a b : ℝ) : Continuous (fun x : ℝ => x^3 + a*x + b) := by fun_prop
-
--- Or manually: continuous_pow + Continuous.mul + Continuous.add
-```
+Extracted to single canonical reference:
+[`references/lean4-ivt-patterns.md`](../../references/lean4-ivt-patterns.md).
+That file owns the canonical incantation, the
+`asymmetric_three_roots_ivt` walk-through, and the polynomial-continuity
+prerequisite.
 
 ---
 

@@ -150,69 +150,21 @@ example : 30 + 40 + 30 = 100 := by decide
 
 ## Part 4 — Time Series Analysis
 
-### 4.1 Formalization Approaches
-
-| Time Series Concept | Mathematical Framework | Lean Formalization |
-|---|---|---|
-| Stationarity | Shift-invariant distribution | `∀ k, dist(X_{n+k}) = dist(X_n)` |
-| Autocorrelation | `R(k) = E[(X_n - μ)(X_{n+k} - μ)]` | Integral definition |
-| ARMA model | `X_t = Σ φᵢ X_{t-i} + Σ θⱼ ε_{t-j} + ε_t` | Recursive definition |
-| Trend detection | Monotone component extraction | `Monotone (trend ∘ proj)` |
-| Change point | Distribution shift at time τ | `∃ τ, ∀ n < τ, dist_1 ∧ ∀ n ≥ τ, dist_2` |
-| Spectral density | Fourier transform of autocorrelation | (Advanced — Mathlib partial) |
-
-### 4.2 Project Time Series Connections
-
-| Project Concept | Time Series Aspect |
-|---|---|
-| Quality score evolution | Discrete time series `{q_n}` |
-| Phase transitions | Change-point detection in quality trajectory |
-| CCV dynamics | Multivariate time series on simplex |
-| Alert severity | Ordinal time series with regime switches |
-| Pipeline throughput | Count process with learning effects |
-| Stress indicators | Bounded time series with Lyapunov decay |
-
-### 4.3 Exponential Smoothing (EWS)
-
-```lean
--- the project's Exponential Warning System uses exponential smoothing:
--- S_n = α * X_n + (1-α) * S_{n-1}
-
--- Formalization:
-def ewma (α : ℝ) (x : ℕ → ℝ) : ℕ → ℝ
-  | 0 => x 0
-  | n + 1 => α * x (n + 1) + (1 - α) * ewma α x n
-
--- Properties to prove:
--- 1. If x_n → L then ewma α x n → L (for 0 < α ≤ 1)
--- 2. ewma is a contraction toward recent values
--- 3. Lag-bias tradeoff: small α → more smoothing, larger lag
-```
+Extracted to single canonical reference:
+[`references/lean4-time-series-patterns.md`](../../references/lean4-time-series-patterns.md).
+That file owns the formalisation-approaches table, the project
+connections table, the EWMA recurrence + convergence sketch, and the
+pitfall list.
 
 ---
 
 ## Part 5 — Ergodic Theory
 
-### 5.1 Ergodic Theorems
-
-```lean
--- Birkhoff's Ergodic Theorem:
--- For ergodic measure-preserving T:
--- (1/n) Σ_{k=0}^{n-1} f(T^k x) → ∫ f dμ  a.e.
-
--- Project relevance: long-run average quality = expected quality under stationary π
--- This justifies using stationary distribution analysis for pipeline assessment
-```
-
-### 5.2 Mixing
-
-```lean
--- Mixing: for any measurable A, B:
--- μ(A ∩ T^{-n} B) → μ(A) * μ(B) as n → ∞
-
--- Mixing rate = spectral gap for Markov chains
--- Project StochasticCCV: faster mixing → faster convergence to design equilibrium
-```
+Extracted to single canonical reference:
+[`references/lean4-ergodic-theory.md`](../../references/lean4-ergodic-theory.md).
+That file owns Birkhoff's theorem statement, the Mathlib API
+entry-points, the mixing-rate ↔ spectral-gap bridge, and the pitfall
+list.
 
 ---
 
@@ -253,15 +205,10 @@ def ewma (α : ℝ) (x : ℕ → ℝ) : ℕ → ℝ
 
 ## Part 7 — Research Council Integration
 
-| Stochastic Topic | Research Council Member |
-|---|---|
-| Markov chain formulation | Β (Structure Strategist) |
-| Convergence rate bounds | Δ (Bounds Analyst) |
-| Spectral gap estimation | Δ (Bounds Analyst) + literature |
-| Ergodic theorem application | Γ (Methods Scholar) |
-| Measure-theoretic foundations | Α (Foundations Architect) |
-| Time series model selection | Ε (Applications Bridge) |
-| Stochastic stability proofs | Γ (Methods Scholar) + Δ (Bounds Analyst) |
+Consolidated into the single canonical routing matrix:
+[`references/research-council-skill-map.md`](../../references/research-council-skill-map.md)
+(see the "Stochastic" section).  When dispatching a question to a
+council member, cite that table rather than restating the rows here.
 
 ---
 
