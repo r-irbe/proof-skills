@@ -6,7 +6,6 @@ updated: 2026-05-27
 type: literature
 tags: [moc, index, seed]
 refs:
-  - zk-001
   - zk-002
   - zk-003
   - zk-004
@@ -40,7 +39,6 @@ filenames-as-IDs make this a mechanical migration.
 
 | ID | Title | Tier-1 tag | Confidence |
 |---|---|---|---|
-| [[zk-001]] | Why we forked leanprover/skills into r-irbe/proof-skills | provenance | high |
 | [[zk-002]] | Filab skill-template v2 frontmatter contract | template-contract | high |
 | [[zk-003]] | AgentRx 9-category failure taxonomy | concept | high |
 | [[zk-004]] | BACM — Burst-And-Compact-Memory context pattern | pattern | medium |
@@ -57,13 +55,8 @@ Edges below are outgoing `refs:` from each note. Arrows read
 "depends on / cites".
 
 ```
-                          ┌─────────────────────────┐
-                          │       zk-001            │
-                          │  fork rationale         │
-                          └────────┬────────────────┘
-                                   │
-                                   ▼
-   ┌──────────────────────────┐    │       ┌──────────────────────────┐
+
+   ┌──────────────────────────┐            ┌──────────────────────────┐
    │       zk-002             │◀───┘──────▶│        zk-009            │
    │  template-v2 contract    │◀───────────│  consolidation rubric    │
    └─────────┬────────────────┘            └──┬────────────────┬──────┘
@@ -95,8 +88,7 @@ Edges below are outgoing `refs:` from each note. Arrows read
 
 ## Reading paths
 
-- **Newcomer to the fork** — start at [[zk-001]] → [[zk-002]] →
-  [[zk-009]].
+- **Newcomer to the fork** — start at [[zk-002]] → [[zk-009]].
 - **Building eval cases** — [[zk-006]] → [[zk-005]] → [[zk-003]] →
   [[zk-007]].
 - **Lean-proof-review migration** — [[zk-008]] → [[zk-002]] →
