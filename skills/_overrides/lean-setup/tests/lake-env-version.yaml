@@ -1,0 +1,8 @@
+repo: "https://github.com/leanprover-community/batteries.git"
+sha: "77d10578945b31d794214a66937b75a6d4311674"
+prompt: |
+  Verify that a Lean clone or project uses the intended toolchain. Compare
+  `lean --version` with `lake env lean --version`, explain what a mismatch
+  means, and describe how to repair the elan or lean-toolchain configuration.
+description: "Checks lean-setup toolchain and Lake environment guidance"
+timeout: 120

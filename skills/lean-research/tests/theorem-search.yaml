@@ -1,0 +1,8 @@
+repo: "https://github.com/leanprover-community/batteries.git"
+sha: "77d10578945b31d794214a66937b75a6d4311674"
+prompt: |
+  A proof is stuck because the right theorem name is unknown. Use Lean theorem
+  search methodology to propose a reproducible search plan involving Loogle,
+  #check or #find, and exact?/apply?/simp?/rw? verification.
+description: "Exercises theorem-search routing and candidate verification guidance"
+timeout: 120

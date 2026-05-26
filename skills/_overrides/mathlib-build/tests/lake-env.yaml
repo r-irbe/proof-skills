@@ -1,0 +1,8 @@
+repo: "https://github.com/leanprover-community/batteries.git"
+sha: "77d10578945b31d794214a66937b75a6d4311674"
+prompt: |
+  Validate a small Lean file in a Lake project with the least noisy command.
+  Explain why lake env lean is preferred over bare lean, and choose a targeted
+  build command instead of a full build.
+description: "Checks Lake environment hygiene and targeted-build guidance"
+timeout: 120

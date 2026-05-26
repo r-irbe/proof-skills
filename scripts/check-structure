@@ -1,0 +1,148 @@
+#!/usr/bin/env python3
+"""Offline structural checks for the Lean skills bundle."""
+
+from __future__ import annotations
+
+import argparse
+import re
+import sys
+from pathlib import Path
+
+
+MAX_SKILL_LINES = 500
+MAX_LINE_LENGTH = 160
+PLACEHOLDER_PROMPTS = {
+    "find the current time of day.",
+    "your prompt here",
+    "the prompt to test.",
+}
+
+
+def parse_frontmatter(path: Path) -> tuple[dict[str, str], list[str], bool]:
+    lines = path.read_text(encoding="utf-8").splitlines()
+    if not lines or lines[0].strip() != "---":
+        return {}, lines, False
+
+    frontmatter: dict[str, str] = {}
+    closed = False
+    for line in lines[1:]:
+        if line.strip() == "---":
+            closed = True
+            break
+        if ":" in line:
+            key, value = line.split(":", 1)
+            frontmatter[key.strip()] = value.strip().strip('"')
+    return frontmatter, lines, closed
+
+
+def normalized_description(value: str) -> str:
+    return re.sub(r"\s+", " ", value.strip().lower())
+
+
+def check_skill(path: Path) -> tuple[list[str], list[str]]:
+    errors: list[str] = []
+    warnings: list[str] = []
+    frontmatter, lines, frontmatter_closed = parse_frontmatter(path)
+    skill_name = path.parent.name
+
+    if not frontmatter_closed:
+        errors.append("missing closing YAML frontmatter delimiter")
+        return errors, warnings
+
+    if not frontmatter:
+        errors.append("missing YAML frontmatter")
+        return errors, warnings
+
+    name = frontmatter.get("name", "")
+    description = frontmatter.get("description", "")
+    if not name:
+        errors.append("missing frontmatter key: name")
+    elif name != skill_name:
+        errors.append(f"name {name!r} does not match directory {skill_name!r}")
+
+    if not description:
+        errors.append("missing frontmatter key: description")
+    elif len(description) < 40:
+        warnings.append("description is too short for reliable dispatch")
+
+    if len(lines) > MAX_SKILL_LINES:
+        warnings.append(f"{len(lines)} lines exceeds {MAX_SKILL_LINES}-line advisory cap")
+
+    long_lines = [
+        index
+        for index, line in enumerate(lines, start=1)
+        if len(line) > MAX_LINE_LENGTH and not line.startswith("description:")
+    ]
+    if long_lines:
+        warnings.append(
+            f"{len(long_lines)} line(s) exceed {MAX_LINE_LENGTH} chars outside description"
+        )
+
+    return errors, warnings
+
+
+def check_test(path: Path) -> tuple[list[str], list[str]]:
+    errors: list[str] = []
+    warnings: list[str] = []
+    text = path.read_text(encoding="utf-8")
+    keys = {
+        match.group(1)
+        for match in re.finditer(r"(?m)^([A-Za-z_][A-Za-z0-9_-]*):", text)
+    }
+    for key in ("repo", "sha", "prompt", "description"):
+        if key not in keys:
+            errors.append(f"missing {key}:")
+    lowered = text.lower()
+    if any(prompt in lowered for prompt in PLACEHOLDER_PROMPTS):
+        warnings.append("test prompt appears to be a placeholder")
+    return errors, warnings
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Check Lean skill structure")
+    parser.add_argument("--strict", action="store_true", help="treat warnings as errors")
+    args = parser.parse_args()
+
+    root = Path(__file__).resolve().parents[1]
+    skill_files = sorted((root / "skills").glob("*/SKILL.md"))
+    errors: list[str] = []
+    warnings: list[str] = []
+    descriptions: dict[str, Path] = {}
+
+    for skill_file in skill_files:
+        skill_errors, skill_warnings = check_skill(skill_file)
+        errors.extend(f"{skill_file}: {message}" for message in skill_errors)
+        warnings.extend(f"{skill_file}: {message}" for message in skill_warnings)
+
+        frontmatter, _, _ = parse_frontmatter(skill_file)
+        description = normalized_description(frontmatter.get("description", ""))
+        if description:
+            previous = descriptions.get(description)
+            if previous is not None:
+                errors.append(f"{skill_file}: duplicate normalized description with {previous}")
+            descriptions[description] = skill_file
+
+        tests = sorted((skill_file.parent / "tests").glob("*.yaml"))
+        if not tests:
+            warnings.append(f"{skill_file.parent}: no tests/*.yaml files")
+        for test_file in tests:
+            test_errors, test_warnings = check_test(test_file)
+            errors.extend(f"{test_file}: {message}" for message in test_errors)
+            warnings.extend(f"{test_file}: {message}" for message in test_warnings)
+
+    print(f"Lean skill structure: {len(skill_files)} skill(s) checked")
+    for message in warnings:
+        print(f"WARN: {message}")
+    for message in errors:
+        print(f"ERROR: {message}")
+
+    if errors or (args.strict and warnings):
+        print(f"FAILED: {len(errors)} error(s), {len(warnings)} warning(s)")
+        return 1
+
+    print(f"PASS: {len(warnings)} warning(s)")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

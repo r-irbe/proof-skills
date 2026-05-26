@@ -1,0 +1,26 @@
+proof-skills
+Copyright 2026 Radu Irbe and the proof-skills contributors
+
+This product includes derivative works of materials from the
+upstream "leanprover/skills" project
+(https://github.com/leanprover/skills), licensed under the Apache
+License, Version 2.0.
+
+Specifically, the contents of `skills/_overrides/` are local
+modifications of the corresponding upstream skill folders:
+
+  - lean-bisect
+  - lean-mwe
+  - lean-pr
+  - lean-proof
+  - lean-setup
+  - mathlib-build
+  - mathlib-pr
+  - mathlib-review
+  - nightly-testing
+
+The unmodified upstream tree is referenced as a git submodule at
+`vendor/leanprover-skills/`.
+
+Per §4 of the Apache License 2.0, this NOTICE file is preserved in
+all distributions. See `LICENSE` for the full license text.

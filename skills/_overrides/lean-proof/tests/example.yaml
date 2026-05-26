@@ -1,0 +1,8 @@
+repo: "https://github.com/leanprover-community/batteries.git"
+sha: "77d10578945b31d794214a66937b75a6d4311674"
+prompt: |
+  Prove a small Lean theorem one tactic at a time. After each tactic, check the
+  diagnostic state before continuing, and ensure the final file contains no
+  sorry, admit, or diagnostic search tactics.
+description: "Checks lean-proof one-step proof discipline and final proof cleanup"
+timeout: 120

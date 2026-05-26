@@ -1,0 +1,8 @@
+repo: "https://github.com/leanprover-community/batteries.git"
+sha: "77d10578945b31d794214a66937b75a6d4311674"
+prompt: |
+  Minimize a Lean diagnostic for a bug report. Preserve the exact error with
+  #guard_msgs, validate the reproduction with lake env lean, and describe how
+  to resume minimization after editing the output file.
+description: "Checks MWE guard preservation and lake env validation guidance"
+timeout: 120

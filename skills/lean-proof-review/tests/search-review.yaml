@@ -1,0 +1,9 @@
+repo: "https://github.com/leanprover-community/batteries.git"
+sha: "77d10578945b31d794214a66937b75a6d4311674"
+prompt: |
+  Review a Lean proof that introduces a custom helper lemma. Check whether the
+  lemma already exists in Mathlib or project helpers using theorem-search
+  methodology, and require diagnostic search commands to be removed from the
+  final proof.
+description: "Checks proof-review theorem-search and non-triviality guidance"
+timeout: 120
