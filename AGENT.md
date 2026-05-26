@@ -10,18 +10,6 @@ override session-only preferences.
 
 ---
 
-# AGENT.md — proof-skills repo contract
-
-Authoritative entry-point for any AI agent doing work inside this repo.
-Read this *before* you touch any file. The rules below are repo-wide and
-override session-only preferences.
-
-> **Audience.** This file is for agents (Claude, Copilot, Gemini, Codex
-> CLI sessions). Humans should read [`README.md`](README.md) for install
-> and quickstart.
-
----
-
 ## 0. What this repo is
 
 A toolkit of [Agent Skills](https://agentskills.io) for working with
