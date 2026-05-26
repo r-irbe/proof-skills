@@ -130,6 +130,17 @@ This is the *fail-closed* discipline (cf. OWASP LINDDUN-GO `T-NC`
 silent-grant pattern): never auto-approve an irreversible op on a
 timeout.
 
+> **Note on wall-clock time.**  The session time budget is **unlimited**
+> by default — slow local builds, long lake-timer probes, repeated test
+> reruns, and large eval loops are all fine.  Time-irreversibility is
+> *not* on the reversibility table in §1.3 and is **not** a HITL trigger
+> on its own.  Use *content* irreversibility (history rewrites, push to
+> default, paid API calls, AGENT.md edits) to decide whether to stop —
+> never wall-clock cost.  If the human operator explicitly imposes a
+> wall-clock cap for a specific request, treat it as a §1.2#4 (Novelty)
+> constraint and confirm before exceeding it; otherwise, slowness alone
+> is never a reason to defer or skip work.
+
 ### 1.5 What "ask" looks like
 
 | Runtime | Channel |
