@@ -154,6 +154,40 @@ Practical floor for this 6-player setup looks like ~80–100 matches (≈ 5–7
 per pair). Below that, individual rank flips are common; above that, ratings
 keep drifting but the ordering is stable.
 
+## Real-model run (2026-05-27)
+
+First time `elo.py` was driven by non-synthetic data. 5 frontier models
+× 5 coding problems (auto-graded by hidden 10-test suites) + 5 Lean 4
+theorems (auto-graded by `lake build`). 100 pairwise matches, K=32,
+R₀=1500. Tool use **forbidden** in prompts so the math wasn't trivialised
+by Python execution.
+
+| Rank | Model                          | Rating  | Games |
+| ---: | ------------------------------ | ------: | ----: |
+|    1 | `claude-opus-4.7-high`         | 1541.3  |    40 |
+|    2 | `claude-sonnet-4.6`            | 1539.7  |    40 |
+|    3 | `gpt-5.4`                      | 1539.1  |    40 |
+|    4 | `claude-opus-4.7`              | 1517.3  |    40 |
+|    5 | `claude-haiku-4.5`             | 1362.7  |    40 |
+
+20 decisive matches, 80 draws. All 20 decisive matches trace to two
+real bugs:
+
+- **`claude-opus-4.7` on `min_jumps`** — early-termination
+  `if i == n-1: return jumps` ignores reachability;
+  fails 5/10 (e.g. `[3,2,1,0,4]` returns 1, expected −1).
+- **`claude-haiku-4.5` on T1–T4** — wrote bare `omega`, `simp`, `exact`
+  as term-mode proofs after `:=`. Lean requires a `by …` block for
+  tactic invocation. Only T5 used a proper `match`-term and compiled.
+
+Full artifacts (prompts, raw responses, graders, per-model Lean files,
+CSV, ratings, leaderboard, combiner): see
+[`example_runs/2026-05-27-tools-off-bench/`](example_runs/2026-05-27-tools-off-bench/README.md).
+
+The run is self-contained — `coding/grade.py`, `coding/build_csv.py`,
+and `combined/build.py` re-execute against the committed in-tree
+paths without modification.
+
 ## Known limitations (prototype)
 
 1. **Order-dependent.** Elo updates in sequence, so shuffling the CSV gives
