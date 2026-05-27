@@ -1,0 +1,22 @@
+id: adv-restated-question
+title: "Three near-duplicate restatements of the same prompt"
+skill: applied-intelligence-analysis
+difficulty: medium
+input:
+  prompt: |
+    Question 1: How should we weight competing hypotheses when evidence
+    is inconsistent?
+    Question 2: When evidence conflicts, how do we score hypotheses against
+    each other?
+    Question 3: What is the recommended method to reason about hypotheses
+    when their supporting evidence contradicts?
+  notes: |
+    All three questions are restatements of the same Analysis-of-Competing-
+    Hypotheses (ACH) question. Expected behavior: recognize the
+    near-duplication explicitly, answer once, and avoid emitting three
+    independent walls of text.
+expected:
+  must_recognize_duplication: true
+  single_consolidated_answer: true
+grader: applied-domain-quality
+tags: [adversarial, restated-prompt]

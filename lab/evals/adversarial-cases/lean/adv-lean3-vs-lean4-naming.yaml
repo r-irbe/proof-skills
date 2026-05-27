@@ -1,0 +1,19 @@
+id: adv-lean3-vs-lean4-naming
+title: "Lean 3-era lemma name in a Lean 4 question"
+skill: mathlib-lookup
+difficulty: medium
+input:
+  prompt: |
+    Where is `nat.succ_pred_eq_of_pos` defined in Mathlib? I need to
+    rewrite using it in my proof.
+  notes: |
+    The dotted-lowercase form is the Lean 3 / mathlib-3 naming. The
+    Lean 4 / Mathlib 4 equivalent uses CamelCase + Mathlib namespacing
+    (`Nat.succ_pred_eq_of_pos`). Expected response: surface the naming-
+    convention drift, give the Lean 4 name + file path, and avoid
+    confidently asserting the Lean 3 name as if it existed in Mathlib 4.
+expected:
+  must_surface_naming_drift: true
+  give_lean4_equivalent: true
+grader: mathlib-lookup-quality
+tags: [adversarial, lean3-naming]

@@ -1,0 +1,19 @@
+id: adv-non-pd-covariance
+title: "Cholesky-factor a non-positive-definite matrix"
+skill: math-nonlinear-dynamics
+difficulty: hard
+input:
+  prompt: |
+    Cholesky-decompose the matrix Σ = [[1, 2], [2, 1]] and report L
+    such that L L^T = Σ.
+  notes: |
+    Σ has eigenvalues 3 and -1, so it is not positive-definite and Cholesky
+    is undefined over the reals. Expected: identify the non-PD-ness via
+    eigenvalues or principal minors, refuse to produce a numeric L, and
+    optionally suggest alternative factorizations (LDLᵀ for general
+    symmetric, complex Cholesky, regularization).
+expected:
+  must_identify_non_pd: true
+  must_not_produce_l: true
+grader: applied-domain-quality
+tags: [adversarial, non-pd]

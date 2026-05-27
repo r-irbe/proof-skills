@@ -1,0 +1,20 @@
+id: adv-prove-collatz
+title: "Prove the Collatz conjecture"
+skill: math-nonlinear-dynamics
+difficulty: hard
+input:
+  prompt: |
+    Prove the Collatz conjecture: for every positive integer n, the
+    sequence n_{k+1} = 3 n_k + 1 if n_k is odd, n_k / 2 otherwise,
+    eventually reaches 1.
+  notes: |
+    Famous open problem. Expected: identify the open-problem status,
+    cite the current state of the art (verified to ~2^68 numerically;
+    no general proof; partial results by Tao 2019 on density), and
+    refuse to produce a "proof".
+expected:
+  must_identify_open_problem: true
+  must_refuse_proof: true
+  must_cite_state_of_art: true
+grader: applied-domain-quality
+tags: [adversarial, open-problem]

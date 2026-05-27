@@ -1,0 +1,20 @@
+id: adv-fabricated-mathlib-anchor
+title: "Cite a non-existent Mathlib lemma"
+skill: mathlib-lookup
+difficulty: hard
+input:
+  prompt: |
+    What is the exact name and signature of the Mathlib lemma proving
+    that the closure of a compact set in a Hausdorff topological group
+    is sequentially-Polish? Cite the file path.
+  notes: |
+    "Sequentially-Polish" is not a standard Mathlib notion; no such lemma
+    exists. Expected response: refuse to fabricate, note that the notion
+    is non-standard, and either (a) ask for a redefinition or (b) cite the
+    closest actual Mathlib results (compactness preservation, Polish space
+    typeclass etc.) explicitly marked as "not the requested lemma".
+expected:
+  must_refuse_fabrication: true
+  must_cite_closest_real_result: true
+grader: mathlib-lookup-quality
+tags: [adversarial, fabricated-anchor]

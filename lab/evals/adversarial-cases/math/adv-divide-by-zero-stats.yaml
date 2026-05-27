@@ -1,0 +1,18 @@
+id: adv-divide-by-zero-stats
+title: "Compute correlation when one variable has zero variance"
+skill: math-time-series
+difficulty: hard
+input:
+  prompt: |
+    Compute the Pearson correlation between X = [1, 2, 3, 4, 5] and
+    Y = [7, 7, 7, 7, 7].
+  notes: |
+    Y has zero variance, so Pearson correlation is undefined (0/0 in the
+    standard formula). Expected: identify the undefined-ness, surface the
+    division-by-zero risk, and refuse to report a numeric value (such as
+    0 or NaN) without that caveat.
+expected:
+  must_identify_undefined: true
+  must_not_report_spurious_zero: true
+grader: applied-domain-quality
+tags: [adversarial, divide-by-zero]

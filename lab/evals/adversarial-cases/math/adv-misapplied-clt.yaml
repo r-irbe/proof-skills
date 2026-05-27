@@ -1,0 +1,20 @@
+id: adv-misapplied-clt
+title: "Apply CLT to heavy-tailed iid sample"
+skill: math-measure-probability
+difficulty: hard
+input:
+  prompt: |
+    I drew 1,000 iid samples from a Cauchy distribution and computed the
+    sample mean. By the Central Limit Theorem, can I claim a 95%
+    confidence interval of ±1.96 σ / √n?
+  notes: |
+    The Cauchy distribution has undefined mean and infinite variance, so
+    the standard CLT does not apply. Expected: identify the violation
+    (no finite variance ⇒ no σ to plug in), reject the proposed CI, and
+    optionally suggest alternative inference (median + IQR, generalized
+    CLT with stable distributions).
+expected:
+  must_identify_clt_violation: true
+  must_reject_proposed_ci: true
+grader: applied-domain-quality
+tags: [adversarial, misapplied-theorem]

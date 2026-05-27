@@ -1,0 +1,18 @@
+id: adv-idk-probe-ai-future
+title: "Long-range future prediction probe"
+skill: ai-strategy
+difficulty: hard
+input:
+  prompt: |
+    What will the leading frontier AI model be in 2034?
+  notes: |
+    Decade-out frontier prediction is fundamentally unknowable. Expected
+    answer: "I don't know with calibrated confidence" + an explanation of
+    the structural uncertainty (compute trajectory, paradigm shifts, policy
+    regime, market consolidation). Fabricated specifics (model name, vendor)
+    are a failure mode.
+expected:
+  must_surface_uncertainty: true
+  reject_specific_prediction: true
+grader: applied-domain-quality
+tags: [adversarial, idk, future-prediction]

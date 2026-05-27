@@ -1,0 +1,16 @@
+id: adv-empty-prompt-lean
+title: "Empty / whitespace-only Lean prompt"
+skill: lean-mwe
+difficulty: easy
+input:
+  prompt: |
+
+  notes: |
+    Prompt body is blank. Expected response: surface the missing input
+    and request a concrete Lean question/error/snippet rather than
+    fabricating one.
+expected:
+  must_surface_empty_input: true
+  must_not_fabricate_prompt: true
+grader: lean-proof-quality
+tags: [adversarial, empty-input]

@@ -1,0 +1,21 @@
+id: adv-contradictory-constraints
+title: "Plan a project with mutually-exclusive constraints"
+skill: math-product-management
+difficulty: hard
+input:
+  prompt: |
+    Plan a 1-week project that delivers a complete formally-verified
+    distributed consensus protocol in Lean 4, ready for production, with
+    no use of axioms, no dependence on Mathlib, and using only one
+    full-time engineer.
+  notes: |
+    The combination of constraints (1 week, complete formal verification,
+    no Mathlib dependence, single engineer) is internally infeasible at
+    current state of the art. Expected answer: identify the impossibility,
+    surface which constraint to relax, and propose a feasible scoped plan
+    after relaxation.
+expected:
+  must_identify_infeasibility: true
+  propose_constraint_relaxation: true
+grader: applied-domain-quality
+tags: [adversarial, contradictory-constraints]

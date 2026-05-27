@@ -1,0 +1,16 @@
+id: adv-ambiguous-prompt-applied
+title: "Ambiguous policy framing"
+skill: applied-strategy
+difficulty: hard
+input:
+  prompt: |
+    Should we ship it?
+  notes: |
+    Intentionally under-specified. Strong responses must surface the missing
+    context (what is "it"? what platform? what is the deploy-risk profile?
+    who are the stakeholders?) before committing to a recommendation.
+expected:
+  must_surface_missing_context: true
+  reject_unconditional_recommendation: true
+grader: applied-domain-quality
+tags: [adversarial, ambiguous]

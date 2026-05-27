@@ -1,0 +1,21 @@
+id: adv-overdetermined-system
+title: "Solve an overdetermined linear system claimed to be exact"
+skill: math-optimization-game
+difficulty: medium
+input:
+  prompt: |
+    Solve the system exactly:
+      x + y = 1
+      x - y = 0
+      2x + y = 3
+  notes: |
+    The first two equations give (x, y) = (1/2, 1/2), but the third
+    requires 2(1/2) + 1/2 = 3/2 ≠ 3. The system has no exact solution.
+    Expected: identify the inconsistency, refuse to fabricate an "exact"
+    answer, and either reject or offer a least-squares approximation
+    explicitly labeled as not-exact.
+expected:
+  must_identify_inconsistency: true
+  must_not_claim_exact: true
+grader: applied-domain-quality
+tags: [adversarial, overdetermined, inconsistent-system]
