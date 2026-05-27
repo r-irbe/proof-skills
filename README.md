@@ -16,17 +16,6 @@ Tactics · domain math · doc / review / research workflows · zettelkasten · g
 
 ---
 
-## Contents
-
-- [Quick start](#quick-start)
-- [What is in here](#what-is-in-here)
-- [Repository layout](#repository-layout)
-- [Tooling](#tooling)
-- [Project-specific overrides](#project-specific-overrides)
-- [Status & contracts](#status--contracts)
-
----
-
 ## Quick start
 
 Install into any coding-agent harness via [APM](https://github.com/microsoft/apm):
