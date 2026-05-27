@@ -1,11 +1,49 @@
 ---
 name: math-project-management
-description: Project and product management for mathematical formalization projects. Covers dependency-aware scheduling, risk management for unprovable theorems, progress tracking, milestone planning, resource allocation across proof workstreams, technical debt management, and stakeholder communication. Use when planning formalization campaigns, tracking multi-module efforts, or managing the intersection of research and engineering in formal mathematics.
+description: |
+  USE FOR: Project and product management for mathematical formalization projects. Covers dependency-aware scheduling, risk management for unprovable theorems, progress tracking, milestone planning, resource allocation across proof workstreams, technical debt management, and stakeholder communication. Use when planning formalization campaigns, tracking multi-module efforts, or managing the intersection of research and engineering in formal mathematics.
+  DO NOT USE FOR: product-level PM (use @math-product-management); retro methodology (use @lean-retro-methodology); engineering discipline view (use @applied-engineering-disciplines).
+  TRIGGERS: project management, dependency scheduling, risk management for proofs, formalization PM.
+tier: "warm"
+runtime_targets: [copilot-cli, claude-code]
+dispatch_targets: []
+handoffs:
+  predecessors: ['agent:gateway', 'skill:lean-research']
+  successors: ['skill:math-product-management', 'skill:lean-retro-methodology', 'skill:lean-zettelkasten']
+metadata:
+  version: "0.2.0"
+  source_spec: "skills/math-project-management/SKILL.md (this file)"
+  last_reviewed: "2026-05-27"
 ---
 
 # Mathematical Project & Product Management
 
 Methodology for managing large-scale formal mathematics projects as engineering endeavors.
+
+
+## Routing
+
+- **USE FOR:** Project and product management for mathematical formalization projects. Covers dependency-aware scheduling, risk management for unprovable theorems, progress tracking, milestone planning, resource allocation across proof workstreams, technical debt management, and stakeholder communication. Use when planning formalization campaigns, tracking multi-module efforts, or managing the intersection of research and engineering in formal mathematics.
+- **DO NOT USE FOR:** product-level PM (use @math-product-management); retro methodology (use @lean-retro-methodology); engineering discipline view (use @applied-engineering-disciplines).
+- **TRIGGERS:** project management, dependency scheduling, risk management for proofs, formalization PM.
+
+## Workflow
+
+1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
+2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
+3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
+4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+
+## Recovery & STOP
+
+- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
+- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
+- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+
+## Handoffs
+
+- **Predecessors:** `agent:gateway`, `skill:lean-research`.
+- **Successors:** `skill:math-product-management`, `skill:lean-retro-methodology`, `skill:lean-zettelkasten`.
 
 ---
 

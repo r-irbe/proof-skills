@@ -1,11 +1,49 @@
 ---
 name: lean-security-formalization
-description: Data security, information security, access control, cryptographic properties, and privacy in Lean 4. Use when formalizing information flow policies, access control models, confidentiality/integrity/availability properties, data protection compliance (GDPR/LED), or trust model properties. Core skill for the project's provenance security and data handling requirements.
+description: |
+  USE FOR: Data security, information security, access control, cryptographic properties, and privacy in Lean 4. Use when formalizing information flow policies, access control models, confidentiality/integrity/availability properties, data protection compliance (GDPR/LED), or trust model properties. Core skill for the project's provenance security and data handling requirements.
+  DO NOT USE FOR: security policy design not in Lean (use @applied-data-information-security); AI safety formalisation (use @lean-ai-formalization); general knowledge formalisation (use @lean-knowledge-formalization).
+  TRIGGERS: security formalization, information flow Lean, access control proof, cryptographic Lean, privacy proof.
+tier: "warm"
+runtime_targets: [copilot-cli, claude-code]
+dispatch_targets: []
+handoffs:
+  predecessors: ['agent:gateway', 'skill:lean-research']
+  successors: ['skill:lean-proof-review', 'skill:lean-enforcement', 'skill:lean-zettelkasten']
+metadata:
+  version: "0.2.0"
+  source_spec: "skills/lean-security-formalization/SKILL.md (this file)"
+  last_reviewed: "2026-05-27"
 ---
 
 # Lean 4 Security & Privacy Formalization
 
 Guide to formalizing security properties, access control, information flow, and privacy in Lean 4.
+
+
+## Routing
+
+- **USE FOR:** Data security, information security, access control, cryptographic properties, and privacy in Lean 4. Use when formalizing information flow policies, access control models, confidentiality/integrity/availability properties, data protection compliance (GDPR/LED), or trust model properties. Core skill for the project's provenance security and data handling requirements.
+- **DO NOT USE FOR:** security policy design not in Lean (use @applied-data-information-security); AI safety formalisation (use @lean-ai-formalization); general knowledge formalisation (use @lean-knowledge-formalization).
+- **TRIGGERS:** security formalization, information flow Lean, access control proof, cryptographic Lean, privacy proof.
+
+## Workflow
+
+1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
+2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
+3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
+4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+
+## Recovery & STOP
+
+- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
+- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
+- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+
+## Handoffs
+
+- **Predecessors:** `agent:gateway`, `skill:lean-research`.
+- **Successors:** `skill:lean-proof-review`, `skill:lean-enforcement`, `skill:lean-zettelkasten`.
 
 ---
 

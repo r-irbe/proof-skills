@@ -1,11 +1,49 @@
 ---
 name: ai-causal-deontic
-description: Causal reasoning, counterfactual analysis, and deontic logic for AI systems. Use for formalizing cause-effect relationships (Pearl's hierarchy), interventional reasoning, structural causal models, counterfactual simulation, obligation/permission/prohibition reasoning, normative systems, and legal/ethical rule formalization in Lean 4.
+description: |
+  USE FOR: Causal reasoning, counterfactual analysis, and deontic logic for AI systems. Use for formalizing cause-effect relationships (Pearl's hierarchy), interventional reasoning, structural causal models, counterfactual simulation, obligation/permission/prohibition reasoning, normative systems, and legal/ethical rule formalization in Lean 4.
+  DO NOT USE FOR: formalising those models in Lean (use @lean-causal-reasoning); agentic AI behaviour (use @ai-agentic-evolving); commonsense reasoning (use @ai-commonsense-reasoning).
+  TRIGGERS: causal, counterfactual, Pearl hierarchy, deontic, obligation, permission, structural causal model.
+tier: "warm"
+runtime_targets: [copilot-cli, claude-code]
+dispatch_targets: []
+handoffs:
+  predecessors: ['agent:gateway', 'skill:lean-research']
+  successors: ['skill:lean-causal-reasoning', 'skill:lean-knowledge-formalization', 'skill:lean-zettelkasten']
+metadata:
+  version: "0.2.0"
+  source_spec: "skills/ai-causal-deontic/SKILL.md (this file)"
+  last_reviewed: "2026-05-27"
 ---
 
 # Causal Reasoning & Deontic Logic
 
 Formal frameworks for reasoning about causes, effects, counterfactuals, and normative obligations.
+
+
+## Routing
+
+- **USE FOR:** Causal reasoning, counterfactual analysis, and deontic logic for AI systems. Use for formalizing cause-effect relationships (Pearl's hierarchy), interventional reasoning, structural causal models, counterfactual simulation, obligation/permission/prohibition reasoning, normative systems, and legal/ethical rule formalization in Lean 4.
+- **DO NOT USE FOR:** formalising those models in Lean (use @lean-causal-reasoning); agentic AI behaviour (use @ai-agentic-evolving); commonsense reasoning (use @ai-commonsense-reasoning).
+- **TRIGGERS:** causal, counterfactual, Pearl hierarchy, deontic, obligation, permission, structural causal model.
+
+## Workflow
+
+1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
+2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
+3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
+4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+
+## Recovery & STOP
+
+- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
+- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
+- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+
+## Handoffs
+
+- **Predecessors:** `agent:gateway`, `skill:lean-research`.
+- **Successors:** `skill:lean-causal-reasoning`, `skill:lean-knowledge-formalization`, `skill:lean-zettelkasten`.
 
 ---
 

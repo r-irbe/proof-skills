@@ -1,11 +1,49 @@
 ---
 name: lean-ai-formalization
-description: Formal verification of AI systems — agentic AI safety, alignment, high-stakes AI, evolving agents, neural network properties, and AI governance constraints. Use when formalizing safety envelopes, trust dynamics, multi-agent composition, AI act compliance, reward specifications, alignment properties, or any AI system property that must be formally verified. Core skill for the project's AgenticSafety module and AI-governance aspects.
+description: |
+  USE FOR: Formal verification of AI systems — agentic AI safety, alignment, high-stakes AI, evolving agents, neural network properties, and AI governance constraints. Use when formalizing safety envelopes, trust dynamics, multi-agent composition, AI act compliance, reward specifications, alignment properties, or any AI system property that must be formally verified. Core skill for the project's AgenticSafety module and AI-governance aspects.
+  DO NOT USE FOR: AI methodology itself (use @ai-high-stakes-verifiable or @ai-agentic-evolving); security-specific formalisation (use @lean-security-formalization); knowledge formalisation (use @lean-knowledge-formalization).
+  TRIGGERS: AI formalization, agentic safety, alignment proof, high-stakes AI, neural network property, AI governance.
+tier: "warm"
+runtime_targets: [copilot-cli, claude-code]
+dispatch_targets: []
+handoffs:
+  predecessors: ['agent:gateway', 'skill:lean-research']
+  successors: ['skill:lean-proof-review', 'skill:lean-enforcement', 'skill:lean-zettelkasten', 'skill:lean-doc-feedback']
+metadata:
+  version: "0.2.0"
+  source_spec: "skills/lean-ai-formalization/SKILL.md (this file)"
+  last_reviewed: "2026-05-27"
 ---
 
 # Lean 4 AI Systems Formalization
 
 Guide to formally verifying properties of AI systems, from safety envelopes to alignment guarantees.
+
+
+## Routing
+
+- **USE FOR:** Formal verification of AI systems — agentic AI safety, alignment, high-stakes AI, evolving agents, neural network properties, and AI governance constraints. Use when formalizing safety envelopes, trust dynamics, multi-agent composition, AI act compliance, reward specifications, alignment properties, or any AI system property that must be formally verified. Core skill for the project's AgenticSafety module and AI-governance aspects.
+- **DO NOT USE FOR:** AI methodology itself (use @ai-high-stakes-verifiable or @ai-agentic-evolving); security-specific formalisation (use @lean-security-formalization); knowledge formalisation (use @lean-knowledge-formalization).
+- **TRIGGERS:** AI formalization, agentic safety, alignment proof, high-stakes AI, neural network property, AI governance.
+
+## Workflow
+
+1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
+2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
+3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
+4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+
+## Recovery & STOP
+
+- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
+- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
+- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+
+## Handoffs
+
+- **Predecessors:** `agent:gateway`, `skill:lean-research`.
+- **Successors:** `skill:lean-proof-review`, `skill:lean-enforcement`, `skill:lean-zettelkasten`, `skill:lean-doc-feedback`.
 
 ---
 

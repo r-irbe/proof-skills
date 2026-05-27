@@ -1,11 +1,49 @@
 ---
 name: lean-retroactive-audit
-description: Apply the review council system retroactively to an existing large Lean 4 project. Use when onboarding an existing codebase to the council review framework. Covers module discovery, dependency analysis, incremental audit scheduling, baseline establishment, gap analysis, and the catch-up RALPH cycle for bringing an existing project to full review coverage.
+description: |
+  USE FOR: Apply the review council system retroactively to an existing large Lean 4 project. Use when onboarding an existing codebase to the council review framework. Covers module discovery, dependency analysis, incremental audit scheduling, baseline establishment, gap analysis, and the catch-up RALPH cycle for bringing an existing project to full review coverage.
+  DO NOT USE FOR: building a new council (use @lean-review-council); single proof review (use @lean-proof-review); RETRO methodology (use @lean-retro-methodology).
+  TRIGGERS: retroactive audit, council onboarding, existing project audit, legacy Lean review.
+tier: "warm"
+runtime_targets: [copilot-cli, claude-code]
+dispatch_targets: []
+handoffs:
+  predecessors: ['agent:gateway', 'skill:lean-research']
+  successors: ['skill:lean-review-council', 'skill:lean-retro-methodology', 'skill:lean-zettelkasten']
+metadata:
+  version: "0.2.0"
+  source_spec: "skills/lean-retroactive-audit/SKILL.md (this file)"
+  last_reviewed: "2026-05-27"
 ---
 
 # Lean 4 Retroactive Audit
 
 Systematic methodology for applying the 5-member review council, Zettelkasten, and specification framework to a large existing Lean 4 codebase that was developed before these systems were in place.
+
+
+## Routing
+
+- **USE FOR:** Apply the review council system retroactively to an existing large Lean 4 project. Use when onboarding an existing codebase to the council review framework. Covers module discovery, dependency analysis, incremental audit scheduling, baseline establishment, gap analysis, and the catch-up RALPH cycle for bringing an existing project to full review coverage.
+- **DO NOT USE FOR:** building a new council (use @lean-review-council); single proof review (use @lean-proof-review); RETRO methodology (use @lean-retro-methodology).
+- **TRIGGERS:** retroactive audit, council onboarding, existing project audit, legacy Lean review.
+
+## Workflow
+
+1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
+2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
+3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
+4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+
+## Recovery & STOP
+
+- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
+- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
+- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+
+## Handoffs
+
+- **Predecessors:** `agent:gateway`, `skill:lean-research`.
+- **Successors:** `skill:lean-review-council`, `skill:lean-retro-methodology`, `skill:lean-zettelkasten`.
 
 ---
 

@@ -1,11 +1,49 @@
 ---
 name: applied-legal-reasoning
-description: Legal reasoning formalization — statutory interpretation, case-based reasoning, argumentation frameworks, defeasible rules, deontic norms, regulatory compliance, and their connection to the project's provenance chains, governance structures, and formal verification for legal-adjacent AI systems.
+description: |
+  USE FOR: Legal reasoning formalization — statutory interpretation, case-based reasoning, argumentation frameworks, defeasible rules, deontic norms, regulatory compliance, and their connection to the project's provenance chains, governance structures, and formal verification for legal-adjacent AI systems.
+  DO NOT USE FOR: formalising those legal models in Lean (use @lean-applied-reasoning); deontic reasoning specifically (use @ai-causal-deontic); security policy (use @applied-data-information-security).
+  TRIGGERS: statutory interpretation, case-based reasoning, argumentation framework, defeasible rule, deontic norm, legal reasoning, regulatory.
+tier: "warm"
+runtime_targets: [copilot-cli, claude-code]
+dispatch_targets: []
+handoffs:
+  predecessors: ['agent:gateway', 'skill:lean-research']
+  successors: ['skill:lean-applied-reasoning', 'skill:ai-causal-deontic', 'skill:lean-knowledge-formalization']
+metadata:
+  version: "0.2.0"
+  source_spec: "skills/applied-legal-reasoning/SKILL.md (this file)"
+  last_reviewed: "2026-05-27"
 ---
 
 # Legal Reasoning
 
 Formal frameworks for legal analysis, argumentation, normative reasoning, and their intersection with formal verification and AI governance.
+
+
+## Routing
+
+- **USE FOR:** Legal reasoning formalization — statutory interpretation, case-based reasoning, argumentation frameworks, defeasible rules, deontic norms, regulatory compliance, and their connection to the project's provenance chains, governance structures, and formal verification for legal-adjacent AI systems.
+- **DO NOT USE FOR:** formalising those legal models in Lean (use @lean-applied-reasoning); deontic reasoning specifically (use @ai-causal-deontic); security policy (use @applied-data-information-security).
+- **TRIGGERS:** statutory interpretation, case-based reasoning, argumentation framework, defeasible rule, deontic norm, legal reasoning, regulatory.
+
+## Workflow
+
+1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
+2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
+3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
+4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+
+## Recovery & STOP
+
+- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
+- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
+- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+
+## Handoffs
+
+- **Predecessors:** `agent:gateway`, `skill:lean-research`.
+- **Successors:** `skill:lean-applied-reasoning`, `skill:ai-causal-deontic`, `skill:lean-knowledge-formalization`.
 
 ---
 

@@ -1,11 +1,49 @@
 ---
 name: lean-applied-reasoning
-description: Applied reasoning for intelligence analysis, strategy creation and analysis, brainstorming methodologies, investigative reasoning, and domain-specific decision-making. Use when formalizing strategic frameworks, situational analysis, hypothesis generation workflows, decision-under-uncertainty models, or when connecting the project's theoretical formalization to practical operational contexts. Bridges mathematical formalization to real-world application domains.
+description: |
+  USE FOR: Applied reasoning for intelligence analysis, strategy creation and analysis, brainstorming methodologies, investigative reasoning, and domain-specific decision-making. Use when formalizing strategic frameworks, situational analysis, hypothesis generation workflows, decision-under-uncertainty models, or when connecting the project's theoretical formalization to practical operational contexts. Bridges mathematical formalization to real-world application domains.
+  DO NOT USE FOR: pure intelligence-analysis methodology (use @applied-intelligence-analysis); strategy analysis methodology (use @applied-strategy-analysis); legal reasoning methodology (use @applied-legal-reasoning).
+  TRIGGERS: applied reasoning, intelligence formalisation, strategy formalisation, investigative reasoning, domain-specific reasoning.
+tier: "warm"
+runtime_targets: [copilot-cli, claude-code]
+dispatch_targets: []
+handoffs:
+  predecessors: ['agent:gateway', 'skill:lean-research']
+  successors: ['skill:lean-proof-review', 'skill:lean-enforcement', 'skill:lean-zettelkasten']
+metadata:
+  version: "0.2.0"
+  source_spec: "skills/lean-applied-reasoning/SKILL.md (this file)"
+  last_reviewed: "2026-05-27"
 ---
 
 # Lean 4 Applied Reasoning & Strategy
 
 Guide to formalizing applied reasoning — from intelligence analysis to strategic decision-making — in Lean 4.
+
+
+## Routing
+
+- **USE FOR:** Applied reasoning for intelligence analysis, strategy creation and analysis, brainstorming methodologies, investigative reasoning, and domain-specific decision-making. Use when formalizing strategic frameworks, situational analysis, hypothesis generation workflows, decision-under-uncertainty models, or when connecting the project's theoretical formalization to practical operational contexts. Bridges mathematical formalization to real-world application domains.
+- **DO NOT USE FOR:** pure intelligence-analysis methodology (use @applied-intelligence-analysis); strategy analysis methodology (use @applied-strategy-analysis); legal reasoning methodology (use @applied-legal-reasoning).
+- **TRIGGERS:** applied reasoning, intelligence formalisation, strategy formalisation, investigative reasoning, domain-specific reasoning.
+
+## Workflow
+
+1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
+2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
+3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
+4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+
+## Recovery & STOP
+
+- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
+- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
+- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+
+## Handoffs
+
+- **Predecessors:** `agent:gateway`, `skill:lean-research`.
+- **Successors:** `skill:lean-proof-review`, `skill:lean-enforcement`, `skill:lean-zettelkasten`.
 
 ---
 

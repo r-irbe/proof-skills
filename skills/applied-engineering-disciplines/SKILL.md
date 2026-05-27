@@ -1,11 +1,49 @@
 ---
 name: applied-engineering-disciplines
-description: Engineering disciplines relevant to formal mathematical systems — control theory, systems engineering, reliability engineering, software verification, signal processing, and testing methodology. Use for bridging the project's mathematical foundations to engineering practice, and for formalizing engineering requirements in Lean 4.
+description: |
+  USE FOR: Engineering disciplines relevant to formal mathematical systems — control theory, systems engineering, reliability engineering, software verification, signal processing, and testing methodology. Use for bridging the project's mathematical foundations to engineering practice, and for formalizing engineering requirements in Lean 4.
+  DO NOT USE FOR: formal verification in Lean (use @lean-ai-formalization); security-specific engineering (use @applied-data-information-security); strategy analysis (use @applied-strategy-analysis).
+  TRIGGERS: control theory, systems engineering, reliability engineering, software verification, engineering discipline.
+tier: "warm"
+runtime_targets: [copilot-cli, claude-code]
+dispatch_targets: []
+handoffs:
+  predecessors: ['agent:gateway', 'skill:lean-research']
+  successors: ['skill:lean-ai-formalization', 'skill:lean-security-formalization', 'skill:math-nonlinear-dynamics']
+metadata:
+  version: "0.2.0"
+  source_spec: "skills/applied-engineering-disciplines/SKILL.md (this file)"
+  last_reviewed: "2026-05-27"
 ---
 
 # Engineering Disciplines for Formal Mathematical Systems
 
 Engineering methods and frameworks that connect the project's formal mathematics to practical system design, verification, testing, and deployment.
+
+
+## Routing
+
+- **USE FOR:** Engineering disciplines relevant to formal mathematical systems — control theory, systems engineering, reliability engineering, software verification, signal processing, and testing methodology. Use for bridging the project's mathematical foundations to engineering practice, and for formalizing engineering requirements in Lean 4.
+- **DO NOT USE FOR:** formal verification in Lean (use @lean-ai-formalization); security-specific engineering (use @applied-data-information-security); strategy analysis (use @applied-strategy-analysis).
+- **TRIGGERS:** control theory, systems engineering, reliability engineering, software verification, engineering discipline.
+
+## Workflow
+
+1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
+2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
+3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
+4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+
+## Recovery & STOP
+
+- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
+- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
+- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+
+## Handoffs
+
+- **Predecessors:** `agent:gateway`, `skill:lean-research`.
+- **Successors:** `skill:lean-ai-formalization`, `skill:lean-security-formalization`, `skill:math-nonlinear-dynamics`.
 
 ---
 

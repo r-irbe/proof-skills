@@ -1,11 +1,49 @@
 ---
 name: math-nonlinear-dynamics
-description: General nonlinear dynamics, chaos theory, bifurcation analysis, catastrophe theory, attractor geometry, Lyapunov methods, phase portraits, and control-theoretic stability. Use for any mathematical reasoning about dynamical systems BEFORE or BEYOND Lean formalization. Covers theory, intuition, calculation techniques, and connection to the project's phase portrait, cusp catastrophe, and governance dynamics.
+description: |
+  USE FOR: General nonlinear dynamics, chaos theory, bifurcation analysis, catastrophe theory, attractor geometry, Lyapunov methods, phase portraits, and control-theoretic stability. Use for any mathematical reasoning about dynamical systems BEFORE or BEYOND Lean formalization. Covers theory, intuition, calculation techniques, and connection to the project's phase portrait, cusp catastrophe, and governance dynamics.
+  DO NOT USE FOR: Lean proofs in this domain (use @lean-math-dynamical); optimization theory (use @math-optimization-game); topology methods (use @math-topology-analysis).
+  TRIGGERS: nonlinear dynamics, chaos theory, bifurcation, catastrophe theory, attractor, Lyapunov, phase portrait.
+tier: "warm"
+runtime_targets: [copilot-cli, claude-code]
+dispatch_targets: []
+handoffs:
+  predecessors: ['agent:gateway', 'skill:lean-research']
+  successors: ['skill:lean-math-dynamical', 'skill:lean-research', 'skill:lean-zettelkasten']
+metadata:
+  version: "0.2.0"
+  source_spec: "skills/math-nonlinear-dynamics/SKILL.md (this file)"
+  last_reviewed: "2026-05-27"
 ---
 
 # General Nonlinear Dynamics & Catastrophe Theory
 
 Comprehensive mathematical methodology for nonlinear dynamics — the theoretical backbone of the project's phase portrait, cusp catastrophe, Lyapunov stability, and governance convergence modules.
+
+
+## Routing
+
+- **USE FOR:** General nonlinear dynamics, chaos theory, bifurcation analysis, catastrophe theory, attractor geometry, Lyapunov methods, phase portraits, and control-theoretic stability. Use for any mathematical reasoning about dynamical systems BEFORE or BEYOND Lean formalization. Covers theory, intuition, calculation techniques, and connection to the project's phase portrait, cusp catastrophe, and governance dynamics.
+- **DO NOT USE FOR:** Lean proofs in this domain (use @lean-math-dynamical); optimization theory (use @math-optimization-game); topology methods (use @math-topology-analysis).
+- **TRIGGERS:** nonlinear dynamics, chaos theory, bifurcation, catastrophe theory, attractor, Lyapunov, phase portrait.
+
+## Workflow
+
+1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
+2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
+3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
+4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+
+## Recovery & STOP
+
+- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
+- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
+- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+
+## Handoffs
+
+- **Predecessors:** `agent:gateway`, `skill:lean-research`.
+- **Successors:** `skill:lean-math-dynamical`, `skill:lean-research`, `skill:lean-zettelkasten`.
 
 ---
 

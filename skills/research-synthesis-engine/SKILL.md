@@ -37,8 +37,6 @@ The Research Synthesis Engine is the **generative counterpart** to the Review Co
 
 ---
 
----
-
 ## Routing
 
 - **USE FOR / DO NOT USE FOR / TRIGGERS** — see the `description` field in the YAML frontmatter above. Same dispatch contract is restated here for in-skill discovery.

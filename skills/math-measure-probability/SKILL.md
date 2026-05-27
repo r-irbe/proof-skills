@@ -1,11 +1,49 @@
 ---
 name: math-measure-probability
-description: Measure theory, probability theory, stochastic processes, ergodic theory, and concentration inequalities. Use for mathematical reasoning about probability spaces, random variables, convergence, mixing, and any probabilistic argument in the project. Covers both theoretical foundations and applied probabilistic methodology.
+description: |
+  USE FOR: Measure theory, probability theory, stochastic processes, ergodic theory, and concentration inequalities. Use for mathematical reasoning about probability spaces, random variables, convergence, mixing, and any probabilistic argument in the project. Covers both theoretical foundations and applied probabilistic methodology.
+  DO NOT USE FOR: Lean proofs in this domain (use @lean-math-stochastic); time-series analysis (use @math-time-series); topology/analysis (use @math-topology-analysis).
+  TRIGGERS: measure theory, probability, stochastic process, ergodic theory, concentration inequality, Radon-Nikodym.
+tier: "warm"
+runtime_targets: [copilot-cli, claude-code]
+dispatch_targets: []
+handoffs:
+  predecessors: ['agent:gateway', 'skill:lean-research']
+  successors: ['skill:lean-math-stochastic', 'skill:lean-research', 'skill:lean-zettelkasten']
+metadata:
+  version: "0.2.0"
+  source_spec: "skills/math-measure-probability/SKILL.md (this file)"
+  last_reviewed: "2026-05-27"
 ---
 
 # Measure Theory & Probability Mathematics
 
 Measure-theoretic and probabilistic foundations for the project's stochastic models, convergence guarantees, mixing time analysis, ergodic properties, and uncertainty quantification.
+
+
+## Routing
+
+- **USE FOR:** Measure theory, probability theory, stochastic processes, ergodic theory, and concentration inequalities. Use for mathematical reasoning about probability spaces, random variables, convergence, mixing, and any probabilistic argument in the project. Covers both theoretical foundations and applied probabilistic methodology.
+- **DO NOT USE FOR:** Lean proofs in this domain (use @lean-math-stochastic); time-series analysis (use @math-time-series); topology/analysis (use @math-topology-analysis).
+- **TRIGGERS:** measure theory, probability, stochastic process, ergodic theory, concentration inequality, Radon-Nikodym.
+
+## Workflow
+
+1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
+2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
+3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
+4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+
+## Recovery & STOP
+
+- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
+- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
+- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+
+## Handoffs
+
+- **Predecessors:** `agent:gateway`, `skill:lean-research`.
+- **Successors:** `skill:lean-math-stochastic`, `skill:lean-research`, `skill:lean-zettelkasten`.
 
 ---
 

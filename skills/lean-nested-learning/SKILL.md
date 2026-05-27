@@ -1,9 +1,49 @@
 ---
 name: lean-nested-learning
-description: Formalize and extend nested learning theory. Covers LaSalle invariance, ProjectHierarchy, multi-scale Lyapunov, timescale separation, and the NL-to-Project bridge. Use for nested learning proofs and theory extension.
+description: |
+  USE FOR: Formalize and extend nested learning theory. Covers LaSalle invariance, ProjectHierarchy, multi-scale Lyapunov, timescale separation, and the NL-to-Project bridge. Use for nested learning proofs and theory extension.
+  DO NOT USE FOR: proof tactics (use @lean-proof); Lyapunov-only proofs (use @lean-math-dynamical); review (use @lean-proof-review).
+  TRIGGERS: nested learning, LaSalle invariance, ProjectHierarchy, multi-scale Lyapunov, timescale separation, NL-to-Project.
+tier: "warm"
+runtime_targets: [copilot-cli, claude-code]
+dispatch_targets: []
+handoffs:
+  predecessors: ['agent:gateway', 'skill:lean-research']
+  successors: ['skill:lean-proof', 'skill:lean-proof-review', 'skill:lean-zettelkasten']
+metadata:
+  version: "0.2.0"
+  source_spec: "skills/lean-nested-learning/SKILL.md (this file)"
+  last_reviewed: "2026-05-27"
 ---
 
 # SK-32: Lean Nested Learning Formalization
+
+
+## Routing
+
+- **USE FOR:** Formalize and extend nested learning theory. Covers LaSalle invariance, ProjectHierarchy, multi-scale Lyapunov, timescale separation, and the NL-to-Project bridge. Use for nested learning proofs and theory extension.
+- **DO NOT USE FOR:** proof tactics (use @lean-proof); Lyapunov-only proofs (use @lean-math-dynamical); review (use @lean-proof-review).
+- **TRIGGERS:** nested learning, LaSalle invariance, ProjectHierarchy, multi-scale Lyapunov, timescale separation, NL-to-Project.
+
+## Workflow
+
+1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
+2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
+3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
+4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+
+## Recovery & STOP
+
+- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
+- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
+- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+
+## Handoffs
+
+- **Predecessors:** `agent:gateway`, `skill:lean-research`.
+- **Successors:** `skill:lean-proof`, `skill:lean-proof-review`, `skill:lean-zettelkasten`.
+
+---
 
 ## Identity
 

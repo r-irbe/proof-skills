@@ -1,11 +1,49 @@
 ---
 name: applied-intelligence-analysis
-description: Intelligence analysis methodology — structured analytic techniques (SATs), evidence reasoning, hypothesis generation, cognitive bias mitigation, competitive intelligence, and their formalization. Use for analysis of competing hypotheses (ACH), link analysis, timeline reconstruction, source reliability assessment, and connections to the project's quality gates, provenance, and multi-agent trust.
+description: |
+  USE FOR: Intelligence analysis methodology — structured analytic techniques (SATs), evidence reasoning, hypothesis generation, cognitive bias mitigation, competitive intelligence, and their formalization. Use for analysis of competing hypotheses (ACH), link analysis, timeline reconstruction, source reliability assessment, and connections to the project's quality gates, provenance, and multi-agent trust.
+  DO NOT USE FOR: formalising intelligence reasoning in Lean (use @lean-applied-reasoning); strategy analysis (use @applied-strategy-analysis); legal reasoning (use @applied-legal-reasoning).
+  TRIGGERS: structured analytic techniques, SATs, evidence reasoning, hypothesis generation, cognitive bias, intelligence analysis, competing hypotheses.
+tier: "warm"
+runtime_targets: [copilot-cli, claude-code]
+dispatch_targets: []
+handoffs:
+  predecessors: ['agent:gateway', 'skill:lean-research']
+  successors: ['skill:lean-applied-reasoning', 'skill:applied-strategy-analysis', 'skill:lean-knowledge-formalization']
+metadata:
+  version: "0.2.0"
+  source_spec: "skills/applied-intelligence-analysis/SKILL.md (this file)"
+  last_reviewed: "2026-05-27"
 ---
 
 # Intelligence Analysis
 
 Structured analytic techniques and evidence-based reasoning frameworks for intelligence, investigative, and analytical contexts.
+
+
+## Routing
+
+- **USE FOR:** Intelligence analysis methodology — structured analytic techniques (SATs), evidence reasoning, hypothesis generation, cognitive bias mitigation, competitive intelligence, and their formalization. Use for analysis of competing hypotheses (ACH), link analysis, timeline reconstruction, source reliability assessment, and connections to the project's quality gates, provenance, and multi-agent trust.
+- **DO NOT USE FOR:** formalising intelligence reasoning in Lean (use @lean-applied-reasoning); strategy analysis (use @applied-strategy-analysis); legal reasoning (use @applied-legal-reasoning).
+- **TRIGGERS:** structured analytic techniques, SATs, evidence reasoning, hypothesis generation, cognitive bias, intelligence analysis, competing hypotheses.
+
+## Workflow
+
+1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
+2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
+3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
+4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+
+## Recovery & STOP
+
+- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
+- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
+- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+
+## Handoffs
+
+- **Predecessors:** `agent:gateway`, `skill:lean-research`.
+- **Successors:** `skill:lean-applied-reasoning`, `skill:applied-strategy-analysis`, `skill:lean-knowledge-formalization`.
 
 ---
 

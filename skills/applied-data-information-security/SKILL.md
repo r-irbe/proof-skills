@@ -1,11 +1,49 @@
 ---
 name: applied-data-information-security
-description: Data security and information security formalization — CIA triad, access control models (BLP, RBAC, ABAC), information flow, cryptographic primitives, privacy (differential privacy, k-anonymity), threat modeling, and their formal verification in Lean 4. Use for security properties of the project's provenance chains, trust composition, and multi-agent systems.
+description: |
+  USE FOR: Data security and information security formalization — CIA triad, access control models (BLP, RBAC, ABAC), information flow, cryptographic primitives, privacy (differential privacy, k-anonymity), threat modeling, and their formal verification in Lean 4. Use for security properties of the project's provenance chains, trust composition, and multi-agent systems.
+  DO NOT USE FOR: Lean formalisation of these policies (use @lean-security-formalization); engineering disciplines more broadly (use @applied-engineering-disciplines); legal-policy reasoning (use @applied-legal-reasoning).
+  TRIGGERS: CIA triad, access control, BLP, RBAC, ABAC, information flow, cryptographic primitive, data security.
+tier: "warm"
+runtime_targets: [copilot-cli, claude-code]
+dispatch_targets: []
+handoffs:
+  predecessors: ['agent:gateway', 'skill:lean-research']
+  successors: ['skill:lean-security-formalization', 'skill:applied-engineering-disciplines', 'skill:lean-knowledge-formalization']
+metadata:
+  version: "0.2.0"
+  source_spec: "skills/applied-data-information-security/SKILL.md (this file)"
+  last_reviewed: "2026-05-27"
 ---
 
 # Data & Information Security
 
 Formal foundations of security properties, access control, information flow, privacy, and their verification in the project framework.
+
+
+## Routing
+
+- **USE FOR:** Data security and information security formalization — CIA triad, access control models (BLP, RBAC, ABAC), information flow, cryptographic primitives, privacy (differential privacy, k-anonymity), threat modeling, and their formal verification in Lean 4. Use for security properties of the project's provenance chains, trust composition, and multi-agent systems.
+- **DO NOT USE FOR:** Lean formalisation of these policies (use @lean-security-formalization); engineering disciplines more broadly (use @applied-engineering-disciplines); legal-policy reasoning (use @applied-legal-reasoning).
+- **TRIGGERS:** CIA triad, access control, BLP, RBAC, ABAC, information flow, cryptographic primitive, data security.
+
+## Workflow
+
+1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
+2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
+3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
+4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+
+## Recovery & STOP
+
+- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
+- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
+- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+
+## Handoffs
+
+- **Predecessors:** `agent:gateway`, `skill:lean-research`.
+- **Successors:** `skill:lean-security-formalization`, `skill:applied-engineering-disciplines`, `skill:lean-knowledge-formalization`.
 
 ---
 

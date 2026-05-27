@@ -151,8 +151,6 @@ As council chair, collect all votes and produce the final decision."
 
 ---
 
----
-
 ## See also
 
 - [`../../references/lean-review-council-handbook.md`](../../references/lean-review-council-handbook.md) — Full council methodology (extracted from this skill)

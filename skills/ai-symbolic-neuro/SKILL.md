@@ -1,11 +1,49 @@
 ---
 name: ai-symbolic-neuro
-description: Symbolic AI, neuro-symbolic integration, knowledge representation and reasoning (KRR), ontology engineering, description logics, and hybrid symbolic-neural architectures. Use for reasoning about formal knowledge structures, rule-based systems, logic programming, semantic web technologies, and their integration with neural approaches relevant to the project's knowledge graph and structuring phases.
+description: |
+  USE FOR: Symbolic AI, neuro-symbolic integration, knowledge representation and reasoning (KRR), ontology engineering, description logics, and hybrid symbolic-neural architectures. Use for reasoning about formal knowledge structures, rule-based systems, logic programming, semantic web technologies, and their integration with neural approaches relevant to the project's knowledge graph and structuring phases.
+  DO NOT USE FOR: formalising the ontology in Lean (use @lean-knowledge-formalization); commonsense reasoning (use @ai-commonsense-reasoning); agentic AI (use @ai-agentic-evolving).
+  TRIGGERS: symbolic AI, neuro-symbolic, knowledge representation, KRR, ontology engineering, description logic, hybrid AI.
+tier: "warm"
+runtime_targets: [copilot-cli, claude-code]
+dispatch_targets: []
+handoffs:
+  predecessors: ['agent:gateway', 'skill:lean-research']
+  successors: ['skill:lean-knowledge-formalization', 'skill:ai-commonsense-reasoning', 'skill:math-graph-knowledge']
+metadata:
+  version: "0.2.0"
+  source_spec: "skills/ai-symbolic-neuro/SKILL.md (this file)"
+  last_reviewed: "2026-05-27"
 ---
 
 # Symbolic AI & Neuro-Symbolic Integration
 
 Formal knowledge representation, symbolic reasoning, and their integration with neural methods for the project's knowledge structuring and consolidation phases.
+
+
+## Routing
+
+- **USE FOR:** Symbolic AI, neuro-symbolic integration, knowledge representation and reasoning (KRR), ontology engineering, description logics, and hybrid symbolic-neural architectures. Use for reasoning about formal knowledge structures, rule-based systems, logic programming, semantic web technologies, and their integration with neural approaches relevant to the project's knowledge graph and structuring phases.
+- **DO NOT USE FOR:** formalising the ontology in Lean (use @lean-knowledge-formalization); commonsense reasoning (use @ai-commonsense-reasoning); agentic AI (use @ai-agentic-evolving).
+- **TRIGGERS:** symbolic AI, neuro-symbolic, knowledge representation, KRR, ontology engineering, description logic, hybrid AI.
+
+## Workflow
+
+1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
+2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
+3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
+4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+
+## Recovery & STOP
+
+- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
+- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
+- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+
+## Handoffs
+
+- **Predecessors:** `agent:gateway`, `skill:lean-research`.
+- **Successors:** `skill:lean-knowledge-formalization`, `skill:ai-commonsense-reasoning`, `skill:math-graph-knowledge`.
 
 ---
 
