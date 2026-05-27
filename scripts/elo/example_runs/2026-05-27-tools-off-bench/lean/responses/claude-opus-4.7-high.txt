@@ -1,0 +1,10 @@
+=== T1 ===
+by omega
+=== T2 ===
+by omega
+=== T3 ===
+List.reverse_reverse l
+=== T4 ===
+by omega
+=== T5 ===
+⟨n - 1, by omega⟩

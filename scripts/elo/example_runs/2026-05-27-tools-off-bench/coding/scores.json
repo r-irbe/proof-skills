@@ -1,0 +1,137 @@
+{
+  "claude-opus-4.7-high": {
+    "P1": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P2": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P3": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P4": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P5": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    }
+  },
+  "claude-opus-4.7": {
+    "P1": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P2": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P3": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P4": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P5": {
+      "pass": 5,
+      "total": 10,
+      "err": "t2:inp=[1, 1, 1, 1] exp=3 got=2"
+    }
+  },
+  "claude-sonnet-4.6": {
+    "P1": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P2": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P3": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P4": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P5": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    }
+  },
+  "gpt-5.4": {
+    "P1": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P2": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P3": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P4": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P5": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    }
+  },
+  "claude-haiku-4.5": {
+    "P1": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P2": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P3": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P4": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    },
+    "P5": {
+      "pass": 10,
+      "total": 10,
+      "err": null
+    }
+  }
+}

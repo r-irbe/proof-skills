@@ -1,0 +1,18 @@
+=== T1 ===
+by
+  omega
+=== T2 ===
+by
+  omega
+=== T3 ===
+List.reverse_reverse l
+=== T4 ===
+by
+  simpa using Nat.succ_le_succ h
+=== T5 ===
+by
+  cases n with
+  | zero =>
+      cases (Nat.lt_irrefl 0 h)
+  | succ m =>
+      exact ⟨m, rfl⟩

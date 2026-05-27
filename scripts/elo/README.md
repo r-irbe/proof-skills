@@ -181,6 +181,12 @@ keep drifting but the ordering is stable.
 - `gen_sample.py` — synthetic data generator (deterministic, seed 42).
 - `sample_matches.csv` — 120-match dataset used for the self-test.
 - `out/ratings.json`, `out/leaderboard.md` — last run's outputs.
+- `example_runs/2026-05-27-tools-off-bench/` — **first real-model run.**
+  5 frontier models (Opus 4.7-high, Opus 4.7, Sonnet 4.6, GPT-5.4,
+  Haiku 4.5) on 5 coding problems (auto-graded by hidden tests) plus
+  5 Lean 4 theorems (auto-graded by `lake build`). 100 matches, 20
+  decisive. See its `README.md` for methodology and the two real bugs
+  that drove differentiation.
 
 ## Glicko-2 vs vanilla ELO (which to use)
 

@@ -1,0 +1,35 @@
+You are competing in a closed-book Lean 4 proof benchmark.
+
+CRITICAL RULES (must be obeyed exactly):
+1. DO NOT use any tools. Do not call bash, do not call view/grep/glob/edit/web. Use only your own reasoning.
+2. Output ONLY proof terms or tactic blocks. No commentary, no markdown fences, no explanations.
+3. You will fill in the `:= ...` for 5 theorems. Output ONE proof per problem.
+4. Lean 4 (toolchain `leanprover/lean4:v4.30.0`), STDLIB ONLY (no Mathlib). You may use `Nat.add_comm`, `Nat.add_zero`, `List.length_append`, `List.reverse_reverse`, `Nat.succ_le_succ`, etc.
+5. The `omega` tactic IS AVAILABLE (it ships with Lean stdlib via `Init.Omega`). The `simp`, `rfl`, `exact`, `induction`, `match`, `decide` tactics are also available.
+
+Output format — use these EXACT separator lines, one per problem, in order:
+
+=== T1 ===
+<your proof for T1, e.g. `by omega` or `Nat.add_comm a b` or a `by` block>
+=== T2 ===
+<your proof for T2>
+=== T3 ===
+<your proof for T3>
+=== T4 ===
+<your proof for T4>
+=== T5 ===
+<your proof for T5>
+
+Each proof will be substituted into the corresponding `:= ...` slot of these theorems:
+
+```
+theorem t1 (a b c : Nat) : a + b + c = c + b + a := ...
+theorem t2 (n : Nat) : 2 * n = n + n := ...
+theorem t3 {α : Type _} (l : List α) : l.reverse.reverse = l := ...
+theorem t4 (a b : Nat) (h : a ≤ b) : a + 1 ≤ b + 1 := ...
+theorem t5 (n : Nat) (h : 0 < n) : ∃ m, n = m + 1 := ...
+```
+
+Each problem will be compiled in isolation; success = `lake build` accepts the file. Failures (type errors, unknown identifiers, unsolved goals) score 0 for that problem.
+
+Begin your output now with the line "=== T1 ===" and nothing before it.

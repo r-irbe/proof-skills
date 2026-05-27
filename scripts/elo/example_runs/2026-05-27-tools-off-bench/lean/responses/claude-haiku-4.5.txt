@@ -1,0 +1,14 @@
+=== T1 ===
+omega
+
+=== T2 ===
+omega
+
+=== T3 ===
+simp
+
+=== T4 ===
+exact Nat.succ_le_succ h
+
+=== T5 ===
+match n with | 0 => absurd h (Nat.not_lt_zero 0) | k + 1 => ⟨k, rfl⟩

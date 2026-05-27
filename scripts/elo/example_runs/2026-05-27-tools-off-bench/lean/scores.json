@@ -1,0 +1,112 @@
+{
+  "claude-opus-4.7-high": {
+    "T1": {
+      "ok": true,
+      "log": ""
+    },
+    "T2": {
+      "ok": true,
+      "log": ""
+    },
+    "T3": {
+      "ok": true,
+      "log": ""
+    },
+    "T4": {
+      "ok": true,
+      "log": ""
+    },
+    "T5": {
+      "ok": true,
+      "log": ""
+    }
+  },
+  "claude-opus-4.7": {
+    "T1": {
+      "ok": true,
+      "log": ""
+    },
+    "T2": {
+      "ok": true,
+      "log": ""
+    },
+    "T3": {
+      "ok": true,
+      "log": ""
+    },
+    "T4": {
+      "ok": true,
+      "log": ""
+    },
+    "T5": {
+      "ok": true,
+      "log": ""
+    }
+  },
+  "claude-sonnet-4.6": {
+    "T1": {
+      "ok": true,
+      "log": ""
+    },
+    "T2": {
+      "ok": true,
+      "log": ""
+    },
+    "T3": {
+      "ok": true,
+      "log": ""
+    },
+    "T4": {
+      "ok": true,
+      "log": ""
+    },
+    "T5": {
+      "ok": true,
+      "log": ""
+    }
+  },
+  "gpt-5.4": {
+    "T1": {
+      "ok": true,
+      "log": ""
+    },
+    "T2": {
+      "ok": true,
+      "log": ""
+    },
+    "T3": {
+      "ok": true,
+      "log": ""
+    },
+    "T4": {
+      "ok": true,
+      "log": ""
+    },
+    "T5": {
+      "ok": true,
+      "log": ""
+    }
+  },
+  "claude-haiku-4.5": {
+    "T1": {
+      "ok": false,
+      "log": "private/tmp/elo-lean/.lake/build/lib/lean /Users/radu/.elan/toolchains/leanprover--lean4---v4.30.0/bin/lean /private/tmp/elo-lean/Bench/haiku45/T1.lean -o /private/tmp/elo-lean/.lake/build/lib/lean/Bench/haiku45/T1.olean -i /private/tmp/elo-lean/.lake/build/lib/lean/Bench/haiku45/T1.ilean -c /private/tmp/elo-lean/.lake/build/ir/Bench/haiku45/T1.c --setup /private/tmp/elo-lean/.lake/build/ir/Bench/haiku45/T1.setup.json --json\nerror: Bench/haiku45/T1.lean:1:53: Unknown identifier `omega`\nerror: Lean exited with code 1\nSome required targets logged failures:\n- Bench.haiku45.T1\n\nerror: build failed"
+    },
+    "T2": {
+      "ok": false,
+      "log": "private/tmp/elo-lean/.lake/build/lib/lean /Users/radu/.elan/toolchains/leanprover--lean4---v4.30.0/bin/lean /private/tmp/elo-lean/Bench/haiku45/T2.lean -o /private/tmp/elo-lean/.lake/build/lib/lean/Bench/haiku45/T2.olean -i /private/tmp/elo-lean/.lake/build/lib/lean/Bench/haiku45/T2.ilean -c /private/tmp/elo-lean/.lake/build/ir/Bench/haiku45/T2.c --setup /private/tmp/elo-lean/.lake/build/ir/Bench/haiku45/T2.setup.json --json\nerror: Bench/haiku45/T2.lean:1:41: Unknown identifier `omega`\nerror: Lean exited with code 1\nSome required targets logged failures:\n- Bench.haiku45.T2\n\nerror: build failed"
+    },
+    "T3": {
+      "ok": false,
+      "log": "/private/tmp/elo-lean/.lake/build/lib/lean /Users/radu/.elan/toolchains/leanprover--lean4---v4.30.0/bin/lean /private/tmp/elo-lean/Bench/haiku45/T3.lean -o /private/tmp/elo-lean/.lake/build/lib/lean/Bench/haiku45/T3.olean -i /private/tmp/elo-lean/.lake/build/lib/lean/Bench/haiku45/T3.ilean -c /private/tmp/elo-lean/.lake/build/ir/Bench/haiku45/T3.c --setup /private/tmp/elo-lean/.lake/build/ir/Bench/haiku45/T3.setup.json --json\nerror: Bench/haiku45/T3.lean:1:65: Unknown identifier `simp`\nerror: Lean exited with code 1\nSome required targets logged failures:\n- Bench.haiku45.T3\n\nerror: build failed"
+    },
+    "T4": {
+      "ok": false,
+      "log": "private/tmp/elo-lean/.lake/build/lib/lean /Users/radu/.elan/toolchains/leanprover--lean4---v4.30.0/bin/lean /private/tmp/elo-lean/Bench/haiku45/T4.lean -o /private/tmp/elo-lean/.lake/build/lib/lean/Bench/haiku45/T4.olean -i /private/tmp/elo-lean/.lake/build/lib/lean/Bench/haiku45/T4.ilean -c /private/tmp/elo-lean/.lake/build/ir/Bench/haiku45/T4.c --setup /private/tmp/elo-lean/.lake/build/ir/Bench/haiku45/T4.setup.json --json\nerror: Bench/haiku45/T4.lean:1:55: Unknown identifier `exact`\nerror: Lean exited with code 1\nSome required targets logged failures:\n- Bench.haiku45.T4\n\nerror: build failed"
+    },
+    "T5": {
+      "ok": true,
+      "log": ""
+    }
+  }
+}

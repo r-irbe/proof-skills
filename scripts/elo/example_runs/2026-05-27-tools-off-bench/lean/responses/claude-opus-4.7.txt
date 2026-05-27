@@ -1,0 +1,10 @@
+=== T1 ===
+by omega
+=== T2 ===
+by omega
+=== T3 ===
+by simp [List.reverse_reverse]
+=== T4 ===
+by omega
+=== T5 ===
+by exact ⟨n - 1, by omega⟩

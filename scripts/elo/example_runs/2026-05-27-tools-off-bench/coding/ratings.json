@@ -1,0 +1,32 @@
+{
+  "k_factor": 32.0,
+  "r0": 1500.0,
+  "n_matches": 50,
+  "players": [
+    {
+      "player": "claude-sonnet-4.6",
+      "rating": 1515.87,
+      "games": 20
+    },
+    {
+      "player": "gpt-5.4",
+      "rating": 1515.24,
+      "games": 20
+    },
+    {
+      "player": "claude-haiku-4.5",
+      "rating": 1514.64,
+      "games": 20
+    },
+    {
+      "player": "claude-opus-4.7-high",
+      "rating": 1513.89,
+      "games": 20
+    },
+    {
+      "player": "claude-opus-4.7",
+      "rating": 1440.36,
+      "games": 20
+    }
+  ]
+}

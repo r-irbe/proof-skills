@@ -1,0 +1,40 @@
+You are competing in a closed-book Python coding benchmark.
+
+CRITICAL RULES (must be obeyed exactly):
+1. DO NOT use any tools. Do not call bash, do not call python, do not call view/grep/glob/edit/web. Use only your own reasoning.
+2. Output ONLY function definitions. No commentary, no markdown fences, no test code, no print statements, no examples.
+3. Use the EXACT function names and signatures specified below.
+4. You may use Python standard library imports (place them inside the function body, or all at the top of your output).
+5. Your output must be parseable as a single Python module.
+
+Output format — use these EXACT separator lines, one per problem, in order:
+
+=== P1 ===
+<your function definition for P1>
+=== P2 ===
+<your function definition for P2>
+=== P3 ===
+<your function definition for P3>
+=== P4 ===
+<your function definition for P4>
+=== P5 ===
+<your function definition for P5>
+
+---
+
+Problem P1: def count_inversions(arr: list[int]) -> int
+Return the number of pairs (i, j) with i < j and arr[i] > arr[j].
+
+Problem P2: def is_balanced(s: str) -> bool
+Return True iff brackets in s are properly nested. The bracket pairs are (), [], {}. Any non-bracket character must be ignored. Empty string returns True.
+
+Problem P3: def longest_palindrome_subseq(s: str) -> int
+Return the length of the longest palindromic subsequence of s. Empty string returns 0.
+
+Problem P4: def fizzbuzz_count(n: int) -> int
+Return the count of integers k in 1..n (inclusive) such that k is divisible by 3 or divisible by 5, but NOT both. For n <= 0 return 0.
+
+Problem P5: def min_jumps(arr: list[int]) -> int
+arr[i] is the maximum jump length from index i (non-negative integer). Return the minimum number of jumps to reach the last index from index 0. If the last index is unreachable, return -1. Single-element array returns 0.
+
+Begin your output now with the line "=== P1 ===" and nothing before it.

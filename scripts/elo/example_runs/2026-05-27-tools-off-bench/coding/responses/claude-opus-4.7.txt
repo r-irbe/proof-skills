@@ -1,0 +1,75 @@
+=== P1 ===
+def count_inversions(arr):
+    def sort(a):
+        if len(a) <= 1:
+            return a, 0
+        m = len(a)//2
+        l, il = sort(a[:m])
+        r, ir = sort(a[m:])
+        merged = []
+        i = j = inv = 0
+        while i < len(l) and j < len(r):
+            if l[i] <= r[j]:
+                merged.append(l[i]); i += 1
+            else:
+                merged.append(r[j]); j += 1
+                inv += len(l) - i
+        merged.extend(l[i:]); merged.extend(r[j:])
+        return merged, il + ir + inv
+    return sort(list(arr))[1]
+=== P2 ===
+def is_balanced(s):
+    pairs = {')': '(', ']': '[', '}': '{'}
+    opens = set('([{')
+    stack = []
+    for c in s:
+        if c in opens:
+            stack.append(c)
+        elif c in pairs:
+            if not stack or stack.pop() != pairs[c]:
+                return False
+    return not stack
+=== P3 ===
+def longest_palindrome_subseq(s):
+    n = len(s)
+    if n == 0:
+        return 0
+    dp = [[0]*n for _ in range(n)]
+    for i in range(n):
+        dp[i][i] = 1
+    for length in range(2, n+1):
+        for i in range(n-length+1):
+            j = i + length - 1
+            if s[i] == s[j]:
+                dp[i][j] = (dp[i+1][j-1] if length > 2 else 0) + 2
+            else:
+                dp[i][j] = max(dp[i+1][j], dp[i][j-1])
+    return dp[0][n-1]
+=== P4 ===
+def fizzbuzz_count(n):
+    if n <= 0:
+        return 0
+    return n//3 + n//5 - 2*(n//15)
+=== P5 ===
+def min_jumps(arr):
+    n = len(arr)
+    if n <= 1:
+        return 0
+    if arr[0] == 0:
+        return -1
+    jumps = 1
+    cur_end = arr[0]
+    farthest = arr[0]
+    for i in range(1, n):
+        if i == n - 1:
+            return jumps if cur_end >= n - 1 or farthest >= n - 1 else jumps
+        if i > cur_end:
+            if farthest <= cur_end:
+                return -1
+            jumps += 1
+            cur_end = farthest
+            if cur_end >= n - 1:
+                return jumps
+        if i + arr[i] > farthest:
+            farthest = i + arr[i]
+    return jumps
