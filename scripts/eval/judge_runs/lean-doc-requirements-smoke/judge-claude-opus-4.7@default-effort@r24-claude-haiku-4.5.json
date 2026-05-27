@@ -1,0 +1,10 @@
+{
+  "score": 4,
+  "rationale": "Response provides complete Lean signature structure with docstring and TODO list",
+  "rubric_evidence": [],
+  "_round": "R24",
+  "_judge_pass": "ensemble",
+  "_judge_model": "claude-haiku-4.5",
+  "_abc_position": "C",
+  "_rubric": "lean-doc-quality"
+}

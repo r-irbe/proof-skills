@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "Correct ACH framing with evidence matrix and inconsistency tally, but only two hypotheses, no calibrated confidence markers, no second-order effects or collection gaps.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "B",
+  "_rubric": "applied-domain-quality"
+}

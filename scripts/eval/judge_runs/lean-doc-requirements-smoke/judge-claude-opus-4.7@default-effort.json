@@ -1,10 +1,15 @@
 {
-  "score": 1,
-  "rationale": "Explicitly prescribes emitting `theorem \u2026 := by sorry` as the deliverable, which the rubric literally flags as a score-1 failure (sorry in inline proof obligations).",
+  "score": 4,
+  "rationale": "Ensemble median of opus=1, haiku=4, sonnet=4.",
   "rubric_evidence": [],
-  "_round": "R23",
-  "_judge_pass": "single",
-  "_judge_model": "claude-opus-4.7-high",
+  "_round": "R24",
+  "_judge_pass": "ensemble_3judge",
+  "_judge_agg": "median",
+  "_judges": [
+    "claude-opus-4.7-high",
+    "claude-haiku-4.5",
+    "claude-sonnet-4.6"
+  ],
   "_abc_position": "C",
   "_rubric": "lean-doc-quality"
 }

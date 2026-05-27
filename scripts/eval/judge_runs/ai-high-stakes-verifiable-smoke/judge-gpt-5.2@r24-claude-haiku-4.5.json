@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "Identifies risk category and fairness auditing approach correctly but lacks jurisdiction specificity",
+  "rubric_evidence": [],
+  "_round": "R24",
+  "_judge_pass": "ensemble",
+  "_judge_model": "claude-haiku-4.5",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

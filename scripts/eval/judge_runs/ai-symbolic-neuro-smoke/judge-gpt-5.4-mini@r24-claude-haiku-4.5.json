@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "Real domain knowledge but shallow",
+  "rubric_evidence": [],
+  "_round": "R24",
+  "_judge_pass": "ensemble",
+  "_judge_model": "claude-haiku-4.5",
+  "_abc_position": "B",
+  "_rubric": "applied-domain-quality"
+}

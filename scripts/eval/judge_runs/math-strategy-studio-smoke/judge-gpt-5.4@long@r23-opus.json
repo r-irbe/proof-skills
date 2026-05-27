@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "Correct framing (dense subspace, uniform constants, extension by continuity/completeness/weak compactness) but shallow: no calibrated confidence, no trade-offs between extension mechanisms, no edge cases (unbounded operators, non-reflexive spaces).",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

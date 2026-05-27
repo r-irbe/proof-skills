@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "Correct framing with a runnable one-liner but hardcodes `Mathlib.Data.Nat.Basic`, omits trade-offs and known risks (toolchain pin, cache miss), and provides no calibrated confidence.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "D",
+  "_rubric": "applied-domain-quality"
+}

@@ -1,0 +1,10 @@
+{
+  "score": 4,
+  "rationale": "Multi-factor analysis: git bisect run integration, exit-125 skip handling, stderr logging for flake disambiguation, complexity bound, and upstream reporting; missing only explicit confidence tags and assumption ledger.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

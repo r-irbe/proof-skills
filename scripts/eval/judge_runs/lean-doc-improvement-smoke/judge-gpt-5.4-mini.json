@@ -1,10 +1,15 @@
 {
   "score": 2,
-  "rationale": "Claims an edit with a specific number but produces no doc artifact with structure, no verification anchor, and no acceptance criteria.",
+  "rationale": "Ensemble median of opus=2, haiku=2, sonnet=2.",
   "rubric_evidence": [],
-  "_round": "R23",
-  "_judge_pass": "single",
-  "_judge_model": "claude-opus-4.7-high",
+  "_round": "R24",
+  "_judge_pass": "ensemble_3judge",
+  "_judge_agg": "median",
+  "_judges": [
+    "claude-opus-4.7-high",
+    "claude-haiku-4.5",
+    "claude-sonnet-4.6"
+  ],
   "_abc_position": "C",
   "_rubric": "lean-doc-quality"
 }

@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "Single English sentence, no Lean code provided.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "C",
+  "_rubric": "lean-proof-quality"
+}

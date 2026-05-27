@@ -1,10 +1,15 @@
 {
   "score": 3,
-  "rationale": "Correct framing via finite-rank approximation and norm-controlled tail, but shallow: no discussion of when finite-rank approximations exist (approximation property), no trade-offs versus pure density arguments, no calibrated confidence.",
+  "rationale": "Ensemble median of opus=3, haiku=4, sonnet=3.",
   "rubric_evidence": [],
-  "_round": "R23",
-  "_judge_pass": "single",
-  "_judge_model": "claude-opus-4.7-high",
+  "_round": "R24",
+  "_judge_pass": "ensemble_3judge",
+  "_judge_agg": "median",
+  "_judges": [
+    "claude-opus-4.7-high",
+    "claude-haiku-4.5",
+    "claude-sonnet-4.6"
+  ],
   "_abc_position": "C",
   "_rubric": "applied-domain-quality"
 }

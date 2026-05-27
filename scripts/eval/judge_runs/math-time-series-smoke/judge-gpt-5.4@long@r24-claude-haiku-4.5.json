@@ -1,0 +1,10 @@
+{
+  "score": 5,
+  "rationale": "Expert: sample-size constraint, parsimony principle, calibrated default",
+  "rubric_evidence": [],
+  "_round": "R24",
+  "_judge_pass": "ensemble",
+  "_judge_model": "claude-haiku-4.5",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

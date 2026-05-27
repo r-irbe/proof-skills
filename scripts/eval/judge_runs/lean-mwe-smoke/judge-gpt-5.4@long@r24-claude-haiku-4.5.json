@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "fail_if_success is misuse",
+  "rubric_evidence": [],
+  "_round": "R24",
+  "_judge_pass": "ensemble",
+  "_judge_model": "claude-haiku-4.5",
+  "_abc_position": "C",
+  "_rubric": "lean-proof-quality"
+}

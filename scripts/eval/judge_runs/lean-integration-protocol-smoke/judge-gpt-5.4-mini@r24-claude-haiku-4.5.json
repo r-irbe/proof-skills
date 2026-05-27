@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "Fails to produce Lean code or structure definition",
+  "rubric_evidence": [],
+  "_round": "R24",
+  "_judge_pass": "ensemble",
+  "_judge_model": "claude-haiku-4.5",
+  "_abc_position": "B",
+  "_rubric": "lean-proof-quality"
+}

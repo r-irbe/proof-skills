@@ -1,10 +1,15 @@
 {
   "score": 2,
-  "rationale": "First equation 'G f \u226b \u03b7 Y = \u03b7 X \u226b F f' has F and G on the wrong sides under the diagrammatic convention; the parenthetical correct form and convention caveat partially redeem it but the stated square is wrong.",
+  "rationale": "Ensemble median of opus=2, haiku=2, sonnet=2.",
   "rubric_evidence": [],
-  "_round": "R23",
-  "_judge_pass": "single",
-  "_judge_model": "claude-opus-4.7-high",
+  "_round": "R24",
+  "_judge_pass": "ensemble_3judge",
+  "_judge_agg": "median",
+  "_judges": [
+    "claude-opus-4.7-high",
+    "claude-haiku-4.5",
+    "claude-sonnet-4.6"
+  ],
   "_abc_position": "B",
   "_rubric": "applied-domain-quality"
 }

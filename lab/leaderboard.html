@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang=en>
+<head>
+<meta charset=utf-8>
+<title>proof-skills leaderboard — Round 24 (R24, 3-judge ensemble re-judge)</title>
+<style>
+ body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        max-width: 920px; margin: 2rem auto; padding: 0 1rem; color: #222; }
+ h1 { font-size: 1.5rem; margin-bottom: 0.2rem; }
+ .sub { color: #666; font-size: 0.95rem; margin-bottom: 1.4rem; }
+ table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+ th, td { padding: 0.45rem 0.7rem; text-align: left; border-bottom: 1px solid #e3e3e3; }
+ th { background: #f7f7f7; font-weight: 600; }
+ td.rank, td.rating, td.rd, td.ci, td.games { text-align: right; font-variant-numeric: tabular-nums; }
+ td.rank { width: 3em; }
+ tr:hover td { background: #fafafa; }
+ code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; }
+ footer { margin-top: 1.5rem; color: #888; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<h1>proof-skills leaderboard</h1>
+<div class=sub>Sprint: Round 24 (R24, 3-judge ensemble re-judge) &middot; rendered 2026-05-27 23:39 UTC</div>
+<table>
+<thead>
+<tr><th>Rank</th><th>Player</th><th>Rating</th><th>RD</th><th>95% CI</th><th>Games</th></tr>
+</thead>
+<tbody>
+<tr><td class=rank>1</td><td class=player><code>claude-opus-4.7@default-effort</code></td><td class=rating>1781.7</td><td class=rd>±37.0</td><td class=ci>[1708, 1856]</td><td class=games>140</td></tr>
+<tr><td class=rank>2</td><td class=player><code>gpt-5.4@long</code></td><td class=rating>1560.9</td><td class=rd>±26.3</td><td class=ci>[1508, 1614]</td><td class=games>236</td></tr>
+<tr><td class=rank>3</td><td class=player><code>claude-sonnet-4.6</code></td><td class=rating>1545.7</td><td class=rd>±22.5</td><td class=ci>[1501, 1591]</td><td class=games>458</td></tr>
+<tr><td class=rank>4</td><td class=player><code>gpt-5.2</code></td><td class=rating>1520.7</td><td class=rd>±26.3</td><td class=ci>[1468, 1573]</td><td class=games>236</td></tr>
+<tr><td class=rank>5</td><td class=player><code>gpt-5.4</code></td><td class=rating>1506.2</td><td class=rd>±23.4</td><td class=ci>[1459, 1553]</td><td class=games>344</td></tr>
+<tr><td class=rank>6</td><td class=player><code>claude-opus-4.7-high</code></td><td class=rating>1476.5</td><td class=rd>±22.3</td><td class=ci>[1432, 1521]</td><td class=games>458</td></tr>
+<tr><td class=rank>7</td><td class=player><code>gpt-5.4-mini</code></td><td class=rating>1421.8</td><td class=rd>±27.7</td><td class=ci>[1366, 1477]</td><td class=games>236</td></tr>
+<tr><td class=rank>8</td><td class=player><code>claude-haiku-4.5</code></td><td class=rating>1381.1</td><td class=rd>±23.0</td><td class=ci>[1335, 1427]</td><td class=games>458</td></tr>
+</tbody>
+</table>
+<footer>
+Glicko-2 system (τ=0.5, RD_init=350, period_size=100 games). Source: <code>scripts/elo/example_runs/2026-05-27-k-r24/ratings.json</code>.<br>
+Auto-generated; do not hand-edit. Regenerate with <code>scripts/elo/render_leaderboard_html.py</code>.
+</footer>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "score": 4,
+  "rationale": "Multi-factor defeasible deontic formalization with exemptions, violation/sanction layers, and downstream-reasoning notes; lacks explicit jurisdiction citation and calibrated confidence tags for top score.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "D",
+  "_rubric": "applied-domain-quality"
+}

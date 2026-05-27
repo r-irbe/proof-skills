@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "Single-option title with no lemma named and no specificity; a domain reviewer would reject as insufficiently descriptive.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

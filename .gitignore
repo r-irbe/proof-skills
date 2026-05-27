@@ -12,3 +12,4 @@ __pycache__/
 apm_modules/
 apm.lock.yaml
 _judge_prompts_workspace/
+lab/.r24-judge-prompts/

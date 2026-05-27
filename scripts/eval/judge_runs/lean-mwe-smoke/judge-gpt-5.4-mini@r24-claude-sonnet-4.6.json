@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "#guard_msgs present but no docstring expected message",
+  "rubric_evidence": [],
+  "_round": "R24",
+  "_judge_pass": "ensemble",
+  "_judge_model": "claude-sonnet-4.6",
+  "_abc_position": "A",
+  "_rubric": "lean-proof-quality"
+}

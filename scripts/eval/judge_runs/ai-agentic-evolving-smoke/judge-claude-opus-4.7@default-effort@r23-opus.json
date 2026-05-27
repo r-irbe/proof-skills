@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "Correct domain framing covering multiple known techniques (EWC, LoRA, replay, regression suite, canarying, distillation) but lacks calibrated confidence markers, explicit assumption ledger, and trade-off analysis.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "B",
+  "_rubric": "applied-domain-quality"
+}

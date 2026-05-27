@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "Correct linearity plus the tower-style corollary E[E[X|F]]=E[X], but still lacks calibrated confidence markers and explicit assumptions; useful but incomplete by the rubric.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

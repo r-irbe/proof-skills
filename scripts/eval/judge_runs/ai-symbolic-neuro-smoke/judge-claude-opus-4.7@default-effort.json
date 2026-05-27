@@ -1,10 +1,15 @@
 {
-  "score": 3,
-  "rationale": "Correct framing with concrete tools and hybrid pattern, but lacks calibrated confidence markers, assumption ledger, and trade-off matrix; a domain expert would flag missing nonlinear/integer caveats.",
+  "score": 5,
+  "rationale": "Ensemble median of opus=3, haiku=5, sonnet=5.",
   "rubric_evidence": [],
-  "_round": "R23",
-  "_judge_pass": "single",
-  "_judge_model": "claude-opus-4.7-high",
+  "_round": "R24",
+  "_judge_pass": "ensemble_3judge",
+  "_judge_agg": "median",
+  "_judges": [
+    "claude-opus-4.7-high",
+    "claude-haiku-4.5",
+    "claude-sonnet-4.6"
+  ],
   "_abc_position": "A",
   "_rubric": "applied-domain-quality"
 }

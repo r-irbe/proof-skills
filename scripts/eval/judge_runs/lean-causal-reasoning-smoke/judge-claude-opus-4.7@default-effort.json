@@ -1,10 +1,15 @@
 {
   "score": 1,
-  "rationale": "No Lean code produced; lengthy prose diagnostic, no `def Causes`.",
+  "rationale": "Ensemble median of opus=1, haiku=1, sonnet=1.",
   "rubric_evidence": [],
-  "_round": "R23",
-  "_judge_pass": "single",
-  "_judge_model": "claude-opus-4.7-high",
+  "_round": "R24",
+  "_judge_pass": "ensemble_3judge",
+  "_judge_agg": "median",
+  "_judges": [
+    "claude-opus-4.7-high",
+    "claude-haiku-4.5",
+    "claude-sonnet-4.6"
+  ],
   "_abc_position": "B",
   "_rubric": "lean-proof-quality"
 }

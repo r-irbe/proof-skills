@@ -1,0 +1,10 @@
+{
+  "score": 5,
+  "rationale": "Expert ACH with assumption ledger and sensitivity",
+  "rubric_evidence": [],
+  "_round": "R24",
+  "_judge_pass": "ensemble",
+  "_judge_model": "claude-sonnet-4.6",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

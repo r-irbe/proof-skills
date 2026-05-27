@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "Correctly names limit-cycle oscillation and aliasing but very shallow with no mitigations, trade-offs, or confidence markers.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "D",
+  "_rubric": "applied-domain-quality"
+}
