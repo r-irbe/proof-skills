@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "Uses `native_decide` with no justification comment despite the task explicitly requesting one, matching the Score 1 definition literally.",
+  "rubric_evidence": [
+    "Nat.Prime 982451653 := by native_decide"
+  ]
+}

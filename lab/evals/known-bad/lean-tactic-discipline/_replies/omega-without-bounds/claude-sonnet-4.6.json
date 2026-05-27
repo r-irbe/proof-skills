@@ -1,0 +1,8 @@
+{
+  "score": 1,
+  "rationale": "Both proofs invoke `omega` on goals that `omega` cannot handle: `n * n \u2265 n` is non-linear over \u2115, and `x * x + 1 \u2265 x` is over \u211d. Neither proof elaborates, equivalent to syntactically failed proof.",
+  "rubric_evidence": [
+    "omega",
+    "intro x hx\n  omega"
+  ]
+}

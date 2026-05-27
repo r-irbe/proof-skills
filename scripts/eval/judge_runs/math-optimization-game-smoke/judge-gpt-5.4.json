@@ -1,20 +1,23 @@
 {
   "score": 4,
-  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "rationale": "3-judge median (scores=[3, 4, 4]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
   "rubric_evidence": [
     "opus_R20: Mathematically correct minimax/LP formulation but lacks calibrated confidence markers, assumption ledger, and trade-off ...",
-    "sonnet_R21: The response correctly frames the min-max game, states the minimax theorem, derives both primal and dual LPs, and identi..."
+    "sonnet_R21: The response correctly frames the min-max game, states the minimax theorem, derives both primal and dual LPs, and identi...",
+    "opus_R22: Comprehensive setup covering mixed strategies, minimax theorem, LP formulations for both players, and Nash equilibrium connection with clear notation; minor gap..."
   ],
   "ensemble_meta": {
-    "round": "R21",
+    "round": "R22",
     "round_b": "B1",
-    "method": "median-of-2",
+    "method": "median-of-3",
     "judges": [
       "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21"
+      "claude-sonnet-4.6@R21",
+      "claude-opus-4.6@R22"
     ],
     "scores": [
       3,
+      4,
       4
     ]
   }

@@ -1,0 +1,1 @@
+{"score": 2, "rationale": "The response invokes `decide` on a `Fin 100000` domain (n ≥ 1000), which the rubric explicitly flags as a Score 2 violation.", "rubric_evidence": ["(⟨99999, by decide⟩ : Fin 100000)", "decide"]}

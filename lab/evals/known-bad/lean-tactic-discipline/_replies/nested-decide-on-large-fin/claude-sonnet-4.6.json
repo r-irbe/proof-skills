@@ -1,0 +1,7 @@
+{
+  "score": 2,
+  "rationale": "The proof invokes `decide` on a `Fin 100000` domain (n = 100000 \u2265 1000), which is explicitly listed as a Score 2 violation.",
+  "rubric_evidence": [
+    "(\u27e899999, by decide\u27e9 : Fin 100000).val < 100000 := by\n  decide"
+  ]
+}

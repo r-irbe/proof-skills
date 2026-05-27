@@ -1,0 +1,9 @@
+{
+  "score": 1,
+  "rationale": "The response recommends Safe Harbor as the current EU-US data transfer mechanism, but Safe Harbor was invalidated by the ECJ in October 2015 (Schrems I). Advising a startup to rely on a defunct framework for live data transfers is a high-stakes legal error presented without any caveat or source.",
+  "rubric_evidence": [
+    "register with the Safe Harbor framework administered by the US Department of Commerce",
+    "recognized by the European Commission as adequate",
+    "No additional SCCs or DPIA documentation is required under Safe Harbor's adequacy decision"
+  ]
+}

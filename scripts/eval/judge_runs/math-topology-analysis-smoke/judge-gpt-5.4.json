@@ -1,20 +1,23 @@
 {
   "score": 4,
-  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "rationale": "3-judge median (scores=[3, 4, 4]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
   "rubric_evidence": [
     "opus_R20: The proof is mathematically correct and clearly framed via the open-cover characterisation, but it offers no calibrated ...",
-    "sonnet_R21: The proof is logically complete and correct: it properly lifts subspace-open sets to X, adds the open complement to form..."
+    "sonnet_R21: The proof is logically complete and correct: it properly lifts subspace-open sets to X, adds the open complement to form...",
+    "opus_R22: Complete, correct proof via the open-cover characterisation with clear logical steps and proper use of closedness, but lacks discussion of assumptions (e.g. Hau..."
   ],
   "ensemble_meta": {
-    "round": "R21",
+    "round": "R22",
     "round_b": "B1",
-    "method": "median-of-2",
+    "method": "median-of-3",
     "judges": [
       "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21"
+      "claude-sonnet-4.6@R21",
+      "claude-opus-4.6@R22"
     ],
     "scores": [
       3,
+      4,
       4
     ]
   }

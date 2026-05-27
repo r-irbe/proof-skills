@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "Response fails to produce any Lean code; it is a purely prose discussion of causal versus correlational claims with pseudo-notation but no actual Lean syntax.", "rubric_evidence": ["theorem assoc : Corr X Y ≠ 0", "theorem effect : E[Y | do T = 1] - E[Y | do T = 0] = δ"]}

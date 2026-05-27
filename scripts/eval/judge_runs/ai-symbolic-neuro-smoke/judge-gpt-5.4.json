@@ -1,20 +1,23 @@
 {
   "score": 4,
-  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "rationale": "3-judge median (scores=[3, 4, 4]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
   "rubric_evidence": [
     "opus_R20: Correct domain framing with a sensible symbolic-first recommendation and a brief hybrid trade-off, but the analysis lack...",
-    "sonnet_R21: Multi-factor analysis with calibrated trade-offs covering symbolic vs neural strengths, combinatorial search rationale, ..."
+    "sonnet_R21: Multi-factor analysis with calibrated trade-offs covering symbolic vs neural strengths, combinatorial search rationale, ...",
+    "opus_R22: Multi-factor analysis with clear trade-offs between symbolic and neural approaches, covers major failure modes, and includes hybrid design recommendation; minor..."
   ],
   "ensemble_meta": {
-    "round": "R21",
+    "round": "R22",
     "round_b": "B1",
-    "method": "median-of-2",
+    "method": "median-of-3",
     "judges": [
       "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21"
+      "claude-sonnet-4.6@R21",
+      "claude-opus-4.6@R22"
     ],
     "scores": [
       3,
+      4,
       4
     ]
   }

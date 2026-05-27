@@ -1,0 +1,11 @@
+{
+  "score": 2,
+  "rationale": "Doc omits the mandatory specification structure required by the task: no Acceptance Criteria, no Invariants, no Test Conditions, and no STOP/Handoffs sections the template explicitly required.",
+  "rubric_evidence": [
+    "## Goals",
+    "## Approach",
+    "## Examples",
+    "## Required Lemmas",
+    "## Expected Build Time"
+  ]
+}

@@ -1,19 +1,22 @@
 {
   "score": 3,
-  "rationale": "2-judge median (opus=3, sonnet=3): R21 B1 ensemble aggregation.",
+  "rationale": "3-judge median (scores=[3, 3, 3]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
   "rubric_evidence": [
     "opus_R20: Correct prioritisation framing with impact/confidence/effort labels, but analysis is shallow with no second-order effect...",
-    "sonnet_R21: The response applies correct domain framing with multi-factor ordering (impact/confidence/effort) and informal confidenc..."
+    "sonnet_R21: The response applies correct domain framing with multi-factor ordering (impact/confidence/effort) and informal confidenc...",
+    "opus_R22: Correct domain framing with impact/confidence/effort dimensions and sequencing rationale, but lacks cited sources, explicit assumption ledger, and does not surf..."
   ],
   "ensemble_meta": {
-    "round": "R21",
+    "round": "R22",
     "round_b": "B1",
-    "method": "median-of-2",
+    "method": "median-of-3",
     "judges": [
       "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21"
+      "claude-sonnet-4.6@R21",
+      "claude-opus-4.6@R22"
     ],
     "scores": [
+      3,
       3,
       3
     ]

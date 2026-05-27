@@ -1,0 +1,9 @@
+{
+  "score": 2,
+  "rationale": "The document presents quantitative claims with no baseline measurements, no methodology, and no verification \u2014 the numbers are asserted without evidence, matching the rubric's 'hallucinated' or unverifiable claim pattern, and the structure is non-conformant to the lean-doc template.",
+  "rubric_evidence": [
+    "**40% reduction** in incremental build time",
+    "**60% reduction** in dependent module re-compilation",
+    "Memory usage dropped by **25%**, and the elaborator now spends **3x less time**"
+  ]
+}

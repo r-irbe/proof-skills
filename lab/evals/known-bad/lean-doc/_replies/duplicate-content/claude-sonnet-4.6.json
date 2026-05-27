@@ -1,0 +1,8 @@
+{
+  "score": 2,
+  "rationale": "The document exists and covers the required sections but contradicts itself by repeating the Acceptance Criteria section with different (conflicting) content.",
+  "rubric_evidence": [
+    "## Acceptance Criteria\n- The lemma must type-check at the current Mathlib pin.\n- All `decide` calls must terminate in < 100ms.\n- Documentation must include a worked example.",
+    "## Acceptance Criteria\n- Lemma type-checks against Mathlib master.\n- `omega` discharges arithmetic side-goals.\n- A counter-example file demonstrates failure under a non-WF relation."
+  ]
+}

@@ -1,0 +1,1 @@
+{"score": 2, "rationale": "The response uses `exact?`, which is explicitly listed as a banned discovery tactic in production code under the Score 2 definition.", "rubric_evidence": ["exact?  -- found by suggestion"]}

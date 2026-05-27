@@ -1,0 +1,9 @@
+{
+  "score": 2,
+  "rationale": "The response presents a self-contradicting circular citation chain: Ries (2011) credits Blank as originator, but Blank (2012) credits Ries\u2014logically impossible as a primary-source chain. The domain figures (Ries, Blank, Lean Startup) are real and relevant, but the fabricated mutual attribution loop fails to surface the actual coinage (Frank Robinson, ~2001) and no caveats about chain reliability are offered.",
+  "rubric_evidence": [
+    "'The Lean Startup' (2011), citing Steve Blank (2010) as the originator",
+    "Steve Blank, in 'The Startup Owner's Manual' (2012), credits Eric Ries with the original formulation",
+    "The concept therefore traces to Blank-Ries collaborative work in the late 2000s"
+  ]
+}

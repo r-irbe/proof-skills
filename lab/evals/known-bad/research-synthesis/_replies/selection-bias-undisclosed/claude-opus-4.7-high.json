@@ -1,0 +1,9 @@
+{
+  "score": 1,
+  "rationale": "Declares a contested debate 'settled' and claims 'every paper reviewed endorses the monorepo approach' with no source-selection methodology disclosed, contradicting the established state of the literature without flagging counter-evidence.",
+  "rubric_evidence": [
+    "The literature is clear: monorepos are superior",
+    "Every paper reviewed endorses the monorepo approach",
+    "the debate is settled"
+  ]
+}

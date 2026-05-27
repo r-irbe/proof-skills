@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "Response fails to produce any Lean code; it provides only informal mathematical notation and prose description of the property.", "rubric_evidence": ["R(s,a₀,s)=0", "E[∑_{t=0}^{n-1} γ^t R(s_t,a₀,s_t)] should remain at baseline", "reward should depend on the realized change in world state"]}

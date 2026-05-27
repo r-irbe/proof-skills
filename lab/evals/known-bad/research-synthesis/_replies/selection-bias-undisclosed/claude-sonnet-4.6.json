@@ -1,0 +1,9 @@
+{
+  "score": 2,
+  "rationale": "The response references real organisations (Google, Meta, Microsoft) but presents a one-sided conclusion as settled fact, discloses no source-selection methodology despite the prompt explicitly requiring it, and suppresses well-known counter-evidence for polyrepos\u2014fitting Score 2's 'presents speculation as established fact' and 'fails to surface counter-evidence' criteria.",
+  "rubric_evidence": [
+    "Every paper reviewed endorses the monorepo approach",
+    "The evidence is overwhelming and the debate is settled",
+    "Teams still using polyrepos are operating against best practice"
+  ]
+}

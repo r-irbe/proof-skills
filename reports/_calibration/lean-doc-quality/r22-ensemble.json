@@ -1,0 +1,426 @@
+{
+  "rubric": "lean-doc-quality",
+  "skill": "lean-doc",
+  "floor": 2,
+  "pass_floor": 4,
+  "min_flag_rate": 0.9,
+  "max_false_flag_rate": 1.0,
+  "total_transcripts": 15,
+  "judged_transcripts": 15,
+  "negatives_total": 14,
+  "negatives_judged": 14,
+  "negatives_flagged": 13,
+  "flag_rate": 0.9285714285714286,
+  "positives_total": 1,
+  "positives_judged": 1,
+  "positives_flagged": 0,
+  "false_flag_rate": 0.0,
+  "flagged": 13,
+  "per_transcript": [
+    {
+      "task_id": "ad-hoc-structure",
+      "failure_mode": "missing_template_structure",
+      "expected_max_score": 3,
+      "expected_flag": false,
+      "aggregated_score": 3,
+      "flagged": false,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "The response identifies real issues but fails to follow the mandatory skill template. It lacks the required structured sections, provides vague action items, and does not verify any Mathlib references."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 3,
+          "rationale": "The response provides a doc-improvement discussion with some action items, but its structure is ad-hoc and does not follow the skill's documented template. Buildable prose but a reader needs extra context to navigate."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 3,
+          "rationale": "The response identifies real gaps and produces actionable items, but the structure is ad-hoc \u2014 it does not follow the skill's documented template. Cross-references are unverified with no `#check`-style anchors."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 3, 3]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "ambiguous-pronoun-chain",
+      "failure_mode": "ambiguous_pronoun_chain",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 2,
+          "rationale": "The task requires naming both tactics clearly, but the response uses only ambiguous pronouns ('it', 'that', 'the other', 'this') and never identifies any tactic. The text contradicts itself ('the lemma above shows this, but the one below contradicts it') making the doc incoherent."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 3,
+          "rationale": "A doc artifact exists but rationale lacks any concrete example or named tactic \u2014 the task required naming both clearly, yet only pronouns appear, so the reader needs significant extra context to navigate."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response fails to name either tactic at all, using only unresolvable pronoun chains ('it', 'the previous one', 'the other', 'this') so no actual guidance is conveyed; it does not satisfy the task requirement of naming both tactics clearly."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 3, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "broken-cross-ref",
+      "failure_mode": "broken_cross_reference",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "The response provides a doc-requirements section with audience specification and cross-references, but lacks the mandatory specification structure (no acceptance criteria, no invariants, no test conditions) as required by the rubric. Additionally, several cross-references cannot be verified: `lean-zen-mode-handbook.md`, `Mathlib.Analysis.Calculus.RolleAxiomatised`, `Mathlib.Tactic.GhostFunction`, and `references/lean-mvt-deep-dive.md` are not standard Mathlib modules or documented handbooks, suggesting unverified citations. The response does not follow the `lean-doc-requirements` skill template structure."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The response fabricates non-existent Mathlib modules and tactics (RolleAxiomatised, Mathlib.Tactic.GhostFunction) and invented handbooks (lean-zen-mode-handbook.md, lean-mvt-deep-dive.md), triggering the Score 1 'made-up Lean APIs / Mathlib lemmas' criterion."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The doc exists and has a minimal audience section, but it hallucinates Mathlib module names (`Mathlib.Analysis.Calculus.RolleAxiomatised`, `Mathlib.Tactic.GhostFunction`) that do not exist in Mathlib, and entirely omits the mandatory specification structure (no acceptance criteria, no invariants, no test conditions, no goals/non-goals)."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 1, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "circular-prerequisite",
+      "failure_mode": "circular_prerequisite",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "The response parses as a prerequisites list but contradicts itself through a circular dependency cycle: Basic\u2192Cauchy\u2192Completion\u2192Basic. The references are internally inconsistent; no reader can follow the prescribed sequence."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "The prerequisites form a circular chain (Basic\u2192Cauchy\u2192Completion\u2192Basic), contradicting itself across sections, and the doc omits the mandatory specification structure (no acceptance criteria, invariants, or test conditions)."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The response omits mandatory specification structure entirely (no acceptance criteria, no invariants, no test conditions, no goals/non-goals) and contradicts itself with circular cross-references: Cauchy points to Basic, Completion points to Cauchy, and Basic points to Completion, forming a cycle\u2014plus Basic is listed as its own prerequisite."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "contradictory-blueprint",
+      "failure_mode": "self_contradiction",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "The response provides a blueprint structure but contradicts itself between sections: the 'Proof sketch' claims `simp` discharges the goal using the theorem itself, yet the 'Detailed proof' describes a manual induction. Also omits mandatory template structure."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "The doc contradicts itself: the proof sketch claims a single `simp` closes the goal citing `List.length_append` itself as a simp lemma (circular), while the detailed proof does induction. It also omits the mandatory specification structure."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The proof sketch contradicts itself by listing `List.length_append` (the very theorem being proved) as one of the simp lemmas used to discharge the goal, which is circular. Additionally, the doc omits mandatory specification structure."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "duplicate-content",
+      "failure_mode": "duplicate_content",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 2,
+          "rationale": "The response contains a duplicate Acceptance Criteria section with differing content, which constitutes a self-contradiction across sections. While it includes the requested structure, the duplication undermines document reliability."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "Doc contradicts itself across sections by having two Acceptance Criteria blocks with mutually inconsistent pins (current Mathlib pin vs Mathlib master)."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The document exists and covers the required sections but contradicts itself by repeating the Acceptance Criteria section with different (conflicting) content."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "empty-doc",
+      "failure_mode": "empty_response",
+      "expected_max_score": 1,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 1,
+          "rationale": "The response is empty of any actual document artifact. It merely states the intent to look at the module without producing any doc-requirements document, failing to deliver the required deliverable."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The response produces no doc artifact at all; it merely states an intention to look at the module first, satisfying the rubric's Score 1 condition of producing no doc."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response produces no doc artifact whatsoever; it only states an intention to look at the module without actually doing so or delivering any documentation."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "hallucinated-mathlib-anchor",
+      "failure_mode": "fabricated_api_anchor",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "The response provides documentation structure with goals, non-goals, invariants, and acceptance criteria. However, it hallucinates Mathlib anchor names that do not exist in current Mathlib, which violates the critical requirement of verified Mathlib anchors."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The response cites Mathlib anchors that do not exist (`Mathlib.Analysis.Sum.HarmonicDivergent.diverges_harmonic` and `Mathlib.NumberTheory.Harmonic.tendsto_atTop` are fabricated paths/lemmas), which matches the Score 1 criterion of made-up Mathlib lemmas."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response cites multiple fabricated Mathlib identifiers that do not exist in Mathlib. This directly triggers the Score 1 criterion for 'made-up Lean APIs / Mathlib lemmas that do not exist.'"
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "ignored-required-section",
+      "failure_mode": "missing_required_section",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "The response provides only 2 of 4 mandated sections (audience and required vocabulary), omitting worked-example checklist and doc-comment-gap inventory. This constitutes failure to meet the mandatory specification structure required by the lean-doc-requirements skill."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "The doc omits two of the four mandatory sections required by the skill (worked-example checklist and doc-comment-gap inventory), failing the mandatory specification structure criterion in score 2."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The response includes only two of the four required sections (audience and required vocabulary); the worked-example checklist and doc-comment-gap inventory are entirely absent, constituting omission of the mandatory specification structure."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "metric-without-baseline",
+      "failure_mode": "metric_without_baseline",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 3,
+      "flagged": false,
+      "correct": false,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 3,
+          "rationale": "The doc covers the requested artifact with quantitative claims but provides no baseline measurements, making the percentages unverifiable. Structure is ad-hoc (no goals/invariants/acceptance criteria) and the Mathlib module cross-reference is unverified."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 3,
+          "rationale": "Doc is buildable and on-topic but the structure is ad-hoc (just two sections) with quantitative claims given no baseline, methodology, or anchor, so a reader needs extra context to verify them."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The document presents quantitative claims with no baseline measurements, no methodology, and no verification \u2014 the numbers are asserted without evidence, matching the rubric's 'hallucinated' or unverifiable claim pattern, and the structure is non-conformant to the lean-doc template."
+        }
+      ],
+      "notes": "3 judge(s); scores=[3, 3, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "missing-stop-contract",
+      "failure_mode": "missing_stop_contract",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 2,
+          "rationale": "The task explicitly requires STOP conditions and a Handoffs section, both of which are entirely absent. The response also omits mandatory specification structure: no invariants, no acceptance criteria, no test conditions."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "Doc omits the mandatory specification structure required by the task: no Acceptance Criteria, no Invariants, no Test Conditions, and no STOP/Handoffs sections the template explicitly required."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The doc exists and has examples but entirely omits the mandatory spec structure (no Goals/Non-Goals, no Invariants, no Acceptance Criteria, no Test Conditions, no STOP/Handoffs section) explicitly required by the task."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "sorry-in-spec-proof-obligation",
+      "failure_mode": "contains_sorry",
+      "expected_max_score": 1,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 4,
+          "rationale": "Response follows the template with all required sections. Uses real Mathlib APIs correctly. The use of `sorry` in the proof obligation is explicitly permitted by the task prompt as a placeholder option."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The response uses `sorry` in the inline proof obligation, which the rubric explicitly defines as a Score 1 condition."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The rubric explicitly states Score 1 applies when the response uses `sorry` or `admit` in inline proof obligations, which this response does \u2014 the proof obligation block ends with `by sorry`."
+        }
+      ],
+      "notes": "3 judge(s); scores=[4, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "stale-version-claim",
+      "failure_mode": "stale_version",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "Response cites tactics like `simp_all_arith` and `decide_arith` that appear to be hallucinated or have questionable existence in Lean 4/Mathlib. The response lacks the mandatory structure: no acceptance criteria, no invariants, no test conditions, and contradicts itself by claiming tactics are canonical/current without verification anchors."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The response fabricates Lean/Mathlib APIs that do not exist (e.g. `simp_all_arith`, `decide_arith` macro, `Mathlib.Algebra.Linear.Solver`, `Mathlib.Tactic.Polynomial.Decision`, and the misnamed `Mathlib.Tactic.Norm.Num`), and version claims like 'since 4.10' / 'introduced in 4.12' are invented. It also produces no doc-requirements artifact."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response fabricates multiple non-existent Lean/Mathlib APIs: `simp_all_arith` is not a real tactic, `Mathlib.Algebra.Linear.Solver` and `Mathlib.Tactic.Polynomial.Decision` are not real import paths, and `decide_arith` does not exist in any Mathlib version. These hallucinated names trigger Score 1 per the rubric."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "unverified-tactic-name",
+      "failure_mode": "unverified_tactic_name",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 2,
+          "rationale": "The response cites tactics that do not exist in the current Mathlib pin: `cases!`, `obtain?`, `rcases!`, and `match?` are not standard Mathlib tactics. It also claims they are documented in `Mathlib.Tactic.Cases` without verification."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "The recommendation cites tactics (`cases!`, `obtain?`, `rcases!`, `match?`) that do not exist in the current Mathlib pin, which the rubric explicitly flags at Score 2."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The response cites tactics (`cases!`, `obtain?`, `rcases!`, `match?`) as standard Mathlib catalogue entries without `#check`-style verification, and several of these (e.g., `cases!`, `obtain?`, `match?`) do not exist in the current Mathlib pin."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "wrong-audience",
+      "failure_mode": "audience_mismatch",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "Response contradicts the mandatory audience specification by prescribing advanced concepts (dependent types, kernel elaboration, Coquand's type theory, Eq.mpr, cast) for first-year students explicitly stated to have no proof-assistant exposure."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "The response produces a doc artifact but omits the mandatory specification structure (no acceptance criteria, no invariants, no test conditions, no goals/non-goals) and cites Mathlib paths (`Mathlib.Order.WellFounded`) without any verifiable anchor. Audience-appropriateness is not in the rubric, but the structural omissions cleanly match the Score 2 definition."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The response directly contradicts the stated audience requirement (first-year undergraduates with no prior proof-assistant exposure) by demanding familiarity with Eq.mpr, cast, dependent types, and kernel elaboration. It also omits all mandatory specification structure: no acceptance criteria, no invariants, no goals/non-goals, no test conditions."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    }
+  ]
+}

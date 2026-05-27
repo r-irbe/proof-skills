@@ -1,21 +1,24 @@
 {
-  "score": 4,
-  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "score": 3,
+  "rationale": "3-judge median (scores=[3, 4, 3]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
   "rubric_evidence": [
     "opus_R20: Correct deontic framings (O, F, until-operator) are offered, but the analysis is shallow: no calibrated confidence marke...",
-    "sonnet_R21: Multi-form deontic analysis covering obligation, prohibition, and temporal operators with practical scoping advice, thou..."
+    "sonnet_R21: Multi-form deontic analysis covering obligation, prohibition, and temporal operators with practical scoping advice, thou...",
+    "opus_R22: Correct deontic logic framing with multiple equivalent formulations but shallow on trade-offs between formulations, no calibrated confidence markers, and no dis..."
   ],
   "ensemble_meta": {
-    "round": "R21",
+    "round": "R22",
     "round_b": "B1",
-    "method": "median-of-2",
+    "method": "median-of-3",
     "judges": [
       "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21"
+      "claude-sonnet-4.6@R21",
+      "claude-opus-4.6@R22"
     ],
     "scores": [
       3,
-      4
+      4,
+      3
     ]
   }
 }

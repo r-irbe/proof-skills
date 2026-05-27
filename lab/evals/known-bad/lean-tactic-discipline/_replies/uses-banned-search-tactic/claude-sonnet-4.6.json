@@ -1,0 +1,7 @@
+{
+  "score": 2,
+  "rationale": "The proof uses `exact?`, a banned discovery tactic explicitly listed under Score 2, in production code.",
+  "rubric_evidence": [
+    "exact?  -- found by suggestion"
+  ]
+}

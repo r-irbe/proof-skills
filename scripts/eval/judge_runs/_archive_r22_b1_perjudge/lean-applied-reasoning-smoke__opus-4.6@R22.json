@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "Response fails to produce any Lean code; it uses informal logic notation and investigative reasoning prose instead of a Lean formalization.", "rubric_evidence": ["let F(x,t) mean \"failed login for account x at time t\"", "This is an abductive step, not a deductive proof", "flag the session for investigation, preserve logs"]}

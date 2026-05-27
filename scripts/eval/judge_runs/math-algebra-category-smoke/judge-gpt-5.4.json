@@ -1,21 +1,24 @@
 {
-  "score": 4,
-  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "score": 3,
+  "rationale": "3-judge median (scores=[3, 4, 3]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
   "rubric_evidence": [
     "opus_R20: The response correctly states the naturality square and its commutativity equation, but it is a bare definition with no ...",
-    "sonnet_R21: The response correctly states all components of the naturality square\u2014objects, morphisms, components \u03b7_X and \u03b7_Y, the co..."
+    "sonnet_R21: The response correctly states all components of the naturality square\u2014objects, morphisms, components \u03b7_X and \u03b7_Y, the co...",
+    "opus_R22: Correct domain framing with an accurate naturality square and commutativity condition, but the analysis is shallow with no second-order discussion, no confidenc..."
   ],
   "ensemble_meta": {
-    "round": "R21",
+    "round": "R22",
     "round_b": "B1",
-    "method": "median-of-2",
+    "method": "median-of-3",
     "judges": [
       "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21"
+      "claude-sonnet-4.6@R21",
+      "claude-opus-4.6@R22"
     ],
     "scores": [
       3,
-      4
+      4,
+      3
     ]
   }
 }

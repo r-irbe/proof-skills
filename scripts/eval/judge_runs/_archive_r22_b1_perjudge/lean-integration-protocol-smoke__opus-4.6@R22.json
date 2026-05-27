@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "Response fails to produce any Lean code; it is entirely a prose description of a module contract with theorem names mentioned but no actual Lean syntax.", "rubric_evidence": ["MeasureBridge is the canonical adapter from EASCI simplex objects to Mathlib probability objects", "Dependency direction is one-way: Information imports MeasureBridge"]}

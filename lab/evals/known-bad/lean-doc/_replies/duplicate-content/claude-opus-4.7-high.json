@@ -1,0 +1,8 @@
+{
+  "score": 2,
+  "rationale": "Doc contradicts itself across sections by having two Acceptance Criteria blocks with mutually inconsistent pins (current Mathlib pin vs Mathlib master).",
+  "rubric_evidence": [
+    "The lemma must type-check at the current Mathlib pin.",
+    "Lemma type-checks against Mathlib master."
+  ]
+}

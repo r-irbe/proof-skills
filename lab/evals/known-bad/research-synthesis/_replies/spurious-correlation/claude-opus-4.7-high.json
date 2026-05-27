@@ -1,0 +1,8 @@
+{
+  "score": 1,
+  "rationale": "Response leaps from correlation to causation and asserts a mechanism while explicitly ruling out confounders, directly contradicting established causal-inference methodology without flagging.",
+  "rubric_evidence": [
+    "Therefore starting work later **causes** higher productivity",
+    "no other variable could explain such a consistent finding"
+  ]
+}

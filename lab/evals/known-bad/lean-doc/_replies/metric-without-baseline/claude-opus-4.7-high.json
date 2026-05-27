@@ -1,0 +1,9 @@
+{
+  "score": 3,
+  "rationale": "Doc is buildable and on-topic but the structure is ad-hoc (just two sections) with quantitative claims given no baseline, methodology, or anchor, so a reader needs extra context to verify them.",
+  "rubric_evidence": [
+    "produced a **40% reduction** in incremental build time",
+    "Memory usage dropped by **25%**",
+    "the elaborator now spends **3x less time** on type-class resolution"
+  ]
+}

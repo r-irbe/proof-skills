@@ -1,20 +1,23 @@
 {
   "score": 4,
-  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "rationale": "3-judge median (scores=[3, 4, 4]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
   "rubric_evidence": [
     "opus_R20: Correct EU AI Act framing and a sensible verifiable property, but the analysis is shallow with no calibrated confidence ...",
-    "sonnet_R21: Correct Annex III classification with concrete enforceability metrics (adverse-impact ratio \u22650.8, FN/FP gap bounds, audi..."
+    "sonnet_R21: Correct Annex III classification with concrete enforceability metrics (adverse-impact ratio \u22650.8, FN/FP gap bounds, audi...",
+    "opus_R22: Multi-factor analysis correctly citing Annex III, on-jurisdiction, with trade-offs between fairness metrics and practical audit requirements; minor gaps in cali..."
   ],
   "ensemble_meta": {
-    "round": "R21",
+    "round": "R22",
     "round_b": "B1",
-    "method": "median-of-2",
+    "method": "median-of-3",
     "judges": [
       "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21"
+      "claude-sonnet-4.6@R21",
+      "claude-opus-4.6@R22"
     ],
     "scores": [
       3,
+      4,
       4
     ]
   }

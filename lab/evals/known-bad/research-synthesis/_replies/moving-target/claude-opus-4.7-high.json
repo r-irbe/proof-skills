@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "Cites real authors (Beck 2001, Cohn 2009) but misattributes a precise '30%' effect size to Beck and silently redefines 'agile' across paragraphs to manufacture contradictory conclusions, paraphrasing well beyond what the cited sources claim.",
+  "rubric_evidence": [
+    "Agile methodology improves outcomes by 30% (Beck 2001)",
+    "When agile means daily stand-ups and short sprints",
+    "if we define agile as continuous customer involvement",
+    "agile is both the best and worst methodology"
+  ]
+}

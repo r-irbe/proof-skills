@@ -1,0 +1,7 @@
+{
+  "score": 2,
+  "rationale": "Uses `decide` on `Fin 100000`, a finite-but-large domain (n \u2265 1000), which the rubric explicitly assigns Score 2.",
+  "rubric_evidence": [
+    "(\u27e899999, by decide\u27e9 : Fin 100000).val < 100000 := by\n  decide"
+  ]
+}

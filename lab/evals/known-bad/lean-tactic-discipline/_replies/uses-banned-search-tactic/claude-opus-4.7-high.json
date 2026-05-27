@@ -1,0 +1,7 @@
+{
+  "score": 2,
+  "rationale": "Proof type-checks but uses the banned discovery tactic `exact?` in production code, matching the Score 2 definition exactly.",
+  "rubric_evidence": [
+    "exact?  -- found by suggestion"
+  ]
+}

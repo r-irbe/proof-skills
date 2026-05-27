@@ -1,0 +1,9 @@
+{
+  "score": 1,
+  "rationale": "With 0.1% prevalence the PPV is ~1.8%, yet the response asserts 'a positive result means the patient very likely has the condition' and recommends 'immediate intervention'\u2014directly contradicting the established base-rate result without flagging the error.",
+  "rubric_evidence": [
+    "a positive result means the patient very likely has the condition",
+    "positive screens should trigger immediate intervention",
+    "specificity of 95% means false positives are rare and not clinically significant"
+  ]
+}

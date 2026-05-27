@@ -1,0 +1,9 @@
+{
+  "score": 2,
+  "rationale": "Asserts causation from an observational 12% gap with no consideration of confounding (self-selection, team skill, codebase type) and offers a single-option mandate without trade-offs or risk register.",
+  "rubric_evidence": [
+    "clear causal effect of the tool's superior static analysis",
+    "The mechanism is obvious",
+    "No further analysis is needed"
+  ]
+}

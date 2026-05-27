@@ -1,0 +1,1 @@
+{"score": 2, "rationale": "The Collatz function uses general recursion (the 3*n+1 branch is not structurally decreasing) without any `termination_by` or `decreasing_by` clause, which the Score 2 definition explicitly covers.", "rubric_evidence": ["def collatz_steps : Nat → Nat", "1 + collatz_steps (3 * n + 1)"]}

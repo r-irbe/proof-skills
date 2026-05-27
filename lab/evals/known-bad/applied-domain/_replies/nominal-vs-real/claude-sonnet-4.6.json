@@ -1,0 +1,9 @@
+{
+  "score": 1,
+  "rationale": "The task explicitly asks about *real* compensation gains, but the response treats a 3.4\u00d7 nominal increase as equivalent to real gains with no inflation adjustment\u2014cumulative CPI 1995-2024 roughly doubled, making real gains far smaller than claimed. No sources are provided for either figure, and an unsupported forward projection is offered as fact.",
+  "rubric_evidence": [
+    "This represents massive real compensation gains for the profession",
+    "New graduates should expect their compensation to continue rising at this rate",
+    "In 1995, the median SF software engineer earned $55,000. In 2024, the figure is $185,000"
+  ]
+}

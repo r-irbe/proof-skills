@@ -1,0 +1,1 @@
+{"score": 3, "rationale": "Correct commonsense conclusion with basic framing but analysis is shallow with no consideration of edge cases, no confidence markers, and a domain expert would flag it as incomplete.", "rubric_evidence": ["the table stays where it is because placing a lightweight object on it does not count as moving the table", "Under normal circumstances"]}

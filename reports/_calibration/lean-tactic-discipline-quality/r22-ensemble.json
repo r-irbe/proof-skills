@@ -1,0 +1,156 @@
+{
+  "rubric": "lean-tactic-discipline-quality",
+  "skill": "lean-tactic-discipline",
+  "floor": 2,
+  "pass_floor": 4,
+  "min_flag_rate": 0.9,
+  "max_false_flag_rate": 1.0,
+  "total_transcripts": 5,
+  "judged_transcripts": 5,
+  "negatives_total": 5,
+  "negatives_judged": 5,
+  "negatives_flagged": 5,
+  "flag_rate": 1.0,
+  "positives_total": 0,
+  "positives_judged": 0,
+  "positives_flagged": 0,
+  "false_flag_rate": 0.0,
+  "flagged": 5,
+  "per_transcript": [
+    {
+      "task_id": "native-decide-without-comment",
+      "failure_mode": "native_decide_unjustified",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 1,
+          "rationale": "The response uses `native_decide` without any justification comment, which the task explicitly required and the rubric Score 1 definition covers."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "Uses `native_decide` with no justification comment despite the task explicitly requesting one, matching the Score 1 definition literally."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The proof uses `native_decide` with no justification comment whatsoever, which is an explicit Score 1 disqualifier."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "nested-decide-on-large-fin",
+      "failure_mode": "decide_on_large_term",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 2,
+          "rationale": "The response invokes `decide` on a `Fin 100000` domain (n \u2265 1000), which the rubric explicitly flags as a Score 2 violation."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "Uses `decide` on `Fin 100000`, a finite-but-large domain (n \u2265 1000), which the rubric explicitly assigns Score 2."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The proof invokes `decide` on a `Fin 100000` domain (n = 100000 \u2265 1000), which is explicitly listed as a Score 2 violation."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "omega-without-bounds",
+      "failure_mode": "omega_overreach",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 1,
+          "rationale": "Neither proof type-checks: `omega` cannot close the non-linear Nat goal `n * n \u2265 n` nor the Real-valued goal `x * x + 1 \u2265 x`, so both fail to elaborate."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "Proof uses `omega` on a non-linear Nat goal (`n * n \u2265 n`) and on a Real-valued goal (`x * x + 1 \u2265 x`), both outside omega's linear-integer domain, so elaboration fails \u2014 misuse of the tactic."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "Both proofs invoke `omega` on goals that `omega` cannot handle: `n * n \u2265 n` is non-linear over \u2115, and `x * x + 1 \u2265 x` is over \u211d. Neither proof elaborates, equivalent to syntactically failed proof."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 2, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "recursion-without-termination",
+      "failure_mode": "missing_termination_proof",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 2,
+          "rationale": "The Collatz function uses general recursion (the 3*n+1 branch is not structurally decreasing) without any `termination_by` or `decreasing_by` clause, which the Score 2 definition explicitly covers."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "General recursion on `collatz_steps` without any `termination_by` / `decreasing_by` clause where Lean's auto-inference will fail (Collatz termination is unproven), matching Score 2."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The recursive definition has no `termination_by` or `decreasing_by` clause; the `3 * n + 1` branch grows, so Lean's auto-inference will fail, which is an explicit Score 2 violation."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "uses-banned-search-tactic",
+      "failure_mode": "banned_search_tactic",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 2,
+          "rationale": "The response uses `exact?`, which is explicitly listed as a banned discovery tactic in production code under the Score 2 definition."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "Proof type-checks but uses the banned discovery tactic `exact?` in production code, matching the Score 2 definition exactly."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The proof uses `exact?`, a banned discovery tactic explicitly listed under Score 2, in production code."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    }
+  ]
+}

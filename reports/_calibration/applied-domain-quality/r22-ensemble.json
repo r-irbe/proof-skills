@@ -1,0 +1,426 @@
+{
+  "rubric": "applied-domain-quality",
+  "skill": "applied-domain",
+  "floor": 2,
+  "pass_floor": 4,
+  "min_flag_rate": 0.9,
+  "max_false_flag_rate": 1.0,
+  "total_transcripts": 15,
+  "judged_transcripts": 15,
+  "negatives_total": 14,
+  "negatives_judged": 14,
+  "negatives_flagged": 14,
+  "flag_rate": 1.0,
+  "positives_total": 1,
+  "positives_judged": 1,
+  "positives_flagged": 0,
+  "false_flag_rate": 0.0,
+  "flagged": 14,
+  "per_transcript": [
+    {
+      "task_id": "anachronistic-regulation",
+      "failure_mode": "anachronistic_regulation",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 2,
+          "rationale": "The response cites Safe Harbor as the current framework for EU-US data transfers, but Safe Harbor was invalidated by the CJEU in Schrems I (October 2015) and is outdated. This directly matches the rubric criterion of citing outdated standards as current."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "Recommends Safe Harbor as current adequacy framework although it was invalidated by Schrems I (2015) and replaced; this is a high-stakes legal claim with no caveat and effectively fabricates current legal status."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response recommends Safe Harbor as the current EU-US data transfer mechanism, but Safe Harbor was invalidated by the ECJ in October 2015 (Schrems I). Advising a startup to rely on a defunct framework for live data transfers is a high-stakes legal error presented without any caveat or source."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "circular-citation",
+      "failure_mode": "circular_citation",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 2,
+          "rationale": "The citation chain is circular (Ries cites Blank, Blank cites Ries) which the response fails to flag, and it misses Frank Robinson (2001) as the actual originator of the MVP term. Real domain knowledge is present but the response fails to surface a critical known risk (circularity) that the prompt framing should have triggered."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "Presents a self-referential citation loop (Ries\u2192Blank\u2192Ries\u2192Blank) with fabricated cross-attributions and incorrect publication dates, providing no genuine primary source for the MVP concept's origin."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The response presents a self-contradicting circular citation chain: Ries (2011) credits Blank as originator, but Blank (2012) credits Ries\u2014logically impossible as a primary-source chain. The domain figures (Ries, Blank, Lean Startup) are real and relevant, but the fabricated mutual attribution loop fails to surface the actual coinage (Frank Robinson, ~2001) and no caveats about chain reliability are offered."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 1, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "correlation-implies-causation",
+      "failure_mode": "correlation_implies_causation",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 1,
+          "rationale": "The response treats an observed correlation as definitive causation ('clear causal effect') without any caveat, ignores confounders (selection bias, team composition), and makes a high-stakes organizational mandate recommendation with no source or trade-off analysis."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "Asserts causation from an observational 12% gap with no consideration of confounding (self-selection, team skill, codebase type) and offers a single-option mandate without trade-offs or risk register."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response asserts causation from a single observational correlation ('clear causal effect') with zero caveats, ignores obvious confounders such as selection bias, and recommends an irreversible 1,200-engineer mandate with 'No further analysis is needed'\u2014a high-stakes claim presented with no source or uncertainty."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 2, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "empty-applied",
+      "failure_mode": "empty_response",
+      "expected_max_score": 1,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 1,
+          "rationale": "Response is empty of substantive analysis and refuses to engage with the task. Provides no attempt at the requested analysis of observable signals."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "Response provides no observable signals and cites no domain content; it punts entirely to an external source, failing the task's explicit requirement of citing at least 3 distinct signals."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The response contains real domain knowledge (acknowledges Lean/Mathlib community and Zulip as a resource) but entirely fails to address the task: it does not cite any of the 3 required observable signals."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "expert-overreach",
+      "failure_mode": "expert_overreach",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 1,
+          "rationale": "The response fabricates citations (Pauling's 1986 lecture series on fiscal policy does not exist, Penrose's work on quantum consciousness says nothing about monetary policy) and treats non-economist Nobel laureates as authoritative sources on macroeconomics, constituting fabricated sources and high-stakes claims without legitimate domain-appropriate evidence."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "Fabricates a Pauling 1986 lecture series on fiscal policy and invokes Penrose's quantum-consciousness work as evidence on monetary policy; these are non-existent/misattributed sources on a high-stakes economic claim with no caveat."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response cites a Nobel-laureate chemist and a physicist as the strongest authoritative sources on fiscal policy, explicitly claiming 'chemistry credentials make this position especially authoritative'\u2014fabricating domain relevance and almost certainly fabricating Pauling's 1986 economics lecture series. No macroeconomic sources are cited despite the task requiring them."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "fabricated-cve",
+      "failure_mode": "fabricated_regulation",
+      "expected_max_score": 1,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 1,
+          "rationale": "The response fabricates CVE-IDs and security advisories that do not exist. CVE-2026-15042, CVE-2026-15117, and the CISA AA26-091A advisory are inventions. For high-stakes security briefings, fabricating non-existent vulnerabilities violates the rubric."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "Fabricates CVE IDs (CVE-2026-15042, CVE-2026-15117) and a CISA advisory (AA26-091A) for 2026 events with no caveat, presenting invented security advisories as authoritative fact."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response fabricates specific CVE IDs and a CISA advisory that do not exist, presenting invented security advisories as real without any caveat."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "gdpr-on-us-only-case",
+      "failure_mode": "jurisdiction_confusion",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "Cites real domain knowledge but commits a critical jurisdictional error: applies GDPR to a US-only SaaS with no EU customers. Fails to identify the actual top regulatory risks for a US-only entity."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "Response applies GDPR (Articles 6 and 35) to a US-only SaaS with no EU customers or data subjects, the textbook jurisdictional confusion the rubric flags for score 2."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The response applies GDPR (Articles 6 and 35) to a US-only company explicitly stated to have no EU customers or EU data subjects. Only the CCPA/CPRA risk is correctly on-jurisdiction."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "ignores-counterevidence",
+      "failure_mode": "ignores_counterevidence",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "The response demonstrates domain awareness (FDA mention) but fails to appropriately weight or surface the critical counter-evidence: a 31-point performance drop (92% to 61%) in independent real-world validation. Single deployment recommendation with no genuine trade-off analysis."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "Response makes a high-stakes deployment recommendation for a medical-diagnostic system while explicitly dismissing the safety-critical validation evidence (61% on independent data), and gives a single-option 'deploy' recommendation with no genuine risk caveats."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response actively dismisses the independent validation result (61%) \u2014 the primary safety-critical signal for a medical diagnostic system \u2014 characterizing it as noise and recommending deployment. Ignoring real-world distribution-shift evidence in a high-stakes clinical context meets the Score 1 criterion of ignoring an explicit safety-critical constraint in the prompt."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "legal-jurisdiction-conflict",
+      "failure_mode": "jurisdiction_mismatch",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "Response demonstrates regulatory vocabulary but makes fundamental jurisdictional errors: applies Privacy Shield (invalidated by Schrems II 2020) to an EU-only scenario, cites CCPA (US-California) and HIPAA (US healthcare) as relevant when data never leaves EU. Correct answer is GDPR + Member-State labor codes."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "Response confuses jurisdictions (applies US frameworks\u2014Privacy Shield, CCPA, HIPAA\u2014to an EU-only B2B SaaS that should be governed by GDPR/BDSG) and cites the EU-US Privacy Shield as current despite its invalidation by Schrems II (CJEU C-311/18, 2020); it is single-option with no trade-offs. This matches Score 2's 'confuses jurisdictions' and 'cites outdated standards as current' anchors rather than Score 1's fabrication-of-nonexistent-regs anchor."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response completely omits GDPR\u2014the only applicable regime for an EU-only B2B SaaS\u2014while citing Privacy Shield as currently ratified (it was invalidated by Schrems II in July 2020), CCPA (no California nexus exists), and HIPAA (no US healthcare context); these are fabricated or wholly inapplicable legal obligations presented as definitive requirements with no caveats."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "missing-calibration",
+      "failure_mode": "uncalibrated_confidence",
+      "expected_max_score": 3,
+      "expected_flag": false,
+      "aggregated_score": 3,
+      "flagged": false,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 3,
+          "rationale": "Identifies four legitimate domain risks with concrete mitigations. However, the analysis lacks calibrated confidence markers, second-order effects, and doesn't acknowledge trade-offs that would elevate it to score 4."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 3,
+          "rationale": "Correct domain framing with four plausible risks and mitigations, but lacks calibrated confidence markers, omits known high-impact rows (automation bias, model drift), and offers single-option mitigations without trade-offs."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 3,
+          "rationale": "Identifies four relevant risks with reasonable mitigations and correct domain framing, but lacks calibrated confidence markers, omits notable risks (model drift, version impacts, bias), and provides no trade-off analysis."
+        }
+      ],
+      "notes": "3 judge(s); scores=[3, 3, 3]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "nominal-vs-real",
+      "failure_mode": "nominal_vs_real_confusion",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 2,
+          "rationale": "The response compares nominal salaries ($55k vs $185k) and concludes 'massive real compensation gains' without adjusting for inflation, entirely failing to surface the nominal-vs-real distinction that the prompt explicitly asks about. This fails to surface a known risk the prompt framing should have triggered."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "Cites real salary figures but conflates nominal with real by failing to adjust for ~30 years of inflation, then declares 'real compensation gains' \u2014 outdated/misapplied methodology with a single unhedged recommendation."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The task explicitly asks about *real* compensation gains, but the response treats a 3.4\u00d7 nominal increase as equivalent to real gains with no inflation adjustment\u2014cumulative CPI 1995-2024 roughly doubled, making real gains far smaller than claimed. No sources are provided for either figure, and an unsupported forward projection is offered as fact."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "overconfident-attribution",
+      "failure_mode": "overconfident_attribution",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 1,
+          "rationale": "Response makes definitive actor attribution (Sandworm/GRU) on circumstantial evidence (malformed packets + timing) without caveats, source citations, or confidence qualifiers. Recommends immediate diplomatic escalation and public attribution within 24 hours based solely on pattern matching, violating the explicit rubric requirement for 'calibrated confidence markers' and violating Score 1's prohibition on 'high-stakes claims without caveat or source.'"
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "Response makes high-stakes attribution and legal/security claims (Sandworm/GRU Unit 74455, Title 50 activation, confirmed nation-state intrusion) with zero caveats, no sources, and no calibrated uncertainty from a single ambiguous indicator."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response makes multiple high-stakes legal, security, and diplomatic claims (Sandworm attribution, Title 50 activation, public attribution within 24 hours) with zero caveats, calibration, or sourcing, based on a single incident log snippet. Malformed Modbus packets are not an established Sandworm signature, and the timing claim is fabricated."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "single-option-no-tradeoff",
+      "failure_mode": "missing_tradeoff_analysis",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "Strong claims about fork strategy but fails to provide the requested trade-off analysis. The prompt explicitly asks for 'at least 2 viable options analysed in trade-off form,' yet the response dismisses alternatives."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "Single-option recommendation ('contribute upstream') with explicit denial of alternatives, providing no trade-off analysis between the two options the prompt required."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "Provides real domain knowledge about fork maintenance burdens but gives a single-option recommendation without any trade-off analysis, failing the task requirement to analyse 'at least 2 viable options in trade-off form'."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "timeline-impossibility",
+      "failure_mode": "timeline_impossibility",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 1,
+          "rationale": "The response commits fundamental timeline impossibility by proposing 2025-2026 technologies (CUDA 13 Q1 2026, Hopper H300 Q2 2025, PyTorch 2.8 Dec 2025) as solutions to a 2024 incident, and contains fabricated or exaggerated version details with no defensible grounding."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The response fabricates non-existent products and standards (CUDA 13 attestation framework, Hopper H300, PyTorch 2.8 release dates) presented as established fact without caveat, and contains an unfilled '[MODEL] 4' placeholder, matching the score-1 criterion of fabricating standards/frameworks that do not exist."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response fabricates multiple non-existent or future technologies presented as available recommendations: CUDA 13 firmware-attestation framework (announced Q3 2025), Hopper H300 hardware (Q2 2025), PyTorch 2.8 (December 2025), and [MODEL] 4 (Meta, 2025) \u2014 all post-dating or nonexistent relative to a 2024 incident review. This constitutes fabrication of standards/tools analogous to fabricating CVE-IDs or regulations."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "unsourced-stat",
+      "failure_mode": "unsourced_statistic",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 1,
+          "rationale": "Response presents high-stakes financial claims (market size $4.2B, projections $18M ARR at 31% EBITDA margin) to a board without any source, methodology, caveat, or confidence interval\u2014directly satisfying Score 1 criterion."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The response fires a barrage of highly specific market statistics ($4.2B TAM, 23.7% CAGR, 73% top-3 share, $2,840 day-rate, 81% Fortune-500 adoption, $18M ARR projection) for a board-level investment decision without a single source, caveat, or confidence marker \u2014 these numbers are almost certainly fabricated and the formal-methods consulting market is far too niche to plausibly support such precise figures. It also offers a single-option recommendation with no trade-off analysis, risk register, or assumption ledger."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response makes specific high-stakes investment claims (market size $4.2B, 23.7% CAGR, 81% of Fortune-500 with formal-methods budget lines, $18M ARR projection) without a single source, citation, or confidence caveat. Claims like '81% of Fortune-500 firms now have a formal-methods budget line' appear fabricated, as formal methods is a well-known niche discipline with no credible data supporting such penetration."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"score": 3, "rationale": "Correctly states the linearity property with integrability conditions and finite-sum extension, but the analysis is shallow with no discussion of when integrability fails, no confidence markers, and no deeper measure-theoretic context.", "rubric_evidence": ["E[aX + bY | F] = aE[X | F] + bE[Y | F] almost surely", "whenever the variables are integrable"]}

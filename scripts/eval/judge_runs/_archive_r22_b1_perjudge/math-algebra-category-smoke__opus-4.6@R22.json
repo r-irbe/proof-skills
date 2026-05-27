@@ -1,0 +1,1 @@
+{"score": 3, "rationale": "Correct domain framing with an accurate naturality square and commutativity condition, but the analysis is shallow with no second-order discussion, no confidence markers, and no trade-off considerations.", "rubric_evidence": ["Commutativity means G(f) ∘ η_X = η_Y ∘ F(f)", "F(X) --F(f)--> F(Y)"]}

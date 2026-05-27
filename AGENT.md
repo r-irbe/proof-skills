@@ -153,6 +153,66 @@ The form **must** include: (a) the decision under contention, (b) 2–4
 named options, (c) which option is recommended and why, (d) what blocks
 on the answer.
 
+### 1.5.1 Sub-agent fleet patterns (Copilot CLI specific)
+
+Lessons captured from Rounds 18–21 of large-fleet ensemble work
+(hundreds of `task` dispatches per session for solver / judge /
+calibration loops):
+
+1. **Haiku `/tmp` sandbox quirk.** `claude-haiku-4.5` agents sometimes
+   refuse to write to `/tmp` citing *"hard security requirement enforced
+   by the runtime"*. Opus 4.7-high, Sonnet 4.6, Opus 4.6 do **not**
+   have this restriction.  Mitigation: use `write_agent` with the full
+   prompt **inlined** + an explicit *"reply with strict JSON only, no
+   file operations"* instruction; harvest the reply via `read_agent`
+   and persist from the parent process. The restriction is not
+   universally enforced — some haiku instances honour `/tmp` writes
+   fine — so retry-then-fall-back is the durable contract.
+
+2. **`read_agent since_turn` semantics.** `since_turn=N` returns turns
+   strictly **after** index `N` (exclusive). For a 2-turn agent
+   (turns 0 and 1), use `since_turn=0` to see turn 1's content, not
+   `since_turn=1`. After a `write_agent` cycle the new exchange lands
+   at the next turn index — read with `since_turn=<previous_total>`.
+
+3. **Mac `/bin/bash` is bash 3.x.** It lacks `declare -A` for
+   associative arrays — they silently produce empty lookups instead
+   of erroring. Promotion / demux scripts that need key → value
+   tables **must** use Python (or `bash` 4+ explicitly). A promotion
+   loop that calls `cp` with an empty source path will still return
+   exit 0 and produce no errors but no files move either.
+
+4. **Ensemble aggregation: median-of-N over minority-veto.** When N ≥ 3
+   judges are available, prefer `statistics.median` over
+   `min(low_band)` minority-veto. Minority-veto propagates any single
+   ≤floor judge regardless of how many score high (R19 lean-proof
+   false-flag rate stuck at 20% because of this). Median is more
+   robust to one outlier judge in either direction. For N=2 use a
+   straight rounded mean as documented in the `judge-*.json`
+   `ensemble_meta.method` field (`median-of-N` / `mean-of-2`).
+
+5. **Per-judge JSON co-location + archive discipline.** Per-judge replies
+   should be saved at
+   `scripts/eval/judge_runs/<case>/judge-<solver>@<round-tag>-<judge>.json`
+   while the **aggregated** verdict lives at the canonical
+   `judge-<solver>.json` — otherwise `multi_model.py` will treat each
+   per-judge file as a phantom entrant. Move per-judge files to
+   `_archive_<round>_perjudge/` once aggregation is in the canonical
+   file. Always include `ensemble_meta: {round, method, judges, scores}`
+   in the aggregated JSON for traceability.
+
+6. **32-concurrent dispatch cap.** Stay under 32 `task` dispatches in
+   flight; use `list_agents include_completed=false` before each new
+   wave. Batch into waves of ≤ 30 with brief gaps so harvest can
+   proceed against partially-complete fleets. Always persist prompts
+   to disk under `/tmp/round<N>/<phase>_prompts/` before dispatch so a
+   crash can resume by re-reading the prompt file.
+
+7. **Pure replay > rerun.** Captured judge JSONs are the durable
+   artifact. `calibrate_judge.py check` and `multi_model.py` are
+   replay-only and run in CI for free — the expensive LLM dispatch
+   was paid once. New gates should always be replay-shaped.
+
 ### 1.6 Logging
 
 Every HITL gate fire (whether asked or auto-resolved under §1.4) must

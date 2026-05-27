@@ -1,0 +1,7 @@
+{
+  "score": 2,
+  "rationale": "The recursive definition has no `termination_by` or `decreasing_by` clause; the `3 * n + 1` branch grows, so Lean's auto-inference will fail, which is an explicit Score 2 violation.",
+  "rubric_evidence": [
+    "| n => if n % 2 = 0 then 1 + collatz_steps (n / 2)\n                       else 1 + collatz_steps (3 * n + 1)"
+  ]
+}

@@ -1,21 +1,24 @@
 {
-  "score": 4,
-  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "score": 3,
+  "rationale": "3-judge median (scores=[3, 4, 3]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
   "rubric_evidence": [
     "opus_R20: Correct domain framing with deontic logic and Prolog-style executable encoding, but analysis is shallow \u2014 no calibrated ...",
-    "sonnet_R21: The response provides a multi-factor formalization with deontic logic, executable Prolog-style encoding, violation condi..."
+    "sonnet_R21: The response provides a multi-factor formalization with deontic logic, executable Prolog-style encoding, violation condi...",
+    "opus_R22: Correct deontic formalization with multiple representations and exception handling, but lacks jurisdiction-specific citations, calibrated confidence markers, an..."
   ],
   "ensemble_meta": {
-    "round": "R21",
+    "round": "R22",
     "round_b": "B1",
-    "method": "median-of-2",
+    "method": "median-of-3",
     "judges": [
       "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21"
+      "claude-sonnet-4.6@R21",
+      "claude-opus-4.6@R22"
     ],
     "scores": [
       3,
-      4
+      4,
+      3
     ]
   }
 }

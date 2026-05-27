@@ -1,19 +1,22 @@
 {
   "score": 3,
-  "rationale": "2-judge median (opus=3, sonnet=3): R21 B1 ensemble aggregation.",
+  "rationale": "3-judge median (scores=[3, 3, 3]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
   "rubric_evidence": [
     "opus_R20: Correct critical-path analysis with accurate durations and float, but lacks calibrated confidence markers, an assumption...",
-    "sonnet_R21: The response correctly frames and solves the CPM calculation (paths, critical path, float for D) but is shallow: no assu..."
+    "sonnet_R21: The response correctly frames and solves the CPM calculation (paths, critical path, float for D) but is shallow: no assu...",
+    "opus_R22: Correct critical-path computation with float analysis, but no risk discussion, no calibrated confidence markers on assumptions (task durations, dependencies), a..."
   ],
   "ensemble_meta": {
-    "round": "R21",
+    "round": "R22",
     "round_b": "B1",
-    "method": "median-of-2",
+    "method": "median-of-3",
     "judges": [
       "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21"
+      "claude-sonnet-4.6@R21",
+      "claude-opus-4.6@R22"
     ],
     "scores": [
+      3,
       3,
       3
     ]

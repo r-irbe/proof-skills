@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "Response contains no Lean code or import statements; it only describes shell commands for building a module with lake.", "rubric_evidence": ["From the repo root, reset to a clean build state with `lake clean`", "lake build Mathlib.Data.Nat.Basic"]}

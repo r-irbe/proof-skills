@@ -1,0 +1,9 @@
+{
+  "score": 1,
+  "rationale": "Cites a 15\u201340% defect-reduction finding then concludes code review 'does not work' because it isn't 100% effective \u2014 a conclusion that directly contradicts the cited established results without flagging.",
+  "rubric_evidence": [
+    "report that formal code review reduces defect rates by 15-40%",
+    "Therefore code review **does not work**",
+    "The 15-40% reduction is within noise and should be ignored"
+  ]
+}

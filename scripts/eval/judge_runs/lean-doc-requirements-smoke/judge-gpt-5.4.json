@@ -1,20 +1,23 @@
 {
   "score": 2,
-  "rationale": "2-judge median (opus=1, sonnet=2): R21 B1 ensemble aggregation.",
+  "rationale": "3-judge median (scores=[1, 2, 2]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
   "rubric_evidence": [
     "opus_R20: The response is generic prose advice about formalising a hypothesis with no Lean documentation artifact, no Mathlib refe...",
-    "sonnet_R21: The response exists as prose guidance but omits the mandatory specification structure (no acceptance criteria, no invari..."
+    "sonnet_R21: The response exists as prose guidance but omits the mandatory specification structure (no acceptance criteria, no invari...",
+    "opus_R22: Response produces a generic methodology description with no Lean-specific doc artifact, no specification structure (no acceptance criteria, invariants, or test ..."
   ],
   "ensemble_meta": {
-    "round": "R21",
+    "round": "R22",
     "round_b": "B1",
-    "method": "median-of-2",
+    "method": "median-of-3",
     "judges": [
       "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21"
+      "claude-sonnet-4.6@R21",
+      "claude-opus-4.6@R22"
     ],
     "scores": [
       1,
+      2,
       2
     ]
   }

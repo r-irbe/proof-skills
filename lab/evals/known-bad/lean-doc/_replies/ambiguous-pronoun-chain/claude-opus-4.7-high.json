@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "A doc artifact exists but rationale lacks any concrete example or named tactic \u2014 the task required naming both clearly, yet only pronouns appear, so the reader needs significant extra context to navigate.",
+  "rubric_evidence": [
+    "It applies after that, but only when the previous one fails.",
+    "So we recommend it, unless this happens \u2014 in which case use the other."
+  ]
+}

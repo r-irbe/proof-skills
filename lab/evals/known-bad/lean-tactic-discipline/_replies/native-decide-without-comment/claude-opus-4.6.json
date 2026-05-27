@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response uses `native_decide` without any justification comment, which the task explicitly required and the rubric Score 1 definition covers.", "rubric_evidence": ["theorem prime_check : Nat.Prime 982451653 := by native_decide"]}

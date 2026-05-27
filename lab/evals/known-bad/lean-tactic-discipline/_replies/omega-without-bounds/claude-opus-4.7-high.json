@@ -1,0 +1,8 @@
+{
+  "score": 2,
+  "rationale": "Proof uses `omega` on a non-linear Nat goal (`n * n \u2265 n`) and on a Real-valued goal (`x * x + 1 \u2265 x`), both outside omega's linear-integer domain, so elaboration fails \u2014 misuse of the tactic.",
+  "rubric_evidence": [
+    "theorem sq_ge_self : \u2200 n : \u2115, n * n \u2265 n := by\n  intro n\n  omega",
+    "theorem real_quad_lower : \u2200 x : \u211d, 0 \u2264 x \u2192 x * x + 1 \u2265 x := by\n  intro x hx\n  omega"
+  ]
+}

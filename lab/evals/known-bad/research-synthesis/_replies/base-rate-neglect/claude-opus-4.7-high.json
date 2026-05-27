@@ -1,0 +1,8 @@
+{
+  "score": 1,
+  "rationale": "With 0.1% prevalence, 90% sensitivity and 95% specificity, PPV is ~1.8%; the response's claim that a positive result means the patient 'very likely has the condition' directly contradicts the established Bayesian result without flagging.",
+  "rubric_evidence": [
+    "a positive result means the patient very likely has the condition",
+    "positive screens should trigger immediate intervention"
+  ]
+}

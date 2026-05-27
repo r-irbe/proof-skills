@@ -1,0 +1,9 @@
+{
+  "score": 1,
+  "rationale": "The response acknowledges a cited 15\u201340% defect reduction and then directly contradicts those same cited results by concluding 'code review does not work', without flagging this as a logical fallacy or contradiction.",
+  "rubric_evidence": [
+    "therefore code review does not work \u2014 a process that fails to eliminate all defects cannot be considered effective",
+    "The 15-40% reduction is within noise and should be ignored",
+    "Teams should not adopt code review until a perfect-prevention method is available"
+  ]
+}

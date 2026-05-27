@@ -1,0 +1,9 @@
+{
+  "score": 2,
+  "rationale": "The response misattributes a fabricated '30% improvement' statistic to 'Beck 2001' (the Agile Manifesto contains no such figure), and silently redefines 'agile' at least four times across consecutive sentences without flagging the shifts\u2014fitting Score 2's misattribution and speculation-as-fact criteria.",
+  "rubric_evidence": [
+    "Agile methodology improves outcomes by 30% (Beck 2001)",
+    "if we define agile as continuous customer involvement, the data shows strong gains",
+    "agile just means responding to change, which everyone does \u2014 so the question is meaningless"
+  ]
+}

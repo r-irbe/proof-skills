@@ -1,0 +1,8 @@
+{
+  "score": 1,
+  "rationale": "The response fails to name either tactic at all, using only unresolvable pronoun chains ('it', 'the previous one', 'the other', 'this') so no actual guidance is conveyed; it does not satisfy the task requirement of naming both tactics clearly.",
+  "rubric_evidence": [
+    "It applies after that, but only when the previous one fails.",
+    "So we recommend it, unless this happens \u2014 in which case use the other."
+  ]
+}

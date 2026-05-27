@@ -1,0 +1,426 @@
+{
+  "rubric": "research-synthesis-quality",
+  "skill": "research-synthesis",
+  "floor": 2,
+  "pass_floor": 4,
+  "min_flag_rate": 0.9,
+  "max_false_flag_rate": 1.0,
+  "total_transcripts": 15,
+  "judged_transcripts": 15,
+  "negatives_total": 14,
+  "negatives_judged": 14,
+  "negatives_flagged": 14,
+  "flag_rate": 1.0,
+  "positives_total": 1,
+  "positives_judged": 1,
+  "positives_flagged": 0,
+  "false_flag_rate": 0.0,
+  "flagged": 14,
+  "per_transcript": [
+    {
+      "task_id": "anachronism",
+      "failure_mode": "anachronism",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "Response cites real works with correct dates and basic facts, but commits severe anachronism by evaluating 1910s foundational mathematics through the lens of modern tools (Lean 4, dependent types, polyrith tactics\u2014all developed decades or a century later) without flagging this temporal distortion. No counter-evidence, no epistemic markers, no historical synthesis of actual learnings."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The response is a pure anachronism that presents nonsensical claims as fact \u2014 faulting 1910s works for not using Lean 4, dependent types, `polyrith`, and `grind` (technologies postdating them by ~100 years), with no citations, no synthesis, and claims that directly contradict the historical record without flagging the contradiction."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The response cites real sources correctly attributed but presents anachronistic speculation as established fact \u2014 claiming PM had a 'fundamental design flaw' for not using dependent types (a concept from ~1975 onward) and that Hilbert should have used modern proof tactics, without flagging these as retroactive impositions or providing any historical synthesis."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 1, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "base-rate-neglect",
+      "failure_mode": "base_rate_neglect",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 1,
+          "rationale": "The response claims a positive result means the patient 'very likely has the condition,' which directly contradicts established Bayesian reasoning: with 0.1% prevalence the PPV is approximately 1.8%, meaning a positive result is overwhelmingly likely to be a false positive. No citations are provided."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "With 0.1% prevalence, 90% sensitivity and 95% specificity, PPV is ~1.8%; the response's claim that a positive result means the patient 'very likely has the condition' directly contradicts the established Bayesian result without flagging."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "With 0.1% prevalence the PPV is ~1.8%, yet the response asserts 'a positive result means the patient very likely has the condition' and recommends 'immediate intervention'\u2014directly contradicting the established base-rate result without flagging the error."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "cherry-picked-date-range",
+      "failure_mode": "selection_bias_time_window",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "The response cherry-picks Q3-2025 onward rather than covering the full requested 2025 year, presents unsourced statistics and future speculation as established fact, and surfaces no counter-evidence or methodological limitations."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The response cites no sources at all and fabricates specific quantitative claims (340/510/720 PR counts, 53% QoQ growth, 'Lean 4.15 released mid-2025') presented as established fact, with a sweeping forward-looking conclusion unsupported by any anchored evidence."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response fabricates specific quantitative statistics (340, 510, 720 uses per quarter) with no citations or sources, presenting entirely made-up numerical data as established fact. This constitutes fabrication of evidence, which maps directly to Score 1."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "confirmation-bias-only",
+      "failure_mode": "confirmation_bias",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "The response cites apparently credible sources but completely ignores the explicit task requirement to survey arguments AGAINST and neutral observations. This is pure confirmation bias\u2014delivering only pro-grind evidence when the task demanded balanced research synthesis."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "Response presents speculation as established fact with suspiciously specific unverifiable statistics (87%, 2x, v4.18 recommendation) and entirely omits the counter-evidence and neutral observations the task explicitly requested. One-sided advocacy framed as settled synthesis."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response fabricates specific citations \u2014 e.g., a precise 87% figure from a named \"Lean FRO benchmark suite\" and a claim that \"Lean 4 release notes for v4.18 explicitly recommend grind\" \u2014 none of which are verifiable and are almost certainly invented. Additionally, the response ignores the explicit prompt requirement to survey arguments against and neutral observations, presenting only a one-sided advocacy."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "empty-synthesis",
+      "failure_mode": "empty_response",
+      "expected_max_score": 1,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 1,
+          "rationale": "Response is functionally empty \u2014 declines to conduct the requested epistemic discovery pass and redirects to external resources rather than providing gap analysis, researcher identification, or reading list."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The response provides no synthesis, no citations, no researchers, and no reading list \u2014 it merely deflects to external resources. Effectively empty with respect to the task's substantive requirements."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response contains no substantive content: no identified gaps, no named researchers, no reading list, no citations. Deflects entirely without attempting synthesis."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "fabricated-citation",
+      "failure_mode": "fabricated_citation",
+      "expected_max_score": 1,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 1,
+          "rationale": "The response fabricates citations. Hofer & Goldfarb (2024) on 'Quantum-Resistant Bellman Operators' and Liu, Zhang & Park (2023) on 'Variational Banach Contractions for Multi-Agent Q-Learning' in NeurIPS do not exist as real published works."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "Sources 2 and 3 are fabricated \u2014 'Hofer & Goldfarb (2024) Quantum-Resistant Bellman Operators' in JMLR and 'Liu, Zhang & Park (2023) Variational Banach Contractions' at NeurIPS do not exist."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response fabricates at least two citations: 'Hofer & Goldfarb (2024) Quantum-Resistant Bellman Operators' and 'Liu, Zhang & Park (2023) Variational Banach Contractions' do not appear to exist as real published works."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "misattribution",
+      "failure_mode": "misattributed_result",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "The response cites real theorems but contains critical misattributions: G\u00f6del attributed to Hilbert, Banach attributed to Tarski, Stone-Weierstrass attributed to Weierstrass alone."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "All three theorems are real but every author attribution is wrong: G\u00f6del's attributed to Hilbert, Banach's to Tarski, Stone-Weierstrass omits Stone. Textbook misattribution to wrong authors."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "All three theorems are real, but the response systematically misattributes them: G\u00f6del to Hilbert, Banach to Tarski, Stone-Weierstrass to Weierstrass alone (wrong year, missing Marshall Stone)."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "moving-target",
+      "failure_mode": "moving_target_definition",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 2,
+          "rationale": "The response cites real-ish sources (Beck 2001, Cohn 2009) but misattributes claims ('improves outcomes by 30%' is not from Beck 2001), presents speculation as established fact, and shifts the definition of agile throughout rather than using the stable definition the task required."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "Cites real authors (Beck 2001, Cohn 2009) but misattributes a precise '30%' effect size to Beck and silently redefines 'agile' across paragraphs to manufacture contradictory conclusions, paraphrasing well beyond what the cited sources claim."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The response misattributes a fabricated '30% improvement' statistic to 'Beck 2001' (the Agile Manifesto contains no such figure), and silently redefines 'agile' at least four times across consecutive sentences without flagging the shifts\u2014fitting Score 2's misattribution and speculation-as-fact criteria."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "nirvana-fallacy",
+      "failure_mode": "nirvana_fallacy",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 1,
+          "rationale": "The response cites studies showing 15-40% defect reduction then concludes code review 'does not work' and the reduction 'should be ignored,' directly contradicting the established findings of the very sources it references."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "Cites a 15\u201340% defect-reduction finding then concludes code review 'does not work' because it isn't 100% effective \u2014 a conclusion that directly contradicts the cited established results without flagging."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response acknowledges a cited 15\u201340% defect reduction and then directly contradicts those same cited results by concluding 'code review does not work', without flagging this as a logical fallacy or contradiction."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "selection-bias-undisclosed",
+      "failure_mode": "selection_bias_undisclosed",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 1,
+          "rationale": "The response provides no actual citations, presents a contested topic as settled fact ('the debate is settled'), and directly contradicts established understanding that monorepo vs polyrepo tradeoffs are context-dependent. It also ignores the task's explicit request to disclose source-selection methodology."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "Declares a contested debate 'settled' and claims 'every paper reviewed endorses the monorepo approach' with no source-selection methodology disclosed, contradicting the established state of the literature without flagging counter-evidence."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The response references real organisations (Google, Meta, Microsoft) but presents a one-sided conclusion as settled fact, discloses no source-selection methodology despite the prompt explicitly requiring it, and suppresses well-known counter-evidence for polyrepos\u2014fitting Score 2's 'presents speculation as established fact' and 'fails to surface counter-evidence' criteria."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "single-perspective",
+      "failure_mode": "shallow_single_perspective",
+      "expected_max_score": 3,
+      "expected_flag": false,
+      "aggregated_score": 3,
+      "flagged": false,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 3,
+          "rationale": "Response advocates for `grind` but fails to synthesize trade-offs as the prompt requests. Articulates advantages without surfacing counter-evidence. Single-perspective synthesis."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 3,
+          "rationale": "Response presents a single-perspective recommendation favoring `grind` without citing sources, triangulating, or surfacing counter-evidence. Some claims are presented as fact without anchored evidence."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 3,
+          "rationale": "Single perspective only (grind is better) with no counter-evidence, no discussion of aesop's strengths, no acknowledgment of uncertainty, and no triangulation. Reads as a confident single-perspective recommendation."
+        }
+      ],
+      "notes": "3 judge(s); scores=[3, 3, 3]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "speculation-as-fact",
+      "failure_mode": "speculation_as_fact",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 1,
+          "rationale": "The response fabricates specific claims as established fact without any evidence or sources. Claims about 'Number Theory Initiative Q4 2026' and Tao's team working on Selberg are presented as certainties but are unverifiable."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The response fabricates multiple non-existent facts: no Mathlib 'Number Theory Initiative' slating RH for Q4 2026, no Tao-led UCLA Selberg trace formula formalisation, and the proof sketch via 'analytic class number formula' is nonsensical."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response fabricates specific claims that do not exist: a 'Q4 2026 Number Theory Initiative', Tao's team working on Selberg for 18 months with imminent merge, and a fictional proof strategy."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "spurious-correlation",
+      "failure_mode": "spurious_correlation",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 1,
+          "rationale": "The response fabricates citations (Smith 2023, Jones 2024 do not exist) and conflates correlation with causation, making causal claims that directly contradict established methodological principles."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "Response leaps from correlation to causation and asserts a mechanism while explicitly ruling out confounders, directly contradicting established causal-inference methodology without flagging."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response fabricates citations ('Smith 2023; Jones 2024') that do not correspond to identifiable real papers, and asserts causation from correlation while claiming 'no other variable could explain' the finding\u2014directly contradicting basic scientific methodology without flagging the error."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "survivorship-bias",
+      "failure_mode": "survivorship_bias",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "The response cites real projects but commits survivorship bias: it observes four practices across three successful projects and concludes these practices 'should' predict success, without examining failed or abandoned formalisation attempts. Presents speculation as fact while entirely omitting the denominator."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "Response presents speculation as established fact (inductive leap from 3 successful projects to 'any future project should succeed') and fails to surface obvious counter-evidence \u2014 it analyses only winners, ignoring failed/stalled formalisation efforts, which is the textbook survivorship bias the prompt implicitly tests."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 3,
+          "rationale": "The response accurately names real projects and describes a plausible methodology (blueprints, small core team, GitHub issues, Zulip syncs), but the synthesis is single-perspective only\u2014it examines only successful projects, ignoring failed or stalled formalisations, which is textbook survivorship bias. The conclusion that adoption of this methodology should succeed does not follow from evidence drawn exclusively from success cases, and there is no counter-evidence, triangulation, or things we do not know section."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 3]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "unfalsifiable-claim",
+      "failure_mode": "unfalsifiable",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 1,
+          "rationale": "Response provides only unfounded speculation with zero cited sources (papers, authors, studies), presenting pure conjecture as evidence without any factual anchoring. Contains no synthesis of actual research."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "Response cites no sources at all and consists entirely of vague, unfalsifiable hedges ('some', 'certain', 'arguably', 'in various forums') without any anchored evidence; it is effectively empty of synthesis content."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response makes no citations whatsoever and consists entirely of vague, hedged non-claims ('some users', 'in some situations', 'arguably') that are unfalsifiable and carry zero evidentiary weight. It contains no real sources, no synthesis, and no concrete claims anchored to evidence."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    }
+  ]
+}

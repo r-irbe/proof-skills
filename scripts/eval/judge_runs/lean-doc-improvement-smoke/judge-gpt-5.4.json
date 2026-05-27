@@ -1,20 +1,23 @@
 {
-  "score": 3,
-  "rationale": "2-judge median (opus=4, sonnet=2): R21 B1 ensemble aggregation.",
+  "score": 2,
+  "rationale": "3-judge median (scores=[4, 2, 2]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
   "rubric_evidence": [
     "opus_R20: The response delivers a concrete sync edit with a specific file path, enumerates the four updated locations, and cites a...",
-    "sonnet_R21: Doc artifact exists and the count sync is verified with a concrete shell command, but the response omits all mandatory s..."
+    "sonnet_R21: Doc artifact exists and the count sync is verified with a concrete shell command, but the response omits all mandatory s...",
+    "opus_R22: Response produces a brief update note but completely omits the mandatory specification structure (no acceptance criteria, no invariants, no test conditions) req..."
   ],
   "ensemble_meta": {
-    "round": "R21",
+    "round": "R22",
     "round_b": "B1",
-    "method": "median-of-2",
+    "method": "median-of-3",
     "judges": [
       "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21"
+      "claude-sonnet-4.6@R21",
+      "claude-opus-4.6@R22"
     ],
     "scores": [
       4,
+      2,
       2
     ]
   }

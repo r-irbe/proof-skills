@@ -1,0 +1,9 @@
+{
+  "score": 1,
+  "rationale": "The response asserts causation from a single observational correlation ('clear causal effect') with zero caveats, ignores obvious confounders such as selection bias, and recommends an irreversible 1,200-engineer mandate with 'No further analysis is needed'\u2014a high-stakes claim presented with no source or uncertainty.",
+  "rubric_evidence": [
+    "The 12% bug-reduction is a clear causal effect of the tool's superior static analysis",
+    "No further analysis is needed \u2014 roll it out to all 1200 engineers within Q1",
+    "you will see a 12% bug reduction company-wide"
+  ]
+}

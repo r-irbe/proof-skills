@@ -1,20 +1,23 @@
 {
   "score": 4,
-  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "rationale": "3-judge median (scores=[3, 4, 4]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
   "rubric_evidence": [
     "opus_R20: Correct standard Lyapunov-stability argument with a textbook example, but it lacks an explicit assumption ledger, calibr...",
-    "sonnet_R21: The response gives a correct, well-structured proof of Lyapunov stability with proper definitions, the key invariance ar..."
+    "sonnet_R21: The response gives a correct, well-structured proof of Lyapunov stability with proper definitions, the key invariance ar...",
+    "opus_R22: Multi-factor analysis covering stability, asymptotic stability, and global stability with explicit assumptions, a worked example, and clear logical progression;..."
   ],
   "ensemble_meta": {
-    "round": "R21",
+    "round": "R22",
     "round_b": "B1",
-    "method": "median-of-2",
+    "method": "median-of-3",
     "judges": [
       "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21"
+      "claude-sonnet-4.6@R21",
+      "claude-opus-4.6@R22"
     ],
     "scores": [
       3,
+      4,
       4
     ]
   }

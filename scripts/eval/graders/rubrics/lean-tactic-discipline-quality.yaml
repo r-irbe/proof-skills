@@ -1,0 +1,57 @@
+---
+name: lean-tactic-discipline-quality
+scale: [1, 2, 3, 4, 5]
+description: |
+  Score the tactic discipline of a Lean 4 / Mathlib proof artifact.
+  Focuses on whether the proof is production-grade, robust to Mathlib
+  pin drift, and free of search/discovery shortcuts.
+
+  Applies to the lean-tactic / lean-proof clusters when the rubric
+  needs to differentiate proof STYLE from proof CORRECTNESS.
+
+  Apply rubric LITERALLY. Don't invent intermediate scores. Don't
+  reward cleverness that sacrifices robustness.
+
+definitions:
+  1: |
+    Proof uses `sorry`, `admit`, OR `native_decide` without any
+    justification comment, OR is syntactically broken / empty.
+  2: |
+    Proof type-checks but uses a banned discovery tactic in production
+    code (`exact?`, `apply?`, `aesop?`, `decide?`, `omega?`,
+    `polyrith?`, `hint`), OR invokes `decide` on a finite-but-large
+    domain (`Fin n` with n ≥ 1000, `List` length ≥ 100), OR uses
+    general recursion without a `termination_by` / `decreasing_by`
+    clause when Lean's auto-inference will fail.
+  3: |
+    Proof works but relies on fragile heuristics: `omega` on goals
+    with `Nat.div` / `Nat.mod` (works at current pin but undefined
+    behaviour), `polyrith` over a weakly-typed field, `simp` with no
+    lemma list when a targeted call would be clearer, OR uses
+    `tauto` / `aesop` as a first-line tactic on a non-trivial goal.
+    Goal-state narration is missing or sparse.
+  4: |
+    Proof is clean: discovery tactics absent, robust tactic choices,
+    `simp only [...]` instead of bare `simp`, explicit lemma names
+    in `apply` / `exact`. Minor style issues only (e.g. one missing
+    goal comment).
+  5: |
+    Proof is exemplary: one-step where possible, explicit goal
+    narration before each non-trivial tactic, robust to Mathlib pin
+    drift, no `decide` on large domains, no `native_decide` without
+    a justification comment block, recursion fully annotated with
+    `termination_by` + `decreasing_by` where needed.
+
+bias_mitigations:
+  - identity_strip: true
+  - per_response_judging: true
+
+aggregation:
+  method: median
+  pass_floor: 4
+
+provenance: |
+  R22 (Round 22) — new rubric introduced 2026-05-27 to give the
+  calibration corpus a finer hook on tactic-discipline failures,
+  complementing the existing `lean-proof-quality` rubric (which
+  scores proof CORRECTNESS).

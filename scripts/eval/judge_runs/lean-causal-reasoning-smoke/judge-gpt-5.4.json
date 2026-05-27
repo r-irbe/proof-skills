@@ -1,19 +1,22 @@
 {
   "score": 1,
-  "rationale": "2-judge median (opus=1, sonnet=1): R21 B1 ensemble aggregation.",
+  "rationale": "3-judge median (scores=[1, 1, 1]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
   "rubric_evidence": [
     "opus_R20: The response contains no actual Lean proof code, only prose with two inline theorem statement examples and no proof term...",
-    "sonnet_R21: The response contains no actual Lean code whatsoever, only prose description of what Lean code would look like...."
+    "sonnet_R21: The response contains no actual Lean code whatsoever, only prose description of what Lean code would look like....",
+    "opus_R22: Response fails to produce any Lean code; it is a purely prose discussion of causal versus correlational claims with pseudo-notation but no actual Lean syntax...."
   ],
   "ensemble_meta": {
-    "round": "R21",
+    "round": "R22",
     "round_b": "B1",
-    "method": "median-of-2",
+    "method": "median-of-3",
     "judges": [
       "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21"
+      "claude-sonnet-4.6@R21",
+      "claude-opus-4.6@R22"
     ],
     "scores": [
+      1,
       1,
       1
     ]

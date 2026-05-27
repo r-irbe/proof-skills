@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "Response is a single PR title string with no Lean code whatsoever.", "rubric_evidence": ["Response fails to produce any Lean code", "[Mathlib.Algebra.Group.Basic] Add lemma `your_lemma_name`"]}

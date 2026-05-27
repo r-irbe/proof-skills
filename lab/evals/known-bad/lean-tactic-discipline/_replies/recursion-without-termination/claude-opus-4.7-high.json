@@ -1,0 +1,7 @@
+{
+  "score": 2,
+  "rationale": "General recursion on `collatz_steps` without any `termination_by` / `decreasing_by` clause where Lean's auto-inference will fail (Collatz termination is unproven), matching Score 2.",
+  "rubric_evidence": [
+    "| n => if n % 2 = 0 then 1 + collatz_steps (n / 2)\n                       else 1 + collatz_steps (3 * n + 1)"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "score": 2,
+  "rationale": "The doc exists and has examples but entirely omits the mandatory spec structure (no Goals/Non-Goals, no Invariants, no Acceptance Criteria, no Test Conditions, no STOP/Handoffs section) explicitly required by the task.",
+  "rubric_evidence": [
+    "## Approach",
+    "## Required Lemmas",
+    "## Expected Build Time"
+  ]
+}

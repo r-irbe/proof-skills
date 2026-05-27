@@ -1,0 +1,1 @@
+{"score": 2, "rationale": "The task explicitly requires STOP conditions and a Handoffs section, both of which are entirely absent. The response also omits mandatory specification structure: no invariants, no acceptance criteria, no test conditions.", "rubric_evidence": ["## Goals", "## Approach", "## Examples", "## Required Lemmas", "## Expected Build Time"]}

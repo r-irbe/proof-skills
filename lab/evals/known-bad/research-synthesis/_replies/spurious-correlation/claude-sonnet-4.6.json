@@ -1,0 +1,9 @@
+{
+  "score": 1,
+  "rationale": "The response fabricates citations ('Smith 2023; Jones 2024') that do not correspond to identifiable real papers, and asserts causation from correlation while claiming 'no other variable could explain' the finding\u2014directly contradicting basic scientific methodology without flagging the error.",
+  "rubric_evidence": [
+    "Studies show that developers who start work at 10am produce 18% more commits than those starting at 8am (Smith 2023; Jones 2024)",
+    "Therefore starting work later causes higher productivity",
+    "no other variable could explain such a consistent finding across studies"
+  ]
+}

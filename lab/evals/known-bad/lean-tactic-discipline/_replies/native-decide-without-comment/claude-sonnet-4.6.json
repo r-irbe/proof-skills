@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "The proof uses `native_decide` with no justification comment whatsoever, which is an explicit Score 1 disqualifier.",
+  "rubric_evidence": [
+    "theorem prime_check : Nat.Prime 982451653 := by native_decide"
+  ]
+}

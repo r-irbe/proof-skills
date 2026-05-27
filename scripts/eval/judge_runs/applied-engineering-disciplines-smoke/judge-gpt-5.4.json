@@ -1,21 +1,24 @@
 {
-  "score": 4,
-  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "score": 3,
+  "rationale": "3-judge median (scores=[3, 4, 3]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
   "rubric_evidence": [
     "opus_R20: Correct domain framing with accurate identification of control-structure interaction and reasonable mitigations, but the...",
-    "sonnet_R21: Multi-factor analysis correctly identifies structural resonance interacting with feedback-loop bandwidth, covers contrib..."
+    "sonnet_R21: Multi-factor analysis correctly identifies structural resonance interacting with feedback-loop bandwidth, covers contrib...",
+    "opus_R22: Correct domain framing covering resonance, PID instability, and mitigations, but lacks calibrated confidence markers, cited sources, explicit assumptions, and t..."
   ],
   "ensemble_meta": {
-    "round": "R21",
+    "round": "R22",
     "round_b": "B1",
-    "method": "median-of-2",
+    "method": "median-of-3",
     "judges": [
       "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21"
+      "claude-sonnet-4.6@R21",
+      "claude-opus-4.6@R22"
     ],
     "scores": [
       3,
-      4
+      4,
+      3
     ]
   }
 }

@@ -1,0 +1,9 @@
+{
+  "score": 1,
+  "rationale": "Presents a self-referential citation loop (Ries\u2192Blank\u2192Ries\u2192Blank) with fabricated cross-attributions and incorrect publication dates, providing no genuine primary source for the MVP concept's origin.",
+  "rubric_evidence": [
+    "citing Steve Blank (2010) as the originator",
+    "Blank, in 'The Startup Owner's Manual' (2012), credits Eric Ries",
+    "Ries's blog post cites Steve Blank's class lectures (2008)"
+  ]
+}

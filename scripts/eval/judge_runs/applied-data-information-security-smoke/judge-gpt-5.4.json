@@ -1,20 +1,23 @@
 {
   "score": 4,
-  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "rationale": "3-judge median (scores=[3, 4, 4]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
   "rubric_evidence": [
     "opus_R20: Correct CIA and GDPR framing with sensible reasoning, but the analysis is shallow with no calibrated confidence markers,...",
-    "sonnet_R21: Multi-factor CIA analysis with sound GDPR framing and trade-off reasoning, but lacks an explicit assumption ledger, cali..."
+    "sonnet_R21: Multi-factor CIA analysis with sound GDPR framing and trade-off reasoning, but lacks an explicit assumption ledger, cali...",
+    "opus_R22: Multi-factor CIA classification with justified ratings, correct GDPR framing including Article 9 consideration, and hedged confidence language; minor gap in not..."
   ],
   "ensemble_meta": {
-    "round": "R21",
+    "round": "R22",
     "round_b": "B1",
-    "method": "median-of-2",
+    "method": "median-of-3",
     "judges": [
       "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21"
+      "claude-sonnet-4.6@R21",
+      "claude-opus-4.6@R22"
     ],
     "scores": [
       3,
+      4,
       4
     ]
   }

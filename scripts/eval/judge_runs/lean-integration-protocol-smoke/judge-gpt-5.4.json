@@ -1,19 +1,22 @@
 {
   "score": 1,
-  "rationale": "2-judge median (opus=1, sonnet=1): R21 B1 ensemble aggregation.",
+  "rationale": "3-judge median (scores=[1, 1, 1]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
   "rubric_evidence": [
     "opus_R20: The response contains only prose describing a bridge contract and produces no Lean code at all, which the rubric defines...",
-    "sonnet_R21: The response contains no Lean code whatsoever\u2014only English prose describing a module contract\u2014which satisfies the rubric..."
+    "sonnet_R21: The response contains no Lean code whatsoever\u2014only English prose describing a module contract\u2014which satisfies the rubric...",
+    "opus_R22: Response fails to produce any Lean code; it is entirely a prose description of a module contract with theorem names mentioned but no actual Lean syntax...."
   ],
   "ensemble_meta": {
-    "round": "R21",
+    "round": "R22",
     "round_b": "B1",
-    "method": "median-of-2",
+    "method": "median-of-3",
     "judges": [
       "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21"
+      "claude-sonnet-4.6@R21",
+      "claude-opus-4.6@R22"
     ],
     "scores": [
+      1,
       1,
       1
     ]

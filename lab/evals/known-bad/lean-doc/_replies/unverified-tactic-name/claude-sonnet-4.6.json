@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "The response cites tactics (`cases!`, `obtain?`, `rcases!`, `match?`) as standard Mathlib catalogue entries without `#check`-style verification, and several of these (e.g., `cases!`, `obtain?`, `match?`) do not exist in the current Mathlib pin.",
+  "rubric_evidence": [
+    "`cases!` \u2014 exhaustive case split with hypothesis generalisation.",
+    "`obtain?` \u2014 interactive obtain suggestion for the current goal.",
+    "`match?` \u2014 produces a match-expression skeleton from goal type.",
+    "All four are part of the standard Mathlib tactic catalogue and are documented in `Mathlib.Tactic.Cases`."
+  ]
+}

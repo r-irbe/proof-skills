@@ -1,19 +1,22 @@
 {
   "score": 3,
-  "rationale": "2-judge median (opus=3, sonnet=3): R21 B1 ensemble aggregation.",
+  "rationale": "3-judge median (scores=[3, 3, 3]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
   "rubric_evidence": [
     "opus_R20: Correct mathematical statement of linearity of conditional expectation with proper integrability and almost-sure qualifi...",
-    "sonnet_R21: The response correctly states the linearity property with the a.s. qualifier and finite-sum generalization, but is shall..."
+    "sonnet_R21: The response correctly states the linearity property with the a.s. qualifier and finite-sum generalization, but is shall...",
+    "opus_R22: Correctly states the linearity property with integrability conditions and finite-sum extension, but the analysis is shallow with no discussion of when integrabi..."
   ],
   "ensemble_meta": {
-    "round": "R21",
+    "round": "R22",
     "round_b": "B1",
-    "method": "median-of-2",
+    "method": "median-of-3",
     "judges": [
       "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21"
+      "claude-sonnet-4.6@R21",
+      "claude-opus-4.6@R22"
     ],
     "scores": [
+      3,
       3,
       3
     ]

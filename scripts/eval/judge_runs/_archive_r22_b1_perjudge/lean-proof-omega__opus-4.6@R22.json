@@ -1,0 +1,1 @@
+{"score": 4, "rationale": "Minimal, correct proof using intro and exact with no banned tactics or sorry, but lacks goal-state narration between steps required for a perfect score.", "rubric_evidence": ["intro n", "exact Nat.add_zero n", "∀ n : ℕ, n + 0 = n"]}

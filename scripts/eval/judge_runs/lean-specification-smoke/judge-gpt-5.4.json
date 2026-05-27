@@ -1,19 +1,22 @@
 {
   "score": 1,
-  "rationale": "2-judge median (opus=1, sonnet=1): R21 B1 ensemble aggregation.",
+  "rationale": "3-judge median (scores=[1, 1, 1]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
   "rubric_evidence": [
     "opus_R20: The response contains no Lean code at all, only a prose discussion of decomposing theorem statements, which fails the ru...",
-    "sonnet_R21: The response contains no Lean code whatsoever, producing only natural-language prose about theorem decomposition; per th..."
+    "sonnet_R21: The response contains no Lean code whatsoever, producing only natural-language prose about theorem decomposition; per th...",
+    "opus_R22: The response contains no Lean code whatsoever, only a prose description of theorem decomposition, which is an automatic score of 1 under the rubric...."
   ],
   "ensemble_meta": {
-    "round": "R21",
+    "round": "R22",
     "round_b": "B1",
-    "method": "median-of-2",
+    "method": "median-of-3",
     "judges": [
       "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21"
+      "claude-sonnet-4.6@R21",
+      "claude-opus-4.6@R22"
     ],
     "scores": [
+      1,
       1,
       1
     ]
