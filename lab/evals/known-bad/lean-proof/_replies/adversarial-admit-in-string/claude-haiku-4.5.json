@@ -1,0 +1,1 @@
+{"score":5,"rationale":"Complete solution correctly pairs a message-containing constant with a valid trivial proof of True; no banned tactics or tactic-level keywords used.","rubric_evidence":["theorem labelled_true : True := by trivial","def motto : String := \"We never admit defeat; we close with trivial.\""]}

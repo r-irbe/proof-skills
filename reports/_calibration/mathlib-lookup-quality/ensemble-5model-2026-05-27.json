@@ -1,0 +1,206 @@
+{
+  "rubric": "mathlib-lookup-quality",
+  "skill": "mathlib-lookup",
+  "floor": 2,
+  "pass_floor": 4,
+  "min_flag_rate": 0.9,
+  "max_false_flag_rate": 1.0,
+  "total_transcripts": 5,
+  "judged_transcripts": 5,
+  "negatives_total": 5,
+  "negatives_judged": 5,
+  "negatives_flagged": 5,
+  "flag_rate": 1.0,
+  "positives_total": 0,
+  "positives_judged": 0,
+  "positives_flagged": 0,
+  "false_flag_rate": 0.0,
+  "flagged": 5,
+  "per_transcript": [
+    {
+      "task_id": "lookup-coq-name",
+      "failure_mode": "wrong_library",
+      "expected_max_score": 1,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 1,
+          "rationale": "Lemma name is fabricated and does not exist in Mathlib; signature incorrectly uses Cardinal.mk instead of Finset.card operation."
+        },
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 1,
+          "rationale": "The lemma `Finset.cardinal_union_le_addition` is fabricated and does not exist in Mathlib. The correct lemma is `Finset.card_union_le`."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The lemma `Finset.cardinal_union_le_addition` is fabricated; the real Mathlib lemma is `Finset.card_union_le` with a `Nat` signature, not `Cardinal.mk`."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The lemma `Finset.cardinal_union_le_addition` does not exist in Mathlib; the correct lemma is `Finset.card_union_le` with signature `(s t : Finset \u03b1) : (s \u222a t).card \u2264 s.card + t.card`. This is a fabricated declaration."
+        },
+        {
+          "judge_id": "gpt-5.2",
+          "score": 1,
+          "rationale": "The proposed lemma name is fabricated and the signature is not a standard Mathlib Finset card bound (it mixes `Finset`/`Set` and `Cardinal.mk`). The correct result is usually stated with `Finset.card` (e.g. `card_union_le`) rather than `Cardinal.mk`."
+        }
+      ],
+      "notes": "5 judge(s); scores=[1, 1, 1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "lookup-empty-response",
+      "failure_mode": "empty_response",
+      "expected_max_score": 1,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 1,
+          "rationale": "Response fails to name any specific lemma despite explicit request. Provides only generic commentary without the requested lemma name or type signature."
+        },
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 1,
+          "rationale": "The response provides no lemma name at all, only vague commentary about cardinality lemmas existing in Mathlib."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "Response provides no lemma name, only vague commentary about Mathlib containing such lemmas."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "No lemma name is provided at all; the response only vaguely acknowledges such a lemma exists without naming it or showing a type signature."
+        },
+        {
+          "judge_id": "gpt-5.2",
+          "score": 1,
+          "rationale": "No Mathlib lemma name or type signature is given; the response is generic and suggests proving it instead of citing the lemma."
+        }
+      ],
+      "notes": "5 judge(s); scores=[1, 1, 1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "lookup-fabricated-lemma",
+      "failure_mode": "fabricated_name",
+      "expected_max_score": 1,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 1,
+          "rationale": "Lemma is fabricated; `Finset.card_disjoint_union_le` does not exist in Mathlib. The correct lemma is `Finset.card_union_le`."
+        },
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 1,
+          "rationale": "The lemma `Finset.card_disjoint_union_le` does not exist in Mathlib. The response fabricates a lemma name and a fake proof; the real lemma is `Finset.card_union_le`."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The cited lemma `Finset.card_disjoint_union_le` is fabricated; Mathlib provides `Finset.card_union_le` for the inequality, and the proof shown is nonsensical."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The cited lemma `Finset.card_disjoint_union_le` does not exist in Mathlib; the real lemmas are `Finset.card_union_le` (for the general bound) and `Finset.card_union_of_disjoint` (for the disjoint equality case). The response fabricates both the name and a nonsensical proof."
+        },
+        {
+          "judge_id": "gpt-5.2",
+          "score": 1,
+          "rationale": "The proposed lemma name is fabricated (not in Mathlib) and the proof applies a different lemma with an incompatible statement. The file/path claim is therefore unreliable."
+        }
+      ],
+      "notes": "5 judge(s); scores=[1, 1, 1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "lookup-wrong-namespace",
+      "failure_mode": "wrong_namespace",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "Response provides type signature but uses wrong namespace. Rubric's score-2 anchor literally cites `Set.card_union_le` as incorrect; correct lemma is `Finset.card_union_le`."
+        },
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 2,
+          "rationale": "The response gives `Set.card_union_le` which is the exact wrong-namespace example cited in the rubric. The correct lemma is `Finset.card_union_le`."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "Cites Set.card_union_le, which is the wrong namespace; Finset.card_union_le is the lemma bounding (s \u222a t).card by s.card + t.card, and Sets use ncard, not card."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The response gives `Set.card_union_le` which is exactly the wrong-namespace example cited in the rubric; the correct lemma for `Finset.card` is `Finset.card_union_le`."
+        },
+        {
+          "judge_id": "gpt-5.2",
+          "score": 2,
+          "rationale": "This is the right inequality but the provided lemma name/namespace/signature are not correct as stated; mathlib has this for `Finset` (and related `Fintype`/`Set.Finite` contexts), not a bare `Set` with `.card`."
+        }
+      ],
+      "notes": "5 judge(s); scores=[2, 2, 2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "lookup-wrong-signature",
+      "failure_mode": "wrong_signature",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "Correct lemma name and namespace, but type signature is wrong. The response invented a `Disjoint` hypothesis that doesn't exist in Mathlib; the actual inequality holds unconditionally."
+        },
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 2,
+          "rationale": "The lemma name `Finset.card_union_le` is correct, but the type signature is wrong: the real lemma has no `Disjoint` hypothesis. Adding a fabricated argument makes the signature incorrect."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "Correct lemma name and namespace but invented an extra `Disjoint` hypothesis; actual `Finset.card_union_le` holds unconditionally."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The lemma name `Finset.card_union_le` is correct, but the response invented a `Disjoint` hypothesis that does not exist in the real Mathlib signature."
+        },
+        {
+          "judge_id": "gpt-5.2",
+          "score": 2,
+          "rationale": "Lemma name/namespace is real, but the provided signature is wrong because the inequality holds without a Disjoint hypothesis; adding it is an invented extra argument."
+        }
+      ],
+      "notes": "5 judge(s); scores=[2, 2, 2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    }
+  ]
+}

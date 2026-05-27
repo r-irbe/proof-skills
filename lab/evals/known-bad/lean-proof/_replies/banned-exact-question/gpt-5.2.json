@@ -1,0 +1,1 @@
+{"score":2,"rationale":"The proof parses but relies on banned search: `exact?` automatically finds `Nat.add_comm` rather than constructing a step-by-step tactic methodology. This violates the rubric even though it closes in Mathlib.","rubric_evidence":["exact?"]}

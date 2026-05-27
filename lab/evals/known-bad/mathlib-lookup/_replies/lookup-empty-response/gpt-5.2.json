@@ -1,0 +1,1 @@
+{"score":1,"rationale":"No Mathlib lemma name or type signature is given; the response is generic and suggests proving it instead of citing the lemma.","rubric_evidence":["There are many lemmas in Mathlib about cardinality of unions of finite sets.","The bound you want is standard and provable from inclusion-exclusion."]}

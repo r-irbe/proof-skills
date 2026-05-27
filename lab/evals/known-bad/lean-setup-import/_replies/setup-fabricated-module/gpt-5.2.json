@@ -1,0 +1,1 @@
+{"score":2,"rationale":"The code parses as Lean but the import is invalid because `Mathlib.AllTheThings` is a fabricated module, so it will not pull in Mathlib.","rubric_evidence":["Note: `Mathlib.AllTheThings` does not exist in Mathlib."]}

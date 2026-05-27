@@ -1,0 +1,1 @@
+{"score":2,"rationale":"Uses banned search tactic `exact?` which directly finds and applies `Nat.add_comm`, violating the no-search requirement and task constraint to prove commutativity without appealing to it.","rubric_evidence":["exact?","Works because Mathlib has `Nat.add_comm` registered and `exact?` finds it"]}

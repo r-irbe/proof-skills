@@ -1,0 +1,1 @@
+{"score":5,"rationale":"Bare `decide` on concrete decidable proposition is correct kernel evaluation, not banned search pattern. Single-step minimal proof.","rubric_evidence":["A bare `decide` on a concrete decidable proposition like `7 ∣ 21` is a legitimate one-step kernel evaluation, not a search."]}

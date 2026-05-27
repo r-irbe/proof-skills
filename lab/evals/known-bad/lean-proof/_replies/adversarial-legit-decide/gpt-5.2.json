@@ -1,0 +1,1 @@
+{"score":5,"rationale":"Valid: `7 ∣ 21` is a closed decidable proposition, so `decide` reduces by kernel computation and is not used as brute-force search. Single-step proof is concise and correct.","rubric_evidence":["example : 7 ∣ 21 := by\n  decide"]}

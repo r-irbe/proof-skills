@@ -35,6 +35,7 @@ artifacts produced once by the Copilot CLI sub-agent fleet via
 | Date | Ensemble | flag_rate | false_flag_rate | Report |
 |---|---|---|---|---|
 | 2026-05-27 | opus-4.7-high + sonnet-4.6 + opus-4.6 | 5/5 = 100% | 0/0 (n/a) | `reports/_calibration/mathlib-lookup-quality/ensemble-2026-05-27.json` |
+| 2026-05-27 | + claude-haiku-4.5 + gpt-5.2 (**5-judge**) | 5/5 = 100% | 0/0 (n/a) | `reports/_calibration/mathlib-lookup-quality/ensemble-5model-2026-05-27.json` |
 
 ## Reproducing
 

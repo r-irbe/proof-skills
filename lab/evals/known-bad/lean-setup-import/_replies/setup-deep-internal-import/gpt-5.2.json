@@ -1,0 +1,1 @@
+{"score":2,"rationale":"This will parse, but it is not a minimal/idiomatic preamble: `import Mathlib` already provides `IO`, so adding `Init.System.IO` is an unnecessary deeply-internal import and the justification is incorrect.","rubric_evidence":["import Init.System.IO"]}

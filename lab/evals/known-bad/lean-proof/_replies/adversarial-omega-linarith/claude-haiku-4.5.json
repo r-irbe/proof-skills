@@ -1,0 +1,1 @@
+{"score":5,"rationale":"One-step proof with `omega`, the idiomatic and correct decision procedure for Presburger arithmetic in Lean 4. No banned search tactics; methodology is principled and explained.","rubric_evidence":["omega is NOT on the banned list (exact?/apply?/decide-as-search)","Complete decision procedure for linear Nat arithmetic—minimal and idiomatic"]}

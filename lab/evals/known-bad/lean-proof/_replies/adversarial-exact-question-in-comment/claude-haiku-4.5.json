@@ -1,0 +1,1 @@
+{"score":4,"rationale":"Final proof code contains no banned search tactics; uses `exact Nat.add_zero n` directly. Methodology correctly distinguishes exploration (`exact?` in REPL) from shipped proof (explicit lemma application).","rubric_evidence":["exact Nat.add_zero n","No banned search (`exact?`/`apply?`/`decide`-as-search) IN THE PROOF CODE"]}

@@ -1,0 +1,1 @@
+{"score":1,"rationale":"Response contains `sorry` in setup block, violating rubric criterion 1. Task requires actual Mathlib import, not placeholder.","rubric_evidence":["import sorry  -- TODO: fill in module name"]}

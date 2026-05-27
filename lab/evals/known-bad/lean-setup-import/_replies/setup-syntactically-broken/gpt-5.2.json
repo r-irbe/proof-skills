@@ -1,0 +1,1 @@
+{"score":1,"rationale":"The code is syntactically invalid in Lean 4: `Import` must be `import`, `Mathlib::` is not valid, and `open : Nat` is invalid syntax. It therefore fails to parse and does not import Mathlib.","rubric_evidence":["Import Mathlib::","open : Nat"]}

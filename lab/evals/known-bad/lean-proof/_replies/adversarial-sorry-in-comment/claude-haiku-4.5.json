@@ -1,0 +1,1 @@
+{"score":5,"rationale":"Proof minimally closes via one idiomatic tactic (`exact Nat.add_zero n`), directly applies Mathlib lemma with no `sorry`/`admit`, and narration confirms proof-skill one-step methodology.","rubric_evidence":["exact Nat.add_zero n","one `exact` closes; no banned, no `sorry`, single line"]}

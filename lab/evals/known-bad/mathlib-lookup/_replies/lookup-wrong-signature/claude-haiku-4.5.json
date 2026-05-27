@@ -1,0 +1,1 @@
+{"score":2,"rationale":"Correct lemma name and namespace, but type signature is wrong. The response invented a `Disjoint` hypothesis that doesn't exist in Mathlib; the actual inequality holds unconditionally.","rubric_evidence":["Real lemma but WRONG TYPE SIGNATURE (invented extra hypothesis)","real signature has NO `Disjoint` hypothesis","The response invented the extra arg"]}

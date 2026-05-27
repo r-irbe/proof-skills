@@ -1,0 +1,1 @@
+{"score":1,"rationale":"Second theorem definition contains syntax errors: unmatched parenthesis and stray dot in `Nat.add_succ 1 0 . trans (by rfl`, causing parse-time rejection.","rubric_evidence":["Nat.add_succ 1 0 . trans (by rfl","Two definitions, second has unmatched paren and stray `.`. Lean rejects at parse time."]}

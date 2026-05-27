@@ -1,0 +1,1 @@
+{"score":1,"rationale":"Response uses `sorry` in base case, violating explicit task requirement (no sorry/admit) and matching rubric criterion for score 1. Succ case structure is reasonable but incomplete proof disqualifies it.","rubric_evidence":["| zero => sorry"]}

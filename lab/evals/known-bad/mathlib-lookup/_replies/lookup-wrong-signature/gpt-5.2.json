@@ -1,0 +1,1 @@
+{"score":2,"rationale":"Lemma name/namespace is real, but the provided signature is wrong because the inequality holds without a Disjoint hypothesis; adding it is an invented extra argument.","rubric_evidence":["real signature has NO `Disjoint` hypothesis (inequality holds unconditionally). The response invented the extra arg."]}

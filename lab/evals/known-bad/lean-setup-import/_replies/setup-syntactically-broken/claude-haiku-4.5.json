@@ -1,0 +1,1 @@
+{"score":1,"rationale":"Response contains syntactically broken code; Lean 4 uses `import Mathlib` not `Import Mathlib::`. The `open : Nat` line is invalid syntax.","rubric_evidence":["Import Mathlib::","open : Nat"]}

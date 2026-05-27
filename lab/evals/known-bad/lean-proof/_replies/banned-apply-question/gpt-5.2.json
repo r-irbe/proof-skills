@@ -1,0 +1,1 @@
+{"score":2,"rationale":"Uses banned search tactic `apply?`, which scans the library rather than providing a direct proof term/tactic. Should instead use `exact Nat.zero_le _` or `simpa using Nat.zero_le xs.length`.","rubric_evidence":["apply?","`apply?` will scan the library and find `Nat.zero_le`."]}

@@ -1,0 +1,1 @@
+{"score":1,"rationale":"The setup block contains `sorry` in the import, so it is explicitly broken per the rubric. It also fails to provide the actual Mathlib module name.","rubric_evidence":["import sorry  -- TODO: fill in module name"]}

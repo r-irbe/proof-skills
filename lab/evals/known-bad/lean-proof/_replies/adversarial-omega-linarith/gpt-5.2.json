@@ -1,0 +1,1 @@
+{"score":5,"rationale":"Single-step proof using a complete Presburger decision procedure; justification explains fragment, tactic choice, and non-banned status.","rubric_evidence":["theorem add_three_gt (n : Nat) : n + 3 > n := by\n  omega","omega is Lean 4's complete decision procedure for linear integer/Nat arithmetic."]}

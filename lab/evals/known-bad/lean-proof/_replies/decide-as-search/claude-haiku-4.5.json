@@ -1,0 +1,1 @@
+{"score":2,"rationale":"Uses `decide`-as-search to brute-force over case split created by `interval_cases`, matching the BANNED SEARCH pattern explicitly prohibited at rubric level 2.","rubric_evidence":["interval_cases n <;> decide"]}

@@ -106,6 +106,7 @@ proofs that exercise judge discrimination:
 |---|---|---|---|---|
 | 2026-05-27 | opus-4.7-high + sonnet-4.6 + opus-4.6 | 7/7 = 100% | n/a (no positives yet) | `reports/_calibration/lean-proof-quality/ensemble-2026-05-27.json` |
 | 2026-05-27 | (same fleet, w/ adversarial pos) | 7/7 = 100% | 1/5 = **20%** | `reports/_calibration/lean-proof-quality/ensemble-adv-2026-05-27.json` |
+| 2026-05-27 | + claude-haiku-4.5 + gpt-5.2 (**5-judge**) | 7/7 = 100% | 1/5 = **20%** | `reports/_calibration/lean-proof-quality/ensemble-5model-2026-05-27.json` |
 
 ### Findings from the 2026-05-27 adversarial pass
 
@@ -125,6 +126,22 @@ proofs that exercise judge discrimination:
      veto is outvoted (cf. follow-on C of the eleventh-pass plan).
   3. **Aggregation tweak**: switch to "veto-iff-majority-low" instead
      of "any-low + any-high → take min(low)".
+
+### Findings from the 2026-05-27 5-judge ensemble pass
+
+Added `claude-haiku-4.5` + `gpt-5.2` as judges 4 + 5 (both scored
+`5` on `adversarial-legit-decide`). Aggregate is unchanged: the
+single sonnet-4.6 veto still propagates because the minority-veto
+rule is `min(low)` — any judge scoring ≤ floor flags the case
+regardless of how many judges score high.
+
+**The 5-judge ensemble vindicates the knob ranking above**: scale
+alone (knob 2) does not move the false-flag rate. The remaining
+1/5 false positive on adv-decide can only be eliminated by knob 1
+(rubric clarification) or knob 3 (aggregation change — e.g.
+`k-of-n veto` where k ≥ 2 judges must score low before flagging).
+Scale is still useful for **recall** robustness on the negatives,
+where the 5-judge ensemble preserves 100 % flagging.
 * For the other four adversarial cases (`sorry`-in-comment, `exact?`-in-comment,
   `omega`, `admit`-in-string) **all three judges correctly returned ≥ 4** — the
   ensemble is not fragile in general, only on the `decide` edge case.

@@ -1,0 +1,1 @@
+{"score":2,"rationale":"This is a brute-force proof: it splits into 1001 cases with `interval_cases` and then uses `decide` to discharge each, which matches the rubric's banned 'decide-as-search' pattern.","rubric_evidence":["interval_cases n <;> decide"]}

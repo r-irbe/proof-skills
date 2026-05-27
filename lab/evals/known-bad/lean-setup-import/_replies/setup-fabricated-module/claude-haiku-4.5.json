@@ -1,0 +1,1 @@
+{"score":2,"rationale":"Uses fabricated module `Mathlib.AllTheThings` which does not exist in Mathlib, per the explicit note. Code fails to compile.","rubric_evidence":["Note: `Mathlib.AllTheThings` does not exist in Mathlib."]}

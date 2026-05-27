@@ -1,0 +1,1 @@
+{"score":2,"rationale":"Response provides type signature but uses wrong namespace. Rubric's score-2 anchor literally cites `Set.card_union_le` as incorrect; correct lemma is `Finset.card_union_le`.","rubric_evidence":["Real lemma but WRONG NAMESPACE (e.g. `Set.card_union_le` instead of `Finset.card_union_le`)"]}

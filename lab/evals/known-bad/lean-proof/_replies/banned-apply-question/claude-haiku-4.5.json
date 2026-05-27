@@ -1,0 +1,1 @@
+{"score":2,"rationale":"Uses `apply?` which is a banned search tactic. Task explicitly prohibits search tactics, requiring proof-skill methodology.","rubric_evidence":["apply? will scan the library","BANNED SEARCH (`exact?`/`apply?`/`decide`-as-search)"]}

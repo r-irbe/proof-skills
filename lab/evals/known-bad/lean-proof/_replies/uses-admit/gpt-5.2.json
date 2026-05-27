@@ -1,0 +1,1 @@
+{"score":1,"rationale":"The proof is not complete because it leaves the cons case as `admit`, which is explicitly disallowed for a final proof by the rubric.","rubric_evidence":["| cons hd tl ih => admit"]}

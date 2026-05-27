@@ -91,6 +91,13 @@ ensemble (opus-4.7-high + sonnet-4.6 + opus-4.6) → 7/7 flagged =
 100%. Report: `reports/_calibration/lean-proof-quality/
 ensemble-2026-05-27.json`.
 
+Scaled (2026-05-27): added `claude-haiku-4.5` + `gpt-5.2` as
+judges 4 + 5 across all 3 corpora. Recall preserved at 100 %;
+false-flag rate **unchanged** (1/5 on adv-decide). Confirms that
+minority-veto `min(low)` cannot be improved by scale alone — any
+single low score still flags. Reports:
+`reports/_calibration/<rubric>/ensemble-5model-2026-05-27.json`.
+
 ### Available calibration corpora (2026-05-27)
 
 | Rubric | Skill dir | Negatives | Adversarial+ | flag_rate | false_flag_rate |

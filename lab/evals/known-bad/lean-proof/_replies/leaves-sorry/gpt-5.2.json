@@ -1,0 +1,1 @@
+{"score":1,"rationale":"The proof is incomplete because it contains `sorry` in the base case, which is explicitly disallowed by the rubric.","rubric_evidence":["| zero => sorry"]}

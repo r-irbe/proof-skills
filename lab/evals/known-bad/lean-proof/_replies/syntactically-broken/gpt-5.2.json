@@ -1,0 +1,1 @@
+{"score":1,"rationale":"The submission is syntactically broken and will not parse due to an incomplete second theorem with an unmatched parenthesis and stray `.`; Lean rejects it before any proof is checked.","rubric_evidence":["theorem one_plus_one : 1 + 1 = 2 :=\n  Nat.add_succ 1 0 . trans (by rfl"]}

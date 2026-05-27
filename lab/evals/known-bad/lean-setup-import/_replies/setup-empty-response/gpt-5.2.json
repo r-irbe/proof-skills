@@ -1,0 +1,1 @@
+{"score":1,"rationale":"The response is prose-only and provides no Lean code import line, so it does not satisfy the task's requirement for a minimal preamble. It also doesn't name the correct import statement (e.g., `import Mathlib`).","rubric_evidence":["You should import the standard Mathlib library at the top of your file."]}

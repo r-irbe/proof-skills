@@ -1,0 +1,1 @@
+{"score":1,"rationale":"Lemma name is fabricated and does not exist in Mathlib; signature incorrectly uses Cardinal.mk instead of Finset.card operation.","rubric_evidence":["Finset.cardinal_union_le_addition does NOT exist in Mathlib"]}
