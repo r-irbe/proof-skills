@@ -1,0 +1,1 @@
+{"score": 2, "rationale": "The proof uses `decide` as a brute-force tactic, which is explicitly listed as a banned search tactic in the rubric. While the code is syntactically valid and would likely discharge the goal, relying on `decide` places it at score 2.", "rubric_evidence": ["interval_cases n <;> decide", "This avoids having to know about `Nat.add_zero`."]}

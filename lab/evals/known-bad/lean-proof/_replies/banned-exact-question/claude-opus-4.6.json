@@ -1,0 +1,1 @@
+{"score": 2, "rationale": "The proof relies on `exact?`, which is explicitly listed as a banned search tactic in the rubric. It parses as valid Lean but uses a prohibited approach.", "rubric_evidence": ["exact?", "This works because Mathlib has `Nat.add_comm` registered and `exact?` finds it automatically."]}

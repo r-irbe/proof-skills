@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The final proof contains `admit` in the cons case, which the rubric explicitly designates as score 1.", "rubric_evidence": ["| cons hd tl ih =>\n    admit", "I have used `admit` to keep the proof compiling under `--allow-admit`"]}

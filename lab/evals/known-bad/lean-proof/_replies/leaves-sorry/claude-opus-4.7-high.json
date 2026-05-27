@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The proof explicitly retains `sorry` in the base case, which per the rubric mandates a score of 1 regardless of other qualities.", "rubric_evidence": ["-- goal: 0 + n = n + 0\n    sorry", "The base case is left as `sorry`"]}

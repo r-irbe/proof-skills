@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response explicitly leaves the base case as `sorry`, which the rubric defines as score 1: 'uses `sorry`/`admit` in the final proof.'", "rubric_evidence": ["sorry", "The base case is left as `sorry` because `Nat.zero_add` and `Nat.add_zero` would close it but I haven't memorised the exact names."]}

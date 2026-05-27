@@ -69,14 +69,30 @@ dispatch procedure:
 - **Anti-length / anti-position** — instructions in `prompts/judge.txt`.
 - **Self-consistency** — `rubric.bias_mitigations.self_consistency_runs`.
 
-## Calibration (ADR-0039)
+## Calibration (ADR-0039) — IMPLEMENTED
 
 Before any LLM-judge enters CI on the deterministic-pass-rate gate,
-run it across `lab/evals/known-bad/<skill>/*.transcript.md` (when that
-directory exists) and confirm it flags ≥90 % as ≤2. Persist the
-calibration in `reports/_calibration/<rubric>/<judge-model>.json`.
-This is currently aspirational — the known-bad corpus does not exist
-yet.
+run it across `lab/evals/known-bad/<skill>/*.transcript.md` and
+confirm it flags ≥90 % as ≤2. The persistent calibration report is
+written to `reports/_calibration/<rubric>/<label>.json`.
+
+Tool: `scripts/eval/calibrate_judge.py`. Three subcommands:
+
+- `build`   — emit the judge prompt for a single transcript.
+- `replay`  — aggregate captured replies, write report, exit 0.
+- `check`   — `replay` + non-zero exit if `flag_rate < --min-flag-rate`
+              (CI gate, default 0.90).
+
+CI wiring: `.github/workflows/eval-smoke.yml :: judge-calibration`
+job hard-gates every push and PR.
+
+First live calibration (2026-05-27): 7 transcripts × 3-judge
+ensemble (opus-4.7-high + sonnet-4.6 + opus-4.6) → 7/7 flagged =
+100%. Report: `reports/_calibration/lean-proof-quality/
+ensemble-2026-05-27.json`.
+
+See `lab/evals/known-bad/lean-proof/README.md` for the per-skill
+corpus structure and how to add new transcripts.
 
 ## File-layout invariants
 

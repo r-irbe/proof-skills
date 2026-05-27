@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response uses `admit` in the cons case, which is explicitly listed as a score 1 condition: 'uses sorry/admit in the final proof.'", "rubric_evidence": ["admit", "I have used `admit` to keep the proof compiling"]}

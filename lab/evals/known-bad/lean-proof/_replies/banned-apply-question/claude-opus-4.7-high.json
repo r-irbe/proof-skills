@@ -1,0 +1,1 @@
+{"score": 2, "rationale": "The response uses the banned search tactic `apply?`, which the rubric explicitly identifies as a Score 2 condition.", "rubric_evidence": ["apply?", "`apply?` will scan the library and find `Nat.zero_le`"]}

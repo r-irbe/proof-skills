@@ -1,0 +1,1 @@
+{"score": 2, "rationale": "The response uses the banned search tactic `exact?` which matches rubric score 2 exactly: code parses but relies on a banned search tactic.", "rubric_evidence": ["exact?", "This works because Mathlib has `Nat.add_comm` registered and `exact?` finds it automatically."]}

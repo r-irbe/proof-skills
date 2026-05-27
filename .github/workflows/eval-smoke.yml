@@ -1,18 +1,20 @@
 name: eval-smoke
 
 # Minimal subset of the design in lab/design/01-eval-framework.md §8.2.
-# Smoke variant of the eval framework: deterministic grader only,
-# no LLM dispatch, no lean-build dispatch. Runs the 5 cases under
-# scripts/eval/cases/ against the committed baseline in
-# scripts/eval/baselines/smoke/baseline.json.
+# Smoke variant of the eval framework: deterministic grader + Glicko-2
+# math + LLM-judge grader replay (no API calls) + ADR-0039 known-bad
+# judge-calibration gate.
 #
 # Hard-gates the PR if any previously-passing case starts failing,
 # or if any case's score drops below its baseline value.
 #
-# W8 Phase 1 (deterministic + baseline) — no API keys required.
-# Phase 2 (LLM judge) + Phase 3 (multi-model) + the full Phase 4
-# matrix (eval-nightly.yml, eval-effort-sweep.yml) remain blocked
-# on the API budget per MASTER-PLAN.md §4.
+# W8 Phase 1 + 2 (deterministic + baseline + LLM judge via offline
+# capture) and W9 Phase 1 (Glicko-2) are CI-green.
+# Live LLM dispatch (W8 Phase 3 / W9 Phase 2) happens offline via
+# scripts/eval/graders/DISPATCH.md flavour A (Copilot CLI sub-agent
+# fleet — see scripts/eval/judge_runs/ + scripts/elo/matches/ for
+# captured artifacts). Flavour B (Anthropic SDK) remains API-budget
+# gated per MASTER-PLAN.md §4.
 
 on:
   push:
@@ -177,3 +179,40 @@ jobs:
               echo "::endgroup::"
             fi
           done
+
+  judge-calibration:
+    name: LLM-judge calibration gate (ADR-0039 ≥90% known-bad flagged)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install PyYAML
+        run: python -m pip install --upgrade pip pyyaml
+
+      - name: Replay calibrate_judge on known-bad transcripts
+        # Per lab/design/01-eval-framework.md §4.2 and ADR-0039: the
+        # judge ensemble must flag ≥90% of known-bad transcripts as ≤2
+        # before being trusted in CI. This step replays captured judge
+        # replies (no API call) and hard-gates the flag-rate.
+        run: |
+          python3 scripts/eval/calibrate_judge.py check \
+            --rubric scripts/eval/graders/rubrics/lean-proof-quality.yaml \
+            --skill-dir lab/evals/known-bad/lean-proof \
+            --label ensemble-ci \
+            --min-flag-rate 0.90
+
+      - name: Upload calibration report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: judge-calibration-report
+          path: ./reports/_calibration/
+          if-no-files-found: warn
+          retention-days: 30

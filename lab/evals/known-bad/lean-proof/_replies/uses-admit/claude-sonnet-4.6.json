@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The proof uses `admit` in the cons case, which is explicitly banned by the rubric as equivalent to `sorry`. The proof does not fully discharge the goal.", "rubric_evidence": ["admit", "I have used `admit` to keep the proof compiling under `--allow-admit`"]}

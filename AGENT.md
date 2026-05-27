@@ -235,7 +235,13 @@ under `vendor/`; update the submodule pin instead.
 - Generic Lean scripts: [`scripts/lean/`](scripts/lean/)
 - Tooling: [`scripts/lint/`](scripts/lint/) ·
   [`scripts/eval/`](scripts/eval/) ·
-  [`scripts/elo/`](scripts/elo/)
+  [`scripts/elo/`](scripts/elo/) ·
+  [`scripts/eval/calibrate_judge.py`](scripts/eval/calibrate_judge.py)
+- LLM-judge artifacts: [`scripts/eval/graders/`](scripts/eval/graders/) ·
+  [`scripts/eval/graders/DISPATCH.md`](scripts/eval/graders/DISPATCH.md)
+- Known-bad calibration corpus (ADR-0039):
+  [`lab/evals/known-bad/lean-proof/`](lab/evals/known-bad/lean-proof/) ·
+  reports under [`reports/_calibration/`](reports/_calibration/)
 - Upstream submodule: [`vendor/leanprover-skills/`](vendor/leanprover-skills)
 - Master plan (private superrepo only): `lab/MASTER-PLAN.md`
 
