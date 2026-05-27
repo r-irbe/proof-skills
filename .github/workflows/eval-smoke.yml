@@ -85,6 +85,16 @@ jobs:
             --matches scripts/elo/sample_matches.csv \
             --out ./_glicko2-out
 
+      - name: Smoke-run Glicko-2 on live matches CSVs (if any)
+        run: |
+          shopt -s nullglob
+          for f in scripts/elo/matches/*.csv; do
+            echo "::group::Glicko-2 on $f"
+            python3 scripts/elo/glicko2.py --matches "$f" --out "./_glicko2-live-$(basename "$f" .csv)"
+            echo "::endgroup::"
+          done
+        shell: bash
+
       - name: Upload Glicko-2 report
         if: always()
         uses: actions/upload-artifact@v4
@@ -93,3 +103,77 @@ jobs:
           path: ./_glicko2-out/
           if-no-files-found: warn
           retention-days: 30
+
+  llm-judge-grader:
+    name: LLM-judge grader replay (no API calls)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install PyYAML
+        run: python -m pip install --upgrade pip pyyaml
+
+      - name: Replay LLM-judge grader on stored judge replies
+        # Hard-gates the grader logic against the committed judge
+        # responses. No API call — judge JSON files were captured
+        # offline via scripts/eval/graders/DISPATCH.md flavour A
+        # (Copilot CLI sub-agent).
+        run: |
+          shopt -s nullglob
+          for case_dir in scripts/eval/judge_runs/*/; do
+            case_name=$(basename "$case_dir")
+            response_file="$case_dir/response.txt"
+            # Multi-model cases have output-<id>.lean instead of response.txt;
+            # skip the grade step for those (multi_model.py handles them).
+            if [ ! -f "$response_file" ]; then
+              echo "Skipping $case_name (multi-model case)"
+              continue
+            fi
+            replies=()
+            for j in "$case_dir"judge-*.json; do
+              replies+=( --judge-reply "$j" )
+            done
+            if [ ${#replies[@]} -eq 0 ]; then
+              echo "Skipping $case_name (no judge replies)"
+              continue
+            fi
+            case_yaml="scripts/eval/cases/$case_name.yaml"
+            if [ ! -f "$case_yaml" ]; then
+              echo "Skipping $case_name (no case YAML at $case_yaml)"
+              continue
+            fi
+            echo "::group::Grade $case_name"
+            # Allow non-zero exit (we expect some cases to fail by design)
+            python3 scripts/eval/graders/llm_judge.py grade \
+              --case "$case_yaml" \
+              --rubric scripts/eval/graders/rubrics/lean-proof-quality.yaml \
+              --response "$response_file" \
+              "${replies[@]}" \
+              --out "$case_dir/grade.json" || true
+            echo "::endgroup::"
+          done
+
+      - name: Replay multi_model.py on judge_runs/ (no API calls)
+        run: |
+          shopt -s nullglob
+          mkdir -p ./_multi-model-out
+          for case_dir in scripts/eval/judge_runs/*/; do
+            case_name=$(basename "$case_dir")
+            # Multi-model cases are detected by presence of output-*.lean
+            if compgen -G "$case_dir/output-*.lean" > /dev/null; then
+              echo "::group::multi_model.py on $case_name"
+              python3 scripts/eval/multi_model.py \
+                --runs-dir scripts/eval/judge_runs \
+                --case "$case_name" \
+                --rubric scripts/eval/graders/rubrics/lean-proof-quality.yaml \
+                --out "./_multi-model-out/$case_name.csv"
+              echo "::endgroup::"
+            fi
+          done

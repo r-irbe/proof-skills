@@ -1,5 +1,10 @@
 {
   "cases": {
+    "lean-add-comm-multi": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
     "lean-mwe-minimize": {
       "grader": "deterministic",
       "passed": true,

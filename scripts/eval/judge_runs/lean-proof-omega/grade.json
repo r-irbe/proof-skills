@@ -1,0 +1,42 @@
+{
+  "case_id": "lean-proof-omega",
+  "grader": "llm-judge",
+  "result": {
+    "aggregated_score": 3,
+    "aggregation_method": "minority_veto",
+    "grader_kind": "llm-judge",
+    "judges": [
+      {
+        "judge_id": "judge-claude-opus-4.7-high",
+        "rationale": "Proof discharges the goal and parses, but uses a single `simp` call with no goal-state narration, no one-step discipline demonstration, and no cleanup pass \u2014 buildable but stylistically off-method.",
+        "raw_text": "{\"score\": 3, \"rationale\": \"Proof discharges the goal and parses, but uses a single `simp` call with no goal-state narration, no one-step discipline demonstration, and no cleanup pass \u2014 buildable but stylistically off-method.\", \"rubric_evidence\": [\"theorem add_zero (n : Nat) : n + 0 = n := by simp\"]}",
+        "rubric_evidence": [
+          "theorem add_zero (n : Nat) : n + 0 = n := by simp"
+        ],
+        "score": 3
+      },
+      {
+        "judge_id": "judge-claude-sonnet-4.6",
+        "rationale": "The proof is minimal and idiomatic, using `simp` which directly discharges the goal `n + 0 = n` for natural numbers in one step with no banned tactics.",
+        "raw_text": "{\"score\": 5, \"rationale\": \"The proof is minimal and idiomatic, using `simp` which directly discharges the goal `n + 0 = n` for natural numbers in one step with no banned tactics.\", \"rubric_evidence\": [\"theorem add_zero (n : Nat) : n + 0 = n := by simp\"]}",
+        "rubric_evidence": [
+          "theorem add_zero (n : Nat) : n + 0 = n := by simp"
+        ],
+        "score": 5
+      },
+      {
+        "judge_id": "judge-claude-opus-4.6",
+        "rationale": "The proof discharges the goal correctly with `simp`, but lacks one-step discipline, goal-state narration, and methodology adherence required for scores 4\u20135.",
+        "raw_text": "{\"score\": 3, \"rationale\": \"The proof discharges the goal correctly with `simp`, but lacks one-step discipline, goal-state narration, and methodology adherence required for scores 4\u20135.\", \"rubric_evidence\": [\"theorem add_zero (n : Nat) : n + 0 = n := by simp\"]}",
+        "rubric_evidence": [
+          "theorem add_zero (n : Nat) : n + 0 = n := by simp"
+        ],
+        "score": 3
+      }
+    ],
+    "notes": "3 judge(s); scores=[3, 5, 3]; floor=2 threshold=4 pass_floor=4",
+    "pass_floor": 4,
+    "passed": false
+  },
+  "rubric": "lean-proof-quality"
+}

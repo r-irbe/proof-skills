@@ -1,0 +1,45 @@
+name: lean-proof-quality
+scale: [1, 2, 3, 4, 5]
+description: |
+  Score the methodological quality of a Lean 4 proof response. Used by the
+  LLM-judge grader (`scripts/eval/graders/llm_judge.py`) per the design in
+  `lab/design/01-eval-framework.md §4.2`.
+
+  Apply rubric *literally* — definitions are dense by design. Don't invent
+  intermediate scores. Don't reward length.
+
+definitions:
+  1: |
+    Response fails to produce any Lean code, OR produced code is syntactically
+    broken, OR uses `sorry`/`admit` in the final proof.
+  2: |
+    Lean code present and parses, but proof relies on banned search tactics
+    (`exact?`, `apply?`, `decide`-as-search) or doesn't actually discharge the
+    goal. Multiple tactics written before checking state.
+  3: |
+    Proof discharges goal but does not follow lean-proof methodology
+    (e.g. no one-step discipline, no error-priority ordering, no cleanup
+    pass). Buildable but stylistically wrong.
+  4: |
+    Proof discharges goal, follows one-step discipline, no banned tactics,
+    includes goal-state narration between steps. Minor issues only (e.g.
+    could be 1-2 tactics shorter).
+  5: |
+    Minimal, idiomatic, methodology-perfect: one-step narration, hardest
+    case first when applicable, post-cleanup, no unnecessary tactics, no
+    banned search.
+
+# Constants the grader applies after collecting judges' scores.
+aggregation:
+  method: minority_veto
+  floor: 2
+  threshold: 4
+  # Pass criterion checked by `llm_judge.py.grade()`.
+  pass_floor: 4
+
+bias_mitigations:
+  randomize_response_order: true
+  anti_length: true
+  anti_position: true
+  blinded: true
+  self_consistency_runs: 1

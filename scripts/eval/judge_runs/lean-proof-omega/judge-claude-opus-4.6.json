@@ -1,0 +1,1 @@
+{"score": 3, "rationale": "The proof discharges the goal correctly with `simp`, but lacks one-step discipline, goal-state narration, and methodology adherence required for scores 4–5.", "rubric_evidence": ["theorem add_zero (n : Nat) : n + 0 = n := by simp"]}

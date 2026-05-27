@@ -1,0 +1,1 @@
+{"score": 4, "rationale": "Proof is minimal and idiomatic using a single-step `exact Nat.add_comm m n`, with no banned search tactics or sorry/admit. It lacks the requested `-- goal:` narration comment, which the rubrics score 5 requires.", "rubric_evidence": ["exact Nat.add_comm m n", "theorem my_add_comm (m n : Nat) : m + n = n + m := by"]}

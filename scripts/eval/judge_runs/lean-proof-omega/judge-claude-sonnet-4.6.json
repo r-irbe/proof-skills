@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "The proof is minimal and idiomatic, using `simp` which directly discharges the goal `n + 0 = n` for natural numbers in one step with no banned tactics.", "rubric_evidence": ["theorem add_zero (n : Nat) : n + 0 = n := by simp"]}

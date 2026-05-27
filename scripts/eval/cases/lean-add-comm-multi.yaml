@@ -1,0 +1,25 @@
+id: lean-add-comm-multi
+title: "Prove ∀ m n : ℕ, m + n = n + m (multi-model match case)"
+skill: lean-proof
+difficulty: easy
+input:
+  prompt: |
+    Write a complete Lean 4 proof, suitable for Mathlib, of
+    `theorem my_add_comm (m n : Nat) : m + n = n + m`. Use idiomatic
+    Mathlib style: one-step tactics where possible, no `sorry`, no `admit`,
+    no `exact?` or `apply?`, no `decide` as a search tactic. Briefly narrate
+    the goal state between tactics with `-- goal:` Lean comments where useful.
+  expected_output_substring: |
+    theorem my_add_comm (m n : Nat) : m + n = n + m := by
+      exact Nat.add_comm m n
+expected:
+  contains:
+    - "theorem\\s+my_add_comm"
+    - "\\bNat\\.add_comm\\b|\\bAdd\\.comm\\b|\\binduction\\s+m\\b"
+  not_contains:
+    - "sorry"
+    - "admit"
+    - "exact\\?"
+    - "apply\\?"
+grader: deterministic
+tags: [lean, mathlib, multi-model, match-source]

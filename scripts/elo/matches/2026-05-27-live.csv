@@ -1,0 +1,4 @@
+case_id,model_a,model_b,winner,reasoning_effort_a,reasoning_effort_b
+lean-add-comm-multi,claude-haiku-4.5,claude-opus-4.7-high,b,,
+lean-add-comm-multi,claude-haiku-4.5,claude-sonnet-4.6,b,,
+lean-add-comm-multi,claude-opus-4.7-high,claude-sonnet-4.6,draw,,

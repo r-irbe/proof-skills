@@ -1,0 +1,1 @@
+{"score": 3, "rationale": "Proof discharges the goal and parses, but uses a single `simp` call with no goal-state narration, no one-step discipline demonstration, and no cleanup pass — buildable but stylistically off-method.", "rubric_evidence": ["theorem add_zero (n : Nat) : n + 0 = n := by simp"]}

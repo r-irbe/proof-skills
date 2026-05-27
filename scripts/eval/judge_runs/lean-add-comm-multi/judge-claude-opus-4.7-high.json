@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "Minimal one-step proof using Nat.add_comm with a goal-state narration comment; no banned tactics, no sorry/admit, idiomatic Mathlib style.", "rubric_evidence": ["-- goal: m + n = n + m", "exact Nat.add_comm m n"]}
