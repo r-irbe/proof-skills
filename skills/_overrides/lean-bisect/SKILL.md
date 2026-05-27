@@ -83,3 +83,5 @@ Verify endpoints of the range show different behavior before bisecting. Keep tes
 ## See also
 
 - [`../../references/lean4-module-dependency-guide.md`](../../references/lean4-module-dependency-guide.md) — Layer discipline and cycle detection (debugging build cycles)
+- [`../../../references/upstream/lean-bug-report-pipeline.md`](../../../references/upstream/lean-bug-report-pipeline.md) — Shared 5-stage bug-report pipeline (repro → guard → minimise → bisect → file) and `lean-mwe` ↔ `lean-bisect` hand-off contract
+- [`../lean-mwe/SKILL.md`](../lean-mwe/SKILL.md) — Sister skill for MWE construction (typically chained before bisect)

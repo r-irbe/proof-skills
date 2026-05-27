@@ -62,6 +62,7 @@ metadata:
 - **Source spec:** `specs/lean/proof-review/requirements.md` — every G-rule traces to an AC there.
 - **Related ADRs:** ADR-0076, ADR-0080.
 - **Reference:** see [`REFERENCE.md`](./REFERENCE.md) for the full project automation stack, proof-search priority table, reusable `Tactics` lemma library, common Lean pitfalls, and the 4-layer verification checklist (original v1 content, preserved verbatim).
+- **Mathlib-specific review:** see [`../../references/upstream/mathlib4-review.md`](../../references/upstream/mathlib4-review.md) for the Mathlib PR review delta (attributes/API, simp squeezing, normal forms, transparency, file size, canonical naming/style URLs). The former `mathlib-review` SKILL has been demoted to a REDIRECT stub pointing at this reference (W4 Wave 1 / move A2).
 
 ## Common failure modes
 

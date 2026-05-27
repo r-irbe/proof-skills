@@ -116,3 +116,5 @@ lake env lean YourFile.out.lean
 
 - [`../../templates/Template_Foundation.md`](../../templates/Template_Foundation.md) — Template: Minimal foundation module to start from
 - [`../../references/lean4-proof-strategy.md`](../../references/lean4-proof-strategy.md) — Workflow: error priority, one-step-at-a-time
+- [`../../../references/upstream/lean-bug-report-pipeline.md`](../../../references/upstream/lean-bug-report-pipeline.md) — Shared 5-stage bug-report pipeline (repro → guard → minimise → bisect → file) and `lean-mwe` ↔ `lean-bisect` hand-off contract
+- [`../lean-bisect/SKILL.md`](../lean-bisect/SKILL.md) — Sister skill for commit-range narrowing

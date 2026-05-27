@@ -1,28 +1,29 @@
 ---
 name: nightly-testing
-description: Understanding the Lean/Mathlib nightly testing infrastructure. Use when working on toolchain bumps, adaptation PRs, or investigating nightly CI failures.
+description: REDIRECT — Lean/Mathlib nightly testing infrastructure notes (branches, tags, Zulip, mathlib4-nightly-testing fork) have been demoted to `references/upstream/lean-nightly-infrastructure.md`. This stub preserves the slug for Ctrl-F discoverability and incoming cross-references (per the zero-deletions Chesterton protocol).
 ---
 
-# Nightly Testing
+# SK-34: Lean / Mathlib Nightly Testing (REDIRECT)
 
-Lean 4 publishes nightly toolchain builds from `master`. Batteries and Mathlib each have a `nightly-testing` branch that tracks these nightlies and runs CI against them. When CI passes, a `nightly-testing-YYYY-MM-DD` tag is created. When it fails, fixes are needed before the new toolchain can be adopted.
+This skill no longer hosts content. The nightly-testing infrastructure
+notes have been moved to a reference because they are a
+"go-read-this-URL" document with no workflow, triggers, or callers
+(verified zero callers across `skills/` and `references/` excluding
+`lean-gateway/REFERENCE.md` which keeps it as a registry row).
 
-## The mathlib4-nightly-testing Fork
+| Old section | New home |
+|---|---|
+| Overview + `mathlib4-nightly-testing` fork explanation | [`references/upstream/lean-nightly-infrastructure.md`](../../references/upstream/lean-nightly-infrastructure.md) §Overview |
+| Key branches (`nightly-testing`, `nightly-with-mathlib`, `bump/v4.X.Y`, `lean-pr-testing-NNNN`) | Same reference §Key branches |
+| Zulip channel | Same reference §Zulip |
+| Canonical reference URL | Same reference §Canonical reference |
 
-Mathlib's nightly testing lives in a **separate fork**: `leanprover-community/mathlib4-nightly-testing`, not on the main `leanprover-community/mathlib4` repo. This keeps experimental toolchain branches out of the main repository. When Lean PRs affect Mathlib, `lean-pr-testing-NNNN` branches are created here automatically.
+Existing inbound links to "SK-34 / `nightly-testing`" should resolve
+here and then follow the table above. Do not add new content to this
+file — author it in
+`references/upstream/lean-nightly-infrastructure.md` instead.
 
-## Key Branches
+## See also
 
-- **`nightly-testing`** — tracks the latest Lean nightly. CI runs here determine whether a nightly is usable.
-- **`nightly-with-mathlib`** — points to the latest nightly that passes Mathlib CI. Lean PRs that may affect downstream should base off this branch.
-- **`bump/v4.X.Y`** — accumulates reviewed adaptations for an upcoming Lean release. Adaptation PRs merge `nightly-testing` changes into this branch, and `master` is regularly merged in during release cycles.
-- **`lean-pr-testing-NNNN`** — created automatically to test specific Lean PRs against Mathlib.
-
-## Zulip
-
-https://leanprover.zulipchat.com/#narrow/channel/nightly-testing has up-to-date status on nightly builds, failures, and adaptation work.
-
-## Full Details
-
-The canonical reference for branch and tag conventions across lean4, Batteries, and Mathlib is:
-https://leanprover-community.github.io/contribute/tags_and_branches.html. If you are asked to work on nightly-testing, or lean-pr-testing-NNNN branches, you should read that page.
+- [`../../../references/upstream/lean-nightly-infrastructure.md`](../../../references/upstream/lean-nightly-infrastructure.md) — full content
+- [`../../../references/upstream/mathlib4-review.md`](../../../references/upstream/mathlib4-review.md) — Mathlib review standards (sister W4 Wave 1 demotion)

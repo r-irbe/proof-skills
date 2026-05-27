@@ -31,15 +31,15 @@ upstream copy in the same dispatch.
 
 | slug | upstream provenance | reason for override |
 |---|---|---|
-| `lean-bisect` | `leanprover/skills` | refreshed bisect tooling + tactic-priority notes |
-| `lean-mwe` | `leanprover/skills` | updated MWE workflow + Mathlib pointers |
+| `lean-bisect` | `leanprover/skills` | refreshed bisect tooling + tactic-priority notes; W4 Wave 1 See-also link to `references/upstream/lean-bug-report-pipeline.md` |
+| `lean-mwe` | `leanprover/skills` | updated MWE workflow + Mathlib pointers; W4 Wave 1 See-also link to `references/upstream/lean-bug-report-pipeline.md` |
 | `lean-pr` | `leanprover/skills` | PR conventions reconciled with current Mathlib practice |
 | `lean-proof` | `leanprover/skills` | tactic-priority order, current theorem-count baseline |
 | `lean-setup` | `leanprover/skills` | toolchain/elan notes for recent Lean releases |
 | `mathlib-build` | `leanprover/skills` | build-flag and verbosity updates |
 | `mathlib-pr` | `leanprover/skills` | label/queueboard refresh |
-| `mathlib-review` | `leanprover/skills` | review-tool inventory refresh |
-| `nightly-testing` | `leanprover/skills` | nightly infrastructure pointer refresh |
+| `mathlib-review` | `leanprover/skills` | **REDIRECT stub** — content demoted to `references/upstream/mathlib4-review.md` in W4 Wave 1 (move A2); slug preserved for Ctrl-F per Chesterton protocol |
+| `nightly-testing` | `leanprover/skills` | **REDIRECT stub** — content demoted to `references/upstream/lean-nightly-infrastructure.md` in W4 Wave 1 (move A4); slug preserved for Ctrl-F per Chesterton protocol |
 
 ## Adding / removing overrides
 
