@@ -1,0 +1,30 @@
+{
+  "players": {
+    "claude-haiku-4.5": {
+      "ci95_high": 1812.18,
+      "ci95_low": 1260.96,
+      "games": 12,
+      "rating": 1536.57,
+      "rd": 137.81,
+      "vol": 0.06
+    },
+    "claude-opus-4.7-high": {
+      "ci95_high": 1958.47,
+      "ci95_low": 1407.24,
+      "games": 12,
+      "rating": 1682.85,
+      "rd": 137.81,
+      "vol": 0.06
+    },
+    "claude-sonnet-4.6": {
+      "ci95_high": 1556.19,
+      "ci95_low": 1004.96,
+      "games": 12,
+      "rating": 1280.57,
+      "rd": 137.81,
+      "vol": 0.06
+    }
+  },
+  "rating_system": "glicko-2",
+  "scale": "display (1500-centered)"
+}

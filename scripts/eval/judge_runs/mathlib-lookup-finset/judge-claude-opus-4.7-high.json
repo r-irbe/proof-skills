@@ -1,0 +1,1 @@
+{"score":5,"rationale":"Correct Mathlib lemma `Finset.card_union_le` with full signature shown via `#check` and a working witness `theorem ex` applying it.","rubric_evidence":["#check @Finset.card_union_le","(s ∪ t).card ≤ s.card + t.card := Finset.card_union_le s t"]}

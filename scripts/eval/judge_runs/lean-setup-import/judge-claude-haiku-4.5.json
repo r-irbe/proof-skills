@@ -1,0 +1,1 @@
+{"score":5,"rationale":"Exactly the minimal idiomatic preamble: `import Mathlib` plus a single `open Nat`, no deep-internal imports, within the 3-line limit.","rubric_evidence":["import Mathlib","open Nat"]}

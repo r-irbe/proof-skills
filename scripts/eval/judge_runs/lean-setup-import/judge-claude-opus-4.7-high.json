@@ -1,0 +1,1 @@
+{"score":4,"rationale":"Imports compile and provide Mathlib access with Classical opened, but `import Mathlib` pulls the entire library rather than a targeted module, which is correct but not minimally idiomatic.","rubric_evidence":["import Mathlib","open Classical"]}

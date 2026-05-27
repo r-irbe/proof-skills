@@ -1,0 +1,1 @@
+{"score":3,"rationale":"Correct Mathlib lemma name in proper namespace, but only a #check command is provided; the textual response does not display the signature inline.","rubric_evidence":["#check @Finset.card_union_le"]}

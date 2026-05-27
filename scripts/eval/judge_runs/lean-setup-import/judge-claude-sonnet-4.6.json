@@ -1,0 +1,1 @@
+{"score":2,"rationale":"Has `import Mathlib` but `open Mathlib` is not an idiomatic namespace to open; Mathlib is the root module, not a meaningful namespace, making the open statement essentially useless.","rubric_evidence":["`open Mathlib` is unusual — Mathlib is the root module name, not a typical namespace to open","minimal idiomatic (e.g. `open Nat` or `open Classical`)"]}

@@ -1,0 +1,1 @@
+{"score":5,"rationale":"Minimal idiomatic Lean 4 proof: `rfl` closes the definitional equality `1 + 1 = 2` on `Nat` directly.","rubric_evidence":["theorem one_plus_one : (1 : Nat) + 1 = 2 := by","rfl"]}

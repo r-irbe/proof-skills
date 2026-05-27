@@ -1,0 +1,1 @@
+{"score":3,"rationale":"Triggers the target error but imports all of Mathlib, which is unnecessary bloat for reproducing `unknown identifier 'foo'`.","rubric_evidence":["import Mathlib","example : True := by exact foo"]}

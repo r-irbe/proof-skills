@@ -1,0 +1,1 @@
+{"score":5,"rationale":"Minimal idiomatic Lean proof using simp with a single narration comment showing the goal state.","rubric_evidence":["-- goal: n + 0 = n","simp"]}

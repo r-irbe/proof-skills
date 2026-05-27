@@ -1,0 +1,1 @@
+{"score":4,"rationale":"Proof closes the goal correctly with `rfl` and the statement is well-formed, but importing all of Mathlib is unnecessary overhead for a trivial `Nat` reflexivity proof.","rubric_evidence":["import Mathlib","rfl"]}

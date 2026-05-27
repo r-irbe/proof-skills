@@ -1,0 +1,1 @@
+{"score":5,"rationale":"Single file with MWE comment, `import Mathlib`, an `example` using `exact foo` that triggers unknown identifier 'foo'; no sorry/admit/TODO and maximally minimal.","rubric_evidence":["-- MWE: reproduces unknown identifier 'foo' error","example : True := by exact foo"]}

@@ -1,0 +1,1 @@
+{"score":4,"rationale":"Proof closes the goal correctly with `rfl` and no banned tokens, but importing all of Mathlib is non-minimal for such a trivial Nat lemma.","rubric_evidence":["import Mathlib","rfl"]}

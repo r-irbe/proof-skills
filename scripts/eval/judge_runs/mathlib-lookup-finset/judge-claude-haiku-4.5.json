@@ -1,0 +1,1 @@
+{"score":4,"rationale":"Correct Mathlib lemma name with explicit full type signature shown, but no Loogle reference or usage example provided.","rubric_evidence":["#check Finset.card_union_le","theorem Finset.card_union_le (s t : Finset α) : (s ∪ t).card ≤ s.card + t.card"]}

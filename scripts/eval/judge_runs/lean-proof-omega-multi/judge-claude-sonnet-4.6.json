@@ -1,0 +1,1 @@
+{"score":5,"rationale":"Proof closes the goal with idiomatic `simp` and includes narration explicitly naming the firing lemma `Nat.add_zero`.","rubric_evidence":["simp resolves via Nat.add_zero","simp"]}

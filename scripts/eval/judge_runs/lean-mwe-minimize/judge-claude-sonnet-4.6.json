@@ -1,0 +1,1 @@
+{"score":1,"rationale":"Term-mode `:= exact foo` is a syntax error in Lean 4 since `exact` is a tactic requiring a `by` block, so it fails to trigger the requested `unknown identifier 'foo'` error.","rubric_evidence":["example : True := exact foo","`:= exact foo` without `by` is a parse error in Lean 4"]}
