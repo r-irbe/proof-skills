@@ -1,0 +1,8 @@
+{
+  "score": 2,
+  "rationale": "Real domain knowledge but cites a non-existent Article 28 obligation in this context and conflates multiple fairness metrics (equal accuracy, FPR/FNR, statistical parity) without specifying a single verifiable threshold or trade-off analysis.",
+  "rubric_evidence": [
+    "Articles 12 and 28 of the AI Act",
+    "equal accuracy, false positive/negative rates, and selection outcomes"
+  ]
+}

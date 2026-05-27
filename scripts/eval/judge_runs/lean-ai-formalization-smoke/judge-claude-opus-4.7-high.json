@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "Produces only prose and informal mathematical notation with no Lean code whatsoever.",
+  "rubric_evidence": [
+    "Σ_{t=0}^∞ γ^t R(s₀, a₀, s₀) < V*(s₀)"
+  ]
+}

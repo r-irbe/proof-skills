@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "No actual Lean proof is produced; the response describes a hypothetical encoding with inline fragments but contains no parseable Lean code or discharged goal.",
+  "rubric_evidence": [
+    "example : corr ∧ ¬cause"
+  ]
+}

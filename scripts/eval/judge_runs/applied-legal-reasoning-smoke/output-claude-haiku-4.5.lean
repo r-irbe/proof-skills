@@ -1,0 +1,3 @@
+∀d, l: [Driver(d) ∧ TrafficLight(l) ∧ ColorOf(l) = red ∧ At(d, l)] → MustStop(d)
+
+Where Driver(d) asserts d is a driver, TrafficLight(l) asserts l is a signal, ColorOf(l) = red asserts the signal shows red, At(d, l) asserts the driver is at that signal, and MustStop(d) is the obligation to stop. The rule triggers when all antecedents hold, establishing the deontic obligation. Add the enforcement rule ∀d: MustStop(d) → Stopped(d) to bind the obligation to actual behavior for state verification. This captures the conditional obligation without temporal aspects; extend with temporal logic (e.g., LTL) if you need to reason about stop duration or signal changes.

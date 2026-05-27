@@ -1,0 +1,8 @@
+{
+  "score": 4,
+  "rationale": "Induction proof handles base and successor cases with narration of each subgoal and no banned tactics, though rfl alone would suffice making it 1-2 tactics longer than minimal.",
+  "rubric_evidence": [
+    "| zero => rfl",
+    "| succ n ih => simp [ih]"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "score": 3,
+  "rationale": "Correct framing with a brief interpretive gloss, but still lacks calibrated confidence markers, assumption ledger, and trade-off analysis required for higher scores.",
+  "rubric_evidence": [
+    "This square commutes: G(f) ∘ ηX = ηY ∘ F(f)"
+  ]
+}

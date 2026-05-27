@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "No Lean code is produced; the response is a natural-language abductive argument with no proof script.",
+  "rubric_evidence": [
+    "abductive inference under temporal precedence + dependency locality + reversibility"
+  ]
+}

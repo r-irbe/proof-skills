@@ -1,0 +1,1 @@
+No task definitions, durations, or dependency data exist in this repository for a "5-task formalisation project." Supply the tasks with their durations and predecessor dependencies, and I will compute the critical path (earliest start, earliest finish, latest start, latest finish, and float for each task, then identify the zero-float chain).

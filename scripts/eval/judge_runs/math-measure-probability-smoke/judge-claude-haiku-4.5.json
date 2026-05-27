@@ -1,0 +1,8 @@
+{
+  "score": 2,
+  "rationale": "Correct headline identity but uses imprecise/non-standard definition 'E[X | F] = ∫ X dP(·|F)', omits the explicit almost-sure qualifier on the identity, and conflates F with a sub-σ-algebra without distinction.",
+  "rubric_evidence": [
+    "E[X | F] = ∫ X dP(·|F), preserving linear structure",
+    "makes conditional expectation a linear operator"
+  ]
+}

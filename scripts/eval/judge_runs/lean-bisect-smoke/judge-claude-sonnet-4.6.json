@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "Produces no Lean code; only shell and git bisect snippets for toolchain selection.",
+  "rubric_evidence": [
+    "git bisect run bash -c 'elan run leanprover/lean4:nightly-..."
+  ]
+}

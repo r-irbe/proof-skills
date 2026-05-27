@@ -1,0 +1,8 @@
+{
+  "score": 4,
+  "rationale": "Multi-factor formalization with explicit temporal/situational grounding, auxiliary axioms covering violation/liability, obligation-lapse edge case, and a noted refinement for temporal role assignment, though it lacks explicit calibrated confidence markers and an assumption ledger.",
+  "rubric_evidence": [
+    "obligation lapses when light changes",
+    "supports three reasoning modes: normative (derive obligations), diagnostic (detect violations), and counterfactual"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "score": 4,
+  "rationale": "Multi-factor analysis with BIC-vs-AIC trade-off justified by n=200, stationarity pre-checks, residual diagnostics, invertibility constraints, and concrete tool calls, missing only explicit calibrated confidence tags.",
+  "rubric_evidence": [
+    "preferred over AIC for n=200 because it penalizes complexity more",
+    "Ljung–Box p>0.05, no significant residual ACF, roots inside unit circle"
+  ]
+}

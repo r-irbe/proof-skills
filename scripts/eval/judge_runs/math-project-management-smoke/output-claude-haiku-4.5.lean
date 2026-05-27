@@ -1,0 +1,1 @@
+I need the project definition to compute critical path: task names, durations (in days/hours), and dependency relationships between the 5 tasks. Provide this as a list or table showing which tasks depend on which, and how long each takes. Without task durations and dependencies, critical path cannot be determined.

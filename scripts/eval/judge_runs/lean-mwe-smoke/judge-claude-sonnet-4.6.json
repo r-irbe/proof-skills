@@ -1,0 +1,8 @@
+{
+  "score": 4,
+  "rationale": "Describes a buildable repro that passes `lake env lean` with verbatim `#guard_msgs` capture and a one-step diagnostic fix, but the actual Lean source is referenced rather than shown inline.",
+  "rubric_evidence": [
+    "passes `lake env lean` with exit 0",
+    "one `rcases v with j' | s` before `simp`"
+  ]
+}

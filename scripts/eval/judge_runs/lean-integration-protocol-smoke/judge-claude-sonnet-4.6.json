@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "Describes Lean declarations in prose without supplying any actual Lean code or proof, so no proof is produced to judge.",
+  "rubric_evidence": [
+    "plain `noncomputable def` wrapping `PMF.toMeasure`"
+  ]
+}

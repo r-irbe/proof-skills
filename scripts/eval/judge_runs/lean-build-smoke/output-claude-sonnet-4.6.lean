@@ -1,0 +1,1 @@
+`lake exe cache get` restored 4812 cached `.olean` files for Mathlib, then `lake build EASCI.Tactics` compiled the module and all its transitive dependencies (3308 jobs) successfully. The Lean project lives at `docs/easci/lean/`; the lakefile pins Mathlib to commit `949174649e0fc6df8d3fa4d3fffd2f4eca3fa8c3` with toolchain `v4.30.0-rc2`.

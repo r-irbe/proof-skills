@@ -1,0 +1,7 @@
+{
+  "score": 3,
+  "rationale": "Technically correct worked example with valid GAS conclusion and radial unboundedness noted, but lacks calibrated confidence markers, assumption ledger, and trade-off discussion required for a higher score.",
+  "rubric_evidence": [
+    "V̇ = ... = −(x₁² + x₂²) = −2V < 0 for x ≠ 0"
+  ]
+}

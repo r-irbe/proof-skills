@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "Response merely restates the task conclusion with no domain analysis, no reasoning, and no engagement with the rubric criteria at all.",
+  "rubric_evidence": [
+    "Putting a cup on the table does not move the table."
+  ]
+}

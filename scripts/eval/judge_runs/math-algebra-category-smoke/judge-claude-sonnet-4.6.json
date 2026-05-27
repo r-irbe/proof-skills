@@ -1,0 +1,7 @@
+{
+  "score": 3,
+  "rationale": "Correct naturality square with the commuting equation stated, but no calibrated confidence markers, assumption ledger, or trade-off discussion as the rubric demands.",
+  "rubric_evidence": [
+    "G(f) ∘ η_X = η_Y ∘ F(f)"
+  ]
+}

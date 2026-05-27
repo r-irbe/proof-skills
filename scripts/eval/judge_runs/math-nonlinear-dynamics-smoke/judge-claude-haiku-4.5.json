@@ -1,0 +1,7 @@
+{
+  "score": 3,
+  "rationale": "Correct general framing of Lyapunov's direct method but no worked example, no calibrated confidence markers, no trade-off analysis, and omits radial unboundedness condition for global results.",
+  "rubric_evidence": [
+    "No solution trajectories need explicit computation—stability follows purely from the existence of a suitable V(x)"
+  ]
+}

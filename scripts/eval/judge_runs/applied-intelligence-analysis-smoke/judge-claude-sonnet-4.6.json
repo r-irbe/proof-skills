@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Correctly explains ACH methodology including diagnosticity and sensitivity analysis, but applies it generically without calibrated confidence markers or trade-offs against alternative SATs.",
+  "rubric_evidence": [
+    "the hypothesis with the fewest inconsistencies survives",
+    "document residual uncertainty and the conditions that would falsify it"
+  ]
+}

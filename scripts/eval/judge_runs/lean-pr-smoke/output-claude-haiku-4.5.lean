@@ -1,0 +1,1 @@
+I need to know which lemma you're adding to Mathlib.Algebra.Group.Basic to create an appropriate PR title. Please provide the lemma name, its statement, and what algebraic property it represents (e.g., commutativity, associativity, distributivity, etc.).

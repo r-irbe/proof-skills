@@ -1,0 +1,7 @@
+{
+  "score": 3,
+  "rationale": "Correct framing with worked example and useful breadth (level-set intuition, SOS, energy functions) but no calibrated confidence tags, no explicit assumption ledger, and no trade-off matrix for construction methods.",
+  "rubric_evidence": [
+    "finding V requires physical intuition or sum-of-squares techniques"
+  ]
+}

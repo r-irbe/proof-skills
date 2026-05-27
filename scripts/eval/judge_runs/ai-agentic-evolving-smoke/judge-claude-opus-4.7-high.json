@@ -1,0 +1,8 @@
+{
+  "score": 4,
+  "rationale": "Multi-factor defense-in-depth with regression gating, versioning, rollback, and trade-off ('Prefer KL-regularization... over unconstrained SGD'), though it lacks an explicit assumption ledger or per-claim confidence tags.",
+  "rubric_evidence": [
+    "block promotion on any regression beyond a tight threshold",
+    "Prefer KL-regularization toward the prior safe policy over unconstrained SGD"
+  ]
+}

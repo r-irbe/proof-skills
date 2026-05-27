@@ -1,0 +1,9 @@
+{
+  "score": 2,
+  "rationale": "Recommends recursive DFS that will hit Python's recursion limit on deep graphs and silently swallows detected cycles by returning [] without surfacing the risk or offering trade-offs.",
+  "rubric_evidence": [
+    "Use a recursive DFS",
+    "if the current node exists in it, skip traversal",
+    "if seed in rec_stack: return []  # cycle detected"
+  ]
+}

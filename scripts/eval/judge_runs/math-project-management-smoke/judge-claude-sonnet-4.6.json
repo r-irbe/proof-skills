@@ -1,0 +1,8 @@
+{
+  "score": 4,
+  "rationale": "Surfaces the unknown, requests the specific inputs needed, and previews the full CPM method (ES/EF/LS/LF/float, zero-float chain) demonstrating expert framing without fabricating data.",
+  "rubric_evidence": [
+    "No task definitions, durations, or dependency data exist in this repository",
+    "earliest start, earliest finish, latest start, latest finish, and float for each task, then identify the zero-float chain"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "Contains only natural-language exposition and inline math; no Lean syntax, declarations, or tactics appear.",
+  "rubric_evidence": [
+    "R(s,a,s') = F(s,a,s') + γΦ(s') − Φ(s)"
+  ]
+}

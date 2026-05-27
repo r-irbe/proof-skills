@@ -1,0 +1,8 @@
+{
+  "score": 4,
+  "rationale": "Rigorous statement with integrability assumption, sub-σ-algebra distinction, a.s. qualifier, and proof sketch via defining property and uniqueness, with extension conditions noted; lacks only explicit confidence markers and trade-off framing.",
+  "rubric_evidence": [
+    "unique G-measurable random variable satisfying ∫_A Z dP = ∫_A X dP",
+    "under appropriate integrability (e.g., dominated convergence)"
+  ]
+}

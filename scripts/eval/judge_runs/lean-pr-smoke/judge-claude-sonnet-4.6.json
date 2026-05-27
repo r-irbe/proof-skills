@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "No Lean code or proof produced; only a PR title template with a placeholder name, not a discharged goal.",
+  "rubric_evidence": [
+    "feat(Algebra.Group.Basic): add lemma <YourLemmaName>"
+  ]
+}

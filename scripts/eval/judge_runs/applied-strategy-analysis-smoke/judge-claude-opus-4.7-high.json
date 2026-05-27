@@ -1,0 +1,7 @@
+{
+  "score": 3,
+  "rationale": "Structured multi-factor plan with owners, metrics, WIP caps, and kill/double-down checkpoint, but lacks calibrated confidence markers, trade-off analysis, and an assumption ledger.",
+  "rubric_evidence": [
+    "Cap WIP at 3 active actions per sprint to avoid dilution"
+  ]
+}

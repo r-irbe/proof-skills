@@ -1,0 +1,7 @@
+{
+  "score": 3,
+  "rationale": "Correct framing with owners, KPIs, and a review cadence, but analysis is shallow with no calibrated confidence, no trade-offs, and no explicit assumptions or unknowns.",
+  "rubric_evidence": [
+    "Each initiative needs an owner, a single KPI, and a weekly 15-min review cadence"
+  ]
+}

@@ -1,0 +1,3 @@
+lake exe cache get && lake build Mathlib.Your.Module.Path
+
+The `cache get` downloads prebuilt `.olean` files for all upstream dependencies from Mathlib's cache, avoiding a multi-hour cold rebuild. Then `lake build` compiles only the target module (and any missing deps). Use dot-separated module path matching the file location, e.g. `Mathlib.Topology.Basic` for `Mathlib/Topology/Basic.lean`. If you only want to fetch cache for what's needed, `lake exe cache get Mathlib/Your/Module.lean` accepts file paths. Run from the Mathlib repo root where `lakefile.lean` lives.

@@ -1,0 +1,9 @@
+{
+  "score": 3,
+  "rationale": "Correct framing with a precise operationalized metric (four-fifths rule) and on-point article citations, but lacks calibrated confidence markers, assumption ledger, and trade-off analysis between competing fairness criteria.",
+  "rubric_evidence": [
+    "Annex III, point 4(a)",
+    "four-fifths rule",
+    "Article 10 (data governance, bias examination) and Article 15"
+  ]
+}

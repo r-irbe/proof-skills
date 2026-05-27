@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Provides the cleanest multi-form encoding including an until-operator, SDL form, and prohibition equivalence with explicit temporal precedence, but offers no calibrated confidence markers, assumption ledger, or trade-off discussion among the variants.",
+  "rubric_evidence": [
+    "F( act(a, p) ∧ ¬consent(a, p) )  ≡  O( ¬act(a, p) ∨ consent(a, p) )",
+    "consent(a, p) must temporally precede act(a, p): ◻( act(a, p) → ⦫ consent(a, p) )"
+  ]
+}

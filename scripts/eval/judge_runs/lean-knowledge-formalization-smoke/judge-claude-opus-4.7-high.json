@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "No Lean code produced; gives an RDF/Turtle prose explanation with no Lean syntax at all.",
+  "rubric_evidence": [
+    ":Alice rdf:type :Person"
+  ]
+}

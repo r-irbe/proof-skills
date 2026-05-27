@@ -1,0 +1,1 @@
+I need the paper excerpt or prose claim you want analyzed. Provide the text and I'll extract a formalisable hypothesis by: identifying the main prediction or causal claim, specifying variables (independent/dependent), defining measurement criteria, and expressing it in testable form with explicit parameters and expected relationships.

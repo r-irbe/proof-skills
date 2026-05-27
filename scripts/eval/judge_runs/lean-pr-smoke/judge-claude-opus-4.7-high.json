@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "No Lean code or proof produced; only a bare PR title string with no lemma name or proof content.",
+  "rubric_evidence": [
+    "feat(Algebra/Group/Basic): add lemma"
+  ]
+}

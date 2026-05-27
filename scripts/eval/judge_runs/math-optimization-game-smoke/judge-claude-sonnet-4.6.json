@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Correct primal/dual LP framing with a useful shifting tip, but lacks calibrated confidence markers, trade-off analysis, and an explicit assumption ledger.",
+  "rubric_evidence": [
+    "Strong duality guarantees both LPs share the same optimal value",
+    "Shift A by a constant if needed to ensure v* > 0"
+  ]
+}

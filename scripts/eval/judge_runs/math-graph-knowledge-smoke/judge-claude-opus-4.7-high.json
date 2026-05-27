@@ -1,0 +1,9 @@
+{
+  "score": 3,
+  "rationale": "Correct framing with complexity and a note on recursion-limit avoidance, but single-option recommendation with no cycle-detection alternative or calibrated confidence on the DAG assumption.",
+  "rubric_evidence": [
+    "avoid recursion limits on deep graphs",
+    "safe even if the graph contains cycles despite the DAG assumption",
+    "O(V+E) time and O(V) space"
+  ]
+}

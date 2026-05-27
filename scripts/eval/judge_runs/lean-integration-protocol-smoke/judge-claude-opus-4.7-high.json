@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "Produces a TypeScript interface rather than any Lean code, failing the baseline requirement for Lean output.",
+  "rubric_evidence": [
+    "interface MeasurementEvent {"
+  ]
+}

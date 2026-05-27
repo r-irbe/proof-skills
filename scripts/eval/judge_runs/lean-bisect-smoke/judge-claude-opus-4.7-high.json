@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "Produces no Lean code; only shell/elan bisect guidance and a request for inputs.",
+  "rubric_evidence": [
+    "I can't run this task as-is"
+  ]
+}

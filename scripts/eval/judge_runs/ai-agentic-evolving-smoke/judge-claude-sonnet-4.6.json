@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Strong technically detailed mitigation stack but lacks calibrated confidence markers, trade-off analysis, or assumption ledger expected at higher rubric tiers.",
+  "rubric_evidence": [
+    "interleave them in every minibatch at a fixed ratio (e.g., 10–20%)",
+    "automated rollback if it drops below a threshold"
+  ]
+}

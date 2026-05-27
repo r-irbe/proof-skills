@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Strong breadth across aerospace, HDD, and robotics with correct mitigation framing (notch filters, gain/phase margin), but asserts specific historical incidents (Falcon 9 GTO, Ariane, N-1) as control-structure-interaction cases without sources or confidence qualifiers, which a domain expert would flag.",
+  "rubric_evidence": [
+    "caused the Falcon 9 GTO mission anomalies and contributed to early Ariane and N-1 difficulties",
+    "The fix is always frequency-domain: identify the mechanical mode, then add notch filters"
+  ]
+}

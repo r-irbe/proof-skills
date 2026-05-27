@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "No Lean code produced; entirely a mathematical exposition of MAML bi-level optimization.",
+  "rubric_evidence": [
+    "min_θ Σᵢ ℒᵢ(φᵢ)"
+  ]
+}

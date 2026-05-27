@@ -1,0 +1,7 @@
+{
+  "score": 3,
+  "rationale": "Proof is correct and addresses the subspace-vs-ambient open cover subtlety in a parenthetical, but lacks the calibrated confidence markers and explicit assumption ledger the rubric expects.",
+  "rubric_evidence": [
+    "the relatively open case reduces to this by extending each open set of C to an open set of X"
+  ]
+}

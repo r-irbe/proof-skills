@@ -1,0 +1,5 @@
+I can't run this task as-is — bisecting Lean nightlies requires a specific test file, a known-good and known-bad nightly version range, and a working Lean toolchain (elan), none of which are provided here.
+
+To proceed, share: (1) the test file (or path), (2) the last-known-good and first-known-bad nightly tags (e.g., `nightly-2024-09-01` … `nightly-2024-10-15`), and (3) the expected vs. actual behavior (compile error, elaboration failure, perf regression, exit code).
+
+General approach once provided: use `elan toolchain install leanprover/lean4:nightly-YYYY-MM-DD` per candidate, then `lean +leanprover/lean4:nightly-YYYY-MM-DD test.lean; echo $?` as the bisect predicate, driven by `git bisect run` against the `leanprover/lean4-nightly` tag list (or a simple binary-search shell loop over a sorted tag array from `gh release list -R leanprover/lean4-nightly`). Cache installs and pin `lean-toolchain` per probe to avoid Lake re-downloading mathlib. Report back the first bad nightly and I'll help diff the `CHANGELOG`/commit range.

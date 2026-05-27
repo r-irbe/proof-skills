@@ -1,0 +1,8 @@
+{
+  "score": 2,
+  "rationale": "Single-sentence report with internally suspicious numbers (1,903→588 net decrease, CCVGating 136→0 zeroing an entire module) and no verification, structure, or acceptance criteria.",
+  "rubric_evidence": [
+    "stale 1,903 to actual 588",
+    "CCVGating: 136→0"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "score": 4,
+  "rationale": "Multi-factor analysis with concrete tool citations, trade-offs (pure neural vs hybrid neural-guided MCTS), and scaling justification, but lacks explicit calibrated confidence tags and an assumption ledger.",
+  "rubric_evidence": [
+    "OR-Tools CP-SAT handles millions of variables",
+    "a hybrid (neural-guided MCTS or learned variable ordering atop a symbolic solver) is preferable"
+  ]
+}

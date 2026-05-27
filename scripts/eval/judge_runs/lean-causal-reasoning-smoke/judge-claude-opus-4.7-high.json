@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "No Lean code is produced; the response is prose describing what causal vs correlational specs would look like, with only inline pseudo-snippets and no actual proof.",
+  "rubric_evidence": [
+    "theorem corr : ∀ s : State, p s → q s"
+  ]
+}

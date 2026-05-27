@@ -1,0 +1,7 @@
+{
+  "score": 3,
+  "rationale": "Correctly executes the standard open-cover argument with clean framing, but is shallow: no second-order considerations, no calibrated confidence, and silently assumes the cover is by sets open in X.",
+  "rubric_evidence": [
+    "{U_α} ∩ {X \\ F} is an open cover of X"
+  ]
+}

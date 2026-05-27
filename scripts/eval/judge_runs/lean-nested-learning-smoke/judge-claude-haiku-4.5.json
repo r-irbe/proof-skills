@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "No Lean code present; purely prose and mathematical notation describing meta-learning.",
+  "rubric_evidence": [
+    "θ_t+1 = θ_t - α∇L(θ_t; D_train)"
+  ]
+}

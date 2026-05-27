@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "Provides an informal mathematical description without any Lean code or proof.",
+  "rubric_evidence": [
+    "the infinite-horizon discounted return ∑ᵢ γᵢ r(s, no-op) must be finite"
+  ]
+}

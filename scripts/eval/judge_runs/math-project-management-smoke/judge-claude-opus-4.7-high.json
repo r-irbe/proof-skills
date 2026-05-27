@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Provides a correct worked CPM example with slack identification and asks for actual data, but assumes durations/dependencies without an explicit assumption ledger or calibrated confidence markers.",
+  "rubric_evidence": [
+    "here's a worked example for a typical 5-task formalisation project",
+    "Supply your actual task list (durations + predecessors) for a project-specific answer"
+  ]
+}

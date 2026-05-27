@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "Produces no Lean code; only a prose description of a shell-driven binary search over nightlies.",
+  "rubric_evidence": [
+    "Install a Lean bisect script using `elan toolchain install nightly-YYYY-MM-DD`"
+  ]
+}

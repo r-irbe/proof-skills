@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "Misidentifies the task as a JS/TS build and produces no Lean code, imports, or opens to score.",
+  "rubric_evidence": [
+    "This is a Material-UI tacit project, not Mathlib"
+  ]
+}

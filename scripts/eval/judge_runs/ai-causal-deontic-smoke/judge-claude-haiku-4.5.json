@@ -1,0 +1,8 @@
+{
+  "score": 2,
+  "rationale": "Offers two formulations but the first, O(seek_consent(agent) → act(agent)), is logically incorrect for the stated constraint (it obligates an implication, not consent-before-action), and there are no confidence markers, trade-offs, or assumption ledger.",
+  "rubric_evidence": [
+    "O(seek_consent(agent) → act(agent))",
+    "Use SDL ... or action-based deontics if representing temporal sequencing more precisely"
+  ]
+}

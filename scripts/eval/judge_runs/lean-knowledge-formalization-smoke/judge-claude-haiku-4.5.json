@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "No Lean code produced; only asks clarifying questions instead of attempting a proof.",
+  "rubric_evidence": [
+    "Unable to determine knowledge graph structure without context. Request clarification"
+  ]
+}

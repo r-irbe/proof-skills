@@ -1,0 +1,8 @@
+{
+  "score": 4,
+  "rationale": "Multi-step plan with concrete analogues, named theorems, and stability/perturbation trade-offs covering the major failure modes, though it lacks explicit likely/unlikely confidence tags.",
+  "rubric_evidence": [
+    "Step 4 (stability): Perturb T by a compact operator K",
+    "formalize via the fact that (T+K)|_{X₁} is still Fredholm by Atkinson's theorem"
+  ]
+}

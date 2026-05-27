@@ -1,0 +1,8 @@
+{
+  "score": 4,
+  "rationale": "Expert-level framing with explicit AIC/BIC formulas, BIC preference justification for n=200, residual diagnostics, root checks, and parameter redundancy caveat, but lacks an explicit assumption ledger and calibrated confidence markers for a 5.",
+  "rubric_evidence": [
+    "prefer BIC since it penalizes complexity more heavily",
+    "if an AR root and MA root nearly cancel, reduce order"
+  ]
+}

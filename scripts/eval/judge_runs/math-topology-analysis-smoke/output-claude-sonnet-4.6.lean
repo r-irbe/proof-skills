@@ -1,0 +1,1 @@
+Let X be compact and F ⊆ X closed. Let {U_α} be an open cover of F. Since F is closed, X \ F is open, so {U_α} ∪ {X \ F} is an open cover of X. By compactness of X, it has a finite subcover, say U_{α_1}, …, U_{α_n}, X \ F. Removing X \ F (which covers no point of F), the sets U_{α_1}, …, U_{α_n} still cover F. Thus every open cover of F has a finite subcover, so F is compact. ∎

@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Correct framing around state representation and causal reasoning but analysis is shallow with no second-order effects, no calibrated confidence, and a single-option recommendation without trade-offs.",
+  "rubric_evidence": [
+    "fundamentally a problem of proper state representation and causal reasoning",
+    "recommendation lacks calibrated confidence markers"
+  ]
+}

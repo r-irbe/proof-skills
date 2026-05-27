@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Correct deontic framing with a sensible enforcement bridge and an acknowledged extension path, but the analysis is shallow—no temporal reasoning, no violation/liability chain, no confidence tags, and missing edge cases a domain expert would flag.",
+  "rubric_evidence": [
+    "This captures the conditional obligation without temporal aspects",
+    "extend with temporal logic (e.g., LTL) if you need to reason about stop duration"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Correct framing and notes when neural would apply, but analysis is brief, omits calibrated confidence tags, and gives a single recommendation without a real trade-off matrix.",
+  "rubric_evidence": [
+    "Reserve neural approaches for when symbolic methods timeout",
+    "If your constraint graph is sparse and propagation-efficient"
+  ]
+}

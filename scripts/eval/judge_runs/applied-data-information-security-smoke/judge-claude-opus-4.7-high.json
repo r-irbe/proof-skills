@@ -1,0 +1,7 @@
+{
+  "score": 3,
+  "rationale": "Correct GDPR/CIA framing with relevant articles and retention guidance but lacks calibrated confidence markers, assumption ledger, and trade-off analysis.",
+  "rubric_evidence": [
+    "Retention limited to statutory payroll/tax periods (commonly ~6–10 years depending on jurisdiction)"
+  ]
+}

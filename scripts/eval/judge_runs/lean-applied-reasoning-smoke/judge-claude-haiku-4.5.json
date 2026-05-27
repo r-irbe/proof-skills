@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "No Lean code is produced; the response is prose describing the form E ⊢ C with no Lean syntax.",
+  "rubric_evidence": [
+    "**E ⊢ C**, where E represents evidence"
+  ]
+}

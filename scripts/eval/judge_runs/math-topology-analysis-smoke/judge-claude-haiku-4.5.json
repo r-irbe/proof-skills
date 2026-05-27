@@ -1,0 +1,7 @@
+{
+  "score": 3,
+  "rationale": "Correct domain framing that explicitly handles the subspace-topology formulation, but offers no calibrated confidence, no assumption ledger, and no discussion of edge cases or trade-offs.",
+  "rubric_evidence": [
+    "each Uᵢ = Vᵢ ∩ C for some Vᵢ open in X"
+  ]
+}

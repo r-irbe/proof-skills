@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Correct domain framing with a.s. qualifier, integrability noted, and the defining integral equation cited, but analysis is shallow with no uniqueness argument or sub-σ-algebra distinction and no calibrated confidence markers.",
+  "rubric_evidence": [
+    "This holds almost surely (conditional expectations are defined up to null sets)",
+    "follows directly from the defining integral equation ∫_A E[Z|F] dP = ∫_A Z dP"
+  ]
+}

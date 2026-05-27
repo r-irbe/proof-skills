@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Correct technical framing of aliasing-driven control-structure interaction with a concrete worked example, but mischaracterizes Ziegler–Nichols (a tuning method, not an instability), lacks calibrated confidence markers, and offers mitigations without trade-off analysis.",
+  "rubric_evidence": [
+    "This is the digital implementation of the Ziegler–Nichols instability",
+    "Mitigation requires either anti-aliasing filters... or increasing the sample rate"
+  ]
+}

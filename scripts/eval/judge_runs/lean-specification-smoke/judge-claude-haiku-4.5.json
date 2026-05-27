@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "Declines to produce any output and contains no Lean code, automatically failing the lowest rubric threshold.",
+  "rubric_evidence": [
+    "No theorem statement provided."
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "score": 4,
+  "rationale": "Provides correct iterative DFS with explicit trade-off between visited-set cycle-safety and back-edge detection, plus a Kahn's algorithm pre-check option and O(V+E)/O(V) complexity calibration.",
+  "rubric_evidence": [
+    "maintain a `in_stack` set",
+    "run topological sort (Kahn's algorithm) as a pre-check",
+    "O(V + E) time and O(V) space"
+  ]
+}

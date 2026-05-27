@@ -1,0 +1,7 @@
+{
+  "score": 2,
+  "rationale": "Gives correct ARMA framing and a default recommendation but lacks calibrated confidence, omits stationarity checks (ADF/KPSS), and offers a single-option leaning without trade-off analysis.",
+  "rubric_evidence": [
+    "A typical choice for stationary series this size is ARMA(1,1) or ARMA(2,1)"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "score": 3,
+  "rationale": "Correct conceptual framing of the analogy with one example and a brief breakdown note, but shallow with no calibrated confidence markers and only a single failure-mode caveat.",
+  "rubric_evidence": [
+    "The analogy breaks down at infinite cardinality and convergence subtleties"
+  ]
+}

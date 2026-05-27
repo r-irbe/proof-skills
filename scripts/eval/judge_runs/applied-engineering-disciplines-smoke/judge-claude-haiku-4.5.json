@@ -1,0 +1,8 @@
+{
+  "score": 2,
+  "rationale": "Identifies the right failure-mode family but stays at a single shallow example, omits known mitigations (notch filters, anti-aliasing, bandwidth shaping), and provides no trade-offs, confidence tags, or second-order effects a domain expert would expect.",
+  "rubric_evidence": [
+    "tool chatter (mechanical oscillation) couples into encoder noise",
+    "leading to runaway vibration and loss of precision or damage"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "No Lean code or proof is produced; the response is purely conceptual prose with type-signature fragments and no theorem discharged.",
+  "rubric_evidence": [
+    "A function signature `f : P → Q` is causal"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "No Lean code is produced; the response is prose describing a decomposition schema rather than any Lean proof.",
+  "rubric_evidence": [
+    "Preconditions: enumerated hypotheses"
+  ]
+}

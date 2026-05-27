@@ -1,0 +1,7 @@
+{
+  "score": 4,
+  "rationale": "Surfaces unknowns and asks for additional context that materially affects the conclusion before committing to a plan, aligning with expert-grade behavior though without a full trade-off matrix.",
+  "rubric_evidence": [
+    "I need the SWOT analysis to create the action plan"
+  ]
+}

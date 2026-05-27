@@ -1,0 +1,7 @@
+{
+  "score": 3,
+  "rationale": "Correct framing with impact/confidence/effort per item and a sequencing rationale, but no calibrated confidence tags, no trade-off matrix, and no surfaced unknowns or assumption ledger.",
+  "rubric_evidence": [
+    "Sequence rationale: each task de-risks and reduces the effort of the next."
+  ]
+}

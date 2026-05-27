@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "Contains no Lean code at all, only informal math notation and traceability prose, so it cannot satisfy any proof-quality criterion.",
+  "rubric_evidence": [
+    "**Preconditions (hypotheses):**"
+  ]
+}

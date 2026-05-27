@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Correct framing of standard continual-learning safety techniques but shallow with no trade-offs, thresholds, confidence markers, or failure-mode analysis.",
+  "rubric_evidence": [
+    "Use rehearsal buffers to replay safety-critical scenarios",
+    "Employ Elastic Weight Consolidation (EWC) or similar techniques"
+  ]
+}

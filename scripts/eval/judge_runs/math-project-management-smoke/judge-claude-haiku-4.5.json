@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Correctly identifies the missing inputs needed for CPM and lists them, but offers no trade-off analysis, confidence tags, or partial framing of method.",
+  "rubric_evidence": [
+    "I need the project definition to compute critical path: task names, durations",
+    "Without task durations and dependencies, critical path cannot be determined"
+  ]
+}

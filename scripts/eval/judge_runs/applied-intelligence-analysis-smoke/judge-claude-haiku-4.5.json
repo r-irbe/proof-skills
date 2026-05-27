@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Surfaces trade-offs between multiple SATs (ACH, Devil's Advocacy, Red Team) and requests missing inputs, but lacks calibrated confidence markers and depth on second-order effects.",
+  "rubric_evidence": [
+    "Devil's Advocacy systematically challenges assumptions; Red Team Analysis attacks from adversary perspective",
+    "Specify which SAT you prefer"
+  ]
+}

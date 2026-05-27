@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "No Lean code is produced; the response is informal lattice-theoretic prose with set-builder notation, not Lean syntax.",
+  "rubric_evidence": [
+    "∀(s, o, r) ∈ σ : λ(o) ≤ λ(s)"
+  ]
+}

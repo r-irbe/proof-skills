@@ -1,0 +1,8 @@
+{
+  "score": 2,
+  "rationale": "Produces a procedural pipeline but no actual doc artifact with the mandatory specification structure (no acceptance criteria, invariants, or test conditions) and cites no Lean/Mathlib references.",
+  "rubric_evidence": [
+    "apply this pipeline: (1) strip hedges/qualifiers",
+    "No prose claim was provided"
+  ]
+}

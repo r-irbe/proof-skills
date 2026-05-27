@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "No Lean code is produced; the response gives a mathematical tuple schema in prose rather than any Lean proof.",
+  "rubric_evidence": [
+    "encode it as a tuple ⟨E, W, D, H, s⟩"
+  ]
+}

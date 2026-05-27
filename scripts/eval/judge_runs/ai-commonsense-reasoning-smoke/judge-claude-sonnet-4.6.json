@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Correct domain framing with STRIPS operators and physics simulation grounding but lacks calibrated confidence markers, trade-off analysis between symbolic vs learned approaches, and an explicit assumption ledger.",
+  "rubric_evidence": [
+    "Model the `place(cup, table)` action using STRIPS-style operators",
+    "no \"likely / unlikely / unknown\" tags"
+  ]
+}

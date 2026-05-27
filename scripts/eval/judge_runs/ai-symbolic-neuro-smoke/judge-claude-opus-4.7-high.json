@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Correct domain framing with named solvers and a brief hybrid caveat, but analysis is shallow with no calibrated confidence markers and minimal second-order trade-off discussion.",
+  "rubric_evidence": [
+    "typically solves in milliseconds to seconds",
+    "Only consider a neural component if you need to learn variable/value ordering heuristics"
+  ]
+}

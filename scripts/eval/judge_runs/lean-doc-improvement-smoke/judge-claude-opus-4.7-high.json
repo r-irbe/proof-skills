@@ -1,0 +1,8 @@
+{
+  "score": 4,
+  "rationale": "Comprehensive per-file breakdown with concrete grep command, consistent ≥2,859 figure across all six listed appendices, and explicit build verification, though it lacks an explicit acceptance/invariants section.",
+  "rubric_evidence": [
+    "grep -c \"^theorem\\|^lemma\"",
+    "Verified `pdflatex easci-report-full` compiles green"
+  ]
+}

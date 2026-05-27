@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "No Lean code produced; response is prose plus shell commands, no proof.",
+  "rubric_evidence": [
+    "Build a directed acyclic graph (DAG) of the codebase"
+  ]
+}

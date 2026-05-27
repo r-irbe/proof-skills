@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "Provides only shell build commands and prose guidance, with no Lean source (no `import` or `open` directives) to assess.",
+  "rubric_evidence": [
+    "lake exe cache get && lake build Mathlib.Your.Module.Path"
+  ]
+}

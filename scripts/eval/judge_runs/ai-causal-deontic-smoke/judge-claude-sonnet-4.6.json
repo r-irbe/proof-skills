@@ -1,0 +1,9 @@
+{
+  "score": 3,
+  "rationale": "Correct deontic framing with multiple formulations and an obligation/permission distinction, but introduces a non-standard 'B' before-operator and a questionable temporal form (◇ for possibility), and lacks calibrated confidence and trade-off analysis.",
+  "rubric_evidence": [
+    "O(seek_consent B act)",
+    "□(act(a,t) → ◇(seek_consent(a,t') ∧ t' < t))",
+    "The operator is an **obligation** (O), not merely permission (P) or prohibition (F)"
+  ]
+}

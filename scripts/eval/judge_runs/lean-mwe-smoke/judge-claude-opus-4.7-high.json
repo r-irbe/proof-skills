@@ -1,0 +1,8 @@
+{
+  "score": 5,
+  "rationale": "Minimal idiomatic `#guard_msgs` repro that pins an exact elaborator error on a one-line example with no banned tactics or unnecessary code.",
+  "rubric_evidence": [
+    "error: unknown identifier 'foo'",
+    "example : Nat := foo"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "score": 3,
+  "rationale": "Correct diagram and commuting equation, but minimal exposition with no calibrated confidence tags or surfaced assumptions/unknowns.",
+  "rubric_evidence": [
+    "η_Y ∘ F(f) = G(f) ∘ η_X in D"
+  ]
+}

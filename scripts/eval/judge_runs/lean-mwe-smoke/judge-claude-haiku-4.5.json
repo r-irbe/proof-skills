@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "The provided Lean snippet is broken because `rfl` cannot discharge `x = x + 1`, so the example fails to produce working Lean code and no proof is completed.",
+  "rubric_evidence": [
+    "`rfl` cannot prove `x = x + 1`"
+  ]
+}

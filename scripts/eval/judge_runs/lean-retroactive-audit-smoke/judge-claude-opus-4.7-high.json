@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "No Lean code produced; response is prose about audit methodology only.",
+  "rubric_evidence": [
+    "Run topological sort on the dependency graph"
+  ]
+}

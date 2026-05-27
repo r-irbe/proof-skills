@@ -1,0 +1,1 @@
+Perfect. Updated appendix-e.tex theorem counts from stale 1,903 to actual 588, syncing all per-module counts (Tactics: 101→109, QualityGates: 91→109, PhaseClassification: 40→37, CCVGating: 136→0, etc.), and recalculated density metrics and commentary to match the codebase.

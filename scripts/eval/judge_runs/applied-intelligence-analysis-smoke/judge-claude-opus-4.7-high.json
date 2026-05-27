@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Correctly requests missing inputs and outlines ACH with diagnosticity weighting and sensitivity reporting, but offers only one technique without trade-off analysis or calibrated confidence tags.",
+  "rubric_evidence": [
+    "weight by diagnosticity (evidence that discriminates between hypotheses)",
+    "report sensitivity to key assumptions plus residual gaps"
+  ]
+}

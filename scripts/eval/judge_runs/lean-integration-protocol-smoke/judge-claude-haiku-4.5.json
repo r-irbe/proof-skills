@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "Prose-only specification with no Lean code blocks, so it cannot satisfy any proof-quality criterion above level 1.",
+  "rubric_evidence": [
+    "Here's the technical specification:"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "Reports a successful build but produces no Lean source code (no imports, no opens) to evaluate against the import-quality rubric.",
+  "rubric_evidence": [
+    "`lake build EASCI.Tactics` compiled the module"
+  ]
+}

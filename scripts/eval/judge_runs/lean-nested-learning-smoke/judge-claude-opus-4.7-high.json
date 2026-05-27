@@ -1,0 +1,7 @@
+{
+  "score": 1,
+  "rationale": "Contains no Lean code at all; only mathematical/textual specification of MAML.",
+  "rubric_evidence": [
+    "θ_τ' = θ − α(φ) · ∇_θ L^s(θ; D_τ^s, φ)"
+  ]
+}

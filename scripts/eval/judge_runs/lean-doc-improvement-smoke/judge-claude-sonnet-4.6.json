@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Covers the artifact with concrete per-module deltas and Zipf recalibration, but provides no build/verification anchor and no template structure (goals/invariants/acceptance) so a reader must take the numbers on trust.",
+  "rubric_evidence": [
+    "RL: 162→561, StochCCV: 281→375",
+    "Total in summary table: 1,888→2,859"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "score": 3,
+  "rationale": "Accurate minimax LP formulation with runnable code, but offers a single-option recommendation without trade-offs, confidence markers, or risk discussion (e.g., degeneracy, unbounded shifts).",
+  "rubric_evidence": [
+    "By LP duality v = w (minimax theorem)",
+    "Swap A → -Aᵀ (or flip signs/constraints) to recover x*"
+  ]
+}

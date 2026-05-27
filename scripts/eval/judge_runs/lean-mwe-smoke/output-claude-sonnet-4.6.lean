@@ -1,0 +1,3 @@
+`docs/easci/lean/docs/refactor/wave-42/scratch/b2-elab-probe-a1.lean` passes `lake env lean` with exit 0.
+
+The repro captures the exact elaborator error: `simp` unfolds `LatinRectangle.toBipartiteGraph.Adj` into a four-arm `match` expression but stalls because `v : Fin n ⊕ Fin n` is not yet case-split, leaving a stuck `match` in the goal. `#guard_msgs` pins the unsolved-goals text verbatim. The fix is one `rcases v with j' | s` before `simp`, which lets the elaborator commit to a single `match` arm and close both subgoals.

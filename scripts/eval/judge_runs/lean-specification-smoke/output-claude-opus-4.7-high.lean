@@ -1,0 +1,5 @@
+Preconditions: enumerated hypotheses (typed variables, structural assumptions, side conditions) each given a stable label H1…Hn so they can be cited independently.
+Conclusion: the single proposition asserted to hold whenever H1…Hn are satisfied, stated in closed form with all free variables bound by the preconditions.
+Traceability anchor: a stable identifier (e.g., `thm:<slug>@<version>`) plus a content hash over the normalized statement, enabling cross-references from proofs, lemmas, and downstream theorems to survive renaming or renumbering.
+Example: Theorem `thm:cauchy-complete@1`: H1: `(X,d)` is a metric space; H2: every Cauchy sequence in `X` converges in `X`. Conclusion: `X` is complete. Anchor: `thm:cauchy-complete@1#sha256:…`.
+Keep preconditions minimal (no redundant hypotheses), conclusion atomic (split conjunctions into separate theorems when reuse matters), and the anchor immutable across edits that don't change semantic content.
