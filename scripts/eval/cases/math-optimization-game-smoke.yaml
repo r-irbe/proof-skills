@@ -1,0 +1,18 @@
+id: math-optimization-game-smoke
+title: "Min-max game-theoretic optimization"
+skill: math-optimization-game
+difficulty: easy
+input:
+  prompt: |
+    Set up a min-max optimization for a two-player zero-sum game with payoff matrix A.
+  expected_output_substring: |
+    Solve `min_x max_y x^T A y` over the simplexes — by the minimax theorem this is equivalent to `max_y min_x x^T A y` when A is finite.
+expected:
+  contains:
+    - "min[- ]?max|minimax"
+    - "simplex"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [math, game-theory, optimization]

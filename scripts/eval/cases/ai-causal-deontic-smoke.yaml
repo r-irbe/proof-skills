@@ -1,0 +1,17 @@
+id: ai-causal-deontic-smoke
+title: "Encode a deontic constraint"
+skill: ai-causal-deontic
+difficulty: easy
+input:
+  prompt: |
+    Encode the constraint 'an agent MUST seek consent before acting' as a deontic operator.
+  expected_output_substring: |
+    Use the obligation modality O(p) to write `O(consent_before(action))` — a deontic operator captures the normative requirement separately from causal capability.
+expected:
+  contains:
+    - "deontic|obligation|O\\("
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [ai, deontic, causal]

@@ -1,6 +1,7 @@
 ---
 name: mathlib-pr
 description: REDIRECT — Mathlib PR workflow has been merged into the agnostic `lean-pr` SKILL, with Mathlib-specific conventions extracted to `references/upstream/mathlib4-pr.md` (W4 Wave 2 / move A1 of lab/design/07-cluster-workflow.md). This stub preserves the slug for Ctrl-F discoverability and incoming cross-references (per the zero-deletions Chesterton protocol).
+tier: "warm"
 ---
 
 # SK-30: Mathlib PR (REDIRECT)

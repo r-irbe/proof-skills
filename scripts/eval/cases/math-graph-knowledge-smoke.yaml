@@ -1,0 +1,18 @@
+id: math-graph-knowledge-smoke
+title: "Directed knowledge graph traversal"
+skill: math-graph-knowledge
+difficulty: easy
+input:
+  prompt: |
+    Implement a depth-first traversal of a directed knowledge graph from a seed node, respecting acyclicity.
+  expected_output_substring: |
+    Use `Quiver` from Mathlib; DFS with a visited set; assume `[IsTrans] [IsAntisymm]` on the reachability relation to enforce DAG semantics.
+expected:
+  contains:
+    - "DFS|depth[- ]?first|traversal"
+    - "Quiver|DAG|acyclic"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [math, graph, DAG]

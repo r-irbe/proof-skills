@@ -1,0 +1,17 @@
+id: lean-integration-protocol-smoke
+title: "Cross-module bridge contract"
+skill: lean-integration-protocol
+difficulty: easy
+input:
+  prompt: |
+    Specify the bridge contract between `MeasureBridge` and a downstream `Information` module.
+  expected_output_substring: |
+    Use `bridge_validator.py` to assert that every public lemma exported from `MeasureBridge` resolves via its declared signature in `Information.lean`; the bridge contract pins the integration surface so downstream proofs don't drift.
+expected:
+  contains:
+    - "bridge|integration|contract"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [lean, integration]

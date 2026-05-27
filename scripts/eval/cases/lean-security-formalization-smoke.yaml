@@ -1,0 +1,17 @@
+id: lean-security-formalization-smoke
+title: "BLP confidentiality property"
+skill: lean-security-formalization
+difficulty: easy
+input:
+  prompt: |
+    Formalise the Bell-LaPadula no-read-up property.
+  expected_output_substring: |
+    State `NoReadUp (s : Subject) (o : Object) := classification(o) ≤ clearance(s) → can_read(s, o)` — read access requires the subject's clearance to dominate the object's classification.
+expected:
+  contains:
+    - "BLP|Bell[- ]LaPadula|no[- ]?read[- ]?up|clearance"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [lean, security, BLP]

@@ -1,0 +1,19 @@
+id: math-algebra-category-smoke
+title: "Functor + natural transformation"
+skill: math-algebra-category
+difficulty: easy
+input:
+  prompt: |
+    State the naturality square for a natural transformation η between functors F, G : C ⥤ D.
+  expected_output_substring: |
+    Naturality: for every morphism f : X ⟶ Y in C, the square commutes: `G(f) ∘ η_X = η_Y ∘ F(f)` — `Mathlib.CategoryTheory.NatTrans.naturality`.
+expected:
+  contains:
+    - "naturality|natural transformation"
+    - "functor|Functor|morphism"
+    - "commut"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [math, algebra, category]

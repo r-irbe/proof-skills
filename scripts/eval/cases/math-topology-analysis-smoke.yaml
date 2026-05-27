@@ -1,0 +1,18 @@
+id: math-topology-analysis-smoke
+title: "Open cover compactness"
+skill: math-topology-analysis
+difficulty: easy
+input:
+  prompt: |
+    Prove that a closed subset of a compact topological space is compact via the open-cover characterisation.
+  expected_output_substring: |
+    Take an open cover of the closed set; extend with the complement (open since the set is closed); extract a finite subcover from the compact ambient space; the original cover gives a finite subcover by intersecting.
+expected:
+  contains:
+    - "compact"
+    - "open cover|cover"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [math, topology, compact]

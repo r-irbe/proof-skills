@@ -1,0 +1,17 @@
+id: applied-legal-reasoning-smoke
+title: "Deontic legal-rule formalization"
+skill: applied-legal-reasoning
+difficulty: easy
+input:
+  prompt: |
+    Formalize the rule 'A driver must stop at a red light' for downstream reasoning.
+  expected_output_substring: |
+    Use deontic logic: `O(stop_at_red(driver))` — Obligation operator. Distinguish from `P(stop_at_red(driver))` (Permission) and `F(¬stop_at_red(driver))` (Forbidden).
+expected:
+  contains:
+    - "deontic|O\\(|obligation"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [applied, legal, deontic]

@@ -1,0 +1,18 @@
+id: math-measure-probability-smoke
+title: "Conditional expectation symmetry"
+skill: math-measure-probability
+difficulty: easy
+input:
+  prompt: |
+    Recall the linearity property of conditional expectation E[X | F].
+  expected_output_substring: |
+    `condExp` is linear: `condExp m (μ : Measure Ω) (X + Y) = condExp m μ X + condExp m μ Y` — `Mathlib.Probability.ConditionalExpectation.Basic` proves this under integrability.
+expected:
+  contains:
+    - "condExp|conditional expectation"
+    - "linear|linearity|\\\\+"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [math, measure, probability]

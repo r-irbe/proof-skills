@@ -1,0 +1,19 @@
+id: applied-data-information-security-smoke
+title: "Confidentiality classification"
+skill: applied-data-information-security
+difficulty: easy
+input:
+  prompt: |
+    Classify a database column 'salary' under CIA + GDPR.
+  expected_output_substring: |
+    CIA: high `Confidentiality`, low `Integrity` risk, low `Availability` risk. GDPR: personal data, not special-category. Apply column-level encryption + role-gated access.
+expected:
+  contains:
+    - "CIA|confidentiality"
+    - "GDPR|personal data"
+    - "encryption|access control"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [applied, security, gdpr]

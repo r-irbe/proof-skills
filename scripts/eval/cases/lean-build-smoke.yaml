@@ -1,0 +1,19 @@
+id: lean-build-smoke
+title: "Targeted Lake build with cache"
+skill: lean-build
+difficulty: easy
+input:
+  prompt: |
+    Build a single Mathlib module after a clean state.
+  expected_output_substring: |
+    Run `lake exe cache get` then `lake build Mathlib.Algebra.Group.Basic -q --log-level=info`.
+expected:
+  contains:
+    - "lake exe cache get"
+    - "lake build"
+    - "-q"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [lean, lake, build]

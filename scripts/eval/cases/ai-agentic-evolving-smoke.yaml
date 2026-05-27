@@ -1,0 +1,18 @@
+id: ai-agentic-evolving-smoke
+title: "Continual learner safety guard"
+skill: ai-agentic-evolving
+difficulty: easy
+input:
+  prompt: |
+    An agent learns continually from new tasks. Guard against catastrophic forgetting of safety constraints.
+  expected_output_substring: |
+    Pin safety constraints as `hard_invariants` outside the learnable parameter set — continual updates may rewire the policy but the guard layer is non-learnable.
+expected:
+  contains:
+    - "hard[_ -]?invariant|safety constraint"
+    - "continual|catastrophic forgetting"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [ai, agentic, continual]

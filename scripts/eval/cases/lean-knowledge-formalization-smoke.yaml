@@ -1,0 +1,17 @@
+id: lean-knowledge-formalization-smoke
+title: "Knowledge graph node type"
+skill: lean-knowledge-formalization
+difficulty: easy
+input:
+  prompt: |
+    Type a node in a formalised knowledge graph.
+  expected_output_substring: |
+    Define `KGNode := { id : Nat, type : NodeType, properties : List (String × Value) }` — typed properties bound the schema and let downstream reasoning use type-checked accessors.
+expected:
+  contains:
+    - "KGNode|knowledge graph|node type"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [lean, knowledge]

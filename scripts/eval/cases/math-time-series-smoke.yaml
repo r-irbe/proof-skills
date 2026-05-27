@@ -1,0 +1,18 @@
+id: math-time-series-smoke
+title: "ARMA model order selection"
+skill: math-time-series
+difficulty: easy
+input:
+  prompt: |
+    Select the order (p, q) of an ARMA model for a 200-point time series.
+  expected_output_substring: |
+    Compute AIC and BIC over a grid `(p, q) ∈ {0,...,5}²`; pick the order minimising BIC (BIC penalises complexity more than AIC, prefer for parsimony with n=200).
+expected:
+  contains:
+    - "ARMA|AIC|BIC"
+    - "order selection|grid"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [math, time-series]

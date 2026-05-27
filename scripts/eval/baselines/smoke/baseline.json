@@ -1,11 +1,121 @@
 {
   "cases": {
+    "ai-agentic-evolving-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "ai-causal-deontic-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "ai-commonsense-reasoning-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "ai-high-stakes-verifiable-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "ai-symbolic-neuro-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "applied-data-information-security-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "applied-engineering-disciplines-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "applied-intelligence-analysis-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "applied-legal-reasoning-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "applied-strategy-analysis-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
     "lean-add-comm-multi": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
     },
+    "lean-ai-formalization-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-applied-reasoning-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-bisect-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-build-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-causal-reasoning-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-doc-improvement-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-doc-requirements-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-integration-protocol-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-knowledge-formalization-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
     "lean-mwe-minimize": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-mwe-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-nested-learning-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-pr-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
@@ -20,7 +130,72 @@
       "passed": true,
       "score": 1.0
     },
+    "lean-retroactive-audit-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-security-formalization-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
     "lean-setup-import": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-specification-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "math-algebra-category-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "math-graph-knowledge-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "math-measure-probability-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "math-nonlinear-dynamics-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "math-optimization-game-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "math-product-management-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "math-project-management-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "math-strategy-studio-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "math-time-series-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "math-topology-analysis-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0

@@ -1,0 +1,18 @@
+id: math-nonlinear-dynamics-smoke
+title: "Lyapunov function direct method"
+skill: math-nonlinear-dynamics
+difficulty: easy
+input:
+  prompt: |
+    Use the Lyapunov direct method to prove an equilibrium is stable for a nonlinear ODE.
+  expected_output_substring: |
+    Find V : ℝⁿ → ℝ positive definite with `V(0) = 0` and `dV/dt ≤ 0` along trajectories — Lyapunov's theorem then gives stability at the origin without solving the ODE.
+expected:
+  contains:
+    - "Lyapunov"
+    - "positive definite|V\\(0\\) ?=|equilibrium|stability"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [math, nonlinear, Lyapunov]

@@ -1,0 +1,18 @@
+id: ai-commonsense-reasoning-smoke
+title: "Frame-problem dispatch"
+skill: ai-commonsense-reasoning
+difficulty: easy
+input:
+  prompt: |
+    An agent must conclude that putting a cup on the table does not move the table.
+  expected_output_substring: |
+    Use a frame axiom set: `∀ a o, action(a) ∧ ¬affects(a, o) → state(o) unchanged` — explicit non-effects close the frame problem in commonsense.
+expected:
+  contains:
+    - "frame axiom|frame problem"
+    - "unchanged|persist"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [ai, commonsense, frame]

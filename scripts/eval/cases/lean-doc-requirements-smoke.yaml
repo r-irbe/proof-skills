@@ -1,0 +1,18 @@
+id: lean-doc-requirements-smoke
+title: "Claim → hypothesis extraction"
+skill: lean-doc-requirements
+difficulty: easy
+input:
+  prompt: |
+    Extract a formalisable hypothesis from a paper's prose claim.
+  expected_output_substring: |
+    Identify the implicit quantifier scope, type the variables (e.g. `n : ℕ`, `μ : Measure ℝ`), and write the hypothesis as a Lean `theorem` statement with the paper anchor `[T<chapter>.<index>]` in a doc comment.
+expected:
+  contains:
+    - "theorem|hypothesis"
+    - "anchor|paper|chapter"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [lean, doc-requirements]

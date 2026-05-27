@@ -1,6 +1,7 @@
 ---
 name: mathlib-review
 description: REDIRECT — Mathlib PR review standards (attributes API, simp squeezing, normal forms, transparency, file size, naming/style URLs) have been demoted to `references/upstream/mathlib4-review.md`. Generic Lean proof review lives in `lean-proof-review`. This stub preserves the slug for Ctrl-F discoverability and incoming cross-references (per the zero-deletions Chesterton protocol).
+tier: "warm"
 ---
 
 # SK-31: Mathlib PR Review (REDIRECT)

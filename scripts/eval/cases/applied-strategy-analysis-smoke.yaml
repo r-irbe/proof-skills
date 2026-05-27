@@ -1,0 +1,17 @@
+id: applied-strategy-analysis-smoke
+title: "SWOT-to-actions translation"
+skill: applied-strategy-analysis
+difficulty: easy
+input:
+  prompt: |
+    Translate a SWOT analysis into a concrete 90-day action plan.
+  expected_output_substring: |
+    Map SO (use Strengths on Opportunities) → growth actions; WO (Weaknesses limiting Opportunities) → capability builds; ST (Strengths neutralising Threats) → moat reinforcement; WT (Weaknesses ∩ Threats) → contingency plans.
+expected:
+  contains:
+    - "SWOT|SO|WO|ST|WT"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [applied, strategy]

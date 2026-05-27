@@ -1,6 +1,7 @@
 ---
 name: lean-research-types
 description: REDIRECT — the typed research protocols (M/T/L/S/D/X/E) previously hosted here have been folded into `lean-research` Part 9. This stub preserves the slug for Ctrl-F discoverability and incoming cross-references (per the zero-deletions Chesterton protocol).
+tier: "warm"
 ---
 
 # SK-38: Typed Research Protocols (REDIRECT)

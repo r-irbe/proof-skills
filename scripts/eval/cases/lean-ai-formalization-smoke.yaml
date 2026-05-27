@@ -1,0 +1,17 @@
+id: lean-ai-formalization-smoke
+title: "Reward-hacking formal property"
+skill: lean-ai-formalization
+difficulty: easy
+input:
+  prompt: |
+    State the formal property that a reward function must not be hackable by a no-op action.
+  expected_output_substring: |
+    Define `NoNoOpHack (R : Action → ℝ) := ∀ a, noop(a) → R(a) ≤ R_baseline` — the reward must not strictly exceed the baseline on a no-op action.
+expected:
+  contains:
+    - "NoNoOpHack|reward|no[- ]?op"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [lean, ai, reward]

@@ -1,6 +1,7 @@
 ---
 name: mathlib-build
 description: REDIRECT — Lake build content has been generalised and moved to the new `lean-build` skill (W4 Wave 2 / move A3 of lab/design/07-cluster-workflow.md). The Mathlib-specific `lake exe cache get` note survives in the new skill. This stub preserves the slug for Ctrl-F discoverability and incoming cross-references (per the zero-deletions Chesterton protocol).
+tier: "warm"
 ---
 
 # SK-29: Building Mathlib (REDIRECT)

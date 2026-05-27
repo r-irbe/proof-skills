@@ -1,0 +1,19 @@
+id: lean-bisect-smoke
+title: "Bisect a Lean nightly regression"
+skill: lean-bisect
+difficulty: easy
+input:
+  prompt: |
+    Bisect to find which Lean nightly introduced a regression in a self-contained test file.
+  expected_output_substring: |
+    Run `script/lean-bisect /tmp/test.lean nightly-2024-01-01..nightly-2024-06-01 --timeout 30` after confirming both endpoints differ.
+expected:
+  contains:
+    - "script/lean-bisect"
+    - "nightly"
+    - "--timeout"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [lean, bisect]

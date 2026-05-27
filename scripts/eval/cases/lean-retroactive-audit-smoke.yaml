@@ -1,0 +1,17 @@
+id: lean-retroactive-audit-smoke
+title: "RETRO dependency-wave scheduling"
+skill: lean-retroactive-audit
+difficulty: easy
+input:
+  prompt: |
+    Schedule a retroactive audit of an existing codebase using dependency waves.
+  expected_output_substring: |
+    Use `retro_recon.py` to compute the import DAG, partition into topological levels, and audit one level per wave starting from leaves (W0 = no dependencies) up to roots (entry points).
+expected:
+  contains:
+    - "retro_recon|dependency wave|topological"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [lean, retroactive-audit]

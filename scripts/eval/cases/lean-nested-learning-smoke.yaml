@@ -1,0 +1,17 @@
+id: lean-nested-learning-smoke
+title: "Nested learner protocol"
+skill: lean-nested-learning
+difficulty: easy
+input:
+  prompt: |
+    Specify a two-level nested learner where the inner level is a gradient step and the outer is a meta-step.
+  expected_output_substring: |
+    Type as `MetaLearner (InnerLearner θ)` with the inner θ as parameter and outer adapting θ across tasks — the nested signature makes the meta-objective explicit.
+expected:
+  contains:
+    - "MetaLearner|meta-learner|nested"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [lean, nested, learning]

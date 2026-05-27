@@ -1,0 +1,18 @@
+id: lean-doc-improvement-smoke
+title: "Metric sync between paper + code"
+skill: lean-doc-improvement
+difficulty: easy
+input:
+  prompt: |
+    Sync the theorem count claimed in the paper appendix with the codebase.
+  expected_output_substring: |
+    Run `python3 scripts/metric_sync.py` to count `^theorem|^lemma` per module and update the paper's `\description` list and the contribution-inventory totals.
+expected:
+  contains:
+    - "metric_sync|theorem count"
+    - "\\\\description|paper"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [lean, doc-improvement]

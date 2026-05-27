@@ -1,0 +1,17 @@
+id: lean-applied-reasoning-smoke
+title: "Investigative reasoning formal step"
+skill: lean-applied-reasoning
+difficulty: easy
+input:
+  prompt: |
+    Formalise one step of an investigative reasoning chain (evidence → conclusion).
+  expected_output_substring: |
+    Step type: `InfRule (premises : List Evidence) (conclusion : Hypothesis) : EvidenceWeight` — every inferential step carries an explicit weight so the final hypothesis has a traceable confidence chain.
+expected:
+  contains:
+    - "InfRule|inference|Evidence|Hypothesis"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [lean, applied, investigation]

@@ -1,6 +1,7 @@
 ---
 name: nightly-testing
 description: REDIRECT — Lean/Mathlib nightly testing infrastructure notes (branches, tags, Zulip, mathlib4-nightly-testing fork) have been demoted to `references/upstream/lean-nightly-infrastructure.md`. This stub preserves the slug for Ctrl-F discoverability and incoming cross-references (per the zero-deletions Chesterton protocol).
+tier: "warm"
 ---
 
 # SK-34: Lean / Mathlib Nightly Testing (REDIRECT)

@@ -1,0 +1,18 @@
+id: math-strategy-studio-smoke
+title: "Analogy-based proof strategy"
+skill: math-strategy-studio
+difficulty: easy
+input:
+  prompt: |
+    Use an analogy from finite-dimensional linear algebra to plan a proof in functional analysis.
+  expected_output_substring: |
+    Match the finite-dim concept to its infinite-dim analogue: matrix → bounded operator, rank → essential rank, kernel → closed kernel; transfer the proof idea, then verify each step lifts under the operator topology.
+expected:
+  contains:
+    - "analog(y|ue)"
+    - "bounded operator|functional analysis|infinite[- ]?dim"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [math, strategy]

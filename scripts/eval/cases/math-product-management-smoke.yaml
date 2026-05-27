@@ -1,0 +1,18 @@
+id: math-product-management-smoke
+title: "Roadmap prioritisation rubric"
+skill: math-product-management
+difficulty: easy
+input:
+  prompt: |
+    Prioritise three formalisation tasks against impact, confidence, and effort.
+  expected_output_substring: |
+    Use the RICE / ICE rubric: `score = (Impact × Confidence) / Effort`. Rank tasks by score, pick top-1 for the next sprint, push the rest to the backlog.
+expected:
+  contains:
+    - "RICE|ICE|prioritis|prioritiz"
+    - "backlog|sprint"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [math, product-management]

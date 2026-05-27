@@ -1,0 +1,18 @@
+id: math-project-management-smoke
+title: "Critical path identification"
+skill: math-project-management
+difficulty: easy
+input:
+  prompt: |
+    Compute the critical path through a 5-task formalisation project.
+  expected_output_substring: |
+    Build the task DAG with `(duration, predecessors)` per task; forward pass for earliest start; backward pass for latest start; critical path = tasks with zero slack.
+expected:
+  contains:
+    - "critical path|slack|DAG"
+    - "forward|backward"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [math, project-management]

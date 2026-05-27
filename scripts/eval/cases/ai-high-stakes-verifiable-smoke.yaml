@@ -1,0 +1,19 @@
+id: ai-high-stakes-verifiable-smoke
+title: "EU AI Act risk gating"
+skill: ai-high-stakes-verifiable
+difficulty: easy
+input:
+  prompt: |
+    Classify a CV-screening system under the EU AI Act and identify the verifiable property to enforce.
+  expected_output_substring: |
+    Classify as `high_risk` (Annex III — employment) → enforce `verifiable_property: equalised_odds(protected_attr) within 0.05` and require human oversight per Art. 14.
+expected:
+  contains:
+    - "high[ _-]?risk|Annex III"
+    - "equalised[ _]?odds|disparate impact|fairness"
+    - "Art\\.? ?14|oversight"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [ai, high-stakes, verifiable]

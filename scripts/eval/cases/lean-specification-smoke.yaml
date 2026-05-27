@@ -1,0 +1,18 @@
+id: lean-specification-smoke
+title: "Theorem-statement decomposition"
+skill: lean-specification
+difficulty: easy
+input:
+  prompt: |
+    Decompose a complex theorem statement into preconditions, conclusion, and traceability anchor.
+  expected_output_substring: |
+    Pull preconditions to top-level `have` hypotheses; state the conclusion as a single proposition; add a paper anchor `[T<chapter>.<index>]` and `source_spec` pointing to the spec file in `specs/<domain>/<thm>.md`.
+expected:
+  contains:
+    - "theorem|hypothesis|conclusion"
+    - "anchor|spec"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [lean, specification]

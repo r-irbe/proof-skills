@@ -1,0 +1,17 @@
+id: applied-intelligence-analysis-smoke
+title: "Structured Analytic Technique"
+skill: applied-intelligence-analysis
+difficulty: easy
+input:
+  prompt: |
+    Apply a Structured Analytic Technique (SAT) to evaluate a competing hypothesis claim.
+  expected_output_substring: |
+    Use `Analysis of Competing Hypotheses (ACH)`: list all hypotheses, list evidence rows, score consistency, eliminate inconsistent hypotheses, retain the most consistent — robust against confirmation bias.
+expected:
+  contains:
+    - "ACH|Analysis of Competing Hypotheses|SAT"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [applied, intelligence, ACH]

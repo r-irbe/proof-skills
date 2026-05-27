@@ -1,6 +1,60 @@
 ---
-name: lean-build
-description: Build Lean 4 projects with Lake. Use when validating Lean changes, choosing targeted build commands, running `lake env lean`, debugging stale build artifacts, or preparing CI-quality local checks. Applies to any Lake-managed project (Mathlib, Cslib, EASCI, downstream).
+name: "lean-build"
+description: |
+  USE FOR: building Lean 4 projects with Lake, validating Lean changes with `lake env lean`, picking targeted build commands (`lake build <Module>`), resolving stale build artifacts via `lake clean` + `lake exe cache get`, preparing CI-quality local checks. Applies to any Lake-managed project (Mathlib, Cslib, EASCI, downstream).
+  DO NOT USE FOR: bisecting which Lean version caused a regression (use @lean-bisect), minimising an error to a bug-report repro (use @lean-mwe), repairing the toolchain itself (use @lean-setup), writing or fixing the proof (use @lean-proof).
+  TRIGGERS: build, lake, lake env lean, lake exe cache get, stale artifacts, lake clean, build error, CI prep.
+tier: "warm"
+runtime_targets: [copilot-cli, claude-code]
+dispatch_targets: []
+handoffs:
+  predecessors:
+    - "skill:lean-setup"
+    - "skill:lean-proof"
+  successors:
+    - "skill:lean-mwe"
+    - "skill:lean-bisect"
+    - "skill:lean-pr"
+metadata:
+  version: "0.2.0"
+  source_spec: "skills/_overrides/lean-build/SKILL.md"
+  last_reviewed: "2026-05-27"
+  migrated_from: "pre-v2 vendor mirror"
+---
+
+# lean-build
+
+> Agnostic Lake-build skill, mirrored from `vendor/leanprover-skills`
+> with the Mathlib-specific `lake exe cache get` note retained. The
+> Mathlib-only `mathlib-build` slug now redirects here (W4 Wave 1).
+
+## Routing
+
+- **USE FOR:** running `lake env lean`, `lake build <Module>`, `lake exe cache get`, `lake clean`, `lake exe runLinter`, `lake update <dep>` — including merge-conflict resolution, targeted iteration, and CI-quality local checks across any Lake-managed project.
+- **DO NOT USE FOR:** bisecting a Lean version-pin regression (use `@lean-bisect`); minimising a build failure to a self-contained MWE (use `@lean-mwe`); repairing or installing the Lean toolchain itself (use `@lean-setup`); fixing the underlying proof error that the build surfaces (use `@lean-proof`).
+- **TRIGGERS:** build, lake, lake env lean, lake exe cache get, stale artifacts, lake clean, "build is slow", "CI failed locally", CI prep.
+
+## Workflow
+
+1. **Pick scope** — single-file (`lake env lean MyFile.lean`), targeted module (`lake build <Module>.Foo.Bar -q --log-level=info`), or full suite (only when broad / pre-CI). Default to targeted iteration to save tokens.
+2. **Fetch cache** — for Mathlib projects, `lake exe cache get` (or `lake exe cache get!` if cache appears corrupt); for non-Mathlib Lake projects, skip this step (no shared cache).
+3. **Build + parse** — run with `-q --log-level=info`. If unexpected results appear, run `lake clean` + cache-get + re-build before treating the diagnostic as real.
+4. **Hand off the diagnostic** — proof failures → `@lean-proof`; toolchain version mismatch → `@lean-setup`; minimisation needed → `@lean-mwe`; suspect upstream regression → `@lean-bisect`; ready-to-file → `@lean-pr`.
+
+## Recovery & STOP
+
+- Build result looks impossible (e.g. ghost errors, missing oleans for a built module) → `lake clean`; for Mathlib, also `lake exe cache get`; re-run targeted build once. If still impossible, STOP and re-anchor.
+- Build hangs > 10 min on a small target → STOP, suspect dependency cycle or runaway elaboration; hand to `@lean-mwe` to isolate.
+- `lake update` accidentally invoked mid-iteration → STOP, `git diff lake-manifest.json`; revert unless the task is explicitly a dependency update.
+- Bare `lean MyFile.lean` invoked instead of `lake env lean` → STOP, results are unreliable; re-run inside the Lake env.
+
+## Handoffs
+
+- **Predecessors / successors**: see FM `handoffs`. Typical inbound: `@lean-setup` (after a clean install) or `@lean-proof` (after a tactic write). Typical outbound: `@lean-mwe` / `@lean-bisect` / `@lean-pr` for any failure that survives a clean rebuild.
+- **Sister skill:** `@lean-setup` for toolchain repair (which often manifests as build failures).
+- **REDIRECT pointer:** `mathlib-build` slug routes here (preserved per Chesterton-protocol).
+- **Source notes:** vendor mirror at `vendor/leanprover-skills/skills/lean-build/SKILL.md`.
+
 ---
 
 # Building Lean Projects with Lake

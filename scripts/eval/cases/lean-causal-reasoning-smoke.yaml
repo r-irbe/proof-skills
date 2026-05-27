@@ -1,0 +1,17 @@
+id: lean-causal-reasoning-smoke
+title: "Causal vs correlational claim"
+skill: lean-causal-reasoning
+difficulty: easy
+input:
+  prompt: |
+    Distinguish a causal from a correlational claim in a Lean specification.
+  expected_output_substring: |
+    Wrap the causal claim as `Causes (X) (Y)` (a typed relation), not just `X ↔ Y` — correlation in Lean is `↔`, causation is a primitive relation with intervention semantics.
+expected:
+  contains:
+    - "Causes|causal|intervention"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [lean, causal]

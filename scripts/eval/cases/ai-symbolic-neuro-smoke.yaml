@@ -1,0 +1,18 @@
+id: ai-symbolic-neuro-smoke
+title: "Hybrid neuro-symbolic dispatch"
+skill: ai-symbolic-neuro
+difficulty: easy
+input:
+  prompt: |
+    Decide whether to use a symbolic rule engine or a neural module for arithmetic constraint satisfaction over 100 variables.
+  expected_output_substring: |
+    Route to the symbolic SAT/SMT solver — neural modules don't give certificates and integer constraints are amenable to deterministic search. Use the neural module only for soft heuristics.
+expected:
+  contains:
+    - "symbolic|SAT|SMT"
+    - "neural"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [ai, hybrid, symbolic]

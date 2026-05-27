@@ -1,0 +1,18 @@
+id: lean-mwe-smoke
+title: "Wrap an error in #guard_msgs"
+skill: lean-mwe
+difficulty: easy
+input:
+  prompt: |
+    Create a minimal repro for a Lean elaborator error using #guard_msgs.
+  expected_output_substring: |
+    Wrap the failing example in `#guard_msgs` capturing the exact error text, then run `lake exe minimize YourFile.lean`.
+expected:
+  contains:
+    - "#guard_msgs"
+    - "lake exe minimize"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [lean, mwe, minimize]
