@@ -129,6 +129,35 @@ A negative-control case (`contains: [goodbye]` but output is `hello`)
 correctly exits `1` and renders a `## Failures` section in `summary.md`
 listing the missing pattern.
 
+## Baseline gate (`baseline.py`)
+
+The deterministic suite is hard-gated against a committed baseline
+at `scripts/eval/baselines/smoke/baseline.json`. This is a minimal
+subset of the design in `lab/design/01-eval-framework.md §5`,
+covering only pass/score (no cost, latency, or LLM-judge fields —
+those are unblocked when W8 Phase 2 lands).
+
+```sh
+# After run_eval.py has populated ./out/eval-test/
+python3 scripts/eval/baseline.py --run-dir ./out/eval-test --mode diff
+
+# Refresh the baseline after intentionally expanding the case set
+python3 scripts/eval/baseline.py --run-dir ./out/eval-test --mode write
+# (then commit scripts/eval/baselines/smoke/baseline.json under PR review)
+```
+
+The diff exits 1 on:
+- **hard regression** (baseline passed → run failed), or
+- **score regression** (baseline score > run score on a passing case).
+
+It reports (but does not block on) *positive regressions* — cases
+that were red in the baseline and are now green. Refresh the baseline
+to lock the improvement in.
+
+This script powers the `eval-smoke` CI workflow
+(`.github/workflows/eval-smoke.yml`) which runs on every push +
+pull request and blocks merges on regressions.
+
 ## What's deliberately missing
 
 This is a prototype; the following belong in the real runner, not here:
@@ -139,6 +168,7 @@ This is a prototype; the following belong in the real runner, not here:
 - per-rep variance buckets, pairwise outcomes for ELO
 - JSONL event stream (`run.jsonl`) and OTLP spans
 - parallelism, retries, timeouts
+- nightly / effort-sweep workflows (require API budget)
 
 See `lab/design/03-multi-model-runner.md` for what the production
 runner will look like.

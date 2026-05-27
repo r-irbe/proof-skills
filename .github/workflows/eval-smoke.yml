@@ -1,0 +1,64 @@
+name: eval-smoke
+
+# Minimal subset of the design in lab/design/01-eval-framework.md §8.2.
+# Smoke variant of the eval framework: deterministic grader only,
+# no LLM dispatch, no lean-build dispatch. Runs the 5 cases under
+# scripts/eval/cases/ against the committed baseline in
+# scripts/eval/baselines/smoke/baseline.json.
+#
+# Hard-gates the PR if any previously-passing case starts failing,
+# or if any case's score drops below its baseline value.
+#
+# W8 Phase 1 (deterministic + baseline) — no API keys required.
+# Phase 2 (LLM judge) + Phase 3 (multi-model) + the full Phase 4
+# matrix (eval-nightly.yml, eval-effort-sweep.yml) remain blocked
+# on the API budget per MASTER-PLAN.md §4.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: Deterministic eval suite (baseline gate)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install PyYAML (runner uses fallback parser without it)
+        run: python -m pip install --upgrade pip pyyaml
+
+      - name: Run deterministic eval suite
+        run: |
+          python3 scripts/eval/run_eval.py \
+            --cases 'scripts/eval/cases/*.yaml' \
+            --out ./_eval-out \
+            --grader deterministic
+
+      - name: Diff against committed baseline
+        run: |
+          python3 scripts/eval/baseline.py \
+            --run-dir ./_eval-out \
+            --baseline scripts/eval/baselines/smoke/baseline.json \
+            --mode diff
+
+      - name: Upload eval report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-smoke-report
+          path: ./_eval-out/
+          if-no-files-found: warn
+          retention-days: 30

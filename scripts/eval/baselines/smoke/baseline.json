@@ -1,0 +1,30 @@
+{
+  "cases": {
+    "lean-mwe-minimize": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-proof-omega": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-quality-no-sorry": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-setup-import": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "mathlib-lookup-finset": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    }
+  },
+  "schema_version": "1"
+}
