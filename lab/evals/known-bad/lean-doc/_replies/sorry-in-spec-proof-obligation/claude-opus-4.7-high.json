@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response uses `sorry` in the inline proof obligation, which the rubric explicitly defines as a Score 1 condition.", "rubric_evidence": ["theorem isOpen_empty {X : Type*} [TopologicalSpace X] : IsOpen (∅ : Set X) := by", "  sorry", "This is the spec placeholder; the actual proof will be filled in by `lean-proof` downstream."]}

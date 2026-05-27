@@ -1,0 +1,55 @@
+name: lean-doc-quality
+scale: [1, 2, 3, 4, 5]
+description: |
+  Score the quality of a Lean-ecosystem documentation artifact (spec,
+  blueprint, doc-requirements, doc-improvement, report). Used by the
+  LLM-judge grader per design §4.2.
+
+  Applies to the lean-doc cluster: lean-doc-improvement,
+  lean-doc-requirements, lean-blueprint, lean-report, lean-specification.
+
+  Apply rubric LITERALLY. Don't invent intermediate scores. Don't
+  reward length — a precise, navigable doc in 200 LOC outranks a
+  rambling 2000-LOC one.
+
+definitions:
+  1: |
+    Response is empty, OR produces no doc artifact, OR contains made-up
+    Lean APIs / Mathlib lemmas that do not exist, OR uses `sorry` /
+    `admit` in inline proof obligations.
+  2: |
+    Doc exists and parses but: hallucinates Mathlib names without
+    citation, OR contradicts itself across sections, OR omits the
+    mandatory specification structure (no acceptance criteria, no
+    invariants, no test conditions), OR cites tactics that don't exist
+    in the current Mathlib pin.
+  3: |
+    Doc covers the requested artifact but: structure is ad-hoc (not
+    aligned with the skill's documented template), OR cross-references
+    are unverified (cites `Mathlib.X.Y` without `#check`-style anchor),
+    OR rationale lacks concrete examples. Buildable but reader needs
+    extra context to navigate.
+  4: |
+    Doc follows the skill's template, all cited Mathlib names are real
+    at the current pin, structure includes goals/non-goals/invariants/
+    acceptance, examples are concrete. Minor issues only (e.g. one
+    typo in a lemma signature, slightly stale style).
+  5: |
+    Doc is template-conformant, all references verified, includes both
+    minimal and pathological examples, has explicit STOP / handoff
+    contracts, is the right length for its purpose (no padding, no
+    omissions). A downstream agent can dispatch from this doc without
+    asking clarifying questions.
+
+aggregation:
+  method: minority_veto
+  floor: 2
+  threshold: 4
+  pass_floor: 4
+
+bias_mitigations:
+  randomize_response_order: true
+  anti_length: true
+  anti_position: true
+  blinded: true
+  self_consistency_runs: 1

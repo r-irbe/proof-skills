@@ -1,0 +1,156 @@
+{
+  "rubric": "lean-doc-quality",
+  "skill": "lean-doc",
+  "floor": 2,
+  "pass_floor": 4,
+  "min_flag_rate": 0.9,
+  "max_false_flag_rate": 1.0,
+  "total_transcripts": 5,
+  "judged_transcripts": 5,
+  "negatives_total": 4,
+  "negatives_judged": 4,
+  "negatives_flagged": 4,
+  "flag_rate": 1.0,
+  "positives_total": 1,
+  "positives_judged": 1,
+  "positives_flagged": 0,
+  "false_flag_rate": 0.0,
+  "flagged": 4,
+  "per_transcript": [
+    {
+      "task_id": "ad-hoc-structure",
+      "failure_mode": "missing_template_structure",
+      "expected_max_score": 3,
+      "expected_flag": false,
+      "aggregated_score": 3,
+      "flagged": false,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "The response identifies real issues but fails to follow the mandatory skill template. It lacks the required structured sections, provides vague action items, and does not verify any Mathlib references."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 3,
+          "rationale": "The response provides a doc-improvement discussion with some action items, but its structure is ad-hoc and does not follow the skill's documented template. Buildable prose but a reader needs extra context to navigate."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 3,
+          "rationale": "The response identifies real gaps and produces actionable items, but the structure is ad-hoc \u2014 it does not follow the skill's documented template. Cross-references are unverified with no `#check`-style anchors."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 3, 3]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "contradictory-blueprint",
+      "failure_mode": "self_contradiction",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "The response provides a blueprint structure but contradicts itself between sections: the 'Proof sketch' claims `simp` discharges the goal using the theorem itself, yet the 'Detailed proof' describes a manual induction. Also omits mandatory template structure."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "The doc contradicts itself: the proof sketch claims a single `simp` closes the goal citing `List.length_append` itself as a simp lemma (circular), while the detailed proof does induction. It also omits the mandatory specification structure."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The proof sketch contradicts itself by listing `List.length_append` (the very theorem being proved) as one of the simp lemmas used to discharge the goal, which is circular. Additionally, the doc omits mandatory specification structure."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "empty-doc",
+      "failure_mode": "empty_response",
+      "expected_max_score": 1,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 1,
+          "rationale": "The response is empty of any actual document artifact. It merely states the intent to look at the module without producing any doc-requirements document, failing to deliver the required deliverable."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The response produces no doc artifact at all; it merely states an intention to look at the module first, satisfying the rubric's Score 1 condition of producing no doc."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response produces no doc artifact whatsoever; it only states an intention to look at the module without actually doing so or delivering any documentation."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "hallucinated-mathlib-anchor",
+      "failure_mode": "fabricated_api_anchor",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 2,
+          "rationale": "The response provides documentation structure with goals, non-goals, invariants, and acceptance criteria. However, it hallucinates Mathlib anchor names that do not exist in current Mathlib, which violates the critical requirement of verified Mathlib anchors."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The response cites Mathlib anchors that do not exist (`Mathlib.Analysis.Sum.HarmonicDivergent.diverges_harmonic` and `Mathlib.NumberTheory.Harmonic.tendsto_atTop` are fabricated paths/lemmas), which matches the Score 1 criterion of made-up Mathlib lemmas."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response cites multiple fabricated Mathlib identifiers that do not exist in Mathlib. This directly triggers the Score 1 criterion for 'made-up Lean APIs / Mathlib lemmas that do not exist.'"
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "sorry-in-spec-proof-obligation",
+      "failure_mode": "contains_sorry",
+      "expected_max_score": 1,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-haiku-4.5",
+          "score": 4,
+          "rationale": "Response follows the template with all required sections. Uses real Mathlib APIs correctly. The use of `sorry` in the proof obligation is explicitly permitted by the task prompt as a placeholder option."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The response uses `sorry` in the inline proof obligation, which the rubric explicitly defines as a Score 1 condition."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The rubric explicitly states Score 1 applies when the response uses `sorry` or `admit` in inline proof obligations, which this response does \u2014 the proof obligation block ends with `by sorry`."
+        }
+      ],
+      "notes": "3 judge(s); scores=[4, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    }
+  ]
+}

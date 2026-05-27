@@ -1,0 +1,51 @@
+name: research-synthesis-quality
+scale: [1, 2, 3, 4, 5]
+description: |
+  Score the quality of a research synthesis / council / methodology
+  output. Used by the LLM-judge grader per design §4.2.
+
+  Applies to the research cluster: research-synthesis-engine,
+  research-council, lean-research, lean-retro-methodology,
+  epistemic-discovery-engine.
+
+  Apply rubric LITERALLY. Don't reward length. Penalise hallucinated
+  citations more than missing ones.
+
+definitions:
+  1: |
+    Response is empty, OR fabricates citations (papers/lemmas/authors
+    that do not exist), OR makes claims that directly contradict
+    established results without flagging the contradiction.
+  2: |
+    Cites real sources but: misattributes results to wrong authors, OR
+    paraphrases beyond what the cited source actually claims, OR
+    presents speculation as established fact, OR fails to surface
+    counter-evidence that the cited literature contains.
+  3: |
+    Cites real sources accurately but: synthesis is shallow (one
+    perspective only, no triangulation), OR omits prior-art that
+    the prompt explicitly asked for, OR conclusions don't follow from
+    the evidence chain shown. Useful but a council/retro reviewer
+    would flag it as single-perspective.
+  4: |
+    Multi-perspective synthesis, accurate citations, conclusions follow
+    from evidence, surfaces counter-evidence when present. Minor issues
+    only (e.g. one source cited as paper when it's a preprint).
+  5: |
+    Council-grade synthesis: triangulated across distinct sources,
+    every claim has anchored evidence, counter-evidence integrated
+    rather than rebutted-and-discarded, an explicit "things we don't
+    know" section, actionable conclusions for the dispatching agent.
+
+aggregation:
+  method: minority_veto
+  floor: 2
+  threshold: 4
+  pass_floor: 4
+
+bias_mitigations:
+  randomize_response_order: true
+  anti_length: true
+  anti_position: true
+  blinded: true
+  self_consistency_runs: 1

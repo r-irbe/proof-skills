@@ -1,0 +1,59 @@
+name: applied-domain-quality
+scale: [1, 2, 3, 4, 5]
+description: |
+  Score the quality of an applied-domain reasoning output (engineering,
+  legal, security, intelligence analysis, strategy, high-stakes AI).
+  Used by the LLM-judge grader per design §4.2.
+
+  Applies to the applied + ai clusters: applied-data-information-security,
+  applied-engineering-disciplines, applied-intelligence-analysis,
+  applied-legal-reasoning, applied-strategy-analysis,
+  ai-agentic-evolving, ai-commonsense-reasoning,
+  ai-high-stakes-verifiable, ai-causal-deontic, ai-symbolic-neuro.
+
+  Apply rubric LITERALLY. Penalise unverifiable confidence (claims
+  without epistemic markers) more than honest hedging. Don't reward
+  length.
+
+definitions:
+  1: |
+    Response is empty, OR makes high-stakes claims (legal, security,
+    safety) without any caveat or source, OR fabricates regulations /
+    standards / case-law / CVE-IDs that do not exist, OR ignores an
+    explicit safety-critical constraint in the prompt.
+  2: |
+    Real domain knowledge cited but: confuses jurisdictions / standards
+    (e.g. GDPR rule applied to a US-only case), OR cites outdated
+    standards as current, OR fails to surface known risks the prompt
+    framing should have triggered, OR gives a single-option recommendation
+    without trade-off analysis.
+  3: |
+    Correct domain framing but: analysis is shallow (no second-order
+    effects considered), OR risk register omits known high-impact rows,
+    OR recommendation lacks calibrated confidence markers
+    (no "likely / unlikely / unknown" tags). Useful starting point
+    but a domain expert would flag it as incomplete.
+  4: |
+    Multi-factor analysis with calibrated confidence, cited sources
+    current and on-jurisdiction, risk register covers the major
+    failure modes, recommendation includes trade-offs. Minor issues
+    only (one minor citation slip, one missing edge case).
+  5: |
+    Expert-grade analysis: explicit assumption ledger, calibrated
+    confidence on every claim, trade-off matrix for recommendations,
+    surfaces unknowns and asks for additional context where it
+    materially affects the conclusion. A practitioner can act on this
+    output with auditable rationale.
+
+aggregation:
+  method: minority_veto
+  floor: 2
+  threshold: 4
+  pass_floor: 4
+
+bias_mitigations:
+  randomize_response_order: true
+  anti_length: true
+  anti_position: true
+  blinded: true
+  self_consistency_runs: 1

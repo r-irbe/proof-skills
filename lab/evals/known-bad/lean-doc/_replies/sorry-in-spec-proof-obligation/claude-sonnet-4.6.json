@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The rubric explicitly states Score 1 applies when the response uses `sorry` or `admit` in inline proof obligations, which this response does — the proof obligation block ends with `by sorry`.", "rubric_evidence": ["theorem isOpen_empty {X : Type*} [TopologicalSpace X] : IsOpen (∅ : Set X) := by\n  sorry"]}

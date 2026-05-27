@@ -247,6 +247,25 @@ jobs:
             skill_dir: mathlib-lookup
             min_flag_rate: "0.90"
             max_false_flag_rate: "1.00"
+          - rubric: lean-doc-quality
+            skill_dir: lean-doc
+            # 4 negatives (expected ≤ 2) + 1 boundary positive (expected ≤ 3).
+            # 3-judge ensemble (opus-4.7-high + sonnet-4.6 + haiku-4.5):
+            # negatives 4/4 flagged, positive 0/1 false-flagged.
+            min_flag_rate: "0.90"
+            max_false_flag_rate: "0.50"
+          - rubric: research-synthesis-quality
+            skill_dir: research-synthesis
+            # 4 negatives (≤ 2) + 1 boundary positive (≤ 3, single-perspective).
+            # 3-judge ensemble: negatives 4/4 flagged, positive 0/1 false-flagged.
+            min_flag_rate: "0.90"
+            max_false_flag_rate: "0.50"
+          - rubric: applied-domain-quality
+            skill_dir: applied-domain
+            # 4 negatives (≤ 2) + 1 boundary positive (≤ 3, missing-calibration).
+            # 3-judge ensemble: negatives 4/4 flagged, positive 0/1 false-flagged.
+            min_flag_rate: "0.90"
+            max_false_flag_rate: "0.50"
     steps:
       - uses: actions/checkout@v5
         with:
