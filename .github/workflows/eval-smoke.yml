@@ -26,6 +26,46 @@ permissions:
   contents: read
 
 jobs:
+  skill-conformance:
+    name: Skill corpus conformance + DAG + cross-link audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install PyYAML
+        run: python -m pip install --upgrade pip pyyaml
+
+      - name: Run skill-audit/check_conformance.py (hard-fail mode)
+        # Hard-gates on:
+        #   - any SKILL.md missing the v2 dispatch contract
+        #   - any handoffs.{successors,predecessors} ref to a non-existent skill
+        #   - any references/<name>-handbook.md link to a missing file
+        #   - any handbook missing the extracted_from: back-reference
+        # Soft-reports cycles, orphans, dead-ends, tier distribution.
+        run: |
+          python3 scripts/skill-audit/check_conformance.py \
+            --json ./_skill-audit.json \
+            --md   ./_skill-audit.md \
+            --fail-on hard
+
+      - name: Upload skill-audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: skill-audit-report
+          path: |
+            ./_skill-audit.json
+            ./_skill-audit.md
+          if-no-files-found: warn
+          retention-days: 30
+
   smoke:
     name: Deterministic eval suite (baseline gate)
     runs-on: ubuntu-latest
