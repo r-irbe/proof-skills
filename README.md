@@ -54,15 +54,12 @@ git clone --recurse-submodules https://github.com/r-irbe/proof-skills
 
 ## What is in here
 
-Three kinds of material that turn out to be useful together when an
-agent is doing real proof work.
-
 | Directory | What it holds | Loaded by |
 |---|---|---|
 | [`skills/`](skills/) | 53 first-party `SKILL.md` files: toolchain setup, proof tactics, MWE extraction, bisection, PR hygiene, Mathlib review, domain math, applied verticals, and end-to-end process workflows (blueprint regeneration, retrospective audits). | Harness, on demand. |
 | [`skills/_overrides/`](skills/_overrides/) | Shadows of [`leanprover/skills`](https://github.com/leanprover/skills) entries that needed audit-modification. Dispatch order **first-party → override → upstream vendor** is documented in [`AGENT.md`](AGENT.md) §3. | Harness, on demand. |
-| [`templates/`](templates/) | 32 copy-pasteable Lean module skeletons: 12 v1 templates (foundation, analysis, dynamics, automation, performance, refactoring, …) plus 12 v2 production templates extracted in W6 (theorem, data module, tactic helper, bridge, plus 8 workflow artefacts: MWE, PR, blueprint, zettelkasten, spec, bisect, council, retro log). Cross-template conventions live in [`templates/00-CONVENTIONS.md`](templates/00-CONVENTIONS.md). | Author, copy-paste. |
-| [`references/`](references/) | 13 background notes a skill points at when needed: theorem-search idioms (Loogle, Moogle, LeanSearch, Mathlib doc-gen 4), proof-strategy notes, refactor playbooks, ergodic/IVT/time-series patterns, Mathlib4 conventions. | Skill, by link. |
+| [`templates/`](templates/) | copy-pasteable Lean module skeletons: foundation, analysis, dynamics, automation, performance, refactoring, theorem, data module, tactic helper, bridge, MWE, PR, blueprint, zettelkasten, spec, bisect, council, retro log), etc. Cross-template conventions live in [`templates/00-CONVENTIONS.md`](templates/00-CONVENTIONS.md). | Author, copy-paste. |
+| [`references/`](references/) | background notes a skill points at when needed: theorem-search idioms (Loogle, Moogle, LeanSearch, Mathlib doc-gen 4), proof-strategy notes, refactor playbooks, ergodic/IVT/time-series patterns, Mathlib4 conventions. | Skill, by link. |
 | [`scripts/`](scripts/) | Project-agnostic helpers: axiom audits, DAG layer checks, bridge validators, zettelkasten linters, eval/ELO harnesses. None hardcodes a host project; each takes the project root as an argument. | Skill / CI / author. |
 | [`zettelkasten/`](zettelkasten/) | Repo-internal knowledge graph (fleeting · literature · permanent · index · tags) that captures cross-skill insights. | Synthesizer skills. |
 | [`vendor/`](vendor/) | Pinned git submodules of upstream sources (e.g. `leanprover-skills`) for transparent re-dispatch. | Override dispatch. |
@@ -100,8 +97,6 @@ proof-skills/
 | [`scripts/lint/apm_validate.py`](scripts/lint/apm_validate.py) | **Hard-gated in CI.** Checks the package stays a valid APM skill collection: manifest keys, required `name` + `description` per `SKILL.md`, directory-name match, no duplicates. |
 | [`scripts/eval/run_eval.py`](scripts/eval/run_eval.py) | v0 advisory eval harness. |
 | [`scripts/elo/elo.py`](scripts/elo/elo.py) | stdlib-only ELO calculator for cross-model A/B benchmarks. |
-
-Full eval / ELO production hardening is on the W8 / W9 roadmap.
 
 ---
 
