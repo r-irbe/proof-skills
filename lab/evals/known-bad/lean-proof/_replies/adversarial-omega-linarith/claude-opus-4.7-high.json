@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "Single tactic `omega` discharges the goal, no banned search tactics used, includes methodology narration justifying the choice as a decision procedure.", "rubric_evidence": ["theorem add_three_gt (n : Nat) : n + 3 > n := by\n  omega", "One tactic, one step, closes the goal in a principled way"]}

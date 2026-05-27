@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "Single idiomatic tactic discharges the goal with goal-state narration and no banned search or sorry.", "rubric_evidence": ["exact Nat.add_zero n", "Goal state: ⊢ n + 0 = n", "No banned search tactic, no `sorry`, single-line proof."]}

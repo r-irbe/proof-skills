@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "Single-tactic proof closes the concrete Nat divisibility goal via kernel reduction, with clear narration distinguishing it from the banned decide-as-search pattern.", "rubric_evidence": ["by\n  decide", "Single tactic, single step, closes the goal."]}

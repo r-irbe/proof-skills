@@ -215,8 +215,10 @@ class TranscriptResult:
     task_id: str
     failure_mode: str
     expected_max_score: int
+    expected_flag: bool                 # True iff transcript is a known-bad negative
     aggregated_score: int | None
     flagged: bool                       # True iff aggregated_score ≤ floor
+    correct: bool                       # True iff flagged == expected_flag
     judges: list[dict] = field(default_factory=list)
     notes: str = ""
 
@@ -228,10 +230,21 @@ class CalibrationReport:
     floor: int
     pass_floor: int
     min_flag_rate: float
+    max_false_flag_rate: float
     total_transcripts: int
     judged_transcripts: int
+    # Negative-class metrics (known-bad transcripts, expected_max_score ≤ floor).
+    negatives_total: int
+    negatives_judged: int
+    negatives_flagged: int
+    flag_rate: float                    # recall on negatives
+    # Positive-class metrics (adversarial good transcripts, expected_max_score > floor).
+    positives_total: int
+    positives_judged: int
+    positives_flagged: int
+    false_flag_rate: float              # false-positive rate on positives
+    # Back-compat: count of correctly-flagged negatives.
     flagged: int
-    flag_rate: float
     per_transcript: list[TranscriptResult] = field(default_factory=list)
 
 
@@ -241,6 +254,7 @@ def calibrate(
     replies_dir: Path,
     rubric: dict,
     min_flag_rate: float,
+    max_false_flag_rate: float = 1.0,
 ) -> CalibrationReport:
     floor = int(rubric.get("aggregation", {}).get("floor", 2))
     pass_floor = int(rubric.get("aggregation", {}).get("pass_floor", 4))
@@ -248,16 +262,24 @@ def calibrate(
 
     per: list[TranscriptResult] = []
     judged = 0
-    flagged = 0
+    neg_total = neg_judged = neg_flagged = 0
+    pos_total = pos_judged = pos_flagged = 0
     for t in transcripts:
+        expected_flag = t.expected_max_score <= floor
+        if expected_flag:
+            neg_total += 1
+        else:
+            pos_total += 1
         replies = load_replies(replies_dir, t.task_id, scale)
         if not replies:
             per.append(TranscriptResult(
                 task_id=t.task_id,
                 failure_mode=t.failure_mode,
                 expected_max_score=t.expected_max_score,
+                expected_flag=expected_flag,
                 aggregated_score=None,
                 flagged=False,
+                correct=False,
                 notes="no judge replies captured",
             ))
             continue
@@ -269,14 +291,22 @@ def calibrate(
         )
         is_flagged = result.aggregated_score <= floor
         judged += 1
-        if is_flagged:
-            flagged += 1
+        if expected_flag:
+            neg_judged += 1
+            if is_flagged:
+                neg_flagged += 1
+        else:
+            pos_judged += 1
+            if is_flagged:
+                pos_flagged += 1
         per.append(TranscriptResult(
             task_id=t.task_id,
             failure_mode=t.failure_mode,
             expected_max_score=t.expected_max_score,
+            expected_flag=expected_flag,
             aggregated_score=result.aggregated_score,
             flagged=is_flagged,
+            correct=(is_flagged == expected_flag),
             judges=[
                 {"judge_id": r.judge_id, "score": r.score,
                  "rationale": r.rationale} for r in replies
@@ -284,7 +314,8 @@ def calibrate(
             notes=result.notes,
         ))
 
-    flag_rate = (flagged / judged) if judged else 0.0
+    flag_rate = (neg_flagged / neg_judged) if neg_judged else 0.0
+    false_flag_rate = (pos_flagged / pos_judged) if pos_judged else 0.0
     skill = transcripts[0].path.parent.name if transcripts else "unknown"
     return CalibrationReport(
         rubric=str(rubric.get("name", "unknown")),
@@ -292,10 +323,18 @@ def calibrate(
         floor=floor,
         pass_floor=pass_floor,
         min_flag_rate=min_flag_rate,
+        max_false_flag_rate=max_false_flag_rate,
         total_transcripts=len(transcripts),
         judged_transcripts=judged,
-        flagged=flagged,
+        negatives_total=neg_total,
+        negatives_judged=neg_judged,
+        negatives_flagged=neg_flagged,
         flag_rate=flag_rate,
+        positives_total=pos_total,
+        positives_judged=pos_judged,
+        positives_flagged=pos_flagged,
+        false_flag_rate=false_flag_rate,
+        flagged=neg_flagged,
         per_transcript=per,
     )
 
@@ -340,6 +379,7 @@ def _cmd_replay(args: argparse.Namespace) -> int:
         replies_dir=replies_dir,
         rubric=rubric,
         min_flag_rate=float(args.min_flag_rate),
+        max_false_flag_rate=float(args.max_false_flag_rate),
     )
 
     out_path: Path
@@ -356,14 +396,21 @@ def _cmd_replay(args: argparse.Namespace) -> int:
 
     # Human-readable summary on stdout.
     print(f"calibrate_judge: rubric={report.rubric} skill={report.skill}")
-    print(f"  judged={report.judged_transcripts}/{report.total_transcripts}"
-          f"  flagged={report.flagged}"
+    print(f"  judged={report.judged_transcripts}/{report.total_transcripts}")
+    print(f"  negatives: flagged={report.negatives_flagged}/{report.negatives_judged}"
           f"  flag_rate={report.flag_rate:.2%}"
           f"  min_required={report.min_flag_rate:.2%}")
+    print(f"  positives: flagged={report.positives_flagged}/{report.positives_judged}"
+          f"  false_flag_rate={report.false_flag_rate:.2%}"
+          f"  max_allowed={report.max_false_flag_rate:.2%}")
     for tr in report.per_transcript:
         agg = "—" if tr.aggregated_score is None else str(tr.aggregated_score)
-        mark = "✓" if tr.flagged else ("∅" if tr.aggregated_score is None else "✗")
-        print(f"    {mark} {tr.task_id:<28} ({tr.failure_mode:<22})"
+        if tr.aggregated_score is None:
+            mark = "∅"
+        else:
+            mark = "✓" if tr.correct else "✗"
+        kind = "neg" if tr.expected_flag else "pos"
+        print(f"    {mark} [{kind}] {tr.task_id:<40} ({tr.failure_mode:<22})"
               f" agg={agg}  expected ≤ {tr.expected_max_score}")
     print(f"  → wrote {out_path}")
     return 0
@@ -375,24 +422,39 @@ def _cmd_check(args: argparse.Namespace) -> int:
         return rc
     # Re-read what replay wrote (cheap, gives us the report).
     rubric = _load_yaml(Path(args.rubric))
-    report_path = (
-        Path(args.report_root)
-        / str(rubric.get("name", "unknown"))
-        / f"{args.label}.json"
-    )
+    if args.out:
+        report_path = Path(args.out)
+    else:
+        report_path = (
+            Path(args.report_root)
+            / str(rubric.get("name", "unknown"))
+            / f"{args.label}.json"
+        )
     report = json.loads(report_path.read_text())
     if report["judged_transcripts"] == 0:
         print("calibrate_judge: FAIL — no transcripts had judge replies", file=sys.stderr)
         return 1
-    if report["flag_rate"] < float(args.min_flag_rate):
+    fail = False
+    if report.get("negatives_judged", 0) > 0 and report["flag_rate"] < float(args.min_flag_rate):
         print(
             f"calibrate_judge: FAIL — flag_rate {report['flag_rate']:.2%} "
             f"< required {float(args.min_flag_rate):.2%}",
             file=sys.stderr,
         )
+        fail = True
+    if report.get("positives_judged", 0) > 0 and report["false_flag_rate"] > float(args.max_false_flag_rate):
+        print(
+            f"calibrate_judge: FAIL — false_flag_rate {report['false_flag_rate']:.2%} "
+            f"> max allowed {float(args.max_false_flag_rate):.2%}",
+            file=sys.stderr,
+        )
+        fail = True
+    if fail:
         return 1
     print(f"calibrate_judge: PASS — flag_rate {report['flag_rate']:.2%} "
-          f"≥ {float(args.min_flag_rate):.2%}")
+          f"≥ {float(args.min_flag_rate):.2%}; "
+          f"false_flag_rate {report['false_flag_rate']:.2%} "
+          f"≤ {float(args.max_false_flag_rate):.2%}")
     return 0
 
 
@@ -411,7 +473,9 @@ def _add_replay_args(p: argparse.ArgumentParser) -> None:
                    help="root for report output (default: reports/_calibration)")
     p.add_argument("--out", default=None, help="explicit output path (overrides --report-root)")
     p.add_argument("--min-flag-rate", type=float, default=0.90,
-                   help="minimum acceptable flag-rate (default 0.90 per ADR-0039)")
+                   help="minimum acceptable flag-rate on negatives (default 0.90 per ADR-0039)")
+    p.add_argument("--max-false-flag-rate", type=float, default=1.0,
+                   help="maximum acceptable false-flag rate on adversarial positives (default 1.0 = no gate)")
 
 
 def main(argv: Iterable[str] | None = None) -> int:

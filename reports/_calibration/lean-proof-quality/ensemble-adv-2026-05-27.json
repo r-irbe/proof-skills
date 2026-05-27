@@ -1,0 +1,345 @@
+{
+  "rubric": "lean-proof-quality",
+  "skill": "lean-proof",
+  "floor": 2,
+  "pass_floor": 4,
+  "min_flag_rate": 0.9,
+  "max_false_flag_rate": 0.2,
+  "total_transcripts": 12,
+  "judged_transcripts": 12,
+  "negatives_total": 7,
+  "negatives_judged": 7,
+  "negatives_flagged": 7,
+  "flag_rate": 1.0,
+  "positives_total": 5,
+  "positives_judged": 5,
+  "positives_flagged": 1,
+  "false_flag_rate": 0.2,
+  "flagged": 7,
+  "per_transcript": [
+    {
+      "task_id": "adversarial-admit-in-string",
+      "failure_mode": "none",
+      "expected_max_score": 5,
+      "expected_flag": false,
+      "aggregated_score": 4,
+      "flagged": false,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 4,
+          "rationale": "The proof discharges the goal with `trivial` in one step, includes goal-state narration (`-- Goal: \u22a2 True`), uses no banned tactics or `sorry`/`admit`. However, the task asks to 'pair a proof of True with a descriptive message' as a single top-level constant (e.g., a Product/Sigma), but the response defines them as separate declarations rather than a paired constant, which is a minor structural issue."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 5,
+          "rationale": "Proof uses single `trivial` tactic with goal-state narration, no sorry/admit/banned search, and idiomatically discharges True."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 4,
+          "rationale": "The proof correctly discharges `True` with `trivial`, follows one-step discipline, and includes goal-state narration. Minor issue: the extra `def motto` and methodology narration prose are not required and add unnecessary bulk, though the core proof is clean."
+        }
+      ],
+      "notes": "3 judge(s); scores=[4, 5, 4]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "adversarial-exact-question-in-comment",
+      "failure_mode": "none",
+      "expected_max_score": 5,
+      "expected_flag": false,
+      "aggregated_score": 5,
+      "flagged": false,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 5,
+          "rationale": "The proof is minimal and idiomatic, using a single `exact Nat.add_zero n` to discharge the goal. It follows one-step discipline with goal-state narration, mentions `exact?` only as a discovery step in prose (not in final code), and contains no banned tactics or unnecessary steps."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 5,
+          "rationale": "Final Lean code discharges the goal in one idiomatic step with `exact Nat.add_zero n`, no banned search tactics in shipped code, and prose narrates exploration, goal state, and cleanup per methodology."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 5,
+          "rationale": "The proof uses a single, minimal tactic `exact Nat.add_zero n` with no banned search tactics in the final code, includes goal-state narration, and documents the discovery process correctly in prose only."
+        }
+      ],
+      "notes": "3 judge(s); scores=[5, 5, 5]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "adversarial-legit-decide",
+      "failure_mode": "none",
+      "expected_max_score": 5,
+      "expected_flag": false,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": false,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 4,
+          "rationale": "The proof discharges the goal with a single tactic `decide`, which is valid for a concrete decidable proposition. The response includes goal-state narration and justifies why this is not the banned `decide`-as-search pattern. Minor issue: `norm_num` or `exact \u27e83, rfl\u27e9` would be more idiomatic for divisibility."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 5,
+          "rationale": "Single-tactic proof closes the concrete Nat divisibility goal via kernel reduction, with clear narration distinguishing it from the banned decide-as-search pattern."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The proof uses `decide`, which is listed as a banned tactic in the rubric (Score 2: 'relies on banned search tactics (`exact?`, `apply?`, `decide`-as-search)'). The response's argument that this use of `decide` is not 'decide-as-search' is an invented distinction not present in the rubric, which bans `decide` categorically."
+        }
+      ],
+      "notes": "3 judge(s); scores=[4, 5, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "adversarial-omega-linarith",
+      "failure_mode": "none",
+      "expected_max_score": 5,
+      "expected_flag": false,
+      "aggregated_score": 5,
+      "flagged": false,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 5,
+          "rationale": "The proof uses a single `omega` tactic to discharge the goal, which is minimal and idiomatic. It includes goal-state narration, uses no banned tactics, and follows one-step discipline perfectly."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 5,
+          "rationale": "Single tactic `omega` discharges the goal, no banned search tactics used, includes methodology narration justifying the choice as a decision procedure."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 5,
+          "rationale": "The proof uses a single `omega` call, which is a complete decision procedure for linear arithmetic over Nat\u2014not a banned search tactic\u2014and closes the goal in one step with methodology narration explaining the goal state and tactic choice."
+        }
+      ],
+      "notes": "3 judge(s); scores=[5, 5, 5]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "adversarial-sorry-in-comment",
+      "failure_mode": "none",
+      "expected_max_score": 5,
+      "expected_flag": false,
+      "aggregated_score": 5,
+      "flagged": false,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 5,
+          "rationale": "The proof uses a single `exact` tactic to discharge the goal with `Nat.add_zero n`, includes goal-state narration, uses no banned tactics or `sorry`, and is minimal and idiomatic."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 5,
+          "rationale": "Single idiomatic tactic discharges the goal with goal-state narration and no banned search or sorry."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 4,
+          "rationale": "The proof correctly discharges the goal with a single `exact` tactic, no `sorry`, no banned search tactics, and includes goal-state narration. However, the proof includes a comment about 'one-step discipline' but the narration is slightly verbose and the comment inside the proof body is unnecessary."
+        }
+      ],
+      "notes": "3 judge(s); scores=[5, 5, 4]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "banned-apply-question",
+      "failure_mode": "banned_search_tactic",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 2,
+          "rationale": "The proof relies on `apply?`, which is explicitly listed as a banned search tactic in the rubric. While the response identifies the correct lemma (`Nat.zero_le`), it does not provide a final proof that actually uses it directly."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "The response uses the banned search tactic `apply?`, which the rubric explicitly identifies as a Score 2 condition."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The response uses `apply?`, which is explicitly listed as a banned search tactic in the rubric. While the response correctly identifies that `Nat.zero_le` would close the goal, it relies on the search tactic rather than applying the lemma directly."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "banned-exact-question",
+      "failure_mode": "banned_search_tactic",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 2,
+          "rationale": "The proof relies on `exact?`, which is explicitly listed as a banned search tactic in the rubric. It parses as valid Lean but uses a prohibited approach."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "The response uses the banned search tactic `exact?` which matches rubric score 2 exactly: code parses but relies on a banned search tactic."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The response contains Lean code that parses, but it relies on `exact?`, which is explicitly listed as a banned search tactic in the rubric. The proof does not manually discharge the goal via induction or other direct tactics."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "decide-as-search",
+      "failure_mode": "banned_search_tactic",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 2,
+          "rationale": "The proof uses `decide` which is explicitly listed as a banned tactic in the rubric (Score 2: 'relies on banned search tactics (`exact?`, `apply?`, `decide`-as-search)'). While the proof would likely discharge the goal, using `decide` as the core solving mechanism violates the rubric criteria."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "The proof uses `decide` as a brute-force search tactic across 1001 cases generated by `interval_cases`, which falls under the banned 'decide-as-search' category. It also chains multiple tactics with `<;>` without one-step discipline or goal-state narration."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The proof uses `decide` as a brute-force tactic, which is explicitly listed as a banned search tactic in the rubric. While the code is syntactically valid and would likely discharge the goal, relying on `decide` places it at score 2."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "empty-response",
+      "failure_mode": "empty_response",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 1,
+          "rationale": "The response is empty, containing no Lean code or proof attempt whatsoever."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The response is empty, producing no Lean code at all."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response is empty, containing no Lean code or proof attempt whatsoever."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "leaves-sorry",
+      "failure_mode": "contains_sorry",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 1,
+          "rationale": "The response explicitly leaves the base case as `sorry`, which the rubric defines as score 1: 'uses `sorry`/`admit` in the final proof.'"
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The proof explicitly retains `sorry` in the base case, which per the rubric mandates a score of 1 regardless of other qualities."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The final proof still contains `sorry` in the base case, which the rubric explicitly disqualifies at score 1 regardless of other qualities."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "syntactically-broken",
+      "failure_mode": "parse_error",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 1,
+          "rationale": "The response contains two definitions of the same theorem, and the second one has an unmatched parenthesis and stray dot, making the file syntactically broken and unparseable by Lean."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The response contains a syntactically broken second definition with an unmatched parenthesis and stray `.`, causing Lean to reject the file at parse time as the response itself admits."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The file contains two definitions of the same theorem and the second definition has an unmatched parenthesis and stray `.`, making the file syntactically broken and unparseable by Lean."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "uses-admit",
+      "failure_mode": "contains_admit",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 1,
+          "rationale": "The response uses `admit` in the cons case, which is explicitly listed as a score 1 condition: 'uses sorry/admit in the final proof.'"
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The final proof contains `admit` in the cons case, which the rubric explicitly designates as score 1."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The proof uses `admit` in the cons case, which is explicitly banned by the rubric as equivalent to `sorry`. The proof does not fully discharge the goal."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    }
+  ]
+}

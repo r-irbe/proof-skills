@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "Proof uses single `trivial` tactic with goal-state narration, no sorry/admit/banned search, and idiomatically discharges True.", "rubric_evidence": ["-- Goal: ⊢ True", "trivial", "No `sorry`, no `admit` tactic, no banned search"]}

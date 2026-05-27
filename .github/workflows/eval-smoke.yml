@@ -181,7 +181,7 @@ jobs:
           done
 
   judge-calibration:
-    name: LLM-judge calibration gate (ADR-0039 ≥90% known-bad flagged)
+    name: LLM-judge calibration gate (ADR-0039 ≥90% recall + ≤20% false-flag)
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -196,17 +196,25 @@ jobs:
       - name: Install PyYAML
         run: python -m pip install --upgrade pip pyyaml
 
-      - name: Replay calibrate_judge on known-bad transcripts
+      - name: Replay calibrate_judge on known-bad + adversarial transcripts
         # Per lab/design/01-eval-framework.md §4.2 and ADR-0039: the
         # judge ensemble must flag ≥90% of known-bad transcripts as ≤2
-        # before being trusted in CI. This step replays captured judge
-        # replies (no API call) and hard-gates the flag-rate.
+        # AND must NOT spuriously flag more than 20% of adversarial
+        # known-good transcripts (which look bad superficially —
+        # `sorry`/`exact?`/`decide` in comments or string literals —
+        # but are actually clean Lean proofs). The 20% ceiling reflects
+        # the baseline measured 2026-05-27: 1/5 adversarial cases is
+        # falsely flagged because sonnet-4.6 over-fires on the literal
+        # `decide` token without honouring the rubric's "as-search"
+        # qualifier. Loosening this ceiling re-arms the gate; tightening
+        # it requires either rubric clarification or fleet rebalancing.
         run: |
           python3 scripts/eval/calibrate_judge.py check \
             --rubric scripts/eval/graders/rubrics/lean-proof-quality.yaml \
             --skill-dir lab/evals/known-bad/lean-proof \
             --label ensemble-ci \
-            --min-flag-rate 0.90
+            --min-flag-rate 0.90 \
+            --max-false-flag-rate 0.20
 
       - name: Upload calibration report
         if: always()

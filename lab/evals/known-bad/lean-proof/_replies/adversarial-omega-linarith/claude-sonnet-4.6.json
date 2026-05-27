@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "The proof uses a single `omega` call, which is a complete decision procedure for linear arithmetic over Nat—not a banned search tactic—and closes the goal in one step with methodology narration explaining the goal state and tactic choice.", "rubric_evidence": ["omega", "One tactic, one step, closes the goal in a principled way"]}
