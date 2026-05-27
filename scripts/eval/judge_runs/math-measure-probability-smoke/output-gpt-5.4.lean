@@ -1,0 +1,1 @@
+For integrable random variables X and Y and constants a and b, conditional expectation is linear: E[aX + bY | F] = aE[X | F] + bE[Y | F] almost surely. More generally, for any finite sum, E[∑i aiXi | F] = ∑i aiE[Xi | F] whenever the variables are integrable.

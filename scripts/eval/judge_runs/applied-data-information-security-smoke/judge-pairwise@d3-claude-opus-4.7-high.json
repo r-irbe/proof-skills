@@ -1,0 +1,8 @@
+{
+  "winner_model": "claude-sonnet-4.6@long",
+  "rationale": "A's structured section-by-section breakdown is clearer and more actionable.",
+  "ordermap": {
+    "A": "claude-sonnet-4.6@long",
+    "B": "claude-opus-4.7-high@long"
+  }
+}

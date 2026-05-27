@@ -1,0 +1,1 @@
+{"score": 3, "rationale": "Mathematically correct minimax/LP formulation but lacks calibrated confidence markers, assumption ledger, and trade-off discussion (e.g., pure vs mixed, computational considerations, degeneracy) expected for expert-grade applied analysis.", "rubric_evidence": ["by the minimax theorem", "max_{x,v} v subject to A^T x >= v*1"]}

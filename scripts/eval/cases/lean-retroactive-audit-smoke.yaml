@@ -1,4 +1,5 @@
 id: lean-retroactive-audit-smoke
+ensemble_rubric: lean-doc-quality  # Round 20 A1: case asks for prose/process, not Lean code
 title: "RETRO dependency-wave scheduling"
 skill: lean-retroactive-audit
 difficulty: easy

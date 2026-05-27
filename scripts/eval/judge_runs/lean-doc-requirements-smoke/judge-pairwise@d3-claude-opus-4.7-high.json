@@ -1,0 +1,8 @@
+{
+  "winner_model": "claude-opus-4.7-high@long",
+  "rationale": "B is concise and covers asymptotic/worst-case/existence-vs-universal and definitional debts.",
+  "ordermap": {
+    "A": "claude-sonnet-4.6@long",
+    "B": "claude-opus-4.7-high@long"
+  }
+}

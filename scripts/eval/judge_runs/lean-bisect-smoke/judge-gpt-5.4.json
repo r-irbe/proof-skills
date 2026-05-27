@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response describes a bisection workflow but contains no Lean code or proof, so it cannot satisfy any rubric level above 1.", "rubric_evidence": ["Bisect to find which Lean nightly introduced a regression", "exits 0 for good / 1 for bad"]}

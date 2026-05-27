@@ -1,0 +1,8 @@
+{
+  "winner_model": "claude-opus-4.7-high@long",
+  "rationale": "B concisely states linearity with integrability + sub-\u03c3-algebra + a.s.; A digresses into projections, pull-out, convergence.",
+  "ordermap": {
+    "A": "claude-sonnet-4.6@long",
+    "B": "claude-opus-4.7-high@long"
+  }
+}

@@ -1,0 +1,1 @@
+Putting a cup on a table changes the cup's location, not the table's. Under normal circumstances, the table stays where it is because placing a lightweight object on it does not count as moving the table.

@@ -1,0 +1,8 @@
+{
+  "winner_model": "claude-opus-4.7-high@long",
+  "rationale": "A enforces acyclicity by raising on back-edges; B silently skips them.",
+  "ordermap": {
+    "A": "claude-opus-4.7-high@long",
+    "B": "claude-sonnet-4.6@long"
+  }
+}

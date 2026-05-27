@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response contains no Lean code whatsoever, only natural-language prose and informal logical notation, so it cannot satisfy any rubric level above the lowest.", "rubric_evidence": ["Formalisation: let F(x,t) mean \"failed login for account x at time t,\"", "This is an abductive step, not a deductive proof"]}

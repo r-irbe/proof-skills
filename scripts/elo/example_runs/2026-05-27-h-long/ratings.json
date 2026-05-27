@@ -1,0 +1,22 @@
+{
+  "players": {
+    "claude-opus-4.7-high@long": {
+      "ci95_high": 1839.91,
+      "ci95_low": 1245.22,
+      "games": 10,
+      "rating": 1542.57,
+      "rd": 148.67,
+      "vol": 0.06
+    },
+    "claude-sonnet-4.6@long": {
+      "ci95_high": 1754.78,
+      "ci95_low": 1160.09,
+      "games": 10,
+      "rating": 1457.43,
+      "rd": 148.67,
+      "vol": 0.06
+    }
+  },
+  "rating_system": "glicko-2",
+  "scale": "display (1500-centered)"
+}

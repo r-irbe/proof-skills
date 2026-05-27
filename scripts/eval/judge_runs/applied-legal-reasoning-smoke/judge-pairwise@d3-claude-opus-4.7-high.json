@@ -1,0 +1,8 @@
+{
+  "winner_model": "claude-sonnet-4.6@long",
+  "rationale": "B delivers a more comprehensive, layered formalization covering ontology, deontic core, defeasibility, temporal logic, violation reification, CWA/OWA, norm priorities.",
+  "ordermap": {
+    "A": "claude-opus-4.7-high@long",
+    "B": "claude-sonnet-4.6@long"
+  }
+}

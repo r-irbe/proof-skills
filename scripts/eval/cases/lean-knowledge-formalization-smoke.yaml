@@ -1,4 +1,5 @@
 id: lean-knowledge-formalization-smoke
+ensemble_rubric: lean-doc-quality  # Round 20 A1: case asks for prose/process, not Lean code
 title: "Knowledge graph node type"
 skill: lean-knowledge-formalization
 difficulty: easy

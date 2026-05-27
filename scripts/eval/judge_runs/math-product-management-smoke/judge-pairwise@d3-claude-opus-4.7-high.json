@@ -1,0 +1,8 @@
+{
+  "winner_model": "claude-opus-4.7-high@long",
+  "rationale": "B's prioritisation is internally consistent; A contains arithmetic / sequencing contradictions.",
+  "ordermap": {
+    "A": "claude-sonnet-4.6@long",
+    "B": "claude-opus-4.7-high@long"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "winner_model": "claude-sonnet-4.6@long",
+  "rationale": "A solves the stated 5-task problem with a fully worked forward/backward pass; B fabricates a different example.",
+  "ordermap": {
+    "A": "claude-sonnet-4.6@long",
+    "B": "claude-opus-4.7-high@long"
+  }
+}

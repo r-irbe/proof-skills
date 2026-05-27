@@ -1,4 +1,5 @@
 id: lean-ai-formalization-smoke
+ensemble_rubric: lean-doc-quality  # Round 20 A1: case asks for prose/process, not Lean code
 title: "Reward-hacking formal property"
 skill: lean-ai-formalization
 difficulty: easy

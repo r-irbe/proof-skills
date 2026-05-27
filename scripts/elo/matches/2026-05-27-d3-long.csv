@@ -1,0 +1,11 @@
+case_id,model_a,model_b,winner,reasoning_effort_a,reasoning_effort_b
+ai-commonsense-reasoning-smoke,claude-opus-4.7-high@long,claude-sonnet-4.6@long,b,,
+ai-symbolic-neuro-smoke,claude-opus-4.7-high@long,claude-sonnet-4.6@long,a,,
+applied-data-information-security-smoke,claude-opus-4.7-high@long,claude-sonnet-4.6@long,b,,
+applied-legal-reasoning-smoke,claude-opus-4.7-high@long,claude-sonnet-4.6@long,b,,
+lean-doc-requirements-smoke,claude-opus-4.7-high@long,claude-sonnet-4.6@long,a,,
+math-graph-knowledge-smoke,claude-opus-4.7-high@long,claude-sonnet-4.6@long,a,,
+math-measure-probability-smoke,claude-opus-4.7-high@long,claude-sonnet-4.6@long,a,,
+math-product-management-smoke,claude-opus-4.7-high@long,claude-sonnet-4.6@long,a,,
+math-project-management-smoke,claude-opus-4.7-high@long,claude-sonnet-4.6@long,b,,
+math-strategy-studio-smoke,claude-opus-4.7-high@long,claude-sonnet-4.6@long,draw,,

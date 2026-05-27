@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response contains no Lean code at all—only shell instructions about `lake build`—so it fails the rubric's baseline requirement to produce any Lean code with imports.", "rubric_evidence": ["lake build Mathlib.Data.Nat.Basic", "Build exactly one module by its Lean name"]}
