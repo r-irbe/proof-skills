@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The syntax `Import Mathlib::` with `open : Nat` is completely fabricated and will not parse in Lean 4. The correct minimal preamble is simply `import Mathlib`.", "rubric_evidence": ["syntactically broken"]}

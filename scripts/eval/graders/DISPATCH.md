@@ -91,7 +91,20 @@ ensemble (opus-4.7-high + sonnet-4.6 + opus-4.6) → 7/7 flagged =
 100%. Report: `reports/_calibration/lean-proof-quality/
 ensemble-2026-05-27.json`.
 
-See `lab/evals/known-bad/lean-proof/README.md` for the per-skill
+### Available calibration corpora (2026-05-27)
+
+| Rubric | Skill dir | Negatives | Adversarial+ | flag_rate | false_flag_rate |
+|---|---|---|---|---|---|
+| `lean-proof-quality` | `lab/evals/known-bad/lean-proof` | 7 | 5 | 7/7 = 100% | 1/5 = 20% |
+| `lean-setup-import-quality` | `lab/evals/known-bad/lean-setup-import` | 5 | 0 | 5/5 = 100% | n/a |
+| `mathlib-lookup-quality` | `lab/evals/known-bad/mathlib-lookup` | 5 | 0 | 5/5 = 100% | n/a |
+
+CI matrix `.github/workflows/eval-smoke.yml :: judge-calibration` runs
+all three. Adversarial positives are presently only authored for
+`lean-proof`; the others' false-flag gate is parked at `1.00` until
+an adversarial sub-corpus is added.
+
+See `lab/evals/known-bad/<skill>/README.md` for the per-skill
 corpus structure and how to add new transcripts.
 
 ## File-layout invariants

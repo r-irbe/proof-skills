@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "Contains `sorry` in the setup block and fails to provide the actual import statement.", "rubric_evidence": ["import sorry  -- TODO: fill in module name"]}

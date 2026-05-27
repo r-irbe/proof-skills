@@ -1,0 +1,1 @@
+{"score": 2, "rationale": "Cites Set.card_union_le, which is the wrong namespace; Finset.card_union_le is the lemma bounding (s ∪ t).card by s.card + t.card, and Sets use ncard, not card.", "rubric_evidence": ["Set.card_union_le (s t : Set α) : (s ∪ t).card ≤ s.card + t.card"]}

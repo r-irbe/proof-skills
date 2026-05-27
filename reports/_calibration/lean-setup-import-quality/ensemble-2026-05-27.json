@@ -1,0 +1,156 @@
+{
+  "rubric": "lean-setup-import-quality",
+  "skill": "lean-setup-import",
+  "floor": 2,
+  "pass_floor": 4,
+  "min_flag_rate": 0.9,
+  "max_false_flag_rate": 1.0,
+  "total_transcripts": 5,
+  "judged_transcripts": 5,
+  "negatives_total": 5,
+  "negatives_judged": 5,
+  "negatives_flagged": 5,
+  "flag_rate": 1.0,
+  "positives_total": 0,
+  "positives_judged": 0,
+  "positives_flagged": 0,
+  "false_flag_rate": 0.0,
+  "flagged": 5,
+  "per_transcript": [
+    {
+      "task_id": "setup-deep-internal-import",
+      "failure_mode": "deep_internal_import",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 2,
+          "rationale": "The response includes `import Mathlib` which is correct, but adds the unnecessary `import Init.System.IO` (a deeply-internal module) and `open Nat` which was not asked for, making it non-minimal and matching the Score 2 criterion."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "Includes a deeply-internal module `Init.System.IO` alongside `import Mathlib` when the umbrella import suffices, matching the score 2 example literally."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The response includes `import Init.System.IO` which is unnecessary when `import Mathlib` already covers it, and the justification for including it is incorrect. The `open Nat` is not requested and adds noise."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "setup-empty-response",
+      "failure_mode": "empty_response",
+      "expected_max_score": 1,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 1,
+          "rationale": "The response contains no Lean code at all\u2014only prose advice. The rubric explicitly states prose-only answers score 1."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "Prose-only response with no actual Lean code shown; does not provide the import statement."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response is entirely prose with no Lean 4 code whatsoever. It never provides the actual import statement `import Mathlib`."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "setup-fabricated-module",
+      "failure_mode": "wrong_module",
+      "expected_max_score": 2,
+      "expected_flag": true,
+      "aggregated_score": 2,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 2,
+          "rationale": "The response imports `Mathlib.AllTheThings`, which is a fabricated module name that does not exist in Mathlib. The correct minimal import is simply `import Mathlib`."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 2,
+          "rationale": "The response imports `Mathlib.AllTheThings`, which is a fabricated module that does not exist in Mathlib; the correct umbrella import is `import Mathlib`."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 2,
+          "rationale": "The response imports `Mathlib.AllTheThings`, which is a fabricated module that does not exist in Mathlib; the correct umbrella import is `import Mathlib`."
+        }
+      ],
+      "notes": "3 judge(s); scores=[2, 2, 2]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "setup-sorry-in-config",
+      "failure_mode": "contains_sorry",
+      "expected_max_score": 1,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 1,
+          "rationale": "The response contains `sorry` as the import target, which is explicitly penalized at rubric level 1. It does not provide the correct `import Mathlib` statement."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "Contains `sorry` in the setup block and fails to provide the actual import statement."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The response contains `sorry` directly in the import statement, which is explicitly disqualified by the rubric. It fails to provide the correct module name `Mathlib`."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    },
+    {
+      "task_id": "setup-syntactically-broken",
+      "failure_mode": "parse_error",
+      "expected_max_score": 1,
+      "expected_flag": true,
+      "aggregated_score": 1,
+      "flagged": true,
+      "correct": true,
+      "judges": [
+        {
+          "judge_id": "claude-opus-4.6",
+          "score": 1,
+          "rationale": "The syntax `Import Mathlib::` with `open : Nat` is completely fabricated and will not parse in Lean 4. The correct minimal preamble is simply `import Mathlib`."
+        },
+        {
+          "judge_id": "claude-opus-4.7-high",
+          "score": 1,
+          "rationale": "The snippet is syntactically broken Lean \u2014 `Import` is capitalized, `::` and `open : Nat` are not valid Lean 4 syntax. It does not provide a working preamble."
+        },
+        {
+          "judge_id": "claude-sonnet-4.6",
+          "score": 1,
+          "rationale": "The syntax `Import Mathlib::` with `open : Nat` is not valid Lean 4 syntax; correct syntax is `import Mathlib` (lowercase `import`, no colons). The response is syntactically broken."
+        }
+      ],
+      "notes": "3 judge(s); scores=[1, 1, 1]; floor=2 threshold=4 pass_floor=4"
+    }
+  ]
+}

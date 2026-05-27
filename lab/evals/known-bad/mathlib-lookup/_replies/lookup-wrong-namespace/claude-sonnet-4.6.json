@@ -1,0 +1,1 @@
+{"score": 2, "rationale": "The response gives `Set.card_union_le` which is exactly the wrong-namespace example cited in the rubric; the correct lemma for `Finset.card` is `Finset.card_union_le`.", "rubric_evidence": ["`Set.card_union_le` instead of `Finset.card_union_le`"]}

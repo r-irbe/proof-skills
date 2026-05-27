@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The lemma `Finset.cardinal_union_le_addition` is fabricated; the real Mathlib lemma is `Finset.card_union_le` with a `Nat` signature, not `Cardinal.mk`.", "rubric_evidence": ["Finset.cardinal_union_le_addition (s t : Finset α)", "Cardinal.mk (s ∪ t : Set α) ≤ Cardinal.mk s + Cardinal.mk t"]}

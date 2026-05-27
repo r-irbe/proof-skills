@@ -241,6 +241,8 @@ under `vendor/`; update the submodule pin instead.
   [`scripts/eval/graders/DISPATCH.md`](scripts/eval/graders/DISPATCH.md)
 - Known-bad calibration corpus (ADR-0039):
   [`lab/evals/known-bad/lean-proof/`](lab/evals/known-bad/lean-proof/) ·
+  [`lab/evals/known-bad/lean-setup-import/`](lab/evals/known-bad/lean-setup-import/) ·
+  [`lab/evals/known-bad/mathlib-lookup/`](lab/evals/known-bad/mathlib-lookup/) ·
   reports under [`reports/_calibration/`](reports/_calibration/)
 - Upstream submodule: [`vendor/leanprover-skills/`](vendor/leanprover-skills)
 - Master plan (private superrepo only): `lab/MASTER-PLAN.md`

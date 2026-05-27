@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The lemma `Finset.card_disjoint_union_le` does not exist in Mathlib. The response fabricates a lemma name and a fake proof; the real lemma is `Finset.card_union_le`.", "rubric_evidence": ["fabricated lemma (no such declaration exists in Mathlib)"]}

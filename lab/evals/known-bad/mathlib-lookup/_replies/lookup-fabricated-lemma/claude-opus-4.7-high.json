@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The cited lemma `Finset.card_disjoint_union_le` is fabricated; Mathlib provides `Finset.card_union_le` for the inequality, and the proof shown is nonsensical.", "rubric_evidence": ["Finset.card_disjoint_union_le (s t : Finset α)", "apply Finset.card_disjoint_union"]}

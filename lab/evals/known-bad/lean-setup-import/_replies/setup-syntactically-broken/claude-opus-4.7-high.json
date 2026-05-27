@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The snippet is syntactically broken Lean — `Import` is capitalized, `::` and `open : Nat` are not valid Lean 4 syntax. It does not provide a working preamble.", "rubric_evidence": ["Import Mathlib::", "open : Nat"]}

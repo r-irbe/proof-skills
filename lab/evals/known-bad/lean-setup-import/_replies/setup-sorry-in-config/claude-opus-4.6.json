@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response contains `sorry` as the import target, which is explicitly penalized at rubric level 1. It does not provide the correct `import Mathlib` statement.", "rubric_evidence": ["contains `sorry`/`admit` in setup blocks"]}

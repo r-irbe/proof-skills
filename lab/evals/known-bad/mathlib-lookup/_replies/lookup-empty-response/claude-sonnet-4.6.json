@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "No lemma name is provided at all; the response only vaguely acknowledges such a lemma exists without naming it or showing a type signature.", "rubric_evidence": ["There are many lemmas in Mathlib about cardinality of unions of finite sets.", "The bound you want is standard and provable from inclusion-exclusion."]}

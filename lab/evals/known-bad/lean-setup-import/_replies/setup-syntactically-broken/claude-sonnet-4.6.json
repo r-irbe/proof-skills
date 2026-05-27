@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The syntax `Import Mathlib::` with `open : Nat` is not valid Lean 4 syntax; correct syntax is `import Mathlib` (lowercase `import`, no colons). The response is syntactically broken.", "rubric_evidence": ["Import Mathlib::", "open : Nat"]}

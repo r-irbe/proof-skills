@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response contains `sorry` directly in the import statement, which is explicitly disqualified by the rubric. It fails to provide the correct module name `Mathlib`.", "rubric_evidence": ["import sorry  -- TODO: fill in module name"]}

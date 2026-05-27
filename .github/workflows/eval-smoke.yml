@@ -181,9 +181,32 @@ jobs:
           done
 
   judge-calibration:
-    name: LLM-judge calibration gate (ADR-0039 ≥90% recall + ≤20% false-flag)
+    name: LLM-judge calibration gate (ADR-0039 ≥90% recall)
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - rubric: lean-proof-quality
+            skill_dir: lean-proof
+            min_flag_rate: "0.90"
+            # Only lean-proof has an adversarial-positive sub-corpus today;
+            # the 20% ceiling reflects the 2026-05-27 baseline (1/5 cases
+            # falsely flagged because sonnet-4.6 over-fires on the literal
+            # `decide` token without honouring the rubric's "as-search"
+            # qualifier). Loosening re-arms the gate; tightening requires
+            # rubric clarification or fleet rebalancing.
+            max_false_flag_rate: "0.20"
+          - rubric: lean-setup-import-quality
+            skill_dir: lean-setup-import
+            min_flag_rate: "0.90"
+            # No adversarial positives yet — gate disabled (1.00 = no-op).
+            max_false_flag_rate: "1.00"
+          - rubric: mathlib-lookup-quality
+            skill_dir: mathlib-lookup
+            min_flag_rate: "0.90"
+            max_false_flag_rate: "1.00"
     steps:
       - uses: actions/checkout@v5
         with:
@@ -196,31 +219,25 @@ jobs:
       - name: Install PyYAML
         run: python -m pip install --upgrade pip pyyaml
 
-      - name: Replay calibrate_judge on known-bad + adversarial transcripts
+      - name: Replay calibrate_judge for ${{ matrix.rubric }}
         # Per lab/design/01-eval-framework.md §4.2 and ADR-0039: the
         # judge ensemble must flag ≥90% of known-bad transcripts as ≤2
-        # AND must NOT spuriously flag more than 20% of adversarial
-        # known-good transcripts (which look bad superficially —
-        # `sorry`/`exact?`/`decide` in comments or string literals —
-        # but are actually clean Lean proofs). The 20% ceiling reflects
-        # the baseline measured 2026-05-27: 1/5 adversarial cases is
-        # falsely flagged because sonnet-4.6 over-fires on the literal
-        # `decide` token without honouring the rubric's "as-search"
-        # qualifier. Loosening this ceiling re-arms the gate; tightening
-        # it requires either rubric clarification or fleet rebalancing.
+        # (recall floor). Where adversarial known-good transcripts exist,
+        # an additional false-flag ceiling guards against keyword-matching
+        # over-firing.
         run: |
           python3 scripts/eval/calibrate_judge.py check \
-            --rubric scripts/eval/graders/rubrics/lean-proof-quality.yaml \
-            --skill-dir lab/evals/known-bad/lean-proof \
+            --rubric scripts/eval/graders/rubrics/${{ matrix.rubric }}.yaml \
+            --skill-dir lab/evals/known-bad/${{ matrix.skill_dir }} \
             --label ensemble-ci \
-            --min-flag-rate 0.90 \
-            --max-false-flag-rate 0.20
+            --min-flag-rate ${{ matrix.min_flag_rate }} \
+            --max-false-flag-rate ${{ matrix.max_false_flag_rate }}
 
       - name: Upload calibration report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: judge-calibration-report
+          name: judge-calibration-report-${{ matrix.rubric }}
           path: ./reports/_calibration/
           if-no-files-found: warn
           retention-days: 30

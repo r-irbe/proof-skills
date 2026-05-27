@@ -1,0 +1,50 @@
+name: mathlib-lookup-quality
+scale: [1, 2, 3, 4, 5]
+description: |
+  Score the quality of a Mathlib-lookup response. Used by the LLM-judge
+  grader (`scripts/eval/graders/llm_judge.py`) per the design in
+  `lab/design/01-eval-framework.md §4.2`. Targets the `mathlib-lookup`
+  skill / case (`scripts/eval/cases/mathlib-lookup-finset.yaml`).
+
+  Apply rubric LITERALLY. Don't invent intermediate scores. Don't reward
+  length — a correct lemma name + signature in two lines should score 5.
+
+definitions:
+  1: |
+    Response is empty, OR names a fabricated lemma (no such declaration
+    exists in Mathlib), OR cites a name from a different library
+    (e.g. Coq, Lean 3-only) without flagging the mismatch.
+  2: |
+    Names a real Mathlib lemma but in the wrong namespace
+    (e.g. `Set.card_union_le` instead of `Finset.card_union_le`), OR
+    cites a deprecated alias as the primary answer, OR gives a wrong
+    type signature (wrong argument order, wrong universe, missing
+    typeclass).
+  3: |
+    Correct lemma in correct namespace, but no type signature is given
+    OR the signature is paraphrased rather than quoted, OR a less-general
+    sibling is recommended when the more general one was asked about
+    (e.g. recommending `card_union_eq_card_add_card_sub_card_inter`
+    instead of `card_union_le`). Buildable but the user has to do extra
+    work to confirm the lookup.
+  4: |
+    Correct lemma, correct namespace, correct type signature in full.
+    Minor issues only (e.g. trailing comma in signature, slightly stale
+    typeclass name that Mathlib has since renamed).
+  5: |
+    Correct lemma, full namespace, exact current type signature, AND
+    one of: (a) usage example, (b) `#check` line, or (c) Loogle/Moogle
+    query that found it. Minimal narration, no fluff.
+
+aggregation:
+  method: minority_veto
+  floor: 2
+  threshold: 4
+  pass_floor: 4
+
+bias_mitigations:
+  randomize_response_order: true
+  anti_length: true
+  anti_position: true
+  blinded: true
+  self_consistency_runs: 1

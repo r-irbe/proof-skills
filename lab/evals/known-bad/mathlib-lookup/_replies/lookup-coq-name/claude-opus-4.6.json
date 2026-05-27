@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The lemma `Finset.cardinal_union_le_addition` is fabricated and does not exist in Mathlib. The correct lemma is `Finset.card_union_le`.", "rubric_evidence": ["fabricated lemma"]}

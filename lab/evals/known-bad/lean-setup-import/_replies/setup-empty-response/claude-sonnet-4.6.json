@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response is entirely prose with no Lean 4 code whatsoever. It never provides the actual import statement `import Mathlib`.", "rubric_evidence": ["You should import the standard Mathlib library at the top of your file. This is usually one line."]}

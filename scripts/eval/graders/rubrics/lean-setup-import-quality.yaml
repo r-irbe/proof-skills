@@ -1,0 +1,47 @@
+name: lean-setup-import-quality
+scale: [1, 2, 3, 4, 5]
+description: |
+  Score the quality of a Lean 4 setup/import response. Used by the
+  LLM-judge grader (`scripts/eval/graders/llm_judge.py`) per the design
+  in `lab/design/01-eval-framework.md §4.2`. Targets the
+  `lean-setup-import` skill / case (`scripts/eval/cases/lean-setup-import.yaml`).
+
+  Apply rubric LITERALLY. Don't invent intermediate scores. Don't reward
+  length — terse correct setups should score 5.
+
+definitions:
+  1: |
+    Response fails to produce any Lean code, OR produced code is
+    syntactically broken, OR contains `sorry`/`admit` in setup blocks.
+  2: |
+    Lean code present and parses, but the import is wrong: imports a
+    fabricated module (no such module in Mathlib/Lean), uses a typo for
+    `import Mathlib`, imports a deeply-internal module (e.g.
+    `Init.System.IO`) when the high-level umbrella module would do, or
+    re-exports private namespaces.
+  3: |
+    Imports are correct but bloated: imports many unnecessary modules,
+    pulls a deeply-nested submodule when the parent would suffice, OR
+    omits the `open` that the task asked for. Buildable but stylistically
+    wrong.
+  4: |
+    Minimal and correct import + open. Minor issues only (e.g. an unused
+    `open` line, missing a stylistic optional like `import Mathlib.Tactic`
+    when the task arguably wanted only `import Mathlib`).
+  5: |
+    Minimal, idiomatic: `import Mathlib` (or the smallest umbrella module
+    appropriate to the task) followed by relevant `open` directives only.
+    No bloat, no stray imports, no extraneous code.
+
+aggregation:
+  method: minority_veto
+  floor: 2
+  threshold: 4
+  pass_floor: 4
+
+bias_mitigations:
+  randomize_response_order: true
+  anti_length: true
+  anti_position: true
+  blinded: true
+  self_consistency_runs: 1

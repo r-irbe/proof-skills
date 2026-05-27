@@ -1,0 +1,1 @@
+{"score": 2, "rationale": "Correct lemma name and namespace but invented an extra `Disjoint` hypothesis; actual `Finset.card_union_le` holds unconditionally.", "rubric_evidence": ["the response invented the extra `(h : Disjoint s t)` argument — wrong signature", "WRONG TYPE SIGNATURE (wrong argument order, wrong universe, MISSING TYPECLASS, or invented extra hypothesis)"]}

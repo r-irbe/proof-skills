@@ -1,0 +1,1 @@
+{"score": 2, "rationale": "The lemma name `Finset.card_union_le` is correct, but the type signature is wrong: the real lemma has no `Disjoint` hypothesis. Adding a fabricated argument makes the signature incorrect.", "rubric_evidence": ["Real lemma but wrong namespace, deprecated alias, or WRONG TYPE SIGNATURE"]}

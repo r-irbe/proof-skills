@@ -1,0 +1,1 @@
+{"score": 2, "rationale": "The lemma name `Finset.card_union_le` is correct, but the response invented a `Disjoint` hypothesis that does not exist in the real Mathlib signature.", "rubric_evidence": ["theorem Finset.card_union_le (s t : Finset α) (h : Disjoint s t) : (s ∪ t).card ≤ s.card + t.card"]}

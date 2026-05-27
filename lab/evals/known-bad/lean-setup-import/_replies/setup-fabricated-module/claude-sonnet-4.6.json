@@ -1,0 +1,1 @@
+{"score": 2, "rationale": "The response imports `Mathlib.AllTheThings`, which is a fabricated module that does not exist in Mathlib; the correct umbrella import is `import Mathlib`.", "rubric_evidence": ["import Mathlib.AllTheThings", "This pulls in every Mathlib module via the `AllTheThings` umbrella."]}

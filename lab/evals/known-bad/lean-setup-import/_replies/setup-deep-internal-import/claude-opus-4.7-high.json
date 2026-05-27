@@ -1,0 +1,1 @@
+{"score": 2, "rationale": "Includes a deeply-internal module `Init.System.IO` alongside `import Mathlib` when the umbrella import suffices, matching the score 2 example literally.", "rubric_evidence": ["deeply-internal module (e.g. `Init.System.IO`) when umbrella would do"]}
