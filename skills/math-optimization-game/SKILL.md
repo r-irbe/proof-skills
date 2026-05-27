@@ -1,5 +1,5 @@
 ---
-name: math-optimization-game
+name: "math-optimization-game"
 description: |
   USE FOR: Mathematical optimization, game theory, decision theory, mechanism design, multi-objective optimization, convex optimization, and reinforcement learning theory. Use for reasoning about Bellman equations, Nash equilibria, Pareto optimality, gradient methods, linear/convex/integer programming, and any optimization-related mathematics in the project. Covers both pure theory and computational methodology.
   DO NOT USE FOR: Lean optimization proofs (use @lean-math-optimization); strategy methodology (use @applied-strategy-analysis); general nonlinear dynamics (use @math-nonlinear-dynamics).
@@ -16,10 +16,12 @@ metadata:
   last_reviewed: "2026-05-27"
 ---
 
+
 # Math Optimization & Game Theory
 
 Mathematical optimization and strategic interaction theory, applied to the project's reinforcement learning, governance convergence, and multi-agent coordination.
 
+---
 
 ## Routing
 
@@ -29,16 +31,16 @@ Mathematical optimization and strategic interaction theory, applied to the proje
 
 ## Workflow
 
-1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
-2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
-3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
-4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+1. Classify the problem: convex / nonconvex / combinatorial / game-theoretic / mechanism-design / multi-objective / RL.
+2. Pick the matching section of the body; identify Mathlib `Convex` / `Optimization` namespaces where applicable.
+3. Produce the answer (algorithm, equilibrium, mechanism) with assumptions + complexity.
+4. Hand off: to `@lean-math-optimization` for the Lean proof, to `@math-nonlinear-dynamics` if dynamics dominate, to `@lean-zettelkasten`.
 
 ## Recovery & STOP
 
-- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
-- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
-- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+- STOP if the question is strategy-analysis (not optimisation) — delegate to `@applied-strategy-analysis`.
+- STOP if a Mathlib pin-verified lemma is required — escalate to `@lean-research`.
+- STOP if the problem requires empirical RL experiments — escalate to `@research-council`.
 
 ## Handoffs
 

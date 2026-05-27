@@ -1,5 +1,5 @@
 ---
-name: ai-causal-deontic
+name: "ai-causal-deontic"
 description: |
   USE FOR: Causal reasoning, counterfactual analysis, and deontic logic for AI systems. Use for formalizing cause-effect relationships (Pearl's hierarchy), interventional reasoning, structural causal models, counterfactual simulation, obligation/permission/prohibition reasoning, normative systems, and legal/ethical rule formalization in Lean 4.
   DO NOT USE FOR: formalising those models in Lean (use @lean-causal-reasoning); agentic AI behaviour (use @ai-agentic-evolving); commonsense reasoning (use @ai-commonsense-reasoning).
@@ -16,10 +16,12 @@ metadata:
   last_reviewed: "2026-05-27"
 ---
 
+
 # Causal Reasoning & Deontic Logic
 
 Formal frameworks for reasoning about causes, effects, counterfactuals, and normative obligations.
 
+---
 
 ## Routing
 
@@ -29,16 +31,16 @@ Formal frameworks for reasoning about causes, effects, counterfactuals, and norm
 
 ## Workflow
 
-1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
-2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
-3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
-4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+1. Classify the question: causal-effect identification, counterfactual evaluation, deontic-norm modelling, or legal-deontic encoding.
+2. Pick the matching framework from the body (Pearl's do-calculus, structural causal model, standard deontic logic, dyadic deontic logic).
+3. Apply the framework to the concrete scenario; document identifiability conditions and norm interactions.
+4. Hand off: to `@lean-causal-reasoning` for Lean encoding, to `@applied-legal-reasoning` for legal-policy mapping, to `@lean-zettelkasten`.
 
 ## Recovery & STOP
 
-- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
-- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
-- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+- STOP if the question is about Lean formalisation — delegate to `@lean-causal-reasoning`.
+- STOP if the question is purely legal (not deontic-logic) — delegate to `@applied-legal-reasoning`.
+- STOP if a causal-effect identifiability claim cannot be established from the body — escalate to `@research-council`.
 
 ## Handoffs
 

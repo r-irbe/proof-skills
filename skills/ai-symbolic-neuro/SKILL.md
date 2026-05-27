@@ -1,5 +1,5 @@
 ---
-name: ai-symbolic-neuro
+name: "ai-symbolic-neuro"
 description: |
   USE FOR: Symbolic AI, neuro-symbolic integration, knowledge representation and reasoning (KRR), ontology engineering, description logics, and hybrid symbolic-neural architectures. Use for reasoning about formal knowledge structures, rule-based systems, logic programming, semantic web technologies, and their integration with neural approaches relevant to the project's knowledge graph and structuring phases.
   DO NOT USE FOR: formalising the ontology in Lean (use @lean-knowledge-formalization); commonsense reasoning (use @ai-commonsense-reasoning); agentic AI (use @ai-agentic-evolving).
@@ -16,10 +16,12 @@ metadata:
   last_reviewed: "2026-05-27"
 ---
 
+
 # Symbolic AI & Neuro-Symbolic Integration
 
 Formal knowledge representation, symbolic reasoning, and their integration with neural methods for the project's knowledge structuring and consolidation phases.
 
+---
 
 ## Routing
 
@@ -29,16 +31,16 @@ Formal knowledge representation, symbolic reasoning, and their integration with 
 
 ## Workflow
 
-1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
-2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
-3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
-4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+1. Identify the integration question: symbolic-only, neural-only, or hybrid; pick the integration pattern (loose / tight / unified) from the body.
+2. Pick the KRR formalism (description logic, RDF/OWL, conceptual graph, neural-symbolic embedding) that matches the application.
+3. Apply the formalism; document where neural and symbolic components communicate + their semantic guarantees.
+4. Hand off: to `@lean-knowledge-formalization` for Lean encoding, to `@math-graph-knowledge` for graph-theoretic foundations, to `@lean-zettelkasten`.
 
 ## Recovery & STOP
 
-- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
-- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
-- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+- STOP if the question is purely commonsense-reasoning — delegate to `@ai-commonsense-reasoning`.
+- STOP if the question is about causal/deontic logic — delegate to `@ai-causal-deontic`.
+- STOP if the neural component requires empirical evaluation beyond methodological reasoning — escalate to `@research-council`.
 
 ## Handoffs
 

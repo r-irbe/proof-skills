@@ -1,5 +1,5 @@
 ---
-name: math-topology-analysis
+name: "math-topology-analysis"
 description: |
   USE FOR: Point-set topology, functional analysis, real analysis, and topological methods for dynamical systems. Use for reasoning about continuity, compactness, fixed-point theorems, Banach spaces, metric spaces, convergence, and the topological foundations underlying Lyapunov stability, contraction mappings, and phase portrait analysis in the project.
   DO NOT USE FOR: Lean analysis proofs (use @lean-math-analysis); algebraic structures (use @math-algebra-category); measure theory (use @math-measure-probability).
@@ -16,10 +16,12 @@ metadata:
   last_reviewed: "2026-05-27"
 ---
 
+
 # Math Topology & Real Analysis
 
 Topological and analytic foundations for the project's dynamical systems, convergence proofs, and contraction mappings.
 
+---
 
 ## Routing
 
@@ -29,16 +31,16 @@ Topological and analytic foundations for the project's dynamical systems, conver
 
 ## Workflow
 
-1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
-2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
-3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
-4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+1. Classify the question: point-set topology, functional analysis, real analysis, or topological dynamics.
+2. Pick the matching section of the body; identify the Mathlib `Topology` / `Analysis` namespace.
+3. Produce the answer; cite the relevant Mathlib lemma and verify it at the current pin.
+4. Hand off: to `@lean-math-analysis` for the Lean proof, to `@math-measure-probability` if measure-theoretic structure surfaces, to `@lean-zettelkasten`.
 
 ## Recovery & STOP
 
-- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
-- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
-- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+- STOP if the question is algebraic-structural — delegate to `@math-algebra-category`.
+- STOP if measure theory dominates — delegate to `@math-measure-probability`.
+- STOP if a pin-verified Mathlib lemma is required — escalate to `@lean-research`.
 
 ## Handoffs
 

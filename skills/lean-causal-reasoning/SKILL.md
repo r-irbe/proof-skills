@@ -1,5 +1,5 @@
 ---
-name: lean-causal-reasoning
+name: "lean-causal-reasoning"
 description: |
   USE FOR: Formalize causal DAGs, knowledge graph quality gates, counterfactual reasoning, and provenance bridges. Use for causal reasoning structures and their integration with the project pipeline.
   DO NOT USE FOR: causal methodology not in Lean (use @ai-causal-deontic); knowledge graph formalisation generally (use @lean-knowledge-formalization); general AI formalisation (use @lean-ai-formalization).
@@ -16,8 +16,10 @@ metadata:
   last_reviewed: "2026-05-27"
 ---
 
+
 # SK-33: Lean Causal Reasoning Formalization
 
+---
 
 ## Routing
 
@@ -27,16 +29,16 @@ metadata:
 
 ## Workflow
 
-1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
-2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
-3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
-4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+1. Identify the causal object: DAG, structural causal model, counterfactual query, provenance bridge, or knowledge-graph gate.
+2. Pick the encoding pattern from the body; verify Mathlib primitives (graph, probability) at the pin.
+3. Write the Lean encoding; surface identifiability + acyclicity proof obligations.
+4. Hand off: to `@lean-proof-review` for review, to `@lean-knowledge-formalization` for KR integration, to `@lean-zettelkasten`.
 
 ## Recovery & STOP
 
-- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
-- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
-- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+- STOP if the question is causal-methodological (not Lean) — delegate to `@ai-causal-deontic`.
+- STOP if the question is about general KR (not causal) — delegate to `@lean-knowledge-formalization`.
+- STOP if Mathlib primitives are missing — escalate to `@lean-research`.
 
 ## Handoffs
 

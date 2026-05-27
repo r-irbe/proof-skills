@@ -1,5 +1,5 @@
 ---
-name: lean-nested-learning
+name: "lean-nested-learning"
 description: |
   USE FOR: Formalize and extend nested learning theory. Covers LaSalle invariance, ProjectHierarchy, multi-scale Lyapunov, timescale separation, and the NL-to-Project bridge. Use for nested learning proofs and theory extension.
   DO NOT USE FOR: proof tactics (use @lean-proof); Lyapunov-only proofs (use @lean-math-dynamical); review (use @lean-proof-review).
@@ -16,8 +16,10 @@ metadata:
   last_reviewed: "2026-05-27"
 ---
 
+
 # SK-32: Lean Nested Learning Formalization
 
+---
 
 ## Routing
 
@@ -27,16 +29,16 @@ metadata:
 
 ## Workflow
 
-1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
-2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
-3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
-4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+1. Identify the learning object: LaSalle invariance set, ProjectHierarchy level, multi-scale Lyapunov function, or timescale-separated subsystem.
+2. Pick the encoding from the body (NL-to-Project schema, hierarchy-level mapping, scale-separation argument).
+3. Produce the Lean statement; verify Mathlib dynamics primitives at the pin.
+4. Hand off: to `@lean-proof` for the proof, to `@lean-proof-review` for review, to `@lean-zettelkasten`.
 
 ## Recovery & STOP
 
-- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
-- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
-- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+- STOP if the question is general nonlinear dynamics — delegate to `@lean-math-dynamical`.
+- STOP if the spec is informal — delegate to `@lean-specification`.
+- STOP if Mathlib lacks the needed primitive — escalate to `@lean-research`.
 
 ## Handoffs
 

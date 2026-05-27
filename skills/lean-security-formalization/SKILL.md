@@ -1,5 +1,5 @@
 ---
-name: lean-security-formalization
+name: "lean-security-formalization"
 description: |
   USE FOR: Data security, information security, access control, cryptographic properties, and privacy in Lean 4. Use when formalizing information flow policies, access control models, confidentiality/integrity/availability properties, data protection compliance (GDPR/LED), or trust model properties. Core skill for the project's provenance security and data handling requirements.
   DO NOT USE FOR: security policy design not in Lean (use @applied-data-information-security); AI safety formalisation (use @lean-ai-formalization); general knowledge formalisation (use @lean-knowledge-formalization).
@@ -16,10 +16,12 @@ metadata:
   last_reviewed: "2026-05-27"
 ---
 
+
 # Lean 4 Security & Privacy Formalization
 
 Guide to formalizing security properties, access control, information flow, and privacy in Lean 4.
 
+---
 
 ## Routing
 
@@ -29,16 +31,16 @@ Guide to formalizing security properties, access control, information flow, and 
 
 ## Workflow
 
-1. Confirm the question / task is in scope by checking the **USE FOR** clause above; if any of the **DO NOT USE FOR** redirects apply, hand off and stop.
-2. Consult the body of this skill (the existing Parts below) for the domain content; pick the smallest relevant section.
-3. Execute the section's procedure; emit an output suitable for the listed successor skill(s). Belief floor: 0.90 before publishing.
-4. On handoff, attach: scope, key findings, recommended next-skill call. Leave a Zettel breadcrumb when permanent.
+1. Identify the security property class: information flow, access control, cryptographic, or privacy.
+2. Pick the matching encoding from the body (non-interference, BLP-Lean, IND-CPA-Lean, k-anonymity-Lean).
+3. Produce the Lean statement + proof skeleton; verify Mathlib primitives at the pin.
+4. Hand off: to `@lean-proof-review` for review, to `@lean-enforcement` for CI, to `@applied-data-information-security` if the model is wrong.
 
 ## Recovery & STOP
 
-- STOP if the task hits a topic redirected by **DO NOT USE FOR** — hand off to that skill rather than expanding scope here.
-- STOP if belief is below 0.90 on a key claim — request HITL or escalate to `@lean-research` for evidence widening.
-- STOP if the domain content below is insufficient for the question — log the gap as a research request and hand off to `@research-council` (or `@lean-research` for a single question).
+- STOP if the question is about policy design — delegate to `@applied-data-information-security`.
+- STOP if Mathlib lacks the cryptographic primitive — escalate to `@lean-research`.
+- STOP if the property has not been formally stated — delegate to `@lean-specification`.
 
 ## Handoffs
 
@@ -47,267 +49,29 @@ Guide to formalizing security properties, access control, information flow, and 
 
 ---
 
-## Part 1 — Security Properties
+## Detailed reference
 
-### 1.1 CIA Triad
+Full content for `lean-security-formalization` lives in
+[`references/lean-security-formalization-handbook.md`](../../references/lean-security-formalization-handbook.md).
+Load that file when the skill is convened; the SKILL.md only carries
+the dispatch contract and the parts index.
 
-| Property | Formal Statement | Project Relevance |
-|---|---|---|
-| **Confidentiality** | Unauthorized agents cannot read protected data | Tacit knowledge protection, LED compliance |
-| **Integrity** | Unauthorized agents cannot modify data | Provenance immutability, quality gate tamper-resistance |
-| **Availability** | Authorized agents can always access data | Pipeline liveness, knowledge retrieval |
-
-### 1.2 Formal Security Properties
-
-```lean
--- Noninterference: high-security inputs don't affect low-security outputs
-def Noninterference (f : Input → Output) (sec : Input → SecurityLevel) 
-    (obs : SecurityLevel) : Prop :=
-  ∀ i₁ i₂, (∀ x, sec x ≤ obs → i₁ x = i₂ x) → 
-    observe obs (f i₁) = observe obs (f i₂)
-
--- Integrity (Biba model): information flows upward
--- No write-up: low integrity cannot modify high integrity
-def Integrity (write : Agent → Object → Prop) (level : Agent → ℕ) 
-    (objLevel : Object → ℕ) : Prop :=
-  ∀ a o, write a o → level a ≥ objLevel o
-```
-
----
-
-## Part 2 — Access Control Models
-
-### 2.1 Lattice-Based Access Control (BLP)
-
-```lean
--- Bell-LaPadula: information flows down (confidentiality)
--- No read-up: subject cannot read object above its clearance
--- No write-down: subject cannot write to object below its clearance
-
-structure BLPState where
-  subjects : Finset Subject
-  objects : Finset Object
-  clearance : Subject → SecurityLevel
-  classification : Object → SecurityLevel
-  currentAccess : Subject → Object → AccessMode → Prop
-
--- Simple security (no read-up):
-def SimpleSecure (st : BLPState) : Prop :=
-  ∀ s o, st.currentAccess s o .Read → st.clearance s ≥ st.classification o
-
--- Star property (no write-down):
-def StarSecure (st : BLPState) : Prop :=
-  ∀ s o, st.currentAccess s o .Write → st.clearance s ≤ st.classification o
-```
-
-### 2.2 Role-Based Access Control (RBAC)
-
-```lean
--- RBAC: permissions assigned to roles, roles assigned to users
-structure RBAC where
-  users : Finset User
-  roles : Finset Role
-  permissions : Finset Permission
-  userRoles : User → Finset Role
-  rolePerms : Role → Finset Permission
-
--- Authorization: user has permission if any of their roles grants it
-def authorized (rbac : RBAC) (u : User) (p : Permission) : Prop :=
-  ∃ r ∈ rbac.userRoles u, p ∈ rbac.rolePerms r
-
--- Project: role-based access to pipeline stages
--- E.g., only ConsolidationReviewer role can approve at Consolidation stage
-```
-
-### 2.3 Project Access Control Model
-
-```lean
--- Project stage-based access:
--- Experience: practitioner (capture) + system (context enrichment)
--- Articulation: practitioner (edit) + AI (elicitation scaffolding, read-only knowledge)
--- Structuring: practitioner (organize) + AI (suggestion, no write)
--- Consolidation: reviewer (approve/reject) + practitioner (read)
--- Innovation: administrator (version, retire) + all (read)
-
--- Key property: AI never has write access to validated knowledge
--- (Design Principles DP6, DP7)
-theorem ai_no_write_to_validated (agent : Agent) (artifact : Artifact)
-    (h_ai : agent.isAI) (h_val : artifact.stage = .Consolidation ∨ artifact.stage = .Innovation) :
-    ¬ hasWriteAccess agent artifact := by
-  sorry -- enforce by construction in the access model
-```
-
----
-
-## Part 3 — Information Flow
-
-### 3.1 Information Flow Control
-
-```lean
--- Security lattice: (levels, ≤) where ≤ is the "can flow to" relation
--- Top = most secret, Bottom = most public
-
--- Project information flow:
--- Tacit knowledge flows: practitioner → system (E → A → S)
--- Validated knowledge flows: system → organization (C → I)
--- AI-generated content: tagged, bounded, never auto-promoted
-
--- No flow violations:
-def NoFlowViolation (flow : Artifact → Artifact → Prop) 
-    (level : Artifact → SecurityLevel) : Prop :=
-  ∀ a b, flow a b → level a ≤ level b
-```
-
-### 3.2 Provenance Integrity
-
-```lean
--- PROV-O provenance chain must be tamper-evident:
--- 1. Each node has a content hash
--- 2. Each derivation references the parent hash
--- 3. Chain verification: recompute hashes and compare
-
--- Formal property: no undetectable modification
-theorem provenance_tamper_evident (chain : ProvChain) (h_wf : WellFormed chain) :
-    ∀ modification, detectable chain modification := by
-  -- Follows from hash chain integrity
-  sorry
-```
-
-### 3.3 Covert Channels
-
-```lean
--- Covert channel: information flow not intended by the security policy
--- In Project: AI model could leak training data through generated text
--- Mitigation: provenance tagging + output filtering
-
--- Formal bound: mutual information between secret and observable is bounded
--- I(Secret; Observable) ≤ ε
-```
-
----
-
-## Part 4 — Privacy and Data Protection
-
-### 4.1 GDPR-Relevant Properties
-
-```lean
--- Data minimization: only necessary data collected
--- Purpose limitation: data used only for stated purpose
--- Storage limitation: data deleted after retention period
-
--- Formal data lifecycle:
-structure DataLifecycle where
-  collected : Nat  -- timestamp
-  purpose : String
-  retentionDays : Nat
-  deleted : Option Nat  -- deletion timestamp
-
--- Compliance: data deleted by deadline
-def gdprCompliant (dl : DataLifecycle) (now : Nat) : Prop :=
-  dl.deleted.isSome ∨ (now - dl.collected) ≤ dl.retentionDays * 86400
-```
-
-### 4.2 LED-Specific Properties (Law Enforcement)
-
-```lean
--- Law Enforcement Directive (2016/680):
--- Article 4: lawful processing principles
--- Article 10: processing of special categories (biometric, genetic)
--- Article 11: automated individual decisions (requires human review)
-
--- Project compliance: Consolidation stage = Article 11 human review
--- Every AI-assisted analysis must be reviewed by a human before
--- it can influence law enforcement decisions
-```
-
-### 4.3 Differential Privacy
-
-```lean
--- ε-differential privacy:
--- P(M(D₁) ∈ S) ≤ e^ε * P(M(D₂) ∈ S)
--- for neighboring datasets D₁, D₂ (differing in one record)
-
--- Project: if the system stores knowledge from multiple practitioners,
--- differential privacy bounds information leakage about individuals
--- (Relevant for organizational knowledge base, not individual capture)
-```
-
----
-
-## Part 5 — Cryptographic Properties
-
-### 5.1 Hash Functions
-
-```lean
--- Collision resistance: hard to find x ≠ y with H(x) = H(y)
--- Pre-image resistance: given h, hard to find x with H(x) = h
--- Second pre-image resistance: given x, hard to find y ≠ x with H(y) = H(x)
-
--- Project provenance uses content hashes:
--- Not modeling computational hardness (that's complexity theory)
--- But modeling: if hashes are different, content is different
-axiom hash_injective_model : ∀ x y, hash x = hash y → x = y
--- (This is the idealized model; real hashes have negligible collision probability)
-```
-
-### 5.2 Digital Signatures
-
-```lean
--- Authenticity: signature proves authorship
--- Non-repudiation: author cannot deny signing
-
--- Project: practitioner signs their contributions
--- AI-generated content signed differently (different key/tag)
--- Verification: any party can verify signature
-```
-
-### 5.3 Secure Multi-Party Computation
-
-```lean
--- Multiple parties compute f(x₁, ..., xₙ) without revealing inputs
--- Project: multiple practitioners contribute knowledge
--- without revealing sensitive operational details
--- (Relevant for cross-organizational knowledge sharing)
-```
-
----
-
-## Part 6 — Trust Models
-
-### 6.1 Computational Trust
-
-```lean
--- Trust as a value in [0,1] (or Nat ×100 in the project):
--- Updated based on evidence: positive → increase, negative → decrease
--- Project trust vector: (recognition, structuring, knowledge)
-
--- Trust composition: agent A trusts B, B trusts C → A trusts C?
--- Not transitive in general! Discount: trust(A,C) ≤ trust(A,B) * trust(B,C)
--- Project: trust contraction bounds composition
-```
-
-### 6.2 Delegation and Authority
-
-```lean
--- Delegation: A grants B some of A's authority
--- Bounded: B's delegated authority ≤ A's authority
--- Revocable: A can revoke at any time
-
--- Project: AI agents have delegated authority from practitioners
--- Trust vector determines delegation bounds
--- Human override = immediate revocation
-```
-
----
-
-## Part 7 — Research Council Integration
-
-| Security Topic | Research Council Member |
+| Section | Topic |
 |---|---|
-| Access control model design | Β (Structure Strategist) |
-| Information flow analysis | Α (Foundations Architect) + Δ (Bounds Analyst) |
-| Privacy property formulation | Ε (Applications Bridge) |
-| Cryptographic modeling | Α (Foundations Architect) |
-| Trust model mathematics | Δ (Bounds Analyst) + Γ (Methods Scholar) |
-| Legal compliance mapping | Ε (Applications Bridge) |
-| Provenance security | Β (Structure Strategist) + Ε (Applications Bridge) |
+| Part 1 | Security Properties |
+| Part 2 | Access Control Models |
+| Part 3 | Information Flow |
+| Part 4 | Privacy and Data Protection |
+| Part 5 | Cryptographic Properties |
+| Part 6 | Trust Models |
+| Part 7 | Research Council Integration |
+
+---
+
+## See also
+
+- [`../../references/lean-security-formalization-handbook.md`](../../references/lean-security-formalization-handbook.md) — Full handbook (extracted from this skill)
+- [`../lean-proof-review/SKILL.md`](../lean-proof-review/SKILL.md) — Successor
+- [`../lean-enforcement/SKILL.md`](../lean-enforcement/SKILL.md) — Successor
+- [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) — Successor
+
