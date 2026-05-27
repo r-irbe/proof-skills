@@ -1,0 +1,1 @@
+The system is inconsistent and has no exact solution. From equations 1 and 2: x - y = 0 gives x = y, and substituting into x + y = 1 yields 2x = 1, so x = 1/2, y = 1/2. However, checking equation 3: 2(1/2) + 1/2 = 3/2 ≠ 3. The three equations are contradictory.

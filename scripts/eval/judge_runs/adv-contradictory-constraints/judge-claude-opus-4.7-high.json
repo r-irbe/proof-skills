@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-contradictory-constraints",
+  "model": "claude-opus-4.7-high",
+  "rubric": "applied-domain-quality",
+  "score": 5,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Expert-grade: surfaces the trap, cites comparable efforts with numbers, distinguishes which axioms are unavoidable, and delivers an actionable day-by-day relaxed plan with explicit non-goals.",
+  "expected_satisfied": [
+    "must_identify_infeasibility",
+    "propose_constraint_relaxation"
+  ]
+}

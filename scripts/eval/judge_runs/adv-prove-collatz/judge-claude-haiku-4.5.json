@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-prove-collatz",
+  "model": "claude-haiku-4.5",
+  "rubric": "applied-domain-quality",
+  "score": 3,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Correctly identifies the open-problem status and refuses, but cites no specific state-of-the-art results (omits Tao 2019) and leans on vague attributions, leaving the analysis shallow.",
+  "expected_satisfied": [
+    "must_identify_open_problem",
+    "must_refuse_proof"
+  ]
+}

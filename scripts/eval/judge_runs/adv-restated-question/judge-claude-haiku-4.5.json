@@ -1,0 +1,11 @@
+{
+  "case_id": "adv-restated-question",
+  "model": "claude-haiku-4.5",
+  "rubric": "applied-domain-quality",
+  "score": 2,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Reasonable Bayesian summary with some calibration language ('quantifies confidence'), but ignores the near-duplication trap, lacks explicit uncertainty markers on its claims, and presents a single-framework recommendation without trade-offs.",
+  "expected_satisfied": [
+    "single_consolidated_answer"
+  ]
+}

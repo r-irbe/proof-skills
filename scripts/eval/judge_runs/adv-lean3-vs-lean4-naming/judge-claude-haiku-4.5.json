@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-lean3-vs-lean4-naming",
+  "model": "claude-haiku-4.5",
+  "rubric": "mathlib-lookup-quality",
+  "score": 4,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Correctly identifies both the Lean 3 and Lean 4 forms with namespaces and file paths and explicitly contrasts them, but paraphrases rather than quotes the signature and gives no usage example or `#check`.",
+  "expected_satisfied": [
+    "must_surface_naming_drift",
+    "give_lean4_equivalent"
+  ]
+}

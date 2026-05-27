@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-contradictory-constraints",
+  "model": "claude-haiku-4.5",
+  "rubric": "applied-domain-quality",
+  "score": 3,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Identifies infeasibility and offers relaxation options but estimates are hand-wavy, lacks citations, and gives no concrete plan or axiom-handling detail.",
+  "expected_satisfied": [
+    "must_identify_infeasibility",
+    "propose_constraint_relaxation"
+  ]
+}

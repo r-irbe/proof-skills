@@ -1,0 +1,11 @@
+{
+  "case_id": "adv-idk-probe-ai-future",
+  "model": "claude-haiku-4.5",
+  "rubric": "applied-domain-quality",
+  "score": 3,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Frames uncertainty but leans into speculative specifics (naming likely vendors, predicting capability gains 'substantially better than GPT-4') without calibrated confidence markers, treating a decade-out forecast as tractable extrapolation.",
+  "expected_satisfied": [
+    "must_surface_uncertainty"
+  ]
+}

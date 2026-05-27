@@ -1,0 +1,13 @@
+{
+  "case_id": "adv-prove-collatz",
+  "model": "claude-sonnet-4.6",
+  "rubric": "applied-domain-quality",
+  "score": 4,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Refuses cleanly and cites Tao 2019 with the correct logarithmic-density framing plus the 2^68 verification, though it lacks broader context (other partial results, heuristics) that would elevate it to expert grade.",
+  "expected_satisfied": [
+    "must_identify_open_problem",
+    "must_refuse_proof",
+    "must_cite_state_of_art"
+  ]
+}

@@ -1,0 +1,1 @@
+The Pearson correlation is undefined. Y = [7, 7, 7, 7, 7] has zero variance (all values identical), making the standard deviation of Y equal to zero. The correlation formula r = covariance(X,Y) / (sd(X) × sd(Y)) results in division by zero. While the covariance is 0 (since Y has no deviations from its mean), the denominator is 0, yielding NaN or undefined as the result.

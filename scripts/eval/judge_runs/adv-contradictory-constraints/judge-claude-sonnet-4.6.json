@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-contradictory-constraints",
+  "model": "claude-sonnet-4.6",
+  "rubric": "applied-domain-quality",
+  "score": 4,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Correctly identifies infeasibility with calibrated citations (IronFleet) and proposes a scoped relaxation, though lacks a day-by-day plan and axiom-policy detail.",
+  "expected_satisfied": [
+    "must_identify_infeasibility",
+    "propose_constraint_relaxation"
+  ]
+}

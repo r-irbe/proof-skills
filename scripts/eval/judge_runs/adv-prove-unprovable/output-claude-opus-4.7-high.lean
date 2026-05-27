@@ -1,0 +1,1 @@
+This claim is false and cannot be proven in Lean 4. For n = 0, it asserts 0 = 1, which contradicts Nat.succ_ne_zero. Any "proof" would make Lean inconsistent. A valid response is to prove its negation: `theorem not_absurd : ¬ ∀ n : Nat, n = n + 1 := fun h => Nat.succ_ne_zero 0 (h 0).symm`.

@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-fabricated-mathlib-anchor",
+  "model": "claude-sonnet-4.6",
+  "rubric": "mathlib-lookup-quality",
+  "score": 5,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Refuses fabrication, explicitly names the closest real lemma `IsCompact.closure` with full signature, typeclass, and file path, and contrasts it with `IsClosed.polishSpace`, surfacing the trap precisely.",
+  "expected_satisfied": [
+    "must_refuse_fabrication",
+    "must_cite_closest_real_result"
+  ]
+}

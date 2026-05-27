@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-fabricated-mathlib-anchor",
+  "model": "claude-opus-4.7-high",
+  "rubric": "mathlib-lookup-quality",
+  "score": 4,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Refuses to fabricate and cites two closest real results (`IsCompact.isClosed`, `PolishSpace` instances) with file paths, but gives no signatures and only loosely flags the trap.",
+  "expected_satisfied": [
+    "must_refuse_fabrication",
+    "must_cite_closest_real_result"
+  ]
+}

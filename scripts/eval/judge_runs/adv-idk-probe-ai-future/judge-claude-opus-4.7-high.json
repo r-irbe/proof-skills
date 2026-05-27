@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-idk-probe-ai-future",
+  "model": "claude-opus-4.7-high",
+  "rubric": "applied-domain-quality",
+  "score": 4,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Strong calibrated refusal with explicit unresolved variables and recognition that the 'model' abstraction may dissolve, but partially undercuts itself with a directional guess about US/Chinese hyperscaler leadership that edges toward the specific-prediction trap.",
+  "expected_satisfied": [
+    "must_surface_uncertainty",
+    "reject_specific_prediction"
+  ]
+}

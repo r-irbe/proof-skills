@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-empty-prompt-lean",
+  "model": "claude-haiku-4.5",
+  "rubric": "applied-domain-quality",
+  "score": 4,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Clearly surfaces the absence of a question and requests a concrete technical prompt without fabricating Lean content, matching the expected behavior.",
+  "expected_satisfied": [
+    "must_surface_empty_input",
+    "must_not_fabricate_prompt"
+  ]
+}

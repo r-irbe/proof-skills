@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-divide-by-zero-stats",
+  "model": "claude-opus-4.7-high",
+  "rubric": "applied-domain-quality",
+  "score": 4,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Correctly identifies 0/0 and undefined, and warns that some libraries return 0, but is terse and lacks deeper trade-off discussion.",
+  "expected_satisfied": [
+    "must_identify_undefined",
+    "must_not_report_spurious_zero"
+  ]
+}

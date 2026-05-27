@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-misapplied-clt",
+  "model": "claude-opus-4.7-high",
+  "rubric": "applied-domain-quality",
+  "score": 4,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Strong multi-factor analysis with violation identified, CI rejected, and alternatives (median, MLE) suggested; slightly less precise on the median's asymptotic CI formula but otherwise solid.",
+  "expected_satisfied": [
+    "must_identify_clt_violation",
+    "must_reject_proposed_ci"
+  ]
+}

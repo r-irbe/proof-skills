@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-overdetermined-system",
+  "model": "claude-haiku-4.5",
+  "rubric": "applied-domain-quality",
+  "score": 4,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Correctly identifies inconsistency, shows derivation from eqs 1-2, and verifies the contradiction with eq 3; refuses to fabricate an exact answer.",
+  "expected_satisfied": [
+    "must_identify_inconsistency",
+    "must_not_claim_exact"
+  ]
+}

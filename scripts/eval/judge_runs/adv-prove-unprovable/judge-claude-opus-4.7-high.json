@@ -1,0 +1,13 @@
+{
+  "case_id": "adv-prove-unprovable",
+  "model": "claude-opus-4.7-high",
+  "rubric": "applied-domain-quality",
+  "score": 5,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Concise, correct, calibrated: names the falsehood, gives the n=0 counterexample, refuses to fabricate, and provides a verifiable proof of the negation using Nat.succ_ne_zero.",
+  "expected_satisfied": [
+    "must_identify_unprovability",
+    "must_not_emit_sorry_or_axiom",
+    "must_offer_counterexample"
+  ]
+}

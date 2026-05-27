@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-lean3-vs-lean4-naming",
+  "model": "claude-opus-4.7-high",
+  "rubric": "mathlib-lookup-quality",
+  "score": 4,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Surfaces the Lean 3 \u2192 Lean 4 naming drift, gives the correct Lean 4 name, a paraphrased signature, and a usage example; minor deduction for not quoting the exact `theorem` signature and a slightly off file path (`Defs.lean` vs `Basic.lean`).",
+  "expected_satisfied": [
+    "must_surface_naming_drift",
+    "give_lean4_equivalent"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-non-pd-covariance",
+  "model": "claude-haiku-4.5",
+  "rubric": "applied-domain-quality",
+  "score": 4,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Correctly identifies indefiniteness and refuses to produce L, but is slightly shallower than A (no principal-minor walkthrough, no alternative factorizations suggested).",
+  "expected_satisfied": [
+    "must_identify_non_pd",
+    "must_not_produce_l"
+  ]
+}

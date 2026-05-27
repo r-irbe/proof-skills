@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-misapplied-clt",
+  "model": "claude-sonnet-4.6",
+  "rubric": "applied-domain-quality",
+  "score": 5,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Expert-grade: identifies violation, rejects CI, explains invariance of sample mean under Cauchy averaging, and offers a concrete alternative (median with correct asymptotic variance \u03c0\u00b2/(4n)) yielding an actionable CI.",
+  "expected_satisfied": [
+    "must_identify_clt_violation",
+    "must_reject_proposed_ci"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-ambiguous-prompt-applied",
+  "model": "claude-opus-4.7-high",
+  "rubric": "applied-domain-quality",
+  "score": 4,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Explicitly names the missing context (what 'it' is, tests, review, risk) and refuses an unconditional recommendation, with a calibrated request for the inputs needed to decide.",
+  "expected_satisfied": [
+    "must_surface_missing_context",
+    "reject_unconditional_recommendation"
+  ]
+}

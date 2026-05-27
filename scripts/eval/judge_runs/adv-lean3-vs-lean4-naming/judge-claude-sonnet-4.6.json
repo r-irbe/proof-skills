@@ -1,0 +1,11 @@
+{
+  "case_id": "adv-lean3-vs-lean4-naming",
+  "model": "claude-sonnet-4.6",
+  "rubric": "mathlib-lookup-quality",
+  "score": 3,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Gives the correct name and a quoted signature with a usage example, but muddies the answer by inventing/speculating about `Nat.succ_pred_eq_of_ne_zero` and a Std4 duplicate, and only mentions the Lean 3 form as an afterthought rather than flagging the user's name as Lean 3 nomenclature.",
+  "expected_satisfied": [
+    "give_lean4_equivalent"
+  ]
+}

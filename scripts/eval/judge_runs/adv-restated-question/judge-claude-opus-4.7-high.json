@@ -1,0 +1,11 @@
+{
+  "case_id": "adv-restated-question",
+  "model": "claude-opus-4.7-high",
+  "rubric": "applied-domain-quality",
+  "score": 2,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Substantively the strongest answer (correctly invokes ACH, MECE, 'none of the above', source independence), but fails the adversarial trap by not flagging that all three questions are restatements and answering as if to a single question without acknowledging the duplication.",
+  "expected_satisfied": [
+    "single_consolidated_answer"
+  ]
+}

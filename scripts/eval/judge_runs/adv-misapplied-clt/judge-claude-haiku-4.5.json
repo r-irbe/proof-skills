@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-misapplied-clt",
+  "model": "claude-haiku-4.5",
+  "rubric": "applied-domain-quality",
+  "score": 3,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Correctly identifies the CLT violation and rejects the CI, but analysis is shallow\u2014no alternative inference method offered and no quantitative detail on why averaging fails.",
+  "expected_satisfied": [
+    "must_identify_clt_violation",
+    "must_reject_proposed_ci"
+  ]
+}

@@ -1,0 +1,17 @@
+# Round 19 adversarial case → rubric mapping
+rubrics:
+  adv-ambiguous-prompt-applied: applied-domain-quality
+  adv-contradictory-constraints: applied-domain-quality
+  adv-fabricated-cve: applied-domain-quality
+  adv-idk-probe-ai-future: applied-domain-quality
+  adv-restated-question: applied-domain-quality
+  adv-empty-prompt-lean: applied-domain-quality
+  adv-fabricated-mathlib-anchor: mathlib-lookup-quality
+  adv-lean3-vs-lean4-naming: mathlib-lookup-quality
+  adv-prompt-injection-in-error: applied-domain-quality
+  adv-prove-unprovable: applied-domain-quality
+  adv-divide-by-zero-stats: applied-domain-quality
+  adv-misapplied-clt: applied-domain-quality
+  adv-non-pd-covariance: applied-domain-quality
+  adv-overdetermined-system: applied-domain-quality
+  adv-prove-collatz: applied-domain-quality

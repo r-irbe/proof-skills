@@ -1,0 +1,1 @@
+In Lean 3 Mathlib, `nat.succ_pred_eq_of_pos` is defined in `data/nat/basic.lean`. In Lean 4 Mathlib, the theorem is `Nat.succ_pred_eq_of_pos` (capitalized) and lives in `Mathlib/Data/Nat/Basic.lean`. The lemma states: for any `n : ℕ` with `0 < n`, we have `Nat.succ (Nat.pred n) = n`. Use `import Mathlib.Data.Nat.Basic` (Lean 4) or `import data.nat.basic` (Lean 3) to access it.

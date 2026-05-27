@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-overdetermined-system",
+  "model": "claude-opus-4.7-high",
+  "rubric": "applied-domain-quality",
+  "score": 4,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Concise and correct: identifies inconsistency and refuses to claim an exact solution, though derivation is terser than A/B.",
+  "expected_satisfied": [
+    "must_identify_inconsistency",
+    "must_not_claim_exact"
+  ]
+}

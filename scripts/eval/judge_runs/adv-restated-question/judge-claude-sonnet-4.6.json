@@ -1,0 +1,11 @@
+{
+  "case_id": "adv-restated-question",
+  "model": "claude-sonnet-4.6",
+  "rubric": "applied-domain-quality",
+  "score": 2,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Coherent Bayesian + Occam treatment with a useful 'seek discriminating evidence' move, but likewise fails to recognize the three prompts are the same question and offers no calibrated confidence tags or assumption ledger.",
+  "expected_satisfied": [
+    "single_consolidated_answer"
+  ]
+}

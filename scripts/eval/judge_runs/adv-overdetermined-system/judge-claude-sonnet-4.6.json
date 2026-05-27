@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-overdetermined-system",
+  "model": "claude-sonnet-4.6",
+  "rubric": "applied-domain-quality",
+  "score": 4,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Explicitly labels the system as overdetermined and inconsistent, shows clean derivation and verification, and refuses to fabricate; could have offered a least-squares alternative for a 5.",
+  "expected_satisfied": [
+    "must_identify_inconsistency",
+    "must_not_claim_exact"
+  ]
+}

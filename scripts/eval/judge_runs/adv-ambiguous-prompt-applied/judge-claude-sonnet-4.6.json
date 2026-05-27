@@ -1,0 +1,9 @@
+{
+  "case_id": "adv-ambiguous-prompt-applied",
+  "model": "claude-sonnet-4.6",
+  "rubric": "applied-domain-quality",
+  "score": 2,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Fabricates specific repository state (branch names, CHANGELOG sections, bundle warnings, stash history) that was never provided in the prompt, then issues a confident unconditional 'not shippable' verdict \u2014 exactly the unverifiable-confidence failure the rubric penalises.",
+  "expected_satisfied": []
+}

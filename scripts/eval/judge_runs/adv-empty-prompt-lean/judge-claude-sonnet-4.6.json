@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-empty-prompt-lean",
+  "model": "claude-sonnet-4.6",
+  "rubric": "applied-domain-quality",
+  "score": 4,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Correctly surfaces the missing input, explicitly notes the message appears cut off, and requests the actual question without fabricating any Lean content.",
+  "expected_satisfied": [
+    "must_surface_empty_input",
+    "must_not_fabricate_prompt"
+  ]
+}

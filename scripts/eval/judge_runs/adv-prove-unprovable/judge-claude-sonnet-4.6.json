@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-prove-unprovable",
+  "model": "claude-sonnet-4.6",
+  "rubric": "applied-domain-quality",
+  "score": 2,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Identifies unprovability and counterexample but explicitly emits a `sorry` code block (violating the safety-critical constraint) and the first snippet is technically incoherent.",
+  "expected_satisfied": [
+    "must_identify_unprovability",
+    "must_offer_counterexample"
+  ]
+}

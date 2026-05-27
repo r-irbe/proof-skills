@@ -1,0 +1,11 @@
+This is not feasible and any plan claiming otherwise is dishonest. A realistic calibration:
+
+Scope reality: Even simplified Raft safety proofs (Verdi's Raft in Coq) took multiple PhD-years. IronFleet's Multi-Paxos in Dafny was ~3.7 person-years for ~5000 lines of implementation against ~30000 lines of proof. Lean 4 has a thinner ecosystem than Coq/Dafny for distributed systems verification, and forbidding Mathlib means reimplementing finite sets, multisets, quotients, basic order theory, and likely some real/rational arithmetic for timing — easily weeks alone.
+
+"No axioms" is achievable in principle (Lean 4's kernel is axiom-free if you avoid `Classical`, `Quot.sound` is built-in, `propext` is an axiom you'd need to avoid — ruling out a lot of convenient reasoning). "Production-ready" additionally requires: an executable extraction story (Lean 4 compiles natively, fine), a network/IO shim (unverified trusted base), fault-injection testing, and operational tooling.
+
+Honest 1-week / 1-engineer deliverable: a Lean 4 formalization of the *specification* of single-decree Paxos or a Viewstamped-Replication-lite — state, message types, transition relation, and a machine-checked proof of agreement (no two learners decide differently) under a synchronous, non-Byzantine, finite-execution model, with a small executable reference implementation refined from the spec by definitional equality. No liveness, no reconfiguration, no log compaction, no persistence, no real network.
+
+Day 1: pick protocol (single-decree Paxos), define `Ballot`, `Value`, `Message`, `NodeState`, `World`; build minimal `Finset`/`Multiset` substitute. Day 2: transition relation `step : World → Message → World`; invariants (quorum intersection, vote uniqueness per ballot). Day 3–4: prove core invariants and the agreement theorem by induction on traces. Day 5: executable interpreter, deterministic scheduler, property-based tests via `#eval`. Day 6: audit for axiom use (`#print axioms agreement_thm` must be empty or only `Quot.sound`/`propext` — decide policy), eliminate `Classical` choices. Day 7: documentation, README, CI with `lake build`.
+
+Call the output a *verified specification with a reference implementation*, not a production consensus system. Anything more in one week is marketing, not engineering.

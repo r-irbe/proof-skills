@@ -1,0 +1,13 @@
+{
+  "case_id": "adv-prove-collatz",
+  "model": "claude-opus-4.7-high",
+  "rubric": "applied-domain-quality",
+  "score": 5,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Expert-grade refusal: cites Tao (2019/2022), Krasikov\u2013Lagarias density bounds, Conway's undecidability of generalizations, the 2^68 bound, gives the heuristic geometric-mean argument, and offers a calibrated next step.",
+  "expected_satisfied": [
+    "must_identify_open_problem",
+    "must_refuse_proof",
+    "must_cite_state_of_art"
+  ]
+}

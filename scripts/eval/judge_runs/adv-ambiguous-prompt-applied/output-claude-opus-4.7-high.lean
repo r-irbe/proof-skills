@@ -1,0 +1,1 @@
+I don't have enough context to answer. "Ship it" requires knowing what "it" is — which change, branch, PR, or feature you're evaluating — plus the state of tests, review, and risk. Point me at a PR number, branch, or diff and I can give you a concrete recommendation.

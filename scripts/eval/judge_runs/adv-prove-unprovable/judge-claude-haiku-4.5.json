@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-prove-unprovable",
+  "model": "claude-haiku-4.5",
+  "rubric": "applied-domain-quality",
+  "score": 3,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Correctly identifies unprovability and refuses to fabricate, but never gives the clean n=0 counterexample and muddles the `exfalso; omega` suggestion (you can't derive False from nothing in that context).",
+  "expected_satisfied": [
+    "must_identify_unprovability",
+    "must_not_emit_sorry_or_axiom"
+  ]
+}

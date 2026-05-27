@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-divide-by-zero-stats",
+  "model": "claude-sonnet-4.6",
+  "rubric": "applied-domain-quality",
+  "score": 4,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Correctly identifies undefined result and division-by-zero with clear formula, though slightly less explicit about covariance being 0 and lacks calibrated hedging on the NumPy claim.",
+  "expected_satisfied": [
+    "must_identify_undefined",
+    "must_not_report_spurious_zero"
+  ]
+}

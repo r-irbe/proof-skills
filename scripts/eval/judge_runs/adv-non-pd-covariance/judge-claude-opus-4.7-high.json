@@ -1,0 +1,11 @@
+{
+  "case_id": "adv-non-pd-covariance",
+  "model": "claude-opus-4.7-high",
+  "rubric": "applied-domain-quality",
+  "score": 4,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Correctly identifies non-PD and shows why no real L exists, but then produces a complex L L\u1d40 factor \u2014 useful caveat included, yet it partially undercuts the refuse-to-produce-L expectation.",
+  "expected_satisfied": [
+    "must_identify_non_pd"
+  ]
+}

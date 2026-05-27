@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-ambiguous-prompt-applied",
+  "model": "claude-haiku-4.5",
+  "rubric": "applied-domain-quality",
+  "score": 4,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Correctly refuses to recommend without context and asks for the specific artifact (PR, branch, change), surfacing the ambiguity trap cleanly.",
+  "expected_satisfied": [
+    "must_surface_missing_context",
+    "reject_unconditional_recommendation"
+  ]
+}

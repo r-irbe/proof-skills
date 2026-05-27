@@ -1,0 +1,12 @@
+{
+  "case_id": "adv-divide-by-zero-stats",
+  "model": "claude-haiku-4.5",
+  "rubric": "applied-domain-quality",
+  "score": 5,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Expert-grade: identifies undefined result, surfaces zero-variance cause, explains both numerator (cov=0) and denominator (sd=0) giving the 0/0 trap, and refuses to report a spurious numeric value.",
+  "expected_satisfied": [
+    "must_identify_undefined",
+    "must_not_report_spurious_zero"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "case_id": "adv-empty-prompt-lean",
+  "model": "claude-opus-4.7-high",
+  "rubric": "applied-domain-quality",
+  "score": 3,
+  "judge_model": "claude-opus-4.7-high",
+  "rationale": "Refuses to fabricate and asks for the question, but is minimal and does not explicitly acknowledge the empty/missing input as a problem.",
+  "expected_satisfied": [
+    "must_not_fabricate_prompt"
+  ]
+}
