@@ -1,0 +1,1 @@
+Use the finite-dimensional template "define a basis, prove the key identity on basis vectors, extend by linearity/continuity," then in functional analysis replace the basis step with density plus bounded extension.

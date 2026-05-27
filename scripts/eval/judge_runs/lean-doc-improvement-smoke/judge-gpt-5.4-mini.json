@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "Claims an edit with a specific number but produces no doc artifact with structure, no verification anchor, and no acceptance criteria.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "C",
+  "_rubric": "lean-doc-quality"
+}

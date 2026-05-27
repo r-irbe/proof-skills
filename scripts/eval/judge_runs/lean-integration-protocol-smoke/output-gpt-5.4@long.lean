@@ -1,0 +1,1 @@
+`MeasureBridge` should expose stable definitions and proofs for measurable spaces, measures, kernels, product or pushforward constructions, and side conditions like measurability and σ-finiteness, while `Information` consumes only that API to define entropy or divergence and proves results without depending on `MeasureBridge` internals.

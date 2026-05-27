@@ -1,0 +1,1 @@
+A causal claim must be stated under an intervention or structural update, such as "after setting `X := x`, `Y` changes," while a correlational claim only states a relation in the observed model, such as dependence or conditional probability without intervention.

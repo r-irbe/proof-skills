@@ -1,0 +1,1 @@
+A failure mode is resonance-driven sensor feedback instability: structural vibration excites an accelerometer or encoder, the sampled signal appears as real error to the software controller, and the loop commands corrective motion at the wrong phase, amplifying oscillation until the system chatters, saturates, or loses positional control.

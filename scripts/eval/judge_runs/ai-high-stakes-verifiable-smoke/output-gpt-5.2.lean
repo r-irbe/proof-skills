@@ -1,0 +1,1 @@
+High-risk AI (employment/workers management: CV screening/selection); enforce verifiable non-discrimination by auditing model outcomes for protected-group parity/impact metrics with documented test sets and reproducible logs.

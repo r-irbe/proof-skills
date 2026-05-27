@@ -1,0 +1,1 @@
+Extract the hypothesis as an explicit quantified antecedent listing all domains and side conditions needed for formalisation, e.g. the objects involved, measurability or integrability assumptions, finiteness conditions, and any independence or absolute-continuity premises.

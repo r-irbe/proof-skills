@@ -1,0 +1,1 @@
+Preconditions: assumptions/hypotheses and required typeclass/structure instances; Conclusion: the final proposition to prove; Traceability anchor: a named label/id tying the statement to a requirement/spec section (e.g., `ReqID := "S3.2"` and theorem tagged/annotated with it).

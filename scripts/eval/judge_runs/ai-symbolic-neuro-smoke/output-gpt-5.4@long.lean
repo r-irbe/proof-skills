@@ -1,0 +1,1 @@
+Use a symbolic rule/constraint solver, because large-scale arithmetic constraint satisfaction over 100 variables requires exactness and guaranteed consistency rather than approximate neural prediction.

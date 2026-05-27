@@ -1,0 +1,1 @@
+Freeze safety constraints as an immutable "constitutional" layer and train task skills with constrained optimization (hard constraints + safety reward), using continual-learning methods (EWC/LwF/rehearsal) plus periodic red-team evals to detect drift and block updates that regress on safety tests.

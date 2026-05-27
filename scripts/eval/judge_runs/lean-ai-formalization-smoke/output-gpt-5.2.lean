@@ -1,0 +1,1 @@
+No-op invariance: ∀s, R(s, noop)=0 (or constant c independent of s) and the return under any policy is unchanged by inserting noop steps, i.e., ∀π, Vπ(s)=Vπ∘noop(s) (equivalently noop cannot increase expected cumulative reward).

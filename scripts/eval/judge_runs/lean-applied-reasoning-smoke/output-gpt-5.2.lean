@@ -1,0 +1,1 @@
+E: Fingerprints of suspect S are found on the inside surface of the broken window pane; C: S likely touched the window during the time of the break-in; formal step: TouchDuringEvent(S,Window,BreakIn) is the best explanation for P(Fingerprints|TouchDuringEvent) ≫ P(Fingerprints|NoTouchDuringEvent) given no prior legitimate access.

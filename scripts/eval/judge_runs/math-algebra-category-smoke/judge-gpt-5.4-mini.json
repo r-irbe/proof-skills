@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "Correct standard-composition statement G.map f \u2218 \u03b7_X = \u03b7_Y \u2218 F.map f, but minimal \u2014 no convention caveat, no calibrated confidence, no surfacing of the \u226b vs \u2218 ambiguity.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

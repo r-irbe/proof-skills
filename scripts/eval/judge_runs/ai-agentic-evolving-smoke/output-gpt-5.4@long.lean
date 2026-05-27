@@ -1,0 +1,1 @@
+Use constrained continual learning: keep safety rules in a frozen or separately verified policy layer, train task skills in another layer, and apply replay/regularization so new learning cannot overwrite safety behavior.

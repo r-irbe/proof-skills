@@ -1,0 +1,10 @@
+{
+  "score": 5,
+  "rationale": "Minimal, idiomatic one-step proof: intro then exact Nat.add_zero, no banned search tactics, no unnecessary steps, methodology-clean.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "C",
+  "_rubric": "lean-proof-quality"
+}

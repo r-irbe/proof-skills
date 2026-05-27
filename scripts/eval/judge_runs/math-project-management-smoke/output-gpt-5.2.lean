@@ -1,0 +1,1 @@
+Compute the critical path by topologically ordering tasks, calculating earliest start/finish times via \(EF_i=ES_i+d_i\) with \(ES_i=\max EF_{\text{pred}(i)}\), then the critical path is the predecessor chain achieving the maximum project finish time (zero slack).

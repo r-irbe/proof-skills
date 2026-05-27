@@ -1,0 +1,1 @@
+Use DFS with a visited set: `def dfs(graph, seed): visited, order = set(), []; def go(u): if u in visited: return; visited.add(u); order.append(u); for v in graph.get(u, []): go(v); go(seed); return order`; acyclicity is respected because each node is expanded at most once, so back-edges/cycles cannot cause repeated traversal.

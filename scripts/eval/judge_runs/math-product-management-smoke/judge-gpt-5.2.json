@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "Correct ICE framing with reasoned ordering and acknowledgement of uncertainty on item 3, but lacks explicit calibrated confidence markers, trade-off matrix, and assumption ledger.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

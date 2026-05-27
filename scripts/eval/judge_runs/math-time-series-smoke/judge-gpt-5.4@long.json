@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "Correct parsimonious framing with explicit cap for n=200 and ARMA(1,1) default, but lacks calibrated confidence, stationarity/differencing caveats, and explicit trade-off analysis.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

@@ -1,0 +1,1 @@
+With \(n=200\), start with small orders and pick \((p,q)\) by fitting a grid (e.g., \(p,q\in\{0,1,2,3\}\)), selecting the minimum AICc/BIC model consistent with ACF/PACF cutoffs/decay, and confirming residuals are approximately white (Ljung–Box, residual ACF).

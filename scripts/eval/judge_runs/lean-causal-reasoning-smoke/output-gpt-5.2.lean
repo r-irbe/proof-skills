@@ -1,0 +1,1 @@
+A correlational claim is expressible as an association like `∀ x, P Y|X=x = ...` or `Cov X Y ≠ 0`, while a causal claim must quantify an intervention or structural model such as `∀ x, P Y|do(X:=x) = ...` or an `Intervene` operator plus assumptions like ignorability or a DAG.

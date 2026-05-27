@@ -1,0 +1,1 @@
+Preconditions: hypotheses/assumptions needed before the theorem; conclusion: the claim proved from them; traceability anchor: the exact theorem/lemma name or identifier linking the statement to its source.

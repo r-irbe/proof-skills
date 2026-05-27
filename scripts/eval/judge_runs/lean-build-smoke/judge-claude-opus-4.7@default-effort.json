@@ -1,0 +1,10 @@
+{
+  "score": 4,
+  "rationale": "Multi-factor: cache rationale, toolchain pin check, manifest integrity, expected timings, verification step, and trade-off on skipping cache; lacks an explicit assumption ledger and per-claim confidence tags.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "B",
+  "_rubric": "applied-domain-quality"
+}

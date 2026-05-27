@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "Correctly uses deontic operator and stop-before-entering, but ignores exemptions (emergency vehicles, officers) and gives a single formalization without trade-offs.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

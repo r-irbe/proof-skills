@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "No Lean code produced; only prose describing components of a theorem.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "A",
+  "_rubric": "lean-proof-quality"
+}

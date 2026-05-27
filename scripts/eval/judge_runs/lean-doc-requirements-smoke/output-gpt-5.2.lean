@@ -1,0 +1,1 @@
+Rewrite the prose claim as a quantifier-and-predicate hypothesis of the form `∀ (input) (params), Pre input params → ∃ (output), Spec input params output ∧ Bound params output`, making every undefined noun a predicate and every "usually/typically" a probability or asymptotic bound.

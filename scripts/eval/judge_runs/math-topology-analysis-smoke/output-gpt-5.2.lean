@@ -1,0 +1,1 @@
+If \(X\) is compact and \(F\subseteq X\) closed, any open cover \(\{U_i\}\) of \(F\) yields an open cover \(\{U_i\}\cup\{X\setminus F\}\) of \(X\), so a finite subcover exists for \(X\), and removing \(X\setminus F\) leaves a finite subcover of \(F\), hence \(F\) is compact.

@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "Correct framing with concrete frequency range and mention of delay/gain, but no mitigations, no calibrated confidence, omits aliasing as a second-order effect.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "B",
+  "_rubric": "applied-domain-quality"
+}

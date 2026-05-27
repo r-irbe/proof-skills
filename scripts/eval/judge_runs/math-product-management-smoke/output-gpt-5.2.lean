@@ -1,0 +1,1 @@
+Rank by ICE score \((\text{Impact}\times\text{Confidence})/\text{Effort}\): (1) formalize core definitions/interfaces (highest leverage, unblocks all), (2) formalize the main theorem/proof skeleton end-to-end (validates approach), (3) build reusable automation/lemma library (high payoff but less certain, often more effort).

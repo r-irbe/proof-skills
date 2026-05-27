@@ -1,0 +1,1 @@
+Bisect the nightly dates, not commits: find one known-good and one known-bad nightly, then binary-search by setting `elan override set leanprover/lean4:nightly-YYYY-MM-DD` and running `lake env lean path/to/test.lean` until the first failing date is isolated.

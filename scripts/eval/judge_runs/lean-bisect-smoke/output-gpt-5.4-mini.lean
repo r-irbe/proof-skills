@@ -1,0 +1,1 @@
+Use the self-contained `.lean` file as the oracle, establish known-good and known-bad nightly bounds with `elan`, then bisect by date with a script that returns 0 on success and 1 on failure until the bounds are adjacent; the first failing nightly is the regression introducer.

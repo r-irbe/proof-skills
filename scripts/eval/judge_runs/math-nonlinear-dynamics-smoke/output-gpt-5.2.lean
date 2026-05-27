@@ -1,0 +1,1 @@
+Pick a C¹ Lyapunov function V(x) with V(0)=0, V(x)>0 for x≠0 in a neighborhood (positive definite), and show Ṽ(x)=∇V(x)·f(x) ≤ 0 in that neighborhood; then level sets of V stay invariant/nonincreasing, implying trajectories starting sufficiently close remain near/at the equilibrium, hence the equilibrium is (Lyapunov) stable.

@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "Provides a schema form but omits the mandatory specification structure (no goals/non-goals, no acceptance criteria, no invariants) and gives no concrete examples.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "B",
+  "_rubric": "lean-doc-quality"
+}

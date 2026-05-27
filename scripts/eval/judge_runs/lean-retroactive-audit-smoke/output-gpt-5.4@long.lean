@@ -1,0 +1,1 @@
+Week 1 wave 0 inventory and trust-boundary mapping, week 2 wave 1 audit leaf dependencies, week 3 wave 2 audit internal libraries that depend only on cleared leaves, week 4 wave 3 audit applications and integration edges, week 5 wave 4 re-audit all high-risk paths and close findings.

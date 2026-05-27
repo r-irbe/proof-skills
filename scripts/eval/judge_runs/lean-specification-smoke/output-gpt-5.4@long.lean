@@ -1,0 +1,1 @@
+Preconditions: declare the ambient types/structures and all hypotheses `H1, …, Hn`; Conclusion: isolate the exact claim `C` proved from those hypotheses; Traceability anchor: attach a stable requirement/spec identifier such as `REQ-THM-017` (optionally with source section/version) so the theorem is linked back to its originating requirement.

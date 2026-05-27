@@ -1,0 +1,1 @@
+Use a symbolic constraint solver/rule engine (e.g., CP-SAT) for arithmetic constraints over 100 variables because it provides exact satisfaction, completeness, and debuggable proofs versus neural approximations.

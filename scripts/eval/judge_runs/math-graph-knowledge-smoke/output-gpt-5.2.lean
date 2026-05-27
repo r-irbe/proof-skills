@@ -1,0 +1,1 @@
+DFS(seed): use a stack (or recursion) and a `visited` set; push seed, while stack nonempty pop v, if v ∈ visited continue else mark visited and emit v, then for each outgoing neighbor w of v if w ∉ visited push w; acyclicity is ensured by the visited check preventing revisits/back-edges.

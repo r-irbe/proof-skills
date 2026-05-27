@@ -1,0 +1,1 @@
+For row-player payoff matrix \(A\), the game value is \(v=\max_{x\in\Delta_m}\min_{y\in\Delta_n} x^\top A y=\max_{x,v}\{v:\ A^\top x\ge v\mathbf 1,\ \mathbf 1^\top x=1,\ x\ge0\}=\min_{y,w}\{w:\ Ay\le w\mathbf 1,\ \mathbf 1^\top y=1,\ y\ge0\}\) (primal/dual LP min–max setup).

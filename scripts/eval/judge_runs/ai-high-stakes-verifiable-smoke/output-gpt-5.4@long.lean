@@ -1,0 +1,1 @@
+It is a high-risk AI system under the EU AI Act for employment access decisions, and the enforceable verifiable property is demonstrable non-discrimination/fairness with auditable logs and measurable bias bounds.

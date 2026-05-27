@@ -1,0 +1,1 @@
+Week 1 wave0: inventory deps + lockfiles + SBOM; Week 2 wave1: direct deps risk review + vuln scan; Week 3 wave2: transitive deps review + license audit; Week 4 wave3: build/test hardening + remediation PRs + final signoff.

@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "Lengthy informal/semi-formal prose with no Lean 4 structure definition.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "C",
+  "_rubric": "lean-proof-quality"
+}

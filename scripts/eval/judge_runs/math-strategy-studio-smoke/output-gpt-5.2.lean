@@ -1,0 +1,1 @@
+Plan the functional-analysis proof like a finite-dimensional argument by projecting onto a "span of basis vectors" analogue (finite-rank subspaces/operators), prove the claim on those manageable pieces, and then pass to the full space by density/approximation controlling the remainder in norm (like bounding the tail in coordinates).

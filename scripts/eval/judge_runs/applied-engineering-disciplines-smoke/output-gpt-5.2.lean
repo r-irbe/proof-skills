@@ -1,0 +1,1 @@
+A resonance at the sensor/structure (e.g., 50–200 Hz vibration) phase-modulates the measured position/velocity, and a PID/observer loop interprets it as real motion, injecting corrective actuation that amplifies the vibration (limit cycle/oscillation) due to delay and high loop gain near the resonance.

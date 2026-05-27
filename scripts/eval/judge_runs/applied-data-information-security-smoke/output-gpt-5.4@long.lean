@@ -1,0 +1,1 @@
+Salary is Confidential under CIA, with integrity also critical and availability typically moderate; under GDPR it is personal data, usually not a special-category datum unless it reveals protected traits indirectly.

@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "Correctly states the naturality square in both diagrammatic and equation form, but lacks any calibrated confidence markers or note on composition-order convention.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

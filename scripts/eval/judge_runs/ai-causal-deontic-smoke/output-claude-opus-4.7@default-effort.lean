@@ -1,0 +1,1 @@
+∀a:Agent, ∀x:Action. Permitted(a, do(x)) ↔ O(Obtain(a, Consent(x)) Before do(x)), equivalently O(¬do(a,x) U Consent(x)), where O is the deontic obligation operator and U is "until"; acting without prior consent constitutes a violation: do(a,x) ∧ ¬∃t'<t. Consent(a,x,t') ⇒ Violation(a).

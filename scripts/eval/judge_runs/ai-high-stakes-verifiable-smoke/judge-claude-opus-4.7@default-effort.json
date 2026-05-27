@@ -1,0 +1,10 @@
+{
+  "score": 4,
+  "rationale": "Cites Annex III \u00a74(a) and Arts. 9\u201315 on-jurisdiction, specifies concrete measurable bounds (four-fifths rule, parity \u03b5) tied to Art. 12 logging; minor issues: no explicit confidence tags or trade-off matrix vs alternative properties.",
+  "rubric_evidence": [],
+  "_round": "R23",
+  "_judge_pass": "single",
+  "_judge_model": "claude-opus-4.7-high",
+  "_abc_position": "B",
+  "_rubric": "applied-domain-quality"
+}

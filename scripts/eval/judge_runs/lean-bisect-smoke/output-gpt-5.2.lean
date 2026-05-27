@@ -1,0 +1,1 @@
+Use two known dates good and bad, then binary-search nightly dates with `elan toolchain install leanprover/lean4:nightly-YYYY-MM-DD` and a script that runs `lake env lean test.lean` returning 0 or 1, iterating midpoints until the first failing nightly is found.

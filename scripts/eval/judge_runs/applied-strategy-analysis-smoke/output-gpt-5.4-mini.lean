@@ -1,0 +1,1 @@
+90 days: weeks 1-2 fix the biggest weakness, weeks 3-6 exploit one key strength in the highest-opportunity segment, weeks 7-10 mitigate top threats with a contingency plan, weeks 11-13 measure results and reallocate to what is working.
