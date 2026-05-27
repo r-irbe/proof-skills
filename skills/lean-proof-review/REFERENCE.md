@@ -408,7 +408,7 @@ Each member votes (✅ 🟡 🟠 🔴) after their RALPH Review+Analyze. A singl
 
 ### Ring Audit Protocol (High-Assurance)
 
-When using Ring topology (see `lean-review-council` Part 4, Topology 6), each member audits one adjacent member's findings after the primary review:
+When using Ring topology (see [`references/lean-review-council-handbook.md` Part 4, Topology 6](../../references/lean-review-council-handbook.md)), each member audits one adjacent member's findings after the primary review:
 
 | Reviewer | Audits findings of | Audit focus |
 |---|---|---|
