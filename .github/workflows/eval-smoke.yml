@@ -62,3 +62,34 @@ jobs:
           path: ./_eval-out/
           if-no-files-found: warn
           retention-days: 30
+
+  glicko2:
+    name: Glicko-2 sanity tests (Glickman 2012 §5)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Run Glicko-2 sanity tests
+        run: python3 scripts/elo/glicko2_test.py
+
+      - name: Smoke-run Glicko-2 on sample_matches.csv
+        run: |
+          python3 scripts/elo/glicko2.py \
+            --matches scripts/elo/sample_matches.csv \
+            --out ./_glicko2-out
+
+      - name: Upload Glicko-2 report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: glicko2-report
+          path: ./_glicko2-out/
+          if-no-files-found: warn
+          retention-days: 30

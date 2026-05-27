@@ -168,7 +168,44 @@ keep drifting but the ordering is stable.
 
 ## Files
 
-- `elo.py` — the calculator. Pure `compute_elo(matches, k, r0)` plus a CLI.
+- `elo.py` — vanilla ELO calculator. Pure `compute_elo(matches, k, r0)`
+  plus a CLI. Kept as the "dashboard view" of design §3.2.
+- `glicko2.py` — **Glicko-2 rating system** (Glickman 2012), the
+  authoritative ranking math per design §3. Same CSV input as `elo.py`;
+  outputs `(rating, RD, vol, games, ci95_low, ci95_high)` per player.
+  System constant τ = 0.5, initial RD = 350, period size = 100 games.
+- `glicko2_test.py` — sanity tests. Includes Glickman's worked example
+  (§5 of the paper) reproduced to 4 decimal places, plus inactive-player
+  RD growth, symmetric draw invariance, winner/loser symmetry, and a
+  CLI smoke test. Run as `python3 scripts/elo/glicko2_test.py`.
 - `gen_sample.py` — synthetic data generator (deterministic, seed 42).
 - `sample_matches.csv` — 120-match dataset used for the self-test.
 - `out/ratings.json`, `out/leaderboard.md` — last run's outputs.
+
+## Glicko-2 vs vanilla ELO (which to use)
+
+| Use case | Use |
+|---|---|
+| Authoritative leaderboard with uncertainty bands | `glicko2.py` |
+| All-decisions inputs in `lab/design/02-elo-system.md` | `glicko2.py` |
+| Dashboard "single number" / familiar ELO scale | `elo.py` |
+| Quick online update for streaming matches | `elo.py` |
+
+Per design §3 ("Why not vanilla ELO?"): with ~25 entrants × ~400 games
+per skill bucket, vanilla ELO can't express "we don't know yet" for
+low-game entrants. Glicko-2's RD gives you that for free.
+
+```sh
+# Sanity check (must pass before any rating release):
+python3 scripts/elo/glicko2_test.py
+
+# Run against your matches:
+python3 scripts/elo/glicko2.py \
+    --matches scripts/elo/sample_matches.csv \
+    --out ./_glicko2-out
+```
+
+Output: `ratings.json` (machine-readable, with 95 % CI per player) and
+`leaderboard.md` (sorted Markdown table). The 95 % CI is
+`[rating − 2·RD, rating + 2·RD]` (per Glickman 2012; same convention
+as USCF / LMSYS reporting).
