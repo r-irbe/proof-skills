@@ -28,7 +28,7 @@ folders over time.
 | `lean-research` | Search and research workflow |
 | `lean-mwe` | Reproducer minimization workflow |
 | `lean-setup` | Lean repository setup workflow |
-| `mathlib-build` | Lake/build validation workflow |
+| `lean-build` | Lake/build validation workflow (formerly `mathlib-build`; renamed in W4 Wave 2 / move A3) |
 | `lean-doc-requirements` | Document-to-formal-claim extraction |
 | `lean-doc-improvement` | Formal-results-to-document update |
 | `lean-blueprint` | Blueprint pipeline orchestration |

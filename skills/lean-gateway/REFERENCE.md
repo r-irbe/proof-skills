@@ -41,12 +41,12 @@ The gateway is the single entry point for all Lean 4 formalization work. It coor
 | `SK-26` | `lean-mwe` | Minimal working examples | Reducer |
 | `SK-27` | `lean-pr` | Pull request preparation | PR Manager |
 | `SK-28` | `lean-bisect` | Git bisection for regressions | Debugger |
-| `SK-29` | `mathlib-build` | Mathlib build infrastructure | Build Engineer |
-| `SK-30` | `mathlib-pr` | Mathlib PR workflow | PR Manager |
-| `SK-31` | `mathlib-review` | Mathlib review standards | Reviewer |
+| `SK-29` | `mathlib-build` | Mathlib build infrastructure (**REDIRECT** — see `lean-build`) | Build Engineer |
+| `SK-30` | `mathlib-pr` | Mathlib PR workflow (**REDIRECT** — see `lean-pr` + `references/upstream/mathlib4-pr.md`) | PR Manager |
+| `SK-31` | `mathlib-review` | Mathlib review standards (**REDIRECT** — see `references/upstream/mathlib4-review.md`) | Reviewer |
 | `SK-32` | `lean-nested-learning` | Nested learning hierarchy, LaSalle, timescale separation | NL Specialist |
 | `SK-33` | `lean-causal-reasoning` | Causal DAGs, KG quality gates, counterfactual | Causality Specialist |
-| `SK-34` | `nightly-testing` | Nightly CI/build testing | CI Engineer |
+| `SK-34` | `nightly-testing` | Nightly CI/build testing (**REDIRECT** — see `references/upstream/lean-nightly-infrastructure.md`) | CI Engineer |
 | `SK-35` | `lean-retro-methodology` | RETRO protocol for retroactive formalization | RETRO Architect |
 | `SK-36` | `lean-enforcement` | Programmatic quality enforcement (Python/shell) | Enforcement Engine |
 | `SK-37` | `lean-doc-feedback` | Bidirectional document ↔ Lean feedback loop | Feedback Coordinator |
@@ -75,6 +75,7 @@ The gateway is the single entry point for all Lean 4 formalization work. It coor
 | `SK-60` | `research-synthesis-engine` | Knowledge synthesis dual to review council | Synthesis Engine |
 | `SK-61` | `lean-blueprint` | Blueprint generation (LeanArchitect + leanblueprint) | Blueprint Architect |
 | `SK-62` | `lean-report` | Blueprint-to-report (LaTeX with NL text) | Report Author |
+| `SK-63` | `lean-build` | Agnostic Lake build skill (W4 Wave 2 — replaces `mathlib-build`) | Build Engineer |
 
 ---
 

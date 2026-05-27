@@ -282,7 +282,7 @@ epistemic-discovery-engine
 | Trigger | Discovery Engine Action | Downstream Skill |
 |---|---|---|
 | New module added | Census sweep + cross-domain probe | research-council (strategy) |
-| Mathlib bump | Dependency sweep | lean-mathlib-build (build check) |
+| Mathlib bump | Dependency sweep | lean-build (build check) |
 | Review Council flag | Targeted probe | lean-research (search execution) |
 | Score stagnation | All 8 UU methods | research-synthesis-engine |
 | Pre-release gate | Exhaustive sweep | lean-quality-engine (quality sign-off) |
