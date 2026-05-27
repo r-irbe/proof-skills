@@ -1,1 +1,21 @@
-{"score": 3, "rationale": "Correct domain framing with a useful matrix-to-functional-analysis translation plan, but the analysis lacks calibrated confidence markers, omits known high-impact pitfalls (e.g., unbounded operators, non-separable spaces, failure of orthonormal-basis arguments outside Hilbert settings), and offers no trade-offs or assumption ledger.", "rubric_evidence": ["replace 'square' by a structural hypothesis such as closed range plus surjectivity", "compact operator = matrix with singular values tending to 0"]}
+{
+  "score": 3,
+  "rationale": "2-judge median (opus=3, sonnet=3): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: Correct domain framing with a useful matrix-to-functional-analysis translation plan, but the analysis lacks calibrated c...",
+    "sonnet_R21: The response demonstrates correct domain framing with technically accurate references (open mapping theorem, compact ope..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      3,
+      3
+    ]
+  }
+}

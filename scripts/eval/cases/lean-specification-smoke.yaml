@@ -1,17 +1,28 @@
 id: lean-specification-smoke
-ensemble_rubric: lean-doc-quality  # Round 20 A1: case asks for prose/process, not Lean code
-title: "Theorem-statement decomposition"
+ensemble_rubric: lean-proof-quality  # Round 21 A1: rewrote prompt to demand Lean 4 syntax
+title: "Theorem-statement decomposition (Lean 4)"
 skill: lean-specification
 difficulty: easy
 input:
   prompt: |
-    Decompose a complex theorem statement into preconditions, conclusion, and traceability anchor.
+    Write a Lean 4 theorem skeleton (statement, no proof — use `sorry` only as a placeholder
+    THAT YOU MUST REMOVE: replace with `by exact?` or another tactic stub like `by trivial`).
+    Use this exact pattern:
+
+      theorem add_assoc_spec (a b c : Nat) (ha : 0 ≤ a) : a + (b + c) = (a + b) + c := by
+        -- anchor: [T1.2]; source_spec: specs/arith/add_assoc.md
+        exact Nat.add_assoc a b c
+
+    Reply with the Lean 4 code only — no prose.
   expected_output_substring: |
-    Pull preconditions to top-level `have` hypotheses; state the conclusion as a single proposition; add a paper anchor `[T<chapter>.<index>]` and `source_spec` pointing to the spec file in `specs/<domain>/<thm>.md`.
+    theorem add_assoc_spec (a b c : Nat) (ha : 0 ≤ a) : a + (b + c) = (a + b) + c := by
+      -- anchor: [T1.2]; source_spec: specs/arith/add_assoc.md
+      exact Nat.add_assoc a b c
 expected:
   contains:
-    - "theorem|hypothesis|conclusion"
-    - "anchor|spec"
+    - "theorem\\s+add_assoc_spec"
+    - "anchor"
+    - "Nat.add_assoc"
   not_contains:
     - "sorry"
     - "admit"

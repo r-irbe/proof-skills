@@ -1,16 +1,24 @@
 id: lean-security-formalization-smoke
-ensemble_rubric: lean-doc-quality  # Round 20 A1: case asks for prose/process, not Lean code
-title: "BLP confidentiality property"
+ensemble_rubric: lean-proof-quality  # Round 21 A1: rewrote prompt to demand Lean 4 syntax
+title: "BLP no-read-up property (Lean 4 def)"
 skill: lean-security-formalization
 difficulty: easy
 input:
   prompt: |
-    Formalise the Bell-LaPadula no-read-up property.
+    Write a Lean 4 `def NoReadUp` for the Bell-LaPadula no-read-up property. Signature:
+    `(s : Subject) (o : Object) (classification : Object → Nat) (clearance : Subject → Nat) (canRead : Subject → Object → Prop) : Prop`.
+    Reply with code only.
   expected_output_substring: |
-    State `NoReadUp (s : Subject) (o : Object) := classification(o) ≤ clearance(s) → can_read(s, o)` — read access requires the subject's clearance to dominate the object's classification.
+    def NoReadUp (s : Subject) (o : Object)
+        (classification : Object → Nat) (clearance : Subject → Nat)
+        (canRead : Subject → Object → Prop) : Prop :=
+      canRead s o → classification o ≤ clearance s
 expected:
   contains:
-    - "BLP|Bell[- ]LaPadula|no[- ]?read[- ]?up|clearance"
+    - "def\\s+NoReadUp"
+    - "clearance"
+    - "classification"
+    - "canRead"
   not_contains:
     - "sorry"
     - "admit"

@@ -1,16 +1,24 @@
 id: lean-applied-reasoning-smoke
-ensemble_rubric: lean-doc-quality  # Round 20 A1: case asks for prose/process, not Lean code
-title: "Investigative reasoning formal step"
+ensemble_rubric: lean-proof-quality  # Round 21 A1: rewrote prompt to demand Lean 4 syntax
+title: "Investigative reasoning step (Lean 4 structure)"
 skill: lean-applied-reasoning
 difficulty: easy
 input:
   prompt: |
-    Formalise one step of an investigative reasoning chain (evidence → conclusion).
+    Write a Lean 4 `structure InfRule` for one inferential step in an evidence-chain.
+    Fields: `premises : List Evidence`, `conclusion : Hypothesis`, `weight : EvidenceWeight`.
+    Reply with the Lean 4 code only — no prose.
   expected_output_substring: |
-    Step type: `InfRule (premises : List Evidence) (conclusion : Hypothesis) : EvidenceWeight` — every inferential step carries an explicit weight so the final hypothesis has a traceable confidence chain.
+    structure InfRule where
+      premises : List Evidence
+      conclusion : Hypothesis
+      weight : EvidenceWeight
 expected:
   contains:
-    - "InfRule|inference|Evidence|Hypothesis"
+    - "structure\\s+InfRule"
+    - "premises"
+    - "conclusion"
+    - "weight"
   not_contains:
     - "sorry"
     - "admit"

@@ -1,16 +1,24 @@
 id: lean-integration-protocol-smoke
-ensemble_rubric: lean-doc-quality  # Round 20 A1: case asks for prose/process, not Lean code
-title: "Cross-module bridge contract"
+ensemble_rubric: lean-proof-quality  # Round 21 A1: rewrote prompt to demand Lean 4 syntax
+title: "Cross-module bridge contract (Lean 4 structure)"
 skill: lean-integration-protocol
 difficulty: easy
 input:
   prompt: |
-    Specify the bridge contract between `MeasureBridge` and a downstream `Information` module.
+    Write a Lean 4 `structure BridgeContract` for an integration surface between two modules.
+    Fields: `source : String` (e.g. "MeasureBridge"), `target : String` (e.g. "Information"),
+    `exported : List String` (lemma names), `validator : Unit → Bool`. Reply with code only.
   expected_output_substring: |
-    Use `bridge_validator.py` to assert that every public lemma exported from `MeasureBridge` resolves via its declared signature in `Information.lean`; the bridge contract pins the integration surface so downstream proofs don't drift.
+    structure BridgeContract where
+      source : String
+      target : String
+      exported : List String
+      validator : Unit → Bool
 expected:
   contains:
-    - "bridge|integration|contract"
+    - "structure\\s+BridgeContract"
+    - "exported"
+    - "validator"
   not_contains:
     - "sorry"
     - "admit"

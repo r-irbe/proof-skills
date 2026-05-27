@@ -1,5 +1,5 @@
 id: lean-bisect-smoke
-ensemble_rubric: lean-doc-quality  # Round 20 A1: case asks for prose/process, not Lean code
+ensemble_rubric: applied-domain-quality  # Round 21 A1: process/workflow, not Lean code
 title: "Bisect a Lean nightly regression"
 skill: lean-bisect
 difficulty: easy

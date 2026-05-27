@@ -1,1 +1,21 @@
-{"score": 3, "rationale": "Correct CIA and GDPR framing with sensible reasoning, but the analysis is shallow with no calibrated confidence markers, no explicit assumption ledger, no trade-off analysis, and omits known issues like Article 6 lawful basis, retention, access controls, and risks of inference to special-category data.", "rubric_evidence": ["A practical GDPR label is \"personal data, confidential HR/payroll data, elevated sensitivity.\"", "Availability is usually medium because HR/payroll staff need timely access"]}
+{
+  "score": 4,
+  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: Correct CIA and GDPR framing with sensible reasoning, but the analysis is shallow with no calibrated confidence markers,...",
+    "sonnet_R21: Multi-factor CIA analysis with sound GDPR framing and trade-off reasoning, but lacks an explicit assumption ledger, cali..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      3,
+      4
+    ]
+  }
+}

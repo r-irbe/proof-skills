@@ -1,1 +1,21 @@
-{"score": 1, "rationale": "The response contains no Lean code at all, providing only LaTeX mathematical notation for MAML-style nested learning, which fails the rubric's level-1 criterion requiring Lean code to be produced.", "rubric_evidence": ["theta'_tau = theta - alpha grad L_sup", "This is a two-level nested learner because the outer update depends on parameters produced by the inner update."]}
+{
+  "score": 1,
+  "rationale": "2-judge median (opus=1, sonnet=1): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: The response contains no Lean code at all, providing only LaTeX mathematical notation for MAML-style nested learning, wh...",
+    "sonnet_R21: The response contains no Lean code whatsoever; it is a mathematical prose/notation description of MAML, which completely..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      1,
+      1
+    ]
+  }
+}

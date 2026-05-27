@@ -1,1 +1,21 @@
-{"score": 3, "rationale": "Correct domain framing with deontic logic and Prolog-style executable encoding, but analysis is shallow — no calibrated confidence markers, no assumption ledger, no jurisdictional grounding (e.g., UVC vs. state-specific statutes), and exceptions are only gestured at rather than systematically enumerated.", "rubric_evidence": ["A basic deontic formalization is: ∀d∀t[(Driver(d) ∧ RedLight(d,t) ∧ ApproachingIntersection(d,t)) → O(StopBeforeLine(d,t))]", "If exceptions matter, add defeating conditions such as directed_by_officer(d,t) or emergency_vehicle_exception(d,t)"]}
+{
+  "score": 4,
+  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: Correct domain framing with deontic logic and Prolog-style executable encoding, but analysis is shallow \u2014 no calibrated ...",
+    "sonnet_R21: The response provides a multi-factor formalization with deontic logic, executable Prolog-style encoding, violation condi..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      3,
+      4
+    ]
+  }
+}

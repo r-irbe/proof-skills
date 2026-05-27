@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response contains only prose describing a bridge contract and produces no Lean code at all, which the rubric defines as a 1.", "rubric_evidence": ["Response fails to produce any Lean code", "`MeasureBridge` is the canonical adapter from EASCI simplex objects to Mathlib probability objects"]}

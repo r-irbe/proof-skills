@@ -1,1 +1,21 @@
-{"score": 3, "rationale": "Correct domain framing with multiple sensible mitigations, but the analysis lacks calibrated confidence markers, explicit trade-offs, an assumption ledger, and omits known high-impact failure modes (e.g., reward hacking, jailbreaks bypassing external checkers, evaluation gaming).", "rubric_evidence": ["Use a dual-memory design", "block deployment if any safety metric degrades beyond a strict threshold", "enforce external safeguards like policy checkers, tool permissions, and refusal classifiers"]}
+{
+  "score": 3,
+  "rationale": "2-judge median (opus=3, sonnet=3): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: Correct domain framing with multiple sensible mitigations, but the analysis lacks calibrated confidence markers, explici...",
+    "sonnet_R21: Correct domain framing with multiple valid techniques (dual-memory, parameter isolation, rehearsal, external safeguards)..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      3,
+      3
+    ]
+  }
+}

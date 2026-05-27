@@ -1,0 +1,1 @@
+{"score": 3, "rationale": "The proof discharges the goal correctly and avoids banned search tactics, but it lacks one-step narration of goal state between tactics and shows no cleanup or methodology discipline beyond a direct lemma application.", "rubric_evidence": ["exact Nat.add_zero n", "intro n"]}

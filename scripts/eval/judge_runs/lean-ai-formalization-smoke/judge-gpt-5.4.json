@@ -1,1 +1,21 @@
-{"score": 1, "rationale": "Response contains no Lean code at all, only English prose describing the property, which per the rubric is the defining condition for score 1.", "rubric_evidence": ["A reward function should satisfy no-op invariance", "Formally, for any state s and no-op a₀ such that T(s,a₀)=s, one requires R(s,a₀,s)=0"]}
+{
+  "score": 1,
+  "rationale": "2-judge median (opus=1, sonnet=1): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: Response contains no Lean code at all, only English prose describing the property, which per the rubric is the defining ...",
+    "sonnet_R21: The response contains no Lean code whatsoever, only informal prose and mathematical notation, which immediately places i..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      1,
+      1
+    ]
+  }
+}

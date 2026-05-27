@@ -1,0 +1,130 @@
+{
+  "_meta": {
+    "purpose": "Anchored seed ratings (Glicko-2 prior mean) for new ELO entrants. Use these instead of the default 1500/350/0.06 when a model has a published proof/code benchmark.",
+    "version": "1.0",
+    "created_round": "Round 21 (Phase A2)",
+    "created_date": "2026-05-27",
+    "schema": {
+      "rating": "Glicko-2 display-scale prior mean (centered at 1500).",
+      "rd": "Glicko-2 rating deviation (350 = fully uninformed; we use 100-200 for benchmark-anchored seeds).",
+      "volatility": "Glicko-2 sigma (0.06 = stable, default).",
+      "provenance": "Source benchmarks + cross-checks justifying the rating."
+    },
+    "consumer": "scripts/elo/glicko2.py --seed-ratings scripts/elo/anchored_seed_ratings.json (optional; falls back to defaults if unspecified).",
+    "calibration_note": "Ratings derived from R20 live Glicko-2 (3-judge median where available) + ADR-0052 extrapolations from public benchmarks (SWE-bench, Terminal-Bench, AlphaProof, Aider Polyglot). Cross-checked against R20 archive scripts/elo/example_runs/2026-05-27-h/ratings.json.",
+    "update_policy": "Refresh anytime a new entrant has > 30 games AND the live Glicko-2 rating differs from this prior by > 100 points."
+  },
+  "tolerance_for_consumer": {
+    "max_rd_for_anchored_use": 200,
+    "fallback_default": {
+      "rating": 1500.0,
+      "rd": 350.0,
+      "volatility": 0.06
+    }
+  },
+  "entrants": {
+    "claude-opus-4.7-high": {
+      "rating": 1545.0,
+      "rd": 150.0,
+      "volatility": 0.06,
+      "provenance": [
+        "R20 Glicko-2 (n=222 games, 3-judge median): 1543.7 [1416, 1672]",
+        "SWE-bench Verified ~70-72% (Anthropic published 2025)",
+        "Terminal-Bench ~50% (one of the highest reported)"
+      ]
+    },
+    "claude-opus-4.7": {
+      "rating": 1475.0,
+      "rd": 200.0,
+      "volatility": 0.06,
+      "provenance": [
+        "Estimate -70 vs @high based on gen_sample.py PLAYERS extrapolation",
+        "No live games yet; widened RD = 200"
+      ]
+    },
+    "claude-sonnet-4.6": {
+      "rating": 1581.0,
+      "rd": 150.0,
+      "volatility": 0.06,
+      "provenance": [
+        "R20 Glicko-2 (n=222 games, 3-judge median): 1581.3 [1454, 1709]",
+        "SWE-bench Verified ~65-68%",
+        "Short-prompt ceiling effect favours sonnet in R18-R20 evaluations (terse case-cluster)"
+      ]
+    },
+    "claude-sonnet-4.5": {
+      "rating": 1510.0,
+      "rd": 200.0,
+      "volatility": 0.06,
+      "provenance": [
+        "Estimate -70 vs sonnet-4.6 based on Anthropic generational delta",
+        "No live games yet; RD = 200"
+      ]
+    },
+    "claude-haiku-4.5": {
+      "rating": 1384.0,
+      "rd": 150.0,
+      "volatility": 0.06,
+      "provenance": [
+        "R20 Glicko-2 (n=222 games, 3-judge median): 1384.1 [1257, 1512]",
+        "Aider Polyglot pass-rate ~50-55%",
+        "Consistently lenient as a judge (kappa=0.537 vs opus, R19 drift audit)"
+      ]
+    },
+    "claude-opus-4.6": {
+      "rating": 1430.0,
+      "rd": 200.0,
+      "volatility": 0.06,
+      "provenance": [
+        "Used as 3rd judge in R19 5-judge calibration; estimate -110 vs opus-4.7-high based on per-case scoring agreement (Pearson r ≈ 0.7)",
+        "No live solver-side games"
+      ]
+    },
+    "gpt-5.4": {
+      "rating": 1486.0,
+      "rd": 150.0,
+      "volatility": 0.06,
+      "provenance": [
+        "R20 Glicko-2 (n=108 games, single-judge opus): 1486.3 [1340, 1632]",
+        "SWE-bench Verified ~74% (OpenAI 2025 announcement)",
+        "Sandbox quirk: cannot read/write /tmp paths — needs inline payload"
+      ]
+    },
+    "gpt-5.4-mini": {
+      "rating": 1390.0,
+      "rd": 200.0,
+      "volatility": 0.06,
+      "provenance": [
+        "ADR-0052 extrapolation: GPT-5 family mini variants score 75-85% of full-size on code benchmarks",
+        "No live games yet; RD = 200"
+      ]
+    },
+    "gpt-5.2": {
+      "rating": 1420.0,
+      "rd": 200.0,
+      "volatility": 0.06,
+      "provenance": [
+        "SWE-bench Verified ~65-68% (OpenAI 2024)",
+        "No live games yet; RD = 200"
+      ]
+    },
+    "gpt-5.2-codex": {
+      "rating": 1455.0,
+      "rd": 200.0,
+      "volatility": 0.06,
+      "provenance": [
+        "Codex variant typically +30-50 over base on code-heavy benchmarks (HumanEval, SWE-bench)",
+        "No live games yet; RD = 200"
+      ]
+    },
+    "gpt-5-mini": {
+      "rating": 1350.0,
+      "rd": 200.0,
+      "volatility": 0.06,
+      "provenance": [
+        "Aider Polyglot ~45% (extrapolated)",
+        "Used in gen_sample.py PLAYERS at 1490 — that value is the synthetic-prototype upper bound; live games will likely show lower"
+      ]
+    }
+  }
+}

@@ -1,0 +1,1 @@
+{"score": 3, "rationale": "Correct DFS-with-acyclicity framing and complexity, but shallow: no calibrated confidence markers, no trade-off analysis, and omits known risks like recursion depth limits and handling of disconnected components.", "rubric_evidence": ["Use a recursive or explicit-stack DFS that keeps two sets", "runs in `O(V + E)` over the reachable subgraph"]}

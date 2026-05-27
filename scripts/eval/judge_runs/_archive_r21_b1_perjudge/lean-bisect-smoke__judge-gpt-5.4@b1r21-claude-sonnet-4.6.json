@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response contains no Lean code whatsoever, only a prose description of a bisection methodology.", "rubric_evidence": ["Use the self-contained `.lean` file as the oracle", "Automate this with a shell script", "no Lean code present anywhere in the response"]}

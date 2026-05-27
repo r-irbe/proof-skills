@@ -1,1 +1,21 @@
-{"score": 1, "rationale": "The response contains no Lean code at all, only an informal natural-language description of Bell-LaPadula, so it fails the rubric's most basic requirement.", "rubric_evidence": ["Let L be a security lattice with partial order ≤", "the simple-security condition (no-read-up) requires that a read by subject s of object o is permitted only if cls(o) ≤ clr(s)"]}
+{
+  "score": 1,
+  "rationale": "2-judge median (opus=1, sonnet=1): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: The response contains no Lean code at all, only an informal natural-language description of Bell-LaPadula, so it fails t...",
+    "sonnet_R21: The response contains no Lean code whatsoever, only informal mathematical prose describing the Bell-LaPadula property...."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      1,
+      1
+    ]
+  }
+}

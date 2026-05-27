@@ -1,0 +1,1 @@
+{"score": 3, "rationale": "The response correctly states the naturality square and its commutativity equation, but it is a bare definition with no domain caveats, calibrated confidence, trade-offs, or risk framing as the rubric demands.", "rubric_evidence": ["Commutativity means G(f) o eta_X = eta_Y o F(f).", "F(X) --F(f)--> F(Y)"]}

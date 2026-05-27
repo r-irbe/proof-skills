@@ -1,1 +1,21 @@
-{"score": 3, "rationale": "The proof is mathematically correct and clearly framed via the open-cover characterisation, but it offers no calibrated confidence markers, assumption ledger, or discussion of edge cases (e.g., subspace vs. ambient cover formulations, Hausdorff hypotheses, or alternative proof routes), which a domain expert would flag as incomplete under this rubric.", "rubric_evidence": ["let {U_i} be any open cover of F", "Since F is closed, X\\F is open", "Thus every open cover of F has a finite subcover, so F is compact."]}
+{
+  "score": 4,
+  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: The proof is mathematically correct and clearly framed via the open-cover characterisation, but it offers no calibrated ...",
+    "sonnet_R21: The proof is logically complete and correct: it properly lifts subspace-open sets to X, adds the open complement to form..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      3,
+      4
+    ]
+  }
+}

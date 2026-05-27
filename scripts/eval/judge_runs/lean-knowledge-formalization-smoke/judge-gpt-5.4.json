@@ -1,1 +1,21 @@
-{"score": 1, "rationale": "The response contains no Lean code at all, only a prose explanation about RDF/OWL typing, so it fails the most basic rubric requirement.", "rubric_evidence": ["In RDF/OWL, this is usually expressed with an `rdf:type` triple, such as `:Paris rdf:type :City`."]}
+{
+  "score": 1,
+  "rationale": "2-judge median (opus=1, sonnet=1): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: The response contains no Lean code at all, only a prose explanation about RDF/OWL typing, so it fails the most basic rub...",
+    "sonnet_R21: The response contains zero Lean code, producing instead a natural-language explanation about RDF/OWL ontology typing, wh..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      1,
+      1
+    ]
+  }
+}

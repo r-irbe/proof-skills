@@ -1,0 +1,1 @@
+{"score": 3, "rationale": "Correct critical-path analysis with accurate durations and float, but lacks calibrated confidence markers, an assumption ledger, trade-off discussion, or a risk register that a domain expert would expect.", "rubric_evidence": ["the critical path is A→B→C→E", "Task D has 1 day of float"]}

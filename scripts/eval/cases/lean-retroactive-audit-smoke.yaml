@@ -1,16 +1,24 @@
 id: lean-retroactive-audit-smoke
-ensemble_rubric: lean-doc-quality  # Round 20 A1: case asks for prose/process, not Lean code
-title: "RETRO dependency-wave scheduling"
+ensemble_rubric: lean-proof-quality  # Round 21 A1: rewrote prompt to demand Lean 4 syntax
+title: "Audit-wave dependency level (Lean 4 def)"
 skill: lean-retroactive-audit
 difficulty: easy
 input:
   prompt: |
-    Schedule a retroactive audit of an existing codebase using dependency waves.
+    Write a Lean 4 `def auditWave` that computes the topological audit-wave level of a module:
+    `def auditWave (importDAG : Std.HashMap String (List String)) (m : String) : Nat`.
+    Leaves (no imports) return 0, otherwise 1 + max over imports. Reply with code only.
   expected_output_substring: |
-    Use `retro_recon.py` to compute the import DAG, partition into topological levels, and audit one level per wave starting from leaves (W0 = no dependencies) up to roots (entry points).
+    partial def auditWave (importDAG : Std.HashMap String (List String)) (m : String) : Nat :=
+      match importDAG[m]? with
+      | none => 0
+      | some [] => 0
+      | some imps => 1 + (imps.map (auditWave importDAG)).foldl max 0
 expected:
   contains:
-    - "retro_recon|dependency wave|topological"
+    - "def\\s+auditWave"
+    - "Nat"
+    - "max"
   not_contains:
     - "sorry"
     - "admit"

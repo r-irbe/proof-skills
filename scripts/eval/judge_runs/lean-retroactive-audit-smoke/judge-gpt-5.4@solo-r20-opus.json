@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response contains no Lean code at all—it is a prose audit schedule rather than a proof, so it cannot satisfy any rubric criterion above the lowest level.", "rubric_evidence": ["Run the audit in four dependency waves over ten working days.", "Wave 0 on Days 1-2 maps repositories, services, shared libraries"]}

@@ -1,16 +1,22 @@
 id: lean-causal-reasoning-smoke
-ensemble_rubric: lean-doc-quality  # Round 20 A1: case asks for prose/process, not Lean code
-title: "Causal vs correlational claim"
+ensemble_rubric: lean-proof-quality  # Round 21 A1: rewrote prompt to demand Lean 4 syntax
+title: "Causal vs correlational claim (Lean 4 def)"
 skill: lean-causal-reasoning
 difficulty: easy
 input:
   prompt: |
-    Distinguish a causal from a correlational claim in a Lean specification.
+    Write a Lean 4 `def Causes` for a causal relation `Causes (X Y : Prop) : Prop` distinct from
+    biconditional `↔`. Reply with the Lean 4 code only — no prose. Include a comment line that
+    states why `Causes X Y` is NOT the same as `X ↔ Y`.
   expected_output_substring: |
-    Wrap the causal claim as `Causes (X) (Y)` (a typed relation), not just `X ↔ Y` — correlation in Lean is `↔`, causation is a primitive relation with intervention semantics.
+    -- Causal relation: a primitive distinct from correlation (which is `↔`).
+    -- Causes X Y means "X is a cause of Y" under intervention semantics.
+    def Causes (X Y : Prop) : Prop := ∀ (interv : Prop), interv → X → Y
 expected:
   contains:
-    - "Causes|causal|intervention"
+    - "def\\s+Causes"
+    - "Prop"
+    - "intervention|interv"
   not_contains:
     - "sorry"
     - "admit"

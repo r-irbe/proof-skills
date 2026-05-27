@@ -1,1 +1,21 @@
-{"score": 1, "rationale": "The response is generic prose advice about formalising a hypothesis with no Lean documentation artifact, no Mathlib references, and none of the mandatory specification structure (goals/non-goals/invariants/acceptance), satisfying the level-1 condition of producing no doc artifact.", "rubric_evidence": ["Identify the paper's core claim by isolating the asserted relationship", "H0: μtreatment − μcontrol = 0 and H1: μtreatment − μcontrol > 0"]}
+{
+  "score": 2,
+  "rationale": "2-judge median (opus=1, sonnet=2): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: The response is generic prose advice about formalising a hypothesis with no Lean documentation artifact, no Mathlib refe...",
+    "sonnet_R21: The response exists as prose guidance but omits the mandatory specification structure (no acceptance criteria, no invari..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      1,
+      2
+    ]
+  }
+}

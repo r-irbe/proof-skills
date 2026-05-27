@@ -1,16 +1,22 @@
 id: lean-nested-learning-smoke
-ensemble_rubric: lean-doc-quality  # Round 20 A1: case asks for prose/process, not Lean code
-title: "Nested learner protocol"
+ensemble_rubric: lean-proof-quality  # Round 21 A1: rewrote prompt to demand Lean 4 syntax
+title: "Nested learner protocol (Lean 4 structure)"
 skill: lean-nested-learning
 difficulty: easy
 input:
   prompt: |
-    Specify a two-level nested learner where the inner level is a gradient step and the outer is a meta-step.
+    Write a Lean 4 `structure MetaLearner` parameterised by an inner-learner type. Fields:
+    `inner : InnerLearner θ`, `metaStep : θ → θ`. Use `θ` as an implicit type parameter.
+    Reply with code only.
   expected_output_substring: |
-    Type as `MetaLearner (InnerLearner θ)` with the inner θ as parameter and outer adapting θ across tasks — the nested signature makes the meta-objective explicit.
+    structure MetaLearner (θ : Type) where
+      inner : InnerLearner θ
+      metaStep : θ → θ
 expected:
   contains:
-    - "MetaLearner|meta-learner|nested"
+    - "structure\\s+MetaLearner"
+    - "inner"
+    - "metaStep"
   not_contains:
     - "sorry"
     - "admit"

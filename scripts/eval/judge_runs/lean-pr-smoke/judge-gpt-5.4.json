@@ -1,1 +1,21 @@
-{"score": 1, "rationale": "The response is a PR title only and contains no Lean code, so it cannot satisfy any proof-quality criteria.", "rubric_evidence": ["[Mathlib.Algebra.Group.Basic] Add lemma `your_lemma_name`"]}
+{
+  "score": 1,
+  "rationale": "2-judge median (opus=1, sonnet=1): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: The response is a PR title only and contains no Lean code, so it cannot satisfy any proof-quality criteria....",
+    "sonnet_R21: The response produces only a PR title string with no Lean code whatsoever, failing the minimum requirement of the rubric..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      1,
+      1
+    ]
+  }
+}

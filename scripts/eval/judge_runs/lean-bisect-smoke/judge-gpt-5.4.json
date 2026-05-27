@@ -1,1 +1,21 @@
-{"score": 1, "rationale": "The response describes a bisection workflow but contains no Lean code or proof, so it cannot satisfy any rubric level above 1.", "rubric_evidence": ["Bisect to find which Lean nightly introduced a regression", "exits 0 for good / 1 for bad"]}
+{
+  "score": 1,
+  "rationale": "2-judge median (opus=1, sonnet=1): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: The response describes a bisection workflow but contains no Lean code or proof, so it cannot satisfy any rubric level ab...",
+    "sonnet_R21: The response contains no Lean code whatsoever, only a prose description of a bisection methodology...."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      1,
+      1
+    ]
+  }
+}

@@ -1,1 +1,21 @@
-{"score": 3, "rationale": "Mathematically correct minimax/LP formulation but lacks calibrated confidence markers, assumption ledger, and trade-off discussion (e.g., pure vs mixed, computational considerations, degeneracy) expected for expert-grade applied analysis.", "rubric_evidence": ["by the minimax theorem", "max_{x,v} v subject to A^T x >= v*1"]}
+{
+  "score": 4,
+  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: Mathematically correct minimax/LP formulation but lacks calibrated confidence markers, assumption ledger, and trade-off ...",
+    "sonnet_R21: The response correctly frames the min-max game, states the minimax theorem, derives both primal and dual LPs, and identi..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      3,
+      4
+    ]
+  }
+}

@@ -1,1 +1,21 @@
-{"score": 3, "rationale": "Correct prioritisation framing with impact/confidence/effort labels, but analysis is shallow with no second-order effects, no risk register, vague qualitative confidence ('medium', 'high') rather than calibrated markers, and no explicit trade-offs or assumptions.", "rubric_evidence": ["impact is highest because every dashboard, experiment readout, and target depends on consistent definitions; confidence is high because scope is bounded; effort is medium"]}
+{
+  "score": 3,
+  "rationale": "2-judge median (opus=3, sonnet=3): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: Correct prioritisation framing with impact/confidence/effort labels, but analysis is shallow with no second-order effect...",
+    "sonnet_R21: The response applies correct domain framing with multi-factor ordering (impact/confidence/effort) and informal confidenc..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      3,
+      3
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response contains no Lean code whatsoever, only informal prose and mathematical notation, which immediately places it at score 1 per rubric definition.", "rubric_evidence": ["A reward function should satisfy no-op invariance", "R(s,a₀,s)=0", "E[∑_{t=0}^{n-1} γ^t R(s_t,a₀,s_t)]"]}

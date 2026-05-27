@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response contains no actual Lean proof code, only prose with two inline theorem statement examples and no proof terms, so it fails the rubric requirement to produce Lean code that discharges a goal.", "rubric_evidence": ["theorem assoc : Corr X Y ≠ 0", "theorem effect : E[Y | do T = 1] - E[Y | do T = 0] = δ"]}

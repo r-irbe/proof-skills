@@ -1,16 +1,22 @@
 id: lean-ai-formalization-smoke
-ensemble_rubric: lean-doc-quality  # Round 20 A1: case asks for prose/process, not Lean code
-title: "Reward-hacking formal property"
+ensemble_rubric: lean-proof-quality  # Round 21 A1: rewrote prompt to demand Lean 4 syntax
+title: "Reward-hacking formal property (Lean 4)"
 skill: lean-ai-formalization
 difficulty: easy
 input:
   prompt: |
-    State the formal property that a reward function must not be hackable by a no-op action.
+    Write a Lean 4 `def` named `NoNoOpHack` for the property "a reward function R must not be
+    strictly higher on a no-op action than a baseline". Use signature
+    `(R : Action → ℝ) (isNoOp : Action → Prop) (Rbaseline : ℝ) : Prop`. Reply with the
+    Lean 4 code only — no prose.
   expected_output_substring: |
-    Define `NoNoOpHack (R : Action → ℝ) := ∀ a, noop(a) → R(a) ≤ R_baseline` — the reward must not strictly exceed the baseline on a no-op action.
+    def NoNoOpHack (R : Action → ℝ) (isNoOp : Action → Prop) (Rbaseline : ℝ) : Prop :=
+      ∀ a, isNoOp a → R a ≤ Rbaseline
 expected:
   contains:
-    - "NoNoOpHack|reward|no[- ]?op"
+    - "def\\s+NoNoOpHack"
+    - "isNoOp"
+    - "Rbaseline"
   not_contains:
     - "sorry"
     - "admit"

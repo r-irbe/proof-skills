@@ -1,1 +1,21 @@
-{"score": 2, "rationale": "The Lean code parses but the final example intentionally does not discharge the goal (uses `exact \"x\"` to trigger a type-mismatch error), satisfying the rubric's literal criterion that the proof does not discharge the goal.", "rubric_evidence": ["example : Nat := by\n  exact \"x\"", "fail_if_success exact \"x\""]}
+{
+  "score": 2,
+  "rationale": "2-judge median (opus=2, sonnet=2): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: The Lean code parses but the final example intentionally does not discharge the goal (uses `exact \"x\"` to trigger a type...",
+    "sonnet_R21: Lean code is present and parses, but neither snippet actually discharges the Nat goal: the first uses `fail_if_success e..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      2,
+      2
+    ]
+  }
+}

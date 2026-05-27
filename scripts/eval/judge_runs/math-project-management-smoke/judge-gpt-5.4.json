@@ -1,1 +1,21 @@
-{"score": 3, "rationale": "Correct critical-path analysis with accurate durations and float, but lacks calibrated confidence markers, an assumption ledger, trade-off discussion, or a risk register that a domain expert would expect.", "rubric_evidence": ["the critical path is A→B→C→E", "Task D has 1 day of float"]}
+{
+  "score": 3,
+  "rationale": "2-judge median (opus=3, sonnet=3): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: Correct critical-path analysis with accurate durations and float, but lacks calibrated confidence markers, an assumption...",
+    "sonnet_R21: The response correctly frames and solves the CPM calculation (paths, critical path, float for D) but is shallow: no assu..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      3,
+      3
+    ]
+  }
+}

@@ -1,1 +1,21 @@
-{"score": 1, "rationale": "The response contains no Lean code at all, only a prose discussion of decomposing theorem statements, which fails the rubric's minimum requirement.", "rubric_evidence": ["A complex theorem statement can be decomposed into three parts: preconditions, conclusion, and a traceability anchor."]}
+{
+  "score": 1,
+  "rationale": "2-judge median (opus=1, sonnet=1): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: The response contains no Lean code at all, only a prose discussion of decomposing theorem statements, which fails the ru...",
+    "sonnet_R21: The response contains no Lean code whatsoever, producing only natural-language prose about theorem decomposition; per th..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      1,
+      1
+    ]
+  }
+}

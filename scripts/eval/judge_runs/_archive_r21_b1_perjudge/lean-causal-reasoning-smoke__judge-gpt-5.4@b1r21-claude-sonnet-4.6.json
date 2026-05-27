@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response contains no actual Lean code whatsoever, only prose description of what Lean code would look like.", "rubric_evidence": ["theorem assoc : Corr X Y ≠ 0", "theorem effect : E[Y | do T = 1] - E[Y | do T = 0] = δ"]}

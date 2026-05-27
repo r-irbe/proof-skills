@@ -2,15 +2,16 @@
   "_meta": {
     "purpose": "ELO regression-gate baseline. CI fails if any entrant drops > tolerance vs these ratings.",
     "tolerance_points": 75,
-    "source_archive": "scripts/elo/example_runs/2026-05-27-e/ratings.json",
-    "created_round": "Round 19 (Phase A3)",
+    "source_archive": "elo/example_runs/2026-05-27-h/ratings.json",
+    "created_round": "Round 21 (B1 ensemble + gpt-5.4 entrant added)",
     "created_date": "2026-05-27",
     "update_policy": "Maintainers may regenerate the baseline with `python3 scripts/elo/check_regression.py --refresh` after intentional changes."
   },
   "tolerance_points": 75,
   "ratings": {
-    "claude-haiku-4.5": 1391.56,
-    "claude-opus-4.7-high": 1524.1,
-    "claude-sonnet-4.6": 1584.34
+    "claude-haiku-4.5": 1369.96,
+    "claude-opus-4.7-high": 1528.54,
+    "claude-sonnet-4.6": 1564.27,
+    "gpt-5.4": 1569.8
   }
 }

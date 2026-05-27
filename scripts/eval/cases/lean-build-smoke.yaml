@@ -1,4 +1,5 @@
 id: lean-build-smoke
+ensemble_rubric: applied-domain-quality  # Round 21 A1: process/workflow, not Lean code
 title: "Targeted Lake build with cache"
 skill: lean-build
 difficulty: easy

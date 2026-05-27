@@ -1,1 +1,21 @@
-{"score": 1, "rationale": "The response contains only prose describing a bridge contract and produces no Lean code at all, which the rubric defines as a 1.", "rubric_evidence": ["Response fails to produce any Lean code", "`MeasureBridge` is the canonical adapter from EASCI simplex objects to Mathlib probability objects"]}
+{
+  "score": 1,
+  "rationale": "2-judge median (opus=1, sonnet=1): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: The response contains only prose describing a bridge contract and produces no Lean code at all, which the rubric defines...",
+    "sonnet_R21: The response contains no Lean code whatsoever\u2014only English prose describing a module contract\u2014which satisfies the rubric..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      1,
+      1
+    ]
+  }
+}

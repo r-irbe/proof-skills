@@ -1,1 +1,21 @@
-{"score": 3, "rationale": "Correct EU AI Act framing and a sensible verifiable property, but the analysis is shallow with no calibrated confidence markers, no trade-off analysis, and omits known high-impact risks like GDPR Article 22 interaction, Article 10 data governance, and the legality limits of using ethnicity proxies.", "rubric_evidence": ["high-risk AI system under the EU AI Act, specifically Annex III", "an adverse impact ratio of at least 0.8", "the most important enforceable property is measurable fairness with reproducible audit evidence"]}
+{
+  "score": 4,
+  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: Correct EU AI Act framing and a sensible verifiable property, but the analysis is shallow with no calibrated confidence ...",
+    "sonnet_R21: Correct Annex III classification with concrete enforceability metrics (adverse-impact ratio \u22650.8, FN/FP gap bounds, audi..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      3,
+      4
+    ]
+  }
+}

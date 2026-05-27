@@ -1,1 +1,21 @@
-{"score": 3, "rationale": "Correct domain framing with a sensible symbolic-first recommendation and a brief hybrid trade-off, but the analysis lacks calibrated confidence markers, an explicit assumption ledger, and omits known second-order risks (encoding choices, solver selection, scaling limits, soft-constraint handling depth).", "rubric_evidence": ["Use a symbolic rule engine.", "symbolic core plus optional neural heuristics only for variable ordering or candidate proposal", "If the constraints are noisy, learned from data, or soft rather than exact, then add a neural component around the symbolic solver"]}
+{
+  "score": 4,
+  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: Correct domain framing with a sensible symbolic-first recommendation and a brief hybrid trade-off, but the analysis lack...",
+    "sonnet_R21: Multi-factor analysis with calibrated trade-offs covering symbolic vs neural strengths, combinatorial search rationale, ..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      3,
+      4
+    ]
+  }
+}

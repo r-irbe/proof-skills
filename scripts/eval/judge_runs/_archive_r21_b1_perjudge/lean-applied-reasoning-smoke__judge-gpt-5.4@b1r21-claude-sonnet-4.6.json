@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response contains no Lean code whatsoever, only natural language formalisation and operational conclusions.", "rubric_evidence": ["let F(x,t) mean \"failed login for account x at time t\"", "This is an abductive step, not a deductive proof", "flag the session for investigation, preserve logs"]}

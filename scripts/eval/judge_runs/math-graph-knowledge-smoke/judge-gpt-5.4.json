@@ -1,1 +1,21 @@
-{"score": 3, "rationale": "Correct DFS-with-acyclicity framing and complexity, but shallow: no calibrated confidence markers, no trade-off analysis, and omits known risks like recursion depth limits and handling of disconnected components.", "rubric_evidence": ["Use a recursive or explicit-stack DFS that keeps two sets", "runs in `O(V + E)` over the reachable subgraph"]}
+{
+  "score": 3,
+  "rationale": "2-judge median (opus=3, sonnet=3): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: Correct DFS-with-acyclicity framing and complexity, but shallow: no calibrated confidence markers, no trade-off analysis...",
+    "sonnet_R21: The response correctly frames the DFS algorithm with cycle detection using two sets and provides valid pseudocode and O(..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      3,
+      3
+    ]
+  }
+}

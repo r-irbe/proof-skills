@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "Response contains no Lean code at all, only English prose describing the property, which per the rubric is the defining condition for score 1.", "rubric_evidence": ["A reward function should satisfy no-op invariance", "Formally, for any state s and no-op a₀ such that T(s,a₀)=s, one requires R(s,a₀,s)=0"]}

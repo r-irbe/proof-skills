@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response contains no Lean code at all, only a prose explanation about RDF/OWL typing, so it fails the most basic rubric requirement.", "rubric_evidence": ["In RDF/OWL, this is usually expressed with an `rdf:type` triple, such as `:Paris rdf:type :City`."]}

@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response contains no Lean code whatsoever, only informal mathematical prose describing the Bell-LaPadula property.", "rubric_evidence": ["Let L be a security lattice with partial order ≤", "cls(o) ≤ clr(s)", "A system state σ satisfies no-read-up iff"]}

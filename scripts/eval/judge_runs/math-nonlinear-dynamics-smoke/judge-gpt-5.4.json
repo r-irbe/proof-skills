@@ -1,1 +1,21 @@
-{"score": 3, "rationale": "Correct standard Lyapunov-stability argument with a textbook example, but it lacks an explicit assumption ledger, calibrated confidence markers, trade-off discussion, and omits standard caveats (e.g., LaSalle, domain of attraction estimation, converse theorems) a domain expert would expect.", "rubric_evidence": ["choose a C^1 Lyapunov function V", "if V is also radially unbounded, the conclusion is global"]}
+{
+  "score": 4,
+  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: Correct standard Lyapunov-stability argument with a textbook example, but it lacks an explicit assumption ledger, calibr...",
+    "sonnet_R21: The response gives a correct, well-structured proof of Lyapunov stability with proper definitions, the key invariance ar..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      3,
+      4
+    ]
+  }
+}

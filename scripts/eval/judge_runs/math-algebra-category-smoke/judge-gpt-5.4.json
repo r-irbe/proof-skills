@@ -1,1 +1,21 @@
-{"score": 3, "rationale": "The response correctly states the naturality square and its commutativity equation, but it is a bare definition with no domain caveats, calibrated confidence, trade-offs, or risk framing as the rubric demands.", "rubric_evidence": ["Commutativity means G(f) o eta_X = eta_Y o F(f).", "F(X) --F(f)--> F(Y)"]}
+{
+  "score": 4,
+  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: The response correctly states the naturality square and its commutativity equation, but it is a bare definition with no ...",
+    "sonnet_R21: The response correctly states all components of the naturality square\u2014objects, morphisms, components \u03b7_X and \u03b7_Y, the co..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      3,
+      4
+    ]
+  }
+}

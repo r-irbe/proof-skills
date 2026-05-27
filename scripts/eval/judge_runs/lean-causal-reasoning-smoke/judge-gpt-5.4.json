@@ -1,1 +1,21 @@
-{"score": 1, "rationale": "The response contains no actual Lean proof code, only prose with two inline theorem statement examples and no proof terms, so it fails the rubric requirement to produce Lean code that discharges a goal.", "rubric_evidence": ["theorem assoc : Corr X Y ≠ 0", "theorem effect : E[Y | do T = 1] - E[Y | do T = 0] = δ"]}
+{
+  "score": 1,
+  "rationale": "2-judge median (opus=1, sonnet=1): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: The response contains no actual Lean proof code, only prose with two inline theorem statement examples and no proof term...",
+    "sonnet_R21: The response contains no actual Lean code whatsoever, only prose description of what Lean code would look like...."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      1,
+      1
+    ]
+  }
+}

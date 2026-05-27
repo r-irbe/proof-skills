@@ -1,1 +1,21 @@
-{"score": 3, "rationale": "Correct domain framing with accurate identification of control-structure interaction and reasonable mitigations, but the analysis lacks calibrated confidence markers, an explicit assumption ledger, and trade-off analysis between mitigations, leaving it a useful but incomplete expert response.", "rubric_evidence": ["Typical mitigations are lowering loop bandwidth, adding notch filters at the resonant mode, improving mounting stiffness or damping, and re-identifying the plant on the real hardware.", "especially when PID gains are increased after bench tests on a stiffer fixture than the real installation"]}
+{
+  "score": 4,
+  "rationale": "2-judge median (opus=3, sonnet=4): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: Correct domain framing with accurate identification of control-structure interaction and reasonable mitigations, but the...",
+    "sonnet_R21: Multi-factor analysis correctly identifies structural resonance interacting with feedback-loop bandwidth, covers contrib..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      3,
+      4
+    ]
+  }
+}

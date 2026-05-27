@@ -1,1 +1,21 @@
-{"score": 3, "rationale": "The proof discharges the goal correctly and avoids banned search tactics, but it lacks one-step narration of goal state between tactics and shows no cleanup or methodology discipline beyond a direct lemma application.", "rubric_evidence": ["exact Nat.add_zero n", "intro n"]}
+{
+  "score": 3,
+  "rationale": "2-judge median (opus=3, sonnet=3): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: The proof discharges the goal correctly and avoids banned search tactics, but it lacks one-step narration of goal state ...",
+    "sonnet_R21: The proof correctly discharges the goal using the idiomatic `Nat.add_zero` lemma with no banned tactics or sorry, but la..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      3,
+      3
+    ]
+  }
+}

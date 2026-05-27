@@ -1,1 +1,21 @@
-{"score": 3, "rationale": "Correct domain framing for ARMA order selection on a 200-point series with reasonable practical guidance, but analysis is shallow—no calibrated confidence markers, no explicit assumption ledger, no trade-off matrix, and omits known issues like overdifferencing, seasonality checks, parameter redundancy/near-cancellation, and information-criterion caveats.", "rubric_evidence": ["typically p, q in {0,1,2,3}", "BIC is often preferred if you want a more conservative choice"]}
+{
+  "score": 3,
+  "rationale": "2-judge median (opus=3, sonnet=3): R21 B1 ensemble aggregation.",
+  "rubric_evidence": [
+    "opus_R20: Correct domain framing for ARMA order selection on a 200-point series with reasonable practical guidance, but analysis i...",
+    "sonnet_R21: The response provides correct domain framing and covers the major steps (stationarity, ACF/PACF, information criteria tr..."
+  ],
+  "ensemble_meta": {
+    "round": "R21",
+    "round_b": "B1",
+    "method": "median-of-2",
+    "judges": [
+      "claude-opus-4.7-high@R20",
+      "claude-sonnet-4.6@R21"
+    ],
+    "scores": [
+      3,
+      3
+    ]
+  }
+}

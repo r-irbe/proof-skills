@@ -1,0 +1,1 @@
+{"score": 1, "rationale": "The response contains no Lean source code whatsoever—only shell commands—so it fails to produce any Lean code as required by the rubric.", "rubric_evidence": ["lake clean", "lake exe cache get", "lake build Mathlib.Data.Nat.Basic"]}

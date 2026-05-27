@@ -1,16 +1,22 @@
 id: lean-knowledge-formalization-smoke
-ensemble_rubric: lean-doc-quality  # Round 20 A1: case asks for prose/process, not Lean code
-title: "Knowledge graph node type"
+ensemble_rubric: lean-proof-quality  # Round 21 A1: rewrote prompt to demand Lean 4 syntax
+title: "Knowledge graph node type (Lean 4 structure)"
 skill: lean-knowledge-formalization
 difficulty: easy
 input:
   prompt: |
-    Type a node in a formalised knowledge graph.
+    Write a Lean 4 `structure KGNode` for a typed knowledge-graph node. Fields:
+    `id : Nat`, `kind : NodeType`, `props : List (String × Value)`. Reply with code only.
   expected_output_substring: |
-    Define `KGNode := { id : Nat, type : NodeType, properties : List (String × Value) }` — typed properties bound the schema and let downstream reasoning use type-checked accessors.
+    structure KGNode where
+      id : Nat
+      kind : NodeType
+      props : List (String × Value)
 expected:
   contains:
-    - "KGNode|knowledge graph|node type"
+    - "structure\\s+KGNode"
+    - "id\\s*:\\s*Nat"
+    - "props"
   not_contains:
     - "sorry"
     - "admit"
