@@ -1,0 +1,16 @@
+{
+  "_meta": {
+    "purpose": "ELO regression-gate baseline. CI fails if any entrant drops > tolerance vs these ratings.",
+    "tolerance_points": 75,
+    "source_archive": "scripts/elo/example_runs/2026-05-27-e/ratings.json",
+    "created_round": "Round 19 (Phase A3)",
+    "created_date": "2026-05-27",
+    "update_policy": "Maintainers may regenerate the baseline with `python3 scripts/elo/check_regression.py --refresh` after intentional changes."
+  },
+  "tolerance_points": 75,
+  "ratings": {
+    "claude-haiku-4.5": 1391.56,
+    "claude-opus-4.7-high": 1524.1,
+    "claude-sonnet-4.6": 1584.34
+  }
+}

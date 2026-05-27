@@ -1,0 +1,74 @@
+# Case → rubric mapping (canonical source of truth for multi-model eval)
+#
+# Rule of thumb:
+# - `lean-proof-quality`: case demands actual Lean code/proof artifacts.
+# - `lean-doc-quality`: case demands Lean documentation/specification prose.
+# - `lean-setup-import-quality`: case demands Lean build/import/setup output.
+# - `applied-domain-quality`: case asks for domain reasoning / methodology /
+#   shell tooling / pseudocode / framework recommendation (no Lean code needed).
+# - `research-synthesis-quality`: case asks for literature review / cross-
+#   referencing / multi-source synthesis.
+# - `mathlib-lookup-quality`: case asks for finding/citing a specific Mathlib
+#   declaration or API.
+#
+# Phase18 retrospective: 13 lean-* smoke cases were mistakenly mapped to
+# `lean-proof-quality` even though they ask for prose/tooling/shell answers
+# (lean-bisect-smoke, lean-build-smoke, lean-pr-smoke etc.) — all three
+# entrants scored 1/5 only because the rubric mandates "no Lean code = 1".
+# Round 19 corrects this mapping.
+
+rubrics:
+  # Lean cases requiring actual Lean code/proof
+  lean-add-comm-multi: lean-proof-quality
+  lean-mwe-minimize: lean-proof-quality
+  lean-mwe-smoke: lean-proof-quality
+  lean-proof-omega: lean-proof-quality
+  lean-proof-omega-multi: lean-proof-quality
+  lean-quality-no-sorry: lean-proof-quality
+  lean-ai-formalization-smoke: lean-proof-quality
+  lean-applied-reasoning-smoke: lean-proof-quality
+  lean-causal-reasoning-smoke: lean-proof-quality
+  lean-integration-protocol-smoke: lean-proof-quality
+  lean-knowledge-formalization-smoke: lean-proof-quality
+  lean-nested-learning-smoke: lean-proof-quality
+  lean-security-formalization-smoke: lean-proof-quality
+  lean-specification-smoke: lean-proof-quality
+
+  # Lean cases requiring docs / specification prose
+  lean-doc-improvement-smoke: lean-doc-quality
+  lean-doc-requirements-smoke: lean-doc-quality
+
+  # Lean cases requiring setup/import/build output
+  lean-setup-import: lean-setup-import-quality
+  lean-build-smoke: lean-setup-import-quality
+
+  # Lean cases requiring shell/tooling/methodology prose (NOT Lean code)
+  # Phase18 mis-mapped these; Round 19 corrects to applied-domain-quality.
+  lean-bisect-smoke: applied-domain-quality
+  lean-pr-smoke: applied-domain-quality
+  lean-retroactive-audit-smoke: applied-domain-quality
+
+  # Mathlib lookup
+  mathlib-lookup-finset: mathlib-lookup-quality
+
+  # AI / applied / math cluster cases
+  ai-agentic-evolving-smoke: applied-domain-quality
+  ai-causal-deontic-smoke: applied-domain-quality
+  ai-commonsense-reasoning-smoke: applied-domain-quality
+  ai-high-stakes-verifiable-smoke: applied-domain-quality
+  ai-symbolic-neuro-smoke: applied-domain-quality
+  applied-data-information-security-smoke: applied-domain-quality
+  applied-engineering-disciplines-smoke: applied-domain-quality
+  applied-intelligence-analysis-smoke: applied-domain-quality
+  applied-legal-reasoning-smoke: applied-domain-quality
+  applied-strategy-analysis-smoke: applied-domain-quality
+  math-algebra-category-smoke: applied-domain-quality
+  math-graph-knowledge-smoke: applied-domain-quality
+  math-measure-probability-smoke: applied-domain-quality
+  math-nonlinear-dynamics-smoke: applied-domain-quality
+  math-optimization-game-smoke: applied-domain-quality
+  math-product-management-smoke: applied-domain-quality
+  math-project-management-smoke: applied-domain-quality
+  math-strategy-studio-smoke: applied-domain-quality
+  math-time-series-smoke: applied-domain-quality
+  math-topology-analysis-smoke: applied-domain-quality

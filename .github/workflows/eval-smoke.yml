@@ -137,6 +137,33 @@ jobs:
           done
         shell: bash
 
+      - name: ELO regression gate (vs baseline_ratings.json)
+        # Hard-gates the PR if any entrant in baseline_ratings.json has
+        # dropped > tolerance_points vs the live matches replay.
+        # Maintainers refresh the baseline intentionally via:
+        #   python3 scripts/elo/check_regression.py --refresh --current <ratings.json>
+        run: |
+          shopt -s nullglob
+          # Find the largest live matches CSV (most recent / most data).
+          latest_csv=""
+          latest_size=0
+          for f in scripts/elo/matches/*-live.csv; do
+            size=$(wc -l < "$f")
+            if [ "$size" -gt "$latest_size" ]; then
+              latest_size=$size
+              latest_csv=$f
+            fi
+          done
+          if [ -z "$latest_csv" ]; then
+            echo "No live matches CSV found — regression gate skipped."
+            exit 0
+          fi
+          echo "Regression-gating against $latest_csv ($latest_size rows)"
+          python3 scripts/elo/glicko2.py --matches "$latest_csv" --out ./_glicko2-regression-check
+          python3 scripts/elo/check_regression.py \
+            --current ./_glicko2-regression-check/ratings.json
+        shell: bash
+
       - name: Upload Glicko-2 report
         if: always()
         uses: actions/upload-artifact@v4
