@@ -1,6 +1,7 @@
 id: applied-intelligence-analysis-smoke
 title: "Structured Analytic Technique"
 skill: applied-intelligence-analysis
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

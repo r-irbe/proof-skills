@@ -1,6 +1,7 @@
 id: ai-high-stakes-verifiable-smoke
 title: "EU AI Act risk gating"
 skill: ai-high-stakes-verifiable
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

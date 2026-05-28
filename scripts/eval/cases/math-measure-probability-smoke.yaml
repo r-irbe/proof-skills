@@ -1,6 +1,7 @@
 id: math-measure-probability-smoke
 title: "Conditional expectation symmetry"
 skill: math-measure-probability
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

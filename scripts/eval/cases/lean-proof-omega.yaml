@@ -1,6 +1,7 @@
 id: lean-proof-omega
 title: "Prove ∀ n : ℕ, n + 0 = n by simp"
 skill: lean-proof
+ensemble_rubric: lean-proof-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

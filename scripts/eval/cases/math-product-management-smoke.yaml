@@ -1,6 +1,7 @@
 id: math-product-management-smoke
 title: "Roadmap prioritisation rubric"
 skill: math-product-management
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

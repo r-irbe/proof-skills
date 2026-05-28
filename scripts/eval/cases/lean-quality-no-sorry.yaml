@@ -1,6 +1,7 @@
 id: lean-quality-no-sorry
 title: "Quality gate: emitted proof must not contain sorry/admit"
 skill: lean-quality
+ensemble_rubric: lean-tactic-discipline-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: trivial
 input:
   prompt: |

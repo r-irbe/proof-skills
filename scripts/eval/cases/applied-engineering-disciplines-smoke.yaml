@@ -1,6 +1,7 @@
 id: applied-engineering-disciplines-smoke
 title: "Cross-discipline failure mode"
 skill: applied-engineering-disciplines
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

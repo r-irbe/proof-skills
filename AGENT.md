@@ -297,6 +297,11 @@ under `vendor/`; update the submodule pin instead.
   [`scripts/eval/`](scripts/eval/) ·
   [`scripts/elo/`](scripts/elo/) ·
   [`scripts/eval/calibrate_judge.py`](scripts/eval/calibrate_judge.py)
+- Pipeline design docs: [`lab/design/`](lab/design/) — eval framework,
+  ELO/Glicko-2, multi-model runner, zettelkasten, cluster workflow
+  (reconstructed in R27 audit; see [`lab/design/README.md`](lab/design/README.md)).
+- Lab guide: [`lab/README.md`](lab/README.md) — calibration corpora,
+  end-to-end workflow, per-round runbook.
 - LLM-judge artifacts: [`scripts/eval/graders/`](scripts/eval/graders/) ·
   [`scripts/eval/graders/DISPATCH.md`](scripts/eval/graders/DISPATCH.md)
 - Known-bad calibration corpus (ADR-0039):

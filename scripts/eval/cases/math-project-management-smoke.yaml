@@ -1,6 +1,7 @@
 id: math-project-management-smoke
 title: "Critical path identification"
 skill: math-project-management
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

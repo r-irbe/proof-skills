@@ -1,6 +1,7 @@
 id: lean-doc-requirements-smoke
 title: "Claim → hypothesis extraction"
 skill: lean-doc-requirements
+ensemble_rubric: lean-doc-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

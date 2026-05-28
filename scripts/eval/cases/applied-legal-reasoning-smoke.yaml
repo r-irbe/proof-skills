@@ -1,6 +1,7 @@
 id: applied-legal-reasoning-smoke
 title: "Deontic legal-rule formalization"
 skill: applied-legal-reasoning
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

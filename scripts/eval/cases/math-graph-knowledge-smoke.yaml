@@ -1,6 +1,7 @@
 id: math-graph-knowledge-smoke
 title: "Directed knowledge graph traversal"
 skill: math-graph-knowledge
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

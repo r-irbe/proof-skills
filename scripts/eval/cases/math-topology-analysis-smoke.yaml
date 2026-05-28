@@ -1,6 +1,7 @@
 id: math-topology-analysis-smoke
 title: "Open cover compactness"
 skill: math-topology-analysis
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

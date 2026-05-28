@@ -1,6 +1,7 @@
 id: mathlib-lookup-finset
 title: "Identify a Mathlib lemma about Finset.card_union_le"
 skill: mathlib-lookup
+ensemble_rubric: mathlib-lookup-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: medium
 input:
   prompt: |

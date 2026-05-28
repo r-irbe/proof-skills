@@ -1,6 +1,7 @@
 id: math-nonlinear-dynamics-smoke
 title: "Lyapunov function direct method"
 skill: math-nonlinear-dynamics
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

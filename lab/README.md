@@ -10,7 +10,7 @@ It is **complementary to** (not a replacement for) `scripts/eval/`:
 | --- | --- | --- |
 | `lab/evals/known-bad/` | Calibration corpora — handcrafted bad answers that anchor the LLM judge's lower rubric scores. | Rubric authors, calibration runs. |
 | `lab/evals/known-bad/_replies/` | Captured model replies for each known-bad transcript — used to anchor judge calibration empirically. | Calibration aggregation. |
-| `lab/design/` | Long-form design docs for ELO, multi-model dispatch, rubric authoring. | Maintainers extending the eval pipeline. |
+| `lab/design/` | Pipeline design docs (eval framework, ELO, multi-model runner, zettelkasten, cluster workflow). Reconstructed in R27 audit. See `lab/design/README.md` for the index. | Maintainers extending the eval pipeline. |
 | `scripts/eval/` | Executable pipeline: graders, dispatchers, aggregators. | CI + Round-N pass runners. |
 | `scripts/eval/cases/` | YAML case registry — one file per smoke-eval case. | CI smoke run. |
 | `scripts/eval/graders/rubrics/` | YAML rubrics referenced by both calibration and live judging. | Both. |

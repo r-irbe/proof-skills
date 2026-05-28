@@ -1,6 +1,7 @@
 id: ai-agentic-evolving-smoke
 title: "Continual learner safety guard"
 skill: ai-agentic-evolving
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

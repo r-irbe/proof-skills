@@ -1,6 +1,7 @@
 id: lean-setup-import
 title: "Minimal Mathlib import preamble"
 skill: lean-setup
+ensemble_rubric: lean-setup-import-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: trivial
 input:
   prompt: |

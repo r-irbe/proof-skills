@@ -1,6 +1,7 @@
 id: lean-mwe-smoke
 title: "Wrap an error in #guard_msgs"
 skill: lean-mwe
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

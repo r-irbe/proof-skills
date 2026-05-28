@@ -1,6 +1,7 @@
 id: math-optimization-game-smoke
 title: "Min-max game-theoretic optimization"
 skill: math-optimization-game
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

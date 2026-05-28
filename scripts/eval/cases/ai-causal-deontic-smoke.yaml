@@ -1,6 +1,7 @@
 id: ai-causal-deontic-smoke
 title: "Encode a deontic constraint"
 skill: ai-causal-deontic
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

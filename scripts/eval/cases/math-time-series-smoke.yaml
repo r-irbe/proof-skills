@@ -1,6 +1,7 @@
 id: math-time-series-smoke
 title: "ARMA model order selection"
 skill: math-time-series
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

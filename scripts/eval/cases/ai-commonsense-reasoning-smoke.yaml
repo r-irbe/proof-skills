@@ -1,6 +1,7 @@
 id: ai-commonsense-reasoning-smoke
 title: "Frame-problem dispatch"
 skill: ai-commonsense-reasoning
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

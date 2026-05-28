@@ -1,6 +1,7 @@
 id: math-algebra-category-smoke
 title: "Functor + natural transformation"
 skill: math-algebra-category
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

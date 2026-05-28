@@ -1,6 +1,7 @@
 id: lean-add-comm-multi
 title: "Prove ∀ m n : ℕ, m + n = n + m (multi-model match case)"
 skill: lean-proof
+ensemble_rubric: lean-proof-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

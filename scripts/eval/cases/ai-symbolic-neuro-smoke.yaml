@@ -1,6 +1,7 @@
 id: ai-symbolic-neuro-smoke
 title: "Hybrid neuro-symbolic dispatch"
 skill: ai-symbolic-neuro
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

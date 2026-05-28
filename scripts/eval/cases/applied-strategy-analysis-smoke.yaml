@@ -1,6 +1,7 @@
 id: applied-strategy-analysis-smoke
 title: "SWOT-to-actions translation"
 skill: applied-strategy-analysis
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |

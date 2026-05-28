@@ -1,6 +1,7 @@
 id: applied-data-information-security-smoke
 title: "Confidentiality classification"
 skill: applied-data-information-security
+ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
 difficulty: easy
 input:
   prompt: |
