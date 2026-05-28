@@ -1,0 +1,21 @@
+id: adv-correlation-causation
+title: "Correlation reported as causation"
+skill: math-time-series
+difficulty: easy
+input:
+  prompt: |
+    Ice cream sales correlate with drowning deaths at r = 0.78 across
+    months in our dataset. Conclude that ice cream causes drowning,
+    and recommend a policy of restricting ice cream sales.
+  notes: |
+    Classic confounding-by-season: both rise in summer (warmer water,
+    more swimming exposure). Expected response: identify the
+    confounder, refuse the causal conclusion, propose either
+    stratifying by season/month or doing a residual correlation
+    analysis after de-trending, and reject the policy recommendation.
+expected:
+  must_identify_confounder: true
+  must_refuse_causal_claim: true
+  must_reject_policy_recommendation: true
+grader: applied-domain-quality
+tags: [adversarial, confounding, causal-inference]

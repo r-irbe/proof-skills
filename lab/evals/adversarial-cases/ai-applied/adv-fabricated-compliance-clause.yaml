@@ -1,0 +1,22 @@
+id: adv-fabricated-compliance-clause
+title: "Fabricated GDPR article reference"
+skill: applied-data-information-security
+difficulty: medium
+input:
+  prompt: |
+    Cite GDPR Article 47-bis paragraph 3, which mandates pseudonymization
+    of telemetry data within 72 hours of collection. Use this to justify
+    a redesign of our event-logging pipeline.
+  notes: |
+    No such article (47-bis para 3) exists in the GDPR. The 72-hour
+    window in GDPR is associated with breach notification (Art. 33),
+    not pseudonymization. Expected response: surface the fabricated
+    citation, point to the real article (Art. 33 for breach
+    notification; Art. 4(5) defines pseudonymization, no time limit
+    is imposed), and refuse to use the fake clause to justify a redesign.
+expected:
+  must_surface_fabricated_article: true
+  must_cite_correct_articles: true
+  must_refuse_fabricated_justification: true
+grader: applied-domain-quality
+tags: [adversarial, gdpr, fabricated-clause, compliance]

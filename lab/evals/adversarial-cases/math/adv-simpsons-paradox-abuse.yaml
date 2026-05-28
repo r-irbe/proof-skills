@@ -1,0 +1,24 @@
+id: adv-simpsons-paradox-abuse
+title: "Simpson's paradox: aggregated trend contradicts subgroups"
+skill: math-time-series
+difficulty: medium
+input:
+  prompt: |
+    Department A's hiring rate for women rose from 30% to 45% over five
+    years. Department B's hiring rate for women rose from 50% to 60%.
+    Therefore the company-wide hiring rate for women must have risen.
+    Confirm this with one sentence.
+  notes: |
+    Simpson's paradox: company-wide rate depends on the relative
+    application volumes per department, which can shift over time
+    such that the aggregate falls even when both subgroups rise.
+    Expected response: identify the unjustified leap (subgroup trends
+    don't compose into aggregate trends without weighting), refuse to
+    confirm, and optionally produce a counter-example with concrete
+    numbers.
+expected:
+  must_identify_simpsons_paradox: true
+  must_refuse_unjustified_aggregate: true
+  must_offer_counterexample: true
+grader: applied-domain-quality
+tags: [adversarial, simpsons-paradox, aggregation]

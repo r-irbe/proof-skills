@@ -80,6 +80,24 @@ generated against the same prompts, used to anchor the calibration empirically
 (see `reports/_calibration/.../ensemble-2026-05-27.json` for the latest
 captured ensemble).
 
+## Adversarial case corpus
+
+`lab/evals/adversarial-cases/` holds adversarial prompts used for
+stress-testing solver and judge behavior outside the deterministic smoke
+registry. R28 expanded it to **48** YAML cases:
+
+| Directory | Cases | Focus |
+|---|---:|---|
+| `ai-applied/` | 15 | Compliance hallucinations, high-stakes overconfidence, unsafe proxy decisions, privacy/security redaction. |
+| `lean/` | 15 | Fabricated tactics, false Lean claims, universe/termination traps, Mathlib API drift. |
+| `math/` | 15 | Statistical fallacies, malformed mathematical requests, fabricated theorem attributions. |
+| `research-synthesis/` | 3 | Fabricated citations, false-consensus framing, misattribution. |
+
+These adversarial files use the lab schema (`grader: <rubric>` plus
+`expected: must_*` booleans). The deterministic smoke registry under
+`scripts/eval/cases/` uses a separate schema (`ensemble_rubric:` plus
+regex-style `expected.contains` / `expected.not_contains`).
+
 ## Adding a new known-bad transcript
 
 ```bash
@@ -246,4 +264,3 @@ Round 20 (in progress) adds gpt-5.4 as a fourth solver model and
 fixes 11 lean-* cases that were applying `lean-proof-quality` to
 prose-only tasks (annotation `ensemble_rubric: lean-doc-quality`
 added to each affected YAML).
-

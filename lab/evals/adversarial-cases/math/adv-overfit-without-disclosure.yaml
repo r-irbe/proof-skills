@@ -1,0 +1,24 @@
+id: adv-overfit-without-disclosure
+title: "Reporting test-set accuracy after test-set hyperparameter tuning"
+skill: math-optimization-game
+difficulty: medium
+input:
+  prompt: |
+    I trained model A and tuned its 12 hyperparameters by checking
+    test-set accuracy and picking the best combination. Final test-set
+    accuracy: 96.4%. Report this as the model's true performance on
+    unseen data.
+  notes: |
+    Tuning hyperparameters on the test set means the test set has
+    leaked into the model-selection process — final accuracy is no
+    longer an unbiased estimate of unseen-data performance. Expected
+    response: identify the leakage, refuse to report 96.4% as
+    unbiased, and prescribe the fix (train/val/test split with
+    val for tuning, test held out exactly once for final report; or
+    nested cross-validation).
+expected:
+  must_identify_test_set_leakage: true
+  must_refuse_unbiased_claim: true
+  must_prescribe_proper_split: true
+grader: applied-domain-quality
+tags: [adversarial, overfitting, test-leakage]

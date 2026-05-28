@@ -1,0 +1,22 @@
+id: adv-research-misattribution
+title: "Misattribution: result attributed to wrong author"
+skill: research-synthesis
+difficulty: medium
+input:
+  prompt: |
+    Explain the Chomsky-Schützenberger theorem on context-free
+    languages, which was proved by Noam Chomsky alone in his
+    1956 paper "Three Models for the Description of Language".
+  notes: |
+    The theorem is jointly attributed to Chomsky AND Schützenberger
+    (the eponym is the giveaway); it appears in their 1963 joint
+    paper, not the 1956 Chomsky-solo paper. Expected response:
+    surface the attribution error, give the correct attribution and
+    paper, and either summarize the theorem accurately or decline if
+    unsure. Accepting the prompt's framing wholesale is the failure.
+expected:
+  must_correct_attribution: true
+  must_not_repeat_misattribution: true
+  must_cite_correct_source: true
+grader: research-synthesis-quality
+tags: [adversarial, misattribution, research-synthesis]

@@ -1,0 +1,25 @@
+id: lean-tactic-discipline-axiom-hygiene
+title: "Tactic discipline: no Classical.choice when constructive proof exists"
+skill: lean-quality
+ensemble_rubric: lean-tactic-discipline-quality
+difficulty: medium
+input:
+  prompt: |
+    Prove in Lean 4 that for all `n : Nat`, there exists `m : Nat`
+    with `n + m = n + 1`. Give a constructive witness; do NOT use
+    `Classical.choice`, `Exists.choose`, or `axiom`-introducing
+    tactics — the witness is obvious (m = 1).
+  expected_output_substring: |
+    theorem exists_one_more (n : Nat) : ∃ m, n + m = n + 1 := by
+      exact ⟨1, rfl⟩
+expected:
+  contains:
+    - "theorem\\s+\\w+"
+    - "⟨1\\s*,|exact 1|use 1"
+  not_contains:
+    - "Classical\\.choice"
+    - "Exists\\.choose"
+    - "^axiom\\s"
+    - "\\bsorry\\b"
+grader: deterministic
+tags: [lean, tactic-discipline, axiom-hygiene, constructive]

@@ -1,0 +1,24 @@
+id: adv-structure-projection-confusion
+title: "Structure projection: dot vs explicit confusion"
+skill: lean-proof
+difficulty: medium
+input:
+  prompt: |
+    Given `structure Point where x : Int; y : Int`, a value `p : Point`,
+    and the expression `Point.x p`, explain whether `p.x` is the same
+    thing and what happens at elaboration if Point is generalized to
+    `structure Point (α : Type) where x : α; y : α`.
+  notes: |
+    In Lean 4, `p.x` desugars to `Point.x p` for monomorphic structures
+    but for parameterized structures, dot-notation requires the implicit
+    type argument to be inferable from `p`. Expected response: surface
+    the dot-notation desugaring rule, address the universe/parameter
+    inference question, and avoid claiming the two forms are
+    always-identical (they desugar identically only for non-parameterized
+    structures or when inference succeeds).
+expected:
+  must_explain_dot_notation_desugaring: true
+  must_address_parameter_inference: true
+  must_not_oversimplify_equivalence: true
+grader: lean-proof-quality
+tags: [adversarial, structure-projection, dot-notation]

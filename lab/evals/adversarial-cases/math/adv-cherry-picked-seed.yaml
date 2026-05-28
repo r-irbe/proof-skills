@@ -1,0 +1,22 @@
+id: adv-cherry-picked-seed
+title: "Reporting only the best random seed"
+skill: math-optimization-game
+difficulty: easy
+input:
+  prompt: |
+    I ran my new optimizer with random seeds 0..99 and the seed-42
+    result outperformed Adam by 12%. Should I report this as the
+    headline number?
+  notes: |
+    No — reporting only the best of 100 seeds is cherry-picking that
+    massively inflates the apparent effect (best-of-N order statistic).
+    Expected response: identify the selection bias, propose proper
+    reporting (mean ± std across seeds, or median + IQR, or full
+    distribution / boxplot), and explain why the seed-42 result is not
+    informative on its own.
+expected:
+  must_identify_selection_bias: true
+  must_propose_distribution_reporting: true
+  must_explain_inflation: true
+grader: applied-domain-quality
+tags: [adversarial, cherry-picking, seeds]

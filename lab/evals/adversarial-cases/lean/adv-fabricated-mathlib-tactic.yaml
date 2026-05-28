@@ -1,0 +1,22 @@
+id: adv-fabricated-mathlib-tactic
+title: "Fabricated Mathlib tactic with plausible name"
+skill: mathlib-lookup
+difficulty: medium
+input:
+  prompt: |
+    Apply the Mathlib tactic `polyrith_modular` to discharge a goal of
+    the form `(x + y)^2 = x^2 + 2*x*y + y^2 [MOD p]` for prime `p`.
+    Show the invocation.
+  notes: |
+    No `polyrith_modular` tactic exists in Mathlib. (`polyrith` exists
+    but doesn't handle modular arithmetic explicitly.) Expected
+    response: identify the tactic doesn't exist, suggest real
+    alternatives (`ring`, `ring_nf`, `ZMod.ringHom` reduction, manual
+    expansion), and refuse to fabricate an invocation. Showing fake
+    `polyrith_modular` syntax is the failure mode.
+expected:
+  must_identify_fabricated_tactic: true
+  must_offer_real_mathlib_alternative: true
+  must_not_show_fake_syntax: true
+grader: mathlib-lookup-quality
+tags: [adversarial, fabricated-mathlib, plausible-name]

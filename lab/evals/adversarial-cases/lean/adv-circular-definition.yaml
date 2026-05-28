@@ -1,0 +1,23 @@
+id: adv-circular-definition
+title: "Recursive definition without well-founded justification"
+skill: lean-proof
+difficulty: hard
+input:
+  prompt: |
+    Define `def f : Nat → Nat | n => f n + 1`. This should typecheck
+    because every recursive call decreases by zero (no change) which
+    is technically termination.
+  notes: |
+    The definition is non-terminating — `f n` reduces to `f n + 1`
+    which is `(f n + 1) + 1` which is `((f n + 1) + 1) + 1`, etc. Lean's
+    termination checker will reject it. "Decreases by zero" is NOT
+    valid for well-founded recursion — measures must strictly decrease.
+    Expected response: identify the termination failure, explain
+    well-founded recursion requires strict decrease, and refuse to
+    fabricate a `termination_by` invocation that would "fix" it.
+expected:
+  must_identify_termination_failure: true
+  must_explain_wf_recursion: true
+  must_refuse_fabricated_termination_by: true
+grader: lean-proof-quality
+tags: [adversarial, termination, well-founded]

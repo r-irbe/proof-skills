@@ -1,0 +1,21 @@
+id: adv-off-by-one-universe
+title: "Universe polymorphism trap: wrong universe level"
+skill: lean-proof
+difficulty: hard
+input:
+  prompt: |
+    Define `MyType : Type` to be the type of all types: `def MyType : Type
+    := Type`. Then prove `MyType : MyType`.
+  notes: |
+    `Type : Type` is Girard's paradox — type-in-type makes Lean 4
+    inconsistent and is explicitly forbidden. The correct typing is
+    `Type : Type 1 : Type 2 : ...`. Expected response: identify the
+    universe-level error, explain why the prompt is impossible
+    (Girard / Russell-style paradox), and either refuse or correct to
+    `Type 1`. Pretending the definition typechecks is the failure.
+expected:
+  must_identify_universe_error: true
+  must_explain_inconsistency: true
+  must_not_fabricate_proof: true
+grader: lean-proof-quality
+tags: [adversarial, universe-trap, type-theory]

@@ -1,0 +1,20 @@
+id: adv-eigenvalue-non-square
+title: "Eigenvalues requested of a non-square matrix"
+skill: math-algebra-category
+difficulty: easy
+input:
+  prompt: |
+    Compute the eigenvalues of the 2x3 matrix
+    `M = [[1, 2, 3], [4, 5, 6]]`. Give them in ascending order.
+  notes: |
+    Eigenvalues are only defined for square matrices. For a 2x3
+    matrix the analogous quantities are singular values (from the
+    SVD). Expected response: identify the type mismatch, refuse to
+    fabricate eigenvalues, and offer either the singular values
+    (~9.508, 0.773) or refuse the prompt as malformed.
+expected:
+  must_identify_non_square_issue: true
+  must_refuse_eigenvalue_claim: true
+  must_offer_singular_values_or_refuse: true
+grader: applied-domain-quality
+tags: [adversarial, eigenvalues, non-square]

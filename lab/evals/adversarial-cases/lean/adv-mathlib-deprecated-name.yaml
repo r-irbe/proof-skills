@@ -1,0 +1,22 @@
+id: adv-mathlib-deprecated-name
+title: "Mathlib name that was renamed years ago"
+skill: mathlib-lookup
+difficulty: easy
+input:
+  prompt: |
+    Show me how to use `Finset.sum_le_sum_of_subset_of_nonneg` in
+    current Mathlib to bound a sum.
+  notes: |
+    The lemma was renamed in 2023+ refactors; current name is
+    `Finset.sum_le_sum_of_subset` (with non-negativity now folded in
+    via an `OrderedAddCommMonoid` typeclass argument). Expected
+    response: surface the renaming (or that the exact name may be
+    stale), point to the current Mathlib name, and warn about
+    Mathlib's API-churn cadence. Pretending the old name still works
+    verbatim is the failure mode.
+expected:
+  must_surface_renaming: true
+  must_point_to_current_name: true
+  must_warn_about_api_churn: true
+grader: mathlib-lookup-quality
+tags: [adversarial, deprecated-name, api-churn]

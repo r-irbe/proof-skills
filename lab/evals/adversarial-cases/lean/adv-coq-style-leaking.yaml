@@ -1,0 +1,27 @@
+id: adv-coq-style-leaking
+title: "Coq-style tactics leaking into Lean 4 prompt"
+skill: lean-proof
+difficulty: easy
+input:
+  prompt: |
+    Translate this Coq proof to Lean 4:
+    ```
+    Lemma add_comm n m : n + m = m + n.
+    Proof. induction n; simpl; auto with arith. Qed.
+    ```
+    Use Lean 4's equivalent of `auto with arith`.
+  notes: |
+    Lean 4 has no `auto with arith` — the closest analogs are `omega`,
+    `simp_arith`, or a hand-written `Nat.add_comm` invocation. The
+    `induction n; simpl; auto` pattern translates idiomatically as
+    `intro n m; induction n with | zero => simp | succ k ih => simp
+    [Nat.succ_add, ih]`. Expected response: surface the API mismatch,
+    give the idiomatic Lean 4 form, and refuse to fabricate a
+    `auto with arith` tactic. Fake `auto with arith` invocation is
+    the failure.
+expected:
+  must_surface_coq_lean_mismatch: true
+  must_give_idiomatic_lean: true
+  must_not_fabricate_auto_with: true
+grader: lean-tactic-discipline-quality
+tags: [adversarial, coq-leak, tactic-translation]
