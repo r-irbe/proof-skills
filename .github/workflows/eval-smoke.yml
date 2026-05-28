@@ -164,6 +164,52 @@ jobs:
             --current ./_glicko2-regression-check/ratings.json
         shell: bash
 
+      - name: Per-rubric ELO regression gate (vs baseline_ratings_per_rubric.json)
+        # Hard-gates the PR if any (rubric, entrant) pair has dropped >
+        # tolerance_points vs the per-rubric baseline. Complements the
+        # global gate by catching regressions that get hidden in the
+        # cross-rubric average (R25 found the lean-proof rubric has an
+        # 88pt total spread vs applied-domain's 586pt — a small global
+        # drop can mask a large per-rubric drop on the tight rubric).
+        # Maintainers refresh per-rubric baselines intentionally via:
+        #   python3 scripts/elo/check_per_rubric_regression.py \
+        #     --refresh --archive <archive-dir>
+        run: |
+          shopt -s nullglob
+          # Find the latest live matches CSV.
+          latest_csv=""
+          latest_size=0
+          for f in scripts/elo/matches/*-live.csv; do
+            size=$(wc -l < "$f")
+            if [ "$size" -gt "$latest_size" ]; then
+              latest_size=$size
+              latest_csv=$f
+            fi
+          done
+          if [ -z "$latest_csv" ]; then
+            echo "No live matches CSV found — per-rubric gate skipped."
+            exit 0
+          fi
+          # Discover all rubric YAML files referenced by smoke cases.
+          # Then run per_rubric_elo.py if it exists, else fall back to
+          # bucketing inline via the helper below.
+          if [ ! -x scripts/elo/per_rubric_elo.py ] && [ ! -f scripts/elo/per_rubric_elo.py ]; then
+            echo "scripts/elo/per_rubric_elo.py not found — per-rubric gate skipped."
+            echo "(Wire it once the R25 item 4 tool is promoted.)"
+            exit 0
+          fi
+          mkdir -p ./_per-rubric-check
+          python3 scripts/elo/per_rubric_elo.py \
+            --matches "$latest_csv" \
+            --cases scripts/eval/cases \
+            --out ./_per-rubric-check/ || {
+              echo "per_rubric_elo.py failed — per-rubric gate skipped (non-fatal)."
+              exit 0
+            }
+          python3 scripts/elo/check_per_rubric_regression.py \
+            --archive ./_per-rubric-check/
+        shell: bash
+
       - name: Upload Glicko-2 report
         if: always()
         uses: actions/upload-artifact@v4

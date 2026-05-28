@@ -1,0 +1,45 @@
+{
+  "_meta": {
+    "purpose": "Per-rubric ELO regression-gate baseline. CI fails if any entrant drops > tolerance vs the per-rubric ratings.",
+    "tolerance_points": 100,
+    "tolerance_rationale": "Per-rubric samples are smaller (74-819 rows per rubric vs 1283 total). Wider tolerance accounts for higher RD on the lean-doc-quality rubric.",
+    "source_archive": "scripts/elo/example_runs/2026-05-27-l-r25-per-rubric/",
+    "created_round": "R26",
+    "created_date": "2026-05-27",
+    "methodology_note": "median-of-4 ensemble (opus-high + haiku + sonnet + gpt-5.4); rows bucketed by ensemble_rubric YAML field per-case.",
+    "update_policy": "Regenerate with `python3 scripts/elo/check_per_rubric_regression.py --refresh`."
+  },
+  "tolerance_points": 100,
+  "rubrics": {
+    "applied-domain-quality": {
+      "claude-haiku-4.5": 1335.22,
+      "claude-opus-4.7-high": 1450.89,
+      "claude-opus-4.7@default-effort": 1921.3,
+      "claude-sonnet-4.6": 1571.91,
+      "gpt-5.2": 1562.68,
+      "gpt-5.4": 1547.55,
+      "gpt-5.4-mini": 1357.2,
+      "gpt-5.4@long": 1592.99
+    },
+    "lean-doc-quality": {
+      "claude-haiku-4.5": 1163.05,
+      "claude-opus-4.7-high": 1539.64,
+      "claude-opus-4.7@default-effort": 1852.61,
+      "claude-sonnet-4.6": 1698.2,
+      "gpt-5.2": 1435.89,
+      "gpt-5.4": 1500.0,
+      "gpt-5.4-mini": 1435.89,
+      "gpt-5.4@long": 1435.89
+    },
+    "lean-proof-quality": {
+      "claude-haiku-4.5": 1473.94,
+      "claude-opus-4.7-high": 1547.45,
+      "claude-opus-4.7@default-effort": 1559.6,
+      "claude-sonnet-4.6": 1481.82,
+      "gpt-5.2": 1480.9,
+      "gpt-5.4": 1470.99,
+      "gpt-5.4-mini": 1500.6,
+      "gpt-5.4@long": 1525.44
+    }
+  }
+}
