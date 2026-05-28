@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "It is the most actionable response, with specific initiatives, owners, KPIs, governance, and some risk guardrails. However, it still lacks calibrated confidence on claims, cited sources, and an explicit trade-off matrix, so it does not meet the rubric for 4 or 5.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "D",
+  "_rubric": "applied-domain-quality"
+}

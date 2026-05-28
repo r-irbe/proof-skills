@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "This is correctly framed and materially more complete: it distinguishes clean-state options, explains cache trade-offs, and gives concrete verification steps. However, it lacks calibrated confidence markers and remains an operational answer rather than the expert-style, explicitly audited analysis required for 4-5.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "B",
+  "_rubric": "applied-domain-quality"
+}

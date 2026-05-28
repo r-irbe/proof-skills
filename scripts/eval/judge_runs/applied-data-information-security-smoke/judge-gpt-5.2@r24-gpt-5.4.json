@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "It gives compliance/security requirements and GDPR characterization without caveat or source. The rubric assigns 1 to high-stakes legal or security claims made that way.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "B",
+  "_rubric": "applied-domain-quality"
+}

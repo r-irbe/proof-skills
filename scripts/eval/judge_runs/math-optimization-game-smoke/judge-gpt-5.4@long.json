@@ -1,15 +1,22 @@
 {
-  "score": 4,
-  "rationale": "Ensemble median of opus=3, haiku=4, sonnet=5.",
+  "score": 3.5,
+  "rationale": "median-of-4 per-judge rationales (see siblings)",
   "rubric_evidence": [],
-  "_round": "R24",
-  "_judge_pass": "ensemble_3judge",
-  "_judge_agg": "median",
+  "_round": "R25",
+  "_judge_pass": "ensemble_4judge",
+  "_judge_agg": "median-of-4-mean-mid",
   "_judges": [
     "claude-opus-4.7-high",
     "claude-haiku-4.5",
-    "claude-sonnet-4.6"
+    "claude-sonnet-4.6",
+    "gpt-5.4"
   ],
   "_abc_position": "B",
-  "_rubric": "applied-domain-quality"
+  "_rubric": "applied-domain-quality",
+  "_per_judge_scores": {
+    "claude-opus-4.7-high": 3,
+    "claude-haiku-4.5": 4,
+    "claude-sonnet-4.6": 5,
+    "gpt-5.4": 3
+  }
 }

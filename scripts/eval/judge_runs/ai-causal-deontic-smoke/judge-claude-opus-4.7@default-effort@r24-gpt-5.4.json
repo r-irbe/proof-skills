@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "This shows real formal knowledge, but the Permitted \u2194 O(...) biconditional overcomplicates and partly shifts the requirement from obligation to permission. The later formulations are closer, but the overall encoding is not cleanly targeted to the prompt.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "B",
+  "_rubric": "applied-domain-quality"
+}

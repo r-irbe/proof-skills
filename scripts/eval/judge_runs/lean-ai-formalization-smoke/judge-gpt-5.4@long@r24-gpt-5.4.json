@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "It does not provide Lean 4 code or the requested definition/signature. The response is plain prose, so it fails immediately.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "B",
+  "_rubric": "lean-proof-quality"
+}

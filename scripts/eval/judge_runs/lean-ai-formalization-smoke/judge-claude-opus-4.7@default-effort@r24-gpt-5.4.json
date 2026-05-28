@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "It does not produce any Lean 4 code for the requested `def`. The response is prose, so it fails the rubric's code requirement.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "lean-proof-quality"
+}

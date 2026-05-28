@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "Correctly identifies resonance-driven feedback instability between vibration and the control loop. It is useful but shallow and lacks calibrated confidence or second-order effects.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

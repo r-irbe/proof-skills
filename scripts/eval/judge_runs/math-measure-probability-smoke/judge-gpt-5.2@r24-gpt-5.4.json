@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "It correctly states the linearity of conditional expectation for integrable variables and constants. Under this rubric, it is a useful but minimal answer without the extra calibration or analysis needed for a higher score.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "This is the most complete response: it correctly covers resonance, bandwidth overlap, aliasing, damage mechanisms, and mitigations. Still, it lacks calibrated confidence, an assumption ledger, and trade-off analysis, so it does not reach expert-grade levels.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

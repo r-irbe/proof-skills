@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "It addresses the constraint, but it makes safety-critical recommendations without any caveat or source. Under the rubric, that requires a 1.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

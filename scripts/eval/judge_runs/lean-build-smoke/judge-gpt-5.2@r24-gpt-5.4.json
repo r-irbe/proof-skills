@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "It gives a plausible command sequence, but it is a single recommended path with no trade-off analysis and includes an incorrect alternative target syntax. It also overreaches on \"clean tree\" by using `git clean -xfd` without discussing impact.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

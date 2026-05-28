@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "Shows the right naturality idea, but the leading equation is notation-sloppy/ambiguous and may invert the maps in a confusing way. Useful, but a domain expert would want the statement cleaned up.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "B",
+  "_rubric": "applied-domain-quality"
+}

@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "It correctly frames ARMA order selection with AICc/BIC, ACF/PACF, and Ljung\u2013Box checks, but still lacks calibrated confidence markers and deeper trade-off analysis. Solid but incomplete under the rubric.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "B",
+  "_rubric": "applied-domain-quality"
+}

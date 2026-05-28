@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "This gives a correct finite-rank/basis-vector analogue and appropriately emphasizes approximation with norm control. Still, it remains a useful starting point rather than expert-grade analysis because it omits calibrated confidence and second-order considerations about when the approximation scheme applies.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

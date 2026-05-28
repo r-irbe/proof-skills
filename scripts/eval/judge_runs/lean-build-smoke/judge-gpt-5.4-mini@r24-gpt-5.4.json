@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "It is a valid one-off build command for a specific module, but it does not generalize to building an arbitrary single Mathlib module after a clean state. It is also a single-option recommendation without trade-off analysis.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "D",
+  "_rubric": "applied-domain-quality"
+}

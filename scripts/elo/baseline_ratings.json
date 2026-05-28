@@ -2,20 +2,21 @@
   "_meta": {
     "purpose": "ELO regression-gate baseline. CI fails if any entrant drops > tolerance vs these ratings.",
     "tolerance_points": 75,
-    "source_archive": "elo/example_runs/2026-05-27-k-r24/ratings.json",
-    "created_round": "Round 24 (R24 3-judge ensemble re-judge; opus-default + gpt-5.2/5.4@long/5.4-mini added)",
+    "source_archive": "scripts/elo/example_runs/2026-05-27-m-r25-median4/",
+    "created_round": "R25",
     "created_date": "2026-05-27",
-    "update_policy": "Maintainers may regenerate the baseline with `python3 scripts/elo/check_regression.py --refresh` after intentional changes."
+    "update_policy": "Maintainers may regenerate the baseline with `python3 scripts/elo/check_regression.py --refresh` after intentional changes.",
+    "methodology_note": "median-of-4 ensemble (opus-high + haiku + sonnet + gpt-5.4)"
   },
   "tolerance_points": 75,
   "ratings": {
-    "claude-haiku-4.5": 1381.11,
-    "claude-opus-4.7-high": 1476.5,
-    "claude-opus-4.7@default-effort": 1781.69,
-    "claude-sonnet-4.6": 1545.65,
-    "gpt-5.2": 1520.7,
-    "gpt-5.4": 1506.16,
-    "gpt-5.4-mini": 1421.8,
-    "gpt-5.4@long": 1560.93
+    "claude-haiku-4.5": 1391.0,
+    "claude-opus-4.7-high": 1495.14,
+    "claude-opus-4.7@default-effort": 1725.02,
+    "claude-sonnet-4.6": 1567.95,
+    "gpt-5.2": 1461.16,
+    "gpt-5.4": 1532.9,
+    "gpt-5.4-mini": 1424.14,
+    "gpt-5.4@long": 1512.27
   }
 }

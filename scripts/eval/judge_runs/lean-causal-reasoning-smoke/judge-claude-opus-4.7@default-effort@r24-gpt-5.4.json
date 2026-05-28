@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "It does not provide Lean 4 code defining `Causes`. The response is explanatory prose rather than the requested code-only answer.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "B",
+  "_rubric": "lean-proof-quality"
+}

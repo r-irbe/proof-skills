@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "It provides a sound parsimonious workflow and a reasonable ARMA(1,1) starting default, but the recommendation is not accompanied by calibrated confidence or explicit trade-offs. More actionable than a minimal answer, yet still incomplete by the rubric.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

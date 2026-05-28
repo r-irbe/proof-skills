@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "It gives detailed safety architecture recommendations, but all safety-critical claims are uncited and unqualified. The rubric assigns 1 for high-stakes safety claims without caveat or source.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "B",
+  "_rubric": "applied-domain-quality"
+}

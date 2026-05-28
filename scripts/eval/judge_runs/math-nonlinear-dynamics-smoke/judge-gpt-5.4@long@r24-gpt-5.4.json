@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "It gives the most complete proof outline, including forward-invariant sublevel sets and the asymptotic-stability strengthening, so the mathematical framing is solid. However, under the literal rubric it still lacks the required expert-grade assumption/confidence structure, so it does not rise above a 3.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

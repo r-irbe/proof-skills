@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "It gives a correct basic nightly binary-search method with elan and a pass/fail oracle, but it is a single-option recommendation with no trade-off analysis or risk handling.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "It correctly explains why the table stays stationary and adds a plausible force/friction condition. However, it still lacks calibrated confidence markers and remains a shallow analysis under the rubric.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "B",
+  "_rubric": "applied-domain-quality"
+}

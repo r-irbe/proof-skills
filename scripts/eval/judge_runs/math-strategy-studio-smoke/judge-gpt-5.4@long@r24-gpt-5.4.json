@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "Correctly uses the finite-dimensional analogy via dense subspaces, uniform estimates, and extension arguments, so the framing is sound and useful. But it lacks calibrated confidence markers and deeper discussion of when continuity, completeness, or weak compactness is the right passage mechanism.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

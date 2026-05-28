@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "It explicitly includes `:= by sorry`, which the rubric says is an automatic score of 1. That overrides its otherwise detailed guidance.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "lean-doc-quality"
+}

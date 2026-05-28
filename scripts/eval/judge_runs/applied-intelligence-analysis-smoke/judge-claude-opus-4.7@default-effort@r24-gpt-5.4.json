@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "This correctly applies ACH with multiple hypotheses, diagnostic evidence, assumptions, and a calibrated low-to-moderate confidence judgment. It is still incomplete against the rubric because it lacks cited sourcing and a more explicit trade-off or risk framework.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "This is parseable Lean, but the tactic block does not solve `True`; `fail_if_success` leaves the goal unproved. So it does not actually discharge the goal.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "lean-proof-quality"
+}

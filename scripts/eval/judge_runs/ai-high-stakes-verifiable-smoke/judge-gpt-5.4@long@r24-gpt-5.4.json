@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "It correctly classifies the system as high-risk and identifies auditable non-discrimination/fairness as the enforceable property. But it remains generic and lacks calibrated confidence, specific legal grounding, and trade-off analysis.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "D",
+  "_rubric": "applied-domain-quality"
+}

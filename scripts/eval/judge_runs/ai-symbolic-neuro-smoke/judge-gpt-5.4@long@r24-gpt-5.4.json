@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "It frames the problem correctly around exactness versus approximation, but it still offers only a one-sided recommendation without trade-off analysis. That matches the rubric's definition of 2.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

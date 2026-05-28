@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "It proposes a clear scoring rule and ranking, but the justification is brief and does not analyze trade-offs between competing sequencing choices. It reads as a single-option recommendation rather than a more calibrated assessment.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

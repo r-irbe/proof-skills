@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "It correctly sets up the min-max problem and equivalent primal/dual LP forms in a compact way. But it is still a concise starting point rather than expert-grade analysis under the literal rubric.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

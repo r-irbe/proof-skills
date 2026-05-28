@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "Correctly names limit-cycle oscillation caused by resonance or aliasing in feedback. But it is very brief and omits confidence markers, edge cases, and deeper analysis.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "D",
+  "_rubric": "applied-domain-quality"
+}

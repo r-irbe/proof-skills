@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "This is in the right formal area, but stacking \u25a1 and O and placing the implication inside the operator makes the encoding muddled. It gestures at prior consent, yet a logician would flag the formulation as imprecise.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

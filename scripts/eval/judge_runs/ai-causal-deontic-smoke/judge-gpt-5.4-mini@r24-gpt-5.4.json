@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "This is a correct minimal deontic encoding of the stated constraint. It is concise and on-task, but it remains a bare starting point with no clarification of scope or formal assumptions.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "D",
+  "_rubric": "applied-domain-quality"
+}

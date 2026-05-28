@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "This is a correct ACH application with a plausible provisional judgment, but the analysis is brief and does not use calibrated confidence markers beyond a general provisional caveat. It is a useful starting point, but incomplete.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "B",
+  "_rubric": "applied-domain-quality"
+}

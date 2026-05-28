@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "It matches the task at a very high level, but remains a single unsupported recommendation without trade-off analysis under the literal rubric. It is also too generic to function as a strong PR title.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

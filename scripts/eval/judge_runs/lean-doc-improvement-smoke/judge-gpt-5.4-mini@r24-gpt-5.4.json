@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "It only reports an update and a number, without supplying a documentation artifact. By the rubric, absence of a doc artifact yields score 1.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "lean-doc-quality"
+}

@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "The response is mathematically correct and directly proves compactness by the open-cover characterization. Applied literally, the rubric caps it below 4 because it does not include the additional analytical structure the higher bands require.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

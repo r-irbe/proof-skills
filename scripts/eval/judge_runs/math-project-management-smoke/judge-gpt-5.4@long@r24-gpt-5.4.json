@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "It correctly identifies the longest path and project duration for the provided 5-task example. However, under the literal rubric it remains a shallow analysis with no calibrated confidence or explicit assumptions.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

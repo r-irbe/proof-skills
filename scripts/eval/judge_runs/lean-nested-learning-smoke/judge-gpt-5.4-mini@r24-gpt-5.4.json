@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "It does not produce the requested Lean 4 `structure MetaLearner` code. The response is mathematical notation, not valid Lean code.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "lean-proof-quality"
+}

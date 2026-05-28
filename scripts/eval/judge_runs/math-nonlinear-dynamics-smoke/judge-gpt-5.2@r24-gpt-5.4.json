@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "It correctly frames the Lyapunov direct method and adds the key nonincreasing-level-set idea, but it still remains a brief sketch without deeper analysis or calibrated confidence markers. A domain expert would view it as correct but incomplete.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "B",
+  "_rubric": "applied-domain-quality"
+}

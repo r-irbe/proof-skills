@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "It uses the requested factors, but offers only a single lexicographic rule with no trade-off analysis or justification for when effort should outweigh confidence. That fits the rubric's single-option recommendation weakness.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "This is not valid Lean 4 code for the requested `structure KGNode`. It is syntactically broken and does not define the required fields.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "lean-proof-quality"
+}

@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "`node : Type` is not a valid Lean 4 structure definition for the task. It also omits `id`, `kind`, and `props`.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "D",
+  "_rubric": "lean-proof-quality"
+}

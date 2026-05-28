@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "It provides a concrete rewrite pattern, but it shifts to statistical hypothesis testing and still omits the mandatory specification structure. The result is not a template-following Lean documentation artifact.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "D",
+  "_rubric": "lean-doc-quality"
+}

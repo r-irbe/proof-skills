@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "It provides a clear 90-day structure with prioritization, owners, budgets, milestones, and KPIs, but the analysis remains generic and lacks trade-offs or calibrated confidence. It is a solid framework rather than expert-grade guidance.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

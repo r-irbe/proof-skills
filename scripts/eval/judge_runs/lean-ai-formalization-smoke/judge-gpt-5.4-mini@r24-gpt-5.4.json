@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "It is not Lean 4 code and does not define `NoNoOpHack`. Therefore it fails the rubric at score 1.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "lean-proof-quality"
+}

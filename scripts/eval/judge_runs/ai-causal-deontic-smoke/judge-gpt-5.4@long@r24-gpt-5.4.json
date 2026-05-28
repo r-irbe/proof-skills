@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "This correctly uses the deontic obligation operator to encode the constraint and adds a plausible formal restatement. It is useful but shallow and does not clarify edge cases like what counts as acting or consent.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

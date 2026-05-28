@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "It does not provide any Lean 4 code or theorem skeleton. Under the rubric, failing to produce Lean code scores 1.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "lean-proof-quality"
+}

@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "It does not provide the requested Lean 4 `structure BridgeContract` code. The response is prose describing a different design, so it fails the task literally.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "lean-proof-quality"
+}

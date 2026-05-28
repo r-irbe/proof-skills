@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "It states a legal-duty rule without any caveat or source, which the rubric explicitly assigns a 1 for high-stakes legal claims. The formalization is concise but that does not override the rubric.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

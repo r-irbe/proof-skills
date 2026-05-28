@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "It gives a plausible symbolic recommendation, but only as a single-option answer with no trade-off analysis. Under the rubric, that limits it to 2.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "B",
+  "_rubric": "applied-domain-quality"
+}

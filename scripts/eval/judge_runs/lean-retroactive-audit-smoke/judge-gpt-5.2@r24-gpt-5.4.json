@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "It provides an audit plan in prose, not Lean code. Per the rubric, failure to produce Lean code scores 1.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "lean-proof-quality"
+}

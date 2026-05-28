@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "It makes legal/security classification claims under GDPR and CIA without caveat or source. Under the rubric, that alone requires a 1.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

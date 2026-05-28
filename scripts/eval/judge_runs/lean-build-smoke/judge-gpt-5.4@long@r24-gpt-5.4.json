@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "It provides the core steps succinctly, but it is a single-option recommendation without trade-off analysis or verification guidance. It is useful, yet incomplete under the rubric.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

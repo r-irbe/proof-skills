@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "It makes the same unqualified legal claim without any caveat or source, so it falls under the rubric's score-1 condition. Added detail about the stop line does not supply sourcing or calibrated legal framing.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "B",
+  "_rubric": "applied-domain-quality"
+}

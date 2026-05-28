@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "It gives a high-level interface description, not actual Lean code. The required `structure BridgeContract` with the specified fields is missing.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "D",
+  "_rubric": "lean-proof-quality"
+}

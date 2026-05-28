@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "It gives the correct min-max formulation with mixed strategies on simplices, so the domain framing is right. However, it is shallow and omits the standard LP constraints/setup a practitioner would typically expect.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "It states the standard Lyapunov conditions correctly, but the proof sketch is very shallow and gives no argument via invariant sublevel sets or other details. It is a useful starting point, not an expert-complete demonstration.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}

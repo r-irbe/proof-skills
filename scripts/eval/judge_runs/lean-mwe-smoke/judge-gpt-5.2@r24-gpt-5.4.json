@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "The code parses, but `exact True` does not prove a goal of type `Nat`. Therefore the goal is not discharged.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "D",
+  "_rubric": "lean-proof-quality"
+}

@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "It correctly favors a symbolic solver and notes exactness and debuggability, but it remains a single-option recommendation without trade-off analysis. That keeps it at 2 by the literal rubric.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "D",
+  "_rubric": "applied-domain-quality"
+}

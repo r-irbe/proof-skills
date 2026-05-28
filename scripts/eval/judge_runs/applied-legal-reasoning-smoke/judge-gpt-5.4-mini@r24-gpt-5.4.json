@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "It presents an unsourced legal obligation with no caveat, which the rubric maps directly to 1. It is also less precise than the others, but the score is already fixed by the rubric trigger.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

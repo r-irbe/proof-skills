@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "It correctly identifies the system as high-risk under the EU AI Act, cites relevant provisions, and proposes measurable, auditable fairness constraints. Still, it lacks calibrated confidence markers and trade-off analysis, so it does not reach expert-grade or near-expert rubric levels.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "B",
+  "_rubric": "applied-domain-quality"
+}

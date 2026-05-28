@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "This is descriptive prose rather than a Lean 4 structure definition. It therefore fails to produce any Lean code for the requested contract.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "lean-proof-quality"
+}

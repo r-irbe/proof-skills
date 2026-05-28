@@ -1,0 +1,10 @@
+{
+  "score": 2,
+  "rationale": "It correctly classifies the system as high-risk, but it replaces the key verifiable property with a generic human-oversight control. It also misses the prompt-triggered non-discrimination risk that should have been surfaced.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

@@ -1,0 +1,10 @@
+{
+  "score": 1,
+  "rationale": "Despite being detailed, it makes many legal and security claims with article references but no source or caveat. The rubric literally requires a 1 for unsupported high-stakes claims.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "D",
+  "_rubric": "applied-domain-quality"
+}

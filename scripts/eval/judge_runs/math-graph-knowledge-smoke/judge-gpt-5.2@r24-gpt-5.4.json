@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "It correctly outlines an iterative DFS using a stack and visited set, and its acyclicity handling is sound. Still, it is a straightforward implementation sketch and does not reach expert-grade completeness under the rubric.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "C",
+  "_rubric": "applied-domain-quality"
+}

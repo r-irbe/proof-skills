@@ -1,0 +1,10 @@
+{
+  "score": 3,
+  "rationale": "It gives a correct basic procedure using information criteria and residual whiteness, but the analysis is shallow and offers no calibrated confidence or trade-off discussion. Useful as a starting point, not expert-complete.",
+  "rubric_evidence": [],
+  "_round": "R25",
+  "_judge_pass": "single",
+  "_judge_model": "gpt-5.4",
+  "_abc_position": "A",
+  "_rubric": "applied-domain-quality"
+}
