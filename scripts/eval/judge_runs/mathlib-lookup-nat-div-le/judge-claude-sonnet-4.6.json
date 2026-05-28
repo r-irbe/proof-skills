@@ -1,0 +1,20 @@
+{
+  "case_id": "mathlib-lookup-nat-div-le",
+  "entrant": "claude-sonnet-4.6",
+  "rubric": "mathlib-lookup-quality",
+  "score": 4.0,
+  "_individual_scores": {
+    "opushigh": 4,
+    "haiku": 5,
+    "sonnet": 4,
+    "gpt54": 4
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R31-gpt55-expanded"
+}

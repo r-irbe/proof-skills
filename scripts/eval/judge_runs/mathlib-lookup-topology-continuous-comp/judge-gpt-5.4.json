@@ -1,0 +1,20 @@
+{
+  "case_id": "mathlib-lookup-topology-continuous-comp",
+  "entrant": "gpt-5.4",
+  "rubric": "mathlib-lookup-quality",
+  "score": 3.0,
+  "_individual_scores": {
+    "opushigh": 4,
+    "haiku": 3,
+    "sonnet": 3,
+    "gpt54": 3
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R31-gpt55-expanded"
+}

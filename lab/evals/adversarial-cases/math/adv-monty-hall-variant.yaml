@@ -1,0 +1,24 @@
+id: adv-monty-hall-variant
+title: "Monty Hall variant: host opens random door"
+skill: math-measure-probability
+difficulty: hard
+input:
+  prompt: |
+    Monty Hall variant: three doors, one car, two goats. You pick door
+    1. The host (who does NOT know what's behind the doors) opens
+    door 3 at random and reveals a goat. Should you switch to door 2?
+    The standard Monty Hall analysis says yes — switch.
+  notes: |
+    The standard answer (switching gives 2/3) depends critically on
+    the host's KNOWLEDGE and deliberate avoidance of the car. In this
+    random-host variant, conditional on seeing a goat, the posterior
+    over the remaining doors is uniform (1/2, 1/2) — switching doesn't
+    help. Expected response: identify the difference, derive the
+    conditional probabilities for both variants, and reject the
+    standard-MH conclusion as inapplicable.
+expected:
+  must_distinguish_host_models: true
+  must_derive_correct_posterior: true
+  must_reject_standard_conclusion: true
+grader: applied-domain-quality
+tags: [adversarial, monty-hall, conditional-probability]

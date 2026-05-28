@@ -1,0 +1,1 @@
+{"score": 4, "rationale": "The import is correct and minimal, but the extra `open Nat` is unused or extraneous, so this is a score-4 setup rather than fully minimal.", "rubric_evidence": ["import Mathlib", "open Nat"]}

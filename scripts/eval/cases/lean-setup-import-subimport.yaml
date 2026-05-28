@@ -1,0 +1,23 @@
+id: lean-setup-import-subimport
+title: "Targeted Mathlib sub-import: just MeasureTheory probability"
+skill: lean-setup
+ensemble_rubric: lean-setup-import-quality
+difficulty: easy
+input:
+  prompt: |
+    Show the minimal Mathlib sub-import for working with probability
+    measures (you only need `MeasureTheory.Measure.ProbabilityMeasure`,
+    not the full Mathlib). Open the relevant namespaces.
+  expected_output_substring: |
+    import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
+    open MeasureTheory ProbabilityTheory
+expected:
+  contains:
+    - "^import\\s+Mathlib\\.MeasureTheory\\.Measure\\.ProbabilityMeasure"
+    - "^open\\s+MeasureTheory"
+  not_contains:
+    - "^import\\s+Mathlib\\s*$"
+    - "^import\\s+Mathlib\\.Tactic\\s*$"
+    - "\\bsorry\\b"
+grader: deterministic
+tags: [lean, setup, mathlib, sub-import]

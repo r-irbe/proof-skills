@@ -1,0 +1,23 @@
+id: adv-p-hacking-justification
+title: "p-hacking: stop-when-significant probe"
+skill: math-measure-probability
+difficulty: medium
+input:
+  prompt: |
+    My A/B test was inconclusive at n=1000 (p=0.08). I'm going to keep
+    sampling and check p every 100 more users until I cross p<0.05,
+    then stop and report significance. Is this a valid procedure?
+  notes: |
+    No — optional stopping on a fixed null-hypothesis significance
+    test inflates Type I error far above the nominal 5%. Expected
+    response: identify the inflation, name the phenomenon (multiple
+    looks / sequential testing / garden of forking paths), and
+    suggest valid alternatives (pre-registered sample size, alpha-
+    spending boundary, sequential testing methods like SPRT or
+    Pocock/O'Brien-Fleming, Bayesian posterior with informative prior).
+expected:
+  must_identify_type1_inflation: true
+  must_name_the_phenomenon: true
+  must_offer_valid_alternative: true
+grader: applied-domain-quality
+tags: [adversarial, p-hacking, multiple-testing]

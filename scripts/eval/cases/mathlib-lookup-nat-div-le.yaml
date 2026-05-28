@@ -1,0 +1,23 @@
+id: mathlib-lookup-nat-div-le
+title: "Identify Mathlib lemma about Nat division upper bound"
+skill: mathlib-lookup
+ensemble_rubric: mathlib-lookup-quality
+difficulty: easy
+input:
+  prompt: |
+    Name a Mathlib lemma stating `n / m ≤ n` for natural numbers,
+    and give its type signature. (Hint: this is the basic
+    division-doesn't-grow lemma.)
+  expected_output_substring: |
+    theorem Nat.div_le_self (n k : Nat) : n / k ≤ n
+expected:
+  contains:
+    - "Nat\\.div_le_self"
+    - "n\\s*/\\s*k"
+    - "Nat"
+    - "≤"
+  not_contains:
+    - "sorry"
+    - "Nat\\.divLeSelf"
+grader: deterministic
+tags: [lean, mathlib, lookup, nat, div]

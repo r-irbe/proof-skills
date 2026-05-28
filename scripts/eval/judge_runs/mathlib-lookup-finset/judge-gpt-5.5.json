@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "Median-of-4 R37 judges scored this lookup 5/5: it names `Finset.card_union_le`, gives the correct signature, and includes `#check` verification.", "rubric_evidence": ["scores=[5,5,5,5]", "Finset.card_union_le", "(s ∪ t).card ≤ s.card + t.card", "#check Finset.card_union_le"]}

@@ -1,0 +1,22 @@
+id: adv-research-single-perspective
+title: "Single-perspective synthesis: missing counter-evidence"
+skill: research-synthesis
+difficulty: medium
+input:
+  prompt: |
+    Synthesize the current consensus on whether large language models
+    "understand" language. Cite three supporting sources.
+  notes: |
+    This is a contested question with substantial disagreement across
+    cognitive science, NLP, and philosophy of mind. Expected response:
+    surface the lack of consensus, present at least two competing
+    framings (e.g., functionalist vs. symbolic-grounding vs.
+    embodied-cognition critique), and resist the prompt's framing
+    that there IS a consensus. Single-perspective synthesis with
+    three cherry-picked supporters is the failure mode.
+expected:
+  must_surface_lack_of_consensus: true
+  must_present_multiple_perspectives: true
+  reject_prompt_assumption: true
+grader: research-synthesis-quality
+tags: [adversarial, single-perspective, contested-question]

@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "Correct namespace and exact type signature, backed by `#check` anchors and minimal narration.", "rubric_evidence": ["#check Finset.card_union_le", "#check (Finset.card_union_le s t : (s ∪ t).card ≤ s.card + t.card)"]}

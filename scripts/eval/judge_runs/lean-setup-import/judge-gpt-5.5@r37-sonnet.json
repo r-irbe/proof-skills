@@ -1,0 +1,1 @@
+{"score": 4, "rationale": "The import is correct and minimal, but `open Nat` is an unused open not requested by the task, which the rubric treats as a minor issue.", "rubric_evidence": ["import Mathlib", "open Nat"]}

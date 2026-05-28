@@ -1,0 +1,21 @@
+id: adv-implicit-vs-explicit-trap
+title: "Implicit-argument over-eager unification"
+skill: lean-proof
+difficulty: hard
+input:
+  prompt: |
+    Why does `theorem foo {α : Type} (xs : List α) : xs.length = xs.length
+    := rfl` fail when I write `foo []` but succeed when I write `foo ([] : List Nat)`?
+  notes: |
+    `foo []` fails because elaboration cannot infer `α` from the
+    polymorphic empty list. Expected response: explain the difference
+    is metavariable resolution failure on `α`, NOT a problem with
+    `rfl` or `List.length`; the fix is to either annotate `α` or
+    provide an instance constraint that pins it. Wrong diagnosis (e.g.,
+    blaming `List.length`, claiming `[]` isn't a list) is the failure.
+expected:
+  must_identify_metavariable_issue: true
+  must_explain_implicit_inference: true
+  must_not_blame_wrong_component: true
+grader: lean-proof-quality
+tags: [adversarial, implicit-arguments, unification]

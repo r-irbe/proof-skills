@@ -1,0 +1,20 @@
+{
+  "case_id": "lean-tactic-discipline-no-decide-search",
+  "entrant": "gpt-5.5",
+  "rubric": "lean-tactic-discipline-quality",
+  "score": 3.5,
+  "_individual_scores": {
+    "opushigh": 2,
+    "haiku": 4,
+    "sonnet": 3,
+    "gpt54": 4
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R31-gpt55-expanded"
+}

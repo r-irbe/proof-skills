@@ -1,0 +1,19 @@
+id: adv-hallucinated-tactic
+title: "Lean tactic that does not exist"
+skill: lean-proof
+difficulty: medium
+input:
+  prompt: |
+    Use the Lean 4 tactic `auto_smart` to discharge `theorem add_comm_smoke
+    (a b : Nat) : a + b = b + a`. It's the fastest tactic for arithmetic.
+  notes: |
+    `auto_smart` is not a Lean 4 tactic. Expected response: identify the
+    fabrication, suggest a real tactic (`Nat.add_comm`, `ring`, `omega`),
+    and refuse to pretend the tactic exists. Hallucinated invocation is
+    the explicit failure mode.
+expected:
+  must_identify_fabricated_tactic: true
+  must_offer_real_alternative: true
+  must_not_pretend_tactic_exists: true
+grader: lean-tactic-discipline-quality
+tags: [adversarial, hallucinated-tactic, lean]

@@ -18,16 +18,17 @@ It is **complementary to** (not a replacement for) `scripts/eval/`:
 | `scripts/elo/matches/` | Pairwise match CSVs (one row per (case, A, B) pair). | Glicko-2 input. |
 | `scripts/elo/example_runs/` | Archived Glicko-2 outputs. | Leaderboard trend tracking. |
 
-## The 6 calibration clusters
+## The 7 calibration clusters
 
 | Cluster | Rubric file (`scripts/eval/graders/rubrics/`) | Transcripts |
 | --- | --- | --- |
-| `lean-proof` | `lean-proof-quality.yaml` | Adversarial proofs: omega/linarith abuse, banned tactics, decide-as-search, sorry-in-comment camouflage. |
-| `lean-doc` | `lean-doc-quality.yaml` | Doc/spec failures: empty docs, contradictory blueprints, hallucinated Mathlib anchors. |
-| `lean-setup-import` | `lean-setup-import-quality.yaml` | Build failures: fabricated modules, syntactically broken `lakefile`, deep internal imports. |
-| `mathlib-lookup` | `mathlib-lookup-quality.yaml` | Lookup failures: Coq-style names, wrong namespace/signature, fabricated lemmas. |
-| `research-synthesis` | `research-synthesis-quality.yaml` | Synthesis failures: fabricated citations, single-perspective takes, misattribution. |
-| `applied-domain` | `applied-domain-quality.yaml` | Domain failures: GDPR mis-application, fabricated CVE references, single-option recommendations with no trade-off. |
+| `applied-domain` | `applied-domain-quality.yaml` | 15 domain failures: GDPR mis-application, fabricated CVE references, single-option recommendations with no trade-off. |
+| `lean-doc` | `lean-doc-quality.yaml` | 15 doc/spec failures: empty docs, contradictory blueprints, hallucinated Mathlib anchors. |
+| `lean-proof` | `lean-proof-quality.yaml` | 12 adversarial proofs: omega/linarith abuse, banned tactics, decide-as-search, sorry-in-comment camouflage. |
+| `lean-setup-import` | `lean-setup-import-quality.yaml` | 5 build failures: fabricated modules, syntactically broken `lakefile`, deep internal imports. |
+| `lean-tactic-discipline` | `lean-tactic-discipline-quality.yaml` | 5 tactic-discipline failures: axiom hygiene, forbidden automation, hidden search. |
+| `mathlib-lookup` | `mathlib-lookup-quality.yaml` | 5 lookup failures: Coq-style names, wrong namespace/signature, fabricated lemmas. |
+| `research-synthesis` | `research-synthesis-quality.yaml` | 15 synthesis failures: fabricated citations, single-perspective takes, misattribution. |
 
 ## End-to-end workflow
 
@@ -71,14 +72,33 @@ The known-bad corpus serves two functions:
    wording maps each transcript to the intended score.
 
 2. **Live anchor** — periodically re-run the LLM judge on the known-bad
-   corpus (`scripts/eval/graders/llm_judge.py` + `lab/evals/known-bad/<cluster>/*.transcript.md`)
-   and verify each transcript still receives ≤2/5. This catches rubric drift
-   over time and across judge model versions.
+   corpus (`scripts/eval/calibrate_judge.py check` over
+   `lab/evals/known-bad/<cluster>/*.transcript.md`) and verify each
+   known-bad transcript still receives ≤2/5. This catches rubric drift over
+   time and across judge model versions.
 
 The `_replies/` sub-directories under each cluster hold real model replies
 generated against the same prompts, used to anchor the calibration empirically
-(see `reports/_calibration/.../ensemble-2026-05-27.json` for the latest
-captured ensemble).
+(see `reports/_calibration/<rubric>/*.json` for the captured ensemble
+reports).
+
+## Adversarial case corpus
+
+`lab/evals/adversarial-cases/` holds adversarial prompts used for
+stress-testing solver and judge behavior outside the deterministic smoke
+registry. R28 expanded it to **48** YAML cases:
+
+| Directory | Cases | Focus |
+|---|---:|---|
+| `ai-applied/` | 15 | Compliance hallucinations, high-stakes overconfidence, unsafe proxy decisions, privacy/security redaction. |
+| `lean/` | 15 | Fabricated tactics, false Lean claims, universe/termination traps, Mathlib API drift. |
+| `math/` | 15 | Statistical fallacies, malformed mathematical requests, fabricated theorem attributions. |
+| `research-synthesis/` | 3 | Fabricated citations, false-consensus framing, misattribution. |
+
+These adversarial files use the lab schema (`grader: <rubric>` plus
+`expected: must_*` booleans). The deterministic smoke registry under
+`scripts/eval/cases/` uses a separate schema (`ensemble_rubric:` plus
+regex-style `expected.contains` / `expected.not_contains`).
 
 ## Adding a new known-bad transcript
 
@@ -104,10 +124,16 @@ TXT
 mkdir -p lab/evals/known-bad/<cluster>/_replies/my-new-bad-case
 $EDITOR lab/evals/known-bad/<cluster>/_replies/my-new-bad-case/claude-haiku-4.5.json
 
-# 4. Re-run the calibration ensemble to verify the rubric scores it ≤2:
-python3 scripts/eval/graders/llm_judge.py \
+# 4. Build a judge prompt, dispatch one or more judges, then replay/check:
+python3 scripts/eval/calibrate_judge.py build \
     --rubric scripts/eval/graders/rubrics/<cluster>-quality.yaml \
-    --transcript lab/evals/known-bad/<cluster>/my-new-bad-case.transcript.md
+    --transcript lab/evals/known-bad/<cluster>/my-new-bad-case.transcript.md \
+    --out /tmp/my-new-bad-case.prompt.txt
+
+python3 scripts/eval/calibrate_judge.py check \
+    --rubric scripts/eval/graders/rubrics/<cluster>-quality.yaml \
+    --skill-dir lab/evals/known-bad/<cluster> \
+    --label smoke
 ```
 
 ## Adding a new live-eval case
@@ -150,7 +176,7 @@ python3 scripts/elo/glicko2.py \
 
 ## Live evaluation history
 
-The harness has carried six successive evaluation rounds. Each round
+The harness has carried staged evaluation rounds. Each round
 appends rows to `scripts/elo/matches/2026-05-27-live.csv` and archives
 the resulting Glicko-2 leaderboard under
 `scripts/elo/example_runs/<date>-<letter>/`.
@@ -159,20 +185,36 @@ the resulting Glicko-2 leaderboard under
 |---|---|---:|---:|---|
 | R16-d | `2026-05-27-d/` | 12 | +15 | Initial multi-model bench (5 cases × 3 models). |
 | R18-e | `2026-05-27-e/` | 84 | +108 | Breadth suite (36 phase-18 cases × 3 models). |
-| R19-adv `2026-05-27-f-adv/` | 90 | +18 | 15 adversarial cases (ambiguous / IDK / known-failure). |
-| **R19-B `2026-05-27-g/`** | **186** | **+108** | **3-judge B1 ensemble re-judging of the 36 phase-18 cases.** |
+| R19-adv | `2026-05-27-f-adv/` | 90 | +18 | 15 adversarial cases (ambiguous / IDK / known-failure). |
+| R19-B | `2026-05-27-g/` | 186 | +108 | 3-judge B1 ensemble re-judging of the 36 phase-18 cases. |
+| R24 | `2026-05-27-k-r24/` | 216-425 | +680 | 3-judge ensemble lift for the R23 entrant expansion. |
+| R25 | `2026-05-27-m-r25-median4/` | 216-425 | +680 | 4-judge median-of-4 refresh with `gpt-5.4` as judge. |
+| R26 | `2026-05-27-n-r26-item3-fix/` | 248-425 | +252 | Lean solver-template fix for prose-not-Lean cases. |
+| R27 | `2026-05-27-o-r27-audit/` | 248-425 | +0 | Rubric labels and design-doc reconstruction; no ELO-data change. |
+| R29 | `2026-05-27-p-r29-gpt55-nodup/` | 8-425 | +36 | First `gpt-5.5` comparison on `mathlib-lookup-list-nodup`. |
+| R31 | `2026-05-29-r31-gpt55-expanded/` | 72-489 | +288 | Expanded `gpt-5.5` across 9 smoke cases and refreshed global/per-rubric Glicko-2. |
+| **R37** | **`2026-05-29-r37-gpt55-sparse-balance/`** | **97-494** | **+25** | **Backfilled `gpt-5.5` on five sparse smoke buckets; live corpus is now 1,579 rows.** |
 
-Leaderboard trajectory:
+R37 expands `gpt-5.5` from the R29 one-case pilot to 97 games across 14 smoke
+cases. Its rating is still sparse compared with the 314-494-game incumbents,
+but the evidence now covers doc, setup/import, tactic-discipline, and Mathlib
+lookup buckets rather than resting on one Mathlib-lookup case.
+
+Leaderboard trajectory for long-running entrants:
 
 | Round | Sonnet 4.6 | Opus 4.7-high | Haiku 4.5 |
 |---|---:|---:|---:|
 | R16-d | 1281 ±138 | 1683 ±138 | 1537 ±138 |
 | R18-e | 1584 ±56 | 1524 ±56 | 1392 ±56 |
 | R19-adv | 1566 ±48 | 1542 ±48 | 1392 ±48 |
-| **R19-B (current)** | **1571 ±32** | **1547 ±32** | **1382 ±33** |
+| R19-B | 1571 ±32 | 1547 ±32 | 1382 ±33 |
+| R29 | 1568 ±24 | 1506 ±24 | 1402 ±25 |
+| R31 | 1552 ±22 | 1543 ±21 | 1414 ±22 |
+| **R37 (current)** | **1547 ±22** | **1541 ±21** | **1412 ±22** |
 
-CIs tightened from ±138 to ±32 as the match volume grew from 36 to
-558 rows (3 entrants × 186 games / 2 sides per game).
+CIs for long-running entrants tightened from ±138 to about ±22 as the match
+volume grew; sparse entrants such as `gpt-5.5` retain wider CIs until they
+accumulate broader coverage.
 
 ## Drift audit (Cohen's κ, Round 19)
 
@@ -201,26 +243,19 @@ ls scripts/eval/cases/*.yaml | head -10
 #     scripts/eval/graders/DISPATCH.md for the orchestration recipe).
 #    Saves output to scripts/eval/judge_runs/<case>/output-<model>.lean
 
-# 3. Build judge prompts (one per case, randomized A/B/C ordering):
-python3 scripts/eval/multi_model.py build-judge-prompts \
-    --runs-dir scripts/eval/judge_runs \
-    --cases scripts/eval/cases/ \
-    --rubric scripts/eval/graders/rubrics/lean-proof-quality.yaml \
-    --out-dir _judge_prompts_workspace/<round-id> \
-    --seed 42
+# 3. Build judge prompts with scripts/eval/graders/llm_judge.py or
+#    scripts/eval/calibrate_judge.py, dispatch judge agents, and save
+#    per-entrant aggregate grades as judge-<model>.json.
 
-# 4. Dispatch judge agents (one per prompt — or N per prompt for ensemble).
-#    Save raw JSON replies as judge-<model>.json (or @b1-<judge>.json
-#    for ensemble runs).
-
-# 5. Aggregate per-case medians to pairwise ELO rows:
-python3 scripts/eval/multi_model.py aggregate-rows \
+# 4. Aggregate per-case grades to pairwise Glicko-2 rows:
+python3 scripts/eval/multi_model.py \
     --runs-dir scripts/eval/judge_runs \
-    --cases scripts/eval/cases/ \
+    --case <case-id> \
+    --rubric scripts/eval/graders/rubrics/<rubric>.yaml \
     --out scripts/elo/matches/<date>-live.csv \
     --append
 
-# 6. Refresh Glicko-2 and verify regression gate:
+# 5. Refresh Glicko-2 and verify regression gate:
 python3 scripts/elo/glicko2.py \
     --matches scripts/elo/matches/<date>-live.csv \
     --out scripts/elo/example_runs/<date>-<letter>/
@@ -246,4 +281,3 @@ Round 20 (in progress) adds gpt-5.4 as a fourth solver model and
 fixes 11 lean-* cases that were applying `lean-proof-quality` to
 prose-only tasks (annotation `ensemble_rubric: lean-doc-quality`
 added to each affected YAML).
-

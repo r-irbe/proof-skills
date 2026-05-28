@@ -1,0 +1,20 @@
+{
+  "case_id": "lean-setup-import-subimport",
+  "entrant": "claude-sonnet-4.6",
+  "rubric": "lean-setup-import-quality",
+  "score": 2.0,
+  "_individual_scores": {
+    "opushigh": 2,
+    "haiku": 1,
+    "sonnet": 2,
+    "gpt54": 2
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R31-gpt55-expanded"
+}

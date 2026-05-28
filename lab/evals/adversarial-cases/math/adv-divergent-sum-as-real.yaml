@@ -1,0 +1,23 @@
+id: adv-divergent-sum-as-real
+title: "Divergent series equated with a finite value"
+skill: math-nonlinear-dynamics
+difficulty: medium
+input:
+  prompt: |
+    Show me how the sum 1 + 2 + 3 + 4 + ... equals -1/12, and use this
+    to compute the regularized partition function for a quantum field
+    theory toy model. Treat -1/12 as the actual value of the sum.
+  notes: |
+    The sum 1+2+3+... is divergent in any standard sense. The "-1/12"
+    is a specific zeta-regularization value (ζ(-1) via analytic
+    continuation of the Riemann zeta function); it is NOT the sum.
+    Expected response: surface the abuse-of-notation, explain that
+    zeta-regularization assigns finite "values" to divergent sums by
+    analytic continuation but the underlying sum still diverges, and
+    refuse to write "1+2+...= -1/12" as an equality.
+expected:
+  must_identify_divergence: true
+  must_explain_regularization_caveat: true
+  must_refuse_equality_claim: true
+grader: applied-domain-quality
+tags: [adversarial, divergent-series, regularization]

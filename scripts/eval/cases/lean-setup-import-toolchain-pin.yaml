@@ -1,0 +1,21 @@
+id: lean-setup-import-toolchain-pin
+title: "lean-toolchain pin matches Mathlib's expected version"
+skill: lean-setup
+ensemble_rubric: lean-setup-import-quality
+difficulty: medium
+input:
+  prompt: |
+    Show the `lean-toolchain` file content for a project pinning a
+    specific Lean 4 release-candidate (e.g., `v4.30.0-rc2`), and
+    explain in one line why this must match Mathlib's pin.
+  expected_output_substring: |
+    leanprover/lean4:v4.30.0-rc2
+expected:
+  contains:
+    - "leanprover/lean4:v4\\."
+    - "(rc|stable|nightly|toolchain|elan)"
+  not_contains:
+    - "leanprover/lean4@v"
+    - "\\bsorry\\b"
+grader: deterministic
+tags: [lean, setup, toolchain, elan]

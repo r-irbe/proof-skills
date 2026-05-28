@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "The document is template-conformant, includes concrete minimal and pathological examples, and gives explicit STOP/handoff conditions.", "rubric_evidence": ["Goals:", "Non-goals:", "Invariants:", "Minimal example:", "Pathological example:", "Hand off with command output, files inspected, and unresolved discrepancy."]}

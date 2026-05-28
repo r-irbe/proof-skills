@@ -1,0 +1,24 @@
+id: mathlib-lookup-topology-continuous-comp
+title: "Identify Mathlib lemma about continuity of function composition"
+skill: mathlib-lookup
+ensemble_rubric: mathlib-lookup-quality
+difficulty: medium
+input:
+  prompt: |
+    Name a Mathlib lemma about continuity of composition: if `f : X → Y`
+    and `g : Y → Z` are continuous, then `g ∘ f` is continuous.
+    Show the type signature using `Continuous`.
+  expected_output_substring: |
+    theorem Continuous.comp {g : Y → Z} {f : X → Y}
+        (hg : Continuous g) (hf : Continuous f) : Continuous (g ∘ f)
+expected:
+  contains:
+    - "Continuous\\.comp"
+    - "Continuous\\s+g"
+    - "Continuous\\s+f"
+    - "g\\s*∘\\s*f|Continuous \\(g"
+  not_contains:
+    - "sorry"
+    - "ContinuousComp\\b"
+grader: deterministic
+tags: [lean, mathlib, lookup, topology, continuous]

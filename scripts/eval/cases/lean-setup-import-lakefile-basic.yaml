@@ -1,0 +1,30 @@
+id: lean-setup-import-lakefile-basic
+title: "Lakefile: minimal Lake project with Mathlib dependency"
+skill: lean-setup
+ensemble_rubric: lean-setup-import-quality
+difficulty: easy
+input:
+  prompt: |
+    Show a minimal `lakefile.lean` for a Lean 4 project that depends
+    on Mathlib (pinned to a recent stable tag). Include the package
+    name, dependencies block, and a default library target.
+  expected_output_substring: |
+    import Lake
+    open Lake DSL
+    package myproj
+    require mathlib from git
+    @[default_target]
+    lean_lib MyProj
+expected:
+  contains:
+    - "^import\\s+Lake"
+    - "^open\\s+Lake\\s+DSL"
+    - "^package\\s+\\w+"
+    - "^require\\s+mathlib\\s+from\\s+git"
+    - "@\\[default_target\\]"
+    - "lean_lib\\s+\\w+"
+  not_contains:
+    - "leanprover/lean4@stable"
+    - "\\bsorry\\b"
+grader: deterministic
+tags: [lean, setup, lakefile, mathlib]

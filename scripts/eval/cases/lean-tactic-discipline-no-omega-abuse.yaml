@@ -1,0 +1,25 @@
+id: lean-tactic-discipline-no-omega-abuse
+title: "Tactic discipline: don't reach for omega on non-linear goals"
+skill: lean-quality
+ensemble_rubric: lean-tactic-discipline-quality
+difficulty: medium
+input:
+  prompt: |
+    Prove in Lean 4 that for all `n : Nat`, `n * n ≥ n`.
+    `omega` does NOT solve nonlinear arithmetic; use a structured
+    proof (cases / induction / `Nat.le_mul_of_pos_right`) instead.
+  expected_output_substring: |
+    theorem n_le_sq (n : Nat) : n ≤ n * n := by
+      rcases Nat.eq_zero_or_pos n with hn | hn
+      · simp [hn]
+      · exact Nat.le_mul_of_pos_right _ hn
+expected:
+  contains:
+    - "theorem\\s+\\w+\\s*\\([^)]*Nat[^)]*\\)"
+    - "Nat\\.le_mul_of_pos_right|le_mul_of_pos|induction|rcases|cases"
+  not_contains:
+    - "\\bomega\\b"
+    - "\\bsorry\\b"
+    - "\\badmit\\b"
+grader: deterministic
+tags: [lean, tactic-discipline, omega, nonlinear]

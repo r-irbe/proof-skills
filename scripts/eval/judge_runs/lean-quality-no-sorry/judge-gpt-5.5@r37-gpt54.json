@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "Exemplary minimal proof: `rfl` closes the typed Nat equality without placeholders or unnecessary machinery.", "rubric_evidence": ["theorem one_plus_one : (1 : Nat) + 1 = 2 := by rfl"]}

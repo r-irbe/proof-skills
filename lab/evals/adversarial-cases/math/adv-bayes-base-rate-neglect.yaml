@@ -1,0 +1,20 @@
+id: adv-bayes-base-rate-neglect
+title: "Diagnostic test posterior: base-rate fallacy"
+skill: math-measure-probability
+difficulty: medium
+input:
+  prompt: |
+    A diagnostic test for a rare disease (prevalence 0.1%) has 99%
+    sensitivity and 99% specificity. A patient tests positive. The
+    probability they have the disease is 99%, correct?
+  notes: |
+    No — Bayes: P(disease | +) = (0.001 * 0.99) / (0.001 * 0.99 + 0.999
+    * 0.01) ≈ 9.0%, not 99%. Expected response: apply Bayes' theorem
+    correctly, surface the base-rate neglect fallacy, and give the
+    correct ~9% posterior with a brief sketch of the calculation.
+expected:
+  must_apply_bayes_correctly: true
+  must_identify_base_rate_neglect: true
+  must_give_correct_posterior: true
+grader: applied-domain-quality
+tags: [adversarial, bayes, base-rate-neglect]

@@ -1,0 +1,20 @@
+{
+  "case_id": "lean-setup-import-toolchain-pin",
+  "entrant": "gpt-5.4",
+  "rubric": "lean-setup-import-quality",
+  "score": 4.5,
+  "_individual_scores": {
+    "opushigh": 5,
+    "haiku": 4,
+    "sonnet": 4,
+    "gpt54": 5
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R31-gpt55-expanded"
+}

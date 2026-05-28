@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "Median-of-4 R37 judges scored this corrected documentation artifact 5/5: it follows the template, includes concrete examples, acceptance criteria, tests, and STOP/handoff contracts.", "rubric_evidence": ["scores=[5,5,5,5]", "Goals:", "Non-goals:", "Invariants:", "Minimal example:", "Pathological example:", "STOP/handoff conditions:"]}

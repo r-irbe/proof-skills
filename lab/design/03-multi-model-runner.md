@@ -4,7 +4,7 @@
 
 ## 1. Entrant roster
 
-As of R26, the live roster (in `scripts/elo/baseline_ratings.json`) is:
+As of R37, the live roster is:
 
 | Player | Model | Effort suffix |
 |---|---|---|
@@ -12,12 +12,21 @@ As of R26, the live roster (in `scripts/elo/baseline_ratings.json`) is:
 | `claude-opus-4.7-high` | Claude Opus 4.7 (high reasoning) | — |
 | `claude-sonnet-4.6` | Claude Sonnet 4.6 | — |
 | `claude-haiku-4.5` | Claude Haiku 4.5 | — |
+| `gpt-5.5` | GPT-5.5 | — |
 | `gpt-5.4` | GPT-5.4 | — |
 | `gpt-5.4@long` | GPT-5.4 (long-context variant) | long |
 | `gpt-5.4-mini` | GPT-5.4 mini | — |
 | `gpt-5.2` | GPT-5.2 | — |
 
 Adding a new entrant requires (a) extending the dispatch loop in the round's `lab/.r<N>-*-solver-prompts/` workspace, (b) running a backfill against existing cases, (c) re-running ELO with the new entrant present.
+
+`gpt-5.5` entered through the R29 one-case
+`mathlib-lookup-list-nodup` pilot, expanded in R31 to 72 games across 9 smoke
+cases, and was backfilled in R37 to 97 games across 14 smoke cases. See
+`lab/reports/R31-gpt55-expanded.md` and
+`lab/reports/R37-gpt55-sparse-balance.md`. It remains sparse relative to
+incumbents, but the evidence now spans doc, setup/import, tactic-discipline, and
+Mathlib lookup rubrics.
 
 ## 2. Solver-prompt template (R26-Item-3-validated)
 
@@ -50,7 +59,10 @@ Current ensemble (median-of-4):
 
 Aggregation: mean of the two middle values when ensemble size is even (`_judge_agg: median-of-4-mean-mid`). Stored alongside `_individual_scores` and `_judges` in each canonical `judge-<entrant>.json` for reproducibility.
 
-R25 carry-over considers adding `gpt-5.4-mini-mini` as a 5th judge for cost-down median-of-5.
+Do not add a fifth judge casually: even-size ensembles preserve fractional
+median scores, while the current minority-veto calibration shows that adding
+more judges does not reduce false flags when any single low score can trigger
+the veto.
 
 ## 4. Dispatch loop
 
@@ -60,7 +72,7 @@ Solver and judge dispatches use the agent harness. Per-round agent-id convention
 - Judges: `r<N>-j-<case-prefix>-<judge-suffix>` (e.g. `r26-j-laif-opushigh`)
 
 Case prefixes (R26 lean-*): `laif/lar/lcr/lip/lkf/lnl/lra/lsf/ls`.
-Model suffixes: `haiku/sonnet/opushigh/opus/gpt54/gpt54mini/gpt52/gpt54long`.
+Model suffixes: `haiku/sonnet/opushigh/opus/gpt55/gpt54/gpt54mini/gpt52/gpt54long`.
 
 ## 5. Blind labelling for judges
 
