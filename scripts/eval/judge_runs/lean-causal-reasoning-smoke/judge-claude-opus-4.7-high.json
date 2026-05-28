@@ -1,7 +1,20 @@
 {
-  "score": 1,
-  "rationale": "No Lean code is produced; the response is prose describing what causal vs correlational specs would look like, with only inline pseudo-snippets and no actual proof.",
-  "rubric_evidence": [
-    "theorem corr : ∀ s : State, p s → q s"
-  ]
+  "case_id": "lean-causal-reasoning-smoke",
+  "entrant": "claude-opus-4.7-high",
+  "rubric": "lean-proof-quality",
+  "score": 3.5,
+  "_individual_scores": {
+    "opushigh": 3,
+    "haiku": 4,
+    "sonnet": 4,
+    "gpt54": 3
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R26-item3"
 }

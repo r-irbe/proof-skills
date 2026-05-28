@@ -1,1 +1,12 @@
-Build a directed acyclic graph (DAG) of the codebase by parsing imports/requires across all files, then run a topological sort to assign each module a wave number (0 = leaves with no internal deps, N = modules depending on wave N-1). Run `madge --json src/ > deps.json` (or `depcruise`) to generate the graph, then invert it so shared utilities (highest in-degree) appear in the earliest wave. Schedule audit issues wave-by-wave: fixing a bug in wave 0 propagates clean contracts upward, so you never audit a consumer before its provider is resolved. For this repo, the HTML pages in `src/` share CSS utilities — audit `demo-controls.css` and font assets (wave 0), then individual widget HTML files (wave 1), then composite pages like `home_dashboard.html` (wave 2). Create one GitHub issue per wave via `gh issue create --label "audit-wave-N"`, linking each to the files in that wave. Gate each wave's audit on the prior wave's issues being closed, enforcing the dependency order. This prevents review churn from cascading changes and gives you a reproducible, ordered audit trail tied to the actual dependency structure.
+import Std.Data.HashMap
+
+def auditWave (importDAG : Std.HashMap String (List String)) (m : String) : Nat :=
+  let rec go (visited : List String) (node : String) : Nat :=
+    if visited.contains node then 0
+    else
+      match importDAG.get? node with
+      | none => 0
+      | some [] => 0
+      | some deps =>
+        1 + deps.foldl (fun acc d => Nat.max acc (go (node :: visited) d)) 0
+  go [] m

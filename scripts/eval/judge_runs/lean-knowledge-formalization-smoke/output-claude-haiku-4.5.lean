@@ -1,1 +1,15 @@
-Unable to determine knowledge graph structure without context. Request clarification: (1) Are you referencing a specific system or file in this project? (2) Do you mean adding type annotations to a node, creating a node with a type property, or something else? (3) What is the expected output format? The tacit-mui project appears to be a Material UI application; no obvious knowledge graph system is apparent from initial search.
+inductive NodeType : Type where
+  | entity : NodeType
+  | relation : NodeType
+  | attribute : NodeType
+
+inductive Value : Type where
+  | string : String → Value
+  | nat : Nat → Value
+  | bool : Bool → Value
+  | float : Float → Value
+
+structure KGNode : Type where
+  id : Nat
+  kind : NodeType
+  props : List (String × Value)

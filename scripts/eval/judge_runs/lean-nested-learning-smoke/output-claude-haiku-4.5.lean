@@ -1,1 +1,3 @@
-Inner loop: θ_t+1 = θ_t - α∇L(θ_t; D_train) performs a single gradient step on task-specific loss. Outer loop: φ_t+1 = φ_t - β∇_φ L_meta(θ_t+1; D_val) updates meta-parameters (learning rate α, optimizer state, or initialization φ) using validation loss after the inner gradient step. The inner loop adapts model parameters for specific tasks; the outer loop optimizes the adaptation process itself. Mathematically: minimize E_task[L_val(SGD_one-step(θ, α, L_train))] over hyperparameters φ controlling α. This implements MAML or similar gradient-based meta-learning where inner steps are differentiable components in the outer optimization graph.
+structure MetaLearner {θ : Type*} (InnerLearner : Type* → Type*) where
+  inner : InnerLearner θ
+  metaStep : θ → θ

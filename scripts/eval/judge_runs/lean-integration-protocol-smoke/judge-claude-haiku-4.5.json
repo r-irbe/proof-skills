@@ -1,7 +1,20 @@
 {
-  "score": 1,
-  "rationale": "Prose-only specification with no Lean code blocks, so it cannot satisfy any proof-quality criterion above level 1.",
-  "rubric_evidence": [
-    "Here's the technical specification:"
-  ]
+  "case_id": "lean-integration-protocol-smoke",
+  "entrant": "claude-haiku-4.5",
+  "rubric": "lean-proof-quality",
+  "score": 5.0,
+  "_individual_scores": {
+    "opushigh": 5,
+    "haiku": 5,
+    "sonnet": 5,
+    "gpt54": 5
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R26-item3"
 }

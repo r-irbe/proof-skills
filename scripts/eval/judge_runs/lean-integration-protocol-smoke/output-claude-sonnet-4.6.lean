@@ -1,7 +1,5 @@
-`MeasureBridge` (`EASCI/StochasticCCV/Information/MeasureBridge.lean`) defines the canonical bridge contract between the CCVR/CCVRE simplex types and the Mathlib measure-theory layer that `Information.lean` consumes:
-
-1. **`CCVR.toPMF : CCVR → PMF (Fin 3)`** — lifts the three simplex weights `(r, s, k)` to a `PMF` via `ENNReal.ofReal` and the simplex identity `hSimplex`; same pattern for **`CCVRE.toPMF : CCVRE → PMF (Fin 4)`** with `(r, s, k, e)`.
-2. **`CCVR.toMeasure / CCVRE.toMeasure`** — plain `noncomputable def` wrapping `PMF.toMeasure` so downstream callers control unfolding; both carry a `IsProbabilityMeasure` instance.
-3. **Singleton evaluation lemmas** (`toMeasure_apply_singleton`) — the induced measure on `{i}` equals `toPMF i`; these are the rewrite targets for all downstream KL proofs.
-4. **Absolute continuity** (`toMeasure_absolutelyContinuous`) — given strict positivity of all coordinates of `q`, every `p.toMeasure ≪ q.toMeasure`; gateway for Radon–Nikodým / KL derivations in `Information.lean`.
-5. The `Information` module imports `MeasureBridge` and depends on no other measure-layer definition; the bridge is the **sole** entry point from the algebraic simplex world to `MeasureTheory`.
+structure BridgeContract where
+  source : String
+  target : String
+  exported : List String
+  validator : Unit → Bool

@@ -1,7 +1,20 @@
 {
-  "score": 1,
-  "rationale": "Produces a TypeScript interface rather than any Lean code, failing the baseline requirement for Lean output.",
-  "rubric_evidence": [
-    "interface MeasurementEvent {"
-  ]
+  "case_id": "lean-integration-protocol-smoke",
+  "entrant": "claude-opus-4.7-high",
+  "rubric": "lean-proof-quality",
+  "score": 5.0,
+  "_individual_scores": {
+    "opushigh": 5,
+    "haiku": 5,
+    "sonnet": 5,
+    "gpt54": 5
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R26-item3"
 }

@@ -1,1 +1,14 @@
-Week 1 wave 0 inventory and trust-boundary mapping, week 2 wave 1 audit leaf dependencies, week 3 wave 2 audit internal libraries that depend only on cleared leaves, week 4 wave 3 audit applications and integration edges, week 5 wave 4 re-audit all high-risk paths and close findings.
+import Std
+
+def auditWave (importDAG : Std.HashMap String (List String)) (m : String) : Nat :=
+  let rec go (fuel : Nat) (mod : String) : Nat :=
+    match fuel with
+    | 0 => 0
+    | fuel + 1 =>
+        match importDAG.get? mod with
+        | none => 0
+        | some deps =>
+            match deps with
+            | [] => 0
+            | _ => 1 + deps.foldl (fun acc dep => Nat.max acc (go fuel dep)) 0
+  go importDAG.size m

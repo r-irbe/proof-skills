@@ -1,1 +1,2 @@
-A causal claim must be stated under an intervention or structural update, such as "after setting `X := x`, `Y` changes," while a correlational claim only states a relation in the observed model, such as dependence or conditional probability without intervention.
+-- Causes X Y is not the same as X ↔ Y because causation is directional and does not require the reverse implication Y → X.
+def Causes (X Y : Prop) : Prop := X → Y

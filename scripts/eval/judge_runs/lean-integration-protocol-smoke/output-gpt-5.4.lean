@@ -1,7 +1,5 @@
-`MeasureBridge` is the canonical adapter from EASCI simplex objects to Mathlib probability objects: it must provide `CCVR/CCVRE → PMF (Fin n) → Measure (Fin n)` lifts, singleton/normalization simp lemmas, and absolute-continuity facts (`toMeasure_absolutelyContinuous`, `PMF.toMeasure_absolutelyContinuous_count`).
-It also owns the reduction layer from measure-theoretic primitives back to discrete formulas, specifically `PMF.rnDeriv_count_ae_eq_self`, `PMF.llr_toMeasure_ae_eq_log_ratio`, and the public KL bridge theorems `klDivergenceCCVR/CCVE_eq_klDiv_toReal_of_absCont` plus the legacy strict-positivity wrappers.
-The downstream `Information` module may assume those theorems as stable API and should express Shannon/KL/Hellinger/Fisher results in terms of the exported bridge surface rather than reproving PMF/measure facts.
-The canonical downstream entrypoints are the hypothesis-light `_of_absCont` theorems and `_noPos` self-divergence theorems; strict-positivity wrappers are compatibility shims, not preferred dependencies.
-Namespace-wise, bridge implementations may use private PMF/count helpers internally, but only the exported theorems are part of the contract, and they remain root-resolvable via `export EASCI.Information.KL (...)`.
-Dependency direction is one-way: `Information` imports `MeasureBridge`, while `MeasureBridge` must stay free of higher-level entropy/geometry policy except for bridge lemmas needed to expose Mathlib `klDiv` and Fisher pullback facts.
-In short, `MeasureBridge` owns representation conversion and equivalence proofs, and `Information` owns the domain-level statements built on that bridge.
+structure BridgeContract where
+  source : String
+  target : String
+  exported : List String
+  validator : Unit → Bool

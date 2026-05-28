@@ -1,7 +1,20 @@
 {
-  "score": 1,
-  "rationale": "Declines to produce any output and contains no Lean code, automatically failing the lowest rubric threshold.",
-  "rubric_evidence": [
-    "No theorem statement provided."
-  ]
+  "case_id": "lean-specification-smoke",
+  "entrant": "claude-haiku-4.5",
+  "rubric": "lean-proof-quality",
+  "score": 1.0,
+  "_individual_scores": {
+    "opushigh": 1,
+    "haiku": 1,
+    "sonnet": 1,
+    "gpt54": 1
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R26-item3"
 }

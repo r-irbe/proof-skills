@@ -1,1 +1,4 @@
-An investigative reasoning step formalizes as: **E ⊢ C**, where E represents evidence (premises) and C is the conclusion, with ⊢ denoting valid derivation under some inference rule. For example, if E = {suspect was at location X at time T, murder occurred at X at time T}, and rule R = "presence + opportunity = possible involvement," then C = "suspect is a person of interest" follows validly. The strength depends on rule soundness: deductive rules guarantee C if E is true; inductive rules assign probability. Formal chains link multiple steps: E₁ ⊢ C₁, then {C₁, E₂} ⊢ C₂, building toward final conclusions. Each step requires explicit premises, stated inference rule, and documented assumptions. Weaknesses surface when evidence is insufficient, rule is fallacious, or hidden premises are unstated, enabling systematic audit and challenge of reasoning.
+structure InfRule where
+  premises : List Evidence
+  conclusion : Hypothesis
+  weight : EvidenceWeight

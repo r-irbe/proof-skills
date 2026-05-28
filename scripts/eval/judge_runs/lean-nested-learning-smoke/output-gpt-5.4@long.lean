@@ -1,1 +1,5 @@
-Inner learner: θ' := θ - α ∇_θ L_train(θ, φ); outer learner: φ' := φ - β ∇_φ L_meta(θ', φ).
+universe u v
+
+structure MetaLearner (InnerLearner : Type u → Type v) {θ : Type u} where
+  inner : InnerLearner θ
+  metaStep : θ → θ

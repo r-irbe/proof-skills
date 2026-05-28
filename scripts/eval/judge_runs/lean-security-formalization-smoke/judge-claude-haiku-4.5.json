@@ -1,7 +1,20 @@
 {
-  "score": 1,
-  "rationale": "No Lean code is produced; the response is an English-language description with informal notation and no proof.",
-  "rubric_evidence": [
-    "canRead(S, O) → L(O) ≤ C(S)"
-  ]
+  "case_id": "lean-security-formalization-smoke",
+  "entrant": "claude-haiku-4.5",
+  "rubric": "lean-proof-quality",
+  "score": 4.0,
+  "_individual_scores": {
+    "opushigh": 5,
+    "haiku": 4,
+    "sonnet": 4,
+    "gpt54": 4
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R26-item3"
 }

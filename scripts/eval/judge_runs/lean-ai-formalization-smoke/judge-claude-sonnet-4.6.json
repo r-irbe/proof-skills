@@ -1,7 +1,20 @@
 {
-  "score": 1,
-  "rationale": "Contains only natural-language exposition and inline math; no Lean syntax, declarations, or tactics appear.",
-  "rubric_evidence": [
-    "R(s,a,s') = F(s,a,s') + γΦ(s') − Φ(s)"
-  ]
+  "case_id": "lean-ai-formalization-smoke",
+  "entrant": "claude-sonnet-4.6",
+  "rubric": "lean-proof-quality",
+  "score": 4.0,
+  "_individual_scores": {
+    "opushigh": 4,
+    "haiku": 4,
+    "sonnet": 4,
+    "gpt54": 1
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R26-item3"
 }

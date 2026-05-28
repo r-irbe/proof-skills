@@ -1,1 +1,4 @@
-To type a node in a formalised knowledge graph, assign it one or more classes from the graph's ontology. In RDF/OWL, this is usually expressed with an `rdf:type` triple, such as `:Paris rdf:type :City`. The chosen type should reflect the node's identity, not a temporary role or attribute. Prefer the most specific valid class while preserving any superclass inferences defined by the ontology. If multiple independent classifications apply, attach multiple types, for example a node can be both `:Person` and `:Researcher`. Typing should be grounded in schema definitions and domain/range constraints so downstream reasoning and validation work correctly.
+structure KGNode where
+  id : Nat
+  kind : NodeType
+  props : List (String × Value)

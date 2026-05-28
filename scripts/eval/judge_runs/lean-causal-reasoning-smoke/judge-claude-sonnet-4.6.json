@@ -1,7 +1,20 @@
 {
-  "score": 1,
-  "rationale": "No actual Lean proof is produced; the response describes a hypothetical encoding with inline fragments but contains no parseable Lean code or discharged goal.",
-  "rubric_evidence": [
-    "example : corr ∧ ¬cause"
-  ]
+  "case_id": "lean-causal-reasoning-smoke",
+  "entrant": "claude-sonnet-4.6",
+  "rubric": "lean-proof-quality",
+  "score": 4.5,
+  "_individual_scores": {
+    "opushigh": 3,
+    "haiku": 5,
+    "sonnet": 5,
+    "gpt54": 4
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R26-item3"
 }

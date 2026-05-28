@@ -1,7 +1,20 @@
 {
-  "score": 1,
-  "rationale": "Contains no Lean code at all; only mathematical/textual specification of MAML.",
-  "rubric_evidence": [
-    "θ_τ' = θ − α(φ) · ∇_θ L^s(θ; D_τ^s, φ)"
-  ]
+  "case_id": "lean-nested-learning-smoke",
+  "entrant": "claude-opus-4.7-high",
+  "rubric": "lean-proof-quality",
+  "score": 4.5,
+  "_individual_scores": {
+    "opushigh": 3,
+    "haiku": 5,
+    "sonnet": 4,
+    "gpt54": 5
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R26-item3"
 }

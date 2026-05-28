@@ -1,1 +1,27 @@
-Run the audit in four dependency waves over ten working days. Wave 0 on Days 1-2 maps repositories, services, shared libraries, CI/CD paths, owners, and the full dependency graph, then locks scope, risk criteria, and evidence templates. Wave 1 on Days 3-4 audits leaf components first because they have no internal dependents, focusing on vulnerable packages, secrets exposure, dead code, test gaps, and license risk. Wave 2 on Days 5-6 reviews mid-tier libraries and shared services, using Wave 1 findings to trace transitive risk, contract drift, and version skew into consuming systems. Wave 3 on Days 7-8 audits top-level applications, user-facing entry points, deployment manifests, and runtime configuration to confirm how lower-layer issues surface in production. Days 9-10 are for cross-wave consolidation: deduplicate findings, rank by blast radius and dependency centrality, assign owners, define remediation deadlines, and document accepted exceptions. Hold a 30-minute checkpoint at the end of each day and a final readout after Day 10 with an ordered remediation backlog.
+import Std
+
+def auditWave (importDAG : Std.HashMap String (List String)) (m : String) : Nat :=
+  Id.run do
+    let mut memo : Std.HashMap String Nat := Std.HashMap.empty
+    let mut stack : List (String × Bool) := [(m, false)]
+    while !stack.isEmpty do
+      match stack with
+      | [] => pure ()
+      | (modName, expanded) :: rest =>
+          stack := rest
+          if expanded then
+            let imports := importDAG.getD modName []
+            let level :=
+              match imports with
+              | [] => 0
+              | _ => 1 + imports.foldl (fun acc dep => max acc (memo.getD dep 0)) 0
+            memo := memo.insert modName level
+          else if memo.contains modName then
+            pure ()
+          else
+            let imports := importDAG.getD modName []
+            stack := (modName, true) :: stack
+            for dep in imports.reverse do
+              if !memo.contains dep then
+                stack := (dep, false) :: stack
+    pure (memo.getD m 0)

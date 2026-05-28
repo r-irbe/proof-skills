@@ -1,1 +1,4 @@
-A node in a formalised knowledge graph is typically typed by assigning it to one or more classes (concepts) drawn from a controlled vocabulary or ontology, expressed via a typing relation such as RDF's `rdf:type` (often abbreviated `a` in Turtle). For example: `:Alice rdf:type :Person` asserts that the node `:Alice` is an instance of class `:Person`. Formally, this is a triple ⟨n, τ, C⟩ where n is the node, τ is the typing predicate, and C is a class IRI defined in a schema (RDFS, OWL, SHACL, or a property graph schema like Neo4j labels). Multiple types are allowed (multi-typing), and subclass hierarchies (`rdfs:subClassOf`) let inferred types propagate. In property graphs, the analogue is attaching one or more labels to a node (e.g., `(:Person:Employee {name:"Alice"})`). Typing enables schema validation, query dispatch, and reasoning over the graph.
+structure KGNode where
+  id : Nat
+  kind : NodeType
+  props : List (String × Value)

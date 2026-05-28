@@ -1,7 +1,20 @@
 {
-  "score": 1,
-  "rationale": "Produces only prose and informal mathematical notation with no Lean code whatsoever.",
-  "rubric_evidence": [
-    "Σ_{t=0}^∞ γ^t R(s₀, a₀, s₀) < V*(s₀)"
-  ]
+  "case_id": "lean-ai-formalization-smoke",
+  "entrant": "claude-opus-4.7-high",
+  "rubric": "lean-proof-quality",
+  "score": 4.0,
+  "_individual_scores": {
+    "opushigh": 5,
+    "haiku": 3,
+    "sonnet": 4,
+    "gpt54": 4
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R26-item3"
 }

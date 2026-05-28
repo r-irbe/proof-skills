@@ -1,7 +1,20 @@
 {
-  "score": 1,
-  "rationale": "No Lean code is produced; the response is a natural-language abductive argument with no proof script.",
-  "rubric_evidence": [
-    "abductive inference under temporal precedence + dependency locality + reversibility"
-  ]
+  "case_id": "lean-applied-reasoning-smoke",
+  "entrant": "claude-opus-4.7-high",
+  "rubric": "lean-proof-quality",
+  "score": 5.0,
+  "_individual_scores": {
+    "opushigh": 5,
+    "haiku": 5,
+    "sonnet": 5,
+    "gpt54": 5
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R26-item3"
 }

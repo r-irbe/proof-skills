@@ -1,1 +1,18 @@
-Week 1 wave0: inventory deps + lockfiles + SBOM; Week 2 wave1: direct deps risk review + vuln scan; Week 3 wave2: transitive deps review + license audit; Week 4 wave3: build/test hardening + remediation PRs + final signoff.
+import Std
+
+open Std
+
+def auditWave (importDAG : Std.HashMap String (List String)) (m : String) : Nat :=
+  let rec go (fuel : Nat) (mod : String) : Nat :=
+    match fuel with
+    | 0 => 0
+    | fuel + 1 =>
+      match importDAG.find? mod with
+      | none => 0
+      | some imps =>
+        match imps with
+        | [] => 0
+        | _ :: _ =>
+          let maxImp := imps.foldl (fun acc im => Nat.max acc (go fuel im)) 0
+          1 + maxImp
+  go importDAG.size m

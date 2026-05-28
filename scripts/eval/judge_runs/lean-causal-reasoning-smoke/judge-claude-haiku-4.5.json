@@ -1,7 +1,20 @@
 {
-  "score": 1,
-  "rationale": "No Lean code or proof is produced; the response is purely conceptual prose with type-signature fragments and no theorem discharged.",
-  "rubric_evidence": [
-    "A function signature `f : P → Q` is causal"
-  ]
+  "case_id": "lean-causal-reasoning-smoke",
+  "entrant": "claude-haiku-4.5",
+  "rubric": "lean-proof-quality",
+  "score": 4.0,
+  "_individual_scores": {
+    "opushigh": 3,
+    "haiku": 4,
+    "sonnet": 4,
+    "gpt54": 5
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R26-item3"
 }

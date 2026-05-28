@@ -1,7 +1,20 @@
 {
-  "score": 1,
-  "rationale": "Contains no Lean code at all, only informal math notation and traceability prose, so it cannot satisfy any proof-quality criterion.",
-  "rubric_evidence": [
-    "**Preconditions (hypotheses):**"
-  ]
+  "case_id": "lean-specification-smoke",
+  "entrant": "claude-sonnet-4.6",
+  "rubric": "lean-proof-quality",
+  "score": 2.0,
+  "_individual_scores": {
+    "opushigh": 4,
+    "haiku": 2,
+    "sonnet": 2,
+    "gpt54": 1
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R26-item3"
 }

@@ -1,1 +1,7 @@
-Wave 1: reconstruct the dependency graph; Wave 2: audit the changed leaf modules; Wave 3: audit all upstream dependents; Wave 4: compile findings into a retroactive report.
+import Std
+
+partial def auditWave (importDAG : Std.HashMap String (List String)) (m : String) : Nat :=
+  let imports := importDAG.findD m []
+  match imports with
+  | [] => 0
+  | xs => 1 + xs.foldl (fun acc imp => Nat.max acc (auditWave importDAG imp)) 0

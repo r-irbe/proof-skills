@@ -1,7 +1,20 @@
 {
-  "score": 1,
-  "rationale": "No Lean code produced; only asks clarifying questions instead of attempting a proof.",
-  "rubric_evidence": [
-    "Unable to determine knowledge graph structure without context. Request clarification"
-  ]
+  "case_id": "lean-knowledge-formalization-smoke",
+  "entrant": "claude-haiku-4.5",
+  "rubric": "lean-proof-quality",
+  "score": 4.0,
+  "_individual_scores": {
+    "opushigh": 3,
+    "haiku": 4,
+    "sonnet": 4,
+    "gpt54": 4
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R26-item3"
 }

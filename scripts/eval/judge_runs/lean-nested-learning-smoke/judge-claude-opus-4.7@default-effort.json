@@ -1,0 +1,20 @@
+{
+  "case_id": "lean-nested-learning-smoke",
+  "entrant": "claude-opus-4.7@default-effort",
+  "rubric": "lean-proof-quality",
+  "score": 4.5,
+  "_individual_scores": {
+    "opushigh": 3,
+    "haiku": 5,
+    "sonnet": 4,
+    "gpt54": 5
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R26-item3"
+}

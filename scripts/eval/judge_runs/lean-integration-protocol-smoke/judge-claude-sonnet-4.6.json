@@ -1,7 +1,20 @@
 {
-  "score": 1,
-  "rationale": "Describes Lean declarations in prose without supplying any actual Lean code or proof, so no proof is produced to judge.",
-  "rubric_evidence": [
-    "plain `noncomputable def` wrapping `PMF.toMeasure`"
-  ]
+  "case_id": "lean-integration-protocol-smoke",
+  "entrant": "claude-sonnet-4.6",
+  "rubric": "lean-proof-quality",
+  "score": 5.0,
+  "_individual_scores": {
+    "opushigh": 5,
+    "haiku": 5,
+    "sonnet": 5,
+    "gpt54": 5
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R26-item3"
 }

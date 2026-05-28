@@ -1,1 +1,6 @@
-AccessLogEntry(suspect, lab, 22:14) ∧ ValidBadgeRead(suspect, lab, 22:14) → PresentNear(suspect, lab, 22:14).
+universe u v w
+
+structure InfRule (Evidence : Type u) (Hypothesis : Type v) (EvidenceWeight : Type w) where
+  premises : List Evidence
+  conclusion : Hypothesis
+  weight : EvidenceWeight

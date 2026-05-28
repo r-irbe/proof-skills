@@ -1,24 +1,20 @@
 {
-  "score": 1,
-  "rationale": "3-judge median (scores=[1, 1, 1]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
-  "rubric_evidence": [
-    "opus_R20: The response contains no Lean code whatsoever, only natural-language prose and informal logical notation, so it cannot s...",
-    "sonnet_R21: The response contains no Lean code whatsoever, only natural language formalisation and operational conclusions....",
-    "opus_R22: Response fails to produce any Lean code; it uses informal logic notation and investigative reasoning prose instead of a Lean formalization...."
+  "case_id": "lean-applied-reasoning-smoke",
+  "entrant": "gpt-5.4",
+  "rubric": "lean-proof-quality",
+  "score": 5.0,
+  "_individual_scores": {
+    "opushigh": 5,
+    "haiku": 5,
+    "sonnet": 5,
+    "gpt54": 5
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
   ],
-  "ensemble_meta": {
-    "round": "R22",
-    "round_b": "B1",
-    "method": "median-of-3",
-    "judges": [
-      "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21",
-      "claude-opus-4.6@R22"
-    ],
-    "scores": [
-      1,
-      1,
-      1
-    ]
-  }
+  "round": "R26-item3"
 }

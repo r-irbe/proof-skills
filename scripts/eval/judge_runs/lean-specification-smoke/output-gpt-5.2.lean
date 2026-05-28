@@ -1,1 +1,3 @@
-Preconditions: assumptions/hypotheses and required typeclass/structure instances; Conclusion: the final proposition to prove; Traceability anchor: a named label/id tying the statement to a requirement/spec section (e.g., `ReqID := "S3.2"` and theorem tagged/annotated with it).
+theorem add_assoc_spec (a b c : Nat) (ha : 0 ≤ a) : a + (b + c) = (a + b) + c := by
+  -- anchor: [T1.2]; source_spec: specs/arith/add_assoc.md
+  exact Nat.add_assoc a b c

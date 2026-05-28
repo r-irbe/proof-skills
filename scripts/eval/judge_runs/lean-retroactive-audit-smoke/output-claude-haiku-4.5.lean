@@ -1,5 +1,12 @@
-I don't have enough context to complete this task. "Dependency waves" isn't a standard auditing methodology or tooling term I can act on. Please clarify:
-
-1. What tool or framework manages "dependency waves" (e.g., Bazel, Maven, npm workspaces, custom system)?
-2. What specific auditing checks should the retroactive audit perform (security, licensing, outdated versions)?
-3. Where should audit results be stored/scheduled (CI/CD, database, report file)?
+def auditWave (importDAG : Std.HashMap String (List String)) (m : String) : Nat :=
+  let rec go (visited : Std.HashSet String) (m : String) : Nat :=
+    if visited.contains m then 0
+    else
+      match importDAG.get? m with
+      | some imports =>
+        if imports.isEmpty then 0
+        else
+          let visited' := visited.insert m
+          1 + (imports.map (go visited') |>.foldl Nat.max 0)
+      | none => 0
+  go Std.HashSet.empty m

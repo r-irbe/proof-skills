@@ -1,7 +1,20 @@
 {
-  "score": 1,
-  "rationale": "No Lean code produced; entirely a mathematical exposition of MAML bi-level optimization.",
-  "rubric_evidence": [
-    "min_θ Σᵢ ℒᵢ(φᵢ)"
-  ]
+  "case_id": "lean-nested-learning-smoke",
+  "entrant": "claude-sonnet-4.6",
+  "rubric": "lean-proof-quality",
+  "score": 2.0,
+  "_individual_scores": {
+    "opushigh": 2,
+    "haiku": 2,
+    "sonnet": 2,
+    "gpt54": 2
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R26-item3"
 }

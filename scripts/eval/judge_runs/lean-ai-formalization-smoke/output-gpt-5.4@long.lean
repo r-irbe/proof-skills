@@ -1,1 +1,4 @@
-No-op non-exploitability: for any state s, if noop leaves the environment unchanged, T(s, noop) = s, then R(s, noop, s) = 0 and repeated no-op actions must not increase expected return, i.e. for all horizons H, E[Σt=0..H-1 γ^t R(st, noop, st+1)] = 0.
+import Mathlib.Data.Real.Basic
+
+def NoNoOpHack {Action : Type} (R : Action → ℝ) (isNoOp : Action → Prop) (Rbaseline : ℝ) : Prop :=
+  ∀ a : Action, isNoOp a → R a ≤ Rbaseline

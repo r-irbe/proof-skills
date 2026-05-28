@@ -1,1 +1,5 @@
-Define `MeasureBridge` as providing a concrete `Measure α` plus proofs of measurability and finiteness conditions and total bridge functions like `pushforward` and `integrate` that preserve measurability, normalization, and equality by extensionality, and require `Information` to consume only this interface (no direct access to underlying measure construction) while assuming stated invariants as typeclass fields.
+structure BridgeContract where
+  source : String
+  target : String
+  exported : List String
+  validator : Unit → Bool

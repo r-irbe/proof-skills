@@ -1,1 +1,5 @@
-For all subjects s and objects o, if s can read o then level(o) ≤ level(s).
+def NoReadUp (s : Subject) (o : Object)
+    (classification : Object → Nat)
+    (clearance : Subject → Nat)
+    (canRead : Subject → Object → Prop) : Prop :=
+  canRead s o → classification o ≤ clearance s

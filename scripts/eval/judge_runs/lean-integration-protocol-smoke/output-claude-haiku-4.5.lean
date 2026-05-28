@@ -1,5 +1,5 @@
-Now I have a clear picture. The bridge contract specifies how `MeasureBridge` (the Information module containing KL divergence definitions) connects to Mathlib's measure-theoretic infrastructure. Here's the technical specification:
-
-**MeasureBridge Contract Specification:**
-
-`MeasureBridge` transforms CCVR/CCVRE simplex points into probability measures: `CCVR → PMF (Fin 3) → Measure (Fin 3)` and `CCVRE → PMF (Fin 4) → Measure (Fin 4)`. Core API: (1) lifting functions `CCVR.toPMF`, `CCVRE.toPMF` expose simplex coordinates via `ENNReal.ofReal`; (2) measure projections `CCVR.toMeasure`, `CCVRE.toMeasure` compose PMF-to-Measure; (3) absolute continuity lemma `CCVR.toMeasure_absolutelyContinuous` gates KL divergence validity when all coordinates of `q` are strictly positive. Downstream consumers depend on singleton evaluation lemmas (`toMeasure_apply_singleton`) and probability measure instances (`isProbabilityMeasure`) for bridging EASCI's categorical KL to Mathlib's `MeasureTheory.InformationTheory.KullbackLeibler` namespace.
+structure BridgeContract where
+  source : String
+  target : String
+  exported : List String
+  validator : Unit → Bool

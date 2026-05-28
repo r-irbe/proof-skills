@@ -1,7 +1,20 @@
 {
-  "score": 1,
-  "rationale": "No Lean code produced; provides JSDoc typedef in JavaScript rather than any Lean formalization.",
-  "rubric_evidence": [
-    "Added a JSDoc `@typedef` block at the top of `graph_widget.html`"
-  ]
+  "case_id": "lean-knowledge-formalization-smoke",
+  "entrant": "claude-sonnet-4.6",
+  "rubric": "lean-proof-quality",
+  "score": 4.5,
+  "_individual_scores": {
+    "opushigh": 3,
+    "haiku": 5,
+    "sonnet": 5,
+    "gpt54": 4
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R26-item3"
 }

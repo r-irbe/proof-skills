@@ -1,0 +1,70 @@
+{
+  "players": {
+    "claude-haiku-4.5": {
+      "ci95_high": 1455.58,
+      "ci95_low": 1352.68,
+      "games": 417,
+      "rating": 1404.13,
+      "rd": 25.73,
+      "vol": 0.06132
+    },
+    "claude-opus-4.7-high": {
+      "ci95_high": 1560.58,
+      "ci95_low": 1463.25,
+      "games": 417,
+      "rating": 1511.92,
+      "rd": 24.33,
+      "vol": 0.06036
+    },
+    "claude-opus-4.7@default-effort": {
+      "ci95_high": 1794.5,
+      "ci95_low": 1653.57,
+      "games": 168,
+      "rating": 1724.04,
+      "rd": 35.23,
+      "vol": 0.06146
+    },
+    "claude-sonnet-4.6": {
+      "ci95_high": 1610.13,
+      "ci95_low": 1511.08,
+      "games": 417,
+      "rating": 1560.61,
+      "rd": 24.76,
+      "vol": 0.06039
+    },
+    "gpt-5.2": {
+      "ci95_high": 1521.87,
+      "ci95_low": 1415.58,
+      "games": 240,
+      "rating": 1468.72,
+      "rd": 26.57,
+      "vol": 0.05991
+    },
+    "gpt-5.4": {
+      "ci95_high": 1567.32,
+      "ci95_low": 1466.68,
+      "games": 321,
+      "rating": 1517.0,
+      "rd": 25.16,
+      "vol": 0.06123
+    },
+    "gpt-5.4-mini": {
+      "ci95_high": 1522.9,
+      "ci95_low": 1409.77,
+      "games": 240,
+      "rating": 1466.33,
+      "rd": 28.28,
+      "vol": 0.06289
+    },
+    "gpt-5.4@long": {
+      "ci95_high": 1546.7,
+      "ci95_low": 1440.7,
+      "games": 240,
+      "rating": 1493.7,
+      "rd": 26.5,
+      "vol": 0.05993
+    }
+  },
+  "rating_system": "glicko-2",
+  "scale": "display (1500-centered)"
+}

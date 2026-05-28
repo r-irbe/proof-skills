@@ -1,22 +1,20 @@
 {
-  "score": 1.0,
-  "rationale": "median-of-4 per-judge rationales (see siblings)",
-  "rubric_evidence": [],
-  "_round": "R25",
-  "_judge_pass": "ensemble_4judge",
+  "case_id": "lean-ai-formalization-smoke",
+  "entrant": "claude-opus-4.7@default-effort",
+  "rubric": "lean-proof-quality",
+  "score": 4.0,
+  "_individual_scores": {
+    "opushigh": 5,
+    "haiku": 3,
+    "sonnet": 4,
+    "gpt54": 4
+  },
   "_judge_agg": "median-of-4-mean-mid",
   "_judges": [
-    "claude-opus-4.7-high",
-    "claude-haiku-4.5",
-    "claude-sonnet-4.6",
-    "gpt-5.4"
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
   ],
-  "_abc_position": "A",
-  "_rubric": "lean-proof-quality",
-  "_per_judge_scores": {
-    "claude-opus-4.7-high": 1,
-    "claude-haiku-4.5": 1,
-    "claude-sonnet-4.6": 1,
-    "gpt-5.4": 1
-  }
+  "round": "R26-item3"
 }

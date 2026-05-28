@@ -1,1 +1,4 @@
-Type it as an `Entity` node.
+structure KGNode where
+  id : Nat
+  kind : NodeType
+  props : List (String × Value)

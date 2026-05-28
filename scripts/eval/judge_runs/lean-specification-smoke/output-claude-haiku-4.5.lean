@@ -1,1 +1,3 @@
-No theorem statement provided. Supply the specific theorem you need decomposed, and I'll extract its preconditions (hypotheses/assumptions), conclusion (what follows), and traceability anchor (proof reference, source document, or lemma dependencies). Format example: state the theorem exactly as written, identify "Given X and Y, then Z holds" structure, and map to source materials for verification chains.
+theorem add_comm_spec (a b : Nat) : a + b = b + a := by
+    -- anchor: [T1.1]; source_spec: specs/arith/add_comm.md
+    exact Nat.add_comm a b

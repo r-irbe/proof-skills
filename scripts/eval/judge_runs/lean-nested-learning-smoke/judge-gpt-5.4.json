@@ -1,24 +1,20 @@
 {
-  "score": 1,
-  "rationale": "3-judge median (scores=[1, 1, 1]): R22 B1 ensemble; new opus-4.6 reply added to R21 2-judge median.",
-  "rubric_evidence": [
-    "opus_R20: The response contains no Lean code at all, providing only LaTeX mathematical notation for MAML-style nested learning, wh...",
-    "sonnet_R21: The response contains no Lean code whatsoever; it is a mathematical prose/notation description of MAML, which completely...",
-    "opus_R22: Response fails to produce any Lean code, instead providing a purely mathematical description of MAML-style meta-learning in LaTeX notation...."
+  "case_id": "lean-nested-learning-smoke",
+  "entrant": "gpt-5.4",
+  "rubric": "lean-proof-quality",
+  "score": 4.0,
+  "_individual_scores": {
+    "opushigh": 3,
+    "haiku": 4,
+    "sonnet": 4,
+    "gpt54": 4
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
   ],
-  "ensemble_meta": {
-    "round": "R22",
-    "round_b": "B1",
-    "method": "median-of-3",
-    "judges": [
-      "claude-opus-4.7-high@R20",
-      "claude-sonnet-4.6@R21",
-      "claude-opus-4.6@R22"
-    ],
-    "scores": [
-      1,
-      1,
-      1
-    ]
-  }
+  "round": "R26-item3"
 }

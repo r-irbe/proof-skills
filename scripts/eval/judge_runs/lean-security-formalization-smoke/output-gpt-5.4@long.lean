@@ -1,1 +1,8 @@
-In a security lattice, formalise no-read-up as `def NoReadUp := ∀ s o, CanRead s o → label o ≤ clearance s`, i.e. any permitted read requires the object's classification to be dominated by the subject's clearance.
+universe u v
+
+def NoReadUp {Subject : Type u} {Object : Type v}
+    (s : Subject) (o : Object)
+    (classification : Object → Nat)
+    (clearance : Subject → Nat)
+    (canRead : Subject → Object → Prop) : Prop :=
+  canRead s o → classification o ≤ clearance s
