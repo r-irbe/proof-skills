@@ -56,7 +56,7 @@ class PlayerResult:
     player_id: str
     model: str
     effort: str
-    score_raw: int            # judge integer score in rubric scale
+    score_raw: float          # judge score in rubric scale
     score_norm: float         # score / max_scale
 
 
@@ -96,7 +96,7 @@ def _collect_case(
         except json.JSONDecodeError as e:
             print(f"WARN: {jpath} parse error: {e}", file=sys.stderr)
             continue
-        score = int(jobj.get("score", 0))
+        score = float(jobj.get("score", 0))
         if score <= 0:
             print(f"WARN: {jpath} score {score!r} not positive — skipping",
                   file=sys.stderr)

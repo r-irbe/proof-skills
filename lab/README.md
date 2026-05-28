@@ -168,7 +168,7 @@ python3 scripts/elo/glicko2.py \
 
 ## Live evaluation history
 
-The harness has carried six successive evaluation rounds. Each round
+The harness has carried staged evaluation rounds. Each round
 appends rows to `scripts/elo/matches/2026-05-27-live.csv` and archives
 the resulting Glicko-2 leaderboard under
 `scripts/elo/example_runs/<date>-<letter>/`.
@@ -177,20 +177,32 @@ the resulting Glicko-2 leaderboard under
 |---|---|---:|---:|---|
 | R16-d | `2026-05-27-d/` | 12 | +15 | Initial multi-model bench (5 cases × 3 models). |
 | R18-e | `2026-05-27-e/` | 84 | +108 | Breadth suite (36 phase-18 cases × 3 models). |
-| R19-adv `2026-05-27-f-adv/` | 90 | +18 | 15 adversarial cases (ambiguous / IDK / known-failure). |
-| **R19-B `2026-05-27-g/`** | **186** | **+108** | **3-judge B1 ensemble re-judging of the 36 phase-18 cases.** |
+| R19-adv | `2026-05-27-f-adv/` | 90 | +18 | 15 adversarial cases (ambiguous / IDK / known-failure). |
+| R19-B | `2026-05-27-g/` | 186 | +108 | 3-judge B1 ensemble re-judging of the 36 phase-18 cases. |
+| R24 | `2026-05-27-k-r24/` | 216-425 | +680 | 3-judge ensemble lift for the R23 entrant expansion. |
+| R25 | `2026-05-27-m-r25-median4/` | 216-425 | +680 | 4-judge median-of-4 refresh with `gpt-5.4` as judge. |
+| R26 | `2026-05-27-n-r26-item3-fix/` | 248-425 | +252 | Lean solver-template fix for prose-not-Lean cases. |
+| R27 | `2026-05-27-o-r27-audit/` | 248-425 | +0 | Rubric labels and design-doc reconstruction; no ELO-data change. |
+| **R29** | **`2026-05-27-p-r29-gpt55-nodup/`** | **8-425** | **+36** | **First `gpt-5.5` comparison on `mathlib-lookup-list-nodup`.** |
 
-Leaderboard trajectory:
+R29 adds `gpt-5.5` to the comparison roster. The model currently has only
+8 games, all from one Mathlib-lookup case, so its high rank is reported with a
+wide CI and must be treated as provisional until it receives the same case
+coverage as the other entrants.
+
+Leaderboard trajectory for long-running entrants:
 
 | Round | Sonnet 4.6 | Opus 4.7-high | Haiku 4.5 |
 |---|---:|---:|---:|
 | R16-d | 1281 ±138 | 1683 ±138 | 1537 ±138 |
 | R18-e | 1584 ±56 | 1524 ±56 | 1392 ±56 |
 | R19-adv | 1566 ±48 | 1542 ±48 | 1392 ±48 |
-| **R19-B (current)** | **1571 ±32** | **1547 ±32** | **1382 ±33** |
+| R19-B | 1571 ±32 | 1547 ±32 | 1382 ±33 |
+| **R29 (current)** | **1568 ±24** | **1506 ±24** | **1402 ±25** |
 
-CIs tightened from ±138 to ±32 as the match volume grew from 36 to
-558 rows (3 entrants × 186 games / 2 sides per game).
+CIs for long-running entrants tightened from ±138 to about ±25 as the match
+volume grew; brand-new entrants such as `gpt-5.5` retain wide CIs until they
+accumulate broader coverage.
 
 ## Drift audit (Cohen's κ, Round 19)
 

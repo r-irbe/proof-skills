@@ -6,19 +6,21 @@ difficulty: medium
 input:
   prompt: |
     Name the Mathlib lemma stating that `(l₁ ++ l₂).Nodup` iff both
-    lists are Nodup AND they are disjoint. Show the type signature.
+    lists are Nodup AND they are disjoint. Show the current Mathlib
+    type signature.
   expected_output_substring: |
-    theorem List.nodup_append {l₁ l₂ : List α} :
-        (l₁ ++ l₂).Nodup ↔ l₁.Nodup ∧ l₂.Nodup ∧ l₁.Disjoint l₂
+    theorem List.nodup_append' {l₁ l₂ : List α} :
+        Nodup (l₁ ++ l₂) ↔ Nodup l₁ ∧ Nodup l₂ ∧ Disjoint l₁ l₂
 expected:
   contains:
-    - "List\\.nodup_append"
+    - "List\\.nodup_append'"
     - "List\\s+α"
     - "Nodup"
     - "Disjoint"
     - "↔"
   not_contains:
     - "sorry"
+    - "List\\.nodup_append(?!')\\b"
     - "List\\.nodupAppend\\b"
 grader: deterministic
 tags: [lean, mathlib, lookup, list, nodup]

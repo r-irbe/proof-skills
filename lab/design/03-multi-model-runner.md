@@ -4,7 +4,7 @@
 
 ## 1. Entrant roster
 
-As of R26, the live roster (in `scripts/elo/baseline_ratings.json`) is:
+As of R29, the live roster is:
 
 | Player | Model | Effort suffix |
 |---|---|---|
@@ -12,12 +12,17 @@ As of R26, the live roster (in `scripts/elo/baseline_ratings.json`) is:
 | `claude-opus-4.7-high` | Claude Opus 4.7 (high reasoning) | — |
 | `claude-sonnet-4.6` | Claude Sonnet 4.6 | — |
 | `claude-haiku-4.5` | Claude Haiku 4.5 | — |
+| `gpt-5.5` | GPT-5.5 | — |
 | `gpt-5.4` | GPT-5.4 | — |
 | `gpt-5.4@long` | GPT-5.4 (long-context variant) | long |
 | `gpt-5.4-mini` | GPT-5.4 mini | — |
 | `gpt-5.2` | GPT-5.2 | — |
 
 Adding a new entrant requires (a) extending the dispatch loop in the round's `lab/.r<N>-*-solver-prompts/` workspace, (b) running a backfill against existing cases, (c) re-running ELO with the new entrant present.
+
+`gpt-5.5` entered through the R29 one-case
+`mathlib-lookup-list-nodup` pilot. Its first leaderboard row is intentionally
+provisional because it has only 8 games; see `lab/reports/R29-gpt55-nodup.md`.
 
 ## 2. Solver-prompt template (R26-Item-3-validated)
 

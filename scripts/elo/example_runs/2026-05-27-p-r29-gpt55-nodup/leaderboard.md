@@ -13,8 +13,3 @@ System constant τ = 0.5; initial RD = 350.0; period size = 100 games.
 | 7 | `gpt-5.2` | 1463.9 | 26.1 | [1412, 1516] | 248 |
 | 8 | `gpt-5.4-mini` | 1461.2 | 27.7 | [1406, 1517] | 248 |
 | 9 | `claude-haiku-4.5` | 1402.0 | 25.3 | [1351, 1453] | 425 |
-
-R29 note: `gpt-5.5` is included from a one-case pilot only
-(`mathlib-lookup-list-nodup`, 8 games). Its rating is useful as a smoke signal
-that the pipeline accepts the model, but the wide CI means it should not be
-treated as a settled rank until more cases are dispatched.
