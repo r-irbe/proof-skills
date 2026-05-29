@@ -64,4 +64,10 @@ The CSV shape is `case_id,model_a,model_b,winner,reasoning_effort_a,reasoning_ef
 - **Global** (`scripts/elo/check_regression.py`): tolerance ±75 pts vs `baseline_ratings.json`.
 - **Per-rubric** (`scripts/elo/check_per_rubric_regression.py`): tolerance ±100 pts vs `baseline_ratings_per_rubric.json` for each (rubric, entrant) pair.
 
+`eval-smoke.yml :: glicko2` runs both gates on the largest committed
+`scripts/elo/matches/*-live.csv`. Per-rubric replay depends on PyYAML because it
+reads case YAML metadata before bucketing rows by `ensemble_rubric`; CI installs
+that dependency in the Glicko-2 job and treats `per_rubric_elo.py` failures as
+hard failures.
+
 Both gates support `--refresh` to lock in a new baseline when a round intentionally moves ratings (e.g., after a bug-fix round like R26 Item 3).

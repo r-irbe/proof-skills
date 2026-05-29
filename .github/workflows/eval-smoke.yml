@@ -118,6 +118,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install PyYAML
+        run: python -m pip install --upgrade pip pyyaml
+
       - name: Run Glicko-2 sanity tests
         run: python3 scripts/elo/glicko2_test.py
 
@@ -190,22 +193,12 @@ jobs:
             echo "No live matches CSV found — per-rubric gate skipped."
             exit 0
           fi
-          # Discover all rubric YAML files referenced by smoke cases.
-          # Then run per_rubric_elo.py if it exists, else fall back to
-          # bucketing inline via the helper below.
-          if [ ! -x scripts/elo/per_rubric_elo.py ] && [ ! -f scripts/elo/per_rubric_elo.py ]; then
-            echo "scripts/elo/per_rubric_elo.py not found — per-rubric gate skipped."
-            echo "(Wire it once the R25 item 4 tool is promoted.)"
-            exit 0
-          fi
           mkdir -p ./_per-rubric-check
           python3 scripts/elo/per_rubric_elo.py \
             --matches "$latest_csv" \
             --cases scripts/eval/cases \
-            --out ./_per-rubric-check/ || {
-              echo "per_rubric_elo.py failed — per-rubric gate skipped (non-fatal)."
-              exit 0
-            }
+            --cases lab/evals/adversarial-cases \
+            --out ./_per-rubric-check/
           python3 scripts/elo/check_per_rubric_regression.py \
             --archive ./_per-rubric-check/
         shell: bash

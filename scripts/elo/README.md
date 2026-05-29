@@ -1,251 +1,103 @@
-# ELO calculator for model A/B evals (v0)
+# Glicko-2 leaderboard and match corpus
 
-Status: **v0 (advisory)**. Single-file Python, stdlib only, no pandas. Lives under
-`scripts/` because we are still figuring out whether ELO is the right
-aggregation for our pairwise judge outputs.
+Status: **active**. `glicko2.py` is the authoritative rating pipeline for live
+model comparisons. `elo.py` remains only as a legacy vanilla-ELO dashboard
+helper for quick local experiments.
 
-## What it does
+The live corpus is `matches/2026-05-27-live.csv` and currently contains 1,554
+evidence-backed pairwise rows. Every row must trace to persisted solver output
+and judge JSON artifacts under `scripts/eval/judge_runs/`.
 
-Given a CSV of pairwise model comparisons (one row per match, with a winner
-field), compute a classic Elo rating per `(model, reasoning_effort)` tuple —
-each tuple is its own player. Emit:
+## Which tool to use
 
-- `ratings.json` — machine-readable ratings + game counts
-- `leaderboard.md` — sorted Markdown table
-- top-5 to stdout
-
-## Formula
-
-Standard Elo, updated after every match in CSV order:
-
-```
-E_a = 1 / (1 + 10 ** ((R_b - R_a) / 400))
-R_a' = R_a + K * (S_a - E_a)
-```
-
-Constants for this prototype:
-
-| Parameter | Value | Notes |
-|-----------|-------|-------|
-| `K`       | 32    | Standard hobby/chess default. Tunable via `--k`. |
-| `R0`      | 1500  | Initial rating for any unseen player. |
-| Draw      | `S = 0.5` for both sides | |
-
-Each `(model, reasoning_effort)` pair gets its own rating. So
-`claude-opus-4.7@high` and `claude-opus-4.7` (no effort tag) are separate
-players, and meeting each other is a legitimate match.
-
-## CSV schema
-
-```
-case_id, model_a, model_b, winner, reasoning_effort_a, reasoning_effort_b
-```
-
-`winner ∈ {a, b, draw}`. Empty effort fields are treated as "no effort tag"
-(the model name alone becomes the player id).
-
-## How to run
-
-```bash
-python3 elo.py --matches sample_matches.csv --out out/
-```
-
-Optional flags: `--k 16`, `--r0 1500`.
-
-To regenerate the synthetic dataset:
-
-```bash
-python3 gen_sample.py --out sample_matches.csv --per-pair 8
-```
-
-## Self-test output
-
-Run on the bundled `sample_matches.csv` (120 matches = 8 per pair × 15 pairs,
-6 players, seed 42):
-
-```
-$ python3 elo.py --matches sample_matches.csv --out out/
-Processed 120 matches across 6 players (K=32, R₀=1500).
-Top 5:
-  1. claude-opus-4.7@high                      1666.0  (40 games)
-  2. claude-opus-4.7                           1662.9  (40 games)
-  3. claude-sonnet-4.6                         1493.4  (40 games)
-  4. gpt-5.4                                   1420.5  (40 games)
-  5. gpt-5-mini                                1388.4  (40 games)
-```
-
-Full leaderboard (`out/leaderboard.md`):
-
-| Rank | Player | Rating | Games |
-|-----:|--------|-------:|------:|
-| 1 | claude-opus-4.7@high | 1666.0 | 40 |
-| 2 | claude-opus-4.7 | 1662.9 | 40 |
-| 3 | claude-sonnet-4.6 | 1493.4 | 40 |
-| 4 | gpt-5.4 | 1420.5 | 40 |
-| 5 | gpt-5-mini | 1388.4 | 40 |
-| 6 | claude-haiku-4.5 | 1368.8 | 40 |
-
-### Does it recover the constructed ordering?
-
-The synthetic data was generated from these hand-picked true ratings:
-
-| Player | True rating |
-|--------|------------:|
-| claude-opus-4.7@high | 1800 |
-| claude-opus-4.7      | 1700 |
-| claude-sonnet-4.6    | 1600 |
-| gpt-5.4              | 1500 |
-| gpt-5-mini           | 1490 |
-| claude-haiku-4.5     | 1350 |
-
-Constructed order: **opus-high > opus > sonnet > gpt-5.4 ≈ gpt-5-mini > haiku**.
-Recovered order: **opus-high > opus > sonnet > gpt-5.4 > gpt-5-mini > haiku**.
-Rank order matches exactly. The gpt-5.4 / gpt-5-mini gap (true Δ=10 Elo) is
-overstated as ~32 Elo by the prototype — expected, since 8 head-to-head
-matches between players that close is well within sampling noise.
-
-The opus-high / opus pair (true Δ=100) collapses to Δ≈3 in the recovered
-ratings. That's because they only play each other 8 times directly; most of
-their other 32 games are against weaker players, where both win
-overwhelmingly and Elo updates are small. This is a known limitation of
-running Elo on a small, partly-disconnected match graph and is worth
-flagging if we move past prototype.
-
-## Sensitivity
-
-All runs use the same `sample_matches.csv` (or a prefix of it) and seed 42.
-
-### K-factor: K=16 vs K=32 (full 120 matches)
-
-| Player | K=32 | K=16 | Δ |
-|--------|-----:|-----:|--:|
-| claude-opus-4.7@high | 1666.0 | 1622.2 | −43.8 |
-| claude-opus-4.7      | 1662.9 | 1598.5 | −64.4 |
-| claude-sonnet-4.6    | 1493.4 | 1494.3 | +0.9  |
-| gpt-5.4              | 1420.5 | 1447.1 | +26.6 |
-| gpt-5-mini           | 1388.4 | 1430.6 | +42.2 |
-| claude-haiku-4.5     | 1368.8 | 1407.3 | +38.5 |
-
-Rank order is identical. Spread (top minus bottom) shrinks from 297 Elo to
-215 Elo: K=16 dampens every update by half, so 120 matches isn't enough to
-push ratings as far from R₀. K=32 gives crisper separation here; K=16 would
-be the safer choice once we have many more matches and care about stability
-over reactivity.
-
-### Sample size: 50 vs 100 vs 120 matches (K=32)
-
-| Player | 50 matches | 100 matches | 120 matches | True |
-|--------|-----------:|------------:|------------:|-----:|
-| claude-opus-4.7@high | 1618.0 | 1705.3 | 1666.0 | 1800 |
-| claude-opus-4.7      | 1527.2 | 1586.3 | 1662.9 | 1700 |
-| claude-sonnet-4.6    | 1486.5 | 1488.2 | 1493.4 | 1600 |
-| gpt-5.4              | 1472.4 | 1445.6 | 1420.5 | 1500 |
-| gpt-5-mini           | 1437.7 | 1401.2 | 1388.4 | 1490 |
-| claude-haiku-4.5     | 1458.1 | 1373.4 | 1368.8 | 1350 |
-
-- At **50 matches** (~3 games per pair) the ordering is broken: haiku ends
-  up above gpt-5-mini, and gpt-5.4 sinks below sonnet's expected gap. Top-1
-  is right; the rest is noise.
-- At **100 matches** the full ordering is recovered.
-- At **120 matches** the ordering is the same as 100, with slightly tighter
-  separation at the top.
-
-Practical floor for this 6-player setup looks like ~80–100 matches (≈ 5–7
-per pair). Below that, individual rank flips are common; above that, ratings
-keep drifting but the ordering is stable.
-
-## Real-model run (2026-05-27)
-
-First time `elo.py` was driven by non-synthetic data. 5 frontier models
-× 5 coding problems (auto-graded by hidden 10-test suites) + 5 Lean 4
-theorems (auto-graded by `lake build`). 100 pairwise matches, K=32,
-R₀=1500. Tool use **forbidden** in prompts so the math wasn't trivialised
-by Python execution.
-
-| Rank | Model                          | Rating  | Games |
-| ---: | ------------------------------ | ------: | ----: |
-|    1 | `claude-opus-4.7-high`         | 1541.3  |    40 |
-|    2 | `claude-sonnet-4.6`            | 1539.7  |    40 |
-|    3 | `gpt-5.4`                      | 1539.1  |    40 |
-|    4 | `claude-opus-4.7`              | 1517.3  |    40 |
-|    5 | `claude-haiku-4.5`             | 1362.7  |    40 |
-
-20 decisive matches, 80 draws. All 20 decisive matches trace to two
-real bugs:
-
-- **`claude-opus-4.7` on `min_jumps`** — early-termination
-  `if i == n-1: return jumps` ignores reachability;
-  fails 5/10 (e.g. `[3,2,1,0,4]` returns 1, expected −1).
-- **`claude-haiku-4.5` on T1–T4** — wrote bare `omega`, `simp`, `exact`
-  as term-mode proofs after `:=`. Lean requires a `by …` block for
-  tactic invocation. Only T5 used a proper `match`-term and compiled.
-
-Full artifacts (prompts, raw responses, graders, per-model Lean files,
-CSV, ratings, leaderboard, combiner): see
-[`example_runs/2026-05-27-tools-off-bench/`](example_runs/2026-05-27-tools-off-bench/README.md).
-
-The run is self-contained — `coding/grade.py`, `coding/build_csv.py`,
-and `combined/build.py` re-execute against the committed in-tree
-paths without modification.
-
-## Known limitations (prototype)
-
-1. **Order-dependent.** Elo updates in sequence, so shuffling the CSV gives
-   different ratings. Fine for prototyping; for a real eval we'd want either
-   Bradley–Terry MLE or multiple-shuffle averaging.
-2. **Sparse graph problem.** With few direct head-to-heads between top
-   players, gaps between them get understated (see opus-high vs opus above).
-3. **No uncertainty.** Ratings come out as point estimates. No confidence
-   intervals, no "X is significantly better than Y" test.
-4. **Draw handling is naive.** A draw always splits 0.5/0.5 regardless of
-   rating gap. Fine; just noted.
-
-## Files
-
-- `elo.py` — vanilla ELO calculator. Pure `compute_elo(matches, k, r0)`
-  plus a CLI. Kept as the "dashboard view" of design §3.2.
-- `glicko2.py` — **Glicko-2 rating system** (Glickman 2012), the
-  authoritative ranking math per design §3. Same CSV input as `elo.py`;
-  outputs `(rating, RD, vol, games, ci95_low, ci95_high)` per player.
-  System constant τ = 0.5, initial RD = 350, period size = 100 games.
-- `glicko2_test.py` — sanity tests. Includes Glickman's worked example
-  (§5 of the paper) reproduced to 4 decimal places, plus inactive-player
-  RD growth, symmetric draw invariance, winner/loser symmetry, and a
-  CLI smoke test. Run as `python3 scripts/elo/glicko2_test.py`.
-- `gen_sample.py` — synthetic data generator (deterministic, seed 42).
-- `sample_matches.csv` — 120-match dataset used for the self-test.
-- `out/ratings.json`, `out/leaderboard.md` — last run's outputs.
-- `example_runs/2026-05-27-tools-off-bench/` — **first real-model run.**
-  5 frontier models (Opus 4.7-high, Opus 4.7, Sonnet 4.6, GPT-5.4,
-  Haiku 4.5) on 5 coding problems (auto-graded by hidden tests) plus
-  5 Lean 4 theorems (auto-graded by `lake build`). 100 matches, 20
-  decisive. See its `README.md` for methodology and the two real bugs
-  that drove differentiation.
-
-## Glicko-2 vs vanilla ELO (which to use)
-
-| Use case | Use |
+| Task | Tool |
 |---|---|
-| Authoritative leaderboard with uncertainty bands | `glicko2.py` |
-| All-decisions inputs in `lab/design/02-elo-system.md` | `glicko2.py` |
-| Dashboard "single number" / familiar ELO scale | `elo.py` |
-| Quick online update for streaming matches | `elo.py` |
+| Release leaderboard with uncertainty bands | `glicko2.py` |
+| Per-rubric leaderboard replay | `per_rubric_elo.py` |
+| Regression gate against lockfiles | `check_regression.py` |
+| Synthetic sanity-data generation | `gen_sample.py` |
+| Legacy single-number dashboard | `elo.py` |
 
-Per design §3 ("Why not vanilla ELO?"): with ~25 entrants × ~400 games
-per skill bucket, vanilla ELO can't express "we don't know yet" for
-low-game entrants. Glicko-2's RD gives you that for free.
+## Match CSV schema
 
-```sh
-# Sanity check (must pass before any rating release):
+```csv
+case_id,model_a,model_b,winner,reasoning_effort_a,reasoning_effort_b
+```
+
+`winner` is `a`, `b`, or `draw`. Empty effort fields are treated as the model's
+default effort. Effort-tagged variants are distinct players; for example
+`gpt-5.4` and `gpt-5.4@long` are separate entrants.
+
+## Glicko-2 replay
+
+```bash
 python3 scripts/elo/glicko2_test.py
 
-# Run against your matches:
 python3 scripts/elo/glicko2.py \
-    --matches scripts/elo/sample_matches.csv \
-    --out ./_glicko2-out
+  --matches scripts/elo/matches/2026-05-27-live.csv \
+  --out scripts/elo/example_runs/2026-05-29-r31-gpt55-expanded
 ```
 
-Output: `ratings.json` (machine-readable, with 95 % CI per player) and
-`leaderboard.md` (sorted Markdown table). The 95 % CI is
-`[rating − 2·RD, rating + 2·RD]` (per Glickman 2012; same convention
-as USCF / LMSYS reporting).
+Outputs:
+
+| File | Meaning |
+|---|---|
+| `ratings.json` | machine-readable rating, RD, volatility, games, and 95% CI per player |
+| `leaderboard.md` | sorted Markdown table |
+
+The 95% interval is `[rating - 2*RD, rating + 2*RD]`.
+
+## Per-rubric replay
+
+Per-rubric ratings join match rows back to case YAML labels. Smoke cases use
+`ensemble_rubric:`; adversarial cases may use `grader:` values such as
+`lean-proof-quality`.
+
+```bash
+python3 scripts/elo/per_rubric_elo.py \
+  --matches scripts/elo/matches/2026-05-27-live.csv \
+  --cases scripts/eval/cases \
+  --cases lab/evals/adversarial-cases \
+  --out scripts/elo/example_runs/2026-05-29-r35-rubric-map-fix-per-rubric
+```
+
+Sparse buckets are expected to have wider uncertainty and should be interpreted
+as coverage diagnostics until they have enough cases and games.
+
+## Regression gates
+
+Global and per-rubric lockfiles protect against accidental leaderboard drift.
+
+```bash
+python3 scripts/elo/check_regression.py \
+  --current scripts/elo/example_runs/2026-05-29-r31-gpt55-expanded/ratings.json
+
+python3 scripts/elo/check_per_rubric_regression.py \
+  --archive scripts/elo/example_runs/2026-05-29-r31-gpt55-expanded-per-rubric
+```
+
+The CI workflow runs the same checks. Update the lockfiles only when a
+rating-affecting batch has been audited and intentionally accepted.
+
+## Current release archives
+
+| Archive | Contents |
+|---|---|
+| `example_runs/2026-05-29-r31-gpt55-expanded/` | Latest global R31 replay |
+| `example_runs/2026-05-29-r31-gpt55-expanded-per-rubric/` | Latest per-rubric R31 replay |
+| `matches/2026-05-29-r31-gpt55-expanded.csv` | R31-only pairwise rows |
+| `matches/2026-05-27-live.csv` | Live cumulative corpus |
+
+Historical dated archives remain in place for auditability, but active docs and
+leaderboards should cite the latest R31 directories above.
+
+## Data hygiene
+
+Do not hand-edit rating-affecting rows without preserving the artifact trail:
+
+1. Persist `output-<entrant>.lean` under `scripts/eval/judge_runs/<case>/`.
+2. Persist `judge-<entrant>.json` with the exact judge score and rationale.
+3. Generate rows through `scripts/eval/multi_model.py`.
+4. Archive the batch-specific CSV before appending to the live corpus.
+5. Re-run global and per-rubric Glicko-2, then update lockfiles only after the
+   regression gates pass for an intentional change.
