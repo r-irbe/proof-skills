@@ -1,7 +1,7 @@
 ---
 name: "math-graph-knowledge"
 description: |
-  USE FOR: Graph theory, knowledge graphs, ontology engineering, provenance structures, network analysis, and formal knowledge representation. Use for mathematical reasoning about DAGs, KGs, trust networks, provenance chains, and any graph-structured knowledge. Covers both pure graph theory and applied knowledge graph methodology relevant to Project.
+  USE FOR: Graph theory, knowledge graphs, ontology engineering, provenance structures, network analysis, and formal knowledge representation. Use for mathematical reasoning about DAGs, KGs, trust networks, provenance chains, and any graph-structured knowledge. Covers both pure graph theory and applied knowledge graph methodology.
   DO NOT USE FOR: KRR / symbolic AI (use @ai-symbolic-neuro); causal DAGs (use @ai-causal-deontic); discrete math (use @lean-math-discrete).
   TRIGGERS: graph theory, knowledge graph, ontology, provenance, network analysis, formal knowledge representation.
 tier: "warm"
@@ -19,13 +19,13 @@ metadata:
 
 # Graph Theory & Knowledge Graph Mathematics
 
-Graph-theoretic and knowledge representation foundations for the project's provenance chains, trust networks, knowledge lifecycle, and causal reasoning structures.
+Graph-theoretic and knowledge representation foundations for provenance chains, trust networks, knowledge lifecycles, and causal reasoning structures.
 
 ---
 
 ## Routing
 
-- **USE FOR:** Graph theory, knowledge graphs, ontology engineering, provenance structures, network analysis, and formal knowledge representation. Use for mathematical reasoning about DAGs, KGs, trust networks, provenance chains, and any graph-structured knowledge. Covers both pure graph theory and applied knowledge graph methodology relevant to Project.
+- **USE FOR:** Graph theory, knowledge graphs, ontology engineering, provenance structures, network analysis, and formal knowledge representation. Use for mathematical reasoning about DAGs, KGs, trust networks, provenance chains, and any graph-structured knowledge. Covers both pure graph theory and applied knowledge graph methodology.
 - **DO NOT USE FOR:** KRR / symbolic AI (use @ai-symbolic-neuro); causal DAGs (use @ai-causal-deontic); discrete math (use @lean-math-discrete).
 - **TRIGGERS:** graph theory, knowledge graph, ontology, provenance, network analysis, formal knowledge representation.
 
@@ -74,4 +74,3 @@ the dispatch contract and the parts index.
 - [`../lean-math-discrete/SKILL.md`](../lean-math-discrete/SKILL.md) — Successor
 - [`../lean-knowledge-formalization/SKILL.md`](../lean-knowledge-formalization/SKILL.md) — Successor
 - [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) — Successor
-

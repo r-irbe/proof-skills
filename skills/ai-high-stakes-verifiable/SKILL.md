@@ -1,7 +1,7 @@
 ---
 name: "ai-high-stakes-verifiable"
 description: |
-  USE FOR: Formally verifiable AI, high-stakes AI systems, safety-critical deployment, certification, and regulatory compliance. Use for reasoning about AI systems that must be provably correct, auditable, or certifiable — medical AI, autonomous vehicles, legal decision support, military/intelligence systems, and the project's approach to making AI governance mathematically rigorous.
+  USE FOR: Formally verifiable AI, high-stakes AI systems, safety-critical deployment, certification, and regulatory compliance. Use for reasoning about AI systems that must be provably correct, auditable, or certifiable — medical AI, autonomous vehicles, legal decision support, military/intelligence systems, and mathematically rigorous AI governance.
   DO NOT USE FOR: formal verification proofs in Lean (use @lean-ai-formalization); agentic AI dynamics (use @ai-agentic-evolving); causal/deontic reasoning (use @ai-causal-deontic).
   TRIGGERS: high stakes, verifiable AI, safety critical, certification, regulatory compliance, AI assurance.
 tier: "warm"
@@ -25,7 +25,7 @@ Mathematical frameworks for AI systems where correctness, safety, and auditabili
 
 ## Routing
 
-- **USE FOR:** Formally verifiable AI, high-stakes AI systems, safety-critical deployment, certification, and regulatory compliance. Use for reasoning about AI systems that must be provably correct, auditable, or certifiable — medical AI, autonomous vehicles, legal decision support, military/intelligence systems, and the project's approach to making AI governance mathematically rigorous.
+- **USE FOR:** Formally verifiable AI, high-stakes AI systems, safety-critical deployment, certification, and regulatory compliance. Use for reasoning about AI systems that must be provably correct, auditable, or certifiable — medical AI, autonomous vehicles, legal decision support, military/intelligence systems, and mathematically rigorous AI governance.
 - **DO NOT USE FOR:** formal verification proofs in Lean (use @lean-ai-formalization); agentic AI dynamics (use @ai-agentic-evolving); causal/deontic reasoning (use @ai-causal-deontic).
 - **TRIGGERS:** high stakes, verifiable AI, safety critical, certification, regulatory compliance, AI assurance.
 
@@ -74,4 +74,3 @@ the dispatch contract and the parts index.
 - [`../lean-ai-formalization/SKILL.md`](../lean-ai-formalization/SKILL.md) — Successor
 - [`../lean-security-formalization/SKILL.md`](../lean-security-formalization/SKILL.md) — Successor
 - [`../applied-data-information-security/SKILL.md`](../applied-data-information-security/SKILL.md) — Successor
-

@@ -1,7 +1,7 @@
 ---
 name: "ai-commonsense-reasoning"
 description: |
-  USE FOR: Commonsense reasoning for AI systems — world knowledge, naive physics, folk psychology, temporal/spatial reasoning, default reasoning, and their formalization. Use for reasoning about everyday knowledge that humans take for granted but AI systems need explicitly, including the project tacit knowledge externalization pipeline's commonsense aspects.
+  USE FOR: Commonsense reasoning for AI systems — world knowledge, naive physics, folk psychology, temporal/spatial reasoning, default reasoning, and their formalization. Use for reasoning about everyday knowledge that humans take for granted but AI systems need explicitly, especially when a downstream project must make implicit context explicit.
   DO NOT USE FOR: formal KR/ontology engineering (use @ai-symbolic-neuro); causal/deontic reasoning (use @ai-causal-deontic); formalisation in Lean (use @lean-knowledge-formalization).
   TRIGGERS: commonsense, naive physics, folk psychology, temporal reasoning, spatial reasoning, default reasoning.
 tier: "warm"
@@ -25,7 +25,7 @@ Formalizing the vast body of everyday knowledge that underlies human reasoning a
 
 ## Routing
 
-- **USE FOR:** Commonsense reasoning for AI systems — world knowledge, naive physics, folk psychology, temporal/spatial reasoning, default reasoning, and their formalization. Use for reasoning about everyday knowledge that humans take for granted but AI systems need explicitly, including the project tacit knowledge externalization pipeline's commonsense aspects.
+- **USE FOR:** Commonsense reasoning for AI systems — world knowledge, naive physics, folk psychology, temporal/spatial reasoning, default reasoning, and their formalization. Use for reasoning about everyday knowledge that humans take for granted but AI systems need explicitly, especially when a downstream project must make implicit context explicit.
 - **DO NOT USE FOR:** formal KR/ontology engineering (use @ai-symbolic-neuro); causal/deontic reasoning (use @ai-causal-deontic); formalisation in Lean (use @lean-knowledge-formalization).
 - **TRIGGERS:** commonsense, naive physics, folk psychology, temporal reasoning, spatial reasoning, default reasoning.
 
@@ -76,4 +76,3 @@ the dispatch contract and the parts index.
 - [`../ai-symbolic-neuro/SKILL.md`](../ai-symbolic-neuro/SKILL.md) — Successor
 - [`../lean-knowledge-formalization/SKILL.md`](../lean-knowledge-formalization/SKILL.md) — Successor
 - [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) — Successor
-

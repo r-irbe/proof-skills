@@ -1,7 +1,7 @@
 ---
 name: "applied-data-information-security"
 description: |
-  USE FOR: Data security and information security formalization — CIA triad, access control models (BLP, RBAC, ABAC), information flow, cryptographic primitives, privacy (differential privacy, k-anonymity), threat modeling, and their formal verification in Lean 4. Use for security properties of the project's provenance chains, trust composition, and multi-agent systems.
+  USE FOR: Data security and information security formalization — CIA triad, access control models (BLP, RBAC, ABAC), information flow, cryptographic primitives, privacy (differential privacy, k-anonymity), threat modeling, and their formal verification in Lean 4. Use for security properties of provenance chains, trust composition, and multi-agent systems.
   DO NOT USE FOR: Lean formalisation of these policies (use @lean-security-formalization); engineering disciplines more broadly (use @applied-engineering-disciplines); legal-policy reasoning (use @applied-legal-reasoning).
   TRIGGERS: CIA triad, access control, BLP, RBAC, ABAC, information flow, cryptographic primitive, data security.
 tier: "warm"
@@ -19,13 +19,13 @@ metadata:
 
 # Data & Information Security
 
-Formal foundations of security properties, access control, information flow, privacy, and their verification in the project framework.
+Formal foundations of security properties, access control, information flow, privacy, and their verification in formal frameworks.
 
 ---
 
 ## Routing
 
-- **USE FOR:** Data security and information security formalization — CIA triad, access control models (BLP, RBAC, ABAC), information flow, cryptographic primitives, privacy (differential privacy, k-anonymity), threat modeling, and their formal verification in Lean 4. Use for security properties of the project's provenance chains, trust composition, and multi-agent systems.
+- **USE FOR:** Data security and information security formalization — CIA triad, access control models (BLP, RBAC, ABAC), information flow, cryptographic primitives, privacy (differential privacy, k-anonymity), threat modeling, and their formal verification in Lean 4. Use for security properties of provenance chains, trust composition, and multi-agent systems.
 - **DO NOT USE FOR:** Lean formalisation of these policies (use @lean-security-formalization); engineering disciplines more broadly (use @applied-engineering-disciplines); legal-policy reasoning (use @applied-legal-reasoning).
 - **TRIGGERS:** CIA triad, access control, BLP, RBAC, ABAC, information flow, cryptographic primitive, data security.
 
@@ -75,4 +75,3 @@ the dispatch contract and the parts index.
 - [`../lean-security-formalization/SKILL.md`](../lean-security-formalization/SKILL.md) — Successor
 - [`../applied-engineering-disciplines/SKILL.md`](../applied-engineering-disciplines/SKILL.md) — Successor
 - [`../lean-knowledge-formalization/SKILL.md`](../lean-knowledge-formalization/SKILL.md) — Successor
-

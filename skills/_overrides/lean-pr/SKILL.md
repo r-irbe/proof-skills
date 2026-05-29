@@ -1,7 +1,7 @@
 ---
 name: "lean-pr"
 description: |
-  USE FOR: opening, titling, or labelling a PR against any Lean ecosystem repo (`leanprover/lean4`, `leanprover-community/mathlib4`, Cslib, downstream EASCI/FLT/Carleson), picking the right commit-message convention, applying upstream-specific labels (changelog-* for Lean core; t-* / easy / awaiting-author for Mathlib), running `lake exe mk_all` for Mathlib file renames, cross-linking dependent PRs.
+  USE FOR: opening, titling, or labelling a PR against any Lean ecosystem repo (`leanprover/lean4`, `leanprover-community/mathlib4`, Cslib, or downstream projects), picking the right commit-message convention, applying upstream-specific labels (changelog-* for Lean core; t-* / easy / awaiting-author for Mathlib), running `lake exe mk_all` for Mathlib file renames, cross-linking dependent PRs.
   DO NOT USE FOR: in-tree proof review (use @lean-proof-review), Mathlib PR-review checklists (use `references/upstream/mathlib4-review.md`), writing the actual proof (use @lean-proof), building the change locally (use @lean-build), minimising an upstream-bug repro (use @lean-mwe).
   TRIGGERS: PR, pull request, "open a PR", changelog label, bors, maintainer-merge, `lake exe mk_all`, upstream filing.
 tier: "warm"
@@ -77,7 +77,7 @@ back here.
 | `leanprover/lean4` | [`references/upstream/lean4-pr.md`](../../references/upstream/lean4-pr.md) | `<type>: <subject>` |
 | `leanprover-community/mathlib4` | [`references/upstream/mathlib4-pr.md`](../../references/upstream/mathlib4-pr.md) | `<type>(<scope>): <subject>` |
 | Cslib (`cslib`) | [`references/upstream/mathlib4-pr.md`](../../references/upstream/mathlib4-pr.md) (closest convention sibling) | `<type>(<scope>): <subject>` |
-| Downstream (EASCI, FLT, Carleson) | Repo-local CONTRIBUTING.md if present; otherwise [`references/upstream/mathlib4-pr.md`](../../references/upstream/mathlib4-pr.md) | repo-local |
+| Downstream projects | Repo-local CONTRIBUTING.md if present; otherwise [`references/upstream/mathlib4-pr.md`](../../references/upstream/mathlib4-pr.md) | repo-local |
 
 ## Generic workflow
 

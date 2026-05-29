@@ -1,7 +1,7 @@
 ---
 name: "applied-strategy-analysis"
 description: |
-  USE FOR: Strategy creation, analysis, and evaluation — game-theoretic foundations, competitive analysis, decision frameworks, SWOT/PESTLE, wargaming, and their mathematical underpinnings. Use for strategic reasoning about complex multi-agent scenarios, organizational strategy, research strategy, and the mathematical planning aspects of the project's governance and optimization layers.
+  USE FOR: Strategy creation, analysis, and evaluation — game-theoretic foundations, competitive analysis, decision frameworks, SWOT/PESTLE, wargaming, and their mathematical underpinnings. Use for strategic reasoning about complex multi-agent scenarios, organizational strategy, research strategy, and mathematical planning for governance and optimization layers.
   DO NOT USE FOR: formalising strategic models in Lean (use @lean-applied-reasoning); intelligence analysis (use @applied-intelligence-analysis); game-theoretic optimization (use @math-optimization-game).
   TRIGGERS: strategy, SWOT, PESTLE, wargaming, decision framework, competitive analysis, game-theoretic strategy.
 tier: "warm"
@@ -25,7 +25,7 @@ Mathematical and systematic frameworks for creating, evaluating, and executing s
 
 ## Routing
 
-- **USE FOR:** Strategy creation, analysis, and evaluation — game-theoretic foundations, competitive analysis, decision frameworks, SWOT/PESTLE, wargaming, and their mathematical underpinnings. Use for strategic reasoning about complex multi-agent scenarios, organizational strategy, research strategy, and the mathematical planning aspects of the project's governance and optimization layers.
+- **USE FOR:** Strategy creation, analysis, and evaluation — game-theoretic foundations, competitive analysis, decision frameworks, SWOT/PESTLE, wargaming, and their mathematical underpinnings. Use for strategic reasoning about complex multi-agent scenarios, organizational strategy, research strategy, and mathematical planning for governance and optimization layers.
 - **DO NOT USE FOR:** formalising strategic models in Lean (use @lean-applied-reasoning); intelligence analysis (use @applied-intelligence-analysis); game-theoretic optimization (use @math-optimization-game).
 - **TRIGGERS:** strategy, SWOT, PESTLE, wargaming, decision framework, competitive analysis, game-theoretic strategy.
 
@@ -75,4 +75,3 @@ the dispatch contract and the parts index.
 - [`../lean-applied-reasoning/SKILL.md`](../lean-applied-reasoning/SKILL.md) — Successor
 - [`../math-optimization-game/SKILL.md`](../math-optimization-game/SKILL.md) — Successor
 - [`../applied-intelligence-analysis/SKILL.md`](../applied-intelligence-analysis/SKILL.md) — Successor
-

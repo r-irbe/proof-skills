@@ -35,7 +35,7 @@ metadata:
 - **G-3** (MUST): Every dimension score MUST cite the underlying script or review record (no inferred scores). [Trace: AC-03]
 - **G-4** (SHOULD): Soft gates (Q3, Q6, Q7) SHOULD report gaps but MAY proceed when the owner has accepted the risk in writing. [Trace: AC-04]
 - **G-5** (MUST NOT): The engine MUST NOT re-implement checks owned by `@lean-enforcement`; it MUST call out to that skill. [Trace: AC-05]
-- **G-6** (MUST): The weighted `Q_score` MUST be persisted to the project's quality tracker with timestamp, commit, and per-dimension breakdown. [Trace: AC-06]
+- **G-6** (MUST): The weighted `Q_score` MUST be persisted to the repository's quality tracker with timestamp, commit, and per-dimension breakdown. [Trace: AC-06]
 - **G-7** (SHOULD): When `Q_score` regresses ≥ 5 % vs prior milestone, the engine SHOULD escalate before proceeding. [Trace: AC-07]
 - **G-8** (MUST): On any guard failure the skill MUST escalate per §Recovery & STOP. [Trace: AC-08]
 

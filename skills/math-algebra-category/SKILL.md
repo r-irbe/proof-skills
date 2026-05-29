@@ -1,7 +1,7 @@
 ---
 name: "math-algebra-category"
 description: |
-  USE FOR: Abstract algebra, category theory, lattice theory, universal algebra, and algebraic structures relevant to Project formalization. Use for reasoning about groups, rings, fields, modules, categories, functors, natural transformations, monads, adjunctions, lattices, and algebraic hierarchies. Covers both pure algebraic theory and categorical perspectives essential for type-theoretic formalization.
+  USE FOR: Abstract algebra, category theory, lattice theory, universal algebra, and algebraic structures relevant to Lean formalization. Use for reasoning about groups, rings, fields, modules, categories, functors, natural transformations, monads, adjunctions, lattices, and algebraic hierarchies. Covers both pure algebraic theory and categorical perspectives essential for type-theoretic formalization.
   DO NOT USE FOR: measure-theoretic reasoning (use @math-measure-probability); topology/analysis (use @math-topology-analysis); Lean proof (use @lean-math-foundations).
   TRIGGERS: abstract algebra, category theory, lattice theory, universal algebra, algebraic structure.
 tier: "warm"
@@ -19,13 +19,13 @@ metadata:
 
 # Abstract Algebra & Category Theory
 
-Algebraic and categorical foundations for the project's type-hierarchies, compositional structures, lattice-based orderings, and the deep connection between algebra and dependent type theory that makes Lean formalization possible.
+Algebraic and categorical foundations for type hierarchies, compositional structures, lattice-based orderings, and the deep connection between algebra and dependent type theory that makes Lean formalization possible.
 
 ---
 
 ## Routing
 
-- **USE FOR:** Abstract algebra, category theory, lattice theory, universal algebra, and algebraic structures relevant to Project formalization. Use for reasoning about groups, rings, fields, modules, categories, functors, natural transformations, monads, adjunctions, lattices, and algebraic hierarchies. Covers both pure algebraic theory and categorical perspectives essential for type-theoretic formalization.
+- **USE FOR:** Abstract algebra, category theory, lattice theory, universal algebra, and algebraic structures relevant to Lean formalization. Use for reasoning about groups, rings, fields, modules, categories, functors, natural transformations, monads, adjunctions, lattices, and algebraic hierarchies. Covers both pure algebraic theory and categorical perspectives essential for type-theoretic formalization.
 - **DO NOT USE FOR:** measure-theoretic reasoning (use @math-measure-probability); topology/analysis (use @math-topology-analysis); Lean proof (use @lean-math-foundations).
 - **TRIGGERS:** abstract algebra, category theory, lattice theory, universal algebra, algebraic structure.
 
@@ -76,4 +76,3 @@ the dispatch contract and the parts index.
 - [`../lean-math-foundations/SKILL.md`](../lean-math-foundations/SKILL.md) — Successor
 - [`../lean-research/SKILL.md`](../lean-research/SKILL.md) — Successor
 - [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) — Successor
-

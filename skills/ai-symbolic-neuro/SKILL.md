@@ -1,7 +1,7 @@
 ---
 name: "ai-symbolic-neuro"
 description: |
-  USE FOR: Symbolic AI, neuro-symbolic integration, knowledge representation and reasoning (KRR), ontology engineering, description logics, and hybrid symbolic-neural architectures. Use for reasoning about formal knowledge structures, rule-based systems, logic programming, semantic web technologies, and their integration with neural approaches relevant to the project's knowledge graph and structuring phases.
+  USE FOR: Symbolic AI, neuro-symbolic integration, knowledge representation and reasoning (KRR), ontology engineering, description logics, and hybrid symbolic-neural architectures. Use for reasoning about formal knowledge structures, rule-based systems, logic programming, semantic web technologies, and their integration with neural approaches in knowledge graphs and structured reasoning pipelines.
   DO NOT USE FOR: formalising the ontology in Lean (use @lean-knowledge-formalization); commonsense reasoning (use @ai-commonsense-reasoning); agentic AI (use @ai-agentic-evolving).
   TRIGGERS: symbolic AI, neuro-symbolic, knowledge representation, KRR, ontology engineering, description logic, hybrid AI.
 tier: "warm"
@@ -19,13 +19,13 @@ metadata:
 
 # Symbolic AI & Neuro-Symbolic Integration
 
-Formal knowledge representation, symbolic reasoning, and their integration with neural methods for the project's knowledge structuring and consolidation phases.
+Formal knowledge representation, symbolic reasoning, and their integration with neural methods for knowledge structuring and consolidation pipelines.
 
 ---
 
 ## Routing
 
-- **USE FOR:** Symbolic AI, neuro-symbolic integration, knowledge representation and reasoning (KRR), ontology engineering, description logics, and hybrid symbolic-neural architectures. Use for reasoning about formal knowledge structures, rule-based systems, logic programming, semantic web technologies, and their integration with neural approaches relevant to the project's knowledge graph and structuring phases.
+- **USE FOR:** Symbolic AI, neuro-symbolic integration, knowledge representation and reasoning (KRR), ontology engineering, description logics, and hybrid symbolic-neural architectures. Use for reasoning about formal knowledge structures, rule-based systems, logic programming, semantic web technologies, and their integration with neural approaches in knowledge graphs and structured reasoning pipelines.
 - **DO NOT USE FOR:** formalising the ontology in Lean (use @lean-knowledge-formalization); commonsense reasoning (use @ai-commonsense-reasoning); agentic AI (use @ai-agentic-evolving).
 - **TRIGGERS:** symbolic AI, neuro-symbolic, knowledge representation, KRR, ontology engineering, description logic, hybrid AI.
 
@@ -53,13 +53,13 @@ Formal knowledge representation, symbolic reasoning, and their integration with 
 
 ### 1.1 Representation Languages
 
-| Language | Expressiveness | Decidability | Project Relevance |
+| Language | Expressiveness | Decidability | Common relevance |
 |---|---|---|---|
-| Propositional logic | Low | P (SAT: NP-complete) | Gate predicates |
+| Propositional logic | Low | P (SAT: NP-complete) | Gate predicates and finite checks |
 | First-order logic (FOL) | High | Semi-decidable | Theorem formalization |
 | Description logic (ALC) | Medium | ExpTime | Ontology TBoxes |
 | OWL-DL | Medium-high | 2NExpTime | Semantic web ontologies |
-| Datalog | Limited FOL | P (data complexity) | Recursive queries on KG |
+| Datalog | Limited FOL | P (data complexity) | Recursive queries on knowledge graphs |
 | Answer Set Programming | Nonmonotonic | ΣP2-complete | Default reasoning |
 | Modal logic | FOL + modalities | Varies | Epistemic/deontic reasoning |
 
@@ -76,7 +76,7 @@ Formal knowledge representation, symbolic reasoning, and their integration with 
 - Roles and role-playing
 - Quality and quality spaces
 
-**project application:** Knowledge Graph quality gates validate ontological consistency:
+**Common application:** knowledge-graph quality gates validate ontological consistency:
 - TBox coherence (no unsatisfiable concepts)
 - ABox consistency (instances satisfy TBox constraints)
 - Schema-instance alignment
@@ -97,7 +97,7 @@ Formal knowledge representation, symbolic reasoning, and their integration with 
 
 ### 2.1 Integration Spectrum (Kautz 2020)
 
-| Level | Description | Example | Project Phase |
+| Level | Description | Example | Pipeline role |
 |---|---|---|---|
 | 1 | Symbolic ← Neural | Neural generates symbolic output | Experience → symbols |
 | 2 | Symbolic → Neural | Symbolic knowledge guides neural | Structuring → embedding |
@@ -113,14 +113,14 @@ Formal knowledge representation, symbolic reasoning, and their integration with 
 - **Neurosymbolic concept learner**: Learn visual concepts as logical programs
 - **Logic tensor networks**: Differentiable first-order logic
 
-### 2.3 the project's Neuro-Symbolic Position
+### 2.3 Typical Neuro-Symbolic Position
 
-Project operates at Level 3-4:
-- **Experience phase**: Neural (LLM perception, embedding)
-- **Articulation**: Neural→Symbolic (natural language → structured claims)
-- **Structuring**: Symbolic (knowledge graph construction, validation)
-- **Consolidation**: Hybrid (formal verification + neural synthesis)
-- **Innovation**: Symbolic→Neural (validated knowledge → novel applications)
+Many verification-oriented pipelines operate at Level 3-4:
+- **Ingest phase**: neural perception, extraction, or embedding.
+- **Articulation**: neural-to-symbolic conversion from natural language to structured claims.
+- **Structuring**: symbolic knowledge graph construction and validation.
+- **Consolidation**: hybrid formal verification plus neural synthesis.
+- **Application**: symbolic-to-neural feedback from validated knowledge to new tasks.
 
 ---
 
@@ -145,9 +145,9 @@ Project operates at Level 3-4:
 - **Probabilistic logic**: Weight rules by confidence
 - **Large language models**: Implicit commonsense from training data
 
-### 3.3 Project Integration
+### 3.3 Pipeline Integration
 
-Commonsense reasoning enters Project in:
+Commonsense reasoning commonly enters structured-AI pipelines in:
 - **Articulation**: Interpreting tacit knowledge requires commonsense context
 - **Structuring**: Default rules for knowledge graph completion
 - **Quality gates**: Commonsense consistency checks on extracted knowledge
@@ -178,7 +178,7 @@ Commonsense reasoning enters Project in:
 | Hits@K | Fraction of correct in top-K | Retrieval quality |
 | Semantic validity | Ontology-consistency rate | Structural soundness |
 
-### 4.3 Project Knowledge Graph Architecture
+### 4.3 Knowledge Graph Architecture
 
 ```
 Experience → Raw triples (LLM extraction)
@@ -196,15 +196,17 @@ Quality gates at each transition enforce:
 
 ---
 
-## Part 5 — Connection to Project Lean Modules
+## Part 5 — Host-Repository Lean Extension Points
 
-| Module | Symbolic AI Aspect | Key Structures |
+Do not assume any project-specific Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. When a repository has local knowledge-graph or quality-gate modules, map them to this generic checklist:
+
+| Local extension point | Symbolic AI aspect | Typical structures |
 |---|---|---|
-| ProvenanceChain.lean | DAG well-formedness, trust composition | `ProvenanceStage`, `WellFormed` |
-| Tactics.lean (§38-39) | CausalDAG, KnowledgeGraph formalization | `CausalLink`, `KGEdge` |
-| QualityGates.lean | Predicate logic on quality measures | `Gate`, `GateMonotone` |
-| PhaseClassification.lean | Decision procedures for regime classification | `RegimeType`, decidability |
-| lean-causal-reasoning (SK-33) | Causal DAGs and counterfactual reasoning | Full causality skill |
+| Provenance / audit trail module | DAG well-formedness, trust composition | stages, edges, well-formedness predicates |
+| Causal / knowledge-graph module | Causal DAG and graph formalization | causal links, typed edges, confidence scores |
+| Quality-gate module | Predicate logic on quality measures | gates, thresholds, monotonicity theorems |
+| Classification / regime module | Decision procedures for regimes | regime types, decidability, monotonicity |
+| Causal-reasoning skill handoff | Causal DAGs and counterfactual reasoning | delegate to `@lean-causal-reasoning` |
 
 ---
 
