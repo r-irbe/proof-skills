@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "Fully template-conformant: goals, non-goals, invariants, theorem skeleton, examples, acceptance criteria, #check-style test guidance, and explicit STOP/handoff contracts.", "rubric_evidence": ["-- Goals:", "-- Non-goals:", "-- Invariants:", "-- Acceptance criteria:", "-- Tests:", "-- STOP / handoff conditions:"]}

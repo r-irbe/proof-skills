@@ -4,7 +4,7 @@
 
 ## 1. Entrant roster
 
-As of R31, the live roster is:
+As of R37, the live roster is:
 
 | Player | Model | Effort suffix |
 |---|---|---|
@@ -21,9 +21,12 @@ As of R31, the live roster is:
 Adding a new entrant requires (a) extending the dispatch loop in the round's `lab/.r<N>-*-solver-prompts/` workspace, (b) running a backfill against existing cases, (c) re-running ELO with the new entrant present.
 
 `gpt-5.5` entered through the R29 one-case
-`mathlib-lookup-list-nodup` pilot and was expanded in R31 to 72 games across 9
-smoke cases; see `lab/reports/R31-gpt55-expanded.md`. It remains sparse
-relative to incumbents, but it is no longer single-case evidence.
+`mathlib-lookup-list-nodup` pilot, expanded in R31 to 72 games across 9 smoke
+cases, and was backfilled in R37 to 97 games across 14 smoke cases. See
+`lab/reports/R31-gpt55-expanded.md` and
+`lab/reports/R37-gpt55-sparse-balance.md`. It remains sparse relative to
+incumbents, but the evidence now spans doc, setup/import, tactic-discipline, and
+Mathlib lookup rubrics.
 
 ## 2. Solver-prompt template (R26-Item-3-validated)
 

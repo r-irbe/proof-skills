@@ -192,11 +192,13 @@ the resulting Glicko-2 leaderboard under
 | R26 | `2026-05-27-n-r26-item3-fix/` | 248-425 | +252 | Lean solver-template fix for prose-not-Lean cases. |
 | R27 | `2026-05-27-o-r27-audit/` | 248-425 | +0 | Rubric labels and design-doc reconstruction; no ELO-data change. |
 | R29 | `2026-05-27-p-r29-gpt55-nodup/` | 8-425 | +36 | First `gpt-5.5` comparison on `mathlib-lookup-list-nodup`. |
-| **R31** | **`2026-05-29-r31-gpt55-expanded/`** | **72-489** | **+288** | **Expanded `gpt-5.5` across 9 smoke cases and refreshed global/per-rubric Glicko-2.** |
+| R31 | `2026-05-29-r31-gpt55-expanded/` | 72-489 | +288 | Expanded `gpt-5.5` across 9 smoke cases and refreshed global/per-rubric Glicko-2. |
+| **R37** | **`2026-05-29-r37-gpt55-sparse-balance/`** | **97-494** | **+25** | **Backfilled `gpt-5.5` on five sparse smoke buckets; live corpus is now 1,579 rows.** |
 
-R31 expands `gpt-5.5` from the R29 one-case pilot to 72 games across 9 smoke
-cases. Its rating is still sparse compared with the 312-489-game incumbents,
-but no longer rests on a single Mathlib-lookup case.
+R37 expands `gpt-5.5` from the R29 one-case pilot to 97 games across 14 smoke
+cases. Its rating is still sparse compared with the 314-494-game incumbents,
+but the evidence now covers doc, setup/import, tactic-discipline, and Mathlib
+lookup buckets rather than resting on one Mathlib-lookup case.
 
 Leaderboard trajectory for long-running entrants:
 
@@ -207,7 +209,8 @@ Leaderboard trajectory for long-running entrants:
 | R19-adv | 1566 ±48 | 1542 ±48 | 1392 ±48 |
 | R19-B | 1571 ±32 | 1547 ±32 | 1382 ±33 |
 | R29 | 1568 ±24 | 1506 ±24 | 1402 ±25 |
-| **R31 (current)** | **1552 ±22** | **1543 ±21** | **1414 ±22** |
+| R31 | 1552 ±22 | 1543 ±21 | 1414 ±22 |
+| **R37 (current)** | **1547 ±22** | **1541 ±21** | **1412 ±22** |
 
 CIs for long-running entrants tightened from ±138 to about ±22 as the match
 volume grew; sparse entrants such as `gpt-5.5` retain wider CIs until they

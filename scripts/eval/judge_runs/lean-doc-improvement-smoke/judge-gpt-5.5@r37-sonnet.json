@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "Fully template-conformant and actionable: includes minimal and pathological examples plus explicit handoff conditions so a downstream agent can execute the sync without clarification.", "rubric_evidence": ["Minimal example:", "Pathological example:", "Acceptance criteria:", "Tests:", "STOP/handoff conditions:"]}

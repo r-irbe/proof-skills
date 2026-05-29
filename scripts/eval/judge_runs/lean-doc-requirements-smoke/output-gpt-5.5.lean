@@ -1,0 +1,74 @@
+-- Formalisable hypothesis extracted from prose:
+-- "Every bounded monotone real sequence converges."
+--
+-- Goals:
+-- - Identify the implicit quantifier scope in the prose claim.
+-- - Type every variable needed for a Lean theorem statement.
+-- - Produce a Lean theorem statement with the paper anchor `[T1.1]`.
+--
+-- Non-goals:
+-- - Do not prove the theorem in this requirements artifact.
+-- - Do not guess a Mathlib theorem name without a `#check` in the target environment.
+-- - Do not resolve ambiguous prose by silently choosing a different mathematical claim.
+--
+-- Invariants:
+-- - The statement must bind `u : ℕ → ℝ` explicitly.
+-- - Monotonicity must be represented as `Monotone u`.
+-- - Bounded-above range semantics must be represented as `BddAbove (Set.range u)`.
+-- - Convergence must be represented as `∃ l : ℝ, Filter.Tendsto u Filter.atTop (nhds l)`.
+-- - The paper anchor `[T1.1]` must remain attached to the theorem statement.
+--
+-- Implicit quantifier scope:
+-- ∀ (u : ℕ → ℝ),
+--   Monotone u →
+--   BddAbove (Set.range u) →
+--   ∃ l : ℝ, Filter.Tendsto u Filter.atTop (nhds l)
+--
+-- Variable types:
+-- u : ℕ → ℝ
+-- l : ℝ
+-- hmono : Monotone u
+-- hbdd : BddAbove (Set.range u)
+--
+-- Lean theorem skeleton:
+--
+-- /-- [T1.1] Every bounded monotone real sequence converges. -/
+-- theorem bounded_monotone_real_sequence_converges
+--     (u : ℕ → ℝ)
+--     (hmono : Monotone u)
+--     (hbdd : BddAbove (Set.range u)) :
+--     ∃ l : ℝ, Filter.Tendsto u Filter.atTop (nhds l)
+--
+-- This requirements artifact intentionally stops at the statement. A
+-- downstream proof pass must `#check` the appropriate Mathlib theorem or
+-- prove the result from order completeness before adding a proof term.
+--
+-- Minimal example:
+-- - Increasing sequence prose: "bounded monotone" means `Monotone u` plus
+--   `BddAbove (Set.range u)`, yielding convergence along `Filter.atTop`.
+--
+-- Pathological example:
+-- - If the prose says only "monotone" but the surrounding text permits
+--   decreasing sequences, do not reuse the bounded-above statement. Split
+--   the requirement or ask whether `Antitone u` with `BddBelow (Set.range u)`
+--   is also required.
+--
+-- Acceptance criteria:
+-- 1. The hypothesis has explicit universal scope over `u : ℕ → ℝ`.
+-- 2. Monotonicity is represented by `Monotone u`.
+-- 3. Boundedness for the increasing-monotone reading is represented by `BddAbove (Set.range u)`.
+-- 4. Convergence is represented by `∃ l : ℝ, Filter.Tendsto u Filter.atTop (nhds l)`.
+-- 5. The paper anchor `[T1.1]` appears in the theorem doc comment line.
+-- 6. The output contains no active Lean proof obligations and no `sorry`, `admit`, or placeholder ellipses.
+--
+-- Tests:
+-- - In the target Lean environment, `#check Monotone`, `#check BddAbove`,
+--   `#check Set.range`, `#check Filter.Tendsto`, `#check Filter.atTop`,
+--   and `#check nhds` before promoting the skeleton into active Lean.
+-- - Confirm that no active theorem body or placeholder proof term is present
+--   in this requirements artifact.
+--
+-- STOP / handoff conditions:
+-- Stop if the paper's meaning of "monotone" includes both increasing and decreasing sequences without specifying the direction; hand off to clarify whether separate increasing/bounded-above and decreasing/bounded-below statements are required.
+-- Stop if the paper uses a nonstandard meaning of "bounded"; hand off to determine whether `BddAbove`, `BddBelow`, order boundedness, or metric boundedness is intended.
+-- Stop if the target Lean environment lacks the named convergence theorem; hand off to identify the correct Mathlib theorem or prove the result from completeness.

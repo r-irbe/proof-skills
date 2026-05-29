@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "Template-conformant with goals, non-goals, invariants, acceptance criteria, tests, explicit STOP/handoff, minimal and pathological examples, and no fabricated Mathlib API citations.", "rubric_evidence": ["Goals:", "Non-goals:", "Invariants:", "Minimal example:", "Pathological example:", "Acceptance criteria:", "STOP/handoff conditions:"]}

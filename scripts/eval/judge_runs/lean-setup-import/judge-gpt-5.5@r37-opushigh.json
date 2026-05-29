@@ -1,0 +1,1 @@
+{"score": 4, "rationale": "Uses the correct minimal umbrella import, but adds an arguably unused `open Nat` line; this matches the rubric's minor-issue tier.", "rubric_evidence": ["import Mathlib", "open Nat"]}

@@ -1,0 +1,1 @@
+{"score": 4, "rationale": "Median-of-4 R37 judges scored this setup 4/5: `import Mathlib` is correct and minimal, while `open Nat` is a harmless but arguably unused open directive.", "rubric_evidence": ["scores=[4,5,4,4]", "import Mathlib", "open Nat"]}

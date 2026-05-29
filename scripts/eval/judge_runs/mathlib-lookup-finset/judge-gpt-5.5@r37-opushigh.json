@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "Correct lemma in the full `Finset` namespace with accurate type signature, required `[DecidableEq α]`, and `#check` verification.", "rubric_evidence": ["Finset.card_union_le (s t : Finset α) : (s ∪ t).card ≤ s.card + t.card", "#check Finset.card_union_le"]}

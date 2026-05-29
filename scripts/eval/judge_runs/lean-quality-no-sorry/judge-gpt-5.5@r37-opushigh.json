@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "One-step `rfl` proof on a trivial goal with no sorry/admit, no discovery tactics, and robust behavior across Mathlib pins.", "rubric_evidence": ["theorem one_plus_one : (1 : Nat) + 1 = 2 := by rfl"]}

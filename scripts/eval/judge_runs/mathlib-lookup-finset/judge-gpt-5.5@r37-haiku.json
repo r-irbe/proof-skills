@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "Correct `Finset.card_union_le` lookup with correct signature and verification via `#check`.", "rubric_evidence": ["Finset.card_union_le", "(s ∪ t).card ≤ s.card + t.card", "#check Finset.card_union_le"]}

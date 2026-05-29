@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "Median-of-4 R37 judges scored this proof 5/5: it is a one-step `rfl` proof with no placeholders or banned tactics.", "rubric_evidence": ["scores=[5,5,5,5]", "theorem one_plus_one : (1 : Nat) + 1 = 2 := by rfl"]}

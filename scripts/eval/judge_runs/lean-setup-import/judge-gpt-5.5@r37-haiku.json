@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "Minimal and idiomatic `import Mathlib` followed by one relevant open directive, with no import bloat or extraneous code.", "rubric_evidence": ["import Mathlib", "open Nat"]}

@@ -1,0 +1,1 @@
+{"score": 5, "rationale": "Names the correct Mathlib lemma in the correct namespace, gives the requested signature, and includes `#check` confirmation.", "rubric_evidence": ["Finset.card_union_le", "#check Finset.card_union_le", "#check (Finset.card_union_le s t : (s ∪ t).card ≤ s.card + t.card)"]}
