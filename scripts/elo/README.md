@@ -49,14 +49,16 @@ The 95% interval is `[rating - 2*RD, rating + 2*RD]`.
 
 ## Per-rubric replay
 
-Per-rubric ratings join match rows back to case YAML labels
-(`ensemble_rubric:`).
+Per-rubric ratings join match rows back to case YAML labels. Smoke cases use
+`ensemble_rubric:`; adversarial cases may use `grader:` values such as
+`lean-proof-quality`.
 
 ```bash
 python3 scripts/elo/per_rubric_elo.py \
   --matches scripts/elo/matches/2026-05-27-live.csv \
-  --cases 'scripts/eval/cases/*.yaml' \
-  --out scripts/elo/example_runs/2026-05-29-r31-gpt55-expanded-per-rubric
+  --cases scripts/eval/cases \
+  --cases lab/evals/adversarial-cases \
+  --out scripts/elo/example_runs/2026-05-29-r35-rubric-map-fix-per-rubric
 ```
 
 Sparse buckets are expected to have wider uncertainty and should be interpreted

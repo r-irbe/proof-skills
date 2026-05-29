@@ -197,6 +197,7 @@ jobs:
           python3 scripts/elo/per_rubric_elo.py \
             --matches "$latest_csv" \
             --cases scripts/eval/cases \
+            --cases lab/evals/adversarial-cases \
             --out ./_per-rubric-check/
           python3 scripts/elo/check_per_rubric_regression.py \
             --archive ./_per-rubric-check/

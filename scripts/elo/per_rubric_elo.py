@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Per-rubric Glicko-2 ELO computation.
 
-Splits a live-matches CSV into buckets by `ensemble_rubric` (read from
-each case's YAML in --cases), then runs Glicko-2 on each bucket
-independently. Writes one sub-directory per rubric:
+Splits a live-matches CSV into buckets by each case's rubric metadata, then
+runs Glicko-2 on each bucket independently. Smoke cases use
+`ensemble_rubric:`; adversarial cases may instead use `grader:` values such as
+`lean-proof-quality`.
 
     <out>/
       <rubric>-matches.csv
@@ -21,10 +22,11 @@ Usage:
     python3 scripts/elo/per_rubric_elo.py \
         --matches scripts/elo/matches/2026-05-27-live.csv \
         --cases   scripts/eval/cases \
+        --cases   lab/evals/adversarial-cases \
         --out     scripts/elo/example_runs/2026-05-27-x-per-rubric/
 """
 from __future__ import annotations
-import argparse, csv, json, subprocess, sys
+import argparse, csv, glob, json, subprocess, sys
 from pathlib import Path
 from collections import defaultdict
 
@@ -36,30 +38,78 @@ except ImportError:
 HERE = Path(__file__).resolve().parent
 
 
-def load_rubricmap(cases_dir: Path) -> dict[str, str]:
-    """Read every case YAML in cases_dir and build {case_id -> rubric}."""
+def _case_files(case_inputs: list[Path]) -> list[Path]:
+    """Expand case inputs that may be directories, files, or glob patterns."""
+    files: list[Path] = []
+    seen: set[Path] = set()
+    for raw in case_inputs:
+        raw_s = str(raw)
+        if any(ch in raw_s for ch in "*?["):
+            candidates = [Path(p) for p in glob.glob(raw_s, recursive=True)]
+            if not candidates:
+                print(f"warning: --cases glob matched no files: {raw}", file=sys.stderr)
+        elif raw.is_dir():
+            candidates = sorted(raw.rglob("*.yaml"))
+        elif raw.is_file():
+            candidates = [raw]
+        else:
+            print(f"warning: --cases path does not exist: {raw}", file=sys.stderr)
+            candidates = []
+
+        for p in candidates:
+            rp = p.resolve()
+            if rp not in seen:
+                files.append(p)
+                seen.add(rp)
+    return files
+
+
+def rubric_from_case(case_id: str, d: dict) -> str:
+    """Resolve a case's per-rubric rating bucket from explicit metadata first."""
+    rubric = d.get("ensemble_rubric")
+    if rubric:
+        return str(rubric)
+
+    grader = d.get("grader")
+    if isinstance(grader, str) and grader.endswith("-quality"):
+        return grader
+
+    skill = d.get("skill") or ""
+    if skill == "mathlib-lookup":
+        return "mathlib-lookup-quality"
+    if skill.startswith("lean-setup"):
+        return "lean-setup-import-quality"
+    if skill.startswith("lean-tactic") or "tactic-discipline" in case_id:
+        return "lean-tactic-discipline-quality"
+    if skill.startswith("lean-") and "doc" in skill:
+        return "lean-doc-quality"
+    if skill.startswith("lean-"):
+        return "lean-proof-quality"
+    if skill.startswith(("ai-", "applied-", "math-")):
+        return "applied-domain-quality"
+    return rubric_for(case_id, {})
+
+
+def load_rubricmap(case_inputs: list[Path]) -> dict[str, str]:
+    """Read case YAML inputs and build {case_id -> rubric}."""
     rmap: dict[str, str] = {}
-    for cy in sorted(cases_dir.glob("*.yaml")):
+    for cy in _case_files(case_inputs):
         try:
             docs = list(yaml.safe_load_all(cy.read_text()))
-        except Exception:
+        except Exception as exc:
+            print(f"warning: failed to parse {cy}: {exc}", file=sys.stderr)
             continue
         if not docs:
             continue
         d = docs[0]
+        if not isinstance(d, dict):
+            print(f"warning: skipped non-mapping YAML document: {cy}", file=sys.stderr)
+            continue
         case = d.get("id")
         if not case:
+            print(f"warning: skipped case YAML without id: {cy}", file=sys.stderr)
             continue
-        rubric = d.get("ensemble_rubric")
-        if not rubric:
-            skill = d.get("skill") or ""
-            if skill.startswith("lean-") and "doc" in skill:
-                rubric = "lean-doc-quality"
-            elif skill.startswith(("ai-", "applied-", "math-")):
-                rubric = "applied-domain-quality"
-            else:
-                rubric = "lean-proof-quality"
-        rmap[case] = rubric
+        rmap[case] = rubric_from_case(str(case), d)
     return rmap
 
 
@@ -79,8 +129,9 @@ def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--matches", type=Path, required=True,
                    help="path to live matches CSV")
-    p.add_argument("--cases", type=Path, required=True,
-                   help="directory of case YAMLs (for rubric discovery)")
+    p.add_argument("--cases", type=Path, action="append", required=True,
+                   help=("case YAML source for rubric discovery; may be repeated "
+                         "and may be a directory, file, or quoted glob pattern"))
     p.add_argument("--out", type=Path, required=True,
                    help="output directory; one subdir per rubric will be written")
     args = p.parse_args()
@@ -89,11 +140,22 @@ def main() -> int:
     rmap = load_rubricmap(args.cases)
 
     buckets: dict[str, list[dict]] = defaultdict(list)
+    unknown_adv_cases: set[str] = set()
     with args.matches.open(newline="") as f:
         reader = csv.DictReader(f)
         fields = reader.fieldnames
         for row in reader:
-            buckets[rubric_for(row["case_id"], rmap)].append(row)
+            case_id = row["case_id"]
+            if case_id not in rmap and case_id.startswith("adv-"):
+                unknown_adv_cases.add(case_id)
+            buckets[rubric_for(case_id, rmap)].append(row)
+
+    for case_id in sorted(unknown_adv_cases):
+        print(
+            f"warning: adversarial case {case_id!r} not found in --cases metadata; "
+            "using fallback rubric",
+            file=sys.stderr,
+        )
 
     summary_lines = [
         "# Per-rubric Glicko-2 leaderboards",

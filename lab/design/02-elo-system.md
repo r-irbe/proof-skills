@@ -40,9 +40,9 @@ Entrants with `@<effort>` suffixes (e.g., `claude-opus-4.7@default-effort`, `gpt
 
 ## 4. Per-rubric stratification
 
-`per_rubric_elo.py` re-runs Glicko-2 over subsets of `live.csv` bucketed by the case's `ensemble_rubric` (read from the case YAML; see `lab/design/01-eval-framework.md §2`). Used to surface per-domain skill differences masked by the global aggregate.
+`per_rubric_elo.py` re-runs Glicko-2 over subsets of `live.csv` bucketed by the case's rubric metadata (read from the case YAML; see `lab/design/01-eval-framework.md §2`). Smoke cases use `ensemble_rubric:` and adversarial cases may use `grader:` values such as `lean-proof-quality`. Used to surface per-domain skill differences masked by the global aggregate.
 
-R27 made the bucketing explicit; the active smoke suite now has 50 cases with `ensemble_rubric:` set, so per-rubric replay no longer relies on the heuristic in `per_rubric_elo.py:53-65`.
+R27 made smoke-case bucketing explicit; the active smoke suite now has 50 cases with `ensemble_rubric:` set, so per-rubric replay no longer relies on fallback heuristics for smoke rows. R35 extended the metadata loader to include nested adversarial-case YAML and `grader:` rubric labels before falling back to ID heuristics.
 
 ## 5. Regression gates
 
