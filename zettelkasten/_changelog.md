@@ -10,10 +10,10 @@ YYYY-MM-DD  ACTION  zk-NNN-slug                    notes
 
 ---
 
-2026-05-27  ADD     _index.md                            Seed MOC root (promoted from `lab/proto/zettelkasten/index.md`).
+2026-05-27  ADD     _index.md                            Seed MOC root (promoted from the historical prototype zettelkasten).
 2026-05-27  ADD     _tags.md                             Bootstrap tag index for the 10 seed notes.
 2026-05-27  ADD     _changelog.md                        This file.
-2026-05-27  ADD     permanent/zk-001-fork-rationale     Seed note 1 of 10. Promoted from lab/proto/zettelkasten/.
+2026-05-27  ADD     permanent/zk-001-fork-rationale     Seed note 1 of 10. Promoted from the historical prototype zettelkasten.
 2026-05-27  ADD     permanent/zk-002-v2-template-contract Seed note 2 of 10. Promoted.
 2026-05-27  ADD     permanent/zk-003-agentrx-9cat        Seed note 3 of 10. Promoted.
 2026-05-27  ADD     permanent/zk-004-bacm-context-burst  Seed note 4 of 10. Promoted.

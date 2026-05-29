@@ -145,7 +145,37 @@
       "passed": true,
       "score": 1.0
     },
+    "lean-setup-import-lakefile-basic": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-setup-import-subimport": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-setup-import-toolchain-pin": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
     "lean-specification-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-tactic-discipline-axiom-hygiene": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-tactic-discipline-no-decide-search": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-tactic-discipline-no-omega-abuse": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
@@ -201,6 +231,21 @@
       "score": 1.0
     },
     "mathlib-lookup-finset": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "mathlib-lookup-list-nodup": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "mathlib-lookup-nat-div-le": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "mathlib-lookup-topology-continuous-comp": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0

@@ -2,7 +2,7 @@
 id: zk-index
 title: Proof-skills zettelkasten — seed index
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-05-29
 type: literature
 tags: [moc, index, seed]
 refs:
@@ -22,9 +22,10 @@ confidence: high
 # Proof-skills zettelkasten — seed index
 
 This is the entry-point Map-of-Content for the first ten seed notes.
-The notes capture findings from the current proof-skills work
-(filab-survey, skill-audit, eval framework, multi-model runner, ELO
-prototype) and follow a simplified Luhmann 3-tier model:
+The notes capture early findings from the proof-skills work
+(survey material, skill-audit, eval framework, multi-model runner, and
+the ranking prototype that later became the Glicko-2 live corpus) and
+follow a simplified Luhmann 3-tier model:
 **fleeting** → **literature** → **permanent**. All ten seeds are
 `permanent` (with two at `confidence: medium` while we collect more
 runs).
@@ -104,4 +105,5 @@ Edges below are outgoing `refs:` from each note. Arrows read
 3. Every seed note is ≤ 300 words.
 4. Every outgoing `refs:` entry is matched by an inline `[[zk-NNN]]`
    wikilink in the body, and vice versa.
-5. No seed note links outside `lab/proto/zettelkasten/`.
+5. Historical source paths may appear in seed-note evidence, but current
+   active tooling paths must be cited in any new or refreshed note.

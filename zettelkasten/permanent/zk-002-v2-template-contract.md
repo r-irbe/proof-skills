@@ -2,14 +2,14 @@
 id: zk-002
 title: Filab skill-template v2 frontmatter contract
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-05-29
 type: permanent
 tags: [template-contract, skills-architecture, dispatch]
 refs:
   - zk-001
   - zk-009
   - zk-008
-status: validated
+status: superseded-by-current-corpus
 confidence: high
 ---
 
@@ -27,15 +27,15 @@ which cites template-v2 lines 64-65 (triad), 88 (USE FOR cardinality),
 89 (handoff requirement), 90 (TRIGGERS grammar), 94-96 (G-rule
 MUST/SHOULD/MUST NOT prefix), 98 (≤14 G-rules gated / ≤6 advisory),
 103-110 (Discover→Plan→Execute→Verify→Persist), 112-118 (explicit STOP),
-127-129 (3 concrete failure modes). The fork-local audit
-(`lab/skill-audit/audit.md` §0) confirms current corpus conformance is
-**0/62** — every skill needs migration.
+127-129 (3 concrete failure modes). This was a migration note: the live
+corpus is now fully v2-conformant, and the current checker is
+`scripts/skill-audit/check_conformance.py`.
 
 **Implication.** Any new or refactored skill in this fork must satisfy
-the triad and the section order before merge; the consolidation rubric
+the triad and section order before merge; the consolidation rubric
 [[zk-009]] uses the same fields (`applies-to`, scope) as its inputs.
-The Lean-specific tactic policy in [[zk-008]] is the canonical example
-of a `G-rule` block we still need to lift out of prose. Provenance of
-this contract is recorded in the fork-rationale note [[zk-001]].
+The Lean-specific tactic policy in [[zk-008]] remains the canonical
+example of a `G-rule` block. Provenance of this contract is recorded in
+the fork-rationale note [[zk-001]].
 
 See also: [[zk-001]], [[zk-008]], [[zk-009]].

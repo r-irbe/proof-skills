@@ -42,11 +42,11 @@ aggregation:
 
 ### 4.1 Calibration corpora
 
-`lab/evals/known-bad/<cluster>/` holds calibration transcripts: handcrafted bad answers that anchor the LLM judge's lower rubric scores. Per cluster there is a README plus per-transcript `.transcript.md` files and `_replies/` directories of captured model judgments.
+`lab/evals/known-bad/<cluster>/` holds calibration transcripts: handcrafted bad answers that anchor the LLM judge's lower rubric scores. The active corpus has 7 clusters. Per cluster there is a README plus per-transcript `.transcript.md` files and `_replies/` directories of captured model judgments.
 
 ### 4.2 LLM judge ensemble
 
-Judges score independently on the rubric scale. Aggregation (as of R26): **median-of-4** over `{claude-opus-4.7-high, claude-haiku-4.5, claude-sonnet-4.6, gpt-5.4}`, with `_judge_agg: median-of-4-mean-mid` (mean of the two middle values when ensemble size is even).
+Judges score independently on the rubric scale. The current live ensemble is **median-of-4** over `{claude-opus-4.7-high, claude-haiku-4.5, claude-sonnet-4.6, gpt-5.4}`, with `_judge_agg: median-of-4-mean-mid` (mean of the two middle values when ensemble size is even).
 
 Per-judge replies are persisted at `scripts/eval/judge_runs/<case>/judge-<entrant>@r<round>-<judge>.json`. The canonical per-entrant grade is `judge-<entrant>.json` with the aggregated score.
 
@@ -57,7 +57,7 @@ Per-judge replies are persisted at `scripts/eval/judge_runs/<case>/judge-<entran
 - `|s_A − s_B| ≥ draw_threshold` (default 0.15 in normalized space) → `winner = a` (or `b`)
 - otherwise → `winner = draw`
 
-The CSV shape is `case_id,model_a,model_b,winner,reasoning_effort_a,reasoning_effort_b` — consumed by `elo.py` and `glicko2.py`.
+The CSV shape is `case_id,model_a,model_b,winner,reasoning_effort_a,reasoning_effort_b` — consumed by the authoritative `glicko2.py` replay. `elo.py` is retained only as a legacy vanilla-ELO dashboard helper.
 
 ## 5. Regression gates
 
