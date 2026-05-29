@@ -1,0 +1,5 @@
+import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
+
+open MeasureTheory
+open MeasureTheory.Measure
+open MeasureTheory.Measure.ProbabilityMeasure

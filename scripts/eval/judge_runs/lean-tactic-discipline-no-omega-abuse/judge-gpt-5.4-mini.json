@@ -1,0 +1,20 @@
+{
+  "case_id": "lean-tactic-discipline-no-omega-abuse",
+  "entrant": "gpt-5.4-mini",
+  "rubric": "lean-tactic-discipline-quality",
+  "score": 1.0,
+  "_individual_scores": {
+    "opushigh": 1,
+    "haiku": 4,
+    "sonnet": 1,
+    "gpt54": 1
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R31-gpt55-expanded"
+}

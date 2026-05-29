@@ -1,0 +1,20 @@
+{
+  "case_id": "lean-tactic-discipline-axiom-hygiene",
+  "entrant": "claude-sonnet-4.6",
+  "rubric": "lean-tactic-discipline-quality",
+  "score": 5.0,
+  "_individual_scores": {
+    "opushigh": 5,
+    "haiku": 5,
+    "sonnet": 5,
+    "gpt54": 5
+  },
+  "_judge_agg": "median-of-4-mean-mid",
+  "_judges": [
+    "opushigh",
+    "haiku",
+    "sonnet",
+    "gpt54"
+  ],
+  "round": "R31-gpt55-expanded"
+}
