@@ -46,7 +46,7 @@ because the Copilot CLI doesn't expose a programmatic batch API for
 sub-agents. A future `run_multi_judge.py` could automate this once
 that API lands.
 
-## Flavour B — Anthropic SDK (`run_multi_model.py`, future)
+## Flavour B — SDK batch dispatcher (future)
 
 Per design `lab/design/01-eval-framework.md §6`, a production runner
 will batch judge calls via the Anthropic / OpenAI SDKs with proper
@@ -92,24 +92,28 @@ ensemble (opus-4.7-high + sonnet-4.6 + opus-4.6) → 7/7 flagged =
 ensemble-2026-05-27.json`.
 
 Scaled (2026-05-27): added `claude-haiku-4.5` + `gpt-5.2` as
-judges 4 + 5 across all 3 corpora. Recall preserved at 100 %;
-false-flag rate **unchanged** (1/5 on adv-decide). Confirms that
-minority-veto `min(low)` cannot be improved by scale alone — any
-single low score still flags. Reports:
+judges 4 + 5 across the early proof/setup/mathlib corpora. Recall stayed at
+100%; false-flag rate remained 1/5 on `adv-decide`. This confirms that
+minority-veto `min(low)` cannot be improved by scale alone — any single low
+score still flags. Reports:
 `reports/_calibration/<rubric>/ensemble-5model-2026-05-27.json`.
 
-### Available calibration corpora (2026-05-27)
+### Available calibration corpora (2026-05-29)
 
 | Rubric | Skill dir | Negatives | Adversarial+ | flag_rate | false_flag_rate |
 |---|---|---|---|---|---|
+| `applied-domain-quality` | `lab/evals/known-bad/applied-domain` | 14 | 1 | 14/14 = 100% | 0/1 = 0% |
+| `lean-doc-quality` | `lab/evals/known-bad/lean-doc` | 14 | 1 | 13/14 = 92.9% | 0/1 = 0% |
 | `lean-proof-quality` | `lab/evals/known-bad/lean-proof` | 7 | 5 | 7/7 = 100% | 1/5 = 20% |
 | `lean-setup-import-quality` | `lab/evals/known-bad/lean-setup-import` | 5 | 0 | 5/5 = 100% | n/a |
+| `lean-tactic-discipline-quality` | `lab/evals/known-bad/lean-tactic-discipline` | 5 | 0 | 5/5 = 100% | n/a |
 | `mathlib-lookup-quality` | `lab/evals/known-bad/mathlib-lookup` | 5 | 0 | 5/5 = 100% | n/a |
+| `research-synthesis-quality` | `lab/evals/known-bad/research-synthesis` | 14 | 1 | 14/14 = 100% | 0/1 = 0% |
 
 CI matrix `.github/workflows/eval-smoke.yml :: judge-calibration` runs
-all three. Adversarial positives are presently only authored for
-`lean-proof`; the others' false-flag gate is parked at `1.00` until
-an adversarial sub-corpus is added.
+all seven. Adversarial positives are presently authored for applied-domain,
+lean-doc, lean-proof, and research-synthesis; the remaining rubrics keep the
+false-flag gate parked at `1.00` until adversarial positives are added.
 
 See `lab/evals/known-bad/<skill>/README.md` for the per-skill
 corpus structure and how to add new transcripts.

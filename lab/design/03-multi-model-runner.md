@@ -4,7 +4,7 @@
 
 ## 1. Entrant roster
 
-As of R29, the live roster is:
+As of R31, the live roster is:
 
 | Player | Model | Effort suffix |
 |---|---|---|
@@ -21,8 +21,9 @@ As of R29, the live roster is:
 Adding a new entrant requires (a) extending the dispatch loop in the round's `lab/.r<N>-*-solver-prompts/` workspace, (b) running a backfill against existing cases, (c) re-running ELO with the new entrant present.
 
 `gpt-5.5` entered through the R29 one-case
-`mathlib-lookup-list-nodup` pilot. Its first leaderboard row is intentionally
-provisional because it has only 8 games; see `lab/reports/R29-gpt55-nodup.md`.
+`mathlib-lookup-list-nodup` pilot and was expanded in R31 to 72 games across 9
+smoke cases; see `lab/reports/R31-gpt55-expanded.md`. It remains sparse
+relative to incumbents, but it is no longer single-case evidence.
 
 ## 2. Solver-prompt template (R26-Item-3-validated)
 
@@ -55,7 +56,10 @@ Current ensemble (median-of-4):
 
 Aggregation: mean of the two middle values when ensemble size is even (`_judge_agg: median-of-4-mean-mid`). Stored alongside `_individual_scores` and `_judges` in each canonical `judge-<entrant>.json` for reproducibility.
 
-R25 carry-over considers adding `gpt-5.4-mini-mini` as a 5th judge for cost-down median-of-5.
+Do not add a fifth judge casually: even-size ensembles preserve fractional
+median scores, while the current minority-veto calibration shows that adding
+more judges does not reduce false flags when any single low score can trigger
+the veto.
 
 ## 4. Dispatch loop
 
@@ -65,7 +69,7 @@ Solver and judge dispatches use the agent harness. Per-round agent-id convention
 - Judges: `r<N>-j-<case-prefix>-<judge-suffix>` (e.g. `r26-j-laif-opushigh`)
 
 Case prefixes (R26 lean-*): `laif/lar/lcr/lip/lkf/lnl/lra/lsf/ls`.
-Model suffixes: `haiku/sonnet/opushigh/opus/gpt54/gpt54mini/gpt52/gpt54long`.
+Model suffixes: `haiku/sonnet/opushigh/opus/gpt55/gpt54/gpt54mini/gpt52/gpt54long`.
 
 ## 5. Blind labelling for judges
 

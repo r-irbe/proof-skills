@@ -18,16 +18,17 @@ It is **complementary to** (not a replacement for) `scripts/eval/`:
 | `scripts/elo/matches/` | Pairwise match CSVs (one row per (case, A, B) pair). | Glicko-2 input. |
 | `scripts/elo/example_runs/` | Archived Glicko-2 outputs. | Leaderboard trend tracking. |
 
-## The 6 calibration clusters
+## The 7 calibration clusters
 
 | Cluster | Rubric file (`scripts/eval/graders/rubrics/`) | Transcripts |
 | --- | --- | --- |
-| `lean-proof` | `lean-proof-quality.yaml` | Adversarial proofs: omega/linarith abuse, banned tactics, decide-as-search, sorry-in-comment camouflage. |
-| `lean-doc` | `lean-doc-quality.yaml` | Doc/spec failures: empty docs, contradictory blueprints, hallucinated Mathlib anchors. |
-| `lean-setup-import` | `lean-setup-import-quality.yaml` | Build failures: fabricated modules, syntactically broken `lakefile`, deep internal imports. |
-| `mathlib-lookup` | `mathlib-lookup-quality.yaml` | Lookup failures: Coq-style names, wrong namespace/signature, fabricated lemmas. |
-| `research-synthesis` | `research-synthesis-quality.yaml` | Synthesis failures: fabricated citations, single-perspective takes, misattribution. |
-| `applied-domain` | `applied-domain-quality.yaml` | Domain failures: GDPR mis-application, fabricated CVE references, single-option recommendations with no trade-off. |
+| `applied-domain` | `applied-domain-quality.yaml` | 15 domain failures: GDPR mis-application, fabricated CVE references, single-option recommendations with no trade-off. |
+| `lean-doc` | `lean-doc-quality.yaml` | 15 doc/spec failures: empty docs, contradictory blueprints, hallucinated Mathlib anchors. |
+| `lean-proof` | `lean-proof-quality.yaml` | 12 adversarial proofs: omega/linarith abuse, banned tactics, decide-as-search, sorry-in-comment camouflage. |
+| `lean-setup-import` | `lean-setup-import-quality.yaml` | 5 build failures: fabricated modules, syntactically broken `lakefile`, deep internal imports. |
+| `lean-tactic-discipline` | `lean-tactic-discipline-quality.yaml` | 5 tactic-discipline failures: axiom hygiene, forbidden automation, hidden search. |
+| `mathlib-lookup` | `mathlib-lookup-quality.yaml` | 5 lookup failures: Coq-style names, wrong namespace/signature, fabricated lemmas. |
+| `research-synthesis` | `research-synthesis-quality.yaml` | 15 synthesis failures: fabricated citations, single-perspective takes, misattribution. |
 
 ## End-to-end workflow
 
@@ -71,14 +72,15 @@ The known-bad corpus serves two functions:
    wording maps each transcript to the intended score.
 
 2. **Live anchor** — periodically re-run the LLM judge on the known-bad
-   corpus (`scripts/eval/graders/llm_judge.py` + `lab/evals/known-bad/<cluster>/*.transcript.md`)
-   and verify each transcript still receives ≤2/5. This catches rubric drift
-   over time and across judge model versions.
+   corpus (`scripts/eval/calibrate_judge.py check` over
+   `lab/evals/known-bad/<cluster>/*.transcript.md`) and verify each
+   known-bad transcript still receives ≤2/5. This catches rubric drift over
+   time and across judge model versions.
 
 The `_replies/` sub-directories under each cluster hold real model replies
 generated against the same prompts, used to anchor the calibration empirically
-(see `reports/_calibration/.../ensemble-2026-05-27.json` for the latest
-captured ensemble).
+(see `reports/_calibration/<rubric>/*.json` for the captured ensemble
+reports).
 
 ## Adversarial case corpus
 
@@ -122,10 +124,16 @@ TXT
 mkdir -p lab/evals/known-bad/<cluster>/_replies/my-new-bad-case
 $EDITOR lab/evals/known-bad/<cluster>/_replies/my-new-bad-case/claude-haiku-4.5.json
 
-# 4. Re-run the calibration ensemble to verify the rubric scores it ≤2:
-python3 scripts/eval/graders/llm_judge.py \
+# 4. Build a judge prompt, dispatch one or more judges, then replay/check:
+python3 scripts/eval/calibrate_judge.py build \
     --rubric scripts/eval/graders/rubrics/<cluster>-quality.yaml \
-    --transcript lab/evals/known-bad/<cluster>/my-new-bad-case.transcript.md
+    --transcript lab/evals/known-bad/<cluster>/my-new-bad-case.transcript.md \
+    --out /tmp/my-new-bad-case.prompt.txt
+
+python3 scripts/eval/calibrate_judge.py check \
+    --rubric scripts/eval/graders/rubrics/<cluster>-quality.yaml \
+    --skill-dir lab/evals/known-bad/<cluster> \
+    --label smoke
 ```
 
 ## Adding a new live-eval case
@@ -183,12 +191,12 @@ the resulting Glicko-2 leaderboard under
 | R25 | `2026-05-27-m-r25-median4/` | 216-425 | +680 | 4-judge median-of-4 refresh with `gpt-5.4` as judge. |
 | R26 | `2026-05-27-n-r26-item3-fix/` | 248-425 | +252 | Lean solver-template fix for prose-not-Lean cases. |
 | R27 | `2026-05-27-o-r27-audit/` | 248-425 | +0 | Rubric labels and design-doc reconstruction; no ELO-data change. |
-| **R29** | **`2026-05-27-p-r29-gpt55-nodup/`** | **8-425** | **+36** | **First `gpt-5.5` comparison on `mathlib-lookup-list-nodup`.** |
+| R29 | `2026-05-27-p-r29-gpt55-nodup/` | 8-425 | +36 | First `gpt-5.5` comparison on `mathlib-lookup-list-nodup`. |
+| **R31** | **`2026-05-29-r31-gpt55-expanded/`** | **72-489** | **+288** | **Expanded `gpt-5.5` across 9 smoke cases and refreshed global/per-rubric Glicko-2.** |
 
-R29 adds `gpt-5.5` to the comparison roster. The model currently has only
-8 games, all from one Mathlib-lookup case, so its high rank is reported with a
-wide CI and must be treated as provisional until it receives the same case
-coverage as the other entrants.
+R31 expands `gpt-5.5` from the R29 one-case pilot to 72 games across 9 smoke
+cases. Its rating is still sparse compared with the 312-489-game incumbents,
+but no longer rests on a single Mathlib-lookup case.
 
 Leaderboard trajectory for long-running entrants:
 
@@ -198,10 +206,11 @@ Leaderboard trajectory for long-running entrants:
 | R18-e | 1584 ±56 | 1524 ±56 | 1392 ±56 |
 | R19-adv | 1566 ±48 | 1542 ±48 | 1392 ±48 |
 | R19-B | 1571 ±32 | 1547 ±32 | 1382 ±33 |
-| **R29 (current)** | **1568 ±24** | **1506 ±24** | **1402 ±25** |
+| R29 | 1568 ±24 | 1506 ±24 | 1402 ±25 |
+| **R31 (current)** | **1552 ±22** | **1543 ±21** | **1414 ±22** |
 
-CIs for long-running entrants tightened from ±138 to about ±25 as the match
-volume grew; brand-new entrants such as `gpt-5.5` retain wide CIs until they
+CIs for long-running entrants tightened from ±138 to about ±22 as the match
+volume grew; sparse entrants such as `gpt-5.5` retain wider CIs until they
 accumulate broader coverage.
 
 ## Drift audit (Cohen's κ, Round 19)
@@ -231,26 +240,19 @@ ls scripts/eval/cases/*.yaml | head -10
 #     scripts/eval/graders/DISPATCH.md for the orchestration recipe).
 #    Saves output to scripts/eval/judge_runs/<case>/output-<model>.lean
 
-# 3. Build judge prompts (one per case, randomized A/B/C ordering):
-python3 scripts/eval/multi_model.py build-judge-prompts \
-    --runs-dir scripts/eval/judge_runs \
-    --cases scripts/eval/cases/ \
-    --rubric scripts/eval/graders/rubrics/lean-proof-quality.yaml \
-    --out-dir _judge_prompts_workspace/<round-id> \
-    --seed 42
+# 3. Build judge prompts with scripts/eval/graders/llm_judge.py or
+#    scripts/eval/calibrate_judge.py, dispatch judge agents, and save
+#    per-entrant aggregate grades as judge-<model>.json.
 
-# 4. Dispatch judge agents (one per prompt — or N per prompt for ensemble).
-#    Save raw JSON replies as judge-<model>.json (or @b1-<judge>.json
-#    for ensemble runs).
-
-# 5. Aggregate per-case medians to pairwise ELO rows:
-python3 scripts/eval/multi_model.py aggregate-rows \
+# 4. Aggregate per-case grades to pairwise Glicko-2 rows:
+python3 scripts/eval/multi_model.py \
     --runs-dir scripts/eval/judge_runs \
-    --cases scripts/eval/cases/ \
+    --case <case-id> \
+    --rubric scripts/eval/graders/rubrics/<rubric>.yaml \
     --out scripts/elo/matches/<date>-live.csv \
     --append
 
-# 6. Refresh Glicko-2 and verify regression gate:
+# 5. Refresh Glicko-2 and verify regression gate:
 python3 scripts/elo/glicko2.py \
     --matches scripts/elo/matches/<date>-live.csv \
     --out scripts/elo/example_runs/<date>-<letter>/

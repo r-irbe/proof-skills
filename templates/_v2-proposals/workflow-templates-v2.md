@@ -465,10 +465,9 @@ Concrete gaps:
    Configuration)` — defines module ordering and cross-module bridges
    to highlight, but does not specify how a blueprint *run* records
    compliance with that configuration.
-4. `lab/proto/skills-v2/lean-blueprint/SKILL.md:7–17` — the prototype
-   v2 SKILL already pins `version: 0.2.0`, `source_spec`,
-   `last_reviewed` in frontmatter, but the artefact it produces
-   inherits none of that.
+4. `skills/lean-blueprint/SKILL.md:13–17` — the current v2 SKILL pins
+   `version: 0.2.0`, `source_spec`, and `last_reviewed` in frontmatter, but
+   the artefact it produces inherits none of that.
 5. `wave-37/b3-a1-br-01-feasibility.md:25–73` — bridge feasibility
    docs already enumerate Mathlib decls with file:line citations;
    blueprint runs should produce the same machine-readable table.
