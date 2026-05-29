@@ -1,7 +1,7 @@
 ---
 name: "applied-legal-reasoning"
 description: |
-  USE FOR: Legal reasoning formalization — statutory interpretation, case-based reasoning, argumentation frameworks, defeasible rules, deontic norms, regulatory compliance, and their connection to the project's provenance chains, governance structures, and formal verification for legal-adjacent AI systems.
+  USE FOR: Legal reasoning formalization — statutory interpretation, case-based reasoning, argumentation frameworks, defeasible rules, deontic norms, regulatory compliance, and their connection to provenance chains, governance structures, and formal verification for legal-adjacent AI systems.
   DO NOT USE FOR: formalising those legal models in Lean (use @lean-applied-reasoning); deontic reasoning specifically (use @ai-causal-deontic); security policy (use @applied-data-information-security).
   TRIGGERS: statutory interpretation, case-based reasoning, argumentation framework, defeasible rule, deontic norm, legal reasoning, regulatory.
 tier: "warm"
@@ -25,7 +25,7 @@ Formal frameworks for legal analysis, argumentation, normative reasoning, and th
 
 ## Routing
 
-- **USE FOR:** Legal reasoning formalization — statutory interpretation, case-based reasoning, argumentation frameworks, defeasible rules, deontic norms, regulatory compliance, and their connection to the project's provenance chains, governance structures, and formal verification for legal-adjacent AI systems.
+- **USE FOR:** Legal reasoning formalization — statutory interpretation, case-based reasoning, argumentation frameworks, defeasible rules, deontic norms, regulatory compliance, and their connection to provenance chains, governance structures, and formal verification for legal-adjacent AI systems.
 - **DO NOT USE FOR:** formalising those legal models in Lean (use @lean-applied-reasoning); deontic reasoning specifically (use @ai-causal-deontic); security policy (use @applied-data-information-security).
 - **TRIGGERS:** statutory interpretation, case-based reasoning, argumentation framework, defeasible rule, deontic norm, legal reasoning, regulatory.
 
@@ -75,4 +75,3 @@ the dispatch contract and the parts index.
 - [`../lean-applied-reasoning/SKILL.md`](../lean-applied-reasoning/SKILL.md) — Successor
 - [`../ai-causal-deontic/SKILL.md`](../ai-causal-deontic/SKILL.md) — Successor
 - [`../lean-knowledge-formalization/SKILL.md`](../lean-knowledge-formalization/SKILL.md) — Successor
-

@@ -1,7 +1,7 @@
 ---
 name: "math-measure-probability"
 description: |
-  USE FOR: Measure theory, probability theory, stochastic processes, ergodic theory, and concentration inequalities. Use for mathematical reasoning about probability spaces, random variables, convergence, mixing, and any probabilistic argument in the project. Covers both theoretical foundations and applied probabilistic methodology.
+  USE FOR: Measure theory, probability theory, stochastic processes, ergodic theory, and concentration inequalities. Use for mathematical reasoning about probability spaces, random variables, convergence, mixing, and probabilistic arguments. Covers both theoretical foundations and applied probabilistic methodology.
   DO NOT USE FOR: Lean proofs in this domain (use @lean-math-stochastic); time-series analysis (use @math-time-series); topology/analysis (use @math-topology-analysis).
   TRIGGERS: measure theory, probability, stochastic process, ergodic theory, concentration inequality, Radon-Nikodym.
 tier: "warm"
@@ -19,13 +19,13 @@ metadata:
 
 # Measure Theory & Probability Mathematics
 
-Measure-theoretic and probabilistic foundations for the project's stochastic models, convergence guarantees, mixing time analysis, ergodic properties, and uncertainty quantification.
+Measure-theoretic and probabilistic foundations for stochastic models, convergence guarantees, mixing time analysis, ergodic properties, and uncertainty quantification.
 
 ---
 
 ## Routing
 
-- **USE FOR:** Measure theory, probability theory, stochastic processes, ergodic theory, and concentration inequalities. Use for mathematical reasoning about probability spaces, random variables, convergence, mixing, and any probabilistic argument in the project. Covers both theoretical foundations and applied probabilistic methodology.
+- **USE FOR:** Measure theory, probability theory, stochastic processes, ergodic theory, and concentration inequalities. Use for mathematical reasoning about probability spaces, random variables, convergence, mixing, and probabilistic arguments. Covers both theoretical foundations and applied probabilistic methodology.
 - **DO NOT USE FOR:** Lean proofs in this domain (use @lean-math-stochastic); time-series analysis (use @math-time-series); topology/analysis (use @math-topology-analysis).
 - **TRIGGERS:** measure theory, probability, stochastic process, ergodic theory, concentration inequality, Radon-Nikodym.
 
@@ -76,4 +76,3 @@ the dispatch contract and the parts index.
 - [`../lean-math-stochastic/SKILL.md`](../lean-math-stochastic/SKILL.md) — Successor
 - [`../lean-research/SKILL.md`](../lean-research/SKILL.md) — Successor
 - [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) — Successor
-

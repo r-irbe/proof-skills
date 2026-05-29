@@ -1,7 +1,7 @@
 ---
 name: "math-topology-analysis"
 description: |
-  USE FOR: Point-set topology, functional analysis, real analysis, and topological methods for dynamical systems. Use for reasoning about continuity, compactness, fixed-point theorems, Banach spaces, metric spaces, convergence, and the topological foundations underlying Lyapunov stability, contraction mappings, and phase portrait analysis in the project.
+  USE FOR: Point-set topology, functional analysis, real analysis, and topological methods for dynamical systems. Use for reasoning about continuity, compactness, fixed-point theorems, Banach spaces, metric spaces, convergence, and the topological foundations underlying Lyapunov stability, contraction mappings, and phase portrait analysis.
   DO NOT USE FOR: Lean analysis proofs (use @lean-math-analysis); algebraic structures (use @math-algebra-category); measure theory (use @math-measure-probability).
   TRIGGERS: point-set topology, functional analysis, real analysis, continuity, compactness, topological method.
 tier: "warm"
@@ -19,13 +19,13 @@ metadata:
 
 # Math Topology & Real Analysis
 
-Topological and analytic foundations for the project's dynamical systems, convergence proofs, and contraction mappings.
+Topological and analytic foundations for dynamical systems, convergence proofs, and contraction mappings.
 
 ---
 
 ## Routing
 
-- **USE FOR:** Point-set topology, functional analysis, real analysis, and topological methods for dynamical systems. Use for reasoning about continuity, compactness, fixed-point theorems, Banach spaces, metric spaces, convergence, and the topological foundations underlying Lyapunov stability, contraction mappings, and phase portrait analysis in the project.
+- **USE FOR:** Point-set topology, functional analysis, real analysis, and topological methods for dynamical systems. Use for reasoning about continuity, compactness, fixed-point theorems, Banach spaces, metric spaces, convergence, and the topological foundations underlying Lyapunov stability, contraction mappings, and phase portrait analysis.
 - **DO NOT USE FOR:** Lean analysis proofs (use @lean-math-analysis); algebraic structures (use @math-algebra-category); measure theory (use @math-measure-probability).
 - **TRIGGERS:** point-set topology, functional analysis, real analysis, continuity, compactness, topological method.
 
@@ -53,7 +53,7 @@ Topological and analytic foundations for the project's dynamical systems, conver
 
 ### 1.1 Metric Space Fundamentals
 
-| Concept | Definition | Project Use |
+| Concept | Definition | Common use |
 |---|---|---|
 | Metric | $d(x,y) \ge 0$, $d(x,y) = 0 \iff x=y$, triangle inequality | Trust distance, L1 on simplex |
 | Open ball | $B(x,r) = \{y : d(x,y) < r\}$ | Neighborhoods in phase space |
@@ -64,7 +64,7 @@ Topological and analytic foundations for the project's dynamical systems, conver
 
 ### 1.2 Key Fixed-Point Theorems
 
-| Theorem | Statement | Project application |
+| Theorem | Statement | Common application |
 |---|---|---|
 | **Banach** | Contraction on complete metric space ⟹ unique fixed point | Bellman operator, governance Lyapunov |
 | **Brouwer** | Continuous map $B^n → B^n$ has fixed point | Trust equilibrium existence |
@@ -75,7 +75,7 @@ Topological and analytic foundations for the project's dynamical systems, conver
 
 ### 1.3 Contraction Mapping Theory
 
-The central tool for Project convergence:
+The central tool for contraction-based convergence:
 
 **Banach Contraction Principle:**
 If $T: X → X$ is a contraction ($d(Tx,Ty) \le \alpha d(x,y)$, $\alpha < 1$) on a complete metric space, then:
@@ -83,7 +83,7 @@ If $T: X → X$ is a contraction ($d(Tx,Ty) \le \alpha d(x,y)$, $\alpha < 1$) on
 - Iteration converges: $d(T^n x, x^*) \le \frac{\alpha^n}{1-\alpha} d(x, Tx)$
 - Rate: geometric $O(\alpha^n)$
 
-**Extensions important for Project:**
+**Common extensions:**
 - Asymptotic regularity: weaker than contraction, still converges
 - Non-expansive mappings + additional conditions
 - Composition of contractions: product of rates
@@ -103,7 +103,7 @@ For $\phi_t : X → X$ continuous:
 
 ### 2.2 Compactness Arguments
 
-Project phase space (quality measures in $[0,1]^n$) is compact:
+Bounded phase spaces such as quality measures in $[0,1]^n$ are compact:
 - **Bolzano-Weierstrass**: Every sequence has convergent subsequence
 - **Arzela-Ascoli**: Equicontinuous + pointwise bounded ⟹ compact in $C(X)$
 - **Prokhorov**: Tight probability measures ⟹ compact (for stochastic CCV)
@@ -125,14 +125,14 @@ Project phase space (quality measures in $[0,1]^n$) is compact:
 
 - **Norm**: $\|x\| \ge 0$, homogeneity, triangle inequality
 - **Complete normed space** = Banach space
-- **Project relevant**: $\ell^\infty$ (value functions), $\ell^1$ (simplex measures), $L^p$ (distributional properties)
+- **Commonly relevant**: $\ell^\infty$ (value functions), $\ell^1$ (simplex measures), $L^p$ (distributional properties)
 
 ### 3.2 Key Operators
 
-| Operator | Type | Project Use |
+| Operator | Type | Common use |
 |---|---|---|
 | Bellman operator $T$ | Contraction on $\ell^\infty$ | Value iteration |
-| OKD transition $P$ | Linear on simplex | Stochastic dynamics |
+| Stochastic transition $P$ | Linear on simplex | Stochastic dynamics |
 | Lyapunov map $V \mapsto V \circ \phi$ | Nonlinear, monotone | Stability analysis |
 | Gradient $\nabla f$ | Linear map $X → X^*$ | Optimization |
 
@@ -142,7 +142,7 @@ Project phase space (quality measures in $[0,1]^n$) is compact:
 - **Spectral radius**: $\rho(A) = \max |\sigma(A)|$
 - **Spectral gap**: $1 - \rho_2$ where $\rho_2$ = second-largest eigenvalue modulus
 - **Perron-Frobenius**: Non-negative matrix ⟹ dominant eigenvalue real, positive
-- **Project**: Spectral gap of OKD transition matrix governs mixing time
+- **Common use**: spectral gaps of stochastic transition matrices govern mixing time
 
 ---
 
@@ -150,7 +150,7 @@ Project phase space (quality measures in $[0,1]^n$) is compact:
 
 ### 4.1 Types of Convergence
 
-| Type | Definition | Strength | Project Use |
+| Type | Definition | Strength | Common use |
 |---|---|---|---|
 | Pointwise | $f_n(x) → f(x)$ for each $x$ | Weakest | — |
 | Uniform | $\sup_x |f_n(x) - f(x)| → 0$ | Stronger | Value iteration |
@@ -197,16 +197,18 @@ Filter.Tendsto f F (nhds L) ↔ ∀ U ∈ nhds L, f⁻¹(U) ∈ F
 
 ---
 
-## Part 6 — Connection to Project Lean Modules
+## Part 6 — Host-Repository Lean Extension Points
 
-| Project Module | Topological Foundation | Key Structures |
+Do not assume any project-specific Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. Map local modules by mathematical role:
+
+| Local extension point | Topological foundation | Typical structures |
 |---|---|---|
-| LyapunovStability.lean | Metric stability, Banach contraction | `governanceLyapunov`, sublevel sets |
-| ReinforcementLearning.lean | $\ell^\infty$ contraction | `bellmanContraction`, `ValueFunction` |
-| StochasticCCV.lean | L1 metric, spectral gap | `okdStep`, `spectralGap100` |
-| CuspCatastrophe.lean | Bifurcation topology | Discriminant, critical sets |
-| AgenticSafety.lean | Product metric spaces | Multi-agent trust distance |
-| Tactics.lean | Contraction lemma library | `contraction_iterate`, `convex_bound` |
+| Lyapunov/stability module | metric stability, Banach contraction | Lyapunov functions, sublevel sets |
+| RL/value-function module | $\ell^\infty$ contraction | Bellman contraction, value functions |
+| Stochastic-dynamics module | L1 metric, spectral gap | transition step, spectral gap |
+| Bifurcation/catastrophe module | bifurcation topology | discriminants, critical sets |
+| Safety/trust module | product metric spaces | multi-agent trust distance |
+| Tactic-helper module | contraction lemma library | iterate bounds, convexity bounds |
 
 ---
 

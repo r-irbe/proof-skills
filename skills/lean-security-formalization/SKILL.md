@@ -1,7 +1,7 @@
 ---
 name: "lean-security-formalization"
 description: |
-  USE FOR: Data security, information security, access control, cryptographic properties, and privacy in Lean 4. Use when formalizing information flow policies, access control models, confidentiality/integrity/availability properties, data protection compliance (GDPR/LED), or trust model properties. Core skill for the project's provenance security and data handling requirements.
+  USE FOR: Data security, information security, access control, cryptographic properties, and privacy in Lean 4. Use when formalizing information flow policies, access control models, confidentiality/integrity/availability properties, data protection compliance (GDPR/LED), or trust model properties.
   DO NOT USE FOR: security policy design not in Lean (use @applied-data-information-security); AI safety formalisation (use @lean-ai-formalization); general knowledge formalisation (use @lean-knowledge-formalization).
   TRIGGERS: security formalization, information flow Lean, access control proof, cryptographic Lean, privacy proof.
 tier: "warm"
@@ -25,7 +25,7 @@ Guide to formalizing security properties, access control, information flow, and 
 
 ## Routing
 
-- **USE FOR:** Data security, information security, access control, cryptographic properties, and privacy in Lean 4. Use when formalizing information flow policies, access control models, confidentiality/integrity/availability properties, data protection compliance (GDPR/LED), or trust model properties. Core skill for the project's provenance security and data handling requirements.
+- **USE FOR:** Data security, information security, access control, cryptographic properties, and privacy in Lean 4. Use when formalizing information flow policies, access control models, confidentiality/integrity/availability properties, data protection compliance (GDPR/LED), or trust model properties.
 - **DO NOT USE FOR:** security policy design not in Lean (use @applied-data-information-security); AI safety formalisation (use @lean-ai-formalization); general knowledge formalisation (use @lean-knowledge-formalization).
 - **TRIGGERS:** security formalization, information flow Lean, access control proof, cryptographic Lean, privacy proof.
 
@@ -74,4 +74,3 @@ the dispatch contract and the parts index.
 - [`../lean-proof-review/SKILL.md`](../lean-proof-review/SKILL.md) — Successor
 - [`../lean-enforcement/SKILL.md`](../lean-enforcement/SKILL.md) — Successor
 - [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) — Successor
-

@@ -1,7 +1,7 @@
 ---
 name: "lean-applied-reasoning"
 description: |
-  USE FOR: Applied reasoning for intelligence analysis, strategy creation and analysis, brainstorming methodologies, investigative reasoning, and domain-specific decision-making. Use when formalizing strategic frameworks, situational analysis, hypothesis generation workflows, decision-under-uncertainty models, or when connecting the project's theoretical formalization to practical operational contexts. Bridges mathematical formalization to real-world application domains.
+  USE FOR: Applied reasoning for intelligence analysis, strategy creation and analysis, brainstorming methodologies, investigative reasoning, and domain-specific decision-making. Use when formalizing strategic frameworks, situational analysis, hypothesis generation workflows, decision-under-uncertainty models, or when connecting theoretical formalization to practical operational contexts. Bridges mathematical formalization to real-world application domains.
   DO NOT USE FOR: pure intelligence-analysis methodology (use @applied-intelligence-analysis); strategy analysis methodology (use @applied-strategy-analysis); legal reasoning methodology (use @applied-legal-reasoning).
   TRIGGERS: applied reasoning, intelligence formalisation, strategy formalisation, investigative reasoning, domain-specific reasoning.
 tier: "warm"
@@ -25,7 +25,7 @@ Guide to formalizing applied reasoning — from intelligence analysis to strateg
 
 ## Routing
 
-- **USE FOR:** Applied reasoning for intelligence analysis, strategy creation and analysis, brainstorming methodologies, investigative reasoning, and domain-specific decision-making. Use when formalizing strategic frameworks, situational analysis, hypothesis generation workflows, decision-under-uncertainty models, or when connecting the project's theoretical formalization to practical operational contexts. Bridges mathematical formalization to real-world application domains.
+- **USE FOR:** Applied reasoning for intelligence analysis, strategy creation and analysis, brainstorming methodologies, investigative reasoning, and domain-specific decision-making. Use when formalizing strategic frameworks, situational analysis, hypothesis generation workflows, decision-under-uncertainty models, or when connecting theoretical formalization to practical operational contexts. Bridges mathematical formalization to real-world application domains.
 - **DO NOT USE FOR:** pure intelligence-analysis methodology (use @applied-intelligence-analysis); strategy analysis methodology (use @applied-strategy-analysis); legal reasoning methodology (use @applied-legal-reasoning).
 - **TRIGGERS:** applied reasoning, intelligence formalisation, strategy formalisation, investigative reasoning, domain-specific reasoning.
 
@@ -74,4 +74,3 @@ the dispatch contract and the parts index.
 - [`../lean-proof-review/SKILL.md`](../lean-proof-review/SKILL.md) — Successor
 - [`../lean-enforcement/SKILL.md`](../lean-enforcement/SKILL.md) — Successor
 - [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) — Successor
-

@@ -9,7 +9,7 @@ tier: "warm"
 This skill no longer hosts content. The Lake build workflow was always
 Lake-generic (only `lake exe cache get` is Mathlib-specific), so the
 content moved to a generic `lean-build` skill that dispatches for any
-Lake-managed project (Mathlib, Cslib, EASCI, downstream).
+Lake-managed project (Mathlib, Cslib, or downstream repositories).
 
 | Old section | New home |
 |---|---|

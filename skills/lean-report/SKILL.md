@@ -35,7 +35,7 @@ Convert a Lean 4 project blueprint (extracted LaTeX nodes, dependency graphs, JS
 2. First-time: run Part 12.2 (INGEST → PLAN → NARRATE → ILLUSTRATE → ASSEMBLE → COMPILE). Each stage's contract is in the handbook (Parts 3–8).
 3. Incremental: run Part 12.3 — re-blueprint, re-ingest, diff, narrate only changed chapters, recompile.
 4. On compilation error consult Part 13 (Troubleshooting) below; on output-artifact question consult Part 14 below.
-5. Handoff to `@lean-doc-feedback` once the PDF lands so the doc-sync skill can record the new artifact in the project's tracking matrix.
+5. Handoff to `@lean-doc-feedback` once the PDF lands so the doc-sync skill can record the new artifact in the repository's tracking matrix.
 
 ## Recovery & STOP
 
@@ -189,5 +189,5 @@ The complete report generation pipeline produces:
 
 - [`../../references/lean-report-handbook.md`](../../references/lean-report-handbook.md) — Full pipeline encyclopaedia (extracted from this skill)
 - [`../lean-blueprint/SKILL.md`](../lean-blueprint/SKILL.md) — Produces the blueprint artifacts this skill consumes
-- [`../lean-doc-feedback/SKILL.md`](../lean-doc-feedback/SKILL.md) — Records the resulting PDF in the project's doc-sync matrix
+- [`../lean-doc-feedback/SKILL.md`](../lean-doc-feedback/SKILL.md) — Records the resulting PDF in the repository's doc-sync matrix
 - [`../lean-review-council/SKILL.md`](../lean-review-council/SKILL.md) — Reviews the report for project-level coherence

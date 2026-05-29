@@ -1,7 +1,7 @@
 ---
 name: "math-time-series"
 description: |
-  USE FOR: Time series analysis, signal processing, temporal pattern detection, and multi-scale temporal dynamics. Use for mathematical reasoning about time-varying data, smoothing, derivative estimation, spectral analysis, changepoint detection, and the temporal aspects of the project's knowledge trajectory computation. Covers both theory and computational methodology.
+  USE FOR: Time series analysis, signal processing, temporal pattern detection, and multi-scale temporal dynamics. Use for mathematical reasoning about time-varying data, smoothing, derivative estimation, spectral analysis, changepoint detection, and temporal trajectory computation. Covers both theory and computational methodology.
   DO NOT USE FOR: measure-theoretic / probabilistic basis (use @math-measure-probability); Lean proofs (use @lean-math-stochastic); nonlinear dynamics (use @math-nonlinear-dynamics).
   TRIGGERS: time series, signal processing, temporal pattern, multi-scale temporal, spectral analysis.
 tier: "warm"
@@ -19,13 +19,13 @@ metadata:
 
 # Time Series Analysis & Temporal Mathematics
 
-Comprehensive methodology for temporal mathematics — the computational backbone of the project's phase trajectory computation, early warning signal detection, and multi-timescale architecture.
+Comprehensive methodology for temporal mathematics — the computational backbone of phase trajectory computation, early warning signal detection, and multi-timescale architectures.
 
 ---
 
 ## Routing
 
-- **USE FOR:** Time series analysis, signal processing, temporal pattern detection, and multi-scale temporal dynamics. Use for mathematical reasoning about time-varying data, smoothing, derivative estimation, spectral analysis, changepoint detection, and the temporal aspects of the project's knowledge trajectory computation. Covers both theory and computational methodology.
+- **USE FOR:** Time series analysis, signal processing, temporal pattern detection, and multi-scale temporal dynamics. Use for mathematical reasoning about time-varying data, smoothing, derivative estimation, spectral analysis, changepoint detection, and temporal trajectory computation. Covers both theory and computational methodology.
 - **DO NOT USE FOR:** measure-theoretic / probabilistic basis (use @math-measure-probability); Lean proofs (use @lean-math-stochastic); nonlinear dynamics (use @math-nonlinear-dynamics).
 - **TRIGGERS:** time series, signal processing, temporal pattern, multi-scale temporal, spectral analysis.
 
@@ -74,4 +74,3 @@ the dispatch contract and the parts index.
 - [`../lean-math-stochastic/SKILL.md`](../lean-math-stochastic/SKILL.md) — Successor
 - [`../math-measure-probability/SKILL.md`](../math-measure-probability/SKILL.md) — Successor
 - [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) — Successor
-

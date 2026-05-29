@@ -1,7 +1,7 @@
 ---
 name: "math-optimization-game"
 description: |
-  USE FOR: Mathematical optimization, game theory, decision theory, mechanism design, multi-objective optimization, convex optimization, and reinforcement learning theory. Use for reasoning about Bellman equations, Nash equilibria, Pareto optimality, gradient methods, linear/convex/integer programming, and any optimization-related mathematics in the project. Covers both pure theory and computational methodology.
+  USE FOR: Mathematical optimization, game theory, decision theory, mechanism design, multi-objective optimization, convex optimization, and reinforcement learning theory. Use for reasoning about Bellman equations, Nash equilibria, Pareto optimality, gradient methods, linear/convex/integer programming, and optimization-related mathematics. Covers both pure theory and computational methodology.
   DO NOT USE FOR: Lean optimization proofs (use @lean-math-optimization); strategy methodology (use @applied-strategy-analysis); general nonlinear dynamics (use @math-nonlinear-dynamics).
   TRIGGERS: optimization, game theory, decision theory, mechanism design, convex optimization, reinforcement learning.
 tier: "warm"
@@ -19,13 +19,13 @@ metadata:
 
 # Math Optimization & Game Theory
 
-Mathematical optimization and strategic interaction theory, applied to the project's reinforcement learning, governance convergence, and multi-agent coordination.
+Mathematical optimization and strategic interaction theory, applied to reinforcement learning, governance convergence, and multi-agent coordination.
 
 ---
 
 ## Routing
 
-- **USE FOR:** Mathematical optimization, game theory, decision theory, mechanism design, multi-objective optimization, convex optimization, and reinforcement learning theory. Use for reasoning about Bellman equations, Nash equilibria, Pareto optimality, gradient methods, linear/convex/integer programming, and any optimization-related mathematics in the project. Covers both pure theory and computational methodology.
+- **USE FOR:** Mathematical optimization, game theory, decision theory, mechanism design, multi-objective optimization, convex optimization, and reinforcement learning theory. Use for reasoning about Bellman equations, Nash equilibria, Pareto optimality, gradient methods, linear/convex/integer programming, and optimization-related mathematics. Covers both pure theory and computational methodology.
 - **DO NOT USE FOR:** Lean optimization proofs (use @lean-math-optimization); strategy methodology (use @applied-strategy-analysis); general nonlinear dynamics (use @math-nonlinear-dynamics).
 - **TRIGGERS:** optimization, game theory, decision theory, mechanism design, convex optimization, reinforcement learning.
 
@@ -53,9 +53,9 @@ Mathematical optimization and strategic interaction theory, applied to the proje
 
 ### 1.1 Convex Optimization
 
-| Concept | Definition | Project Relevance |
+| Concept | Definition | Common relevance |
 |---|---|---|
-| Convex set | $S$ where $\forall x,y \in S, \lambda x + (1-\lambda)y \in S$ for $\lambda \in [0,1]$ | Quality gates, OKD simplex |
+| Convex set | $S$ where $\forall x,y \in S, \lambda x + (1-\lambda)y \in S$ for $\lambda \in [0,1]$ | Quality gates, stochastic simplexes |
 | Convex function | $f(\lambda x + (1-\lambda)y) \le \lambda f(x) + (1-\lambda)f(y)$ | Lyapunov candidates |
 | Strong convexity | $f(y) \ge f(x) + \nabla f(x)^T(y-x) + \frac{\mu}{2}\|y-x\|^2$ | Convergence rate bounds |
 | KKT conditions | Stationarity + primal/dual feasibility + complementarity | Constrained governance |
@@ -67,7 +67,7 @@ Mathematical optimization and strategic interaction theory, applied to the proje
 - **Interior point**: Barrier methods for LP
 - **Branch & bound**: Integer programming via LP relaxation
 - **Network flows**: Min-cost flow, max-flow/min-cut
-- **project application**: Pipeline composition as flow optimization
+- **Common application**: pipeline composition as flow optimization
 
 ### 1.3 Nonlinear Optimization
 
@@ -78,7 +78,7 @@ Mathematical optimization and strategic interaction theory, applied to the proje
 | Newton's method | Quadratic | Strongly convex, Hessian available |
 | BFGS/L-BFGS | Super-linear | Large-scale smooth |
 | Proximal gradient | $O(1/k)$ | Composite (smooth + nonsmooth) |
-| Mirror descent | $O(1/\sqrt{k})$ | Simplex constraints (OKD) |
+| Mirror descent | $O(1/\sqrt{k})$ | Simplex constraints |
 
 ---
 
@@ -114,7 +114,7 @@ Mathematical optimization and strategic interaction theory, applied to the proje
 - Homotopy methods
 - Learning dynamics (fictitious play, multiplicative weights)
 
-**Project formalization:** Trust dynamics as learning dynamics converging to NE-like fixed points.
+**Common formalization:** trust dynamics as learning dynamics converging to NE-like fixed points.
 
 ---
 
@@ -124,11 +124,11 @@ Mathematical optimization and strategic interaction theory, applied to the proje
 
 - Von Neumann-Morgenstern axioms → utility function
 - Risk aversion: concave utility ($u'' < 0$)
-- Project: Quality gate thresholds as risk-adjusted decisions
+- Quality gate thresholds as risk-adjusted decisions
 
 ### 3.2 Multi-Criteria Decision Making
 
-| Method | Type | Project Use |
+| Method | Type | Common use |
 |---|---|---|
 | Weighted sum | Scalarization | CCV → single quality score |
 | Pareto front | Geometric | Trade-off visualization |
@@ -169,7 +169,7 @@ Mathematical optimization and strategic interaction theory, applied to the proje
 - **Constrained MDP**: $\max_\pi V^\pi$ s.t. $C^\pi \le d$
 - **Lyapunov-based**: Safety via Lyapunov barrier functions
 - **Shielding**: Pre/post-safety filters on actions
-- **Project**: Trust dynamics as safe RL with Lyapunov certification
+- **Common use**: trust dynamics as safe RL with Lyapunov certification
 
 ---
 
@@ -182,9 +182,9 @@ Mathematical optimization and strategic interaction theory, applied to the proje
 - **Scalarization**: $\min_x \sum_i w_i f_i(x)$ recovers Pareto points (for convex)
 - **$\epsilon$-constraint**: $\min f_1$ s.t. $f_j \le \epsilon_j$ for $j \ge 2$
 
-### 5.2 Project Multi-Objective Formulation
+### 5.2 Multi-Objective Formulation
 
-The Project governance problem is inherently multi-objective:
+Governance and safety problems are often inherently multi-objective:
 - Maximize quality (CCV scores)
 - Minimize risk (safety envelope violations)
 - Maximize learning rate (nested learning convergence)
@@ -192,15 +192,17 @@ The Project governance problem is inherently multi-objective:
 
 ---
 
-## Part 6 — Connection to Project Lean Modules
+## Part 6 — Host-Repository Lean Extension Points
 
-| Project Module | Mathematical Foundation | Key Concepts |
+Do not assume any project-specific Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. Map local modules by role:
+
+| Local extension point | Mathematical foundation | Typical concepts |
 |---|---|---|
-| ReinforcementLearning.lean | MDP, Bellman, contraction | `ValueFunction`, `bellmanContraction`, `greedyValue` |
-| AgenticSafety.lean | Constrained optimization, game theory | `MultiAgentTrust`, `SafetyEnvelope` |
-| LyapunovStability.lean | Lyapunov optimization, safe RL | `governanceLyapunov`, `multiScaleLyapunov` |
-| Tactics.lean | General contraction theory | `AlignedReward`, `ProjectHierarchy` |
-| StochasticCCV.lean | Stochastic optimization, simplex | `okdStep`, `balancedStart` |
+| RL/value-function module | MDP, Bellman, contraction | value functions, Bellman contraction, greedy values |
+| Safety/trust module | constrained optimization, game theory | multi-agent trust, safety envelopes |
+| Lyapunov/stability module | Lyapunov optimization, safe RL | Lyapunov functions, multi-scale energy |
+| Tactic-helper module | general contraction theory | aligned rewards, hierarchy bounds |
+| Stochastic-dynamics module | stochastic optimization, simplex | transition steps, balanced starts |
 
 ---
 
@@ -227,5 +229,5 @@ The Project governance problem is inherently multi-objective:
 | KK | KU | UK/UU to discover |
 |---|---|---|
 | Bellman contraction | Tighter regret bounds | Novel game formulations for trust |
-| Convex CCV structure | Multi-objective Pareto for Project | Mechanism design for governance |
-| Simplex projection | Mirror descent for OKD | Stackelberg formulation of hierarchy |
+| Convex quality structure | Multi-objective Pareto analysis | Mechanism design for governance |
+| Simplex projection | Mirror descent on constrained probability states | Stackelberg formulation of hierarchy |

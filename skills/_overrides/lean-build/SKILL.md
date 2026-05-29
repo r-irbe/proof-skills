@@ -1,7 +1,7 @@
 ---
 name: "lean-build"
 description: |
-  USE FOR: building Lean 4 projects with Lake, validating Lean changes with `lake env lean`, picking targeted build commands (`lake build <Module>`), resolving stale build artifacts via `lake clean` + `lake exe cache get`, preparing CI-quality local checks. Applies to any Lake-managed project (Mathlib, Cslib, EASCI, downstream).
+  USE FOR: building Lean 4 projects with Lake, validating Lean changes with `lake env lean`, picking targeted build commands (`lake build <Module>`), resolving stale build artifacts via `lake clean` + `lake exe cache get`, preparing CI-quality local checks. Applies to any Lake-managed project (Mathlib, Cslib, or downstream repositories).
   DO NOT USE FOR: bisecting which Lean version caused a regression (use @lean-bisect), minimising an error to a bug-report repro (use @lean-mwe), repairing the toolchain itself (use @lean-setup), writing or fixing the proof (use @lean-proof).
   TRIGGERS: build, lake, lake env lean, lake exe cache get, stale artifacts, lake clean, build error, CI prep.
 tier: "warm"

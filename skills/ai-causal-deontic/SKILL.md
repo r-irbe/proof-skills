@@ -110,14 +110,14 @@ Three rules for identifying causal effects from observational data:
 - **Rubin causal model**: $Y_i(1), Y_i(0)$ — potential outcomes under treatment/control
 - **ATE**: $\mathbb{E}[Y(1) - Y(0)]$ — average treatment effect
 - **CATE**: $\mathbb{E}[Y(1) - Y(0) \mid X = x]$ — conditional on covariates
-- **Project mapping**: OKD phase transitions as "treatment" effects on knowledge quality
+- **Pipeline mapping**: phase transitions as "treatment" effects on quality or safety outcomes
 
 ### 2.3 Counterfactual Stability
 
 When is a counterfactual claim robust?
 - **Monotonicity**: Outcome monotonic in treatment
 - **Counterfactual stability**: Small perturbations in $U$ → small perturbations in counterfactual outcome
-- **Project**: Phase transitions exhibit cusp-catastrophe counterfactual behavior (sudden jumps)
+- **Pipeline example**: phase transitions can exhibit threshold or bifurcation-like counterfactual behavior (sudden jumps)
 
 ---
 
@@ -133,14 +133,14 @@ When is a counterfactual claim robust?
 | NOTEARS | Continuous optimization | Acyclicity constraint | DAG |
 | Causal transformers | Deep learning | Large observational data | DAG |
 
-### 3.2 Causal Graphs in the project
+### 3.2 Causal Graphs in a Verification Pipeline
 
 ```
-Project Causal DAG (formalized in ProvenanceChain.lean):
+Example causal DAG:
   Stakeholder → Requirements → Phase classification
   Phase classification → Quality thresholds → Gate decisions
   Gate decisions → Knowledge state → Phase transitions
-  Phase transitions → OKD trajectory → Final quality
+  Phase transitions → System trajectory → Final quality
 ```
 
 ---
@@ -181,7 +181,7 @@ Four operators: out_1 (simple), out_2 (+SI), out_3 (+CT), out_4 (+SI+CT)
 Permission: negative (not forbidden) vs positive (explicitly permitted)
 ```
 
-project application: Quality gates as I/O norms mapping observation states to action obligations.
+Common application: quality gates as I/O norms mapping observation states to action obligations.
 
 ---
 
@@ -189,7 +189,7 @@ project application: Quality gates as I/O norms mapping observation states to ac
 
 ### 5.1 Norm Types
 
-| Norm Type | Example in the project |
+| Norm Type | Example in a verification pipeline |
 |---|---|
 | Regulative | "Agents SHALL pass quality gate" |
 | Constitutive | "Meeting threshold counts as passing" |
@@ -200,11 +200,11 @@ project application: Quality gates as I/O norms mapping observation states to ac
 
 - **Regimented**: System physically prevents violations (hard constraints)
 - **Regulated**: System detects and sanctions violations (soft constraints with enforcement)
-- **Project**: Quality gates are regimented; trust scores are regulated
+- **Example**: quality gates can be regimented while trust scores or review confidence are regulated
 
 ### 5.3 Norm Conflict Resolution
 
-| Strategy | Description | Project approach |
+| Strategy | Description | Common approach |
 |---|---|---|
 | Priority ordering | Higher-priority norm wins | Safety > quality > efficiency |
 | Specificity | More specific norm overrides general | Phase-specific thresholds override defaults |
@@ -212,16 +212,18 @@ project application: Quality gates as I/O norms mapping observation states to ac
 
 ---
 
-## Part 6 — Connection to Project Lean Modules
+## Part 6 — Host-Repository Lean Extension Points
 
-| Module | Causal/Deontic Aspect |
+Do not assume any project-specific Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. When local modules exist, map them by role:
+
+| Local extension point | Causal/deontic aspect |
 |---|---|
-| ProvenanceChain.lean | Causal DAG of evidence, intervention tracking |
-| QualityGates.lean | Deontic obligations (gate passage requirements) |
-| AgenticSafety.lean | Safety obligations, prohibition of envelope violation |
-| PhaseClassification.lean | Causal model of classification → gate → transition |
-| Tactics.lean | Reasoning automation for causal/deontic proofs |
-| KnowledgePhasePortrait.lean | Causal dynamics of phase transitions |
+| Provenance / audit trail module | causal DAG of evidence, intervention tracking |
+| Quality-gate module | deontic obligations and gate-passage requirements |
+| Safety module | safety obligations and prohibited envelope violations |
+| Classification module | causal model of classification → gate → transition |
+| Tactic-helper module | reasoning automation for causal/deontic proofs |
+| Dynamics module | causal dynamics of phase transitions |
 
 ---
 
@@ -232,4 +234,4 @@ project application: Quality gates as I/O norms mapping observation states to ac
 | SCM theory well-established | Full do-calculus in Lean 4 | Causal reasoning under deep uncertainty |
 | SDL axiomatized | I/O logic Lean formalization | Emergent norms in multi-agent systems |
 | Back-door criterion proven | Automated causal discovery verification | Counterfactual stability for chaotic systems |
-| Project causal DAG identified | GAI causal reasoning regulation | Ethical AI as deontic system |
+| Pipeline causal DAG identified | GAI causal reasoning regulation | Ethical AI as deontic system |

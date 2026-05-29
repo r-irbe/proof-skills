@@ -46,7 +46,7 @@ metadata:
 3. **L2 statement** [validate] — diff the theorem statement against the spec / paper; halt if it has drifted.
 4. **L3 non-triviality** [validate] — confirm the hypothesis is non-vacuous; spot pattern-match for hidden trivialities.
 5. **L4 quality** [validate] — apply the proof-search priority table; flag tactic mis-selection, unused hypothesis, fragile rewrite chains; suggest improvements but do NOT apply them.
-6. **Persist** [persist] *(MANDATORY)* — write the review record (per-layer status, findings, suggestions) to the project's review log, link it from the theorem, update sign-off state. Skipping Persist = incomplete.
+6. **Persist** [persist] *(MANDATORY)* — write the review record (per-layer status, findings, suggestions) to the repository's review log, link it from the theorem, update sign-off state. Skipping Persist = incomplete.
 
 ## Recovery & STOP
 

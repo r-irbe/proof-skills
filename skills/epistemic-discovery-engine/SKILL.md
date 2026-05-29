@@ -70,7 +70,7 @@ the dispatch contract and a parts index.
 | Part 3 | Reporting and Outputs | Census + probe + trigger templates |
 | Part 4 | Integration Architecture | Wiring with research-council + synthesis |
 | Part 5 | Anti-Stagnation Mechanisms | Discovery-loop diversifiers |
-| Part 6 | Project Relevance | Per-project applicability scoring |
+| Part 6 | Applicability Scoring | Per-repository applicability scoring |
 | Part 7 | Cross-References | Sibling skill inventory |
 
 ---

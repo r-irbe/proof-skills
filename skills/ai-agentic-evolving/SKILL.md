@@ -1,7 +1,7 @@
 ---
 name: "ai-agentic-evolving"
 description: |
-  USE FOR: Agentic AI systems, multi-agent coordination, evolving agents, agent lifecycle management, emergent behavior, and trust dynamics in autonomous systems. Use for reasoning about agent architectures, communication protocols, coalition formation, reputation systems, and the mathematical foundations of the project's agentic safety and multi-agent trust formalization.
+  USE FOR: Agentic AI systems, multi-agent coordination, evolving agents, agent lifecycle management, emergent behavior, and trust dynamics in autonomous systems. Use for reasoning about agent architectures, communication protocols, coalition formation, reputation systems, and the mathematical foundations of agentic safety and multi-agent trust formalization.
   DO NOT USE FOR: formal verification of those AI systems (use @lean-ai-formalization); high-stakes / verifiable AI mode (use @ai-high-stakes-verifiable); causal/deontic reasoning (use @ai-causal-deontic).
   TRIGGERS: agentic AI, multi-agent, evolving agent, agent lifecycle, emergent behavior, trust dynamics, autonomous system.
 tier: "warm"
@@ -19,13 +19,13 @@ metadata:
 
 # Agentic & Evolving AI Systems
 
-Mathematical and architectural foundations for autonomous agents, multi-agent systems, evolving capabilities, and the trust/safety dynamics formalized in the project.
+Mathematical and architectural foundations for autonomous agents, multi-agent systems, evolving capabilities, and formally verified trust/safety dynamics.
 
 ---
 
 ## Routing
 
-- **USE FOR:** Agentic AI systems, multi-agent coordination, evolving agents, agent lifecycle management, emergent behavior, and trust dynamics in autonomous systems. Use for reasoning about agent architectures, communication protocols, coalition formation, reputation systems, and the mathematical foundations of the project's agentic safety and multi-agent trust formalization.
+- **USE FOR:** Agentic AI systems, multi-agent coordination, evolving agents, agent lifecycle management, emergent behavior, and trust dynamics in autonomous systems. Use for reasoning about agent architectures, communication protocols, coalition formation, reputation systems, and the mathematical foundations of agentic safety and multi-agent trust formalization.
 - **DO NOT USE FOR:** formal verification of those AI systems (use @lean-ai-formalization); high-stakes / verifiable AI mode (use @ai-high-stakes-verifiable); causal/deontic reasoning (use @ai-causal-deontic).
 - **TRIGGERS:** agentic AI, multi-agent, evolving agent, agent lifecycle, emergent behavior, trust dynamics, autonomous system.
 
@@ -74,4 +74,3 @@ the dispatch contract and the parts index.
 - [`../lean-ai-formalization/SKILL.md`](../lean-ai-formalization/SKILL.md) — Successor
 - [`../ai-high-stakes-verifiable/SKILL.md`](../ai-high-stakes-verifiable/SKILL.md) — Successor
 - [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) — Successor
-

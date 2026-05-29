@@ -53,12 +53,12 @@ the high-frequency pitfalls / recipes (kept inline below).
 |---|---|---|
 | Part 1 | Probability in Mathlib | ProbabilityMeasure, MeasurableSpace, Random variables |
 | Part 2 | Markov Chains | transition kernels, row-stochastic matrices, stationary distributions |
-| Part 3 | Project Stochastic Patterns | EASCI StochasticCCV module bridges |
+| Part 3 | Repository Stochastic Patterns | host-repository stochastic bridge modules |
 | Part 4 | Time Series Analysis | stationarity, autocovariance, spectral density |
 | Part 5 | Ergodic Theory | MeasurePreserving, Ergodic, Birkhoff pointwise ergodic |
 | Part 6 | Stochastic Stability | stochastic Lyapunov, mean-square stability |
 | Part 7 | Research Council Integration | stochastic-domain dispatch matrix |
-| Part 8 | Project Stochastic Module Reference | project StochasticCCV-specific patterns + IVT |
+| Part 8 | Repository Stochastic Module Reference | local stochastic-module patterns + IVT |
 
 ## Part 9 — Common Pitfalls (Probability & Stochastic Processes)
 
@@ -75,7 +75,7 @@ the high-frequency pitfalls / recipes (kept inline below).
 
 ## Part 10 — Mathlib-Pin Notes (verified 2026-05)
 
-These are concrete pin-relative facts that have bitten this project in the past — keep them in mind when reading "old" Mathlib citations:
+These are concrete pin-relative facts that have bitten downstream projects in the past — keep them in mind when reading "old" Mathlib citations:
 
 - **`IsFiniteMeasure.toSigmaFinite`** — priority-100 instance at `MeasureTheory/Measure/Typeclasses/SFinite.lean:577`. Don't manually `apply` it; let typeclass synthesis handle it. Used in `Mathlib/Probability/Independence/Basic.lean:704` as a reference example.
 - **`supermartingale_of_condExp_sub_nonneg_nat`** — at `Probability/Martingale/Basic.lean:424` at pin `949174649e0f` (drifted from `:431`). Preferred over `submartingale_nat` for `ConditionalRS`-style bridges.

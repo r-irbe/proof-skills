@@ -126,14 +126,14 @@ Soundness) review of [artifact]. Run #print axioms on all theorems. Check
 for sorry, admit, native_decide. Verify lake build passes. Report findings 
 using the Council Session Report template. Vote ✅/🟡/🟠/🔴."
 
-Dispatch Φ: "You are Phi, the Statement Oracle. Execute Layer 2 (Statement 
-Correctness) review of [artifact]. Translate every theorem to English. Run 
-the missing-hypothesis checklist. Check for vacuous truth. Cross-reference 
-with project-tufte.tex. Report findings using the Council Session Report 
+Dispatch Φ: "You are Phi, the Statement Oracle. Execute Layer 2 (Statement
+Correctness) review of [artifact]. Translate every theorem to English. Run
+the missing-hypothesis checklist. Check for vacuous truth. Cross-reference
+with the repository's source specification or paper. Report findings using the Council Session Report
 template. Vote ✅/🟡/🟠/🔴."
 
 Dispatch Ν: "You are Nu, the Novelty Scout. Execute Layer 3 (Non-Triviality) 
-review of [artifact]. Run exact? on all goals. Check Tactics.lean for 
+review of [artifact]. Run exact? on all goals. Check local tactic/helper modules for
 duplicates. Classify novelty. Report findings using the Council Session 
 Report template. Vote ✅/🟡/🟠/🔴."
 

@@ -26,7 +26,7 @@ metadata:
 ## Routing
 
 - **USE FOR:** running an individual enforcement script or the full `enforce_all.sh` pipeline; checking a build is clean before review; auditing axioms after a refactor; validating cross-module bridges; gating a workflow step.
-- **DO NOT USE FOR:** deciding whether a proof is *correct* (delegate to `@lean-proof-review`); scoring the project's quality (delegate to `@lean-quality-engine`); routing across skills (delegate to `@lean-gateway`).
+- **DO NOT USE FOR:** deciding whether a proof is *correct* (delegate to `@lean-proof-review`); scoring repository quality (delegate to `@lean-quality-engine`); routing across skills (delegate to `@lean-gateway`).
 - **TRIGGERS:** enforcement, CI gate, axiom audit, council_precheck, workflow_gate, ecosystem_health, sorry check.
 
 ## Behavioural rules (G-*)
@@ -36,13 +36,13 @@ metadata:
 - **G-3** (MUST): `council_precheck.sh` failure MUST block council convening; the workflow MUST NOT proceed to review. [Trace: AC-03]
 - **G-4** (MUST): `workflow_gate.py` MUST verify all mandatory gates for a given step before that step starts. [Trace: AC-04]
 - **G-5** (SHOULD NOT): The skill SHOULD NOT silently retry a failed blocking script; escalate per §Recovery & STOP instead. [Trace: AC-05]
-- **G-6** (MUST): Every script invocation MUST emit a structured result (exit code, summary, artefact path) to the project's enforcement log. [Trace: AC-06]
+- **G-6** (MUST): Every script invocation MUST emit a structured result (exit code, summary, artefact path) to the repository's enforcement log. [Trace: AC-06]
 - **G-7** (SHOULD): When multiple scripts can answer the same question, the skill SHOULD prefer the most specific (e.g. `axiom_audit.py` over `enforce_all.sh` for an axiom-only question). [Trace: AC-07]
 - **G-8** (MUST): On any guard failure the skill MUST escalate per §Recovery & STOP. [Trace: AC-08]
 
 ## Workflow
 
-1. **Discover** [discover] — identify the target gate (single script, group, or `enforce_all.sh`); read the project's `lakefile.lean` + recent commit log.
+1. **Discover** [discover] — identify the target gate (single script, group, or `enforce_all.sh`); read the repository's `lakefile.lean` + recent commit log.
 2. **Run** [execute] — execute the script(s) in the order documented in [`REFERENCE.md`](./REFERENCE.md) Part 2; capture stdout, stderr, exit code, artefact paths.
 3. **Validate** [validate] — interpret exit codes against the blocking-vs-advisory table; for blocking failures, HALT and route to recovery.
 4. **Aggregate** [validate] — compose a per-script status line + overall pass/fail; surface advisories without blocking.

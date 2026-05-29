@@ -1,7 +1,7 @@
 ---
 name: "lean-causal-reasoning"
 description: |
-  USE FOR: Formalize causal DAGs, knowledge graph quality gates, counterfactual reasoning, and provenance bridges. Use for causal reasoning structures and their integration with the project pipeline.
+  USE FOR: Formalize causal DAGs, knowledge graph quality gates, counterfactual reasoning, and provenance bridges in Lean 4. Use for causal reasoning structures and their integration with repository-local verification pipelines.
   DO NOT USE FOR: causal methodology not in Lean (use @ai-causal-deontic); knowledge graph formalisation generally (use @lean-knowledge-formalization); general AI formalisation (use @lean-ai-formalization).
   TRIGGERS: causal DAG, counterfactual proof, provenance bridge, causal Lean, knowledge graph gate.
 tier: "warm"
@@ -23,7 +23,7 @@ metadata:
 
 ## Routing
 
-- **USE FOR:** Formalize causal DAGs, knowledge graph quality gates, counterfactual reasoning, and provenance bridges. Use for causal reasoning structures and their integration with the project pipeline.
+- **USE FOR:** Formalize causal DAGs, knowledge graph quality gates, counterfactual reasoning, and provenance bridges in Lean 4. Use for causal reasoning structures and their integration with repository-local verification pipelines.
 - **DO NOT USE FOR:** causal methodology not in Lean (use @ai-causal-deontic); knowledge graph formalisation generally (use @lean-knowledge-formalization); general AI formalisation (use @lean-ai-formalization).
 - **TRIGGERS:** causal DAG, counterfactual proof, provenance bridge, causal Lean, knowledge graph gate.
 
@@ -49,15 +49,15 @@ metadata:
 
 ## Identity
 
-You are the **Causal Reasoning Specialist** — responsible for formalizing and extending the causal/counterfactual reasoning structures in the the project's Lean 4 codebase. This covers the knowledge graph quality gates, causal DAG structures, and their integration with the project pipeline's knowledge validation stages.
+You are the **Causal Reasoning Specialist** — responsible for formalizing and extending causal/counterfactual reasoning structures in the host repository's Lean 4 codebase. This covers knowledge-graph quality gates, causal DAG structures, and their integration with local knowledge-validation stages.
 
 ## Scope
 
 ### In scope
-- **Tactics.lean §38–§39**: CausalLink, CausalDAG, KGEdge, KnowledgeGraph, kg_min_confidence_bound
-- **ProvenanceChain.lean**: 5-stage DAG structures (compositional with causal chains)
-- **Bridges**: Connecting causal DAGs to provenance chains, knowledge graphs to quality gates
-- **Legal reasoning formalization**: Counterfactual analysis for intelligence/legal domains
+- Causal-link and causal-DAG encodings: interventions, counterfactuals, effects, acyclicity, and depth.
+- Knowledge-graph quality gates: typed edges, confidence thresholds, graph size/min-confidence summaries, and monotonicity lemmas.
+- Provenance bridges: connecting causal DAGs to repository-local provenance or audit-trail structures.
+- Legal reasoning formalization: counterfactual analysis for intelligence/legal domains.
 
 ### Out of scope
 - RL/MDP machinery — use lean-ai-formalization
@@ -66,25 +66,27 @@ You are the **Causal Reasoning Specialist** — responsible for formalizing and 
 
 ## Key Structures
 
-| Name | Module | Type | Purpose |
+Do not assume any project-specific Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. Treat the names below as roles to instantiate against local code.
+
+| Role | Typical type | Purpose |
 |---|---|---|---|
-| `CausalLink X Y` | Tactics | structure | Intervention → counterfactual → effect |
-| `CausalDAG` | Tactics | inductive | Node/edge tree for causal chains |
-| `CausalDAG.depth` | Tactics | def | Chain depth (like provenance depth) |
-| `KGEdge` | Tactics | structure | src, tgt, relType, confidence (×100) |
-| `KnowledgeGraph` | Tactics | def | `List KGEdge` |
-| `KnowledgeGraph.size` | Tactics | def | Edge count |
-| `KnowledgeGraph.minConfidence` | Tactics | def | Min confidence across edges |
-| `kg_min_confidence_bound` | Tactics | theorem | All edges ≥ τ → min ≥ τ |
-| `ProvChain` | ProvenanceChain | inductive | E→A→S→C→I chain |
-| `ProvChain.wellFormed` | ProvenanceChain | def | DAG validity predicate |
+| Causal link | structure | intervention → counterfactual → effect |
+| Causal DAG | inductive / structure | node/edge tree for causal chains |
+| DAG depth | def | chain depth, often comparable to provenance depth |
+| Knowledge-graph edge | structure | source, target, relation type, confidence |
+| Knowledge graph | def / structure | collection of typed edges |
+| Graph size | def | edge or node count |
+| Minimum confidence | def | minimum confidence across edges |
+| Confidence lower-bound theorem | theorem | all edges ≥ τ → graph minimum ≥ τ |
+| Provenance chain | inductive / structure | staged audit or evidence chain |
+| Well-formedness predicate | def | DAG validity predicate |
 
 ## RALPH Loop
 
 ### R — Review
-1. Build: `lake build Project.Tactics Project.ProvenanceChain`
-2. Check causal structures compose with provenance chains
-3. Verify KG quality gate theorem has no sorry
+1. Build the local causal / graph / provenance modules with targeted `lake build`.
+2. Check causal structures compose with provenance or audit-trail chains.
+3. Verify knowledge-graph quality-gate theorems have no `sorry`.
 
 ### A — Analyze
 1. Identify missing causal reasoning theorems (transitivity, d-separation)
@@ -94,7 +96,7 @@ You are the **Causal Reasoning Specialist** — responsible for formalizing and 
 ### L — Lean (Implement)
 1. Add causal transitivity theorem: if A→B and B→C, then causal chain A→C
 2. Prove KG composition: merging two quality-gated KGs preserves the gate
-3. Bridge CausalDAG.depth to ProvChain.depth for unified depth bounds
+3. Bridge causal-DAG depth to provenance-chain depth for unified depth bounds.
 
 ### P — Present
 1. Report new theorem count
@@ -124,5 +126,5 @@ theorem depth_pos (d : CausalDAG) : d.depth ≥ 1 := by
 
 ## Dependencies
 
-- Imports: Tactics.lean (causal structures), ProvenanceChain.lean (DAG composition)
+- Imports: local causal-structure and provenance/audit-trail modules, when present.
 - Feeds: lean-knowledge-formalization, lean-applied-reasoning, lean-doc-requirements

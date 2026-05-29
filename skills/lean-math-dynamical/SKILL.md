@@ -84,14 +84,14 @@ prerequisite.
 | Lyapunov candidate not positive-definite | `V 0 = 0` proved, but `V x > 0` for `x ≠ 0` fails | Add a quadratic-form witness (`x^T Q x` with `Q` PSD); check `posDef_iff_eigenvalues_pos` family |
 | Contraction map without `[CompleteSpace α]` | `ContractingWith.fixedPoint` won't apply | Add `[CompleteSpace α]` instance or restrict to a closed subset and use `IsCompact.completeSpace` |
 | IVT sign-error in bifurcation diagram | Existential `∃ c, f c = 0` won't close | Re-check sign of `f a` and `f b`; see `references/lean4-ivt-patterns.md` for the canonical `asymmetric_three_roots_ivt` walk-through |
-| Catastrophe normal form drifted from project canon | `cusp` / `fold` polynomial signs don't match expectations | Compare against `Mathlib.Analysis.SpecialFunctions.Pow.Real`; there is *no* canonical catastrophe API in Mathlib — keep local definitions in `EASCI.CuspCatastrophe.*` |
+| Catastrophe normal form drifted from repository canon | `cusp` / `fold` polynomial signs don't match expectations | Compare against `Mathlib.Analysis.SpecialFunctions.Pow.Real`; there is *no* canonical catastrophe API in Mathlib — keep local definitions in the host repository's catastrophe namespace |
 | Discrete- vs continuous-time confusion | `Tendsto` with the wrong filter | Discrete: `atTop` on `ℕ`; continuous: `atTop` on `ℝ` (often with a measure-preserving step) |
 | Spurious equilibrium from `simp` overreach | `f x = x` "proved" by simplifying both sides to `0` | Disable `simp` for the candidate equilibrium proof; use `linear_combination` or explicit substitution |
 
-### Cross-reference: EASCI stability tactics
+### Cross-reference: repository stability tactics
 
-- `EASCI.Lyapunov.*` — quadratic-form Lyapunov constructions for the project's cusp + phase-portrait models.
-- `EASCI.CuspCatastrophe.*` — cusp-form polynomial bifurcation (the 3-real-roots case).
+- Host-repository Lyapunov modules — quadratic-form Lyapunov constructions for local cusp + phase-portrait models.
+- Host-repository catastrophe modules — cusp-form polynomial bifurcation (the 3-real-roots case).
 - [`references/lean4-ivt-patterns.md`](../../references/lean4-ivt-patterns.md) — `asymmetric_three_roots_ivt` walk-through (canonical entry-point for sign-change existence).
 - [`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md) — catalog of contraction-mapping templates (uses `ContractingWith` / `LipschitzWith`).
 
