@@ -2,7 +2,7 @@
 id: zk-010
 title: Multi-model cost–quality Pareto across model × reasoning-effort
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-05-29
 type: permanent
 tags: [evals, multi-model, cost, synthesis]
 refs:
@@ -29,8 +29,8 @@ questions a single-model loop cannot answer — first among them
 *"Cost–quality Pareto frontier per skill"*. The runner is the
 producer of head-to-head outcomes (case × model × rep grid) consumed
 by both the ELO calculator and the skill-eval reports. Player
-identity in `lab/proto/elo/elo.py` is `model@effort`, confirming the
-tuple is the unit of analysis.
+identity in the current Glicko-2 pipeline remains `model@effort`,
+confirming the tuple is the unit of analysis.
 
 **Implication.** Three rules. (1) Every Pareto report must publish
 **per-task-class** frontiers — there is no global Pareto. (2) ELO

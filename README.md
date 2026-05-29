@@ -10,7 +10,8 @@ Tactics · domain math · doc / review / research workflows · zettelkasten · g
 [![Lean 4](https://img.shields.io/badge/Lean-4-2D3748.svg?logo=lean&logoColor=white)](https://github.com/leanprover/lean4)
 [![Mathlib4](https://img.shields.io/badge/Mathlib-4-4E7CD0.svg)](https://github.com/leanprover-community/mathlib4)
 [![APM](https://img.shields.io/badge/APM-skill_collection-6e5494.svg)](https://github.com/microsoft/apm)
-[![Skills](https://img.shields.io/badge/skills-53-2c974b.svg)](skills/)
+[![First-party skills](https://img.shields.io/badge/first--party%20skills-53-2c974b.svg)](skills/)
+[![Overrides](https://img.shields.io/badge/overrides-10-6e5494.svg)](skills/_overrides/)
 
 </div>
 
@@ -47,9 +48,9 @@ git clone --recurse-submodules https://github.com/r-irbe/proof-skills
 |---|---|---|
 | [`skills/`](skills/) | 53 first-party `SKILL.md` files: toolchain setup, proof tactics, MWE extraction, bisection, PR hygiene, Mathlib review, domain math, applied verticals, and end-to-end process workflows (blueprint regeneration, retrospective audits). | Harness, on demand. |
 | [`skills/_overrides/`](skills/_overrides/) | Shadows of [`leanprover/skills`](https://github.com/leanprover/skills) entries that needed audit-modification. Dispatch order **first-party → override → upstream vendor** is documented in [`AGENT.md`](AGENT.md) §3. | Harness, on demand. |
-| [`templates/`](templates/) | copy-pasteable Lean module skeletons: foundation, analysis, dynamics, automation, performance, refactoring, theorem, data module, tactic helper, bridge, MWE, PR, blueprint, zettelkasten, spec, bisect, council, retro log), etc. Cross-template conventions live in [`templates/00-CONVENTIONS.md`](templates/00-CONVENTIONS.md). | Author, copy-paste. |
-| [`references/`](references/) | background notes a skill points at when needed: theorem-search idioms (Loogle, Moogle, LeanSearch, Mathlib doc-gen 4), proof-strategy notes, refactor playbooks, ergodic/IVT/time-series patterns, Mathlib4 conventions. | Skill, by link. |
-| [`scripts/`](scripts/) | Project-agnostic helpers: axiom audits, DAG layer checks, bridge validators, zettelkasten linters, eval/ELO harnesses. None hardcodes a host project; each takes the project root as an argument. | Skill / CI / author. |
+| [`templates/`](templates/) | copy-pasteable Lean module skeletons and workflow templates. Cross-template conventions live in [`templates/00-CONVENTIONS.md`](templates/00-CONVENTIONS.md). | Author, copy-paste. |
+| [`references/`](references/) | background notes and layered skill handbooks a skill points at when needed: theorem-search idioms, proof-strategy notes, Mathlib4 conventions, and per-domain handbooks. | Skill, by link. |
+| [`scripts/`](scripts/) | Project-agnostic helpers: axiom audits, DAG layer checks, bridge validators, zettelkasten linters, eval, calibration, and Glicko-2 harnesses. None hardcodes a host project; each takes the project root as an argument. | Skill / CI / author. |
 | [`zettelkasten/`](zettelkasten/) | Repo-internal knowledge graph (fleeting · literature · permanent · index · tags) that captures cross-skill insights. | Synthesizer skills. |
 | [`vendor/`](vendor/) | Pinned git submodules of upstream sources (e.g. `leanprover-skills`) for transparent re-dispatch. | Override dispatch. |
 
@@ -64,13 +65,14 @@ proof-skills/
 ├── README.md                # You are here
 ├── LICENSE · NOTICE         # Apache-2.0
 ├── skills/                  # 53 first-party SKILL.md + _overrides/
-├── templates/               # 32 Lean module skeletons (v1 + v2)
-├── references/              # 13 background notes (Loogle, Moogle, …)
+├── templates/               # 38 Lean/workflow templates
+├── references/              # 57 notes and layered handbooks
 ├── scripts/
 │   ├── lean/                # axiom_audit, bridge_validator, dep_graph, …
-│   ├── lint/                # check_skill.py, apm_validate.py
-│   ├── eval/                # run_eval.py (v0 advisory)
-│   ├── elo/                 # elo.py (stdlib-only ELO)
+│   ├── lint/                # APM package validation
+│   ├── skill-audit/         # v2 conformance + handoff DAG audit
+│   ├── eval/                # deterministic, LLM-judge replay, calibration
+│   ├── elo/                 # Glicko-2 + live match corpus
 │   └── check-structure/     # repo-shape sanity checks
 ├── zettelkasten/            # fleeting · literature · permanent
 └── vendor/leanprover-skills # pinned upstream submodule
@@ -82,10 +84,13 @@ proof-skills/
 
 | Script | Purpose |
 |---|---|
-| [`scripts/lint/check_skill.py`](scripts/lint/check_skill.py) | Validates a `SKILL.md` against the template. |
 | [`scripts/lint/apm_validate.py`](scripts/lint/apm_validate.py) | **Hard-gated in CI.** Checks the package stays a valid APM skill collection: manifest keys, required `name` + `description` per `SKILL.md`, directory-name match, no duplicates. |
-| [`scripts/eval/run_eval.py`](scripts/eval/run_eval.py) | v0 advisory eval harness. |
-| [`scripts/elo/elo.py`](scripts/elo/elo.py) | stdlib-only ELO calculator for cross-model A/B benchmarks. |
+| [`scripts/skill-audit/check_conformance.py`](scripts/skill-audit/check_conformance.py) | **Hard-gated in CI.** Checks v2 conformance, tier coverage, handoff DAG integrity, and handbook links. |
+| [`scripts/eval/run_eval.py`](scripts/eval/run_eval.py) | Deterministic smoke runner for the 50-case suite. |
+| [`scripts/eval/calibrate_judge.py`](scripts/eval/calibrate_judge.py) | Pure replay calibration gate for known-bad judge corpora. |
+| [`scripts/eval/multi_model.py`](scripts/eval/multi_model.py) | Converts persisted solver + judge artifacts into pairwise match rows. |
+| [`scripts/elo/glicko2.py`](scripts/elo/glicko2.py) | Authoritative Glicko-2 leaderboard with uncertainty bands. |
+| [`scripts/elo/elo.py`](scripts/elo/elo.py) | Legacy vanilla-ELO dashboard helper; do not use for release rankings. |
 
 ---
 

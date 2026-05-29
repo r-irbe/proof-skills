@@ -42,7 +42,7 @@ Entrants with `@<effort>` suffixes (e.g., `claude-opus-4.7@default-effort`, `gpt
 
 `per_rubric_elo.py` re-runs Glicko-2 over subsets of `live.csv` bucketed by the case's `ensemble_rubric` (read from the case YAML; see `lab/design/01-eval-framework.md §2`). Used to surface per-domain skill differences masked by the global aggregate.
 
-R27 audit makes the bucketing explicit (all 41 cases now carry `ensemble_rubric:` rather than relying on the heuristic in `per_rubric_elo.py:53-65`).
+R27 made the bucketing explicit; the active smoke suite now has 50 cases with `ensemble_rubric:` set, so per-rubric replay no longer relies on the heuristic in `per_rubric_elo.py:53-65`.
 
 ## 5. Regression gates
 
@@ -63,4 +63,4 @@ scripts/elo/example_runs/<DATE>-<letter>-<sprint-tag>/
     per-rubric-summary.md
 ```
 
-Each round (R21, R22, ...) writes a new archive directory. Baselines are refreshed from one of these archives via `check_regression.py --refresh --current <archive>/ratings.json/ratings.json`.
+Each round (R21, R22, ...) writes a new archive directory. Baselines are refreshed from one of these archives via `check_regression.py --refresh --current <archive>/ratings.json`.

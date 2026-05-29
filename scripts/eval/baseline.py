@@ -10,8 +10,8 @@ scope for W8 Phase 1 / smoke CI).
 Two modes:
 
 * ``--mode write``  Reads a directory of per-case ``<case_id>.json``
-  files (produced by ``run_eval.py``) and writes / overwrites
-  ``baseline.json`` next to it.
+  files (produced by ``run_eval.py``) and writes / overwrites the
+  requested baseline file.
 * ``--mode diff``   Reads the same per-case JSON files plus the
   existing ``baseline.json`` and reports regressions. Exits 1 if
   any regression is found (so this is a drop-in CI gate).
@@ -79,8 +79,7 @@ def _read_run(run_dir: Path) -> dict[str, CaseRun]:
     return runs
 
 
-def _write_baseline(run_dir: Path, runs: dict[str, CaseRun]) -> Path:
-    out = run_dir / "baseline.json"
+def _write_baseline(out: Path, runs: dict[str, CaseRun]) -> Path:
     baseline = {
         "schema_version": SCHEMA_VERSION,
         "cases": {
@@ -185,7 +184,7 @@ def main() -> int:
         return 2
 
     if args.mode == "write":
-        out = _write_baseline(run_dir, runs)
+        out = _write_baseline(baseline_path, runs)
         print(f"wrote baseline: {out}  ({len(runs)} cases)")
         return 0
 

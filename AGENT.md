@@ -43,10 +43,10 @@ Top-level surfaces:
 | Path | Purpose | Lifecycle |
 |---|---|---|
 | `apm.yml` | APM manifest (name, version, deps, scripts). | Bump `version` on releases. |
-| `skills/` | One folder per skill; each has a `SKILL.md` agent-loadable contract. Auto-discovered by APM. | Migrating to v2 template (see `scripts/lint/check_skill.py`). |
+| `skills/` | One folder per skill; each has a `SKILL.md` agent-loadable contract. Auto-discovered by APM. | 53 first-party skills plus 10 overrides; all are v2-conformant or explicit REDIRECT stubs. |
 | `skills/_overrides/` | Local overrides for upstream skill slugs (audit-modified copies of `leanprover/skills` entries). | Stable; dispatched per §3. |
-| `templates/` | Copy-pasteable Lean module / proof / refactor templates. v1 (12) + v2 production (12, incl. `00-CONVENTIONS.md`). | Stable. |
-| `references/` | Background knowledge an agent can `view` when a skill `## See also`s it. | Append-only. |
+| `templates/` | Copy-pasteable Lean module, proof, refactor, and workflow templates, with cross-template rules in `00-CONVENTIONS.md`. | Stable. |
+| `references/` | Background knowledge and layered skill handbooks an agent can `view` when a skill links to them. | Append-only except link repair. |
 | `scripts/lean/` | Generic Lean-4 helper scripts (axiom audit, DAG checks, bridge validators, etc.) callable from any project. | Project-agnostic; no host-project paths. |
 | `vendor/leanprover-skills/` | Upstream `leanprover/skills` referenced as a git submodule (read-only; do not edit in place). | Pinned commit; bump deliberately. NOT yet an APM dep — see `apm.yml` note. |
 | `zettelkasten/` | Reserved for the canonical Luhmann-tier ZK. Currently empty pending W7 of the master plan. | Bootstrapping. |
@@ -278,11 +278,10 @@ under `vendor/`; update the submodule pin instead.
 - Commit messages: prefix with `feat:` / `fix:` / `docs:` / `chore:`;
   no internal slot IDs in subjects.
 - All structural changes (skill consolidation, template rewrites,
-  layout moves) follow the **master plan** under
-  `lab/MASTER-PLAN.md` *if accessible*; the lab lives outside this
-  repo. If you are working without the lab, defer the change and ask.
-- Linter (`scripts/lint/check_skill.py`) is **advisory** in CI; do
-  not silently regress the pass-rate of v2-compliant skills.
+  layout moves) follow the current `lab/` reports and design notes.
+- Skill conformance is hard-gated by
+  `scripts/skill-audit/check_conformance.py`; APM packaging is
+  hard-gated by `scripts/lint/apm_validate.py`.
 
 ---
 

@@ -11,7 +11,7 @@ seen in `scripts/eval/cases/`.
 
 ## 2. Current state of cases
 
-All 41 case YAMLs use the v2 shape:
+All 50 active smoke case YAMLs use the v2 shape:
 
 ```yaml
 id: <case-slug>
@@ -31,8 +31,9 @@ expected:
     - <regex>
 ```
 
-R27 audit added the `ensemble_rubric:` field to the 29 cases that
-previously lacked it, capturing the per-rubric ELO heuristic explicitly.
+R27 audit added the `ensemble_rubric:` field to the cases that previously
+lacked it, and later rounds preserved that explicit field as the suite grew to
+50 smoke cases.
 
 ## 3. Migration provenance
 
