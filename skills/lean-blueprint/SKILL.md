@@ -2,7 +2,7 @@
 name: "lean-blueprint"
 description: |
   USE FOR: generating Lean blueprint, annotating theorems with @[blueprint], scaffolding blueprint directory, building blueprint LaTeX, rendering blueprint web.
-  DO NOT USE FOR: writing Lean proofs (use @lean-formalization), editing Mathlib (use @lean-mathlib-contrib).
+  DO NOT USE FOR: writing Lean proofs (use @lean-proof), opening Lean/Mathlib PRs (use @lean-pr).
   TRIGGERS: blueprint, leanblueprint, LeanArchitect, dependency-graph.
 tier: "hot"
 runtime_targets: [copilot-cli, claude-code]
@@ -25,7 +25,7 @@ metadata:
 ## Routing
 
 - **USE FOR:** generating a navigable formal blueprint from a Lean 4 codebase; annotating definitions and theorems with `@[blueprint]`; scaffolding `blueprint/` with `leanblueprint new`; building blueprint LaTeX via `lake build :blueprint`; rendering the dependency graph and web view.
-- **DO NOT USE FOR:** authoring new Lean proofs (use `@lean-formalization`); contributing to Mathlib (use `@lean-mathlib-contrib`); editing prose docs (use `@lean-doc-improvement`).
+- **DO NOT USE FOR:** authoring new Lean proofs (use `@lean-proof`); opening Lean/Mathlib PRs (use `@lean-pr`); editing prose docs (use `@lean-doc-improvement`).
 - **TRIGGERS:** blueprint, leanblueprint, LeanArchitect, dependency-graph.
 
 ## Behavioural rules (G-*)

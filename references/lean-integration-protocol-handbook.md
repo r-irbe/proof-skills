@@ -168,7 +168,7 @@ Complete list of all feedback loops in the ecosystem:
 
 - Every loop must complete within 2 RALPH iterations (else: stale signal)
 - No loop may have > 10 queued signals (else: backlog alert)
-- Every loop must be exercised at least once per project phase (else: starvation)
+- Every loop must be exercised at least once per host-repository phase (else: starvation)
 
 ---
 

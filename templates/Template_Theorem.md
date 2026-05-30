@@ -170,7 +170,7 @@ noncomputable def <name> (x : α) : ℝ :=
     closes with `linarith` on the assembled bounds.">
 -/
 theorem <snake_case_name> (h : <Hyp>) : <Goal> := by
-  -- One-step-at-a-time per project proof discipline.
+  -- One-step-at-a-time per host-repository proof discipline.
   <tac1>
   <tac2>
   -- Close with the lowest-cost terminator that works:

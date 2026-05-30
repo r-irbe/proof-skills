@@ -3,8 +3,8 @@
 This directory contains the package-level APM validator. The old prototype
 `check_skill.py` and its generated `compliance-report.md` snapshot were
 removed after the corpus reached full v2 conformance; use
-`scripts/skill-audit/check_conformance.py` for schema, handoff, tier, and
-handbook-link checks.
+`scripts/skill-audit/check_conformance.py` for schema, handoff, tier,
+handbook-link, inline `@skill`, and relative Markdown-link checks.
 
 ## Current checks
 

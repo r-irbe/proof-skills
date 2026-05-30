@@ -52,7 +52,7 @@ the high-frequency pitfalls / recipes (kept inline below).
 | Part | Topic | Covers |
 |---|---|---|
 | Part 1 | Optimization Fundamentals | objective / feasible-set / optimum vocabulary in Mathlib |
-| Part 2 | Convex Optimization | ConvexOn, KKT (project-side), Jensen, gradient conditions |
+| Part 2 | Convex Optimization | ConvexOn, KKT (host-repository), Jensen, gradient conditions |
 | Part 3 | Fixed-Point Iterations | Banach contraction; iteration-bound estimates |
 | Part 4 | Game Theory | Nash equilibrium, zero-sum, minimax, saddle-point hypotheses |
 | Part 5 | Reinforcement Learning Theory | Bellman backup, value/policy iteration, discount factor |
@@ -84,7 +84,7 @@ council member, cite that table rather than restating the rows here.
 - **Finite horizon:** `Finset.sum_range_succ` unfolding usually beats induction on a `valueFn`.
 - **Infinite horizon:** only meaningful with `0 ≤ γ < 1`; the geometric-series bound is `Real.geom_series_lt` / `tsum_geometric_lt_one` / `summable_geometric_of_lt_one`.
 - **Value-iteration convergence:** prove the Bellman backup is a contraction in `‖·‖∞`, then apply the Banach fixed-point theorem (see `@lean-math-dynamical` Part 10 for the recipe).
-- **Policy iteration:** equivalence to value iteration is *not* in Mathlib — author a local lemma per project and cite it.
+- **Policy iteration:** equivalence to value iteration is *not* in Mathlib — author a local lemma in the host repository and cite it.
 
 ---
 
@@ -93,7 +93,7 @@ council member, cite that table rather than restating the rows here.
 | Goal | Mathlib lemma / tactic |
 |---|---|
 | Jensen's inequality | `ConvexOn.inner_le_iff`, `ConvexOn.smul_le_sum` |
-| Strict convexity → unique minimum | `StrictConvexOn.eq_of_le_of_le` (project-side lemma usually required) |
+| Strict convexity → unique minimum | `StrictConvexOn.eq_of_le_of_le` (host-repository lemma usually required) |
 | Convex hull of a finite set | `Mathlib.Analysis.Convex.Hull` — `convexHull_eq` |
 | Polytope vertices | `Mathlib.Analysis.Convex.Extrema` — extreme-point characterisation |
 | KKT conditions | *No general KKT API in Mathlib*; author locally and cite |

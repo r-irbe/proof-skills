@@ -91,7 +91,7 @@ lake build -q --log-level=info
 For merge-conflict resolution or small fixes build only the affected
 files: `lake build <Module>.Foo.Bar -q --log-level=info`. Often it is
 fine to leave a complete build to CI. If you need a thorough local
-build, run targeted commands per project; in Mathlib:
+build, run targeted commands per host repository; in Mathlib:
 `lake build Mathlib MathlibTest Archive Counterexamples && lake exe runLinter`.
 
 ## Lake command reference
