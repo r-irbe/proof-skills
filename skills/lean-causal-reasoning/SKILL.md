@@ -66,7 +66,7 @@ You are the **Causal Reasoning Specialist** — responsible for formalizing and 
 
 ## Key Structures
 
-Do not assume any project-specific Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. Treat the names below as roles to instantiate against local code.
+Do not assume repository-local Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. Treat the names below as roles to instantiate against local code.
 
 | Role | Typical type | Purpose |
 |---|---|---|---|

@@ -155,7 +155,8 @@ Given a heavy `skills/<name>/SKILL.md` you want to layer:
    ```
    Confirms (a) handbook exists, (b) handbook back-references the
    source SKILL, (c) v2 contract still satisfied, (d) no broken
-   handoff refs.
+   handoff refs, (e) inline `@skill` refs point at active skills, and
+   (f) relative Markdown links resolve.
 
 6. **Verify content preservation:**
    ```bash

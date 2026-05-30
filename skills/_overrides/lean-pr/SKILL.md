@@ -74,10 +74,10 @@ back here.
 
 | Target repo | Read first | Title format |
 |---|---|---|
-| `leanprover/lean4` | [`references/upstream/lean4-pr.md`](../../references/upstream/lean4-pr.md) | `<type>: <subject>` |
-| `leanprover-community/mathlib4` | [`references/upstream/mathlib4-pr.md`](../../references/upstream/mathlib4-pr.md) | `<type>(<scope>): <subject>` |
-| Cslib (`cslib`) | [`references/upstream/mathlib4-pr.md`](../../references/upstream/mathlib4-pr.md) (closest convention sibling) | `<type>(<scope>): <subject>` |
-| Downstream projects | Repo-local CONTRIBUTING.md if present; otherwise [`references/upstream/mathlib4-pr.md`](../../references/upstream/mathlib4-pr.md) | repo-local |
+| `leanprover/lean4` | [`references/upstream/lean4-pr.md`](../../../references/upstream/lean4-pr.md) | `<type>: <subject>` |
+| `leanprover-community/mathlib4` | [`references/upstream/mathlib4-pr.md`](../../../references/upstream/mathlib4-pr.md) | `<type>(<scope>): <subject>` |
+| Cslib (`cslib`) | [`references/upstream/mathlib4-pr.md`](../../../references/upstream/mathlib4-pr.md) (closest convention sibling) | `<type>(<scope>): <subject>` |
+| Downstream projects | Repo-local CONTRIBUTING.md if present; otherwise [`references/upstream/mathlib4-pr.md`](../../../references/upstream/mathlib4-pr.md) | repo-local |
 
 ## Generic workflow
 
@@ -117,19 +117,19 @@ back here.
 - If unsure which repo conventions apply, fall back to the dispatch
   table above and read the relevant reference before pushing.
 - If a `changelog-*` label is missing on a Lean core `feat`/`fix` PR,
-  CI will block — read [`references/upstream/lean4-pr.md`](../../references/upstream/lean4-pr.md) §Changelog labels.
+  CI will block — read [`references/upstream/lean4-pr.md`](../../../references/upstream/lean4-pr.md) §Changelog labels.
 - If Mathlib CI fails after a file rename, you likely forgot
   `lake exe mk_all`.
 - For in-tree review feedback during PR review, hand off to
-  [`lean-proof-review`](../lean-proof-review/SKILL.md).
+  [`lean-proof-review`](../../lean-proof-review/SKILL.md).
 
 ---
 
 ## See also
 
-- [`../../templates/Template_Refactoring.md`](../../templates/Template_Refactoring.md) — Template: Module splitting and import re-organization
-- [`../../references/mathlib4-conventions.md`](../../references/mathlib4-conventions.md) — Naming, file headers, capitalization expected in PRs
-- [`../../references/upstream/lean4-pr.md`](../../references/upstream/lean4-pr.md) — Lean 4 core (leanprover/lean4) PR conventions (W4 Wave 2)
-- [`../../references/upstream/mathlib4-pr.md`](../../references/upstream/mathlib4-pr.md) — Mathlib4 PR conventions (W4 Wave 2)
-- [`../../references/upstream/mathlib4-review.md`](../../references/upstream/mathlib4-review.md) — Mathlib PR review standards
+- [`../../../templates/Template_Refactoring.md`](../../../templates/Template_Refactoring.md) — Template: Module splitting and import re-organization
+- [`../../../references/mathlib4-conventions.md`](../../../references/mathlib4-conventions.md) — Naming, file headers, capitalization expected in PRs
+- [`../../../references/upstream/lean4-pr.md`](../../../references/upstream/lean4-pr.md) — Lean 4 core (leanprover/lean4) PR conventions (W4 Wave 2)
+- [`../../../references/upstream/mathlib4-pr.md`](../../../references/upstream/mathlib4-pr.md) — Mathlib4 PR conventions (W4 Wave 2)
+- [`../../../references/upstream/mathlib4-review.md`](../../../references/upstream/mathlib4-review.md) — Mathlib PR review standards
 - [`../mathlib-pr/SKILL.md`](../mathlib-pr/SKILL.md) — REDIRECT stub (legacy slug)

@@ -94,7 +94,7 @@ council member, cite that table rather than restating the rows here.
 | `simp` loops on an algebraic rewrite | `simp only [list]`; replace `add_comm` with `Nat.add_comm` etc. (qualified names cut through diamond confusion) |
 | `decide` can't see a `Decidable` instance | `classical decide` (uses `Classical.dec`); or rewrite the predicate to one with a `Decidable` instance you can locate via `#check` |
 | Universe issue blocks elaboration | Annotate universes explicitly (`@F.{u, v}`) at the call site |
-| Need a foundational lemma absent from Mathlib at the pin | Author it locally in a project-side `Foundation/Helpers.lean` (mirroring the Mathlib namespace) and open a Mathlib PR via `@mathlib-pr` |
+| Need a foundational lemma absent from Mathlib at the pin | Author it locally in a host-repository `Foundation/Helpers.lean` (mirroring the Mathlib namespace) and open a Lean/Mathlib PR via `@lean-pr` |
 | Want to suppress an instance for one section | `attribute [-instance] foo in section` — preferable to deleting the instance entirely |
 
 ---

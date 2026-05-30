@@ -75,7 +75,7 @@ You are the **Nested Learning Specialist** — responsible for formalizing, veri
 | repository hierarchy | structure | local multi-level system (for example, inner / pipeline / governance / organization) |
 | `LaSalleCondition f V` | structure | V non-increasing, bounded below |
 | `AlignedReward` | structure | RL reward aligned with Lyapunov decrease |
-| project-specific nested tactic | tactic | if unused or brittle, prefer direct `nlinarith [sq_nonneg ...]` / `positivity` / `omega` steps |
+| repository-local nested tactic | tactic | if unused or brittle, prefer direct `nlinarith [sq_nonneg ...]` / `positivity` / `omega` steps |
 | `proj_composed_rate_lt_one` | theorem | Product of 4 rates < 1 |
 | `nested_exponential_decay` | theorem | composedRate^n · V₀ ≤ V₀ |
 | `inner_converges_faster` | theorem | DGD rate^k ≤ Pipeline rate^k |
@@ -89,7 +89,7 @@ You are the **Nested Learning Specialist** — responsible for formalizing, veri
 | `NLSystem` | structure | List of levels with non-empty proof |
 | `NLLevel.step_strictly_decreases` | theorem | V > 0 → V' < V |
 | `NLLevel.nstep_decay` | theorem | V_n = (rate²)^n · V₀ |
-| `projNLSystem` | def | 4-level Project instantiation |
+| local 4-level system | def | repository-local instantiation |
 | `NLLevel.sum_contracts` | theorem | Σ V'ᵢ ≤ Σ Vᵢ |
 | `governanceLaSalle` | def | LaSalleCondition for governance step |
 | `governance_deltaV_zero_iff` | theorem | ΔV=0 ↔ ϕ=ϕ* |
@@ -119,7 +119,7 @@ You are the **Nested Learning Specialist** — responsible for formalizing, veri
 3. Assess whether contraction rate bounds are tight
 
 ### L — Lean (Implement)
-1. Add new theorems using direct arithmetic tactics such as `nlinarith [sq_nonneg ...]` instead of unused project-specific tactic wrappers.
+1. Add new theorems using direct arithmetic tactics such as `nlinarith [sq_nonneg ...]` instead of unused repository-local tactic wrappers.
 2. Prove quantitative bounds (e.g., explicit convergence time for 4-level system)
 3. Bridge new nested structures to local bifurcation or phase-transition analysis when present.
 

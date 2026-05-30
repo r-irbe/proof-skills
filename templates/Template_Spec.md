@@ -73,7 +73,7 @@ skill: "skills/skills/lean-specification/SKILL.md@vX.Y.Z"
 ### 1.4 Domain placement
 
 - Module: `<Project>/<…>.lean` §<N>
-- DAG layer: <0 | 1 | 2 | 3 | 4> (per project AGENT.md "DAG Build Layers")
+- DAG layer: <0 | 1 | 2 | 3 | 4> (per host-repository AGENT.md "DAG Build Layers")
 - Related existing theorems: <names>
 
 ## §2 Design (how)

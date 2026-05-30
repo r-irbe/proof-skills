@@ -199,7 +199,7 @@ Filter.Tendsto f F (nhds L) ↔ ∀ U ∈ nhds L, f⁻¹(U) ∈ F
 
 ## Part 6 — Host-Repository Lean Extension Points
 
-Do not assume any project-specific Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. Map local modules by mathematical role:
+Do not assume repository-local Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. Map local modules by mathematical role:
 
 | Local extension point | Topological foundation | Typical structures |
 |---|---|---|

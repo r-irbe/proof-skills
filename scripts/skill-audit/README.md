@@ -4,7 +4,8 @@ Tools for auditing the SKILL corpus structure, conformance, and routing graph.
 
 ## `check_conformance.py`
 
-One-shot corpus audit: v2 conformance + handoff DAG + handbook cross-links.
+One-shot corpus audit: v2 conformance + handoff DAG + handbook cross-links +
+inline `@skill` refs + relative Markdown links.
 
 ### Usage
 
@@ -31,6 +32,8 @@ python3 scripts/skill-audit/check_conformance.py --fail-on never  # always exit 
 | Invalid `handoffs.successors` / `handoffs.predecessors` refs | Every `skill:X` must resolve to a real skill or override | ✓ |
 | `references/<name>-handbook.md` link integrity | Every layered SKILL must point at an existing handbook | ✓ |
 | Handbook `extracted_from:` back-references | Handbook YAML preamble must back-link to its source SKILL | ✓ |
+| Inline `@skill` refs | Active SKILL.md files must point only at existing non-REDIRECT skills | ✓ |
+| Relative Markdown links | Ordinary non-image Markdown links in SKILL.md must resolve on disk | ✓ |
 | Mutual peer pairs (X↔Y handoffs) | Reported (by-design collaboration pattern) | ✗ |
 | True cycles (length ≥ 3) | Reported (editorial feedback loops are by-design) | ✗ |
 | Orphans (no upstream) | Reported (entry points are intentional) | ✗ |

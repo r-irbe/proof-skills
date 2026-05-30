@@ -230,7 +230,7 @@ universe u
 abbrev PartialOrder (α : Type u) : Type u := _root_.PartialOrder α
 
 /-- Bridge-local convenience: pull `le_refl` to a fully-qualified form so that
-    project-side proofs can write `MyProj.Bridges.MathlibPartialOrder.refl x`. -/
+    host-repository proofs can write `MyProj.Bridges.MathlibPartialOrder.refl x`. -/
 theorem refl {α : Type u} [PartialOrder α] (x : α) : x ≤ x := le_refl x
 
 end MyProj.Bridges.MathlibPartialOrder

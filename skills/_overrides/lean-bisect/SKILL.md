@@ -128,12 +128,12 @@ When the issue requires Mathlib:
 
 Verify endpoints of the range show different behavior before bisecting. Keep tests fast — each bisection step runs the full test.
 
-**Project context (22,312 lines, ≥1,255 theorems, zero sorry, grind-first tactics):** when bisecting an Project regression, reproduce with the same tactic (`grind` before `omega`/`linarith`) for accurate isolation. Test files must have no sorry unless testing sorry-specific elaboration behavior.
+**Host-repository context:** when bisecting a regression from a downstream repository, preserve the tactic family and diagnostic shape that triggered the failure so the isolated test stays faithful. Test files must have no `sorry` unless testing `sorry`-specific elaboration behavior.
 
 ---
 
 ## See also
 
-- [`../../references/lean4-module-dependency-guide.md`](../../references/lean4-module-dependency-guide.md) — Layer discipline and cycle detection (debugging build cycles)
+- [`../../../references/lean4-module-dependency-guide.md`](../../../references/lean4-module-dependency-guide.md) — Layer discipline and cycle detection (debugging build cycles)
 - [`../../../references/upstream/lean-bug-report-pipeline.md`](../../../references/upstream/lean-bug-report-pipeline.md) — Shared 5-stage bug-report pipeline (repro → guard → minimise → bisect → file) and `lean-mwe` ↔ `lean-bisect` hand-off contract
 - [`../lean-mwe/SKILL.md`](../lean-mwe/SKILL.md) — Sister skill for MWE construction (typically chained before bisect)

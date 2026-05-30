@@ -11,7 +11,7 @@ date: 2026-05-27
 Single canonical reference for every place a Lean 4 + Mathlib4 project
 reasons about **contraction maps**: the `ContractingWith` bundle, the
 Banach fixed-point theorem, geometric decay from a contraction factor,
-and the inventory of project-side contraction theorems.  All consumer
+and the inventory of host-repository contraction theorems.  All consumer
 skills (analysis, dynamical, optimization, AI safety) link here.
 
 ## 1. Mathlib API entry-points

@@ -58,7 +58,7 @@ the high-frequency pitfalls / recipes (kept inline below).
 | Part 5 | Convex Analysis | ConvexOn, ConvexHull, Jensen's inequality |
 | Part 6 | Measure Theory Essentials | MeasureSpace, MeasureTheory.integral, intervalIntegral |
 | Part 7 | Research Council Integration | (also kept inline below) — analysis-domain dispatch matrix |
-| Part 8 | Project Analysis Module Reference | project-specific Lyapunov / contraction / convex-on-Nat bridges |
+| Part 8 | Host-Repository Analysis Extensions | repository-local Lyapunov / contraction / convex-on-Nat bridges |
 
 ## Part 8 — Pitfalls
 

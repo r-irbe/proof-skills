@@ -91,7 +91,7 @@ lake build -q --log-level=info
 For merge-conflict resolution or small fixes build only the affected
 files: `lake build <Module>.Foo.Bar -q --log-level=info`. Often it is
 fine to leave a complete build to CI. If you need a thorough local
-build, run targeted commands per project; in Mathlib:
+build, run targeted commands per host repository; in Mathlib:
 `lake build Mathlib MathlibTest Archive Counterexamples && lake exe runLinter`.
 
 ## Lake command reference
@@ -125,6 +125,6 @@ explicitly a dependency update.
 
 ## See also
 
-- [`../../templates/Template_Lakefile.md`](../../templates/Template_Lakefile.md) — Template: Annotated lakefile and CI patterns
-- [`../../references/lean4-module-dependency-guide.md`](../../references/lean4-module-dependency-guide.md) — DAG enforcement and splitting workflow
+- [`../../../templates/Template_Lakefile.md`](../../../templates/Template_Lakefile.md) — Template: Annotated lakefile and CI patterns
+- [`../../../references/lean4-module-dependency-guide.md`](../../../references/lean4-module-dependency-guide.md) — DAG enforcement and splitting workflow
 - [`../mathlib-build/SKILL.md`](../mathlib-build/SKILL.md) — REDIRECT stub (legacy slug)

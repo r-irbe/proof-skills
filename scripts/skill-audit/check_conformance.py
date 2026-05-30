@@ -5,7 +5,7 @@ Skill-corpus conformance + DAG + cross-link audit (one-shot).
 Usage:
     python3 scripts/skill-audit/check_conformance.py [--json out.json] [--md out.md]
 
-Runs three audits over the corpus rooted at the repo's `skills/`
+Runs five audits over the corpus rooted at the repo's `skills/`
 directory:
 
   1. **v2 conformance** — for every SKILL.md (first-party + overrides),
@@ -24,13 +24,21 @@ directory:
      its YAML preamble has `extracted_from: skill:<X>` (or a similar
      back-reference). Report any dangling or unmatched links.
 
+  4. **Inline skill references** — verify active SKILL.md files only point
+     `@skill-name` handoffs at existing non-REDIRECT skills.
+
+  5. **Markdown link integrity** — verify ordinary relative Markdown
+     links in SKILL.md files resolve on disk, including override skills
+     whose relative depth differs from first-party skills.
+
 Outputs:
 - stdout: human-readable headline + per-section status (always)
 - --json: machine-readable structured report
 - --md: Markdown-formatted report (for the audit folder)
 
 Exits non-zero if there are any hard failures (invalid refs, broken
-handbook links, schema violations). Cycles, orphans, dead-ends are
+handbook links, unresolved inline @skill refs, schema violations).
+Cycles, orphans, dead-ends are
 informational (the corpus deliberately has by-design cycles +
 operational entry/exit nodes).
 """
@@ -40,6 +48,7 @@ import json
 import pathlib
 import re
 import sys
+import urllib.parse
 from collections import Counter, defaultdict
 
 try:
@@ -276,6 +285,92 @@ def audit_handbook_links(skills, repo_root):
     return results
 
 
+# ------------------------------ 4. Inline skill references ------------------------------
+
+AT_SKILL_RE = re.compile(r"(?<![\w./-])@([A-Za-z0-9][A-Za-z0-9_-]+)")
+
+
+def audit_inline_skill_refs(skills, repo_root):
+    """Verify active SKILL.md files only route to live, non-REDIRECT skills."""
+    active = {name for name, info in skills.items() if not info["is_redirect"]}
+    all_skills = set(skills)
+    results = {"valid_refs": 0, "unresolved_refs": [], "redirect_refs": []}
+    for name, info in skills.items():
+        if info["is_redirect"]:
+            continue
+        path = repo_root / info["path"]
+        text = path.read_text()
+        for m in AT_SKILL_RE.finditer(text):
+            target = m.group(1)
+            line = text[:m.start()].count("\n") + 1
+            if target not in all_skills:
+                results["unresolved_refs"].append({
+                    "from_skill": name,
+                    "source": info["path"],
+                    "line": line,
+                    "target": f"@{target}",
+                })
+            elif target not in active:
+                results["redirect_refs"].append({
+                    "from_skill": name,
+                    "source": info["path"],
+                    "line": line,
+                    "target": f"@{target}",
+                })
+            else:
+                results["valid_refs"] += 1
+    return results
+
+
+# ------------------------------ 5. Markdown link integrity ------------------------------
+
+MD_LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
+
+
+def audit_markdown_links(skills, repo_root):
+    """Verify relative Markdown links from SKILL.md files resolve on disk."""
+    results = {"broken_links": [], "valid_links": 0}
+    for name, info in skills.items():
+        path = repo_root / info["path"]
+        text = path.read_text()
+        for m in MD_LINK_RE.finditer(text):
+            raw_href = m.group(1).strip()
+            href = raw_href.split("#", 1)[0]
+            if (
+                not href
+                or href.startswith("#")
+                or "://" in href
+                or href.startswith("mailto:")
+            ):
+                continue
+            href = urllib.parse.unquote(href)
+            target = (path.parent / href).resolve()
+            line = text[:m.start()].count("\n") + 1
+            try:
+                rel_target = str(target.relative_to(repo_root))
+            except ValueError:
+                results["broken_links"].append({
+                    "from_skill": name,
+                    "source": info["path"],
+                    "line": line,
+                    "target": raw_href,
+                    "reason": "escapes repo root",
+                })
+                continue
+            if not target.exists():
+                results["broken_links"].append({
+                    "from_skill": name,
+                    "source": info["path"],
+                    "line": line,
+                    "target": raw_href,
+                    "resolved": rel_target,
+                    "reason": "missing target",
+                })
+            else:
+                results["valid_links"] += 1
+    return results
+
+
 # ------------------------------ Report formatter ------------------------------
 
 def render_md(report):
@@ -283,6 +378,8 @@ def render_md(report):
     v2 = report["v2"]
     dag = report["dag"]
     cl = report["cross_link"]
+    ir = report["inline_refs"]
+    ml = report["markdown_links"]
     lines = []
     a = lines.append
     a("---")
@@ -313,6 +410,11 @@ def render_md(report):
     a(f"| Handbook cross-links — valid | {len(cl['valid_pairs'])} |")
     a(f"| Handbook cross-links — broken | {len(cl['broken_links'])} |")
     a(f"| Handbook cross-links — missing backref | {len(cl['missing_backref'])} |")
+    a(f"| Inline @skill refs — valid | {ir['valid_refs']} |")
+    a(f"| Inline @skill refs — unresolved | {len(ir['unresolved_refs'])} |")
+    a(f"| Inline @skill refs — redirect stubs | {len(ir['redirect_refs'])} |")
+    a(f"| Markdown links — valid | {ml['valid_links']} |")
+    a(f"| Markdown links — broken | {len(ml['broken_links'])} |")
     a("")
     a("## 1. v2 conformance — non-conformant SKILLs")
     a("")
@@ -370,6 +472,30 @@ def render_md(report):
             a(f"- ⚠ {m['skill']} → {m['handbook']}-handbook.md (extracted_from={m['actual_extracted_from']!r})")
     if not cl["broken_links"] and not cl["missing_backref"]:
         a("\nAll handbook references resolve and back-link correctly. ✓")
+    a("")
+    a("## 5. Inline @skill reference integrity")
+    a("")
+    a(f"- Valid inline @skill refs: {ir['valid_refs']}")
+    if ir["unresolved_refs"]:
+        a("\n### Unresolved inline @skill refs")
+        for r in ir["unresolved_refs"]:
+            a(f"- ❌ {r['source']}:{r['line']} → {r['target']}")
+    if ir["redirect_refs"]:
+        a("\n### Inline refs to REDIRECT stubs")
+        for r in ir["redirect_refs"]:
+            a(f"- ❌ {r['source']}:{r['line']} → {r['target']}")
+    if not ir["unresolved_refs"] and not ir["redirect_refs"]:
+        a("\nAll inline @skill refs point at active skills. ✓")
+    a("")
+    a("## 6. Markdown link integrity")
+    a("")
+    a(f"- Valid relative links: {ml['valid_links']}")
+    if ml["broken_links"]:
+        a("\n### Broken relative Markdown links")
+        for b in ml["broken_links"]:
+            a(f"- ❌ {b['source']}:{b['line']} → {b['target']} ({b['reason']})")
+    else:
+        a("\nAll relative Markdown links resolve. ✓")
     return "\n".join(lines) + "\n"
 
 
@@ -411,6 +537,8 @@ def main():
         "v2": audit_v2(skills),
         "dag": audit_dag(skills),
         "cross_link": audit_handbook_links(skills, repo),
+        "inline_refs": audit_inline_skill_refs(skills, repo),
+        "markdown_links": audit_markdown_links(skills, repo),
     }
 
     md = render_md(report)
@@ -426,6 +554,9 @@ def main():
         report["dag"]["invalid_successor_refs"]
         or report["dag"]["invalid_predecessor_refs"]
         or report["cross_link"]["broken_links"]
+        or report["inline_refs"]["unresolved_refs"]
+        or report["inline_refs"]["redirect_refs"]
+        or report["markdown_links"]["broken_links"]
         or report["v2"]["non_v2"]
     )
     soft_fail = report["dag"]["orphans"] or report["dag"]["deadends"]

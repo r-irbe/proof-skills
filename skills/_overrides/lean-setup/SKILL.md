@@ -2,7 +2,7 @@
 name: "lean-setup"
 description: |
   USE FOR: bootstrapping a fresh leanprover/lean4 clone, repairing elan toolchains, linking stage0/stage1 builds, verifying that `lean` and `lake env lean` agree, cleaning up linked toolchains when done.
-  DO NOT USE FOR: building Mathlib or downstream Lake projects (use @mathlib-build), bisecting a behavioural regression (use @lean-bisect), authoring a reproducer (use @lean-mwe), writing proofs (use @lean-proof), creating new lakefiles for downstream projects (use @lean-blueprint).
+  DO NOT USE FOR: building Mathlib or downstream Lake projects (use @lean-build), bisecting a behavioural regression (use @lean-bisect), authoring a reproducer (use @lean-mwe), writing proofs (use @lean-proof), creating new lakefiles for downstream projects (use @lean-blueprint).
   TRIGGERS: elan, lean-toolchain, cmake preset, stage0, stage1.
 tier: "hot"
 runtime_targets: [copilot-cli, claude-code]
@@ -12,7 +12,7 @@ handoffs:
   successors:
     - "skill:lean-proof"
     - "skill:lean-bisect"
-    - "skill:mathlib-build"
+    - "skill:lean-build"
     - "skill:lean-mwe"
 metadata:
   version: "0.2.0"
@@ -32,7 +32,7 @@ r_caveats: [F1]
 ## Routing
 
 - **USE FOR:** running the first-time `cmake --preset release` + `make -j -C build/release` bootstrap; choosing a toolchain name (`lean4` or `lean4-XYZ`); linking `build/release/stage1` and `build/release/stage0` with `elan toolchain link`; pinning the four `lean-toolchain` files; verifying `lean --version` and `lake env lean --version` agree; uninstalling linked toolchains when the clone is retired.
-- **DO NOT USE FOR:** building Mathlib or downstream Lake projects (use `@mathlib-build`); bisecting which commit changed behaviour (use `@lean-bisect`); minimising an error into a reproducer (use `@lean-mwe`); writing proofs against an existing toolchain (use `@lean-proof`); scaffolding new lakefiles for downstream projects (use `@lean-blueprint`).
+- **DO NOT USE FOR:** building Mathlib or downstream Lake projects (use `@lean-build`); bisecting which commit changed behaviour (use `@lean-bisect`); minimising an error into a reproducer (use `@lean-mwe`); writing proofs against an existing toolchain (use `@lean-proof`); scaffolding new lakefiles for downstream projects (use `@lean-blueprint`).
 - **TRIGGERS:** elan, lean-toolchain, cmake preset, stage0, stage1.
 
 ## Behavioural rules (G-*)
@@ -66,7 +66,7 @@ r_caveats: [F1]
 
 ## Handoffs
 
-- **Predecessors / successors**: see FM `handoffs`. `lean-setup` is a root node — no predecessors. Typical outbound: `@lean-proof` (once `lean --version` and `lake env lean --version` agree), `@lean-bisect` (once toolchains are linked), `@mathlib-build` (for downstream builds), `@lean-mwe` (when the agent immediately needs to reproduce an issue against the new toolchain).
+- **Predecessors / successors**: see FM `handoffs`. `lean-setup` is a root node — no predecessors. Typical outbound: `@lean-proof` (once `lean --version` and `lake env lean --version` agree), `@lean-bisect` (once toolchains are linked), `@lean-build` (for downstream builds), `@lean-mwe` (when the agent immediately needs to reproduce an issue against the new toolchain).
 - **Source spec**: `specs/lean/setup/requirements.md` — every G-rule traces to an AC there.
 - **Related ADRs**: ADR-0076 (skill-as-contract), ADR-0080 (handoff DAG), ADR-0028 (packaging — clone layout assumed).
 
@@ -81,6 +81,6 @@ r_caveats: [F1]
 
 ## See also
 
-- [`../../skills/skills/lean-setup/SKILL.md`](../../../skills/lean-setup/SKILL.md) — pre-v2 source skill (this is the migration).
-- [`../../templates/Template_Lakefile.md`](../../../templates/Template_Lakefile.md) — annotated lakefile reference.
+- This `SKILL.md` is the canonical v2 toolchain-setup contract for this package.
+- [`../../../templates/Template_Lakefile.md`](../../../templates/Template_Lakefile.md) — annotated lakefile reference.
 - [`../lean-proof/SKILL.md`](../lean-proof/SKILL.md) — v2 sibling, the typical successor in the DAG.

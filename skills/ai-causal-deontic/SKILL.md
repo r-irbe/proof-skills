@@ -214,7 +214,7 @@ Common application: quality gates as I/O norms mapping observation states to act
 
 ## Part 6 — Host-Repository Lean Extension Points
 
-Do not assume any project-specific Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. When local modules exist, map them by role:
+Do not assume repository-local Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. When local modules exist, map them by role:
 
 | Local extension point | Causal/deontic aspect |
 |---|---|
