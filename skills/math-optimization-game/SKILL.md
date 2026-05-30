@@ -194,7 +194,7 @@ Governance and safety problems are often inherently multi-objective:
 
 ## Part 6 — Host-Repository Lean Extension Points
 
-Do not assume any project-specific Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. Map local modules by role:
+Do not assume repository-local Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. Map local modules by role:
 
 | Local extension point | Mathematical foundation | Typical concepts |
 |---|---|---|

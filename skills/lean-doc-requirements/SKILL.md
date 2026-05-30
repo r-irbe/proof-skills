@@ -71,6 +71,5 @@ the dispatch contract and the parts index.
 
 - [`../../references/lean-doc-requirements-handbook.md`](../../references/lean-doc-requirements-handbook.md) — Full handbook (extracted from this skill)
 - [`../lean-specification/SKILL.md`](../lean-specification/SKILL.md) — Successor
-- [`../lean-proof/SKILL.md`](../lean-proof/SKILL.md) — Successor
+- [`../_overrides/lean-proof/SKILL.md`](../_overrides/lean-proof/SKILL.md) — Successor
 - [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) — Successor
-

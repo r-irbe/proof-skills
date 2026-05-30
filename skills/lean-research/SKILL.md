@@ -78,5 +78,5 @@ the dispatch contract and a parts index.
 - [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) — Successor
 - [`../research-council/SKILL.md`](../research-council/SKILL.md) — Successor
 - [`../research-synthesis-engine/SKILL.md`](../research-synthesis-engine/SKILL.md) — Successor
-- [`../lean-proof/SKILL.md`](../lean-proof/SKILL.md) — Successor
+- [`../_overrides/lean-proof/SKILL.md`](../_overrides/lean-proof/SKILL.md) — Successor
 - [`../lean-proof-review/SKILL.md`](../lean-proof-review/SKILL.md) — Successor

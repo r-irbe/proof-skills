@@ -24,6 +24,10 @@ directory:
      its YAML preamble has `extracted_from: skill:<X>` (or a similar
      back-reference). Report any dangling or unmatched links.
 
+  4. **Markdown link integrity** — verify ordinary relative Markdown
+     links in SKILL.md files resolve on disk, including override skills
+     whose relative depth differs from first-party skills.
+
 Outputs:
 - stdout: human-readable headline + per-section status (always)
 - --json: machine-readable structured report
@@ -40,6 +44,7 @@ import json
 import pathlib
 import re
 import sys
+import urllib.parse
 from collections import Counter, defaultdict
 
 try:
@@ -276,6 +281,55 @@ def audit_handbook_links(skills, repo_root):
     return results
 
 
+# ------------------------------ 4. Markdown link integrity ------------------------------
+
+MD_LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
+
+
+def audit_markdown_links(skills, repo_root):
+    """Verify relative Markdown links from SKILL.md files resolve on disk."""
+    results = {"broken_links": [], "valid_links": 0}
+    for name, info in skills.items():
+        path = repo_root / info["path"]
+        text = path.read_text()
+        for m in MD_LINK_RE.finditer(text):
+            raw_href = m.group(1).strip()
+            href = raw_href.split("#", 1)[0]
+            if (
+                not href
+                or href.startswith("#")
+                or "://" in href
+                or href.startswith("mailto:")
+            ):
+                continue
+            href = urllib.parse.unquote(href)
+            target = (path.parent / href).resolve()
+            line = text[:m.start()].count("\n") + 1
+            try:
+                rel_target = str(target.relative_to(repo_root))
+            except ValueError:
+                results["broken_links"].append({
+                    "from_skill": name,
+                    "source": info["path"],
+                    "line": line,
+                    "target": raw_href,
+                    "reason": "escapes repo root",
+                })
+                continue
+            if not target.exists():
+                results["broken_links"].append({
+                    "from_skill": name,
+                    "source": info["path"],
+                    "line": line,
+                    "target": raw_href,
+                    "resolved": rel_target,
+                    "reason": "missing target",
+                })
+            else:
+                results["valid_links"] += 1
+    return results
+
+
 # ------------------------------ Report formatter ------------------------------
 
 def render_md(report):
@@ -283,6 +337,7 @@ def render_md(report):
     v2 = report["v2"]
     dag = report["dag"]
     cl = report["cross_link"]
+    ml = report["markdown_links"]
     lines = []
     a = lines.append
     a("---")
@@ -313,6 +368,8 @@ def render_md(report):
     a(f"| Handbook cross-links — valid | {len(cl['valid_pairs'])} |")
     a(f"| Handbook cross-links — broken | {len(cl['broken_links'])} |")
     a(f"| Handbook cross-links — missing backref | {len(cl['missing_backref'])} |")
+    a(f"| Markdown links — valid | {ml['valid_links']} |")
+    a(f"| Markdown links — broken | {len(ml['broken_links'])} |")
     a("")
     a("## 1. v2 conformance — non-conformant SKILLs")
     a("")
@@ -370,6 +427,16 @@ def render_md(report):
             a(f"- ⚠ {m['skill']} → {m['handbook']}-handbook.md (extracted_from={m['actual_extracted_from']!r})")
     if not cl["broken_links"] and not cl["missing_backref"]:
         a("\nAll handbook references resolve and back-link correctly. ✓")
+    a("")
+    a("## 5. Markdown link integrity")
+    a("")
+    a(f"- Valid relative links: {ml['valid_links']}")
+    if ml["broken_links"]:
+        a("\n### Broken relative Markdown links")
+        for b in ml["broken_links"]:
+            a(f"- ❌ {b['source']}:{b['line']} → {b['target']} ({b['reason']})")
+    else:
+        a("\nAll relative Markdown links resolve. ✓")
     return "\n".join(lines) + "\n"
 
 
@@ -411,6 +478,7 @@ def main():
         "v2": audit_v2(skills),
         "dag": audit_dag(skills),
         "cross_link": audit_handbook_links(skills, repo),
+        "markdown_links": audit_markdown_links(skills, repo),
     }
 
     md = render_md(report)
@@ -426,6 +494,7 @@ def main():
         report["dag"]["invalid_successor_refs"]
         or report["dag"]["invalid_predecessor_refs"]
         or report["cross_link"]["broken_links"]
+        or report["markdown_links"]["broken_links"]
         or report["v2"]["non_v2"]
     )
     soft_fail = report["dag"]["orphans"] or report["dag"]["deadends"]

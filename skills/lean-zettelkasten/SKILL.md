@@ -78,6 +78,6 @@ r_caveats: [F1, F6]
 
 ## See also
 
-- [`../../skills/skills/lean-zettelkasten/SKILL.md`](../../../skills/lean-zettelkasten/SKILL.md) — pre-v2 source skill (this is the migration).
-- [`../../zettelkasten/_index.md`](../../../zettelkasten/_index.md) — live ZK index this skill maintains.
+- This `SKILL.md` is the canonical v2 zettelkasten contract for this package.
+- [`../../zettelkasten/_index.md`](../../zettelkasten/_index.md) — live ZK index this skill maintains.
 - [`../lean-doc-feedback/SKILL.md`](../lean-doc-feedback/SKILL.md) — v2 sibling on the documentation side of the DAG.

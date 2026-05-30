@@ -81,7 +81,7 @@ r_caveats: [F1, F6]
 
 ## See also
 
-- [`../../skills/skills/lean-proof/SKILL.md`](../../../skills/lean-proof/SKILL.md) — pre-v2 source skill (this is the migration).
-- [`../../templates/Template_ProofStrategy.md`](../../../templates/Template_ProofStrategy.md) — proof methodology cheat sheet.
-- [`../../references/lean4-proof-strategy.md`](../../../references/lean4-proof-strategy.md) — one-step-at-a-time, error priority, hardest case first.
-- [`../../references/lean4-tactic-hierarchy.md`](../../../references/lean4-tactic-hierarchy.md) — tactic priority table.
+- This `SKILL.md` is the canonical v2 proof-writing contract for this package.
+- [`../../../templates/Template_ProofStrategy.md`](../../../templates/Template_ProofStrategy.md) — proof methodology cheat sheet.
+- [`../../../references/lean4-proof-strategy.md`](../../../references/lean4-proof-strategy.md) — one-step-at-a-time, error priority, hardest case first.
+- [`../../../references/lean4-tactic-hierarchy.md`](../../../references/lean4-tactic-hierarchy.md) — tactic priority table.

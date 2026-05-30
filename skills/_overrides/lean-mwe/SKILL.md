@@ -161,13 +161,13 @@ lake env lean YourFile.out.lean
 - [ ] The `.out.lean` file compiles with the expected error/panic
 - [ ] No Mathlib imports remain (ideal) or minimal imports remain
 - [ ] The error message in `#guard_msgs` matches exactly
-- [ ] project-specific: the project codebase has zero `sorry`; strip any sorry introduced during debugging before filing. Prefer `grind` over `omega`/`linarith` in reproductions when the original proof used `grind`.
+- [ ] Host-repository invariant: if the source repository forbids `sorry`, strip any `sorry` introduced during debugging before filing. Preserve the original tactic family in reproductions so the minimized failure remains faithful.
 
 ---
 
 ## See also
 
-- [`../../templates/Template_Foundation.md`](../../templates/Template_Foundation.md) — Template: Minimal foundation module to start from
-- [`../../references/lean4-proof-strategy.md`](../../references/lean4-proof-strategy.md) — Workflow: error priority, one-step-at-a-time
+- [`../../../templates/Template_Foundation.md`](../../../templates/Template_Foundation.md) — Template: Minimal foundation module to start from
+- [`../../../references/lean4-proof-strategy.md`](../../../references/lean4-proof-strategy.md) — Workflow: error priority, one-step-at-a-time
 - [`../../../references/upstream/lean-bug-report-pipeline.md`](../../../references/upstream/lean-bug-report-pipeline.md) — Shared 5-stage bug-report pipeline (repro → guard → minimise → bisect → file) and `lean-mwe` ↔ `lean-bisect` hand-off contract
 - [`../lean-bisect/SKILL.md`](../lean-bisect/SKILL.md) — Sister skill for commit-range narrowing

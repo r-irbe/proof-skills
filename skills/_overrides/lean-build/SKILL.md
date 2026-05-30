@@ -125,6 +125,6 @@ explicitly a dependency update.
 
 ## See also
 
-- [`../../templates/Template_Lakefile.md`](../../templates/Template_Lakefile.md) — Template: Annotated lakefile and CI patterns
-- [`../../references/lean4-module-dependency-guide.md`](../../references/lean4-module-dependency-guide.md) — DAG enforcement and splitting workflow
+- [`../../../templates/Template_Lakefile.md`](../../../templates/Template_Lakefile.md) — Template: Annotated lakefile and CI patterns
+- [`../../../references/lean4-module-dependency-guide.md`](../../../references/lean4-module-dependency-guide.md) — DAG enforcement and splitting workflow
 - [`../mathlib-build/SKILL.md`](../mathlib-build/SKILL.md) — REDIRECT stub (legacy slug)

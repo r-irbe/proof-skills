@@ -14,7 +14,7 @@ notes have been moved to a reference because they are a
 
 | Old section | New home |
 |---|---|
-| Overview + `mathlib4-nightly-testing` fork explanation | [`references/upstream/lean-nightly-infrastructure.md`](../../references/upstream/lean-nightly-infrastructure.md) §Overview |
+| Overview + `mathlib4-nightly-testing` fork explanation | [`references/upstream/lean-nightly-infrastructure.md`](../../../references/upstream/lean-nightly-infrastructure.md) §Overview |
 | Key branches (`nightly-testing`, `nightly-with-mathlib`, `bump/v4.X.Y`, `lean-pr-testing-NNNN`) | Same reference §Key branches |
 | Zulip channel | Same reference §Zulip |
 | Canonical reference URL | Same reference §Canonical reference |

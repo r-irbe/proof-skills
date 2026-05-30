@@ -198,7 +198,7 @@ Quality gates at each transition enforce:
 
 ## Part 5 — Host-Repository Lean Extension Points
 
-Do not assume any project-specific Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. When a repository has local knowledge-graph or quality-gate modules, map them to this generic checklist:
+Do not assume repository-local Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. When a repository has local knowledge-graph or quality-gate modules, map them to this generic checklist:
 
 | Local extension point | Symbolic AI aspect | Typical structures |
 |---|---|---|
