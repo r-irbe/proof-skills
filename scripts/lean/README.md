@@ -6,7 +6,7 @@ These scripts are project-agnostic. Run from the directory containing your Lean 
 - `check-native-decide.sh` — Ensure each `native_decide` call has a nearby KEEP justification. Example: `scripts/lean/check-native-decide.sh MyProject`.
 - `axiom_audit.py` — Generate and parse a Lean axiom contamination report. Example: `python3 scripts/lean/axiom_audit.py --lean-dir MyProject --project MyProject --expected-axioms expected_axioms.json`.
 - `bridge_validator.py` — Check that cross-module references are backed by explicit imports. Example: `python3 scripts/lean/bridge_validator.py --lean-dir MyProject --project MyProject`.
-- `proof_quality.py` — Run static proof-quality heuristics and write a Markdown report. Example: `python3 scripts/lean/proof_quality.py --lean-dir MyProject --output proof_quality.md`.
+- `proof_quality.py` — Run static proof-quality heuristics, including long proofs, vacuity, `: True` stubs, bare `decide`, and reflexive `rfl` candidates, then write a Markdown report. Example: `python3 scripts/lean/proof_quality.py --lean-dir MyProject --output proof_quality.md`.
 - `import_hygiene_advisory.py` — Report duplicate imports, missing local targets, and source-level cycles. Example: `python3 scripts/lean/import_hygiene_advisory.py --root MyProject --project MyProject --markdown`.
 - `review_coverage.py` — Verify theorem/lemma review records exist. Example: `python3 scripts/lean/review_coverage.py --lean-dir MyProject --reviews-dir reviews`.
 - `zettelkasten_lint.py` — Lint Markdown Zettelkasten notes for structure and links. Example: `python3 scripts/lean/zettelkasten_lint.py --zk-dir zettelkasten`.
