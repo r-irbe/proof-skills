@@ -98,6 +98,24 @@ Conflict, Novelty, Governance}`); 5 categories empirically dominate
 | 4 | **Novelty** | The user's request mentions a pattern, tool, ADR slot, or skill name that is not present in the repo and not in the runtime knowledge cutoff. | Soft — `ask_user` for intent. |
 | 5 | **Governance** | The change touches `AGENT.md`, top-level layout, license, the public README, or this contract. | **Hard — always ask**. |
 
+### 1.2.1 Trigger registry for skill authors
+
+When writing or editing a `SKILL.md`, encode the same five categories in the
+skill's `## Recovery & STOP` section. This keeps local skill behavior aligned
+with the repo-wide contract and avoids hidden "continue anyway" paths.
+
+| Trigger | Skill-facing wording | Common examples |
+|---|---|---|
+| Confidence | STOP if confidence is below the repo belief floor; ask through the runtime elicitation channel. | Choosing theorem names, package adoption class, proof strategy, taxonomy, or owner. |
+| Irreversible | STOP before irreversible data, trust, economic, or history-changing actions. | Push, release, destructive cleanup, public contract change, paid external call. |
+| Conflict | STOP when two authoritative sources disagree; cite both and ask which wins. | Skill vs. reference, template vs. actual project layout, package docs vs. source. |
+| Novelty | STOP when the requested tool, skill slug, package, or pattern is absent from the repo and current evidence. | New skill family, unfamiliar package ecosystem, undocumented workflow. |
+| Governance | STOP before changing public contracts, top-level layout, packaging, license, or agent rules. | `AGENT.md`, README, APM metadata, skill schema, conformance gate semantics. |
+
+Prefer a short explicit STOP rule over a vague reminder. A skill should tell the
+agent what decision is risky, why the human must choose, and what work is
+blocked until the answer is available.
+
 ### 1.3 Reversibility table
 
 Order matters: if a single command crosses two classes, treat as the
@@ -278,7 +296,7 @@ under `vendor/`; update the submodule pin instead.
 - Commit messages: prefix with `feat:` / `fix:` / `docs:` / `chore:`;
   no internal slot IDs in subjects.
 - All structural changes (skill consolidation, template rewrites,
-  layout moves) follow the current `lab/` reports and design notes.
+  layout moves) follow the current public design reports and release notes.
 - Skill conformance is hard-gated by
   `scripts/skill-audit/check_conformance.py`; APM packaging is
   hard-gated by `scripts/lint/apm_validate.py`.
@@ -296,20 +314,13 @@ under `vendor/`; update the submodule pin instead.
   [`scripts/eval/`](scripts/eval/) ·
   [`scripts/elo/`](scripts/elo/) ·
   [`scripts/eval/calibrate_judge.py`](scripts/eval/calibrate_judge.py)
-- Pipeline design docs: [`lab/design/`](lab/design/) — eval framework,
-  ELO/Glicko-2, multi-model runner, zettelkasten, cluster workflow
-  (reconstructed in R27 audit; see [`lab/design/README.md`](lab/design/README.md)).
-- Lab guide: [`lab/README.md`](lab/README.md) — calibration corpora,
-  end-to-end workflow, per-round runbook.
+- Pipeline design docs: packaged public design reports and release notes.
 - LLM-judge artifacts: [`scripts/eval/graders/`](scripts/eval/graders/) ·
   [`scripts/eval/graders/DISPATCH.md`](scripts/eval/graders/DISPATCH.md)
 - Known-bad calibration corpus (ADR-0039):
-  [`lab/evals/known-bad/lean-proof/`](lab/evals/known-bad/lean-proof/) ·
-  [`lab/evals/known-bad/lean-setup-import/`](lab/evals/known-bad/lean-setup-import/) ·
-  [`lab/evals/known-bad/mathlib-lookup/`](lab/evals/known-bad/mathlib-lookup/) ·
-  reports under [`reports/_calibration/`](reports/_calibration/)
+  replay reports under [`reports/_calibration/`](reports/_calibration/) and
+  grader configuration under [`scripts/eval/graders/`](scripts/eval/graders/).
 - Upstream submodule: [`vendor/leanprover-skills/`](vendor/leanprover-skills)
-- Master plan (private superrepo only): `lab/MASTER-PLAN.md`
 
 ---
 
