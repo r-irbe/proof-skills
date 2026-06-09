@@ -5,6 +5,7 @@ Proof Quality Analyzer for Lean 4 projects.
 
 Static analysis of Lean 4 proof quality:
   - Detect potential vacuous truths (empty hypotheses → trivial conclusions)
+  - Detect `: True` placeholders and likely tautology/smoke-test closures
   - Find overly long proofs (candidate for decomposition)
   - Detect redundant hypotheses (hypothesis never used in proof term)
   - Find tactic diversity (over-reliance on omega/simp)
@@ -108,6 +109,8 @@ def analyze_module(filepath: Path) -> dict:
                 'line': thm['line'],
                 'detail': 'May be vacuously true — proof uses False.elim or absurd with impossible hypothesis',
             })
+
+        findings.extend(find_tautology_candidates(thm))
 
         # Check hypothesis usage
         unused = find_unused_hypotheses(thm['signature'], thm['body'])
@@ -311,6 +314,58 @@ def is_vacuous_candidate(signature: str, body: str) -> bool:
         if 'False' in signature or '0 > 1' in signature or '¬ True' in signature:
             return True
     return False
+
+
+def find_tautology_candidates(thm: dict) -> list[dict]:
+    """Precision-oriented tautology/smoke-test candidates.
+
+    These are intentionally triage findings.  Short proofs are often good Lean;
+    the detector only flags shapes that repeatedly hide placeholder statements:
+    `: True`, a single bare `decide`, or a single bare `rfl` over a reflexive
+    equality/iff.
+    """
+    signature = thm['signature']
+    body = thm['body']
+    conclusion = _normalize_ws(_extract_conclusion(signature))
+    body_lines = [
+        line.strip()
+        for line in body.splitlines()
+        if line.strip() and not line.strip().startswith('--')
+    ]
+    body_norm = _normalize_ws(' '.join(body_lines))
+    findings: list[dict] = []
+
+    if conclusion == 'True':
+        findings.append({
+            'type': 'truth-stub',
+            'severity': 'P1',
+            'theorem': thm['name'],
+            'line': thm['line'],
+            'detail': 'Statement conclusion is exactly `True`; treat as placeholder/smoke unless explicitly documented',
+        })
+        return findings
+
+    if body_norm in {'decide', 'exact decide'}:
+        findings.append({
+            'type': 'decide-closed-candidate',
+            'severity': 'P2',
+            'theorem': thm['name'],
+            'line': thm['line'],
+            'detail': 'Proof is a single bare `decide`; review whether the statement is finite smoke-test code or substantive theorem',
+        })
+
+    if body_norm == 'rfl':
+        reflexive = _reflexive_conclusion(conclusion)
+        if reflexive:
+            findings.append({
+                'type': 'rfl-reflexive-candidate',
+                'severity': 'P2',
+                'theorem': thm['name'],
+                'line': thm['line'],
+                'detail': f'Proof is `rfl` and conclusion is definitionally reflexive (`{reflexive}`); review name/docstring for overclaim',
+            })
+
+    return findings
 
 
 def find_unused_hypotheses(signature: str, body: str) -> list[str]:
@@ -800,6 +855,22 @@ def _extract_head_symbol(lhs: str) -> str | None:
         tok = tok.split('.')[-1]
     if re.match(r"^[A-Za-z_][A-Za-z0-9_']*$", tok):
         return tok
+    return None
+
+
+def _normalize_ws(text: str) -> str:
+    return re.sub(r'\s+', ' ', text).strip()
+
+
+def _reflexive_conclusion(conclusion: str) -> str | None:
+    eq = _find_top_level_eq(conclusion)
+    if eq is None:
+        return None
+    idx, op = eq
+    lhs = _normalize_ws(conclusion[:idx])
+    rhs = _normalize_ws(conclusion[idx + len(op):])
+    if lhs and lhs == rhs:
+        return f'{lhs} {op} {rhs}'
     return None
 
 

@@ -312,6 +312,12 @@ Note: Blue checkmarks (✓✓) appear even when a *dependency* uses `sorry`. Alw
 3. **Dead-end check:** Does this lemma get used downstream, or is it isolated?
 4. **Duplicate check in Tactics.lean:** Search the reusable lemma library above before adding new helpers.
 
+For high-risk non-triviality questions, route to
+[`lean-tautology-triage`](../lean-tautology-triage/SKILL.md). Use it when a
+statement looks like a placeholder (`: True`), smoke theorem, reflexive `rfl`
+self-projection, bare `decide` closure, or automation-only proof whose name
+suggests a stronger mathematical claim.
+
 ### Layer 4: Proof Quality
 
 1. **Readability:** Uses `calc`, `have`, `show` for multi-step arguments?
@@ -327,6 +333,9 @@ Note: Blue checkmarks (✓✓) appear even when a *dependency* uses `sorry`. Alw
    - `duper` without lemma hints
    - any `proj_*` tactic use (all DEPRECATED — 0 uses; replace with specific Mathlib tactic)
    - Bare `aesop` / `canonical` without extracting the suggested proof script
+   - `: True` theorem/lemma conclusions unless explicitly marked as smoke tests
+   - Single-line `by decide` or `by rfl` proofs on names that claim semantic
+     correspondence, equivalence, convergence, safety, or optimality
 5. **Docstring:** Theorem has a docstring describing the mathematical content?
 
 ---
