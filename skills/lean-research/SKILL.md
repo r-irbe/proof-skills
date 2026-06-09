@@ -2,14 +2,14 @@
 name: "lean-research"
 description: |
   USE FOR: per-question Lean 4 research — picking a research method (Mathlib grep / Web / repo grep / sub-agent), running the discovery ladder for Mathlib/Loogle/Reservoir/GitHub/literature lookups, choosing depth (Shallow / Standard / Deep / Exhaustive), emitting a findings + recommended-strategy + Zettel triple, integrating with the Rumsfeld epistemic matrix and the review council, running a typed protocol (M / T / L / S / D / X / E).
-  DO NOT USE FOR: full council convocation (use @research-council); synthesis emission (use @research-synthesis-engine); proof writing (use @lean-proof); review (use @lean-review-council).
-  TRIGGERS: research, mathlib lookup, find lemma, theorem search, Loogle, Moogle, Reservoir, literature search, web search, what does X mean, typed research, M protocol, T protocol, L protocol.
+  DO NOT USE FOR: full council convocation (use @research-council); synthesis emission (use @research-synthesis-engine); package adoption or Lake dependency decisions (use @lean-package-research); proof writing (use @lean-proof); review (use @lean-review-council).
+  TRIGGERS: research, mathlib lookup, find lemma, theorem search, Loogle, Moogle, Reservoir, package search, literature search, web search, what does X mean, typed research, M protocol, T protocol, L protocol.
 tier: "warm"
 runtime_targets: [copilot-cli, claude-code]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-proof', 'skill:lean-proof-review', 'skill:lean-specification', 'skill:lean-blueprint']
-  successors: ['skill:lean-zettelkasten', 'skill:research-council', 'skill:research-synthesis-engine', 'skill:lean-proof', 'skill:lean-proof-review']
+  successors: ['skill:lean-zettelkasten', 'skill:research-council', 'skill:research-synthesis-engine', 'skill:lean-package-research', 'skill:lean-proof', 'skill:lean-proof-review']
 metadata:
   version: "0.2.0"
   source_spec: "skills/lean-research/SKILL.md (this file)"
@@ -27,8 +27,8 @@ Systematic methodology for investigating proof strategies, API availability, tac
 
 - **USE FOR / DO NOT USE FOR / TRIGGERS** — see the `description` field in the YAML frontmatter above. Same dispatch contract is restated here for in-skill discovery.
 - **USE FOR:** per-question Lean 4 research — picking a research method (Mathlib grep / Web / repo grep / sub-agent), running the discovery ladder for Mathlib/Loogle/Reservoir/GitHub/literature lookups, choosing depth (Shallow / Standard / Deep / Exhaustive), emitting a findings + recommended-strategy + Zettel triple, integrating with the Rumsfeld epistemic matrix and the review council, running a typed protocol (M / T / L / S / D / X / E).
-- **DO NOT USE FOR:** full council convocation (use @research-council); synthesis emission (use @research-synthesis-engine); proof writing (use @lean-proof); review (use @lean-review-council).
-- **TRIGGERS:** research, mathlib lookup, find lemma, theorem search, Loogle, Moogle, Reservoir, literature search, web search, what does X mean, typed research, M protocol, T protocol, L protocol.
+- **DO NOT USE FOR:** full council convocation (use @research-council); synthesis emission (use @research-synthesis-engine); package adoption or Lake dependency decisions (use @lean-package-research); proof writing (use @lean-proof); review (use @lean-review-council).
+- **TRIGGERS:** research, mathlib lookup, find lemma, theorem search, Loogle, Moogle, Reservoir, package search, literature search, web search, what does X mean, typed research, M protocol, T protocol, L protocol.
 
 ## Workflow
 
@@ -54,7 +54,7 @@ Systematic methodology for investigating proof strategies, API availability, tac
 ## Handoffs
 
 - **Predecessors:** `agent:gateway`, `skill:lean-proof`, `skill:lean-proof-review`, `skill:lean-specification`, `skill:lean-blueprint`.
-- **Successors:** `skill:lean-zettelkasten`, `skill:research-council`, `skill:research-synthesis-engine`, `skill:lean-proof`, `skill:lean-proof-review`.
+- **Successors:** `skill:lean-zettelkasten`, `skill:research-council`, `skill:research-synthesis-engine`, `skill:lean-package-research`, `skill:lean-proof`, `skill:lean-proof-review`.
 
 ---
 
@@ -84,6 +84,7 @@ the dispatch contract and a parts index.
 - [`../../references/lean-research-handbook.md`](../../references/lean-research-handbook.md) — Full handbook (extracted from this skill)
 - [`../../references/discovery-ladder.md`](../../references/discovery-ladder.md) — Runged Mathlib/Loogle/Reservoir/GitHub/literature lookup protocol
 - [`../../references/discovery-ladder-evals.md`](../../references/discovery-ladder-evals.md) — Evaluation prompts for the discovery ladder
+- [`../lean-package-research/SKILL.md`](../lean-package-research/SKILL.md) — Successor for package adoption and Lake dependency decisions
 - [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) — Successor
 - [`../research-council/SKILL.md`](../research-council/SKILL.md) — Successor
 - [`../research-synthesis-engine/SKILL.md`](../research-synthesis-engine/SKILL.md) — Successor
