@@ -3,10 +3,14 @@
 """
 Proof Quality Analyzer for Lean 4 projects.
 
-Static analysis of Lean 4 proof quality:
+Static analysis of Lean 4 proof quality (both tactic-mode `:= by …` and
+term-mode `:= <term>` proofs; recognises `example` and the
+`private`/`protected`/`public`/`scoped`/`noncomputable` modifiers):
   - Detect potential vacuous truths (empty hypotheses → trivial conclusions)
-  - Detect `: True` placeholders and likely tautology/smoke-test closures
-  - Find overly long proofs (candidate for decomposition)
+  - Detect `: True` placeholders, term-mode truth witnesses, and likely
+    tautology/smoke-test closures
+  - Find overly long proofs (candidate for decomposition), refined by a
+    structural branch-point signal
   - Detect redundant hypotheses (hypothesis never used in proof term)
   - Find tactic diversity (over-reliance on omega/simp)
   - Detect potential duplication (similarly-structured theorems)
@@ -67,6 +71,14 @@ def analyze_module(filepath: Path) -> dict:
         # improvement (P2), and ≥100 is a strong-signal P1 outlier.
         # Bands preserve visibility while reserving the loud signal
         # for genuine outliers.
+        #
+        # Structural signal (Wave-05): raw line count alone cannot tell a
+        # flat 40-line `calc` (hard to split) from a 40-line proof with
+        # many independent case branches (a natural decomposition
+        # candidate).  `branch_points` counts focus dots / case splits /
+        # combinators; a 31–59 line proof that is *also* structurally
+        # branchy is escalated P3 → P2.
+        branch_points = _structural_branch_points(thm['body'])
         if body_lines >= 100:
             findings.append({
                 'type': 'long-proof',
@@ -74,8 +86,9 @@ def analyze_module(filepath: Path) -> dict:
                 'theorem': thm['name'],
                 'line': thm['line'],
                 'detail': (
-                    f'Proof is {body_lines} lines — strongly consider '
-                    f'decomposition or extraction of reusable lemmas'
+                    f'Proof is {body_lines} lines ({branch_points} branch '
+                    f'points) — strongly consider decomposition or '
+                    f'extraction of reusable lemmas'
                 ),
             })
         elif body_lines >= 60:
@@ -85,18 +98,25 @@ def analyze_module(filepath: Path) -> dict:
                 'theorem': thm['name'],
                 'line': thm['line'],
                 'detail': (
-                    f'Proof is {body_lines} lines — consider decomposition'
+                    f'Proof is {body_lines} lines ({branch_points} branch '
+                    f'points) — consider decomposition'
                 ),
             })
         elif body_lines > 30:
+            branchy = branch_points >= 12
             findings.append({
                 'type': 'long-proof',
-                'severity': 'P3',
+                'severity': 'P2' if branchy else 'P3',
                 'theorem': thm['name'],
                 'line': thm['line'],
                 'detail': (
-                    f'Proof is {body_lines} lines — review for natural '
-                    f'helper-lemma extraction (advisory)'
+                    f'Proof is {body_lines} lines with {branch_points} '
+                    f'branch points — multiple independent branches suggest '
+                    f'natural helper-lemma extraction'
+                    if branchy else
+                    f'Proof is {body_lines} lines ({branch_points} branch '
+                    f'points) — review for natural helper-lemma extraction '
+                    f'(advisory)'
                 ),
             })
 
@@ -159,98 +179,140 @@ def analyze_module(filepath: Path) -> dict:
 def extract_theorem_blocks(text: str) -> list[dict]:
     """Extract theorem name, signature, body, and line number.
 
-    Uses indentation-aware body extraction: the proof body starts
-    after `:= by` and ends when a line at column 0 begins a new
-    top-level declaration (theorem, lemma, def, structure, etc.)
-    or a section marker (`-- §`).
+    Handles both proof styles:
+      * tactic-mode  — `... := by <tactics>`
+      * term-mode    — `... := <term>` (e.g. `:= rfl`, `:= ⟨h₁, h₂⟩`)
+
+    The separator between signature and proof is the first *depth-0*
+    `:=` (so binder defaults like `(n := 0)` inside parens are not
+    mistaken for the proof assignment).  The proof body then runs until
+    the next top-level declaration at column 0.
+
+    Modifier/keyword coverage (FQ-1/FQ-2, Wave-05 calibration): the
+    declaration and terminator regexes recognise `example` and the
+    `private`/`protected`/`public`/`scoped`/`noncomputable` modifiers.
+    Earlier revisions only matched `theorem|lemma|private …` and only
+    `:= by`, which (a) dropped every term-mode proof and (b) let a
+    term-mode signature keep scanning forward, swallowing the following
+    declarations — together missing ~22% of declarations on EASCI.
     """
     blocks = []
     lines = text.splitlines()
     i = 0
-    # Top-level declaration starters.  Includes `private theorem`/
-    # `private lemma` and attribute-prefixed `@[…] theorem` since the
-    # body extractor uses this regex to know when to stop collecting
-    # proof lines.  Without these, the comment-stripping introduced in
-    # W12 r03 caused the extractor to swallow subsequent
-    # `private theorem ...` declarations into the previous theorem's
-    # body (the old extraction relied on `-- §N` block-headers as
-    # accidental terminators).  (W12 r03b.)
+    # Optional leading attributes, then optional declaration modifiers.
+    _ATTR = r'(?:@\[[^\]]*\]\s*)*'
+    _MODS = r'(?:(?:private|protected|public|scoped|noncomputable)\s+)*'
+    # Top-level declaration starters — used to know when to stop
+    # collecting proof-body lines.
     TOP_LEVEL = re.compile(
-        r'^(?:@\[[^\]]*\]\s*)*'
-        r'(?:theorem|lemma|private\s+theorem|private\s+lemma|'
-        r'def|noncomputable\s+def|noncomputable\s+instance|'
-        r'abbrev|structure|inductive|class|instance|end|namespace|section|'
+        _ATTR + _MODS +
+        r'(?:theorem|lemma|example|'
+        r'def|abbrev|instance|structure|inductive|class|'
+        r'end|namespace|section|'
         r'open|set_option|attribute|#|/--|--\s*[§=])'
     )
+    # Declarations we actually analyze (carry a proof we can inspect).
+    DECL_RE = re.compile(
+        _ATTR + _MODS + r'(theorem|lemma|example)\b(?:\s+(\S+))?'
+    )
     while i < len(lines):
-        # Match theorem/lemma at column 0, with optional leading
-        # `@[...]` attribute markers (e.g., `@[simp] theorem foo`).
-        m = re.match(
-            r'^(?:@\[[^\]]*\]\s*)*(theorem|lemma|private\s+theorem|private\s+lemma)\s+(\S+)',
-            lines[i])
+        m = DECL_RE.match(lines[i])
         if not m:
             i += 1
             continue
         kind = m.group(1)
-        raw_name = m.group(2).split('(')[0].split(':')[0].strip()
+        if kind == 'example':
+            raw_name = '(example)'
+        else:
+            name_tok = m.group(2) or ''
+            raw_name = (name_tok.split('(')[0].split(':')[0].strip()
+                        or '(anonymous)')
         start_line = i + 1  # 1-based
 
-        # Collect signature lines until `:= by`
+        # Scan forward to the first depth-0 `:=` separating signature
+        # from proof, tracking bracket depth across continuation lines.
+        depth = 0
+        in_string = False
+        found_assign = False
+        assign_line = -1
+        assign_col = -1
         sig_lines = []
         j = i
-        found_by = False
         while j < len(lines):
             line = lines[j]
-            # If we hit a NEW top-level declaration (not the current one),
-            # this theorem doesn't use `by` — skip it
-            if j > i and line and line[0] != ' ' and line[0] != '\t':
-                if TOP_LEVEL.match(line) or re.match(
-                    r'^(?:theorem|lemma|private\s+theorem|private\s+lemma)\s', line
-                ):
+            # A new top-level declaration at column 0 before any `:=`
+            # means this declaration has no inspectable proof body
+            # (forward declaration, `where`-less ref, etc.); bail out.
+            if j > i and line and line[0] not in (' ', '\t'):
+                if TOP_LEVEL.match(line):
                     break
+            k = 0
+            n = len(line)
+            while k < n:
+                c = line[k]
+                if c == '"':
+                    in_string = not in_string
+                    k += 1
+                    continue
+                if in_string:
+                    k += 1
+                    continue
+                if c in '([{⟨':
+                    depth += 1
+                elif c in ')]}⟩':
+                    depth -= 1
+                elif (c == ':' and depth == 0
+                        and k + 1 < n and line[k + 1] == '='):
+                    found_assign = True
+                    assign_line = j
+                    assign_col = k
+                    break
+                k += 1
+            if found_assign:
+                break
             sig_lines.append(line)
-            if ':= by' in line or ':=by' in line:
-                found_by = True
-                break
-            if re.search(r':=\s*$', line) and j + 1 < len(lines) and lines[j+1].strip().startswith('by'):
-                sig_lines.append(lines[j+1])
-                j += 1
-                found_by = True
-                break
             j += 1
-        if not found_by:
+        if not found_assign:
             i += 1
             continue
 
-        # Extract signature (before `:= by`) and find body start
-        full_sig = '\n'.join(sig_lines)
-        by_idx = full_sig.find(':= by')
-        if by_idx == -1:
-            by_idx = full_sig.find(':=by')
-        if by_idx == -1:
-            by_idx = full_sig.rfind(':=')
-        signature = full_sig[:by_idx] if by_idx >= 0 else full_sig
+        # Signature is everything up to (not including) the `:=`.
+        sig_lines.append(lines[assign_line][:assign_col])
+        signature = '\n'.join(sig_lines)
 
-        # Collect body lines: everything indented after `:= by` until
-        # the next top-level declaration at column 0
+        # Seed the body from the remainder of the `:=` line, deciding
+        # between tactic-mode (`by …`) and term-mode.
         body_lines = []
-        # Remainder of the `:= by` line after `by`
-        by_line = lines[j]
-        after_by = by_line[by_line.index('by') + 2:] if 'by' in by_line else ''
-        if after_by.strip():
-            body_lines.append(after_by)
-        j += 1
+        remainder = lines[assign_line][assign_col + 2:]
+        rstrip = remainder.strip()
+        j = assign_line + 1
+        if re.match(r'by\b', rstrip):
+            after = remainder[remainder.index('by') + 2:]
+            if after.strip():
+                body_lines.append(after)
+        elif rstrip == '':
+            # Proof starts on a following line: a leading `by` token
+            # means tactic-mode, otherwise it is a term-mode body.
+            if j < len(lines) and re.match(r'by\b', lines[j].strip()):
+                bl = lines[j]
+                after = bl[bl.index('by') + 2:]
+                if after.strip():
+                    body_lines.append(after)
+                j += 1
+        else:
+            # Term-mode: the remainder is the start of the proof term.
+            body_lines.append(remainder)
+
+        # Collect the rest of the body until the next top-level decl.
         while j < len(lines):
             line = lines[j]
-            # Blank or indented lines are part of the body
-            if line == '' or (line[0:1] == ' ' or line[0:1] == '\t'):
+            if line == '' or line[0:1] in (' ', '\t'):
                 body_lines.append(line)
                 j += 1
                 continue
-            # Non-indented non-blank line: check if it's a top-level start
             if TOP_LEVEL.match(line):
                 break
-            # Otherwise, might be a continuation (e.g., `| pattern =>`)
+            # Non-indented continuation (e.g. `| pattern => …`).
             body_lines.append(line)
             j += 1
 
@@ -321,8 +383,18 @@ def find_tautology_candidates(thm: dict) -> list[dict]:
 
     These are intentionally triage findings.  Short proofs are often good Lean;
     the detector only flags shapes that repeatedly hide placeholder statements:
-    `: True`, a single bare `decide`, or a single bare `rfl` over a reflexive
-    equality/iff.
+    `: True`, a term-mode truth witness (`trivial`/`True.intro`/`⟨⟩`), a single
+    bare `decide`, or a single bare `rfl` over a reflexive equality/iff.
+
+    Severity calibration (Wave-05):
+      * `truth-stub` (`: True` conclusion) — P1; almost always a placeholder.
+      * `truth-stub-term` (term-mode `trivial`/`True.intro`/`⟨⟩` proving a
+        non-`True` goal) — P2; a nullary witness that usually marks a
+        smoke/stub statement (FQ-3).
+      * `decide-closed-candidate` — bare `decide`.  Concrete, closed targets
+        (no binders/quantifiers) are the *intended* use of `decide`, so they
+        are advisory P3; targets carrying variables/quantifiers stay P2
+        because they are the shapes that hide non-substantive smoke (FQ-4).
     """
     signature = thm['signature']
     body = thm['body']
@@ -345,13 +417,39 @@ def find_tautology_candidates(thm: dict) -> list[dict]:
         })
         return findings
 
-    if body_norm in {'decide', 'exact decide'}:
+    # Term-mode truth witnesses (FQ-3): a nullary proof term such as
+    # `trivial`, `True.intro`, or the empty anonymous constructor `⟨⟩`
+    # only closes goals that are definitionally `True`/a nullary
+    # structure.  When the *stated* conclusion is not literally `True`
+    # this shape usually marks a smoke/stub statement worth review.
+    if body_norm in {'trivial', 'True.intro', '⟨⟩', '⟨ ⟩'}:
         findings.append({
-            'type': 'decide-closed-candidate',
+            'type': 'truth-stub-term',
             'severity': 'P2',
             'theorem': thm['name'],
             'line': thm['line'],
-            'detail': 'Proof is a single bare `decide`; review whether the statement is finite smoke-test code or substantive theorem',
+            'detail': (
+                f'Proof is a nullary truth witness (`{body_norm}`); the goal '
+                f'is provable by a trivial term — confirm it is a substantive '
+                f'statement, not a placeholder/smoke'
+            ),
+        })
+
+    if body_norm in {'decide', 'exact decide'}:
+        concrete = _is_concrete_decide_target(signature)
+        findings.append({
+            'type': 'decide-closed-candidate',
+            'severity': 'P3' if concrete else 'P2',
+            'theorem': thm['name'],
+            'line': thm['line'],
+            'detail': (
+                'Proof is a single bare `decide` over a concrete closed '
+                'proposition (decide is the intended tool here; advisory)'
+                if concrete else
+                'Proof is a single bare `decide` and the statement carries '
+                'variables/quantifiers; review whether it is finite '
+                'smoke-test code or a substantive theorem'
+            ),
         })
 
     if body_norm == 'rfl':
@@ -366,6 +464,20 @@ def find_tautology_candidates(thm: dict) -> list[dict]:
             })
 
     return findings
+
+
+def _is_concrete_decide_target(signature: str) -> bool:
+    """True if a `decide` target is a concrete, closed proposition.
+
+    Concrete == no binders introduced in the signature and no `∀`/`∃`
+    quantifier anywhere.  For such statements `decide` is the intended
+    discharge tactic, so the finding is downgraded to advisory (FQ-4).
+    """
+    if _bound_variable_names(signature):
+        return False
+    if '∀' in signature or '∃' in signature:
+        return False
+    return True
 
 
 def find_unused_hypotheses(signature: str, body: str) -> list[str]:
@@ -748,7 +860,8 @@ def _extract_conclusion(signature: str) -> str:
     """
     sig = signature
     m = re.match(
-        r'^\s*(?:theorem|lemma|private\s+theorem|private\s+lemma)\s+\S+',
+        r'^\s*(?:(?:private|protected|public|scoped|noncomputable)\s+)*'
+        r'(?:theorem|lemma|example)\b(?:\s+\S+)?',
         sig)
     if m:
         sig = sig[m.end():]
@@ -860,6 +973,31 @@ def _extract_head_symbol(lhs: str) -> str | None:
 
 def _normalize_ws(text: str) -> str:
     return re.sub(r'\s+', ' ', text).strip()
+
+
+def _structural_branch_points(body: str) -> int:
+    """Count case-split / focusing structure in a tactic proof body.
+
+    A heuristic proxy for "how decomposable" a long proof is.  Counts
+    focus dots (`·`/`. `), `case`/`next` headers, pattern bullets (`| `),
+    the `<;>` combinator, and the branch-introducing tactics
+    `rcases`/`obtain`/`cases`/`induction`/`by_cases`/`match`.  Higher
+    counts indicate many independent sub-goals — a natural extraction
+    signal — whereas a flat `calc`/`simp` block scores near zero.
+    """
+    count = 0
+    for line in body.splitlines():
+        stripped = line.strip()
+        if stripped.startswith('·') or stripped.startswith('. '):
+            count += 1
+        if re.match(r'(case|next)\b', stripped):
+            count += 1
+        if stripped.startswith('| '):
+            count += 1
+    count += len(re.findall(r'<;>', body))
+    count += len(re.findall(
+        r'\b(?:rcases|obtain|cases|induction|by_cases|match)\b', body))
+    return count
 
 
 def _reflexive_conclusion(conclusion: str) -> str | None:
