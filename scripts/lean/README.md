@@ -2,6 +2,12 @@
 
 These scripts are project-agnostic. Run from the directory containing your Lean project, or pass paths explicitly.
 
+For the EASCI Lean project, prefer the repository-local wrappers in
+`docs/easci/lean/scripts/*.py` when you want CI-equivalent defaults and tracking
+outputs. Use these generic `skills/scripts/lean/*.py` entry points when writing
+portable proof-skills guidance or when another Lean project supplies an explicit
+`--lean-dir`.
+
 - `templates_to_md.py` — Convert `templates/Template_*.lean` literate Lean files into Markdown. Example: `python3 scripts/lean/templates_to_md.py --src-dir templates --dst-dir templates`.
 - `check-native-decide.sh` — Ensure each `native_decide` call has a nearby KEEP justification. Example: `scripts/lean/check-native-decide.sh MyProject`.
 - `axiom_audit.py` — Generate and parse a Lean axiom contamination report. Example: `python3 scripts/lean/axiom_audit.py --lean-dir MyProject --project MyProject --expected-axioms expected_axioms.json`.
