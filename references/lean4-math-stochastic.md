@@ -228,13 +228,16 @@ council member, cite that table rather than restating the rows here.
 
 ### 8.2 Perron-Frobenius Absence from Mathlib
 
-As of Lean 4 / Mathlib 4.28, **Mathlib does NOT have a general Perron-Frobenius theorem** for real matrices. Workarounds:
+As of Lean 4 / Mathlib 4.30, **Mathlib does NOT have a general Perron-Frobenius theorem** for real matrices. Workarounds (all proven in the corpus's `StochMatrix3/4/5` line):
 
-| Problem | Project approach |
+| Problem | Approach (proven) |
 |---|---|
-| Finite irreducible Markov chain: stationary distribution exists | Prove directly from column sums = 1 via `field_simp + ring` |
-| Convergence to stationary | Use Doeblin's condition + geometric mixing bounds (proven in StochasticCCV) |
-| 3×3 doubly stochastic: uniform is stationary | `uniformQ_stationary_doubly_stochastic` theorem |
+| Stationary distribution exists — row-identical kernels | Explicit common row: `rowDistribution` is stationary (no PF, no topology) |
+| Stationary distribution exists — strictly positive kernels | Brouwer on the simplex: `step` maps the convex compact simplex to itself, continuous ⇒ fixed point (see §8.5) |
+| Stationary distribution uniqueness (strictly positive) | Two stationary π₁ π₂: `dist(π₁,π₂) = dist(Tπ₁,Tπ₂) ≤ r·dist(π₁,π₂)` with r < 1 ⇒ π₁ = π₂ |
+| Convergence to stationary | Doeblin δ-bound ⇒ `ContractionMapping` instance (rate `1 − nδ/100`) ⇒ geometric convergence `Tendsto` |
+| Stationary sensitivity / gate monotonicity | Perturbation bound: `dist(π_P, π_Q) ≤ ‖T_P π_Q − T_Q π_Q‖₁ / (nδ/100)` |
+| Doubly stochastic: uniform is stationary | Column sums = 1 via `field_simp + ring` |
 
 ```lean
 -- Column stochasticity → uniform is stationary (no PF needed):
@@ -246,6 +249,27 @@ theorem uniformQ_stationary_doubly_stochastic :
   field_simp
   ring
 ```
+
+### 8.5 Finite Markov chain existence pattern (Brouwer on the simplex)
+
+The general existence theorem — every strictly positive finite stochastic
+matrix has a stationary distribution — is provable without PF via Brouwer:
+
+1. **State space**: the standard simplex `stdSimplex ℝ (Fin n)` (or a bespoke
+   subtype `{c : Fin n → ℝ // ∀ i, 0 ≤ c i ∧ ∑ c = 1}`).
+2. **Invariance**: the transition `T c = c·P` maps the simplex to itself
+   (non-negativity of entries + row sums = 1 ⇒ mass preservation).
+3. **Continuity**: `T` is a finite linear combination of coordinates, hence
+   `Continuous` on the simplex.
+4. **Fixed point**: Mathlib's Brouwer theorem for convex compact sets
+   (`exists_fixedPoint_of_convexCompact`-style, or `IsCompact.exists_fixedPoint`
+   on the simplex) yields `∃ π ∈ Δ, T π = π`.
+5. **Stationarity**: `T π = π` is exactly `∀ j, ∑ i, π i · P[i][j] = π j`.
+
+Mathlib pieces: `convex_stdSimplex`, `isCompact_stdSimplex`,
+`continuous_finset_sum`, `Continuous.continuousOn`. The corpus's `CCVR`
+module already installs `CCVR.equivStdSimplex` + `Convex`/`IsCompact`
+corollaries for the 3-simplex — mirror for `Fin n`.
 
 ### 8.3 Doubly-Stochastic Uniqueness
 
