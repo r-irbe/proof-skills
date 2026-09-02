@@ -250,26 +250,59 @@ theorem uniformQ_stationary_doubly_stochastic :
   ring
 ```
 
-### 8.5 Finite Markov chain existence pattern (Brouwer on the simplex)
+### 8.5 Finite Markov chain existence pattern (pin-compatible, PROVEN)
 
 The general existence theorem — every strictly positive finite stochastic
-matrix has a stationary distribution — is provable without PF via Brouwer:
+matrix has a stationary distribution — is provable **without PF and without
+Brouwer** (Mathlib at pin `c5ea003` has neither; verified 2026-09-02:
+`exists_fixedPoint_of_convexCompact`, `IsCompact.exists_fixedPoint`,
+`Brouwer` are all unknown identifiers).  Two routes:
 
-1. **State space**: the standard simplex `stdSimplex ℝ (Fin n)` (or a bespoke
-   subtype `{c : Fin n → ℝ // ∀ i, 0 ≤ c i ∧ ∑ c = 1}`).
-2. **Invariance**: the transition `T c = c·P` maps the simplex to itself
-   (non-negativity of entries + row sums = 1 ⇒ mass preservation).
-3. **Continuity**: `T` is a finite linear combination of coordinates, hence
-   `Continuous` on the simplex.
-4. **Fixed point**: Mathlib's Brouwer theorem for convex compact sets
-   (`exists_fixedPoint_of_convexCompact`-style, or `IsCompact.exists_fixedPoint`
-   on the simplex) yields `∃ π ∈ Δ, T π = π`.
-5. **Stationarity**: `T π = π` is exactly `∀ j, ∑ i, π i · P[i][j] = π j`.
+#### Route A — Doeblin–Cauchy (PRIMARY; proven in `StageMatrix5.lean`)
 
-Mathlib pieces: `convex_stdSimplex`, `isCompact_stdSimplex`,
-`continuous_finset_sum`, `Continuous.continuousOn`. The corpus's `CCVR`
-module already installs `CCVR.equivStdSimplex` + `Convex`/`IsCompact`
-corollaries for the 3-simplex — mirror for `Fin n`.
+Every strictly positive `n×n` stochastic matrix is a Doeblin contraction
+with factor `r = 1 − n·δ/100 < 1` (take `δ = 1`): the one-step L¹
+contraction `‖c₁P − c₂P‖₁ ≤ r·‖c₁ − c₂‖₁` holds for equal-mass vectors.
+Then:
+
+1. **Uniform start** `u = (1/n, …, 1/n)`; iterates `xₖ = u·Pᵏ` form an
+   **explicit Cauchy sequence**: `‖xₘ − xₙ‖₁ ≤ rᵐ·‖u − x₀‖₁ ≤ rᵐ·2`.
+2. **Completeness**: `cauchySeq_tendsto_of_complete` gives a pointwise
+   limit `π` (ℝ is complete; no Brouwer needed).
+3. **Limit in the simplex**: `∑π = 1` via mass preservation +
+   `tendsto_nhds_unique`; `π ≥ 0` via `ge_of_tendsto` of non-negative
+   iterates.
+4. **Limit is a fixed point**: triangle inequality
+   `‖π − πP‖₁ ≤ ‖π − xₙ₊₁‖₁ + ‖xₙ₊₁ − πP‖₁`; both terms → 0 (the second
+   by the contraction applied to the tail).  Hence `πP = π`, i.e.
+   `∀ j, ∑ i, π i · P[i][j] = π j`.
+
+Key Mathlib pieces: `cauchySeq_tendsto_of_complete`, `tendsto_nhds_unique`,
+`ge_of_tendsto`, `tendsto_pow_atTop_nhds_zero_of_lt_one`,
+`Finset.sum_add_distrib` (the sum-of-sums vs sum-of-pointwise-sum trap:
+`Finset.sum_le_sum` gives `∑(a+b)`, the goal needs `∑a + ∑b`).
+Reference implementation: `EASCI/StochasticCCV/StageMatrix5.lean`
+`stationary_exists_of_strictlyPositive` (154 lines, 0 sorry/admit/axiom,
+LSpec-tested).  Uniqueness of the stationary distribution then follows
+from the same contraction (`stationary_unique` in the same module).
+
+#### Route B — Brouwer (FUTURE; blocked at this pin)
+
+When Mathlib lands a Brouwer fixed-point theorem for convex compact sets
+(the upstream PR is tracked in mathlib), the classical route becomes
+available:
+
+1. **State space**: `stdSimplex ℝ (Fin n)` — `convex_stdSimplex`,
+   `isCompact_stdSimplex` already exist at this pin.
+2. **Invariance**: `T c = c·P` maps the simplex to itself (non-negativity
+   + row sums = 1).
+3. **Continuity**: `T` is a finite linear combination of coordinates.
+4. **Fixed point**: Brouwer yields `∃ π ∈ Δ, T π = π`.
+5. **Stationarity**: `T π = π` is exactly the balance equation.
+
+Until then, Route A is the honest, pin-compatible proof.  The corpus's
+`CCVR` module already installs `CCVR.equivStdSimplex` + `Convex`/`IsCompact`
+corollaries for the 3-simplex — mirror for `Fin n` when Route B opens.
 
 ### 8.3 Doubly-Stochastic Uniqueness
 
