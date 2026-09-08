@@ -11,10 +11,15 @@ Usage:
 """
 
 import argparse
-import os
 import re
 import sys
 from pathlib import Path
+
+try:
+    from axiom_audit import strip_comments_preserving_newlines
+except ImportError:  # direct-script execution from another cwd
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from axiom_audit import strip_comments_preserving_newlines
 
 
 def extract_theorems(lean_dir: Path) -> dict[str, list[tuple[str, int]]]:
@@ -23,6 +28,10 @@ def extract_theorems(lean_dir: Path) -> dict[str, list[tuple[str, int]]]:
 
     Subdirectories are included (module name = relative path with `/`
     replaced by `.`); `Tests/`, `.scratch/`, and hidden dirs are excluded.
+
+    Comments are stripped (line structure preserved) before matching so
+    prose lines inside doc comments that begin with the word `theorem`/
+    `lemma` are not counted as declarations.
     """
     pattern = re.compile(r'^(theorem|lemma)\s+(\S+)', re.MULTILINE)
     results: dict[str, list[tuple[str, int]]] = {}
@@ -32,13 +41,19 @@ def extract_theorems(lean_dir: Path) -> dict[str, list[tuple[str, int]]]:
         parts = rel.parts
         if any(p in ('Tests', '.scratch') or p.startswith('.') for p in parts):
             continue
-        module = '.'.join(p for p in parts[:-1]) + ('.' if len(parts) > 1 else '') + parts[-1][:-5]
+        module = '.'.join([*parts[:-1], lean_file.stem])
         theorems = []
-        with open(lean_file, 'r', encoding='utf-8') as f:
-            for i, line in enumerate(f, 1):
-                m = pattern.match(line)
-                if m:
-                    theorems.append((m.group(2), i))
+        try:
+            source = strip_comments_preserving_newlines(
+                lean_file.read_text(encoding='utf-8'))
+        except OSError as exc:
+            print(f'warning: skipping unreadable {lean_file}: {exc}',
+                  file=sys.stderr)
+            continue
+        for i, line in enumerate(source.splitlines(), 1):
+            m = pattern.match(line)
+            if m:
+                theorems.append((m.group(2), i))
         if theorems:
             results[module] = theorems
 
@@ -51,11 +66,17 @@ def find_review_records(reviews_dir: Path) -> set[str]:
     if not reviews_dir.exists():
         return reviewed
 
-    name_pattern = re.compile(r'##\s*Theorem:\s*`?([\w.]+)`?', re.IGNORECASE)
+    # `\w.` plus `'`: Lean identifier constituents include trailing primes
+    # (`hasDerivAt'`, `G4'_implies_G4`).
+    name_pattern = re.compile(r"##\s*Theorem:\s*`?([\w.']+)`?", re.IGNORECASE)
 
     for review_file in reviews_dir.rglob('*.md'):
-        with open(review_file, 'r', encoding='utf-8') as f:
-            content = f.read()
+        try:
+            content = review_file.read_text(encoding='utf-8')
+        except OSError as exc:
+            print(f'warning: skipping unreadable {review_file}: {exc}',
+                  file=sys.stderr)
+            continue
         for m in name_pattern.finditer(content):
             reviewed.add(m.group(1))
 
