@@ -33,22 +33,22 @@ def extract_theorems(lean_dir: Path) -> dict[str, list[tuple[str, int]]]:
     prose lines inside doc comments that begin with the word `theorem`/
     `lemma` are not counted as declarations.
     """
-    pattern = re.compile(r'^(theorem|lemma)\s+(\S+)', re.MULTILINE)
+    pattern = re.compile(r"^(theorem|lemma)\s+(\S+)", re.MULTILINE)
     results: dict[str, list[tuple[str, int]]] = {}
 
-    for lean_file in sorted(lean_dir.rglob('*.lean')):
+    for lean_file in sorted(lean_dir.rglob("*.lean")):
         rel = lean_file.relative_to(lean_dir)
         parts = rel.parts
-        if any(p in ('Tests', '.scratch') or p.startswith('.') for p in parts):
+        if any(p in ("Tests", ".scratch") or p.startswith(".") for p in parts):
             continue
-        module = '.'.join([*parts[:-1], lean_file.stem])
+        module = ".".join([*parts[:-1], lean_file.stem])
         theorems = []
         try:
             source = strip_comments_preserving_newlines(
-                lean_file.read_text(encoding='utf-8'))
+                lean_file.read_text(encoding="utf-8")
+            )
         except OSError as exc:
-            print(f'warning: skipping unreadable {lean_file}: {exc}',
-                  file=sys.stderr)
+            print(f"warning: skipping unreadable {lean_file}: {exc}", file=sys.stderr)
             continue
         for i, line in enumerate(source.splitlines(), 1):
             m = pattern.match(line)
@@ -70,12 +70,11 @@ def find_review_records(reviews_dir: Path) -> set[str]:
     # (`hasDerivAt'`, `G4'_implies_G4`).
     name_pattern = re.compile(r"##\s*Theorem:\s*`?([\w.']+)`?", re.IGNORECASE)
 
-    for review_file in reviews_dir.rglob('*.md'):
+    for review_file in reviews_dir.rglob("*.md"):
         try:
-            content = review_file.read_text(encoding='utf-8')
+            content = review_file.read_text(encoding="utf-8")
         except OSError as exc:
-            print(f'warning: skipping unreadable {review_file}: {exc}',
-                  file=sys.stderr)
+            print(f"warning: skipping unreadable {review_file}: {exc}", file=sys.stderr)
             continue
         for m in name_pattern.finditer(content):
             reviewed.add(m.group(1))
@@ -84,11 +83,18 @@ def find_review_records(reviews_dir: Path) -> set[str]:
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Check review coverage for Lean 4 theorems')
-    parser.add_argument('--lean-dir', type=Path, required=True,
-                        help='Directory containing .lean files')
-    parser.add_argument('--reviews-dir', type=Path, default=Path('reviews'),
-                        help='Directory containing review records')
+    parser = argparse.ArgumentParser(
+        description="Check review coverage for Lean 4 theorems"
+    )
+    parser.add_argument(
+        "--lean-dir", type=Path, required=True, help="Directory containing .lean files"
+    )
+    parser.add_argument(
+        "--reviews-dir",
+        type=Path,
+        default=Path("reviews"),
+        help="Directory containing review records",
+    )
     args = parser.parse_args()
 
     theorems = extract_theorems(args.lean_dir)
@@ -121,5 +127,5 @@ def main():
         sys.exit(0)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
