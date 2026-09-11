@@ -22,22 +22,22 @@ Usage:
 import argparse
 import re
 import sys
-from collections import Counter, defaultdict
+from collections import Counter
 from pathlib import Path
 
 
 def analyze_module(filepath: Path) -> dict:
     """Analyze proof quality for one module."""
-    text = filepath.read_text(encoding='utf-8')
+    text = filepath.read_text(encoding="utf-8")
     lines = text.splitlines()
     module = filepath.stem
 
     findings = []
     stats = {
-        'module': module,
-        'tactic_usage': Counter(),
-        'proof_lengths': [],
-        'theorem_count': 0,
+        "module": module,
+        "tactic_usage": Counter(),
+        "proof_lengths": [],
+        "theorem_count": 0,
     }
 
     # Parse theorem blocks from the comment-stripped source so that
@@ -47,22 +47,25 @@ def analyze_module(filepath: Path) -> dict:
     # `thm['line']` and the rest of the analysis remain accurate.
     # (W12 r03, replaces an earlier column-0 `/-` halt-condition
     # heuristic that was unsafe inside `by`-blocks.)
-    stripped_text = '\n'.join(_strip_lean_comments(lines))
+    stripped_text = "\n".join(_strip_lean_comments(lines))
     theorem_blocks = extract_theorem_blocks(stripped_text)
 
     for thm in theorem_blocks:
-        stats['theorem_count'] += 1
+        stats["theorem_count"] += 1
 
         # Count tactics used
-        tactics_used = extract_tactics(thm['body'])
+        tactics_used = extract_tactics(thm["body"])
         for tactic in tactics_used:
-            stats['tactic_usage'][tactic] += 1
+            stats["tactic_usage"][tactic] += 1
 
         # Proof length (count non-blank, non-comment lines only)
-        proof_lines = [l for l in thm['body'].splitlines()
-                       if l.strip() and not l.strip().startswith('--')]
+        proof_lines = [
+            ln
+            for ln in thm["body"].splitlines()
+            if ln.strip() and not ln.strip().startswith("--")
+        ]
         body_lines = len(proof_lines)
-        stats['proof_lengths'].append((thm['name'], body_lines))
+        stats["proof_lengths"].append((thm["name"], body_lines))
 
         # Long-proof bands (W12 r04, after rubber-duck critique):
         # Mathlib4 routinely contains substantive proofs of 50–100
@@ -78,70 +81,80 @@ def analyze_module(filepath: Path) -> dict:
         # candidate).  `branch_points` counts focus dots / case splits /
         # combinators; a 31–59 line proof that is *also* structurally
         # branchy is escalated P3 → P2.
-        branch_points = _structural_branch_points(thm['body'])
+        branch_points = _structural_branch_points(thm["body"])
         if body_lines >= 100:
-            findings.append({
-                'type': 'long-proof',
-                'severity': 'P1',
-                'theorem': thm['name'],
-                'line': thm['line'],
-                'detail': (
-                    f'Proof is {body_lines} lines ({branch_points} branch '
-                    f'points) — strongly consider decomposition or '
-                    f'extraction of reusable lemmas'
-                ),
-            })
+            findings.append(
+                {
+                    "type": "long-proof",
+                    "severity": "P1",
+                    "theorem": thm["name"],
+                    "line": thm["line"],
+                    "detail": (
+                        f"Proof is {body_lines} lines ({branch_points} branch "
+                        f"points) — strongly consider decomposition or "
+                        f"extraction of reusable lemmas"
+                    ),
+                }
+            )
         elif body_lines >= 60:
-            findings.append({
-                'type': 'long-proof',
-                'severity': 'P2',
-                'theorem': thm['name'],
-                'line': thm['line'],
-                'detail': (
-                    f'Proof is {body_lines} lines ({branch_points} branch '
-                    f'points) — consider decomposition'
-                ),
-            })
+            findings.append(
+                {
+                    "type": "long-proof",
+                    "severity": "P2",
+                    "theorem": thm["name"],
+                    "line": thm["line"],
+                    "detail": (
+                        f"Proof is {body_lines} lines ({branch_points} branch "
+                        f"points) — consider decomposition"
+                    ),
+                }
+            )
         elif body_lines > 30:
             branchy = branch_points >= 12
-            findings.append({
-                'type': 'long-proof',
-                'severity': 'P2' if branchy else 'P3',
-                'theorem': thm['name'],
-                'line': thm['line'],
-                'detail': (
-                    f'Proof is {body_lines} lines with {branch_points} '
-                    f'branch points — multiple independent branches suggest '
-                    f'natural helper-lemma extraction'
-                    if branchy else
-                    f'Proof is {body_lines} lines ({branch_points} branch '
-                    f'points) — review for natural helper-lemma extraction '
-                    f'(advisory)'
-                ),
-            })
+            findings.append(
+                {
+                    "type": "long-proof",
+                    "severity": "P2" if branchy else "P3",
+                    "theorem": thm["name"],
+                    "line": thm["line"],
+                    "detail": (
+                        f"Proof is {body_lines} lines with {branch_points} "
+                        f"branch points — multiple independent branches suggest "
+                        f"natural helper-lemma extraction"
+                        if branchy
+                        else f"Proof is {body_lines} lines ({branch_points} branch "
+                        f"points) — review for natural helper-lemma extraction "
+                        f"(advisory)"
+                    ),
+                }
+            )
 
         # Check for potential vacuous truth
-        if is_vacuous_candidate(thm['signature'], thm['body']):
-            findings.append({
-                'type': 'vacuous-candidate',
-                'severity': 'P1',
-                'theorem': thm['name'],
-                'line': thm['line'],
-                'detail': 'May be vacuously true — proof uses False.elim or absurd with impossible hypothesis',
-            })
+        if is_vacuous_candidate(thm["signature"], thm["body"]):
+            findings.append(
+                {
+                    "type": "vacuous-candidate",
+                    "severity": "P1",
+                    "theorem": thm["name"],
+                    "line": thm["line"],
+                    "detail": "May be vacuously true — proof uses False.elim or absurd with impossible hypothesis",
+                }
+            )
 
         findings.extend(find_tautology_candidates(thm))
 
         # Check hypothesis usage
-        unused = find_unused_hypotheses(thm['signature'], thm['body'])
+        unused = find_unused_hypotheses(thm["signature"], thm["body"])
         for hyp in unused:
-            findings.append({
-                'type': 'unused-hypothesis',
-                'severity': 'P2',
-                'theorem': thm['name'],
-                'line': thm['line'],
-                'detail': f'Hypothesis {hyp} appears unused in proof body',
-            })
+            findings.append(
+                {
+                    "type": "unused-hypothesis",
+                    "severity": "P2",
+                    "theorem": thm["name"],
+                    "line": thm["line"],
+                    "detail": f"Hypothesis {hyp} appears unused in proof body",
+                }
+            )
 
     # @[simp] loop-risk scan (W9 HITL B-1): for each `@[simp]` rewrite rule,
     # if the head symbol of the LHS occurs as a function application in the
@@ -161,19 +174,21 @@ def analyze_module(filepath: Path) -> dict:
     findings.extend(find_heartbeat_overrides(text, filepath))
 
     # Tactic diversity check
-    total_tactics = sum(stats['tactic_usage'].values())
+    total_tactics = sum(stats["tactic_usage"].values())
     if total_tactics > 0:
-        top_tactic, top_count = stats['tactic_usage'].most_common(1)[0]
+        top_tactic, top_count = stats["tactic_usage"].most_common(1)[0]
         if top_count / total_tactics > 0.5 and total_tactics > 10:
-            findings.append({
-                'type': 'low-tactic-diversity',
-                'severity': 'P3',
-                'theorem': '(module-level)',
-                'line': 0,
-                'detail': f'{top_tactic} used {top_count}/{total_tactics} times ({top_count/total_tactics:.0%})',
-            })
+            findings.append(
+                {
+                    "type": "low-tactic-diversity",
+                    "severity": "P3",
+                    "theorem": "(module-level)",
+                    "line": 0,
+                    "detail": f"{top_tactic} used {top_count}/{total_tactics} times ({top_count / total_tactics:.0%})",
+                }
+            )
 
-    return {'findings': findings, 'stats': stats}
+    return {"findings": findings, "stats": stats}
 
 
 def extract_theorem_blocks(text: str) -> list[dict]:
@@ -200,33 +215,29 @@ def extract_theorem_blocks(text: str) -> list[dict]:
     lines = text.splitlines()
     i = 0
     # Optional leading attributes, then optional declaration modifiers.
-    _ATTR = r'(?:@\[[^\]]*\]\s*)*'
-    _MODS = r'(?:(?:private|protected|public|scoped|noncomputable)\s+)*'
+    _ATTR = r"(?:@\[[^\]]*\]\s*)*"
+    _MODS = r"(?:(?:private|protected|public|scoped|noncomputable)\s+)*"
     # Top-level declaration starters — used to know when to stop
     # collecting proof-body lines.
     TOP_LEVEL = re.compile(
-        _ATTR + _MODS +
-        r'(?:theorem|lemma|example|'
-        r'def|abbrev|instance|structure|inductive|class|'
-        r'end|namespace|section|'
-        r'open|set_option|attribute|#|/--|--\s*[§=])'
+        _ATTR + _MODS + r"(?:theorem|lemma|example|"
+        r"def|abbrev|instance|structure|inductive|class|"
+        r"end|namespace|section|"
+        r"open|set_option|attribute|#|/--|--\s*[§=])"
     )
     # Declarations we actually analyze (carry a proof we can inspect).
-    DECL_RE = re.compile(
-        _ATTR + _MODS + r'(theorem|lemma|example)\b(?:\s+(\S+))?'
-    )
+    DECL_RE = re.compile(_ATTR + _MODS + r"(theorem|lemma|example)\b(?:\s+(\S+))?")
     while i < len(lines):
         m = DECL_RE.match(lines[i])
         if not m:
             i += 1
             continue
         kind = m.group(1)
-        if kind == 'example':
-            raw_name = '(example)'
+        if kind == "example":
+            raw_name = "(example)"
         else:
-            name_tok = m.group(2) or ''
-            raw_name = (name_tok.split('(')[0].split(':')[0].strip()
-                        or '(anonymous)')
+            name_tok = m.group(2) or ""
+            raw_name = name_tok.split("(")[0].split(":")[0].strip() or "(anonymous)"
         start_line = i + 1  # 1-based
 
         # Scan forward to the first depth-0 `:=` separating signature
@@ -243,9 +254,8 @@ def extract_theorem_blocks(text: str) -> list[dict]:
             # A new top-level declaration at column 0 before any `:=`
             # means this declaration has no inspectable proof body
             # (forward declaration, `where`-less ref, etc.); bail out.
-            if j > i and line and line[0] not in (' ', '\t'):
-                if TOP_LEVEL.match(line):
-                    break
+            if j > i and line and line[0] not in (" ", "\t") and TOP_LEVEL.match(line):
+                break
             k = 0
             n = len(line)
             while k < n:
@@ -257,12 +267,11 @@ def extract_theorem_blocks(text: str) -> list[dict]:
                 if in_string:
                     k += 1
                     continue
-                if c in '([{⟨':
+                if c in "([{⟨":
                     depth += 1
-                elif c in ')]}⟩':
+                elif c in ")]}⟩":
                     depth -= 1
-                elif (c == ':' and depth == 0
-                        and k + 1 < n and line[k + 1] == '='):
+                elif c == ":" and depth == 0 and k + 1 < n and line[k + 1] == "=":
                     found_assign = True
                     assign_line = j
                     assign_col = k
@@ -278,24 +287,24 @@ def extract_theorem_blocks(text: str) -> list[dict]:
 
         # Signature is everything up to (not including) the `:=`.
         sig_lines.append(lines[assign_line][:assign_col])
-        signature = '\n'.join(sig_lines)
+        signature = "\n".join(sig_lines)
 
         # Seed the body from the remainder of the `:=` line, deciding
         # between tactic-mode (`by …`) and term-mode.
         body_lines = []
-        remainder = lines[assign_line][assign_col + 2:]
+        remainder = lines[assign_line][assign_col + 2 :]
         rstrip = remainder.strip()
         j = assign_line + 1
-        if re.match(r'by\b', rstrip):
-            after = remainder[remainder.index('by') + 2:]
+        if re.match(r"by\b", rstrip):
+            after = remainder[remainder.index("by") + 2 :]
             if after.strip():
                 body_lines.append(after)
-        elif rstrip == '':
+        elif rstrip == "":
             # Proof starts on a following line: a leading `by` token
             # means tactic-mode, otherwise it is a term-mode body.
-            if j < len(lines) and re.match(r'by\b', lines[j].strip()):
+            if j < len(lines) and re.match(r"by\b", lines[j].strip()):
                 bl = lines[j]
-                after = bl[bl.index('by') + 2:]
+                after = bl[bl.index("by") + 2 :]
                 if after.strip():
                     body_lines.append(after)
                 j += 1
@@ -306,7 +315,7 @@ def extract_theorem_blocks(text: str) -> list[dict]:
         # Collect the rest of the body until the next top-level decl.
         while j < len(lines):
             line = lines[j]
-            if line == '' or line[0:1] in (' ', '\t'):
+            if line == "" or line[0:1] in (" ", "\t"):
                 body_lines.append(line)
                 j += 1
                 continue
@@ -316,14 +325,16 @@ def extract_theorem_blocks(text: str) -> list[dict]:
             body_lines.append(line)
             j += 1
 
-        body = '\n'.join(body_lines)
-        blocks.append({
-            'kind': kind,
-            'name': raw_name,
-            'signature': signature,
-            'body': body,
-            'line': start_line,
-        })
+        body = "\n".join(body_lines)
+        blocks.append(
+            {
+                "kind": kind,
+                "name": raw_name,
+                "signature": signature,
+                "body": body,
+                "line": start_line,
+            }
+        )
         i = j  # advance past body
     return blocks
 
@@ -332,22 +343,59 @@ def extract_tactics(body: str) -> list[str]:
     """Extract tactic names from a proof body."""
     # Common Lean 4 tactics
     known_tactics = [
-        'simp', 'omega', 'linarith', 'nlinarith', 'norm_num', 'ring', 'ring_nf',
-        'exact', 'apply', 'intro', 'intros', 'constructor', 'cases', 'induction',
-        'rfl', 'ext', 'funext', 'congr', 'rw', 'rewrite', 'subst',
-        'have', 'let', 'obtain', 'rcases', 'rintro',
-        'contradiction', 'absurd', 'exfalso',
-        'aesop', 'decide', 'trivial', 'assumption',
-        'calc', 'conv', 'show', 'suffices',
-        'refine', 'use', 'existsi',
-        'push_neg', 'by_contra', 'by_cases',
-        'gcongr', 'positivity', 'bound_tac',
-        'auto', 'duper',
+        "simp",
+        "omega",
+        "linarith",
+        "nlinarith",
+        "norm_num",
+        "ring",
+        "ring_nf",
+        "exact",
+        "apply",
+        "intro",
+        "intros",
+        "constructor",
+        "cases",
+        "induction",
+        "rfl",
+        "ext",
+        "funext",
+        "congr",
+        "rw",
+        "rewrite",
+        "subst",
+        "have",
+        "let",
+        "obtain",
+        "rcases",
+        "rintro",
+        "contradiction",
+        "absurd",
+        "exfalso",
+        "aesop",
+        "decide",
+        "trivial",
+        "assumption",
+        "calc",
+        "conv",
+        "show",
+        "suffices",
+        "refine",
+        "use",
+        "existsi",
+        "push_neg",
+        "by_contra",
+        "by_cases",
+        "gcongr",
+        "positivity",
+        "bound_tac",
+        "auto",
+        "duper",
     ]
 
     found = []
     for tactic in known_tactics:
-        pattern = re.compile(rf'\b{re.escape(tactic)}\b')
+        pattern = re.compile(rf"\b{re.escape(tactic)}\b")
         count = len(pattern.findall(body))
         found.extend([tactic] * count)
 
@@ -367,13 +415,13 @@ def is_vacuous_candidate(signature: str, body: str) -> bool:
     they derive `False` from genuinely contradictory semantic conditions
     rather than from structurally impossible hypotheses.
     """
-    if 'False.elim' in body or 'absurd' in body or 'exfalso' in body:
+    if "False.elim" in body or "absurd" in body or "exfalso" in body:
         # If conclusion is False and proof rewrites iff-lemmas,
         # it's an intentional disjointness proof → skip
-        if re.search(r'rw\s*\[.*_iff', body):
+        if re.search(r"rw\s*\[.*_iff", body):
             return False
         # Only flag if the hypotheses look structurally impossible
-        if 'False' in signature or '0 > 1' in signature or '¬ True' in signature:
+        if "False" in signature or "0 > 1" in signature or "¬ True" in signature:
             return True
     return False
 
@@ -396,25 +444,27 @@ def find_tautology_candidates(thm: dict) -> list[dict]:
         are advisory P3; targets carrying variables/quantifiers stay P2
         because they are the shapes that hide non-substantive smoke (FQ-4).
     """
-    signature = thm['signature']
-    body = thm['body']
+    signature = thm["signature"]
+    body = thm["body"]
     conclusion = _normalize_ws(_extract_conclusion(signature))
     body_lines = [
         line.strip()
         for line in body.splitlines()
-        if line.strip() and not line.strip().startswith('--')
+        if line.strip() and not line.strip().startswith("--")
     ]
-    body_norm = _normalize_ws(' '.join(body_lines))
+    body_norm = _normalize_ws(" ".join(body_lines))
     findings: list[dict] = []
 
-    if conclusion == 'True':
-        findings.append({
-            'type': 'truth-stub',
-            'severity': 'P1',
-            'theorem': thm['name'],
-            'line': thm['line'],
-            'detail': 'Statement conclusion is exactly `True`; treat as placeholder/smoke unless explicitly documented',
-        })
+    if conclusion == "True":
+        findings.append(
+            {
+                "type": "truth-stub",
+                "severity": "P1",
+                "theorem": thm["name"],
+                "line": thm["line"],
+                "detail": "Statement conclusion is exactly `True`; treat as placeholder/smoke unless explicitly documented",
+            }
+        )
         return findings
 
     # Term-mode truth witnesses (FQ-3): a nullary proof term such as
@@ -422,46 +472,52 @@ def find_tautology_candidates(thm: dict) -> list[dict]:
     # only closes goals that are definitionally `True`/a nullary
     # structure.  When the *stated* conclusion is not literally `True`
     # this shape usually marks a smoke/stub statement worth review.
-    if body_norm in {'trivial', 'True.intro', '⟨⟩', '⟨ ⟩'}:
-        findings.append({
-            'type': 'truth-stub-term',
-            'severity': 'P2',
-            'theorem': thm['name'],
-            'line': thm['line'],
-            'detail': (
-                f'Proof is a nullary truth witness (`{body_norm}`); the goal '
-                f'is provable by a trivial term — confirm it is a substantive '
-                f'statement, not a placeholder/smoke'
-            ),
-        })
+    if body_norm in {"trivial", "True.intro", "⟨⟩", "⟨ ⟩"}:
+        findings.append(
+            {
+                "type": "truth-stub-term",
+                "severity": "P2",
+                "theorem": thm["name"],
+                "line": thm["line"],
+                "detail": (
+                    f"Proof is a nullary truth witness (`{body_norm}`); the goal "
+                    f"is provable by a trivial term — confirm it is a substantive "
+                    f"statement, not a placeholder/smoke"
+                ),
+            }
+        )
 
-    if body_norm in {'decide', 'exact decide'}:
+    if body_norm in {"decide", "exact decide"}:
         concrete = _is_concrete_decide_target(signature)
-        findings.append({
-            'type': 'decide-closed-candidate',
-            'severity': 'P3' if concrete else 'P2',
-            'theorem': thm['name'],
-            'line': thm['line'],
-            'detail': (
-                'Proof is a single bare `decide` over a concrete closed '
-                'proposition (decide is the intended tool here; advisory)'
-                if concrete else
-                'Proof is a single bare `decide` and the statement carries '
-                'variables/quantifiers; review whether it is finite '
-                'smoke-test code or a substantive theorem'
-            ),
-        })
+        findings.append(
+            {
+                "type": "decide-closed-candidate",
+                "severity": "P3" if concrete else "P2",
+                "theorem": thm["name"],
+                "line": thm["line"],
+                "detail": (
+                    "Proof is a single bare `decide` over a concrete closed "
+                    "proposition (decide is the intended tool here; advisory)"
+                    if concrete
+                    else "Proof is a single bare `decide` and the statement carries "
+                    "variables/quantifiers; review whether it is finite "
+                    "smoke-test code or a substantive theorem"
+                ),
+            }
+        )
 
-    if body_norm == 'rfl':
+    if body_norm == "rfl":
         reflexive = _reflexive_conclusion(conclusion)
         if reflexive:
-            findings.append({
-                'type': 'rfl-reflexive-candidate',
-                'severity': 'P2',
-                'theorem': thm['name'],
-                'line': thm['line'],
-                'detail': f'Proof is `rfl` and conclusion is definitionally reflexive (`{reflexive}`); review name/docstring for overclaim',
-            })
+            findings.append(
+                {
+                    "type": "rfl-reflexive-candidate",
+                    "severity": "P2",
+                    "theorem": thm["name"],
+                    "line": thm["line"],
+                    "detail": f"Proof is `rfl` and conclusion is definitionally reflexive (`{reflexive}`); review name/docstring for overclaim",
+                }
+            )
 
     return findings
 
@@ -475,9 +531,7 @@ def _is_concrete_decide_target(signature: str) -> bool:
     """
     if _bound_variable_names(signature):
         return False
-    if '∀' in signature or '∃' in signature:
-        return False
-    return True
+    return not ("∀" in signature or "∃" in signature)
 
 
 def find_unused_hypotheses(signature: str, body: str) -> list[str]:
@@ -511,21 +565,36 @@ def find_unused_hypotheses(signature: str, body: str) -> list[str]:
     # `simpa` is `simp ... using h`; both behave like simp/linarith.
     # (W12 r01.)
     AUTOMATION_TACTICS = [
-        'omega', 'simp', 'simpa', 'nlinarith', 'linarith', 'ring', 'decide',
-        'positivity', 'norm_num', 'auto', 'duper', 'aesop', 'tauto',
-        'trivial', 'assumption', 'exact_mod_cast', 'simp_all', 'grind',
+        "omega",
+        "simp",
+        "simpa",
+        "nlinarith",
+        "linarith",
+        "ring",
+        "decide",
+        "positivity",
+        "norm_num",
+        "auto",
+        "duper",
+        "aesop",
+        "tauto",
+        "trivial",
+        "assumption",
+        "exact_mod_cast",
+        "simp_all",
+        "grind",
     ]
     for tactic in AUTOMATION_TACTICS:
-        if re.search(rf'\b{re.escape(tactic)}\b', body):
+        if re.search(rf"\b{re.escape(tactic)}\b", body):
             return []  # cannot determine unused-ness via text matching
 
     # Also skip if proof uses `unfold` (consumes structure parameters)
-    if 'unfold' in body:
+    if "unfold" in body:
         return []
 
     # Extract the conclusion/goal part (after the last top-level `:`)
     # Parameters appearing in the conclusion are needed by the type system
-    conclusion = ''
+    conclusion = ""
     # Find conclusion: everything after the last `:` that's not inside parens
     # OR braces (the latter matters for struct-literal `{ field := ... }` in
     # the goal, where ad-hoc `:` characters appear inside `{...}` and would
@@ -539,48 +608,38 @@ def find_unused_hypotheses(signature: str, body: str) -> list[str]:
     while i < len(signature):
         ch = signature[i]
         # Skip `:=` (binding marker), it must not be counted as a top-level `:`
-        if ch == ':' and i + 1 < len(signature) and signature[i + 1] == '=':
+        if ch == ":" and i + 1 < len(signature) and signature[i + 1] == "=":
             i += 2
             continue
-        if ch == '(':
+        if ch == "(":
             paren_depth += 1
-        elif ch == ')':
+        elif ch == ")":
             paren_depth -= 1
-        elif ch == '{':
+        elif ch == "{":
             brace_depth += 1
-        elif ch == '}':
+        elif ch == "}":
             brace_depth -= 1
-        elif ch == '[':
+        elif ch == "[":
             bracket_depth += 1
-        elif ch == ']':
+        elif ch == "]":
             bracket_depth -= 1
-        elif (
-            ch == ':'
-            and paren_depth == 0
-            and brace_depth == 0
-            and bracket_depth == 0
-        ):
+        elif ch == ":" and paren_depth == 0 and brace_depth == 0 and bracket_depth == 0:
             last_colon_pos = i
         i += 1
     if last_colon_pos >= 0:
         conclusion = signature[last_colon_pos:]
 
-    # Build the full context: conclusion + body + all hypothesis types
-    # (a parameter used in another hypothesis's type is still "used")
-    full_context = conclusion + '\n' + body
-
     unused = []
     # Extract hypothesis names: (hName : Type)
-    hyp_pattern = re.compile(r'\((\w+)\s*:')
+    hyp_pattern = re.compile(r"\((\w+)\s*:")
     hyps = list(hyp_pattern.finditer(signature))
-    hyp_names = {m.group(1) for m in hyps}
     for m in hyps:
         hyp_name = m.group(1)
         # Skip single-char type variables
         if len(hyp_name) <= 1:
             continue
         # Skip intentionally unused (underscore prefix)
-        if hyp_name.startswith('_'):
+        if hyp_name.startswith("_"):
             continue
         # Skip if appears in the conclusion (needed by type system)
         if hyp_name in conclusion:
@@ -593,7 +652,7 @@ def find_unused_hypotheses(signature: str, body: str) -> list[str]:
                 continue
             # Check the type text of the other hypothesis
             other_start = other.end()  # after the `:`
-            other_end = signature.find(')', other_start)
+            other_end = signature.find(")", other_start)
             if other_end == -1:
                 other_end = len(signature)
             other_type = signature[other_start:other_end]
@@ -625,29 +684,29 @@ def _strip_lean_comments(lines: list[str]) -> list[str]:
         n = len(chars)
         while i < n:
             if in_block:
-                if i + 1 < n and chars[i] == '-' and chars[i + 1] == '/':
-                    chars[i] = ' '
-                    chars[i + 1] = ' '
+                if i + 1 < n and chars[i] == "-" and chars[i + 1] == "/":
+                    chars[i] = " "
+                    chars[i + 1] = " "
                     in_block = False
                     i += 2
                     continue
-                chars[i] = ' '
+                chars[i] = " "
                 i += 1
                 continue
             # Single-line comment: rest of line becomes whitespace
-            if i + 1 < n and chars[i] == '-' and chars[i + 1] == '-':
+            if i + 1 < n and chars[i] == "-" and chars[i + 1] == "-":
                 for j in range(i, n):
-                    chars[j] = ' '
+                    chars[j] = " "
                 break
             # Start of block / docstring
-            if i + 1 < n and chars[i] == '/' and chars[i + 1] == '-':
+            if i + 1 < n and chars[i] == "/" and chars[i + 1] == "-":
                 in_block = True
-                chars[i] = ' '
-                chars[i + 1] = ' '
+                chars[i] = " "
+                chars[i + 1] = " "
                 i += 2
                 continue
             i += 1
-        out.append(''.join(chars))
+        out.append("".join(chars))
     return out
 
 
@@ -679,20 +738,20 @@ def find_simp_loops(text: str, theorem_blocks: list[dict]) -> list[dict]:
     stripped_lines = _strip_lean_comments(lines)
 
     # Step 1: collect every `@[simp]`-bearing attribute line
-    simp_marker_re = re.compile(r'@\[\s*([^\]]*)\]')
+    simp_marker_re = re.compile(r"@\[\s*([^\]]*)\]")
     simp_lines: list[tuple[int, str, str]] = []  # (1-based line, attr text, raw line)
     for idx, line in enumerate(stripped_lines, start=1):
         for m in simp_marker_re.finditer(line):
             attr = m.group(1)
-            tokens = [t.strip() for t in attr.split(',') if t.strip()]
-            head_tokens = [t.split()[0] if t.split() else '' for t in tokens]
-            if 'simp' in head_tokens:
+            tokens = [t.strip() for t in attr.split(",") if t.strip()]
+            head_tokens = [t.split()[0] if t.split() else "" for t in tokens]
+            if "simp" in head_tokens:
                 simp_lines.append((idx, attr, line))
                 break  # one simp annotation per line is enough
 
     # Step 2: pair each simp marker with a theorem/lemma block
-    by_start_line = {thm['line']: thm for thm in theorem_blocks}
-    for attr_line, attr_text, attr_raw in simp_lines:
+    by_start_line = {thm["line"]: thm for thm in theorem_blocks}
+    for attr_line, _attr_text, attr_raw in simp_lines:
         target_thm = None
 
         # Same-line attribute: `@[simp] theorem foo : ...`
@@ -700,7 +759,7 @@ def find_simp_loops(text: str, theorem_blocks: list[dict]) -> list[dict]:
         # match coming from `by_start_line[attr_line]`. Falling through to
         # the look-ahead would incorrectly bind this attribute to the next
         # theorem. (Bug fix surfaced by W9 HITL B-1 false positives.)
-        same_line_thm = bool(re.search(r'(?:theorem|lemma)\s+\S+', attr_raw))
+        same_line_thm = bool(re.search(r"(?:theorem|lemma)\s+\S+", attr_raw))
         if same_line_thm:
             target_thm = by_start_line.get(attr_line)
             if target_thm is None:
@@ -708,25 +767,26 @@ def find_simp_loops(text: str, theorem_blocks: list[dict]) -> list[dict]:
 
         # Otherwise look ahead a few lines for the next theorem block
         if target_thm is None:
-            candidates = [t for t in theorem_blocks if t['line'] > attr_line]
+            candidates = [t for t in theorem_blocks if t["line"] > attr_line]
             if candidates:
-                nearest = min(candidates, key=lambda t: t['line'])
-                if nearest['line'] - attr_line <= 5:
+                nearest = min(candidates, key=lambda t: t["line"])
+                if nearest["line"] - attr_line <= 5:
                     target_thm = nearest
 
         if target_thm is None:
             continue
 
-        loop_detail = check_simp_lhs_in_rhs(target_thm['signature'],
-                                            target_thm['name'])
+        loop_detail = check_simp_lhs_in_rhs(target_thm["signature"], target_thm["name"])
         if loop_detail:
-            findings.append({
-                'type': 'simp-loop-risk',
-                'severity': 'P1',
-                'theorem': target_thm['name'],
-                'line': target_thm['line'],
-                'detail': loop_detail,
-            })
+            findings.append(
+                {
+                    "type": "simp-loop-risk",
+                    "severity": "P1",
+                    "theorem": target_thm["name"],
+                    "line": target_thm["line"],
+                    "detail": loop_detail,
+                }
+            )
 
     return findings
 
@@ -748,50 +808,56 @@ def find_heartbeat_overrides(text: str, filepath: Path) -> list[dict]:
     """
     findings = []
     pattern = re.compile(
-        r'^\s*set_option\s+'
-        r'(?P<opt>(?:synthInstance\.)?maxHeartbeats)\s+'
-        r'(?P<n>\d+)\b'
+        r"^\s*set_option\s+"
+        r"(?P<opt>(?:synthInstance\.)?maxHeartbeats)\s+"
+        r"(?P<n>\d+)\b"
     )
     for idx, line in enumerate(text.splitlines(), start=1):
         m = pattern.match(line)
         if not m:
             continue
-        n = int(m.group('n'))
-        opt = m.group('opt')
+        n = int(m.group("n"))
+        opt = m.group("opt")
         if n == 0:
-            findings.append({
-                'type': 'heartbeat-budget-disabled',
-                'severity': 'P1',
-                'theorem': '(file-level)',
-                'line': idx,
-                'detail': (
-                    f'`set_option {opt} 0` disables the elaborator safety net '
-                    f'in {filepath.name}; never ship 0'
-                ),
-            })
+            findings.append(
+                {
+                    "type": "heartbeat-budget-disabled",
+                    "severity": "P1",
+                    "theorem": "(file-level)",
+                    "line": idx,
+                    "detail": (
+                        f"`set_option {opt} 0` disables the elaborator safety net "
+                        f"in {filepath.name}; never ship 0"
+                    ),
+                }
+            )
         elif n > 1_000_000:
-            findings.append({
-                'type': 'heartbeat-budget-excessive',
-                'severity': 'P1',
-                'theorem': '(file-level)',
-                'line': idx,
-                'detail': (
-                    f'`set_option {opt} {n}` exceeds 1_000_000 in '
-                    f'{filepath.name}; almost always indicates a perf '
-                    f'regression that should be tracked'
-                ),
-            })
+            findings.append(
+                {
+                    "type": "heartbeat-budget-excessive",
+                    "severity": "P1",
+                    "theorem": "(file-level)",
+                    "line": idx,
+                    "detail": (
+                        f"`set_option {opt} {n}` exceeds 1_000_000 in "
+                        f"{filepath.name}; almost always indicates a perf "
+                        f"regression that should be tracked"
+                    ),
+                }
+            )
         elif n > 200_000:
-            findings.append({
-                'type': 'heartbeat-budget-elevated',
-                'severity': 'P2',
-                'theorem': '(file-level)',
-                'line': idx,
-                'detail': (
-                    f'`set_option {opt} {n}` is above the 200_000 default in '
-                    f'{filepath.name}; consider proof split or term-mode hint'
-                ),
-            })
+            findings.append(
+                {
+                    "type": "heartbeat-budget-elevated",
+                    "severity": "P2",
+                    "theorem": "(file-level)",
+                    "line": idx,
+                    "detail": (
+                        f"`set_option {opt} {n}` is above the 200_000 default in "
+                        f"{filepath.name}; consider proof split or term-mode hint"
+                    ),
+                }
+            )
     return findings
 
 
@@ -808,7 +874,7 @@ def check_simp_lhs_in_rhs(signature: str, theorem_name: str) -> str | None:
         return None
     idx, op = eq
     lhs = conclusion[:idx].strip()
-    rhs = conclusion[idx + len(op):].strip()
+    rhs = conclusion[idx + len(op) :].strip()
     if not lhs or not rhs:
         return None
 
@@ -819,10 +885,10 @@ def check_simp_lhs_in_rhs(signature: str, theorem_name: str) -> str | None:
     if head == theorem_name:
         return None
     # Skip operator-shaped heads (e.g. `=`, `+`, `≤`)
-    if not re.match(r'^[A-Za-z_]', head):
+    if not re.match(r"^[A-Za-z_]", head):
         return None
     # Skip common Lean keywords that may appear at LHS head accidentally
-    KEYWORDS = {'fun', 'if', 'then', 'else', 'let', 'match', 'with', 'do'}
+    KEYWORDS = {"fun", "if", "then", "else", "let", "match", "with", "do"}
     if head in KEYWORDS:
         return None
     # Skip if head is a bound variable from the theorem signature.
@@ -832,10 +898,8 @@ def check_simp_lhs_in_rhs(signature: str, theorem_name: str) -> str | None:
     if head in _bound_variable_names(signature):
         return None
 
-    if re.search(r'(?<![A-Za-z0-9_])' + re.escape(head) + r'(?![A-Za-z0-9_])',
-                 rhs):
-        return (f"@[simp] LHS head `{head}` appears in RHS — potential "
-                f"rewrite loop")
+    if re.search(r"(?<![A-Za-z0-9_])" + re.escape(head) + r"(?![A-Za-z0-9_])", rhs):
+        return f"@[simp] LHS head `{head}` appears in RHS — potential rewrite loop"
     return None
 
 
@@ -845,7 +909,7 @@ def _bound_variable_names(signature: str) -> set[str]:
     """
     names: set[str] = set()
     # Match each binder group; capture the variable list before the colon.
-    binder_re = re.compile(r'[\(\{\[⦃]\s*([^\):\}\]⦄]+?)\s*:\s*[^\)\}\]⦄]+[\)\}\]⦄]')
+    binder_re = re.compile(r"[\(\{\[⦃]\s*([^\):\}\]⦄]+?)\s*:\s*[^\)\}\]⦄]+[\)\}\]⦄]")
     for m in binder_re.finditer(signature):
         for tok in m.group(1).split():
             if re.match(r"^[A-Za-z_][A-Za-z0-9_']*$", tok):
@@ -860,11 +924,12 @@ def _extract_conclusion(signature: str) -> str:
     """
     sig = signature
     m = re.match(
-        r'^\s*(?:(?:private|protected|public|scoped|noncomputable)\s+)*'
-        r'(?:theorem|lemma|example)\b(?:\s+\S+)?',
-        sig)
+        r"^\s*(?:(?:private|protected|public|scoped|noncomputable)\s+)*"
+        r"(?:theorem|lemma|example)\b(?:\s+\S+)?",
+        sig,
+    )
     if m:
-        sig = sig[m.end():]
+        sig = sig[m.end() :]
 
     depth = 0
     in_string = False
@@ -879,22 +944,22 @@ def _extract_conclusion(signature: str) -> str:
         if in_string:
             i += 1
             continue
-        if c in '([{⟨':
+        if c in "([{⟨":
             depth += 1
-        elif c in ')]}⟩':
+        elif c in ")]}⟩":
             depth -= 1
-        elif c == ':' and depth == 0:
-            if i + 1 < len(sig) and sig[i + 1] == '=':
+        elif c == ":" and depth == 0:
+            if i + 1 < len(sig) and sig[i + 1] == "=":
                 break  # `:=` ends the signature without a colon-typed conclusion
             colon_pos = i
             break
         i += 1
 
     if colon_pos < 0:
-        return ''
-    conclusion = sig[colon_pos + 1:]
+        return ""
+    conclusion = sig[colon_pos + 1 :]
     # Strip trailing `:= ...` or `:= by ...` if signature included it
-    conclusion = re.sub(r':=.*$', '', conclusion, flags=re.DOTALL)
+    conclusion = re.sub(r":=.*$", "", conclusion, flags=re.DOTALL)
     return conclusion.strip()
 
 
@@ -914,29 +979,29 @@ def _find_top_level_eq(text: str) -> tuple[int, str] | None:
         if in_string:
             i += 1
             continue
-        if c in '([{⟨':
+        if c in "([{⟨":
             depth += 1
             i += 1
             continue
-        if c in ')]}⟩':
+        if c in ")]}⟩":
             depth -= 1
             i += 1
             continue
         if depth != 0:
             i += 1
             continue
-        if text[i:i + 1] == '↔':
-            return (i, '↔')
-        if c == '=':
-            prev = text[i - 1] if i > 0 else ''
-            nxt = text[i + 1] if i + 1 < len(text) else ''
-            if prev in ':=<>!≤≥≠≡↔':
+        if text[i : i + 1] == "↔":
+            return (i, "↔")
+        if c == "=":
+            prev = text[i - 1] if i > 0 else ""
+            nxt = text[i + 1] if i + 1 < len(text) else ""
+            if prev in ":=<>!≤≥≠≡↔":
                 i += 1
                 continue
-            if nxt == '=':
+            if nxt == "=":
                 i += 2
                 continue
-            return (i, '=')
+            return (i, "=")
         i += 1
     return None
 
@@ -945,13 +1010,13 @@ def _extract_head_symbol(lhs: str) -> str | None:
     """Pull the leftmost non-paren identifier from a LHS expression."""
     s = lhs.strip()
     # Strip outer parens that wrap the whole expression
-    while s.startswith('(') and s.endswith(')'):
+    while s.startswith("(") and s.endswith(")"):
         depth = 0
         balanced = True
         for j, c in enumerate(s):
-            if c == '(':
+            if c == "(":
                 depth += 1
-            elif c == ')':
+            elif c == ")":
                 depth -= 1
                 if depth == 0 and j < len(s) - 1:
                     balanced = False
@@ -962,17 +1027,17 @@ def _extract_head_symbol(lhs: str) -> str | None:
             break
 
     # First token (split on whitespace or dot, keeping namespaced heads)
-    tok = re.split(r'[\s(){}\[\],]', s, maxsplit=1)[0]
+    tok = re.split(r"[\s(){}\[\],]", s, maxsplit=1)[0]
     # Drop a `.` suffix used by dot notation like `Foo.bar baz`
-    if '.' in tok:
-        tok = tok.split('.')[-1]
+    if "." in tok:
+        tok = tok.split(".")[-1]
     if re.match(r"^[A-Za-z_][A-Za-z0-9_']*$", tok):
         return tok
     return None
 
 
 def _normalize_ws(text: str) -> str:
-    return re.sub(r'\s+', ' ', text).strip()
+    return re.sub(r"\s+", " ", text).strip()
 
 
 def _structural_branch_points(body: str) -> int:
@@ -988,15 +1053,16 @@ def _structural_branch_points(body: str) -> int:
     count = 0
     for line in body.splitlines():
         stripped = line.strip()
-        if stripped.startswith('·') or stripped.startswith('. '):
+        if stripped.startswith(("·", ". ")):
             count += 1
-        if re.match(r'(case|next)\b', stripped):
+        if re.match(r"(case|next)\b", stripped):
             count += 1
-        if stripped.startswith('| '):
+        if stripped.startswith("| "):
             count += 1
-    count += len(re.findall(r'<;>', body))
-    count += len(re.findall(
-        r'\b(?:rcases|obtain|cases|induction|by_cases|match)\b', body))
+    count += len(re.findall(r"<;>", body))
+    count += len(
+        re.findall(r"\b(?:rcases|obtain|cases|induction|by_cases|match)\b", body)
+    )
     return count
 
 
@@ -1006,101 +1072,135 @@ def _reflexive_conclusion(conclusion: str) -> str | None:
         return None
     idx, op = eq
     lhs = _normalize_ws(conclusion[:idx])
-    rhs = _normalize_ws(conclusion[idx + len(op):])
+    rhs = _normalize_ws(conclusion[idx + len(op) :])
     if lhs and lhs == rhs:
-        return f'{lhs} {op} {rhs}'
+        return f"{lhs} {op} {rhs}"
     return None
 
 
-def generate_report(results: list[dict], output: Path) -> None:
+def generate_report(
+    results: list[dict], output: Path, excluded_dirs: list[str] | None = None
+) -> None:
     """Generate Markdown quality report."""
     all_findings = []
     all_stats = []
     for r in results:
-        all_findings.extend(r['findings'])
-        all_stats.append(r['stats'])
+        all_findings.extend(r["findings"])
+        all_stats.append(r["stats"])
+    excluded_dirs = excluded_dirs or []
 
-    total_thms = sum(s['theorem_count'] for s in all_stats)
+    total_thms = sum(s["theorem_count"] for s in all_stats)
     global_tactics = Counter()
     for s in all_stats:
-        global_tactics += s['tactic_usage']
+        global_tactics += s["tactic_usage"]
 
     lines = [
-        '# Proof Quality Analysis',
-        '',
-        f'## Summary',
-        f'- **Modules analyzed:** {len(all_stats)}',
-        f'- **Theorems analyzed:** {total_thms}',
-        f'- **Total findings:** {len(all_findings)}',
-        f'- **P1 (important):** {sum(1 for f in all_findings if f["severity"] == "P1")}',
-        f'- **P2 (improvement):** {sum(1 for f in all_findings if f["severity"] == "P2")}',
-        f'- **P3 (style):** {sum(1 for f in all_findings if f["severity"] == "P3")}',
-        '',
-        '## Tactic Usage (Global)',
-        '',
-        '| Tactic | Count | % |',
-        '|---|---|---|',
+        "# Proof Quality Analysis",
+        "",
+        "## Summary",
+        f"- **Modules analyzed:** {len(all_stats)}",
+        f"- **Theorems analyzed:** {total_thms}",
+        f"- **Total findings:** {len(all_findings)}",
+        f"- **P1 (important):** {sum(1 for f in all_findings if f['severity'] == 'P1')}",
+        f"- **P2 (improvement):** {sum(1 for f in all_findings if f['severity'] == 'P2')}",
+        f"- **P3 (style):** {sum(1 for f in all_findings if f['severity'] == 'P3')}",
+        *(
+            [
+                f"- **Excluded dirs (vendored, style-gate exempt):** {', '.join(excluded_dirs)}"
+            ]
+            if excluded_dirs
+            else []
+        ),
+        "",
+        "## Tactic Usage (Global)",
+        "",
+        "| Tactic | Count | % |",
+        "|---|---|---|",
     ]
 
     total_tactic_count = sum(global_tactics.values())
     for tactic, count in global_tactics.most_common(15):
         pct = count / total_tactic_count * 100 if total_tactic_count > 0 else 0
-        lines.append(f'| {tactic} | {count} | {pct:.1f}% |')
+        lines.append(f"| {tactic} | {count} | {pct:.1f}% |")
 
     if all_findings:
-        lines.extend([
-            '',
-            '## Findings',
-            '',
-            '| Severity | Module | Theorem | Type | Detail |',
-            '|---|---|---|---|---|',
-        ])
-        for f in sorted(all_findings, key=lambda x: (x['severity'], x['theorem'])):
-            module = f['theorem'].split('.')[0] if '.' in f['theorem'] else '—'
+        lines.extend(
+            [
+                "",
+                "## Findings",
+                "",
+                "| Severity | Module | Theorem | Type | Detail |",
+                "|---|---|---|---|---|",
+            ]
+        )
+        for f in sorted(all_findings, key=lambda x: (x["severity"], x["theorem"])):
             lines.append(
                 f"| {f['severity']} | — | {f['theorem']} | {f['type']} | {f['detail']} |"
             )
 
-    lines.extend([
-        '',
-        '---',
-        '*Generated by proof_quality.py*',
-    ])
+    lines.extend(
+        [
+            "",
+            "---",
+            "*Generated by proof_quality.py*",
+        ]
+    )
 
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+    output.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Proof quality analysis')
-    parser.add_argument('--lean-dir', type=Path, default=Path('MyProject'),
-                        help='Directory containing .lean files')
-    parser.add_argument('--output', type=Path, default=Path('proof_quality.md'),
-                        help='Output report path')
+    parser = argparse.ArgumentParser(description="Proof quality analysis")
+    parser.add_argument(
+        "--lean-dir",
+        type=Path,
+        default=Path("MyProject"),
+        help="Directory containing .lean files",
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=Path("proof_quality.md"),
+        help="Output report path",
+    )
+    parser.add_argument(
+        "--exclude-dir",
+        action="append",
+        default=[],
+        metavar="DIR",
+        help="Skip files under a directory with this name (relative to "
+        "--lean-dir); repeatable. Intended for vendored code whose "
+        "style quality is governed upstream — correctness gates "
+        "(sorry/axiom audits) still cover it.",
+    )
     args = parser.parse_args()
 
     results = []
-    for f in sorted(args.lean_dir.rglob('*.lean')):
+    for f in sorted(args.lean_dir.rglob("*.lean")):
         rel = f.relative_to(args.lean_dir)
+        if any(part in args.exclude_dir for part in rel.parts[:-1]):
+            print(f"Skipping {rel} (excluded dir)")
+            continue
         print(f"Analyzing {rel}...")
         result = analyze_module(f)
         results.append(result)
-        findings = result['findings']
+        findings = result["findings"]
         if findings:
             print(f"  {len(findings)} finding(s)")
 
-    generate_report(results, args.output)
-    total = sum(len(r['findings']) for r in results)
+    generate_report(results, args.output, args.exclude_dir)
+    total = sum(len(r["findings"]) for r in results)
     print(f"\nTotal findings: {total}")
     print(f"Report: {args.output}")
 
     # Exit with error if P1 issues found
-    p1_count = sum(1 for r in results for f in r['findings'] if f['severity'] == 'P1')
+    p1_count = sum(1 for r in results for f in r["findings"] if f["severity"] == "P1")
     if p1_count > 0:
         print(f"\n{p1_count} P1 issue(s) found")
         sys.exit(1)
     sys.exit(0)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
