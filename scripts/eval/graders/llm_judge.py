@@ -15,6 +15,27 @@ one or more judge models. This module never calls an API directly — that
 boundary lets us swap dispatchers (Anthropic SDK, OpenAI SDK, local
 Claude sub-agent, etc.) without touching the grader.
 
+Evidence policy
+---------------
+A judge that returns a high score without quoting what it scored on is a
+rubber stamp. ``rubric_evidence`` alone does not prevent that: the field is
+collected and, unenforced, it decays. A rubric may therefore declare an
+``evidence`` block, adapted from the council rubric in the ``algos``
+project::
+
+    evidence:
+      enforce_at_or_above: 4    # a score this high must be evidenced
+      min_quotes: 1             # at least N substantive quotes
+      min_quote_chars: 12       # "yes" is not a quote
+      reject_boilerplate: true  # the same quote from two judges is not two
+      on_violation: cap         # cap | reject
+      cap_at: 3                 # cap draws the line below the threshold
+
+``cap`` is the default because it degrades rather than fails: an
+evidence-free judge drops below the aggregation threshold and the existing
+``minority_veto`` does the rest. Absent the block, behaviour is unchanged,
+so every rubric written before it keeps working.
+
 CLI usage (test the parser):
 
     python3 -m graders.llm_judge \\
@@ -32,9 +53,10 @@ import json
 import re
 import statistics
 import sys
+from collections.abc import Iterable
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 PROMPT_TEMPLATE_PATH = Path(__file__).parent / "prompts" / "judge.txt"
 
@@ -43,12 +65,13 @@ PROMPT_TEMPLATE_PATH = Path(__file__).parent / "prompts" / "judge.txt"
 # Data
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class JudgeReply:
     score: int
     rationale: str = ""
     rubric_evidence: list[str] = field(default_factory=list)
-    judge_id: str = ""           # e.g. "claude-opus-4.7-high"
+    judge_id: str = ""  # e.g. "claude-opus-4.7-high"
     raw_text: str = ""
 
 
@@ -61,16 +84,30 @@ class GradeResult:
     judges: list[JudgeReply] = field(default_factory=list)
     aggregation_method: str = "minority_veto"
     notes: str = ""
+    evidence_violations: list[str] = field(default_factory=list)
+    rejected_for_evidence: bool = False
+
+
+EVIDENCE_DEFAULTS: dict[str, Any] = {
+    "enforce_at_or_above": 4,
+    "min_quotes": 1,
+    "min_quote_chars": 12,
+    "reject_boilerplate": True,
+    "on_violation": "cap",
+    "cap_at": 3,
+}
 
 
 # ---------------------------------------------------------------------------
 # YAML loader (PyYAML if available, regex fallback for simple cases)
 # ---------------------------------------------------------------------------
 
+
 def _load_yaml(path: Path) -> dict:
     text = path.read_text()
     try:
         import yaml
+
         return yaml.safe_load(text)
     except ImportError:
         return _yaml_fallback(text)
@@ -152,7 +189,7 @@ def _yaml_fallback(text: str) -> dict:
             ):
                 sub_lines.append(lines[i])
                 i += 1
-            if any(l.lstrip().startswith("- ") for l in sub_lines):
+            if any(line.lstrip().startswith("- ") for line in sub_lines):
                 out[key] = []
                 for sl in sub_lines:
                     s = sl.strip()
@@ -160,8 +197,9 @@ def _yaml_fallback(text: str) -> dict:
                         out[key].append(_parse_value(s[2:]))
             else:
                 # Recurse on the dedented block
-                sub_text = "\n".join(l[2:] if l.startswith("  ") else ""
-                                     for l in sub_lines)
+                sub_text = "\n".join(
+                    line[2:] if line.startswith("  ") else "" for line in sub_lines
+                )
                 out[key] = _yaml_fallback(sub_text)
             continue
         i += 1
@@ -171,6 +209,7 @@ def _yaml_fallback(text: str) -> dict:
 # ---------------------------------------------------------------------------
 # Pure functions
 # ---------------------------------------------------------------------------
+
 
 def _blind_response(text: str) -> str:
     """Strip model identity from a response. Heuristic, not security-grade."""
@@ -200,8 +239,7 @@ def build_prompt(
     """Build the judge prompt from the canonical template."""
     tpl = (template_path or PROMPT_TEMPLATE_PATH).read_text()
     defs_str = "\n".join(
-        f"  Score {k}: {v.strip()}"
-        for k, v in sorted(rubric_definitions.items())
+        f"  Score {k}: {v.strip()}" for k, v in sorted(rubric_definitions.items())
     )
     payload = response.strip()
     if blind:
@@ -242,7 +280,9 @@ def parse_judge_response(text: str, *, scale: list[int]) -> dict:
             # 3. Greedy match for first {...} block.
             m = _JSON_OBJECT_RE.search(text)
             if not m:
-                raise ValueError(f"no JSON object found in judge reply: {text[:200]!r}")
+                raise ValueError(
+                    f"no JSON object found in judge reply: {text[:200]!r}"
+                ) from None
             obj = json.loads(m.group(0))
     if not isinstance(obj, dict):
         raise ValueError(f"judge reply is not a JSON object: {obj!r}")
@@ -266,6 +306,108 @@ def minority_veto(scores: list[int], *, floor: int = 2, threshold: int = 4) -> i
     return int(round(statistics.median(scores)))
 
 
+def _normalize_quote(text: str) -> str:
+    """Collapse whitespace and case so two seats quoting the same line match."""
+    return re.sub(r"\s+", " ", text or "").strip().lower()
+
+
+def apply_evidence_policy(
+    judge_replies: list[JudgeReply],
+    spec: dict | None,
+    *,
+    floor: int | None = None,
+) -> tuple[list[JudgeReply], list[str], bool]:
+    """Enforce the rubric's evidence block. Returns (replies, violations, rejected).
+
+    A judge scoring at or above ``enforce_at_or_above`` must supply at least
+    ``min_quotes`` quotes of at least ``min_quote_chars`` each. With
+    ``reject_boilerplate``, a quote already claimed by an earlier seat does not
+    count: two judges pasting the same line is one observation, not two.
+
+    ``on_violation`` decides the consequence. ``cap`` lowers the offending
+    seat's score to ``cap_at``, which puts it below the aggregation threshold
+    and lets ``minority_veto`` handle it. ``reject`` fails the whole grade,
+    for gates where an unevidenced score is disqualifying rather than merely
+    unpersuasive.
+
+    ``cap_at`` defaults to the aggregation ``floor``, not to some score between
+    the floor and the threshold. That matters: ``minority_veto`` only vetoes a
+    score at or below the floor, so a cap set to 3 against a floor of 2 leaves
+    the offending seat able to drag the median to the pass line without ever
+    being vetoed. Anchoring the cap on the floor makes the consequence real.
+    """
+    if not spec:
+        return judge_replies, [], False
+
+    cfg = dict(EVIDENCE_DEFAULTS)
+    cfg.update(spec)
+    enforce_at = int(cfg["enforce_at_or_above"])
+    min_quotes = int(cfg["min_quotes"])
+    min_chars = int(cfg["min_quote_chars"])
+    reject_boilerplate = bool(cfg["reject_boilerplate"])
+    on_violation = str(cfg["on_violation"])
+    cap_at = (
+        int(cfg["cap_at"])
+        if spec.get("cap_at") is not None
+        else (floor if floor is not None else int(cfg["cap_at"]))
+    )
+
+    violations: list[str] = []
+    seen: set[str] = set()
+    revised: list[JudgeReply] = []
+    rejected = False
+
+    for reply in judge_replies:
+        seat = reply.judge_id or "<unnamed seat>"
+        if reply.score < enforce_at:
+            revised.append(reply)
+            continue
+
+        # De-duplicate before counting, so one reused quote cannot satisfy the
+        # quota for two seats.
+        unique: list[str] = []
+        for raw in reply.rubric_evidence:
+            key = _normalize_quote(raw)
+            if len(key) < min_chars:
+                continue
+            if reject_boilerplate and key in seen:
+                violations.append(
+                    f"{seat}: quote reused from another seat, not counted: "
+                    f"{raw.strip()[:60]!r}"
+                )
+                continue
+            unique.append(raw)
+            seen.add(key)
+
+        if len(unique) >= min_quotes:
+            revised.append(reply)
+            continue
+
+        violations.append(
+            f"{seat}: scored {reply.score} (>= {enforce_at}) with "
+            f"{len(unique)} usable quote(s), needs {min_quotes}"
+        )
+        if on_violation == "reject":
+            rejected = True
+            revised.append(reply)
+        else:
+            revised.append(
+                JudgeReply(
+                    score=min(cap_at, reply.score),
+                    rationale=(
+                        reply.rationale
+                        + f" [evidence policy: score {reply.score} capped to "
+                        f"{min(cap_at, reply.score)}]"
+                    ),
+                    rubric_evidence=reply.rubric_evidence,
+                    judge_id=reply.judge_id,
+                    raw_text=reply.raw_text,
+                )
+            )
+
+    return revised, violations, rejected
+
+
 def grade(
     *,
     case: dict,
@@ -274,13 +416,23 @@ def grade(
     rubric: dict,
 ) -> GradeResult:
     if not judge_replies:
-        return GradeResult(passed=False, notes="no judge replies",
-                           pass_floor=int(rubric.get("aggregation", {}).get("pass_floor", 4)))
+        return GradeResult(
+            passed=False,
+            notes="no judge replies",
+            pass_floor=int(rubric.get("aggregation", {}).get("pass_floor", 4)),
+        )
     agg_spec = rubric.get("aggregation", {})
     floor = int(agg_spec.get("floor", 2))
     threshold = int(agg_spec.get("threshold", 4))
     pass_floor = int(agg_spec.get("pass_floor", 4))
     method = agg_spec.get("method", "minority_veto")
+
+    # Enforce the evidence block before aggregating, so a capped seat votes in
+    # the same aggregation as every other seat rather than being excluded from
+    # it. The floor is passed in because it defines what a real cap is.
+    judge_replies, violations, rejected = apply_evidence_policy(
+        judge_replies, rubric.get("evidence"), floor=floor
+    )
 
     scores = [r.score for r in judge_replies]
     if method == "minority_veto":
@@ -292,21 +444,30 @@ def grade(
     else:
         raise ValueError(f"unknown aggregation method: {method}")
 
+    notes = (
+        f"{len(judge_replies)} judge(s); scores={scores}; "
+        f"floor={floor} threshold={threshold} pass_floor={pass_floor}"
+    )
+    if violations:
+        notes += f"; {len(violations)} evidence violation(s)"
+
     return GradeResult(
         grader_kind="llm-judge",
-        passed=agg >= pass_floor,
+        passed=(agg >= pass_floor) and not rejected,
         aggregated_score=agg,
         pass_floor=pass_floor,
         judges=judge_replies,
         aggregation_method=method,
-        notes=f"{len(judge_replies)} judge(s); scores={scores}; "
-              f"floor={floor} threshold={threshold} pass_floor={pass_floor}",
+        notes=notes,
+        evidence_violations=violations,
+        rejected_for_evidence=rejected,
     )
 
 
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
+
 
 def _load_case(path: Path) -> dict:
     return _load_yaml(path)
@@ -357,16 +518,17 @@ def _cmd_grade(args: argparse.Namespace) -> int:
     for reply_path in args.judge_reply:
         raw = reply_path.read_text()
         parsed = parse_judge_response(raw, scale=scale)
-        replies.append(JudgeReply(
-            score=int(parsed["score"]),
-            rationale=str(parsed.get("rationale", "")),
-            rubric_evidence=list(parsed.get("rubric_evidence", [])),
-            judge_id=reply_path.stem,
-            raw_text=raw.strip(),
-        ))
+        replies.append(
+            JudgeReply(
+                score=int(parsed["score"]),
+                rationale=str(parsed.get("rationale", "")),
+                rubric_evidence=list(parsed.get("rubric_evidence", [])),
+                judge_id=reply_path.stem,
+                raw_text=raw.strip(),
+            )
+        )
 
-    result = grade(case=case, response=response,
-                   judge_replies=replies, rubric=rubric)
+    result = grade(case=case, response=response, judge_replies=replies, rubric=rubric)
 
     payload = {
         "case_id": case.get("id", args.case.stem),
@@ -379,9 +541,11 @@ def _cmd_grade(args: argparse.Namespace) -> int:
         print(f"wrote grade: {args.out}")
     else:
         print(json.dumps(payload, indent=2))
-    print(f"[{'PASS' if result.passed else 'FAIL'}] "
-          f"case={payload['case_id']} score={result.aggregated_score}/"
-          f"{rubric.get('scale', [5])[-1]} pass_floor={result.pass_floor}")
+    print(
+        f"[{'PASS' if result.passed else 'FAIL'}] "
+        f"case={payload['case_id']} score={result.aggregated_score}/"
+        f"{rubric.get('scale', [5])[-1]} pass_floor={result.pass_floor}"
+    )
     return 0 if result.passed else 1
 
 
@@ -392,19 +556,28 @@ def main(argv: Iterable[str] | None = None) -> int:
     pb = sub.add_parser("build", help="emit a judge prompt to stdout / file")
     pb.add_argument("--case", required=True, type=Path)
     pb.add_argument("--rubric", required=True, type=Path)
-    pb.add_argument("--response", type=Path,
-                    help="file with the model response (default: case.input.expected_output_substring)")
+    pb.add_argument(
+        "--response",
+        type=Path,
+        help="file with the model response (default: case.input.expected_output_substring)",
+    )
     pb.add_argument("--out", type=Path)
-    pb.add_argument("--no-blind", action="store_true",
-                    help="skip identity stripping (debug only)")
+    pb.add_argument(
+        "--no-blind", action="store_true", help="skip identity stripping (debug only)"
+    )
     pb.set_defaults(func=_cmd_build)
 
     pg = sub.add_parser("grade", help="aggregate judge replies into a GradeResult")
     pg.add_argument("--case", required=True, type=Path)
     pg.add_argument("--rubric", required=True, type=Path)
     pg.add_argument("--response", type=Path)
-    pg.add_argument("--judge-reply", action="append", type=Path, required=True,
-                    help="file(s) with raw judge JSON (repeat per judge)")
+    pg.add_argument(
+        "--judge-reply",
+        action="append",
+        type=Path,
+        required=True,
+        help="file(s) with raw judge JSON (repeat per judge)",
+    )
     pg.add_argument("--out", type=Path)
     pg.set_defaults(func=_cmd_grade)
 

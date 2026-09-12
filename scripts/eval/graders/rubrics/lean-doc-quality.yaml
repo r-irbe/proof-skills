@@ -47,6 +47,18 @@ aggregation:
   threshold: 4
   pass_floor: 4
 
+# The definitions above already require that cited Mathlib names are real at the
+# current pin. The evidence block makes that enforceable: a 4 or a 5 must quote
+# the artifact it scored on, and a quote pasted by two seats counts once. cap_at
+# is omitted so it defaults to the aggregation floor, which is what makes a
+# capped score a vetoing minority rather than merely a low median.
+evidence:
+  enforce_at_or_above: 4
+  min_quotes: 1
+  min_quote_chars: 12
+  reject_boilerplate: true
+  on_violation: cap
+
 bias_mitigations:
   randomize_response_order: true
   anti_length: true
