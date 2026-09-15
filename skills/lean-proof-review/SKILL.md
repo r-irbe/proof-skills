@@ -11,7 +11,7 @@ handoffs:
   predecessors: ["agent:gateway", "skill:lean-proof"]
   successors: ["skill:lean-review-council", "skill:lean-enforcement", "skill:lean-doc-feedback"]
 metadata:
-  version: "0.2.0"
+  version: "0.2.1"
   source_spec: "specs/lean/proof-review/requirements.md"
   last_reviewed: "2026-05-27"
 ---
@@ -69,5 +69,8 @@ metadata:
 > AI agents commonly: rewrite the proof inline instead of suggesting changes;
 > approve at L4 without confirming L1/L2 passed; miss vacuous-truth L3
 > failures behind a clean `aesop` close; cite a pitfall without quoting line
-> numbers or the source rule. Full registry: GUARDRAILS.md §Agent failure
-> taxonomy.
+> numbers or the source rule; accept an "independent routes" claim without
+> checking it — when a project claims two or more independent proofs of one
+> theorem, verify the routes actually share no machinery (imports, helper
+> lemmas, substrate definitions) before repeating the independence claim in
+> a review verdict. Full registry: GUARDRAILS.md §Agent failure taxonomy.

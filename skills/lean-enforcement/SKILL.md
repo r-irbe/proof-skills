@@ -11,7 +11,7 @@ handoffs:
   predecessors: ["agent:gateway", "skill:lean-quality-engine"]
   successors: ["skill:lean-review-council", "skill:lean-proof-review", "skill:lean-retro-methodology"]
 metadata:
-  version: "0.2.0"
+  version: "0.2.1"
   source_spec: "specs/lean/enforcement/requirements.md"
   last_reviewed: "2026-05-27"
 ---
@@ -67,5 +67,12 @@ metadata:
 
 > AI agents commonly: silently retry a blocking failure; downgrade a hard gate
 > to a soft one to "unblock progress"; run `enforce_all.sh` when a single
-> script would have answered the question; skip the structured-result emit step.
+> script would have answered the question; skip the structured-result emit
+> step; trust a green gate whose generated probe/scan manifest is stale —
+> after registering new modules or targets, REGENERATE generated probe
+> scripts and rerun before quoting the result, and treat per-item coverage
+> gaps inside the gate's own report as findings rather than noise (a summary
+> can be clean while whole namespaces went unscanned). When a report shows
+> unexplained gaps, close the loop with a targeted spot-check (e.g. a
+> single-declaration `#print axioms` probe) before declaring the gate clean.
 > Full registry: GUARDRAILS.md §Agent failure taxonomy.
