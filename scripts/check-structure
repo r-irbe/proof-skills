@@ -8,6 +8,8 @@ import re
 import sys
 from pathlib import Path
 
+import yaml
+
 
 MAX_SKILL_LINES = 500
 MAX_LINE_LENGTH = 160
@@ -23,15 +25,33 @@ def parse_frontmatter(path: Path) -> tuple[dict[str, str], list[str], bool]:
     if not lines or lines[0].strip() != "---":
         return {}, lines, False
 
-    frontmatter: dict[str, str] = {}
     closed = False
-    for line in lines[1:]:
+    end = len(lines)
+    for index, line in enumerate(lines[1:], start=1):
         if line.strip() == "---":
             closed = True
+            end = index
             break
-        if ":" in line:
-            key, value = line.split(":", 1)
-            frontmatter[key.strip()] = value.strip().strip('"')
+
+    # [fix 2026-09-15] The previous line-based parser (split(":", 1) per line)
+    # could not read multi-line YAML values.  Every SKILL.md in this corpus
+    # uses a literal block scalar for `description:` (`description: |`), so
+    # the old parser stored the indicator string "|" as the description and
+    # mass-reported false "duplicate normalized description" errors across
+    # all skills sharing the style (55 false errors at the time of the fix).
+    # Parse the frontmatter block with a real YAML parser instead — same
+    # approach as skill-audit/check_conformance.py and lint/apm_validate.py.
+    try:
+        parsed = yaml.safe_load("\n".join(lines[1:end])) or {}
+    except yaml.YAMLError:
+        return {}, lines, closed
+    if not isinstance(parsed, dict):
+        return {}, lines, closed
+
+    frontmatter: dict[str, str] = {
+        str(key): value if isinstance(value, str) else str(value)
+        for key, value in parsed.items()
+    }
     return frontmatter, lines, closed
 
 
