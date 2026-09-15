@@ -17,7 +17,7 @@ handoffs:
     - "skill:lean-mwe"
     - "skill:lean-zettelkasten"
 metadata:
-  version: "0.2.0"
+  version: "0.2.1"
   source_spec: "specs/lean/proof/requirements.md"
   last_reviewed: "2026-05-30"
 r_caveats: [F1, F6]
@@ -77,7 +77,14 @@ r_caveats: [F1, F6]
 > linter warning while an unsolved-goals error is open; fill helper-lemma
 > `sorry`s before touching the target theorem; declare success while a
 > `sorry` remains; fight `motive is not type correct` with more `rw` instead
-> of generalising. Full registry: `GUARDRAILS.md §Agent failure taxonomy`.
+> of generalising; keep retrying `rw` with "pattern not found" on goals whose
+> summand contains a non-reducible type synonym or a semireducible definition
+> — the matcher runs below default transparency and cannot unfold these.
+> Switch to `simp only` with the exact lemma list, then `exact` the residual
+> identity; bare commutation lemmas loop as simp lemmas, so supply them as
+> terms instead. Probe the actual goal shape with `trace_state`, never with
+> `sorry` placeholders. Full registry: `GUARDRAILS.md §Agent failure
+> taxonomy`.
 
 ## See also
 
