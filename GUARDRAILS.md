@@ -122,6 +122,9 @@ Rules of maintenance:
 | GT-48 | Declares success on a green `lean --version` without checking `lake env lean --version` | Both version probes must agree before handoff |
 | GT-49 | Hands off to `@lean-proof` while the two `--version` commands disagree | Resolve the toolchain mismatch before handoff |
 | GT-50 | Treats destructive-command approvals as reusable prose, or HITL rulings as free text | Destructive commands require single-use sha256+TTL approval ledger records; HITL gates are JSON-schema-typed packets (approve/reject/defer) — see the filab investigation plan (PLAN-FILAB-DEEP-INV) for the full design |
+| GT-51 | Ships a gate that lacks one of the four quality properties, or claims enforcement without a binding control | Every gate must be machine-verifiable, bounded (numeric threshold), committed (evidence recorded), and rollback-safe — else advisory; mark each rule `runtime-enforceable: Y\|N` with a named binding control; advisory→blocking promotion requires a 30-day clean baseline (filab third-look, N1) |
+| GT-52 | Treats a mandatory-read bypass as an invisible exception, or records rationale only in prose | Bypasses are first-class auditable events: canonical syntax, JSONL audit row written before the call returns, per-row PR review, repeat-offender escalation; encode why-provenance in `Lore-*`-style commit trailers for machine queryability (filab third-look, N6) |
+| GT-53 | Conflates capability tiers into one enum, or gates irreversible actions with re-runnable checks | Capability tiers are distinct newtypes per surface over a base ladder; irreversible actions fail closed with signed risk-acceptance; environment scrubbing re-opens threat surfaces — prefer per-subject opt-in with dual-digest audit rows (filab third-look, N8; extends GT-50) |
 
 ## Source-of-truth note
 
