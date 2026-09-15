@@ -121,6 +121,7 @@ Rules of maintenance:
 | GT-47 | Pins only `lean-toolchain` and forgets the three sibling files | Pin all four sibling files together |
 | GT-48 | Declares success on a green `lean --version` without checking `lake env lean --version` | Both version probes must agree before handoff |
 | GT-49 | Hands off to `@lean-proof` while the two `--version` commands disagree | Resolve the toolchain mismatch before handoff |
+| GT-50 | Treats destructive-command approvals as reusable prose, or HITL rulings as free text | Destructive commands require single-use sha256+TTL approval ledger records; HITL gates are JSON-schema-typed packets (approve/reject/defer) — see the filab investigation plan (PLAN-FILAB-DEEP-INV) for the full design |
 
 ## Source-of-truth note
 
