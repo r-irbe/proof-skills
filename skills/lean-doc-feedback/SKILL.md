@@ -53,4 +53,5 @@ metadata:
 ## Common failure modes
 
 > AI agents commonly: rewrite instead of annotating; omit rubric anchors;
-> bundle many findings into one comment.
+> bundle many findings into one comment. Full registry:
+> GUARDRAILS.md §Agent failure taxonomy.
