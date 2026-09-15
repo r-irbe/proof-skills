@@ -1,0 +1,18 @@
+repo: "https://github.com/harfe/fixed-point-theorems-lean4.git"
+sha: "770940ddf9878cf61952ed53d910b92bca841838"
+prompt: |
+  A project pinned to a Lean 4 toolchain NEWER than this repo's has decided
+  (ADOPT-NOW) to vendor the cubical-Sperner chain (cubical_sperner_prep,
+  cubical_sperner, convex_homeos, apply_cubical_sperner, brouwer). Produce the
+  vendoring plan: license and provenance verification, import/namespace
+  rewrites, and — the focus — the pin-drift playbook you expect to need on the
+  first build at the newer pin: which elaboration-transparency symptoms
+  (rw/simp matcher failures on type-abbreviation applications, ext/funext
+  over-extension, DecidablePred synthesis failures on semireducible
+  predicates, rw auto-rfl goal drops) map to which root causes and which
+  minimal marker-commented adaptations. State the gate suite you run
+  afterwards and the vendored-duality rule for style gates.
+description: >-
+  Exercises the vendoring workflow plus the pin-drift playbook
+  on a real upstream chain
+timeout: 180

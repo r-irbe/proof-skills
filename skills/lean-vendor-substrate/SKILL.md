@@ -24,7 +24,7 @@ handoffs:
   predecessors: ["skill:lean-package-research", "skill:lean-research", "agent:gateway"]
   successors: ["skill:lean-enforcement", "skill:lean-quality-engine", "skill:lean-proof-review"]
 metadata:
-  version: "0.1.0"
+  version: "0.2.0"
   source_spec: "skills/lean-vendor-substrate/SKILL.md (this file)"
 ---
 
@@ -66,6 +66,9 @@ decision belongs to `@lean-package-research`.
      default such as `autoImplicit true`, keep that per vendored module and
      document it in-file; never silently switch vendored modules to project
      conventions.
+   - when the target pin is NEWER than the one upstream compiled at, expect
+     elaboration-transparency drift before API drift — run the pin-drift
+     playbook (below) on the first build's error list.
 4. **Register the subtree** [execute] — add the vendored modules to the build
    (library globs or umbrella imports), wire them so the default build target
    and CI compile them transitively, and add any vendored license text to the
@@ -84,6 +87,56 @@ decision belongs to `@lean-package-research`.
    (re-vendor from the upstream pin and re-run the gate suite). Downstream
    readers must be able to diff the vendored subtree against upstream.
 
+## Pin-drift playbook (toolchain migration)
+
+The recurring failure class when re-vendoring across a toolchain bump is not
+Mathlib API drift but *elaboration-transparency drift*: the rewrite matcher
+and instance resolution change what they unfold. Symptom → root cause → fix,
+in the order a real port typically hits them:
+
+- **`rw`/`simp` report "function expected" or a type mismatch on goals that
+  *apply* an upstream type abbreviation (`T := ...`).** Root cause: the
+  matcher runs at `.implicit` transparency, where a semireducible def does
+  not unfold (hierarchy `none < reducible < instances < implicit < default <
+  all`; lean4 #13368/#13637). Fix: mark the abbreviation `@[reducible]` with
+  an in-file marker; reducible unfolding is the safe direction.
+- **After that, `ext` (or `funext`) introduces two binders where the proof
+  expected one.** Root cause: the equality's type now unfolds to a Pi, so the
+  extension tactic keeps extending. Fix: use `funext` for exactly the levels
+  the proof supplies, or adapt the proof term to the doubly-extended goal.
+- **`failed to synthesize DecidablePred p` for a comprehension over a
+  semireducible predicate, despite `open Classical` or a local
+  `propDecidable`.** Root cause: *using* `propDecidable` requires
+  sort-checking the predicate application at `.instances` transparency, where
+  the semireducible def does not unfold. Fix: declare the instance directly,
+  `letI : DecidablePred p := fun a => Classical.propDecidable (p a)` — it
+  must be `letI` (zeta-reducible) with the exact lambda body; an opaque
+  `haveI` fvar fails the synthesized-vs-inferred defeq check against the
+  goal's inline instance term.
+- **"no goals to be solved" on a standalone `rfl` after an `rw` that upstream
+  needed.** Root cause: newer pins auto-close `rw` goals by `rfl`. Fix: delete
+  the trailing `rfl`; pure pin drift, no content change.
+- **Deprecated-lemma warnings on the first build** (e.g. `Set.mem_setOf_eq`
+  → `Set.mem_ofPred_eq`). Root cause: pin-bump deprecation renames. Fix:
+  sweep the whole vendored tree for the renamed names before the first build
+  cycle.
+
+Two meta-rules that each cost a debugging cycle in a real port:
+
+- **Fix errors in declaration order and rebuild per module.** A failed tactic
+  poisons the goal state for the rest of its declaration; downstream failures —
+  even ones with an apparent independent cause — can vanish when the earlier
+  error is fixed. Do not batch-fix from the bottom of the error list.
+- **Probe goals with `trace_state`, never with `sorry` placeholders**, when a
+  rewrite fails and the goal shape is unknown; the info output is definitive
+  and leaves nothing to revert.
+
+For axiom evidence after the port: a generated corpus-wide probe script can
+have coverage gaps (declarations inside `namespace` blocks are routinely
+missed). Regenerate the probe script after registering new modules, and treat
+targeted `#print axioms <name>` runs in a scratch file as the authoritative
+per-theorem evidence when a full-audit report shows unexplained gaps.
+
 ## Recovery & STOP
 
 - STOP if the license is missing, unclear, copyleft-incompatible, or the
@@ -96,9 +149,10 @@ decision belongs to `@lean-package-research`.
 - STOP if the local sorry/axiom audit finds findings inside the vendored
   subtree after the port; a vendored subtree must be at least as clean as the
   project's correctness bar.
-- RECOVERY if the build breaks only on Mathlib API drift: fix by adapting
-  call sites inside the vendored file with a marker comment per change, never
-  by restructuring upstream definitions.
+- RECOVERY if the build breaks only on Mathlib API drift or
+  elaboration-transparency drift (pin-drift playbook): fix by adapting call
+  sites inside the vendored file with a marker comment per change, never by
+  restructuring upstream definitions.
 
 ## Handoffs
 
