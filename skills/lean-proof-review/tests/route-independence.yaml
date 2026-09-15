@@ -1,0 +1,18 @@
+repo: https://github.com/leanprover-community/batteries
+sha: 77d10578945b31d794214a66937b75a6d4311674
+prompt: >
+  A project claims two independent proofs of one fixed-point existence
+  theorem via two separately vendored chains (a Scarf-style constructive
+  chain and a cubical-Sperner counting chain), both ultimately instantiating
+  a shared vendored Brouwer theorem. Per the lean-proof-review skill's L4
+  independence check: what shared-machinery evidence (imports, helper
+  lemmas, substrate definitions, vendored substrate) must be inspected
+  before a review may repeat the independence claim, what verdict downgrade
+  applies when a shared substrate lemma is found, and what the review
+  record must quote for the claim to stand.
+description: >
+  GT-16 regression: route-independence claims require shared-machinery
+  verification across vendored chains; a shared substrate lemma forces a
+  "partly independent" downgrade. Exercises the L4 checklist layer and
+  finding-evidence discipline (GT-15).
+timeout: 180

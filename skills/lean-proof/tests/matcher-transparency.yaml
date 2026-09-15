@@ -1,0 +1,17 @@
+repo: https://github.com/leanprover-community/batteries
+sha: 77d10578945b31d794214a66937b75a6d4311674
+prompt: >
+  In Lean 4 (recent toolchain), an `rw [Finset.sum_comm]` fails with "Did
+  not find an occurrence of the pattern" on a nested-sum goal whose summand
+  contains a non-reducible type synonym, and an upstream proof that ended
+  with a standalone `rfl` after `rw` now errors with "No goals to be
+  solved". Diagnose which elaboration-transparency class the matcher runs
+  at, apply the `simp only` + `exact` remedy, explain why the bare
+  commutation lemma loops as a `simp` lemma, and state which probing tactic
+  reveals the goal shape without leaving artifacts. No sorry placeholders.
+description: >
+  GT-11 regression: rewrite-matcher transparency failures on non-reducible
+  type synonyms and pin-drift rfl auto-close. Exercises the lean-proof
+  skill's big-operator remedy (simp only with exact lemma list, exact for
+  bare commutations) and the trace_state probing rule.
+timeout: 180

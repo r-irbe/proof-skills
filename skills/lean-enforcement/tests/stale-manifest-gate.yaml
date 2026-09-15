@@ -1,0 +1,17 @@
+repo: https://github.com/leanprover-community/batteries
+sha: 77d10578945b31d794214a66937b75a6d4311674
+prompt: >
+  A Lean corpus registered six new modules this week, but the corpus-wide
+  axiom-audit probe script predates them. The gate summary reports
+  "0 forbidden axioms" while per-module rows show `script-error (missing)`
+  for the new modules. Decide, per the lean-enforcement skill: pass or fail
+  the gate, what artifact you regenerate, what targeted spot-check closes
+  the gap, and quote the exact coverage set your verdict must carry.
+  Do not re-implement the gate inline; invoke the real gate after
+  regeneration.
+description: >
+  GT-21/GT-24 regression: stale generated probe artifact must not pass a
+  gate, and the auditor must invoke the real gate rather than re-implement
+  it. Exercises the enforcement contract's manifest-freshness and
+  no-inline-reimplementation rules plus the AOR-11 coverage-set quoting.
+timeout: 180

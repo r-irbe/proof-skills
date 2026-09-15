@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import re
 import sys
+import tempfile
 from pathlib import Path
 
 import yaml
@@ -118,12 +119,8 @@ def check_test(path: Path) -> tuple[list[str], list[str]]:
     return errors, warnings
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser(description="Check Lean skill structure")
-    parser.add_argument("--strict", action="store_true", help="treat warnings as errors")
-    args = parser.parse_args()
-
-    root = Path(__file__).resolve().parents[1]
+def run_checks(root: Path) -> tuple[list[str], list[str], int]:
+    """Run all structural checks under ``root``; return (errors, warnings, n_skills)."""
     skill_files = sorted((root / "skills").glob("*/SKILL.md"))
     errors: list[str] = []
     warnings: list[str] = []
@@ -150,7 +147,90 @@ def main() -> int:
             errors.extend(f"{test_file}: {message}" for message in test_errors)
             warnings.extend(f"{test_file}: {message}" for message in test_warnings)
 
-    print(f"Lean skill structure: {len(skill_files)} skill(s) checked")
+    return errors, warnings, len(skill_files)
+
+
+def self_test() -> int:
+    """Regression suite for the parser and duplicate-detection logic.
+
+    Pins the 2026-09-15 bug class: the old line-based frontmatter parser
+    stored the literal block-scalar indicator "|" as the description, which
+    made every multi-line-description skill a false duplicate AND made true
+    duplicates of multi-line descriptions undetectable.  The YAML-parser
+    fix must satisfy both directions at once.
+    """
+    long_desc_alpha = "alpha skill with a multi-line block scalar description"
+    long_desc_beta = "alpha skill with a multi-line block scalar description"
+    fixtures = {
+        "alpha": f"---\nname: alpha\ndescription: |\n  {long_desc_alpha}\n  second line for dispatch\n---\n\n# Alpha\n\nBody.\n",
+        "beta": f"---\nname: beta\ndescription: |\n  {long_desc_beta}\n  second line for dispatch\n---\n\n# Beta\n\nBody.\n",
+        "gamma": "---\nname: gamma\ndescription: unclosed frontmatter skill\n\n# Gamma\n",
+        "delta": "---\nname: delta\ndescription: short\n---\n\n# Delta\n\nBody.\n",
+    }
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        for name, body in fixtures.items():
+            skill_dir = root / "skills" / name
+            skill_dir.mkdir(parents=True)
+            (skill_dir / "SKILL.md").write_text(body, encoding="utf-8")
+        errors, warnings, n_skills = run_checks(root)
+
+    failures: list[str] = []
+
+    def assert_true(condition: bool, message: str) -> None:
+        if not condition:
+            failures.append(message)
+
+    joined_errors = "\n".join(errors)
+    assert_true(n_skills == 4, f"expected 4 skills, saw {n_skills}")
+    # alpha parses cleanly: block scalar read as text, not "|" (the bug).
+    assert_true(not any(str(long_desc_alpha)[:20] in e and "alpha" in e for e in errors),
+                "alpha must parse without errors (block-scalar description read correctly)")
+    assert_true(not any("duplicate normalized description" in w for w in warnings),
+                "no duplicate-description finding may be reported as a warning")
+    # beta duplicates alpha: the true duplicate MUST fire (as an error).
+    assert_true(any("duplicate normalized description" in e and "beta" in e for e in errors),
+                "true duplicate of multi-line description must be detected")
+    # gamma: unclosed frontmatter fires.
+    assert_true(any("missing closing YAML frontmatter" in e and "gamma" in e for e in errors),
+                "unclosed frontmatter must be detected")
+    # delta: short-description warning fires; delta is NOT a false duplicate.
+    assert_true(any("description is too short" in w and "delta" in w for w in warnings),
+                "short-description warning must fire for delta")
+    assert_true(not any("duplicate normalized description" in e and "delta" in e for e in errors),
+                "delta must not be a false duplicate")
+    # Every fixture warns about missing tests (no tests/ dir).
+    assert_true(sum(1 for w in warnings if "no tests/*.yaml" in w) == 4,
+                "each fixture without tests/ must warn exactly once")
+
+    if failures:
+        print("SELF-TEST FAILED:")
+        for failure in failures:
+            print(f"  - {failure}")
+        print(f"  (errors={len(errors)}, warnings={len(warnings)})")
+        for message in errors:
+            print(f"    ERROR: {message}")
+        for message in warnings:
+            print(f"    WARN: {message}")
+        return 1
+    print(f"SELF-TEST PASS: parser + duplicate detection verified ({len(errors)} errors, {len(warnings)} warnings on fixtures)")
+    return 0
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Check Lean skill structure")
+    parser.add_argument("--strict", action="store_true", help="treat warnings as errors")
+    parser.add_argument("--self-test", action="store_true",
+                        help="run the parser/duplicate regression suite on temp fixtures and exit")
+    args = parser.parse_args()
+
+    if args.self_test:
+        return self_test()
+
+    root = Path(__file__).resolve().parents[1]
+    errors, warnings, n_skills = run_checks(root)
+
+    print(f"Lean skill structure: {n_skills} skill(s) checked")
     for message in warnings:
         print(f"WARN: {message}")
     for message in errors:
