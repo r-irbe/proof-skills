@@ -62,7 +62,8 @@ issues: https://github.com/r-irbe/proof-skills/issues
 # verbatim. Convert to apm-dep once upstream ships `apm.yml`.
 dependencies:
   apm: []
-  mcp: []
+  mcp:
+    - lean-lsp
 
 # Ship any in-repo `.apm/` content the author drops in later (none
 # today). The skill-collection layout under `skills/` is hoisted
@@ -79,3 +80,5 @@ scripts:
   audit-axioms: python3 scripts/lean/axiom_audit.py --help
   templates-list: ls -1 templates/Template_*.md
   skills-count: bash -c 'find skills -maxdepth 2 -name SKILL.md -not -path "*_overrides*" | wc -l'
+  test-mcp: node --experimental-strip-types tools/lean_lsp_mcp/tests/test_lean_lsp_mcp.mjs
+
