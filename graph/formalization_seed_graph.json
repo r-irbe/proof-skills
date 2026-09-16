@@ -1,0 +1,126 @@
+{
+  "version": "1.0.0",
+  "nodes": [
+    {
+      "id": "P_INTRO",
+      "name": "intro / intros",
+      "category": "decomposition",
+      "description": "Introduces hypotheses and universal quantifiers into local context",
+      "reversibility": "full"
+    },
+    {
+      "id": "P_RCASES",
+      "name": "rcases / obtain",
+      "category": "decomposition",
+      "description": "Recursive case analysis and destructuring of conjunctions and existentials",
+      "reversibility": "full"
+    },
+    {
+      "id": "P_INDUCTION",
+      "name": "induction",
+      "category": "decomposition",
+      "description": "Applies structural or well-founded induction principle to inductive data",
+      "reversibility": "partial"
+    },
+    {
+      "id": "P_SIMP",
+      "name": "simp",
+      "category": "normalization",
+      "description": "General term rewriting engine using equational lemmas and simp-sets",
+      "reversibility": "partial"
+    },
+    {
+      "id": "P_SIMP_ONLY",
+      "name": "simp only",
+      "category": "normalization",
+      "description": "Deterministic simplification using strictly enumerated equational lemmas",
+      "reversibility": "full"
+    },
+    {
+      "id": "P_OMEGA",
+      "name": "omega",
+      "category": "normalization",
+      "description": "Presburger arithmetic decision procedure for Nat and Int linear constraints",
+      "reversibility": "full"
+    },
+    {
+      "id": "P_RING",
+      "name": "ring",
+      "category": "normalization",
+      "description": "Polynomial ring equality normalizer modulo commutative ring axioms",
+      "reversibility": "full"
+    },
+    {
+      "id": "P_EXACT",
+      "name": "exact",
+      "category": "kernel",
+      "description": "Closes the active goal immediately with an exact term match",
+      "reversibility": "full"
+    },
+    {
+      "id": "P_APPLY",
+      "name": "apply",
+      "category": "kernel",
+      "description": "Matches lemma conclusion against goal and generates subgoals for premises",
+      "reversibility": "partial"
+    },
+    {
+      "id": "P_GRIND",
+      "name": "grind",
+      "category": "search",
+      "description": "Lean 4 modern heuristic automated theorem search tactic",
+      "reversibility": "irreversible"
+    }
+  ],
+  "triplets": [
+    {
+      "source": "P_SIMP",
+      "relation": "specializes",
+      "target": "P_SIMP_ONLY",
+      "condition": "General simp explodes AST size, loops, or introduces inaccessible daggers",
+      "guidance": "Harvest minimal required lemma set from squeeze_simp or plainGoal diagnostics and restrict to simp only [lemmas].",
+      "pitfalls": "Unbounded simp slows down compilation and degrades maintenance stability across Lean versions."
+    },
+    {
+      "source": "P_INTRO",
+      "relation": "recovers_from",
+      "target": "P_RCASES",
+      "condition": "Introduced hypothesis is a composite structure, existential, or conjunction",
+      "guidance": "Immediately destructure compound hypotheses into named components using obtain or rcases.",
+      "pitfalls": "Leaving existential hypotheses in un-destructured form requires repeated projection extraction."
+    },
+    {
+      "source": "P_INDUCTION",
+      "relation": "precedes",
+      "target": "P_OMEGA",
+      "condition": "Base case of natural number induction yields linear arithmetic equality",
+      "guidance": "Close the zero/base case directly with omega before elaborating inductive step.",
+      "pitfalls": "Elaborating verbose manual rewrites on trivial base cases bloats proof scripts."
+    },
+    {
+      "source": "P_APPLY",
+      "relation": "specializes",
+      "target": "P_EXACT",
+      "condition": "Subterm or lemma already matches goal completely without remaining premises",
+      "guidance": "Prefer exact over apply to prevent lingering metavariables or unintended subgoals.",
+      "pitfalls": "Using apply when exact fits can leave invisible typeclass synthesis goals open."
+    },
+    {
+      "source": "P_RING",
+      "relation": "alternative_to",
+      "target": "P_OMEGA",
+      "condition": "Goal involves multiplication of variables rather than pure linear inequalities",
+      "guidance": "Use ring for non-linear algebraic ring identities where omega decision procedure fails.",
+      "pitfalls": "Omega rejects non-linear multiplication terms, causing premature tactic failure."
+    },
+    {
+      "source": "P_GRIND",
+      "relation": "complements",
+      "target": "P_SIMP_ONLY",
+      "condition": "First-order goal simplification before deep combinatorial search",
+      "guidance": "Pre-normalize the goal state using simp only before dispatching to grind.",
+      "pitfalls": "Dispatching grind directly to unsimplified goals causes heartbeat exhaustion."
+    }
+  ],
+  "rejection_memory": []
+}

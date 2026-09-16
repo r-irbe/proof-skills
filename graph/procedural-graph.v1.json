@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/r-irbe/proof-skills/schemas/procedural-graph.v1.json",
+  "title": "Lean4FormalizationProceduralGraph",
+  "description": "Schema for Lean 4 formalization procedural knowledge graphs per arXiv:2609.09153",
+  "type": "object",
+  "required": ["version", "nodes", "triplets"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "enum": ["1.0.0"]
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "category", "description"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "category": {
+            "type": "string",
+            "enum": ["kernel", "tactic", "decomposition", "macro", "normalization", "search"]
+          },
+          "description": { "type": "string" },
+          "reversibility": {
+            "type": "string",
+            "enum": ["full", "partial", "irreversible"]
+          }
+        }
+      }
+    },
+    "triplets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "relation", "target", "condition", "guidance", "pitfalls"],
+        "properties": {
+          "source": { "type": "string" },
+          "relation": {
+            "type": "string",
+            "enum": [
+              "depends_on",
+              "alternative_to",
+              "specializes",
+              "recovers_from",
+              "precedes",
+              "complements"
+            ]
+          },
+          "target": { "type": "string" },
+          "condition": { "type": "string" },
+          "guidance": { "type": "string" },
+          "pitfalls": { "type": "string" }
+        }
+      }
+    },
+    "rejection_memory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["goal_signature", "rejected_tactic", "error_reason"],
+        "properties": {
+          "goal_signature": { "type": "string" },
+          "rejected_tactic": { "type": "string" },
+          "error_reason": { "type": "string" },
+          "timestamp": { "type": "string" }
+        }
+      }
+    }
+  }
+}\n
