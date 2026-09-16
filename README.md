@@ -10,8 +10,9 @@ Tactics · domain math · doc / review / research workflows · zettelkasten · g
 [![Lean 4](https://img.shields.io/badge/Lean-4-2D3748.svg?logo=lean&logoColor=white)](https://github.com/leanprover/lean4)
 [![Mathlib4](https://img.shields.io/badge/Mathlib-4-4E7CD0.svg)](https://github.com/leanprover-community/mathlib4)
 [![APM](https://img.shields.io/badge/APM-skill_collection-6e5494.svg)](https://github.com/microsoft/apm)
-[![First-party skills](https://img.shields.io/badge/first--party%20skills-59-2c974b.svg)](skills/)
+[![First-party skills](https://img.shields.io/badge/first--party%20skills-63-2c974b.svg)](skills/)
 [![Legacy Stubs](https://img.shields.io/badge/legacy%20stubs-4-6e5494.svg)](skills/_overrides/)
+[![Taxonomy](https://img.shields.io/badge/taxonomy-hybrid_architecture-blue.svg)](TAXONOMY.md)
 
 </div>
 
@@ -46,10 +47,13 @@ git clone --recurse-submodules https://github.com/r-irbe/proof-skills
 
 | Directory | What it holds | Loaded by |
 |---|---|---|
-| [`skills/`](skills/) | 59 first-party `SKILL.md` files: toolchain setup, Lake building, proof tactics, MWE extraction, bisection, PR hygiene, Mathlib review, domain math, applied verticals, and end-to-end process workflows. | Harness, on demand. |
+| [`skills/`](skills/) | 63 first-party `SKILL.md` files: toolchain setup, Lake building, proof tactics, MWE extraction, bisection, PR hygiene, Mathlib review, domain math, applied verticals, and end-to-end process workflows. | Harness, on demand. |
 | [`skills/_overrides/`](skills/_overrides/) | 4 legacy REDIRECT stubs (`mathlib-build`, `mathlib-pr`, `mathlib-review`, `nightly-testing`) preserving deprecated slugs per Chesterton protocol. | Harness, on demand. |
+| [`TAXONOMY.md`](TAXONOMY.md) | Authoritative classification mapping skills into Kernel, Roles, and Facets. | Planning / routing. |
+| [`ROLES.md`](ROLES.md) | Stanford ACE Prover Swarm operational contracts (Specifier, Prover, Auditor, Gardener). | Multi-agent execution. |
+| [`FACETS.md`](FACETS.md) | Domain Facets catalog (Math, AI, Governance packs). | Domain consumers. |
 | [`templates/`](templates/) | copy-pasteable Lean module skeletons and workflow templates. Cross-template conventions live in [`templates/00-CONVENTIONS.md`](templates/00-CONVENTIONS.md). | Author, copy-paste. |
-| [`references/`](references/) | background notes and layered skill handbooks a skill points at when needed: theorem-search idioms, proof-strategy notes, Mathlib4 conventions, Lean 4 LSP guide, and per-domain handbooks. | Skill, by link. |
+| [`references/`](references/) | background notes and layered skill handbooks; authoritative catalog in [`references/INDEX.md`](references/INDEX.md). | Skill, by link. |
 | [`scripts/`](scripts/) | Project-agnostic helpers: axiom audits, DAG layer checks, bridge validators, zettelkasten linters, eval, calibration, and Glicko-2 harnesses. None hardcodes a host project; each takes the project root as an argument. | Skill / CI / author. |
 | [`zettelkasten/`](zettelkasten/) | Repo-internal knowledge graph (fleeting · literature · permanent · index · tags) that captures cross-skill insights. | Synthesizer skills. |
 | [`vendor/`](vendor/) | Pinned git submodules of upstream sources (e.g. `leanprover-skills`) for transparent re-dispatch. | Override dispatch. |
@@ -60,15 +64,18 @@ git clone --recurse-submodules https://github.com/r-irbe/proof-skills
 
 ```text
 proof-skills/
-├── apm.yml                  # APM manifest — package metadata
-├── AGENT.md                 # Agent contract: belief threshold, dispatch precedence, …
+├── apm.yml                  # APM manifest -- package metadata
+├── AGENT.md                 # Agent contract: belief threshold, dispatch precedence, ...
 ├── README.md                # You are here
+├── TAXONOMY.md              # Hybrid architecture mapping (Kernel, Roles, Facets)
+├── ROLES.md                 # Stanford ACE Prover Swarm operational contracts
+├── FACETS.md                # Domain facets catalog (Math, AI, Governance)
 ├── LICENSE · NOTICE         # Apache-2.0
-├── skills/                  # 59 first-party SKILL.md + 4 legacy stubs in _overrides/
+├── skills/                  # 63 first-party SKILL.md + 4 legacy stubs in _overrides/
 ├── templates/               # 38 Lean/workflow templates
-├── references/              # 57 notes and layered handbooks
+├── references/              # 58 notes and handbooks indexed via references/INDEX.md
 ├── scripts/
-│   ├── lean/                # axiom_audit, bridge_validator, dep_graph, …
+│   ├── lean/                # axiom_audit, bridge_validator, dep_graph, ...
 │   ├── lint/                # APM package validation
 │   ├── skill-audit/         # v2 conformance + handoff DAG audit
 │   ├── eval/                # deterministic, LLM-judge replay, calibration

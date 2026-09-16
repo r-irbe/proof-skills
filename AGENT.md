@@ -43,12 +43,15 @@ Top-level surfaces:
 | Path | Purpose | Lifecycle |
 | --- | --- | --- |
 | `apm.yml` | APM manifest (name, version, deps, scripts). | Bump `version` on releases. |
-| `skills/` | One folder per skill; each has a `SKILL.md` agent-loadable contract. Auto-discovered by APM. | 59 first-party skills; all are v2-conformant. |
+| `skills/` | One folder per skill; each has a `SKILL.md` agent-loadable contract. Auto-discovered by APM. | 63 first-party skills; all are v2-conformant. |
 | `skills/_overrides/` | 4 legacy REDIRECT stubs for deprecated upstream slugs (`mathlib-build`, `mathlib-pr`, `mathlib-review`, `nightly-testing`). | Stable; preserves backwards compatibility. |
+| `TAXONOMY.md` | Formal classification mapping skills into Kernel, Roles, and Facets. | Authoritative taxonomy. |
+| `ROLES.md` | Stanford ACE Prover Swarm operational contracts (Specifier, Prover, Auditor, Gardener). | Operational protocol. |
+| `FACETS.md` | Domain Facets catalog (Math, AI, Governance packs). | Domain guide. |
 | `templates/` | Copy-pasteable Lean module, proof, refactor, and workflow templates, with cross-template rules in `00-CONVENTIONS.md`. | Stable. |
-| `references/` | Background knowledge and layered skill handbooks an agent can `view` when a skill links to them. | Append-only except link repair. |
+| `references/` | Background knowledge and layered skill handbooks; see `references/INDEX.md`. | Indexed via `references/INDEX.md`. |
 | `scripts/lean/` | Generic Lean-4 helper scripts (axiom audit, DAG checks, bridge validators, etc.) callable from any project. | Project-agnostic; no host-project paths. |
-| `vendor/leanprover-skills/` | Upstream `leanprover/skills` referenced as a git submodule (read-only; do not edit in place). | Pinned commit; bump deliberately. NOT yet an APM dep — see `apm.yml` note. |
+| `vendor/leanprover-skills/` | Upstream `leanprover/skills` referenced as a git submodule (read-only; do not edit in place). | Pinned commit; bump deliberately. NOT yet an APM dep -- see `apm.yml` note. |
 | `zettelkasten/` | Reserved for the canonical Luhmann-tier ZK. Currently empty pending W7 of the master plan. | Bootstrapping. |
 
 This repo is **standalone** and has **no runtime dependency** on any

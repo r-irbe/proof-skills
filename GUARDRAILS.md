@@ -37,7 +37,7 @@ Rules of maintenance:
 | GT-08 | Fills helper-lemma `sorry`s before touching the target theorem | Target theorem first; helpers only as reached |
 | GT-09 | Declares success while a `sorry` remains | Verify pass: no `sorry`, no error, diagnostics re-read |
 | GT-10 | Fights `motive is not type correct` with more `rw` instead of generalising | Generalise-then-instantiate (G-9) |
-| GT-11 | Retries `rw` with "pattern not found" on goals whose summand contains a non-reducible type synonym or a semireducible definition — the matcher runs below default transparency and cannot unfold these | `simp only` with the exact lemma list, then `exact` the residual identity; supply bare commutation lemmas as terms (they loop as simp lemmas); probe goal shapes with `trace_state`, never `sorry` placeholders |
+| GT-11 | Retries `rw` with "pattern not found" on goals whose summand contains a non-reducible type synonym or a semireducible definition — the matcher runs below default transparency and cannot unfold these | `simp only` with the exact lemma list, then `exact` the residual identity; supply bare commutation lemmas as terms (they loop as simp lemmas); probe goal shapes with live LSP `plainGoal` queries, never file-polluting `trace_state` or `sorry` placeholders |
 
 ### Proof review — [`lean-proof-review`](skills/lean-proof-review/SKILL.md)
 
