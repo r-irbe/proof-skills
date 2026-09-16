@@ -28,7 +28,7 @@ Rules of maintenance:
 | GT-04 | Ignores context-collapse signals | Surface degradation; recommend a fresh session |
 | GT-05 | Skips the per-task tracker update | Update the tracker as part of the handoff |
 
-### Proof writing — [`lean-proof` (override)](skills/_overrides/lean-proof/SKILL.md)
+### Proof writing — [`lean-proof`](skills/lean-proof/SKILL.md)
 
 | ID | Failure class | Remedy |
 | --- | --- | --- |

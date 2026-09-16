@@ -93,7 +93,7 @@ r_caveats: [F1, F6]
 ## See also
 
 - This `SKILL.md` is the canonical v2 proof-writing contract for this package.
-- [`../../../references/lean4-lsp-proof-protocol.md`](../../../references/lean4-lsp-proof-protocol.md) — interactive LSP proof loop, suggestion harvesting, and hygiene protocol.
-- [`../../../templates/Template_ProofStrategy.md`](../../../templates/Template_ProofStrategy.md) — proof methodology cheat sheet.
-- [`../../../references/lean4-proof-strategy.md`](../../../references/lean4-proof-strategy.md) — one-step-at-a-time, error priority, hardest case first.
-- [`../../../references/lean4-tactic-hierarchy.md`](../../../references/lean4-tactic-hierarchy.md) — tactic priority table.
+- [`../../references/lean4-lsp-proof-protocol.md`](../../references/lean4-lsp-proof-protocol.md) — interactive LSP proof loop, suggestion harvesting, and hygiene protocol.
+- [`../../templates/Template_ProofStrategy.md`](../../templates/Template_ProofStrategy.md) — proof methodology cheat sheet.
+- [`../../references/lean4-proof-strategy.md`](../../references/lean4-proof-strategy.md) — one-step-at-a-time, error priority, hardest case first.
+- [`../../references/lean4-tactic-hierarchy.md`](../../references/lean4-tactic-hierarchy.md) — tactic priority table.

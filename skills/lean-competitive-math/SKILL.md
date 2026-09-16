@@ -157,7 +157,7 @@ Discover -> Plan -> Execute -> Validate -> Persist.
 - [`Template_Euler.md`](Template_Euler.md) -- per-problem Lean file template with a verified Euler-1 example.
 - [`../lean-specification/SKILL.md`](../lean-specification/SKILL.md) -- Predecessor (theorem statement).
 - [`../lean-research/SKILL.md`](../lean-research/SKILL.md) -- Predecessor (Mathlib encoding).
-- [`../_overrides/lean-proof/SKILL.md`](../_overrides/lean-proof/SKILL.md) -- Successor (tactic-level proving).
+- [`../lean-proof/SKILL.md`](../lean-proof/SKILL.md) -- Successor (tactic-level proving).
 - [`../lean-proof-review/SKILL.md`](../lean-proof-review/SKILL.md) -- Successor (audit under the L3 carve-out).
 - [`../lean-quality-engine/SKILL.md`](../lean-quality-engine/SKILL.md) -- Successor (project QA).
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Predecessor / router.

@@ -83,4 +83,4 @@ r_caveats: [F1]
 
 - This `SKILL.md` is the canonical v2 toolchain-setup contract for this package.
 - [`../../../templates/Template_Lakefile.md`](../../../templates/Template_Lakefile.md) — annotated lakefile reference.
-- [`../lean-proof/SKILL.md`](../lean-proof/SKILL.md) — v2 sibling, the typical successor in the DAG.
+- [`../../lean-proof/SKILL.md`](../../lean-proof/SKILL.md) — v2 sibling, the typical successor in the DAG.

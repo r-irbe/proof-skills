@@ -27,7 +27,7 @@ in this order:
 The first hit wins. Do not load both an override and the underlying
 upstream copy in the same dispatch.
 
-## Current overrides (10)
+## Current overrides (9)
 
 | slug | upstream provenance | reason for override |
 |---|---|---|
@@ -35,7 +35,6 @@ upstream copy in the same dispatch.
 | `lean-build` | repo-native (new in W4 Wave 2) | agnostic Lake build skill; replaces `mathlib-build` slug; the single Mathlib-specific `lake exe cache get` note is preserved with a clarifying comment |
 | `lean-mwe` | `leanprover/skills` | updated MWE workflow + Mathlib pointers; W4 Wave 1 See-also link to `references/upstream/lean-bug-report-pipeline.md` |
 | `lean-pr` | `leanprover/skills` | **reshaped in W4 Wave 2** to be the agnostic Lean-ecosystem PR workflow; per-repo conventions moved to `references/upstream/{lean4,mathlib4}-pr.md`; dispatches by target repo |
-| `lean-proof` | `leanprover/skills` | tactic-priority order, current theorem-count baseline |
 | `lean-setup` | `leanprover/skills` | toolchain/elan notes for recent Lean releases |
 | `mathlib-build` | `leanprover/skills` | **REDIRECT stub** — content moved to repo-native `lean-build` in W4 Wave 2 (move A3); slug preserved for Ctrl-F per Chesterton protocol |
 | `mathlib-pr` | `leanprover/skills` | **REDIRECT stub** — content merged into `lean-pr` + `references/upstream/mathlib4-pr.md` in W4 Wave 2 (move A1); slug preserved for Ctrl-F per Chesterton protocol |
