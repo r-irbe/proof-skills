@@ -41,7 +41,7 @@ the on-disk format.
 Top-level surfaces:
 
 | Path | Purpose | Lifecycle |
-|---|---|---|
+| --- | --- | --- |
 | `apm.yml` | APM manifest (name, version, deps, scripts). | Bump `version` on releases. |
 | `skills/` | One folder per skill; each has a `SKILL.md` agent-loadable contract. Auto-discovered by APM. | 59 first-party skills; all are v2-conformant. |
 | `skills/_overrides/` | 4 legacy REDIRECT stubs for deprecated upstream slugs (`mathlib-build`, `mathlib-pr`, `mathlib-review`, `nightly-testing`). | Stable; preserves backwards compatibility. |
@@ -91,7 +91,7 @@ Conflict, Novelty, Governance}`); 5 categories empirically dominate
 8-category alternatives at <1 % structured-error rate.
 
 | # | Category | Fires when… | Gate type |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | 1 | **Confidence** | Your belief < 0.90 on routing, design, taxonomy, naming, scope. | Soft — `ask_user`. |
 | 2 | **Irreversible** | You are about to do anything in the reversibility table below at class ≥ `irreversible_*`. | **Hard — always ask**, regardless of confidence. |
 | 3 | **Conflict** | Two readings of the same source give materially different answers (spec vs. ADR, template vs. SKILL.md, two skills mutually contradicting). | Soft — `ask_user`, cite both. |
@@ -105,7 +105,7 @@ skill's `## Recovery & STOP` section. This keeps local skill behavior aligned
 with the repo-wide contract and avoids hidden "continue anyway" paths.
 
 | Trigger | Skill-facing wording | Common examples |
-|---|---|---|
+| --- | --- | --- |
 | Confidence | STOP if confidence is below the repo belief floor; ask through the runtime elicitation channel. | Choosing theorem names, package adoption class, proof strategy, taxonomy, or owner. |
 | Irreversible | STOP before irreversible data, trust, economic, or history-changing actions. | Push, release, destructive cleanup, public contract change, paid external call. |
 | Conflict | STOP when two authoritative sources disagree; cite both and ask which wins. | Skill vs. reference, template vs. actual project layout, package docs vs. source. |
@@ -122,7 +122,7 @@ Order matters: if a single command crosses two classes, treat as the
 *higher* class.
 
 | Class | Examples | HITL gate |
-|---|---|---|
+| --- | --- | --- |
 | `reversible` | Read-only inspection, temp-file write, local build, `lake exe`, `git status`, `view`, `grep`. | None — auto. |
 | `mostly_reversible` | New file under a draft path, branch creation, local commit on a personal branch, `git add`, `lake update` on lockfile-bearing project. | None — auto, but log the action in the response. |
 | `irreversible_data` | `rm -rf`, `git push --force`, `git filter-repo`, `git reset --hard`, `git rebase` on shared branch, history rewrite. | **Hard HITL gate**. |
@@ -162,7 +162,7 @@ timeout.
 ### 1.5 What "ask" looks like
 
 | Runtime | Channel |
-|---|---|
+| --- | --- |
 | Copilot CLI | `ask_user` with a JSON-schema form (single field for simple yes/no; multi-field with `default` set when there is a recommended answer). |
 | MCP-aware host (Claude Code, Cursor, etc.) | `elicitation/create` with the same shape. |
 | Plain chat | A numbered question list ending with *"Pick A/B/C, or describe alternative"*. |
