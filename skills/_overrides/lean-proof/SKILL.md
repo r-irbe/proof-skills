@@ -38,17 +38,19 @@ r_caveats: [F1, F6]
 
 ## Behavioural rules (G-*)
 
-- **G-1** (MUST): The skill MUST write exactly one tactic, then read diagnostics, before writing the next. [Trace: AC-01]
+- **G-1** (MUST): The skill MUST write exactly one tactic, then verify the proof state (via LSP `goal` or diagnostics), before writing the next. The skill MUST NOT write exploratory `trace_state` probes to disk when live LSP goal inspection is available. [Trace: AC-01]
 - **G-2** (MUST): The skill MUST use `done` to surface unsolved goals whenever an active proof has expected next steps. [Trace: AC-02]
 - **G-3** (MUST): Errors MUST be addressed in the order syntax → type → unsolved goals → linter. A lower-priority diagnostic MUST NOT be touched while a higher-priority one is open in the same file. [Trace: AC-03]
 - **G-4** (MUST): When an "unsolved goals" error appears on a `by` or `=>` line alongside a tactic error on a later line, the tactic error MUST be fixed first. [Trace: AC-04]
 - **G-5** (MUST NOT): The skill MUST NOT write further tactics after any unresolved error. [Trace: AC-05]
 - **G-6** (MUST): When working a target theorem, the skill MUST go directly to that theorem and MAY leave dependent helper lemmas as `sorry`. [Trace: AC-06]
-- **G-7** (SHOULD): Within a case split, the skill SHOULD `sorry` the easy branches and prove the hardest branch first. [Trace: AC-07]
+- **G-7** (SHOULD): Within a case split, the skill SHOULD `sorry` the easy branches and prove the hardest branch first. Multi-goal states MUST be isolated using focus blocks (`.` or bullet) or explicit `case` tags. [Trace: AC-07]
 - **G-8** (MUST): After a proof closes, the skill MUST attempt cleanup (combine rewrites, test whether `simp` subsumes earlier steps) before declaring the proof done. [Trace: AC-08]
 - **G-9** (SHOULD): On `motive is not type correct` or analogous dependent-type rewrite failure, the skill SHOULD apply the generalise-then-instantiate pattern (`suffices ∀ s, …` + `convert`) rather than fighting the rewrite. [Trace: AC-09]
 - **G-10** (MUST NOT): The skill MUST NOT declare a proof complete while any `sorry` or error diagnostic remains in the closed term. [Trace: AC-10]
 - **G-11** (MUST): The skill MUST persist (commit + state-tracker tick) before handing off to `@lean-proof-review`. [Trace: AC-11]
+- **G-12** (MUST): When using search tactics (`exact?`, `apply?`, `simp?`, `grind?`, `aesop?`), the skill MUST harvest the suggested script via LSP code actions or diagnostic messages and substitute the concrete proof script immediately. Bare search tactics MUST NOT remain in committed code. [Trace: AC-12]
+- **G-13** (MUST NOT): The skill MUST NOT reference inaccessible hygienic variables (`x✝`, `h✝`) directly by name in tactic code. The skill MUST use `rename_i` or bind them explicitly with `intro` / `rcases`. [Trace: AC-13]
 
 ## Workflow
 
@@ -82,13 +84,16 @@ r_caveats: [F1, F6]
 > — the matcher runs below default transparency and cannot unfold these.
 > Switch to `simp only` with the exact lemma list, then `exact` the residual
 > identity; bare commutation lemmas loop as simp lemmas, so supply them as
-> terms instead. Probe the actual goal shape with `trace_state`, never with
-> `sorry` placeholders. Full registry: `GUARDRAILS.md §Agent failure
-> taxonomy`.
+> terms instead. Probe the actual goal shape with live LSP `goal`, never by
+> polluting source files with `trace_state` or `sorry` placeholders. Never
+> attempt to name hygienic dagger variables (`x✝`) directly without `rename_i`;
+> never leave bare `exact?` or `simp?` un-expanded. Full registry:
+> `GUARDRAILS.md §Agent failure taxonomy`.
 
 ## See also
 
 - This `SKILL.md` is the canonical v2 proof-writing contract for this package.
+- [`../../../references/lean4-lsp-proof-protocol.md`](../../../references/lean4-lsp-proof-protocol.md) — interactive LSP proof loop, suggestion harvesting, and hygiene protocol.
 - [`../../../templates/Template_ProofStrategy.md`](../../../templates/Template_ProofStrategy.md) — proof methodology cheat sheet.
 - [`../../../references/lean4-proof-strategy.md`](../../../references/lean4-proof-strategy.md) — one-step-at-a-time, error priority, hardest case first.
 - [`../../../references/lean4-tactic-hierarchy.md`](../../../references/lean4-tactic-hierarchy.md) — tactic priority table.
