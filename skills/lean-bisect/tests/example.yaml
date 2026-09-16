@@ -1,0 +1,7 @@
+repo: "https://github.com/leanprover-community/batteries.git"
+sha: "77d10578945b31d794214a66937b75a6d4311674"
+prompt: |
+  Verify that a minimal reproduction file produces discriminating diagnostics
+  between candidate toolchains suitable for lean-bisect.
+description: "Checks lean-bisect endpoint verification and reproducer suitability"
+timeout: 120

@@ -43,8 +43,8 @@ Top-level surfaces:
 | Path | Purpose | Lifecycle |
 |---|---|---|
 | `apm.yml` | APM manifest (name, version, deps, scripts). | Bump `version` on releases. |
-| `skills/` | One folder per skill; each has a `SKILL.md` agent-loadable contract. Auto-discovered by APM. | 53 first-party skills plus 10 overrides; all are v2-conformant or explicit REDIRECT stubs. |
-| `skills/_overrides/` | Local overrides for upstream skill slugs (audit-modified copies of `leanprover/skills` entries). | Stable; dispatched per §3. |
+| `skills/` | One folder per skill; each has a `SKILL.md` agent-loadable contract. Auto-discovered by APM. | 59 first-party skills; all are v2-conformant. |
+| `skills/_overrides/` | 4 legacy REDIRECT stubs for deprecated upstream slugs (`mathlib-build`, `mathlib-pr`, `mathlib-review`, `nightly-testing`). | Stable; preserves backwards compatibility. |
 | `templates/` | Copy-pasteable Lean module, proof, refactor, and workflow templates, with cross-template rules in `00-CONVENTIONS.md`. | Stable. |
 | `references/` | Background knowledge and layered skill handbooks an agent can `view` when a skill links to them. | Append-only except link repair. |
 | `scripts/lean/` | Generic Lean-4 helper scripts (axiom audit, DAG checks, bridge validators, etc.) callable from any project. | Project-agnostic; no host-project paths. |

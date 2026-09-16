@@ -27,19 +27,20 @@ in this order:
 The first hit wins. Do not load both an override and the underlying
 upstream copy in the same dispatch.
 
-## Current overrides (9)
+## Legacy REDIRECT stubs (4)
 
-| slug | upstream provenance | reason for override |
+The core toolchain skills (`lean-proof`, `lean-setup`, `lean-build`, `lean-mwe`,
+`lean-bisect`, `lean-pr`) have been promoted to repo-native first-party skills
+under `skills/<slug>/` for native APM collection discovery. This folder now
+preserves only the legacy Mathlib-specific slugs as REDIRECT stubs per the
+Chesterton zero-deletions protocol.
+
+| slug | upstream provenance | reason for stub |
 |---|---|---|
-| `lean-bisect` | `leanprover/skills` | refreshed bisect tooling + tactic-priority notes; W4 Wave 1 See-also link to `references/upstream/lean-bug-report-pipeline.md` |
-| `lean-build` | repo-native (new in W4 Wave 2) | agnostic Lake build skill; replaces `mathlib-build` slug; the single Mathlib-specific `lake exe cache get` note is preserved with a clarifying comment |
-| `lean-mwe` | `leanprover/skills` | updated MWE workflow + Mathlib pointers; W4 Wave 1 See-also link to `references/upstream/lean-bug-report-pipeline.md` |
-| `lean-pr` | `leanprover/skills` | **reshaped in W4 Wave 2** to be the agnostic Lean-ecosystem PR workflow; per-repo conventions moved to `references/upstream/{lean4,mathlib4}-pr.md`; dispatches by target repo |
-| `lean-setup` | `leanprover/skills` | toolchain/elan notes for recent Lean releases |
-| `mathlib-build` | `leanprover/skills` | **REDIRECT stub** — content moved to repo-native `lean-build` in W4 Wave 2 (move A3); slug preserved for Ctrl-F per Chesterton protocol |
-| `mathlib-pr` | `leanprover/skills` | **REDIRECT stub** — content merged into `lean-pr` + `references/upstream/mathlib4-pr.md` in W4 Wave 2 (move A1); slug preserved for Ctrl-F per Chesterton protocol |
-| `mathlib-review` | `leanprover/skills` | **REDIRECT stub** — content demoted to `references/upstream/mathlib4-review.md` in W4 Wave 1 (move A2); slug preserved for Ctrl-F per Chesterton protocol |
-| `nightly-testing` | `leanprover/skills` | **REDIRECT stub** — content demoted to `references/upstream/lean-nightly-infrastructure.md` in W4 Wave 1 (move A4); slug preserved for Ctrl-F per Chesterton protocol |
+| `mathlib-build` | `leanprover/skills` | **REDIRECT stub** — content moved to first-party `skills/lean-build` |
+| `mathlib-pr` | `leanprover/skills` | **REDIRECT stub** — content moved to first-party `skills/lean-pr` + `references/upstream/mathlib4-pr.md` |
+| `mathlib-review` | `leanprover/skills` | **REDIRECT stub** — content demoted to `references/upstream/mathlib4-review.md` |
+| `nightly-testing` | `leanprover/skills` | **REDIRECT stub** — content demoted to `references/upstream/lean-nightly-infrastructure.md` |
 
 ## Adding / removing overrides
 

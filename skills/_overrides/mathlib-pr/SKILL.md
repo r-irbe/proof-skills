@@ -8,7 +8,7 @@ tier: "warm"
 
 This skill no longer hosts content. The generic PR workflow and the
 Mathlib-specific conventions are now separated cleanly: the agnostic
-workflow lives in [`lean-pr`](../lean-pr/SKILL.md), and the
+workflow lives in [`lean-pr`](../../lean-pr/SKILL.md), and the
 Mathlib-only deltas (commit format with `(<scope>)`, labels, merge
 process via bors, `lake exe mk_all`) live in the upstream reference.
 
@@ -19,7 +19,7 @@ process via bors, `lake exe mk_all`) live in the upstream reference.
 | Labels (author-managed / topic / downstream / automated) | Same reference §Labels |
 | Merge process (`maintainer-merge` → `ready-to-merge` → bors) | Same reference §Merge process |
 | Style and naming URLs | Same reference §Style and naming |
-| Generic agnostic PR workflow (dispatch, title shape, common ecosystem rules) | [`../lean-pr/SKILL.md`](../lean-pr/SKILL.md) |
+| Generic agnostic PR workflow (dispatch, title shape, common ecosystem rules) | [`../../lean-pr/SKILL.md`](../../lean-pr/SKILL.md) |
 
 Existing inbound links to "SK-30 / `mathlib-pr`" should resolve here
 and then follow the table above. `lean-gateway/REFERENCE.md` registry
@@ -29,7 +29,7 @@ specific) or `_overrides/lean-pr/SKILL.md` (generic) instead.
 
 ## See also
 
-- [`../lean-pr/SKILL.md`](../lean-pr/SKILL.md) — agnostic Lean-ecosystem PR SKILL (parent)
+- [`../../lean-pr/SKILL.md`](../../lean-pr/SKILL.md) — agnostic Lean-ecosystem PR SKILL (parent)
 - [`../../../references/upstream/mathlib4-pr.md`](../../../references/upstream/mathlib4-pr.md) — full Mathlib-specific content
 - [`../../../references/upstream/lean4-pr.md`](../../../references/upstream/lean4-pr.md) — Lean 4 core sister reference
 - [`../../../references/upstream/mathlib4-review.md`](../../../references/upstream/mathlib4-review.md) — Mathlib PR review standards (sister W4 Wave 1)

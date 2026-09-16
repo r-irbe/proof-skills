@@ -1,0 +1,8 @@
+repo: "https://github.com/leanprover-community/batteries.git"
+sha: "77d10578945b31d794214a66937b75a6d4311674"
+prompt: |
+  Verify that the lean toolchain is properly configured, that elan resolves
+  the pinned version, and that lake env lean --version strictly agrees with
+  lean --version.
+description: "Checks lean-setup toolchain verification and lake environment agreement"
+timeout: 120

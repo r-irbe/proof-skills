@@ -4,7 +4,7 @@
 > (move A1 of `lab/design/07-cluster-workflow.md`). Repo-specific
 > conventions for PRs against `leanprover/lean4` live here; the
 > generic Lean-ecosystem PR workflow stays in the
-> [`lean-pr`](../../skills/_overrides/lean-pr/SKILL.md) SKILL.
+> [`lean-pr`](../../skills/lean-pr/SKILL.md) SKILL.
 
 ## Commit message format
 
@@ -87,4 +87,4 @@ headers.
 
 - [`./mathlib4-pr.md`](./mathlib4-pr.md) — Mathlib4 PR conventions (sister upstream)
 - [`./mathlib4-review.md`](./mathlib4-review.md) — Mathlib PR review standards
-- [`../../skills/_overrides/lean-pr/SKILL.md`](../../skills/_overrides/lean-pr/SKILL.md) — Agnostic Lean-ecosystem PR SKILL
+- [`../../skills/lean-pr/SKILL.md`](../../skills/lean-pr/SKILL.md) — Agnostic Lean-ecosystem PR SKILL

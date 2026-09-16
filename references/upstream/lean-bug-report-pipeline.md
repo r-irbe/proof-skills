@@ -1,8 +1,8 @@
 # Lean Bug-Report Pipeline (reference)
 
 > Pure reference. Cross-skill pipeline diagram shared between
-> [`lean-mwe`](../../skills/_overrides/lean-mwe/SKILL.md) and
-> [`lean-bisect`](../../skills/_overrides/lean-bisect/SKILL.md).
+> [`lean-mwe`](../../skills/lean-mwe/SKILL.md) and
+> [`lean-bisect`](../../skills/lean-bisect/SKILL.md).
 > Added in W4 Wave 1 (move E1 of `lab/design/07-cluster-workflow.md`).
 
 ## Why this reference exists
@@ -64,7 +64,7 @@ self-contained so bisect doesn't need patching to swap toolchains.
 
 ## See also
 
-- [`../../skills/_overrides/lean-mwe/SKILL.md`](../../skills/_overrides/lean-mwe/SKILL.md) — Minimal working example construction
-- [`../../skills/_overrides/lean-bisect/SKILL.md`](../../skills/_overrides/lean-bisect/SKILL.md) — Git bisect for regressions
-- [`../../skills/_overrides/lean-pr/SKILL.md`](../../skills/_overrides/lean-pr/SKILL.md) — PR submission workflow
+- [`../../skills/lean-mwe/SKILL.md`](../../skills/lean-mwe/SKILL.md) — Minimal working example construction
+- [`../../skills/lean-bisect/SKILL.md`](../../skills/lean-bisect/SKILL.md) — Git bisect for regressions
+- [`../../skills/lean-pr/SKILL.md`](../../skills/lean-pr/SKILL.md) — PR submission workflow
 - [`./lean-nightly-infrastructure.md`](./lean-nightly-infrastructure.md) — Nightly testing infrastructure (added in W4 Wave 1 / A4)

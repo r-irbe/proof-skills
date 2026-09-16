@@ -1,0 +1,7 @@
+repo: "https://github.com/leanprover-community/batteries.git"
+sha: "77d10578945b31d794214a66937b75a6d4311674"
+prompt: |
+  Construct a minimal working example that isolates a specific error using
+  #guard_msgs and verifies cleanly under lake env lean.
+description: "Checks lean-mwe diagnostic guard encapsulation and reproducer verification"
+timeout: 120

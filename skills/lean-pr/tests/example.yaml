@@ -1,0 +1,7 @@
+repo: "https://github.com/leanprover-community/batteries.git"
+sha: "77d10578945b31d794214a66937b75a6d4311674"
+prompt: |
+  Validate that pull request formatting adheres to ecosystem title conventions,
+  contains changelog description paragraphs, and passes pre-flight checks.
+description: "Checks lean-pr pull request formatting and pre-flight validation"
+timeout: 120

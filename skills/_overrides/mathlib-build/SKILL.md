@@ -13,7 +13,7 @@ Lake-managed project (Mathlib, Cslib, or downstream repositories).
 
 | Old section | New home |
 |---|---|
-| Build rule of thumb (including `lake exe cache get` Mathlib note) | [`../lean-build/SKILL.md`](../lean-build/SKILL.md) §Build rule of thumb |
+| Build rule of thumb (including `lake exe cache get` Mathlib note) | [`../../lean-build/SKILL.md`](../../lean-build/SKILL.md) §Build rule of thumb |
 | Lake command reference | Same file §Lake command reference |
 | Stale artifact recovery | Same file §Stale artifact recovery |
 
@@ -25,5 +25,5 @@ instead.
 
 ## See also
 
-- [`../lean-build/SKILL.md`](../lean-build/SKILL.md) — full content (agnostic Lake build skill)
+- [`../../lean-build/SKILL.md`](../../lean-build/SKILL.md) — full content (agnostic Lake build skill)
 - [`../../../references/upstream/lean-bug-report-pipeline.md`](../../../references/upstream/lean-bug-report-pipeline.md) — Shared bug-report pipeline (sister W4 reference)

@@ -1,0 +1,7 @@
+repo: "https://github.com/leanprover-community/batteries.git"
+sha: "77d10578945b31d794214a66937b75a6d4311674"
+prompt: |
+  Validate that the project builds cleanly using lake build and that
+  lake env lean properly elaborates files without environment bypass.
+description: "Checks lean-build project compilation and Lake environment invocation"
+timeout: 120

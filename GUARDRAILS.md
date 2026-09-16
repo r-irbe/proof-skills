@@ -112,7 +112,7 @@ Rules of maintenance:
 | GT-43 | Omits rubric anchors | Findings anchor to rubric items |
 | GT-44 | Bundles many findings into one comment | One finding per comment |
 
-### Environment setup — [`lean-setup` (override)](skills/_overrides/lean-setup/SKILL.md)
+### Environment setup — [`lean-setup`](skills/lean-setup/SKILL.md)
 
 | ID | Failure class | Remedy |
 | --- | --- | --- |
