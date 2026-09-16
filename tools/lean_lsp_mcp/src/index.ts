@@ -919,11 +919,19 @@ export function main(): void {
   server.startStdio();
 }
 
-const isMain = Boolean(
-  process.argv[1] &&
-  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
-);
-if (isMain) {
+function checkIsMain(): boolean {
+  if (!process.argv[1]) return false;
+  try {
+    const argvPath = fs.realpathSync(path.resolve(process.argv[1]));
+    const modulePath = fs.realpathSync(fileURLToPath(import.meta.url));
+    return argvPath === modulePath;
+  } catch {
+    return path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+  }
+}
+
+if (checkIsMain()) {
   main();
 }
+
 
