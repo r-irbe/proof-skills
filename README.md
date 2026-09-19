@@ -16,6 +16,7 @@ Tactics · domain math · doc / review / research workflows · zettelkasten · g
 
 </div>
 
+Fork of [leanprover/skills](https://github.com/leanprover/skills)
 ---
 
 ## Quick start
