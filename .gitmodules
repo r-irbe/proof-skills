@@ -1,3 +1,6 @@
 [submodule "vendor/leanprover-skills"]
 	path = vendor/leanprover-skills
 	url = https://github.com/leanprover/skills.git
+[submodule "tools/lean-lsp-mcp"]
+	path = tools/lean-lsp-mcp
+	url = git@github.com:r-irbe/lean-lsp-mcp.git
