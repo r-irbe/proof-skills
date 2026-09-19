@@ -145,3 +145,5 @@ The per-skill blockquotes remain the operative in-context reminders; this
 registry is the consolidated view. When a blockquote and this registry
 disagree, fix both in the same commit — the blockquote is the dispatch-time
 surface, the registry is the audit surface.
+
+| GT-65 | Runs multi-lane campaigns without a stall detector, or treats lane silence as progress | Corpus-wide stall detection: every multi-lane campaign carries a heartbeat-based stall detector that (a) flags any lane with no progress for 2 hours, (b) reads the heartbeat timestamps from turn-state.json, (c) escalates to HITL when 2+ lanes stall simultaneously — a lane's silence is not progress, it is a defect (filab-fourth N-7, AMENDED by operator HITL D-03: promoted from TASK-SCALE-STALL to a GT rule after the LSP runner's every-turn stall demonstrated the need at CURRENT scale, not just tens-of-thousands scale) |
