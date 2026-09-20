@@ -51,6 +51,9 @@ r_caveats: [F1, F6]
 - **G-11** (MUST): The skill MUST persist (commit + state-tracker tick) before handing off to `@lean-proof-review`. [Trace: AC-11]
 - **G-12** (MUST): When using search tactics (`exact?`, `apply?`, `simp?`, `grind?`, `aesop?`), the skill MUST harvest the suggested script via LSP code actions or diagnostic messages and substitute the concrete proof script immediately. Bare search tactics MUST NOT remain in committed code. [Trace: AC-12]
 - **G-13** (MUST NOT): The skill MUST NOT reference inaccessible hygienic variables (`x✝`, `h✝`) directly by name in tactic code. The skill MUST use `rename_i` or bind them explicitly with `intro` / `rcases`. [Trace: AC-13]
+- **G-14** (MUST NOT): Anti-unbundling in simplification. The skill MUST NOT apply `simp` lemmas that unbundle structured morphisms into bare function evaluations (`.toFun`, `.val`, `coe_fn`) unless explicitly required by a target signature, as unbundling destroys algebraic typeclass inference downstream. [Trace: AC-14]
+- **G-15** (MUST): Closed term reversion for specification boundaries. When exporting a proof across subpackage boundaries or connecting to a specification card, the skill MUST clear auxiliary local definitions and revert free variables into a closed Pi-type signature matching the target card (mirroring `p2m_exact_reverting`). [Trace: AC-15]
+- **G-16** (SHOULD): Show horizons on multi-step rewrites. When rewriting complex nested terms, the skill SHOULD wrap subterm equivalences in `show <lhs> = <rhs> by <tactic>` to enforce local elaboration horizons and eliminate higher-order matching ambiguity. [Trace: AC-16]
 
 ## Workflow
 
