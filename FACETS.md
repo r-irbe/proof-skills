@@ -1,37 +1,13 @@
-# proof-skills Domain Facets Catalog
+# Domain Facets Guide
 
-Authoritative catalog of domain-specialized formalization packs across the
-proof-skills repository.
-
-Strict 7-bit ASCII only.
+While the core skills handle the mechanics of writing and compiling proofs, Domain Facets provide deep expertise, specialized vocabularies, and formalization patterns tailored to specific fields of study.
 
 ---
 
-## 1. Facet Model
+## The Three Facets
 
-While Core Kernel skills provide the universal mechanics of proving and compiling,
-Domain Facets supply deep domain knowledge, Mathlib theorem vocabularies, and
-specialized formalization patterns.
-
-```text
-+-----------------------------------------------------------------------------+
-|                            DOMAIN FACETS MAP                                |
-+-----------------------------------------------------------------------------+
-|                                                                             |
-|  [ MATH FACET ]           [ AI FACET ]            [ GOVERNANCE FACET ]      |
-|  14 Skills:               10 Skills:              25 Skills:                |
-|  Analysis, Discrete,      Neuro-Symbolic,         Security, Intelligence,   |
-|  Algebra, Topology,       Causal Logic,           Legal Reasoning,          |
-|  Probability, Games       Verifiable Agents       Synthesis, Zettelkasten   |
-|                                                                             |
-+-----------------------------------------------------------------------------+
-```
-
----
-
-## 2. Math Facet
-
-Designed for pure and applied mathematicians working against Mathlib4.
+### 1. Math Facet
+Designed for pure and applied mathematicians, this facet connects directly with the rich library of theorems in Mathlib4. It covers a wide range of mathematical domains, ensuring that formalizations use the correct conventions and underlying theories.
 
 - **Foundational & Discrete**:
   - `lean-math-foundations`: Type universes, inductive types, quotients, classical axioms.
@@ -52,11 +28,8 @@ Designed for pure and applied mathematicians working against Mathlib4.
   - `lean-math-optimization`: Convex analysis, subgradients, duality.
   - `lean-competitive-math`: Competition problem templates (Putnam, IMO, MiniF2F).
 
----
-
-## 3. AI and Neuro-Symbolic Facet
-
-Designed for AI researchers developing verifiable agents and neural-symbolic systems.
+### 2. AI and Neuro-Symbolic Facet
+Tailored for AI researchers, this facet helps build verifiable agents and neural-symbolic systems. It bridges the gap between informal reasoning and rigorous formal proofs.
 
 - **Autoformalization & Deduction**:
   - `lean-ai-formalization`: Translating informal LaTeX math into Lean 4 statements.
@@ -70,11 +43,8 @@ Designed for AI researchers developing verifiable agents and neural-symbolic sys
   - `ai-commonsense-reasoning`: Default logics, non-monotonic deduction.
   - `ai-symbolic-neuro`: Differentiable theorem proving and neural tactic scoring.
 
----
-
-## 4. Governance and Systems Facet
-
-Designed for systems engineers, legal analysts, and research program managers.
+### 3. Governance and Systems Facet
+Created for systems engineers, legal analysts, and project managers, this facet focuses on applying formal methods to high-stakes operations and knowledge management.
 
 - **High-Assurance Engineering**:
   - `applied-data-information-security`: Information flow proofs and protocol models.
