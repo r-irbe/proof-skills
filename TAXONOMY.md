@@ -5,9 +5,12 @@ Architecture, combining Approach 1 (Kernel & Domain Facets) and Approach 2
 (Multi-Agent Role Lifecycle / Stanford ACE Swarm).
 
 
+
 ---
 
 ## 1. Architectural Model
+
+For deep architectural rules and dispatch precedence, see [`references/architecture.md`](references/architecture.md).
 
 ```text
 +-----------------------------------------------------------------------------+

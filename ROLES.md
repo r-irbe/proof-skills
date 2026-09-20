@@ -1,3 +1,5 @@
+For a detailed explanation of the Swarm methodology and multi-agent theory, see [`references/swarm_methodology.md`](references/swarm_methodology.md).
+
 # Multi-Agent Lifecycle Roles
 
 ## 1. Specifier
@@ -23,5 +25,4 @@
 - **Stop Condition**: New patterns indexed, scratch memory purged
 
 ## Handoff Protocol
-- **Format**: JSON
-- **Fields**: `handoff_version`, `from_role`, `to_role`, `artifact`, `theorem`, `proof_status`, `sorry_count`, `heartbeats_consumed`, `tactics_used`, `notes`
+- **Format**: JSON schema defined in [`templates/handoff_protocol.json`](templates/handoff_protocol.json)

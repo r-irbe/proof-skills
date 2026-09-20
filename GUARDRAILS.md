@@ -1,65 +1,74 @@
+
+For rules of maintenance and the underlying philosophy of these guardrails, see [`references/contributing.md`](references/contributing.md).
+
 # GUARDRAILS
 
-### Delegation & routing — [`lean-gateway`](skills/lean-gateway/SKILL.md)
+### 1. Agent Handoff, Routing, and Context
 - GT-01: FAIL: Does the delegated work themselves "to save a delegation" -> REMEDY: Delegate; the gateway routes, domain skills execute
 - GT-02: FAIL: Picks a broad skill when a specific one exists -> REMEDY: Match the most specific dispatch target
 - GT-03: FAIL: Retries a failed delegation instead of escalating -> REMEDY: Escalate or hand off after failure, do not loop
 - GT-04: FAIL: Ignores context-collapse signals -> REMEDY: Surface degradation; recommend a fresh session
 - GT-05: FAIL: Skips the per-task tracker update -> REMEDY: Update the tracker as part of the handoff
-### Proof writing — [`lean-proof`](skills/lean-proof/SKILL.md)
+
+### 2. Proof Strategy, Syntax & Execution
 - GT-06: FAIL: Writes 3–5 tactics before reading diagnostics -> REMEDY: One tactic at a time, gated on `done`/diagnostics
 - GT-07: FAIL: Chases a linter warning while an unsolved-goals error is open -> REMEDY: Error-priority order (G-3, G-4): errors before warnings
 - GT-08: FAIL: Fills helper-lemma `sorry`s before touching the target theorem -> REMEDY: Target theorem first; helpers only as reached
 - GT-09: FAIL: Declares success while a `sorry` remains -> REMEDY: Verify pass: no `sorry`, no error, diagnostics re-read
 - GT-10: FAIL: Fights `motive is not type correct` with more `rw` instead of generalising -> REMEDY: Generalise-then-instantiate (G-9)
 - GT-11: FAIL: Retries `rw` with "pattern not found" on goals whose summand contains a non-reducible type synonym or a semireducible definition — the matcher runs below default transparency and cannot unfold these -> REMEDY: `simp only` with the exact lemma list, then `exact` the residual identity; supply bare commutation lemmas as terms (they loop as simp lemmas); probe goal shapes with live LSP `plainGoal` queries, never file-polluting `trace_state` or `sorry` placeholders
-### Proof review — [`lean-proof-review`](skills/lean-proof-review/SKILL.md)
+
+### 3. Code Review & Auditing
 - GT-12: FAIL: Rewrites the proof inline instead of suggesting changes -> REMEDY: Review produces findings, not silent rewrites
 - GT-13: FAIL: Approves at L4 without confirming L1/L2 passed -> REMEDY: Checklist order is mandatory: L1 → L2 → L3 → L4
 - GT-14: FAIL: Misses vacuous-truth L3 failures behind a clean `aesop` close -> REMEDY: Inspect what `aesop` actually closed, not just that it closed
 - GT-15: FAIL: Cites a pitfall without quoting line numbers or the source rule -> REMEDY: Every finding carries location + rule reference
 - GT-16: FAIL: Accepts an "independent routes" claim without checking it — when a project claims two or more independent proofs of one theorem, the routes may share machinery (imports, helper lemmas, substrate definitions) -> REMEDY: Before repeating an independence claim in a verdict, verify the routes share no machinery; a shared-lemma discovery downgrades the claim to "partly independent" in the review record
-### Enforcement & gates — [`lean-enforcement`](skills/lean-enforcement/SKILL.md)
+
+### 4. CI, Enforcement, & Golfing
 - GT-17: FAIL: Silently retries a blocking failure -> REMEDY: A hard-gate failure halts; escalate, do not retry
 - GT-18: FAIL: Downgrades a hard gate to a soft one to "unblock progress" -> REMEDY: Gate severity is frozen during a campaign
 - GT-19: FAIL: Runs `enforce_all.sh` when a single script would have answered the question -> REMEDY: Run the narrowest gate that answers the question
 - GT-20: FAIL: Skips the structured-result emit step -> REMEDY: Emit the structured result; skipping = incomplete
+
+### 5. Pull Request & Upstream Hygiene
 - GT-21: FAIL: Trusts a green gate whose generated probe/scan manifest is stale — newly registered modules or targets are silently unscanned, and a summary can be clean while whole namespaces went unscanned -> REMEDY: After registering new targets, regenerate generated probe scripts and rerun before quoting the result; treat per-item coverage gaps inside the gate's own report as findings, not noise; close unexplained gaps with a targeted spot-check (e.g. a single-declaration `#print axioms` probe) before declaring the gate clean
-### Quality scoring — [`lean-quality-engine`](skills/lean-quality-engine/SKILL.md)
 - GT-22: FAIL: Scores soft gates before hard gates pass -> REMEDY: Hard gates first; soft scores are conditional on them
 - GT-23: FAIL: Persists a `Q_score` that includes a failed hard gate -> REMEDY: A failed hard gate invalidates the score
 - GT-24: FAIL: Re-implements an enforcement check inline instead of calling `@lean-enforcement` -> REMEDY: Call the enforcement skill; do not fork checks
 - GT-25: FAIL: Skips the regression delta against the prior milestone -> REMEDY: Every score carries a delta against the previous one
-### Blueprint & planning — [`lean-blueprint`](skills/lean-blueprint/SKILL.md)
+
+### 6. Architecture & Toolchain Bisection
 - GT-26: FAIL: Skips the Persist step -> REMEDY: Persist is mandatory (FSIA-R-11-09)
 - GT-27: FAIL: Over-annotates stable modules -> REMEDY: Annotation budget goes to unstable surfaces
 - GT-28: FAIL: Re-runs `lake build` instead of escalating on third failure -> REMEDY: Same-error ×3 → STOP and escalate
-### Competitive math — [`lean-competitive-math`](skills/lean-competitive-math/SKILL.md)
 - GT-29: FAIL: States an existential or a bound instead of the exact numeric answer -> REMEDY: Answer form must match the requested form exactly
 - GT-30: FAIL: Declares done on a green `native_decide` without ever running `#print axioms` -> REMEDY: Axiom-probe every `native_decide` result
+
+### 7. Knowledge Synthesis & Zettelkasten
 - GT-31: FAIL: Leaves a Bronze `native_decide` answer-check permanent with no structural follow-up filed -> REMEDY: Bronze results require a filed structural follow-up
 - GT-32: FAIL: Reaches for kernel `decide` at a scale that blows `maxRecDepth`, then gives up -> REMEDY: Scale-check before `decide`; fall back to structural proof
 - GT-33: FAIL: Papers a gap with `sorry` -> REMEDY: `sorry` is a hard gate failure, never a submission state
-### Knowledge graph — [`lean-zettelkasten`](skills/lean-zettelkasten/SKILL.md)
 - GT-34: FAIL: Over-polishes fleeting notes (defeats the speed of capture) -> REMEDY: Fleeting = fast; polish happens at promotion
 - GT-35: FAIL: Promotes 1–2-note clusters to permanent notes -> REMEDY: Promotion needs a genuine cluster
 - GT-36: FAIL: Creates permanent notes without back-linking the sources or marking them `superseded` -> REMEDY: Back-links and supersession marks are part of the note
 - GT-37: FAIL: Silently resolves a contradiction instead of flagging it for SDR -> REMEDY: Contradictions are flagged, never silently resolved
 - GT-38: FAIL: Skips `_index.md` and `_tags.md` updates so the graph view rots -> REMEDY: Index updates are part of the write path
-### Epistemic mapping — [`epistemic-mapping`](skills/epistemic-mapping/SKILL.md)
 - GT-39: FAIL: Picks the first framing encountered -> REMEDY: Enumerate competing framings before choosing
 - GT-40: FAIL: Merges contested terms -> REMEDY: Keep contested terms separate until resolved
 - GT-41: FAIL: Omits citations for "obvious" nodes -> REMEDY: Every node carries its citation
-### Documentation feedback — [`lean-doc-feedback`](skills/lean-doc-feedback/SKILL.md)
 - GT-42: FAIL: Rewrites instead of annotating -> REMEDY: Feedback annotates; it does not rewrite
 - GT-43: FAIL: Omits rubric anchors -> REMEDY: Findings anchor to rubric items
 - GT-44: FAIL: Bundles many findings into one comment -> REMEDY: One finding per comment
-### Environment setup — [`lean-setup`](skills/lean-setup/SKILL.md)
+
+### 8. Build Systems & Toolchain Governance
 - GT-45: FAIL: Re-runs `cmake --preset release` on every build -> REMEDY: Reuse the configured build; rebuild only on config change
 - GT-46: FAIL: Links only stage1 and forgets stage0 -> REMEDY: Both stages link
 - GT-47: FAIL: Pins only `lean-toolchain` and forgets the three sibling files -> REMEDY: Pin all four sibling files together
 - GT-48: FAIL: Declares success on a green `lean --version` without checking `lake env lean --version` -> REMEDY: Both version probes must agree before handoff
 - GT-49: FAIL: Hands off to `@lean-proof` while the two `--version` commands disagree -> REMEDY: Resolve the toolchain mismatch before handoff
+
+### 9. HITL Triggers & Operational Compliance
 - GT-50: FAIL: Treats destructive-command approvals as reusable prose, or HITL rulings as free text -> REMEDY: Destructive commands require single-use sha256+TTL approval ledger records; HITL gates are JSON-schema-typed packets (approve/reject/defer) — see the filab investigation plan (PLAN-FILAB-DEEP-INV) for the full design
 - GT-51: FAIL: Ships a gate that lacks one of the four quality properties, or claims enforcement without a binding control -> REMEDY: Every gate must be machine-verifiable, bounded (numeric threshold), committed (evidence recorded), and rollback-safe — else advisory; mark each rule `runtime-enforceable: Y\|N` with a named binding control; advisory→blocking promotion requires a 30-day clean baseline (filab third-look, N1)
 - GT-52: FAIL: Treats a mandatory-read bypass as an invisible exception, or records rationale only in prose -> REMEDY: Bypasses are first-class auditable events: canonical syntax, JSONL audit row written before the call returns, per-row PR review, repeat-offender escalation; encode why-provenance in `Lore-*`-style commit trailers for machine queryability (filab third-look, N6)

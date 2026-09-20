@@ -2,9 +2,9 @@
 
 # proof-skills
 
-**A friendly collection of [Agent Skills](https://agentskills.io) for working with Lean 4 and Mathlib4.**
+**A bundle of [Agent Skills](https://agentskills.io) for Lean 4 + Mathlib4 proof work.**
 
-Tactics · domain math · documentation & review workflows · generic tooling
+Tactics · domain math · doc / review / research workflows · zettelkasten · generic tooling.
 
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache_2.0-blue.svg)](LICENSE)
 [![Lean 4](https://img.shields.io/badge/Lean-4-2D3748.svg?logo=lean&logoColor=white)](https://github.com/leanprover/lean4)
@@ -19,23 +19,24 @@ Tactics · domain math · documentation & review workflows · generic tooling
 Fork of [leanprover/skills](https://github.com/leanprover/skills)
 ---
 
-## Welcome!
+## Quick start
 
-This repository provides a comprehensive toolkit for AI agents to interact with Lean 4 and Mathlib4. Whether you're working on toolchain setup, proof tactics, minimal working examples, or end-to-end formalization workflows, these skills help streamline the process.
-
-## Quick Start
-
-You can install this bundle into your coding-agent harness (like Copilot, Claude Code, Cursor, Codex, or Gemini) using [APM](https://github.com/microsoft/apm):
+Install into any coding-agent harness via [APM](https://github.com/microsoft/apm):
 
 ```bash
-apm install r-irbe/proof-skills                       # install the full bundle
-apm install r-irbe/proof-skills --skill lean-proof    # install a specific skill
-apm install r-irbe/proof-skills#v0.1.0                # install a specific version
+apm install r-irbe/proof-skills                       # entire bundle
+apm install r-irbe/proof-skills --skill lean-proof    # single skill
+apm install r-irbe/proof-skills#v0.1.0                # version-pinned
 ```
 
-Once installed, the skills become available for your agent to use by name.
+After installation, each skill is hoisted into the harness's runtime
+directory — Copilot, Claude Code, Cursor, OpenCode, Codex, Gemini, or
+Windsurf — and becomes invocable by name. Pinning, single-skill
+selection, and lockfile reproducibility work the same way they do for
+any other APM package; the manifest is [`apm.yml`](apm.yml) and the
+layout is APM's *skill collection* type.
 
-If you prefer to browse or use the source tree directly:
+Prefer the source tree on disk instead?
 
 ```bash
 git clone --recurse-submodules https://github.com/r-irbe/proof-skills
@@ -43,24 +44,58 @@ git clone --recurse-submodules https://github.com/r-irbe/proof-skills
 
 ---
 
-## What's Inside?
+## What is in here
 
-Here's a quick overview of how things are organized:
-
-- **[`skills/`](skills/)**: The core collection of skills, covering everything from basic compilation and proving to domain-specific math and process workflows.
-- **[`TAXONOMY.md`](TAXONOMY.md)**: A high-level view of how skills are grouped.
-- **[`FACETS.md`](FACETS.md)**: An overview of the specialized domain areas (Math, AI, Governance).
-- **[`ROLES.md`](ROLES.md)**: Details on how different agent roles (like Specifier, Prover, Auditor, Gardener) collaborate.
-- **[`templates/`](templates/)**: Helpful starting points for Lean modules and workflows.
-- **[`references/`](references/)**: Background notes, guides, and detailed manuals for the skills.
-- **[`scripts/`](scripts/)**: Helpful tools for evaluation, linting, and repo checks. See [`scripts/README.md`](scripts/README.md) for technical details on CI and tooling.
-- **[`zettelkasten/`](zettelkasten/)**: Our internal knowledge base.
+| Directory | What it holds | Loaded by |
+|---|---|---|
+| [`skills/`](skills/) | 63 first-party `SKILL.md` files: toolchain setup, Lake building, proof tactics, MWE extraction, bisection, PR hygiene, Mathlib review, domain math, applied verticals, and end-to-end process workflows. | Harness, on demand. |
+| [`skills/_overrides/`](skills/_overrides/) | 4 legacy REDIRECT stubs (`mathlib-build`, `mathlib-pr`, `mathlib-review`, `nightly-testing`) preserving deprecated slugs per Chesterton protocol. | Harness, on demand. |
+| [`TAXONOMY.md`](TAXONOMY.md) | Authoritative classification mapping skills into Kernel, Roles, and Facets. | Planning / routing. |
+| [`ROLES.md`](ROLES.md) | Stanford ACE Prover Swarm operational contracts (Specifier, Prover, Auditor, Gardener). | Multi-agent execution. |
+| [`FACETS.md`](FACETS.md) | Domain Facets catalog (Math, AI, Governance packs). | Domain consumers. |
+| [`templates/`](templates/) | copy-pasteable Lean module skeletons and workflow templates. Cross-template conventions live in [`templates/00-CONVENTIONS.md`](templates/00-CONVENTIONS.md). | Author, copy-paste. |
+| [`references/`](references/) | background notes and layered skill handbooks; authoritative catalog in [`references/INDEX.md`](references/INDEX.md). | Skill, by link. |
+| [`scripts/`](scripts/) | Project-agnostic helpers: axiom audits, DAG layer checks, bridge validators, zettelkasten linters, eval, calibration, and Glicko-2 harnesses. None hardcodes a host project; each takes the project root as an argument. | Skill / CI / author. |
+| [`zettelkasten/`](zettelkasten/) | Repo-internal knowledge graph (fleeting · literature · permanent · index · tags) that captures cross-skill insights. | Synthesizer skills. |
+| [`vendor/`](vendor/) | Pinned git submodules of upstream sources (e.g. `leanprover-skills`) for transparent re-dispatch. | Override dispatch. |
 
 ---
 
-## Project Customization
+## Project Structure
 
-These tools are designed to work across any project. Instead of modifying the core templates directly, we recommend creating a thin override layer in your specific project to encode your custom details.
+For a deep dive into the exact directory layout and the purpose of every folder, please see [`references/project_structure.md`](references/project_structure.md).
+
+## Tooling
+
+| Script | Purpose |
+|---|---|
+| [`scripts/lint/apm_validate.py`](scripts/lint/apm_validate.py) | **Hard-gated in CI.** Checks the package stays a valid APM skill collection: manifest keys, required `name` + `description` per `SKILL.md`, directory-name match, no duplicates. |
+| [`scripts/skill-audit/check_conformance.py`](scripts/skill-audit/check_conformance.py) | **Hard-gated in CI.** Checks v2 conformance, tier coverage, handoff DAG integrity, handbook links, inline `@skill` refs, and relative Markdown links. |
+| [`scripts/eval/run_eval.py`](scripts/eval/run_eval.py) | Deterministic smoke runner for the 50-case suite. |
+| [`scripts/eval/calibrate_judge.py`](scripts/eval/calibrate_judge.py) | Pure replay calibration gate for known-bad judge corpora. |
+| [`scripts/eval/multi_model.py`](scripts/eval/multi_model.py) | Converts persisted solver + judge artifacts into pairwise match rows. |
+| [`scripts/elo/glicko2.py`](scripts/elo/glicko2.py) | Authoritative Glicko-2 leaderboard with uncertainty bands. |
+| [`scripts/elo/elo.py`](scripts/elo/elo.py) | Legacy vanilla-ELO dashboard helper; do not use for release rankings. |
+
+---
+
+## Project-specific overrides
+
+The toolkit is **deliberately project-agnostic** — templates and skills
+use `<Project>` / `<proj>` placeholders. Downstream projects encode
+their concrete values in a thin override layer rather than forking the
+templates; the rule is that an override file **links back to the
+generic source and lists only the deltas**.
+
+---
+
+## Status & contracts
+
+| Document | Covers |
+|---|---|
+| [`AGENT.md`](AGENT.md) | Full agent contract — belief threshold, reversibility tiers, dispatch precedence, confidentiality rules. **Required reading before any edit.** |
+| [`apm.yml`](apm.yml) | Package metadata: name, version, license, keywords, repository. |
+| [`templates/00-CONVENTIONS.md`](templates/00-CONVENTIONS.md) | Cross-template conventions: file-doc header, section skeleton, proof-comment tags, anti-patterns checklist. |
 
 ---
 
