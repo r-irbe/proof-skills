@@ -8,18 +8,20 @@ Agents operating on mathematical formalization face severe context limits when m
 
 ## 2. Theoretical Backing & Literature
 
+*For full citations, refer to the [`bibliography.md`](bibliography.md).*
+
 The architectural choices in this methodology build upon several core concepts in modern LLM research:
 
 1.  **Multi-Agent Role Specialization**: Breaking complex reasoning tasks into specialized agent roles (Specifier, Prover, Auditor, Gardener) prevents persona drift and improves accuracy.
-    *   *Reference*: Wu, Q., et al. (2023). "AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation." *arXiv preprint arXiv:2308.08155*.
+    *   *Reference*: Wu et al. (2023)
     *   *Application*: Ensures that agents focused on high-level blueprinting do not get bogged down in the syntax of `simp` tactics.
 
 2.  **Iterative Proof Refinement and Auditing**: Using separate roles to verify and golf proofs is essential for formal systems like Lean 4, where correctness is absolute.
-    *   *Reference*: Yang, K., et al. (2023). "LeanDojo: Theorem Proving with Retrieval-Augmented Language Models." *NeurIPS*.
+    *   *Reference*: Yang et al. (2023)
     *   *Application*: The Auditor role acts as a strict verification layer before any knowledge is persisted.
 
 3.  **Cross-Session Knowledge Retrieval (Zettelkasten)**:
-    *   *Reference*: Lewis, P., et al. (2020). "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks." *NeurIPS*.
+    *   *Reference*: Lewis et al. (2020)
     *   *Application*: The Gardener role persists verified tactics to a knowledge graph, preventing the swarm from repeating failures in subsequent sessions.
 
 ## 3. The Four Roles

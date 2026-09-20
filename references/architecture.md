@@ -11,14 +11,16 @@ For a high-level, human-friendly summary of the Domain Facets, see `FACETS.md`. 
 
 ## 2. Dispatch Principles & Literature
 
+*For full citations, refer to the [`bibliography.md`](bibliography.md).*
+
 The routing of agent skills and the handling of safety gates are informed by structured deployment frameworks and cost-aware routing:
 
 1.  **FrugalGPT and Cascade Routing**: Utilizing a hierarchy of models or fallback mechanisms based on confidence thresholds and task difficulty.
-    *   *Reference*: Chen, L., et al. (2023). "FrugalGPT: How to Use Large Language Models While Reducing Cost and Improving Performance." *arXiv preprint arXiv:2305.05176*.
+    *   *Reference*: Chen et al. (2023)
     *   *Application*: Applied in our `AGENT.md` dispatch fallback rules, where agents degrade gracefully based on human-in-the-loop (HITL) availability.
 
 2.  **Safety and Reversibility Tiers**:
-    *   *Reference*: OWASP Foundation. (2023). "OWASP LINDDUN-GO: Threat Modeling Framework."
+    *   *Reference*: OWASP Foundation (2023)
     *   *Application*: The fail-closed discipline and the strict `reversible` vs `irreversible` tiers outlined in our agent constraints prevent unauthorized destructive actions during autonomous runs.
 
 ## 3. Skill Dispatch Precedence

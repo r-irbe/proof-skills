@@ -2,9 +2,11 @@
 
 ## 1. Philosophy of Guardrails
 
+*For full citations, refer to the [`bibliography.md`](bibliography.md).*
+
 The guardrails defined in this repository (`GUARDRAILS.md`) are not theoretical best practices; they are a taxonomy of *measured agent failure classes*. This empirical approach ensures that our safety and operational constraints are grounded in reality.
 
-*   *Reference*: Amodei, D., et al. (2016). "Concrete Problems in AI Safety." *arXiv preprint arXiv:1606.06565*.
+*   *Reference*: Amodei et al. (2016)
 *   *Application*: We only introduce guardrails when a specific behavior causes a debugging cycle or review failure.
 
 ## 2. Maintenance Rules
@@ -19,4 +21,4 @@ To ensure the integrity of the guardrail system, all contributors (human and age
 
 Hard stops (terminal NO-GO, frozen clamps) are reserved exclusively for actions that pose security risks, corrupt history, or incur economic costs (as defined in `AGENT.md`). Everywhere else, the design must fail-open with compensating controls, allowing the agent to proceed provisionally within a quarantined scope.
 
-*   *Reference*: Constitutional AI principles regarding bounded escalation (Bai, Y., et al. 2022).
+*   *Reference*: Constitutional AI principles regarding bounded escalation (Bai et al., 2022)

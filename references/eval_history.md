@@ -1,9 +1,11 @@
 # Evaluation History & Fleet Patterns
 
 ## 1. Context and Motivation
+
+*For full citations, refer to the [`bibliography.md`](bibliography.md).*
 Running multi-agent systems at scale introduces unique sandbox and coordination challenges not seen in single-turn code generation. Lessons captured from Rounds 18-21 of large-fleet ensemble work (involving hundreds of `task` dispatches per session for solver, judge, and calibration loops) inform our `AGENT.md` guidelines.
 
-*   *Reference*: Shinn, N., et al. (2023). "Reflexion: Language Agents with Verbal Reinforcement Learning." *NeurIPS*.
+*   *Reference*: Shinn et al. (2023)
 *   *Application*: Ensemble judging and pure-replay calibration strategies reduce the hallucination rate of multi-agent formalization loops.
 
 ## 2. Specific Patterns
