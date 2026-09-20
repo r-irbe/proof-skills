@@ -1,0 +1,14 @@
+{
+  "handoff_version": "1.0",
+  "required_fields": [
+    "from_role",
+    "to_role",
+    "artifact",
+    "theorem",
+    "proof_status",
+    "sorry_count",
+    "heartbeats_consumed",
+    "tactics_used",
+    "notes"
+  ]
+}

@@ -1,65 +1,7 @@
 # AGENT.md — proof-skills repo contract
 
 Authoritative entry-point for any AI agent doing work inside this repo.
-Read this *before* you touch any file. The rules below are repo-wide and
-override session-only preferences.
 
-> **Audience.** This file is for agents (Claude, Copilot, Gemini, Codex
-> CLI sessions). Humans should read [`README.md`](README.md) for install
-> and quickstart.
-
----
-
-## 0. What this repo is
-
-A toolkit of [Agent Skills](https://agentskills.io) for working with
-[Lean 4](https://github.com/leanprover/lean4) and
-[Mathlib4](https://github.com/leanprover-community/mathlib4). This is a
-**standalone** repository — not a fork — and references upstream
-`leanprover/skills` as a vendor git submodule for transparent
-re-dispatch (see §3).
-
-Distribution model: **[APM](https://github.com/microsoft/apm) skill
-collection** (per the
-[package-types reference](https://microsoft.github.io/apm/reference/package-types/)).
-The root [`apm.yml`](apm.yml) makes the bundle installable with one
-command in any Copilot / Claude Code / Cursor / OpenCode / Codex /
-Gemini / Windsurf project:
-
-```bash
-apm install r-irbe/proof-skills                     # entire bundle
-apm install r-irbe/proof-skills --skill lean-proof  # single skill
-apm install r-irbe/proof-skills#v0.1.0              # version-pinned
-```
-
-APM auto-discovers every `skills/<name>/SKILL.md`, hoists each to the
-consumer's harness runtime directory, and pins the resolved tree
-(source + content hashes) in `apm.lock.yaml`. No `apm install` step is
-needed if you clone the repo directly — the same `skills/` tree is
-the on-disk format.
-
-Top-level surfaces:
-
-| Path | Purpose | Lifecycle |
-| --- | --- | --- |
-| `apm.yml` | APM manifest (name, version, deps, scripts). | Bump `version` on releases. |
-| `skills/` | One folder per skill; each has a `SKILL.md` agent-loadable contract. Auto-discovered by APM. | 63 first-party skills; all are v2-conformant. |
-| `skills/_overrides/` | 4 legacy REDIRECT stubs for deprecated upstream slugs (`mathlib-build`, `mathlib-pr`, `mathlib-review`, `nightly-testing`). | Stable; preserves backwards compatibility. |
-| `TAXONOMY.md` | Formal classification mapping skills into Kernel, Roles, and Facets. | Authoritative taxonomy. |
-| `ROLES.md` | Stanford ACE Prover Swarm operational contracts (Specifier, Prover, Auditor, Gardener). | Operational protocol. |
-| `FACETS.md` | Domain Facets catalog (Math, AI, Governance packs). | Domain guide. |
-| `templates/` | Copy-pasteable Lean module, proof, refactor, and workflow templates, with cross-template rules in `00-CONVENTIONS.md`. | Stable. |
-| `references/` | Background knowledge and layered skill handbooks; see `references/INDEX.md`. | Indexed via `references/INDEX.md`. |
-| `scripts/lean/` | Generic Lean-4 helper scripts (axiom audit, DAG checks, bridge validators, etc.) callable from any project. | Project-agnostic; no host-project paths. |
-| `vendor/leanprover-skills/` | Upstream `leanprover/skills` referenced as a git submodule (read-only; do not edit in place). | Pinned commit; bump deliberately. NOT yet an APM dep -- see `apm.yml` note. |
-| `zettelkasten/` | Reserved for the canonical Luhmann-tier ZK. Currently empty pending W7 of the master plan. | Bootstrapping. |
-
-This repo is **standalone** and has **no runtime dependency** on any
-host formalization project. Examples and references may be inspired by
-real Lean projects, but no project-specific names appear in the public
-content.
-
----
 
 ## 1. HITL gating (MANDATORY)
 
@@ -94,7 +36,6 @@ Conflict, Novelty, Governance}`); 5 categories empirically dominate
 8-category alternatives at <1 % structured-error rate.
 
 | # | Category | Fires when… | Gate type |
-| --- | --- | --- | --- |
 | 1 | **Confidence** | Your belief < 0.90 on routing, design, taxonomy, naming, scope. | Soft — `ask_user`. |
 | 2 | **Irreversible** | You are about to do anything in the reversibility table below at class ≥ `irreversible_*`. | **Hard — always ask**, regardless of confidence. |
 | 3 | **Conflict** | Two readings of the same source give materially different answers (spec vs. ADR, template vs. SKILL.md, two skills mutually contradicting). | Soft — `ask_user`, cite both. |
@@ -107,30 +48,19 @@ When writing or editing a `SKILL.md`, encode the same five categories in the
 skill's `## Recovery & STOP` section. This keeps local skill behavior aligned
 with the repo-wide contract and avoids hidden "continue anyway" paths.
 
-| Trigger | Skill-facing wording | Common examples |
-| --- | --- | --- |
-| Confidence | STOP if confidence is below the repo belief floor; ask through the runtime elicitation channel. | Choosing theorem names, package adoption class, proof strategy, taxonomy, or owner. |
-| Irreversible | STOP before irreversible data, trust, economic, or history-changing actions. | Push, release, destructive cleanup, public contract change, paid external call. |
-| Conflict | STOP when two authoritative sources disagree; cite both and ask which wins. | Skill vs. reference, template vs. actual project layout, package docs vs. source. |
-| Novelty | STOP when the requested tool, skill slug, package, or pattern is absent from the repo and current evidence. | New skill family, unfamiliar package ecosystem, undocumented workflow. |
-| Governance | STOP before changing public contracts, top-level layout, packaging, license, or agent rules. | `AGENT.md`, README, APM metadata, skill schema, conformance gate semantics. |
-
-Prefer a short explicit STOP rule over a vague reminder. A skill should tell the
-agent what decision is risky, why the human must choose, and what work is
-blocked until the answer is available.
+- **Confidence**: STOP if below repo belief floor; ask. (e.g. naming, strategy, owner).
+- **Irreversible**: STOP before irreversible data, trust, economic actions. (e.g. push, paid call).
+- **Conflict**: STOP when authoritative sources disagree; ask.
+- **Novelty**: STOP when tool/pattern is absent from repo.
+- **Governance**: STOP before changing contracts, layout, rules.
 
 ### 1.3 Reversibility table
 
-Order matters: if a single command crosses two classes, treat as the
-*higher* class.
-
-| Class | Examples | HITL gate |
-| --- | --- | --- |
-| `reversible` | Read-only inspection, temp-file write, local build, `lake exe`, `git status`, `view`, `grep`. | None — auto. |
-| `mostly_reversible` | New file under a draft path, branch creation, local commit on a personal branch, `git add`, `lake update` on lockfile-bearing project. | None — auto, but log the action in the response. |
-| `irreversible_data` | `rm -rf`, `git push --force`, `git filter-repo`, `git reset --hard`, `git rebase` on shared branch, history rewrite. | **Hard HITL gate**. |
-| `irreversible_trust` | PR merge, branch push to default, release tag, public docs change, edit to this `AGENT.md`. | **Hard HITL gate**. |
-| `irreversible_economic` | Paid API call, model invocation expected to cost ≥ $1, third-party webhook, billing-bearing action. | **Hard HITL gate**. |
+- `reversible`: Read-only, temp-file, local build, `lake exe`, `git status`, `view`, `grep`. -> **No gate**.
+- `mostly_reversible`: New file in draft, branch creation, local commit on personal branch, `lake update` on lockfile. -> **No gate**, but log action.
+- `irreversible_data`: `rm -rf`, `git push --force`, history rewrite. -> **Hard HITL gate**.
+- `irreversible_trust`: PR merge, branch push to default, tag, docs change, edit AGENT.md. -> **Hard HITL gate**.
+- `irreversible_economic`: Paid API call >= $1, billing action. -> **Hard HITL gate**.
 
 ### 1.4 When the user is unavailable (autopilot fallback)
 
@@ -164,84 +94,31 @@ timeout.
 
 ### 1.5 What "ask" looks like
 
-| Runtime | Channel |
-| --- | --- |
-| Copilot CLI | `ask_user` with a JSON-schema form (single field for simple yes/no; multi-field with `default` set when there is a recommended answer). |
-| MCP-aware host (Claude Code, Cursor, etc.) | `elicitation/create` with the same shape. |
-| Plain chat | A numbered question list ending with *"Pick A/B/C, or describe alternative"*. |
+- **Copilot CLI**: `ask_user` with a JSON-schema form.
+- **MCP-aware host**: `elicitation/create` with the same shape.
+- **Plain chat**: A numbered question list.
 
 The form **must** include: (a) the decision under contention, (b) 2–4
 named options, (c) which option is recommended and why, (d) what blocks
 on the answer.
 
-### 1.5.1 Sub-agent fleet patterns (Copilot CLI specific)
+### 1.5.1 Sub-agent fleet patterns
 
-Lessons captured from Rounds 18–21 of large-fleet ensemble work
-(hundreds of `task` dispatches per session for solver / judge /
-calibration loops):
+For a deeper look into the history of these patterns (Rounds 18-21), see [`references/eval_history.md`](references/eval_history.md).
 
-1. **Haiku `/tmp` sandbox quirk.** `claude-haiku-4.5` agents sometimes
-   refuse to write to `/tmp` citing *"hard security requirement enforced
-   by the runtime"*. Opus 4.7-high, Sonnet 4.6, Opus 4.6 do **not**
-   have this restriction.  Mitigation: use `write_agent` with the full
-   prompt **inlined** + an explicit *"reply with strict JSON only, no
-   file operations"* instruction; harvest the reply via `read_agent`
-   and persist from the parent process. The restriction is not
-   universally enforced — some haiku instances honour `/tmp` writes
-   fine — so retry-then-fall-back is the durable contract.
-
-2. **`read_agent since_turn` semantics.** `since_turn=N` returns turns
-   strictly **after** index `N` (exclusive). For a 2-turn agent
-   (turns 0 and 1), use `since_turn=0` to see turn 1's content, not
-   `since_turn=1`. After a `write_agent` cycle the new exchange lands
-   at the next turn index — read with `since_turn=<previous_total>`.
-
-3. **Mac `/bin/bash` is bash 3.x.** It lacks `declare -A` for
-   associative arrays — they silently produce empty lookups instead
-   of erroring. Promotion / demux scripts that need key → value
-   tables **must** use Python (or `bash` 4+ explicitly). A promotion
-   loop that calls `cp` with an empty source path will still return
-   exit 0 and produce no errors but no files move either.
-
-4. **Ensemble aggregation: median-of-N over minority-veto.** When N ≥ 3
-   judges are available, prefer `statistics.median` over
-   `min(low_band)` minority-veto. Minority-veto propagates any single
-   ≤floor judge regardless of how many score high (R19 lean-proof
-   false-flag rate stuck at 20% because of this). Median is more
-   robust to one outlier judge in either direction. For N=2 use a
-   straight rounded mean as documented in the `judge-*.json`
-   `ensemble_meta.method` field (`median-of-N` / `mean-of-2`).
-
-5. **Per-judge JSON co-location + archive discipline.** Per-judge replies
-   should be saved at
-   `scripts/eval/judge_runs/<case>/judge-<solver>@<round-tag>-<judge>.json`
-   while the **aggregated** verdict lives at the canonical
-   `judge-<solver>.json` — otherwise `multi_model.py` will treat each
-   per-judge file as a phantom entrant. Move per-judge files to
-   `_archive_<round>_perjudge/` once aggregation is in the canonical
-   file. Always include `ensemble_meta: {round, method, judges, scores}`
-   in the aggregated JSON for traceability.
-
-6. **32-concurrent dispatch cap.** Stay under 32 `task` dispatches in
-   flight; use `list_agents include_completed=false` before each new
-   wave. Batch into waves of ≤ 30 with brief gaps so harvest can
-   proceed against partially-complete fleets. Always persist prompts
-   to disk under `/tmp/round<N>/<phase>_prompts/` before dispatch so a
-   crash can resume by re-reading the prompt file.
-
-7. **Pure replay > rerun.** Captured judge JSONs are the durable
-   artifact. `calibrate_judge.py check` and `multi_model.py` are
-   replay-only and run in CI for free — the expensive LLM dispatch
-   was paid once. New gates should always be replay-shaped.
-
+- `claude-haiku-4.5` -> inline prompts, use `write_agent` for `/tmp` write restrictions
+- `read_agent since_turn=N` -> exclusive
+- `mac bash` -> no associative arrays; use Python
+- ensembles (N>=3) -> prefer `statistics.median` over `min(low_band)`
+- per_judge_json -> save local, move to `_archive`
+- dispatch -> <32 concurrent, batch waves
+- eval -> pure replay > rerun
 ### 1.6 Logging
 
 Every HITL gate fire (whether asked or auto-resolved under §1.4) must
 appear in the agent's response so the user can audit. If the runtime
 provides a structured trace (`events.jsonl`, OTel `gen_ai.hitl.*`
 spans), use it; otherwise inline prose is sufficient.
-
----
 
 ## 2. Confidentiality (MANDATORY)
 
@@ -256,9 +133,9 @@ If you discover a slip-through (a private name in body text, a
 real project's path in a sample command, etc.), treat the rewrite as
 a `governance` HITL trigger (§1.2 #5) and ask before pushing.
 
----
-
 ## 3. Layout invariants
+
+For a full map of the architecture, see [`references/architecture.md`](references/architecture.md).
 
 ### 3.1 Skill dispatch precedence
 
@@ -291,8 +168,6 @@ under `vendor/`; update the submodule pin instead.
 - `zettelkasten/` is reserved. Do not populate ad-hoc — the W7 rollout
   has a specific Luhmann-tier layout.
 
----
-
 ## 4. Workflow defaults
 
 - Branch naming: `work/<topic>-<YYYYMMDD>`.
@@ -304,35 +179,3 @@ under `vendor/`; update the submodule pin instead.
   `scripts/skill-audit/check_conformance.py`; APM packaging is
   hard-gated by `scripts/lint/apm_validate.py`.
 
----
-
-## 5. Quick links
-
-- Public README: [`README.md`](README.md)
-- License: [`LICENSE`](LICENSE) — Apache-2.0
-- Upstream attribution: [`NOTICE`](NOTICE)
-- Skill dispatch precedence: §3.1 above
-- Generic Lean scripts: [`scripts/lean/`](scripts/lean/)
-- Tooling: [`scripts/lint/`](scripts/lint/) ·
-  [`scripts/eval/`](scripts/eval/) ·
-  [`scripts/elo/`](scripts/elo/) ·
-  [`scripts/eval/calibrate_judge.py`](scripts/eval/calibrate_judge.py)
-- Pipeline design docs: packaged public design reports and release notes.
-- LLM-judge artifacts: [`scripts/eval/graders/`](scripts/eval/graders/) ·
-  [`scripts/eval/graders/DISPATCH.md`](scripts/eval/graders/DISPATCH.md)
-- Known-bad calibration corpus (ADR-0039):
-  replay reports under [`reports/_calibration/`](reports/_calibration/) and
-  grader configuration under [`scripts/eval/graders/`](scripts/eval/graders/).
-- Upstream submodule: [`vendor/leanprover-skills/`](vendor/leanprover-skills)
-
----
-
-## Provenance
-
-This contract is informed by published agent-HITL practice
-(constitutional AI, FrugalGPT cascades, OWASP LINDDUN-GO `T-NC`,
-A2A v1.0 `TaskState`, AgentRx-2025 5-category cover) and empirical
-HITL research summarised in the public *belief-gated escalation*
-literature. The patterns themselves are public research and are
-paraphrased above so this repo stands alone, with no dependency on any
-external ADR vocabulary.

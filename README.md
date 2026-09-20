@@ -61,32 +61,9 @@ git clone --recurse-submodules https://github.com/r-irbe/proof-skills
 
 ---
 
-## Repository layout
+## Project Structure
 
-```text
-proof-skills/
-├── apm.yml                  # APM manifest -- package metadata
-├── AGENT.md                 # Agent contract: belief threshold, dispatch precedence, ...
-├── README.md                # You are here
-├── TAXONOMY.md              # Hybrid architecture mapping (Kernel, Roles, Facets)
-├── ROLES.md                 # Stanford ACE Prover Swarm operational contracts
-├── FACETS.md                # Domain facets catalog (Math, AI, Governance)
-├── LICENSE · NOTICE         # Apache-2.0
-├── skills/                  # 63 first-party SKILL.md + 4 legacy stubs in _overrides/
-├── templates/               # 38 Lean/workflow templates
-├── references/              # 58 notes and handbooks indexed via references/INDEX.md
-├── scripts/
-│   ├── lean/                # axiom_audit, bridge_validator, dep_graph, ...
-│   ├── lint/                # APM package validation
-│   ├── skill-audit/         # v2 conformance + handoff DAG audit
-│   ├── eval/                # deterministic, LLM-judge replay, calibration
-│   ├── elo/                 # Glicko-2 + live match corpus
-│   └── check-structure/     # repo-shape sanity checks
-├── zettelkasten/            # fleeting · literature · permanent
-└── vendor/leanprover-skills # pinned upstream submodule
-```
-
----
+For a deep dive into the exact directory layout and the purpose of every folder, please see [`references/project_structure.md`](references/project_structure.md).
 
 ## Tooling
 

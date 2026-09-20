@@ -1,14 +1,16 @@
 # proof-skills Taxonomy -- Hybrid Architecture (Kernel, Roles & Facets)
 
-Authoritative classification of all 63 first-party skills across the Hybrid
+Classification of all first-party skills across the Hybrid
 Architecture, combining Approach 1 (Kernel & Domain Facets) and Approach 2
 (Multi-Agent Role Lifecycle / Stanford ACE Swarm).
 
-Strict 7-bit ASCII only.
+
 
 ---
 
 ## 1. Architectural Model
+
+For deep architectural rules and dispatch precedence, see [`references/architecture.md`](references/architecture.md).
 
 ```text
 +-----------------------------------------------------------------------------+
@@ -32,7 +34,7 @@ Strict 7-bit ASCII only.
 
 ---
 
-## 2. Core Kernel Skills (14 Skills)
+## 2. Core Kernel Skills
 
 Essential skills required for interactive Lean 4 theorem proving, compilation,
 diagnostic extraction, bisection, and pull-request hygiene.
@@ -56,7 +58,7 @@ diagnostic extraction, bisection, and pull-request hygiene.
 
 ---
 
-## 3. Mathematical Domain Facet (14 Skills)
+## 3. Mathematical Domain Facet
 
 Specialized formalization contracts aligned with Mathlib4 namespaces.
 
@@ -79,7 +81,7 @@ Specialized formalization contracts aligned with Mathlib4 namespaces.
 
 ---
 
-## 4. AI and Neuro-Symbolic Facet (10 Skills)
+## 4. AI and Neuro-Symbolic Facet
 
 Contracts for autoformalization, neural proof search, and verifiable agents.
 
@@ -98,7 +100,7 @@ Contracts for autoformalization, neural proof search, and verifiable agents.
 
 ---
 
-## 5. Governance, Systems and Operations Facet (25 Skills)
+## 5. Governance, Systems and Operations Facet
 
 Engineering operations, documentation review councils, and cross-session knowledge gardening.
 
@@ -112,11 +114,3 @@ Engineering operations, documentation review councils, and cross-session knowled
 | **Gardening & Memory** | [lean-zettelkasten](skills/lean-zettelkasten/SKILL.md), [lean-retro-methodology](skills/lean-retro-methodology/SKILL.md), [lean-retroactive-audit](skills/lean-retroactive-audit/SKILL.md) |
 
 ---
-
-## 6. Legacy Redirect Stubs (4 Overrides)
-
-Preserved per Chesterton protocol for backward compatibility with upstream slugs:
-- `skills/_overrides/mathlib-build` -> redirects to `lean-build`
-- `skills/_overrides/mathlib-pr` -> redirects to `lean-pr`
-- `skills/_overrides/mathlib-review` -> redirects to `lean-proof-review`
-- `skills/_overrides/nightly-testing` -> redirects to `lean-enforcement`

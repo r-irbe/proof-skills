@@ -1,9 +1,9 @@
 # proof-skills Domain Facets Catalog
 
-Authoritative catalog of domain-specialized formalization packs across the
+Catalog of domain-specialized formalization packs across the
 proof-skills repository.
 
-Strict 7-bit ASCII only.
+
 
 ---
 
