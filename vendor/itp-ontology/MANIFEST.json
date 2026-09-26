@@ -1,0 +1,54 @@
+{
+  "package": "itp-master-authority-ontology",
+  "version": "1.0.0",
+  "description": "Standalone distribution of the 100-concept ITP Master Authority Ontology",
+  "license": "Apache-2.0",
+  "files": {
+    "master-authority-index.json": {
+      "sha256": "2cf40d8dfe092e2b42ed36fe9ce5a2896ae69922dbf8f6293cc5560ec8d98561",
+      "size_bytes": 243611
+    },
+    "itp_ontology_graph.db": {
+      "sha256": "ceb29ba02145f101223145aa65060f67c83e6fc012b3007ebb3ede9e7e427b74",
+      "size_bytes": 159744
+    },
+    "book-indexes": {
+      "avigad-lamr-2024.index.json": {
+        "sha256": "4c840e91906e770b95a90c0942e2effa70fa9d728798240e45706456e85934f1",
+        "size_bytes": 3046
+      },
+      "avigad-massot-mathematics-in-lean.index.json": {
+        "sha256": "8c470fac731cd612b16980e1a4fb54996e0df430150ce3219f2aa69b21f51ce0",
+        "size_bytes": 1357
+      },
+      "bertot-casteran-coqart-2004.index.json": {
+        "sha256": "3e35f5254c13c2a2b1be1758dfd8f825493c3d37322120636dfb13d190c85970",
+        "size_bytes": 2751
+      },
+      "blanchette-logical-verification-2025.index.json": {
+        "sha256": "cca6f7db021ff596478aad48210406d29521804455b60f7061f4e8ddfa6b4cb9",
+        "size_bytes": 3141
+      },
+      "chlipala-cpdt-2013.index.json": {
+        "sha256": "1573605ba45e244abb3d47645969717b349a0c4f1c81e676dbc3d3df352541db",
+        "size_bytes": 3580
+      },
+      "harrison-logic-2009.index.json": {
+        "sha256": "f152767e2f9a392561327f37b4dfbf97ba9115365299a18b687f46273fb5a6de",
+        "size_bytes": 2612
+      },
+      "megill-wheeler-metamath-2019.index.json": {
+        "sha256": "2e711bf50901504b854dbee3c531fed9d5092707fd407817273d3735829cad26",
+        "size_bytes": 1292
+      },
+      "nipkow-klein-concrete-semantics-2014.index.json": {
+        "sha256": "81be275ba0eadeb7fd669b4d8abecb41f373dd3e50ef6a1a99aa1fdedc056c51",
+        "size_bytes": 1321
+      },
+      "pierce-software-foundations-lf-2024.index.json": {
+        "sha256": "a40f8c78d3dd5de225808e08a2d94e4b419cbb25830301d60bc0295c97adef8f",
+        "size_bytes": 2736
+      }
+    }
+  }
+}

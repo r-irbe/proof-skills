@@ -1,0 +1,87 @@
+{
+  "schema_version": "v1.0",
+  "corpus_id": "BERTOT-COQART-2004",
+  "prover_family": "coq",
+  "book_title": "Interactive Theorem Proving and Program Development: CoqArt The Calculus of Inductive Constructions",
+  "authors": [
+    "Yves Bertot",
+    "Pierre Casteran"
+  ],
+  "publication_year": 2004,
+  "edition_or_version": "Springer, 1st Edition",
+  "index_metadata": {
+    "entry_count": 1820,
+    "source_page_range": "449-469",
+    "has_subterms": true,
+    "has_definitive_styling": true,
+    "ocr_or_source_format": "Print index digitization"
+  },
+  "entries": [
+    {
+      "term": "inversion tactic",
+      "category": "tactic",
+      "primary_references": [
+        {
+          "page": 142,
+          "section_anchor": "urn:itp:bertot-coqart:ch7:sec3:tactic[inversion]",
+          "is_definitive": true,
+          "prover_anchor": "Coq.Init.Tactics.inversion",
+          "context_note": "Canonical description of dependent inversion for inductive predicates"
+        }
+      ],
+      "subterms": [
+        {
+          "subterm": "inversion_clear",
+          "references": [
+            {
+              "page": 146,
+              "section_anchor": "urn:itp:bertot-coqart:ch7:sec3:sub2:tactic[inversion_clear]",
+              "is_definitive": true,
+              "prover_anchor": "Coq.Init.Tactics.inversion_clear",
+              "context_note": "Clears inverted equality hypothesis after substitution"
+            }
+          ]
+        }
+      ],
+      "cross_references": [
+        "see also injection",
+        "see also discriminate"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "cases / rcases",
+          "target_tactic_or_primitive": "Lean.Elab.Tactic.Rcases",
+          "mapping_confidence": 0.96,
+          "notes": "Lean 4 rcases decomposes inductive constructors with pattern matching"
+        }
+      ]
+    },
+    {
+      "term": "proof by reflection",
+      "category": "concept",
+      "primary_references": [
+        {
+          "page": 387,
+          "section_anchor": "urn:itp:bertot-coqart:ch16:sec1:concept[reflection]",
+          "is_definitive": true,
+          "prover_anchor": "Coq.vm_compute",
+          "context_note": "Computational verification using boolean decision functions and vm_compute"
+        }
+      ],
+      "cross_references": [
+        "see also vm_compute",
+        "see also decidable"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "decide / rfl",
+          "target_tactic_or_primitive": "Lean.Elab.Tactic.Decide",
+          "mapping_confidence": 0.98,
+          "notes": "Lean 4 decide runs kernel reduction on decidability instances"
+        }
+      ]
+    }
+  ]
+}

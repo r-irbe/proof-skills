@@ -1,0 +1,98 @@
+{
+  "schema_version": "v1.0",
+  "corpus_id": "AVIGAD-LAMR-2024",
+  "prover_family": "lean4",
+  "book_title": "Logic and Automated Mathematical Reasoning",
+  "authors": [
+    "Jeremy Avigad"
+  ],
+  "publication_year": 2024,
+  "edition_or_version": "Draft Web Edition",
+  "index_metadata": {
+    "entry_count": 420,
+    "source_page_range": "Chapters 1-13",
+    "has_subterms": true,
+    "has_definitive_styling": true,
+    "ocr_or_source_format": "Lean 4 and Markdown text repository"
+  },
+  "entries": [
+    {
+      "term": "propositional satisfiability (SAT / CDCL)",
+      "category": "decision_procedure",
+      "primary_references": [
+        {
+          "page": "Chapter 3",
+          "section_anchor": "urn:itp:avigad-lamr-2024:ch3:sec2:sat[cdcl]",
+          "is_definitive": true,
+          "prover_anchor": "LAMR.Util.Propositional",
+          "context_note": "Conflict-Driven Clause Learning and unit propagation"
+        }
+      ],
+      "cross_references": [
+        "see also DPLL",
+        "see also resolution"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "isabelle_hol",
+          "target_term": "sat / cdcl",
+          "target_tactic_or_primitive": "SAT.satx",
+          "mapping_confidence": 0.98,
+          "notes": "Certified SAT solver linkage in Isabelle/HOL"
+        }
+      ]
+    },
+    {
+      "term": "congruence closure and union-find",
+      "category": "decision_procedure",
+      "primary_references": [
+        {
+          "page": "Chapter 8",
+          "section_anchor": "urn:itp:avigad-lamr-2024:ch8:sec1:cc[union_find]",
+          "is_definitive": true,
+          "prover_anchor": "LAMR.Util.DisjointSet",
+          "context_note": "Ground equality reasoning and term graph congruence"
+        }
+      ],
+      "cross_references": [
+        "see also e-graph",
+        "see also equality"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "coq",
+          "target_term": "congruence",
+          "target_tactic_or_primitive": "congruence",
+          "mapping_confidence": 0.99,
+          "notes": "Nelson-Oppen ground congruence closure"
+        }
+      ]
+    },
+    {
+      "term": "quantifier elimination for real closed fields",
+      "category": "decision_procedure",
+      "primary_references": [
+        {
+          "page": "Chapter 10",
+          "section_anchor": "urn:itp:avigad-lamr-2024:ch10:sec3:rcf[qelim]",
+          "is_definitive": true,
+          "prover_anchor": "LAMR.Examples.DecisionProceduresForArithmetic",
+          "context_note": "Sturm sequences, sign determination, and Tarski-Seidenberg"
+        }
+      ],
+      "cross_references": [
+        "see also linear real arithmetic",
+        "see also CAD"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "hol_light",
+          "target_term": "REAL_QELIM_CONV",
+          "target_tactic_or_primitive": "REAL_QELIM_CONV",
+          "mapping_confidence": 0.96,
+          "notes": "Harrison real quantifier elimination"
+        }
+      ]
+    }
+  ]
+}

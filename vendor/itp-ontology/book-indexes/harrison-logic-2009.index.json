@@ -1,0 +1,85 @@
+{
+  "schema_version": "v1.0",
+  "corpus_id": "HARRISON-LOGIC-2009",
+  "prover_family": "hol_light",
+  "book_title": "Handbook of Practical Logic and Automated Reasoning",
+  "authors": [
+    "John Harrison"
+  ],
+  "publication_year": 2009,
+  "edition_or_version": "Cambridge University Press, 1st Edition",
+  "index_metadata": {
+    "entry_count": 2540,
+    "source_page_range": "661-681",
+    "has_subterms": true,
+    "has_definitive_styling": true,
+    "ocr_or_source_format": "LaTeX source index"
+  },
+  "entries": [
+    {
+      "term": "Presburger arithmetic",
+      "category": "algorithm",
+      "primary_references": [
+        {
+          "page": 298,
+          "section_anchor": "urn:itp:harrison-logic-2009:ch5:sec9:algo[presburger]",
+          "is_definitive": true,
+          "prover_anchor": "HOL_LIGHT.Cooper",
+          "context_note": "Definitive formulation of Presburger arithmetic decision procedure"
+        }
+      ],
+      "subterms": [
+        {
+          "subterm": "Cooper algorithm",
+          "references": [
+            {
+              "page": 305,
+              "section_anchor": "urn:itp:harrison-logic-2009:ch5:sec9:sub1:algo[cooper]",
+              "is_definitive": true,
+              "prover_anchor": "HOL_LIGHT.COOPER_TAC",
+              "context_note": "Quantifier elimination and test points"
+            }
+          ]
+        }
+      ],
+      "cross_references": [
+        "see also quantifier elimination",
+        "see also Cooper algorithm"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "omega",
+          "target_tactic_or_primitive": "Lean.Elab.Tactic.Omega",
+          "mapping_confidence": 0.98,
+          "notes": "Direct algorithmic equivalent in Lean 4 omega"
+        }
+      ]
+    },
+    {
+      "term": "congruence closure",
+      "category": "algorithm",
+      "primary_references": [
+        {
+          "page": 224,
+          "section_anchor": "urn:itp:harrison-logic-2009:ch4:sec7:algo[congruence_closure]",
+          "is_definitive": true,
+          "prover_anchor": "HOL_LIGHT.cc",
+          "context_note": "Nelson-Oppen ground equational theory decision procedure"
+        }
+      ],
+      "cross_references": [
+        "see also equational logic"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "grind / cc",
+          "target_tactic_or_primitive": "Lean.Meta.Tactic.Grind",
+          "mapping_confidence": 0.95,
+          "notes": "Lean 4 grind integrates congruence closure and E-matching"
+        }
+      ]
+    }
+  ]
+}

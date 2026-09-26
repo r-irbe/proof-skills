@@ -1,0 +1,46 @@
+{
+  "schema_version": "v1.0",
+  "corpus_id": "MEGILL-WHEELER-2019",
+  "prover_family": "metamath",
+  "book_title": "Metamath: A Computer Language for Pure Mathematics",
+  "authors": [
+    "Norman Megill",
+    "David A. Wheeler"
+  ],
+  "publication_year": 2019,
+  "edition_or_version": "2nd Edition",
+  "index_metadata": {
+    "entry_count": 840,
+    "source_page_range": "235-248",
+    "has_subterms": true,
+    "has_definitive_styling": true,
+    "ocr_or_source_format": "Print index digitization"
+  },
+  "entries": [
+    {
+      "term": "modus ponens",
+      "category": "rule",
+      "primary_references": [
+        {
+          "page": 44,
+          "section_anchor": "urn:itp:megill-metamath:ch3:sec2:rule[ax-mp]",
+          "is_definitive": true,
+          "prover_anchor": "Metamath.ax-mp",
+          "context_note": "Axiomatic primitive inference rule in set.mm"
+        }
+      ],
+      "cross_references": [
+        "see also deduction theorem"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "apply / exact",
+          "target_tactic_or_primitive": "Lean.Elab.Tactic.Apply",
+          "mapping_confidence": 0.99,
+          "notes": "Direct function application in dependent type theory"
+        }
+      ]
+    }
+  ]
+}

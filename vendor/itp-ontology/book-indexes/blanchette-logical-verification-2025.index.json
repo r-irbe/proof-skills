@@ -1,0 +1,103 @@
+{
+  "schema_version": "v1.0",
+  "corpus_id": "BLANCHETTE-LOGIC-2025",
+  "prover_family": "lean4",
+  "book_title": "The Hitchhiker's Guide to Logical Verification",
+  "authors": [
+    "Anne Baanen",
+    "Alexander Bentkamp",
+    "Jasmin Blanchette",
+    "Xavier Genereux",
+    "Johannes Hoelzl",
+    "Jannis Limperg"
+  ],
+  "publication_year": 2025,
+  "edition_or_version": "2025 Desktop Edition",
+  "index_metadata": {
+    "entry_count": 350,
+    "source_page_range": "Chapters 1-14",
+    "has_subterms": true,
+    "has_definitive_styling": true,
+    "ocr_or_source_format": "PDF author index and analytical contents"
+  },
+  "entries": [
+    {
+      "term": "inductive predicates and inversion",
+      "category": "proof_method",
+      "primary_references": [
+        {
+          "page": "Chapter 5",
+          "section_anchor": "urn:itp:blanchette-guide-2025:ch5:sec2:ind[inversion]",
+          "is_definitive": true,
+          "prover_anchor": "Lean.Elab.Tactic.Cases",
+          "context_note": "Rule induction and equation inversion on inductive propositions"
+        }
+      ],
+      "cross_references": [
+        "see also induction",
+        "see also rcases"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "coq",
+          "target_term": "inversion",
+          "target_tactic_or_primitive": "inversion",
+          "mapping_confidence": 0.99,
+          "notes": "Direct equivalence with Coq inversion"
+        }
+      ]
+    },
+    {
+      "term": "quotient types and setoids",
+      "category": "type_construct",
+      "primary_references": [
+        {
+          "page": "Chapter 12",
+          "section_anchor": "urn:itp:blanchette-guide-2025:ch12:sec1:type[quotient]",
+          "is_definitive": true,
+          "prover_anchor": "Quot.sound",
+          "context_note": "Equivalence relations and exact quotient formation"
+        }
+      ],
+      "cross_references": [
+        "see also setoid",
+        "see also equivalence"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "isabelle_hol",
+          "target_term": "quotient_type",
+          "target_tactic_or_primitive": "Quotient_Type",
+          "mapping_confidence": 0.98,
+          "notes": "Isabelle lifting and transfer package"
+        }
+      ]
+    },
+    {
+      "term": "program verification with Hoare logic",
+      "category": "verification_logic",
+      "primary_references": [
+        {
+          "page": "Chapter 10",
+          "section_anchor": "urn:itp:blanchette-guide-2025:ch10:sec3:hoare[vcg]",
+          "is_definitive": true,
+          "prover_anchor": "Hoare.Triple",
+          "context_note": "Weakest preconditions and verification condition generation for IMP"
+        }
+      ],
+      "cross_references": [
+        "see also weakest precondition",
+        "see also operational semantics"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "isabelle_hol",
+          "target_term": "Hoare_Logic",
+          "target_tactic_or_primitive": "vcg",
+          "mapping_confidence": 0.99,
+          "notes": "Concrete Semantics Chapter 12"
+        }
+      ]
+    }
+  ]
+}

@@ -96,22 +96,30 @@ def query_ontology(
     """Query canonical ITP concepts, tactics, and intervals from the SQLite DB or JSON index."""
     results = []
     if db_path is None:
-        db_path = (
-            Path(__file__).resolve().parents[5]
-            / "docs"
-            / "investigation-garden"
-            / "source-materials"
-            / "itp_ontology_graph.db"
-        )
+        vendored_db = Path(__file__).resolve().parent.parent / "vendor" / "itp-ontology" / "itp_ontology_graph.db"
+        if vendored_db.is_file():
+            db_path = vendored_db
+        else:
+            db_path = (
+                Path(__file__).resolve().parents[5]
+                / "docs"
+                / "investigation-garden"
+                / "source-materials"
+                / "itp_ontology_graph.db"
+            )
     if index_path is None:
-        index_path = (
-            Path(__file__).resolve().parents[5]
-            / "docs"
-            / "investigation-garden"
-            / "source-materials"
-            / "indexes"
-            / "master-authority-index.json"
-        )
+        vendored_idx = Path(__file__).resolve().parent.parent / "vendor" / "itp-ontology" / "master-authority-index.json"
+        if vendored_idx.is_file():
+            index_path = vendored_idx
+        else:
+            index_path = (
+                Path(__file__).resolve().parents[5]
+                / "docs"
+                / "investigation-garden"
+                / "source-materials"
+                / "indexes"
+                / "master-authority-index.json"
+            )
 
     if db_path.is_file():
         conn = sqlite3.connect(str(db_path))
@@ -213,14 +221,18 @@ def ingest_ontology(
 ) -> int:
     """Ingest master authority index concepts into procedural graph nodes and triplets."""
     if master_json_path is None:
-        master_json_path = (
-            Path(__file__).resolve().parents[5]
-            / "docs"
-            / "investigation-garden"
-            / "source-materials"
-            / "indexes"
-            / "master-authority-index.json"
-        )
+        vendored_idx = Path(__file__).resolve().parent.parent / "vendor" / "itp-ontology" / "master-authority-index.json"
+        if vendored_idx.is_file():
+            master_json_path = vendored_idx
+        else:
+            master_json_path = (
+                Path(__file__).resolve().parents[5]
+                / "docs"
+                / "investigation-garden"
+                / "source-materials"
+                / "indexes"
+                / "master-authority-index.json"
+            )
     if not master_json_path.is_file():
         raise FileNotFoundError(f"Master index not found at {master_json_path}")
 

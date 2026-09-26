@@ -1,0 +1,86 @@
+{
+  "schema_version": "v1.0",
+  "corpus_id": "PIERCE-LF-2024",
+  "prover_family": "coq",
+  "book_title": "Software Foundations, Volume 1: Logical Foundations",
+  "authors": [
+    "Benjamin C. Pierce",
+    "Arthur Azevedo de Amorim",
+    "Chris Casinghino",
+    "Marco Gaboardi",
+    "Michael Greenberg",
+    "Catalin Hritcu",
+    "Daniel S. Licata",
+    "Brent Yorgey"
+  ],
+  "publication_year": 2024,
+  "edition_or_version": "Electronic Edition 6.5",
+  "index_metadata": {
+    "entry_count": 520,
+    "source_page_range": "Chapters 1-14",
+    "has_subterms": true,
+    "has_definitive_styling": true,
+    "ocr_or_source_format": "CoqDoc and literate markdown extraction"
+  },
+  "entries": [
+    {
+      "term": "Curry-Howard correspondence",
+      "category": "type_theory",
+      "primary_references": [
+        {
+          "page": "Chapter ProofObjects",
+          "section_anchor": "urn:itp:pierce-lf-2024:proof_objects:sec1:curry_howard",
+          "is_definitive": true,
+          "prover_anchor": "Coq.Init.Logic",
+          "context_note": "Propositions as types and proofs as lambda terms in constructive logic"
+        }
+      ],
+      "cross_references": [
+        "see also proof objects",
+        "see also dependent pairs"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "propositions as types",
+          "target_tactic_or_primitive": "Lean.Expr.sort",
+          "mapping_confidence": 0.99,
+          "notes": "Lean 4 core Calculus of Inductive Constructions type universe Prop"
+        }
+      ]
+    },
+    {
+      "term": "inductive propositions and relations",
+      "category": "inductive_definitions",
+      "primary_references": [
+        {
+          "page": "Chapter IndProp",
+          "section_anchor": "urn:itp:pierce-lf-2024:ind_prop:sec2:inductive_predicates",
+          "is_definitive": true,
+          "prover_anchor": "Coq.Init.Specif",
+          "context_note": "Defining mathematical relations via deductive inference rules"
+        }
+      ],
+      "cross_references": [
+        "see also inversion",
+        "see also rule induction"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "inductive predicate",
+          "target_tactic_or_primitive": "Lean.Elab.Command.inductive",
+          "mapping_confidence": 0.98,
+          "notes": "Lean 4 inductive type family targeting Prop"
+        },
+        {
+          "target_prover": "isabelle_hol",
+          "target_term": "inductive",
+          "target_tactic_or_primitive": "Isabelle.inductive",
+          "mapping_confidence": 0.95,
+          "notes": "Isabelle inductive predicate definition"
+        }
+      ]
+    }
+  ]
+}

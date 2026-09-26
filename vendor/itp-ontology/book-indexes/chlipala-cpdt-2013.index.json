@@ -1,0 +1,105 @@
+{
+  "schema_version": "v1.0",
+  "corpus_id": "CHLIPALA-CPDT-2013",
+  "prover_family": "coq",
+  "book_title": "Certified Programming with Dependent Types",
+  "authors": [
+    "Adam Chlipala"
+  ],
+  "publication_year": 2013,
+  "edition_or_version": "MIT Press, 1st Edition",
+  "index_metadata": {
+    "entry_count": 680,
+    "source_page_range": "Chapters 1-20",
+    "has_subterms": true,
+    "has_definitive_styling": true,
+    "ocr_or_source_format": "LaTeX source repository and PDF extraction"
+  },
+  "entries": [
+    {
+      "term": "higher-order abstract syntax (HOAS)",
+      "category": "language_formalization",
+      "primary_references": [
+        {
+          "page": "Chapter 17",
+          "section_anchor": "urn:itp:chlipala-cpdt-2013:ch17:sec1:hoas[phoas]",
+          "is_definitive": true,
+          "prover_anchor": "Coq.HOAS",
+          "context_note": "Parametric higher-order abstract syntax avoiding explicit variable binder encodings"
+        }
+      ],
+      "cross_references": [
+        "see also de Bruijn indices",
+        "see also nominal syntax"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "PHOAS / Higher-Order Syntax",
+          "target_tactic_or_primitive": "Lean.Expr.lam",
+          "mapping_confidence": 0.92,
+          "notes": "Lean 4 higher-order expression representation and meta-programming level abstractions"
+        },
+        {
+          "target_prover": "isabelle_hol",
+          "target_term": "Nominal2 / Lambda_Calculus",
+          "target_tactic_or_primitive": "nominal_datatype",
+          "mapping_confidence": 0.88,
+          "notes": "Nominal Isabelle alpha-equivalence classes for binding structures"
+        }
+      ]
+    },
+    {
+      "term": "proof search with Ltac",
+      "category": "proof_automation",
+      "primary_references": [
+        {
+          "page": "Chapter 13",
+          "section_anchor": "urn:itp:chlipala-cpdt-2013:ch13:sec2:proof_search[ltac]",
+          "is_definitive": true,
+          "prover_anchor": "Coq.Ltac",
+          "context_note": "Domain-specific automated proof search using recursive pattern matching on proof goals"
+        }
+      ],
+      "cross_references": [
+        "see also reflection",
+        "see also decision procedures"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "aesop / macro_rules",
+          "target_tactic_or_primitive": "Lean.Elab.Tactic.Aesop",
+          "mapping_confidence": 0.95,
+          "notes": "Lean 4 Aesop white-box search engine and extensible macro expansion"
+        }
+      ]
+    },
+    {
+      "term": "reasoning about equality proofs and axiom K",
+      "category": "type_theory",
+      "primary_references": [
+        {
+          "page": "Chapter 12",
+          "section_anchor": "urn:itp:chlipala-cpdt-2013:ch12:sec1:equality[axiom_k]",
+          "is_definitive": true,
+          "prover_anchor": "Coq.Logic.Eqdep",
+          "context_note": "Heterogeneous equality, Streicher axiom K, and UIP across dependent families"
+        }
+      ],
+      "cross_references": [
+        "see also JMeq",
+        "see also uniqueness of identity proofs"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "Eq.rec / proof irrelevance",
+          "target_tactic_or_primitive": "Lean.Meta.KRewrite",
+          "mapping_confidence": 0.98,
+          "notes": "Lean 4 definitional proof irrelevance in Prop rendering Axiom K provable"
+        }
+      ]
+    }
+  ]
+}

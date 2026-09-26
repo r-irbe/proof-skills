@@ -1,0 +1,46 @@
+{
+  "schema_version": "v1.0",
+  "corpus_id": "NIPKOW-KLEIN-2014",
+  "prover_family": "isabelle_hol",
+  "book_title": "Concrete Semantics with Isabelle/HOL",
+  "authors": [
+    "Tobias Nipkow",
+    "Gerwin Klein"
+  ],
+  "publication_year": 2014,
+  "edition_or_version": "Springer, 1st Edition",
+  "index_metadata": {
+    "entry_count": 950,
+    "source_page_range": "285-292",
+    "has_subterms": true,
+    "has_definitive_styling": true,
+    "ocr_or_source_format": "PDF index extraction"
+  },
+  "entries": [
+    {
+      "term": "rule induction",
+      "category": "concept",
+      "primary_references": [
+        {
+          "page": 45,
+          "section_anchor": "urn:itp:nipkow-klein:ch4:sec4:concept[rule_induction]",
+          "is_definitive": true,
+          "prover_anchor": "Isabelle.inductive_cases",
+          "context_note": "Induction over inductive definitions with parameter instantiation"
+        }
+      ],
+      "cross_references": [
+        "see also inductive"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "induction ... using",
+          "target_tactic_or_primitive": "Lean.Elab.Tactic.Induction",
+          "mapping_confidence": 0.95,
+          "notes": "Lean 4 induction using customized eliminator"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "schema_version": "v1.0",
+  "corpus_id": "AVIGAD-MASSOT-MIL",
+  "prover_family": "lean4",
+  "book_title": "Mathematics in Lean",
+  "authors": [
+    "Jeremy Avigad",
+    "Patrick Massot"
+  ],
+  "publication_year": 2024,
+  "edition_or_version": "Lean Community, Continuous Web Edition",
+  "index_metadata": {
+    "entry_count": 680,
+    "source_page_range": "Sphinx Search Index",
+    "has_subterms": true,
+    "has_definitive_styling": true,
+    "ocr_or_source_format": "Sphinx documentation manifest"
+  },
+  "entries": [
+    {
+      "term": "calculation block (calc)",
+      "category": "tactic",
+      "primary_references": [
+        {
+          "page": "Chapter 2",
+          "section_anchor": "urn:itp:avigad-mil:ch2:sec2:tactic[calc]",
+          "is_definitive": true,
+          "prover_anchor": "Lean.Elab.Tactic.Calc",
+          "context_note": "Structured transitive equational and relational calculations"
+        }
+      ],
+      "cross_references": [
+        "see also rewrite",
+        "see also transitivity"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "isabelle_hol",
+          "target_term": "also / finally (Isar)",
+          "target_tactic_or_primitive": "Isar.also_finally",
+          "mapping_confidence": 0.99,
+          "notes": "Exact declarative equivalent in Isar"
+        }
+      ]
+    }
+  ]
+}
