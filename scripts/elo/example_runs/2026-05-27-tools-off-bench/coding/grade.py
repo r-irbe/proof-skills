@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 """Grade the 5 model responses for the coding benchmark."""
 from __future__ import annotations
-import re, json
-from pathlib import Path
+
 import importlib.util
+import json
+import re
+from pathlib import Path
+
 HERE = Path(__file__).resolve().parent
 spec = importlib.util.spec_from_file_location("tests", str(HERE / "tests.py"))
 tests_mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(tests_mod)

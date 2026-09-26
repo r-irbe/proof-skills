@@ -15,7 +15,10 @@ CI invokes:
         --current scripts/elo/example_runs/$(ls scripts/elo/example_runs/ | tail -1)/ratings.json
 """
 from __future__ import annotations
-import argparse, json, sys
+
+import argparse
+import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).parent

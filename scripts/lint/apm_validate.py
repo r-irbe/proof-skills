@@ -30,7 +30,6 @@ from pathlib import Path
 
 import yaml
 
-
 REPO_ROOT = Path(__file__).resolve().parents[2]
 APM_YML = REPO_ROOT / "apm.yml"
 SKILLS_DIR = REPO_ROOT / "skills"

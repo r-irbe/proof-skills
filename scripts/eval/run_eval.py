@@ -33,7 +33,8 @@ from typing import Any
 
 # Project-local import (graders/ lives next to this file).
 sys.path.insert(0, str(Path(__file__).parent))
-from graders.deterministic import GradeResult, grade as deterministic_grade
+from graders.deterministic import GradeResult
+from graders.deterministic import grade as deterministic_grade
 
 # --- YAML loading -----------------------------------------------------------
 

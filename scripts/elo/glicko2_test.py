@@ -15,15 +15,13 @@ Exits 0 on success, 1 on any check failure.
 
 from __future__ import annotations
 
-import csv
 import math
 import sys
-import tempfile
 from pathlib import Path
 
 # Import the implementation alongside this script.
 sys.path.insert(0, str(Path(__file__).parent))
-from glicko2 import (  # noqa: E402
+from glicko2 import (
     DEFAULT_TAU,
     Game,
     Rating,
@@ -150,7 +148,7 @@ def test_cli_smoke_against_csv() -> bool:
         print(f"FAIL game counts: alpha={counts['alpha']} beta={counts['beta']}")
         ok = False
     else:
-        print(f"PASS game counts both = 4")
+        print("PASS game counts both = 4")
     return ok
 
 

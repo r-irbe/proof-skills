@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Build pairwise-match CSV from coding-eval scores.
 Per problem, A vs B: more passes wins, equal is draw."""
-import json, csv, itertools
+import csv
+import itertools
+import json
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent

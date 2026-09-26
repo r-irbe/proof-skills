@@ -260,7 +260,7 @@ def main():
     print(f"Missing imports: {len(missing)}")
 
     if missing:
-        print(f"\nMissing Import Candidates:")
+        print("\nMissing Import Candidates:")
         by_pair = defaultdict(list)
         for m in missing:
             key = (m['user_module'], m['defined_in'])

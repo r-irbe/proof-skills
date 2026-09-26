@@ -42,9 +42,9 @@ import csv
 import json
 import math
 import sys
+from collections.abc import Iterable
 from dataclasses import dataclass, field, replace
 from pathlib import Path
-from typing import Iterable
 
 # ---------------------------------------------------------------------------
 # Constants

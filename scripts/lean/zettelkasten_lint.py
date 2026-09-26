@@ -18,9 +18,8 @@ Usage:
 import argparse
 import re
 import sys
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
-
 
 ZK_ID_PATTERN = re.compile(r'ZK-(\d{8})-(\d{3})')
 LINK_PATTERN = re.compile(r'\[\[([^\]]+)\]\]')
@@ -30,7 +29,7 @@ REQUIRED_FIELDS = ['Type', 'Tags', 'Created']
 
 def parse_note(filepath: Path) -> dict:
     """Parse a Zettelkasten note file."""
-    with open(filepath, 'r', encoding='utf-8') as f:
+    with open(filepath, encoding='utf-8') as f:
         content = f.read()
 
     note = {
@@ -107,7 +106,7 @@ def lint_zettelkasten(zk_dir: Path) -> list[dict]:
             issues.append({
                 'severity': 'warn',
                 'type': 'orphan',
-                'message': f'No incoming links',
+                'message': 'No incoming links',
                 'file': notes[name]['path'],
             })
 
@@ -117,7 +116,7 @@ def lint_zettelkasten(zk_dir: Path) -> list[dict]:
             issues.append({
                 'severity': 'warn',
                 'type': 'island',
-                'message': f'No outgoing links (isolated note)',
+                'message': 'No outgoing links (isolated note)',
                 'file': note['path'],
             })
 
@@ -147,8 +146,8 @@ def lint_zettelkasten(zk_dir: Path) -> list[dict]:
         if note['note_type'] == 'fleeting' and note['created']:
             try:
                 created = datetime.strptime(note['created'][:10], '%Y-%m-%d')
-                created = created.replace(tzinfo=timezone.utc)
-                age = datetime.now(timezone.utc) - created
+                created = created.replace(tzinfo=UTC)
+                age = datetime.now(UTC) - created
                 if age > timedelta(days=7):
                     issues.append({
                         'severity': 'warn',

@@ -52,9 +52,9 @@ import argparse
 import json
 import re
 import sys
+from collections.abc import Iterable
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Iterable
 
 # Local import — calibrate_judge.py lives next to graders/.
 THIS_DIR = Path(__file__).resolve().parent
@@ -62,14 +62,12 @@ sys.path.insert(0, str(THIS_DIR))
 
 from graders.llm_judge import (  # noqa: E402
     JudgeReply,
-    GradeResult,
     _load_yaml,
     _rubric_definitions,
     build_prompt,
     grade,
     parse_judge_response,
 )
-
 
 # ---------------------------------------------------------------------------
 # Transcript parsing
@@ -142,7 +140,7 @@ def _parse_simple_yaml(raw: str) -> dict:
             buf: list[str] = []
             i += 1
             while i < len(lines) and (lines[i].startswith("  ") or not lines[i].strip()):
-                buf.append(lines[i][2:] if lines[i].startswith("  ") else lines[i])
+                buf.append(lines[i].removeprefix("  "))
                 i += 1
             out[key] = "\n".join(buf).rstrip()
         else:

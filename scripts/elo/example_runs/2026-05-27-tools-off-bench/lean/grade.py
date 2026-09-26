@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Build a Lean file per (model, problem) and run `lake build` to grade."""
-import subprocess, json, re
+import json
+import re
+import subprocess
 from pathlib import Path
 
 PROBLEMS = {

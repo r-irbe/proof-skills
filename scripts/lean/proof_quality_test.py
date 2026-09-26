@@ -24,7 +24,7 @@ from pathlib import Path
 
 # Import the implementation alongside this script.
 sys.path.insert(0, str(Path(__file__).parent))
-from proof_quality import (  # noqa: E402
+from proof_quality import (
     _is_concrete_decide_target,
     _structural_branch_points,
     extract_theorem_blocks,

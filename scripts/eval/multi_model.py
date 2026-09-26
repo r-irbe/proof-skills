@@ -48,7 +48,7 @@ from pathlib import Path
 
 # Allow `from graders.llm_judge import _load_yaml` without sys.path tricks.
 sys.path.insert(0, str(Path(__file__).parent))
-from graders.llm_judge import _load_yaml  # noqa: E402
+from graders.llm_judge import _load_yaml
 
 
 @dataclass
@@ -189,7 +189,7 @@ def main() -> int:
         )
 
     if not all_rows:
-        print(f"ERROR: no match rows produced", file=sys.stderr)
+        print("ERROR: no match rows produced", file=sys.stderr)
         return 1
 
     args.out.parent.mkdir(parents=True, exist_ok=True)

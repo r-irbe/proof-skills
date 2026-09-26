@@ -31,7 +31,6 @@ import re
 import sys
 from pathlib import Path
 
-
 # Axioms that are expected and acceptable
 EXPECTED_AXIOMS = {
     'propext',           # Propositional extensionality (Lean core)
@@ -207,7 +206,7 @@ def extract_theorems_from_file(lean_file: Path) -> list[dict]:
     scope_stack: list[tuple[str, str | None, str | None]] = []
     names: list[dict] = []
 
-    with open(lean_file, 'r', encoding='utf-8') as f:
+    with open(lean_file, encoding='utf-8') as f:
         source = strip_comments_preserving_newlines(f.read())
 
     for raw_line in source.splitlines():
@@ -322,7 +321,7 @@ def extract_raw_axioms_from_file(lean_file: Path) -> list[tuple[int, str]]:
     their fully-qualified identity (matching how `#print axioms` surfaces
     them and how `PROJECT_EXPECTED_AXIOMS` is keyed).
     """
-    with open(lean_file, 'r', encoding='utf-8') as f:
+    with open(lean_file, encoding='utf-8') as f:
         source = strip_comments_preserving_newlines(f.read())
 
     scope_stack: list[tuple[str, str | None, str | None]] = []
@@ -461,7 +460,7 @@ def parse_axiom_output(theorems: dict[str, list[str]], axiom_output: Path,
     pending_theorem: str | None = None
     pending_axiom_lines: list[str] = []
 
-    with open(axiom_output, 'r', encoding='utf-8') as f:
+    with open(axiom_output, encoding='utf-8') as f:
         for raw_line in f:
             line = raw_line.strip()
             if not line:
@@ -514,7 +513,7 @@ def parse_axiom_output(theorems: dict[str, list[str]], axiom_output: Path,
             if info is None:
                 continue
             for _, qualified in items:
-                
+
                 if qualified not in PROJECT_EXPECTED_AXIOMS:
                     info['unexpected'].add(qualified)
 

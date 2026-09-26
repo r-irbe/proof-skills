@@ -26,9 +26,15 @@ Usage:
         --out     scripts/elo/example_runs/2026-05-27-x-per-rubric/
 """
 from __future__ import annotations
-import argparse, csv, glob, json, subprocess, sys
-from pathlib import Path
+
+import argparse
+import csv
+import glob
+import json
+import subprocess
+import sys
 from collections import defaultdict
+from pathlib import Path
 
 try:
     import yaml

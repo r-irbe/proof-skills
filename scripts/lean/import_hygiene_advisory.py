@@ -15,11 +15,11 @@ It is advisory, not a semantic unused-import prover.
 from __future__ import annotations
 
 import argparse
+import re
+import sys
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-import re
-import sys
 
 
 @dataclass(frozen=True)

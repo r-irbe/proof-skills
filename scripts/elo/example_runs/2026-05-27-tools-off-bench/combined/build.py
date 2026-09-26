@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Combine coding-eval and lean-eval into one pairwise CSV, run elo.py."""
-import json, csv, itertools, subprocess
+import csv
+import itertools
+import json
+import subprocess
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent

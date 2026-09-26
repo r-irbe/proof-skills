@@ -5,6 +5,7 @@ Verify all references pass all tests before sending prompts to models.
 """
 from __future__ import annotations
 
+
 # ---------- P1: count_inversions ----------
 def ref_count_inversions(arr):
     n = len(arr); c = 0

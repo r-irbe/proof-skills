@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """lean-serve-broker: singleton `lake serve` multiplexer for Lean 4 projects.
 
 One lake serve per project root, shared by every LSP consumer (pi-lens,
@@ -35,7 +34,7 @@ import subprocess
 import sys
 import threading
 import time
-from typing import Any, Dict, IO, NoReturn, Optional, Tuple
+from typing import IO, Any, NoReturn
 
 STATE_ROOT = os.environ.get(
     "LEAN_SERVE_STATE_HOME",
@@ -74,7 +73,7 @@ def state_dir(root: str) -> str:
     return os.path.join(STATE_ROOT, key)
 
 
-def atomic_write_status(path: str, fields: Dict[str, Any]) -> None:
+def atomic_write_status(path: str, fields: dict[str, Any]) -> None:
     tmp = path + ".tmp.%d" % os.getpid()
     try:
         with open(tmp, "w") as f:
@@ -84,7 +83,7 @@ def atomic_write_status(path: str, fields: Dict[str, Any]) -> None:
         pass
 
 
-def read_lsp_frame(rfile: IO[bytes]) -> Optional[bytes]:
+def read_lsp_frame(rfile: IO[bytes]) -> bytes | None:
     """Read one Content-Length framed LSP message; return None on EOF."""
     content_length = None
     while True:
@@ -128,17 +127,17 @@ class Broker:
         self.server_cmd = server_cmd
         self.state = state_dir(root)
         self.sock_path = os.path.join(self.state, "server.sock")
-        self.lock_fd: Optional[IO[Any]] = None
-        self.server: Optional[subprocess.Popen] = None
-        self.server_stream: Optional[IO[bytes]] = None
-        self.clients: Dict[Any, Dict[str, Any]] = {}
+        self.lock_fd: IO[Any] | None = None
+        self.server: subprocess.Popen | None = None
+        self.server_stream: IO[bytes] | None = None
+        self.clients: dict[Any, dict[str, Any]] = {}
         self.clients_lock = threading.Lock()
-        self.pending: Dict[int, Tuple[Any, Any]] = {}
+        self.pending: dict[int, tuple[Any, Any]] = {}
         self.pending_lock = threading.Lock()
-        self.client_pending: Dict[Any, Dict[Any, int]] = {}
+        self.client_pending: dict[Any, dict[Any, int]] = {}
         self.next_id = 1
         self.write_lock = threading.Lock()
-        self.cached_init_result: Optional[Dict[str, Any]] = None
+        self.cached_init_result: dict[str, Any] | None = None
         self.building = False
         self.build_pids: list = []
         self.shutdown = threading.Event()
@@ -256,7 +255,7 @@ class Broker:
                 self.broadcast(msg)
         self.log("server reader exited")
 
-    def send_to(self, conn: Any, msg: Dict[str, Any]) -> None:
+    def send_to(self, conn: Any, msg: dict[str, Any]) -> None:
         data = json.dumps(msg).encode("utf-8")
         info = self.clients.get(conn)
         if info is None:
@@ -267,7 +266,7 @@ class Broker:
         except OSError:
             self.drop_client(conn)
 
-    def broadcast(self, msg: Dict[str, Any]) -> None:
+    def broadcast(self, msg: dict[str, Any]) -> None:
         data = json.dumps(msg).encode("utf-8")
         with self.clients_lock:
             targets = list(self.clients.items())
@@ -278,7 +277,7 @@ class Broker:
             except OSError:
                 self.drop_client(conn)
 
-    def forward(self, msg: Dict[str, Any]) -> None:
+    def forward(self, msg: dict[str, Any]) -> None:
         data = json.dumps(msg).encode("utf-8")
         stdin = self.server_stdin()
         try:
@@ -348,7 +347,7 @@ class Broker:
             self.forward(msg)
         self.drop_client(conn)
 
-    def wait_if_building(self, method: Optional[str]) -> None:
+    def wait_if_building(self, method: str | None) -> None:
         """Boundedly hold elaboration-triggering traffic during lake builds."""
         if not method or not method.startswith("textDocument/"):
             return
@@ -361,7 +360,7 @@ class Broker:
     def our_subtree(self) -> set:
         """Pids of the broker, the lake serve child, and all descendants."""
         ours = {os.getpid(), self.server.pid if self.server else -1}
-        procs: Dict[int, int] = {}
+        procs: dict[int, int] = {}
         for pid in os.listdir("/proc"):
             if not pid.isdigit():
                 continue
@@ -371,7 +370,7 @@ class Broker:
                 procs[int(pid)] = int(fields[1])
             except (OSError, IndexError, ValueError):
                 continue
-        children: Dict[int, list] = {}
+        children: dict[int, list] = {}
         for pid, ppid in procs.items():
             children.setdefault(ppid, []).append(pid)
         marked = set(ours)
@@ -384,7 +383,7 @@ class Broker:
                     stack.append(child)
         return marked
 
-    def detect_builds(self) -> Tuple[bool, list]:
+    def detect_builds(self) -> tuple[bool, list]:
         building, pids = False, []
         ours = self.our_subtree()
         for pid in os.listdir("/proc"):
@@ -526,13 +525,13 @@ def spawn_broker(root: str) -> None:
     )
 
 
-def socket_connect(sock_path: str, timeout: float = 1.0) -> Optional[socket.socket]:
+def socket_connect(sock_path: str, timeout: float = 1.0) -> socket.socket | None:
     s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     s.settimeout(timeout)
     try:
         s.connect(sock_path)
         return s
-    except (OSError, socket.timeout):
+    except (TimeoutError, OSError):
         try:
             s.close()
         except OSError:

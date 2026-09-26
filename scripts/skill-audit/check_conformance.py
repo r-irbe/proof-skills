@@ -49,7 +49,7 @@ import pathlib
 import re
 import sys
 import urllib.parse
-from collections import Counter, defaultdict
+from collections import Counter
 
 try:
     import yaml

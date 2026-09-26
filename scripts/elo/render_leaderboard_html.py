@@ -4,14 +4,19 @@
 Pure script, no deps beyond stdlib.
 """
 from __future__ import annotations
-import argparse, json, html, os, sys
-from datetime import datetime, timezone
+
+import argparse
+import html
+import json
+import os
+from datetime import UTC, datetime
+
 
 def render(ratings_path: str, out_path: str, sprint_label: str) -> None:
     data = json.load(open(ratings_path))
     players = data["players"]
     ranked = sorted(players.items(), key=lambda kv: kv[1]["rating"], reverse=True)
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    now = datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
     rows = []
     for rank, (pid, p) in enumerate(ranked, 1):
         rows.append(

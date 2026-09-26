@@ -19,7 +19,10 @@ Usage:
         --refresh        # regenerate baseline from this archive
 """
 from __future__ import annotations
-import argparse, json, sys
+
+import argparse
+import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).parent
@@ -85,10 +88,10 @@ def main() -> int:
         base_r = baseline.get(rubric, {})
         cur_r = cur.get(rubric, {})
         if not base_r:
-            print(f"  (new rubric in current run)")
+            print("  (new rubric in current run)")
             continue
         if not cur_r:
-            print(f"  MISSING from current archive", file=sys.stderr)
+            print("  MISSING from current archive", file=sys.stderr)
             regressions.append((rubric, "<rubric>", None, None, "MISSING"))
             continue
         for player, b in sorted(base_r.items()):
@@ -108,7 +111,7 @@ def main() -> int:
               f"> {tol} points:", file=sys.stderr)
         for rubric, player, b, c, kind in regressions:
             if kind == "MISSING":
-                desc = f"present in baseline but missing"
+                desc = "present in baseline but missing"
                 if b is not None:
                     desc = f"baseline {b:.2f}; {desc}"
                 print(f"  [{rubric}] {player}: {desc}", file=sys.stderr)
