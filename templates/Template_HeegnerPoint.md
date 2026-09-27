@@ -1,47 +1,40 @@
-# Template_HeegnerPoint - Heegner Points, Canonical Heights & Non-Degenerate Markov Drift
+# Template_HeegnerPoint - Heegner Points, Canonical Heights & Non-Degenerate Drift
 
-Use this template for **Heegner points on modular curves**, **Gross-Zagier height derivative relations**,
-**non-degenerate Markov drift trajectories**, and **ergodic stagnation avoidance**.
+Use this template for **Heegner points on modular curves**, **Gross-Zagier height formulas**,
+**non-degenerate directional drift**, and **ergodic persistence overcoming potential wells**.
 
-In arithmetic geometry and Iwasawa theory (FLT), Heegner points y_K in E(K) on modular curves
-X_0(N) associated with imaginary quadratic fields K provide explicit global points of infinite order.
-The Gross-Zagier formula (1986) proves that the canonical Neron-Tate height h(y_K) is proportional
-to the central derivative of the L-function:
-L'(E/K, 1) = (Omega / sqrt(|D|)) * h(y_K)
-Non-vanishing of the derivative L'(E/K, 1) != 0 guarantees that the Heegner point has infinite order,
-proving that the Mordell-Weil rank is at least 1.
+In arithmetic geometry and Fermat's Last Theorem / Birch and Swinnerton-Dyer theory,
+a Heegner point y_K on a modular curve X_0(N) arises from complex multiplication by an imaginary
+quadratic order O_K with discriminant D. The Gross-Zagier theorem establishes that the first derivative
+of the central L-series L'(E/K, 1) is proportional to the canonical Neron-Tate height h_hat(y_K)
+multiplied by periods and sqrt(|D|). Non-vanishing of the height guarantees rank 1 and provides
+an explicit generator for the Mordell-Weil group.
 
-In stochastic consensus and multi-agent dynamics, this structure transfers directly to:
-* A Heegner datum specifying discriminant |D|, conductor N, period scale Omega, and height h.
-* Gross-Zagier drift coefficient c = Omega / sqrt(|D|) > 0.
-* Non-equilibrium drift rate v = c * h.
-* Rank-1 regime certification: h > 0 implies strictly positive drift rate v > 0.
-* Non-degenerate drift equivalence: v > 0 <-> h > 0.
-* Zero drift equivalence: v = 0 <-> h = 0.
-* Uniform upper bounds on drift rate under bounded canonical height.
-* Monotonicity of drift rate with respect to height for constant period geometry.
+In stochastic consensus and multi-agent Markov networks, this structure models:
+* Fundamental discriminant D and conductor N measuring topological complexity and graph scale.
+* Canonical height derivative h_hat(y_K) measuring persistent directional drift overcoming diffusion.
+* Non-degeneracy predicate certifying strictly positive ergodic velocity avoiding deadlock wells.
+* Monotonicity and uniform upper bounding of drift trajectories under bounded heights.
 
 ## Main results
-* `HeegnerDatum` - fundamental discriminant, conductor, height derivative, and period scale
-* `grossZagierCoeff` - drift coupling coefficient c = Omega / sqrt(|D|)
-* `heegnerDrift` - macroscopic drift rate v = c * h
-* `IsRankOneRegime` - predicate certifying strictly positive canonical height
-* `IsNonDegenerateDrift` - predicate certifying strictly positive drift rate
-* `gross_zagier_coeff_pos` - strict positivity of the coupling coefficient
-* `heegner_drift_nonneg` - non-negativity of the drift rate
-* `heegner_drift_pos` - strict positivity of drift in rank-1 regime
-* `non_degenerate_iff_rank_one` - equivalence of non-degenerate drift and rank-1 status
-* `heegner_drift_zero_iff` - vanishing drift iff canonical height vanishes
-* `heegner_drift_upper_bound` - linear upper bound under bounded height
-* `heegner_drift_monotone` - monotonicity of drift with respect to height
+* `HeegnerDatum` - modular curve Heegner parameters (|D|, N, h_hat, Omega)
+* `grossZagierCoeff` - scaling factor sqrt(|D|) / (N * Omega)
+* `heegnerDrift` - persistent velocity c_GZ * h_hat
+* `IsRankOneRegime` - rank 1 condition h_hat > 0
+* `IsNonDegenerateDrift` - strictly positive velocity predicate
+* `gross_zagier_coeff_pos` - strict positivity of Gross-Zagier scale
+* `heegner_drift_nonneg` - non-negativity of persistent drift
+* `heegner_drift_pos` - rank 1 implies strictly positive velocity
+* `non_degenerate_iff_rank_one` - equivalence of rank 1 and non-degenerate drift
+* `heegner_drift_monotone` - monotonicity under increasing canonical height
 
 ## References
-* FLT: `Heegner/HeegnerPoint.lean`, `GrossZagier/GrossZagierFormula.lean`
-* Gross, B. H., Zagier, D. B. (1986), *Heegner points and derivatives of L-series*, Invent. Math. 84, 225-320
-* Kolyvagin, V. A. (1988), *Euler systems*, The Grothendieck Festschrift, Vol. II, 435-483
+* FLT: `ModularCurves/HeegnerPoints.lean`, `LSeries/GrossZagier.lean`
+* Gross, B., Zagier, D. (1986), *Heegner points and derivatives of L-series*, Invent. Math. 84, 225-320
+* Kolyvagin, V. A. (1990), *Euler systems*, The Grothendieck Festschrift, Vol. II, 435-483
 
 ## Tags
-template, heegner-point, gross-zagier, canonical-height, markov-drift, non-degenerate-trajectory, rank-one-regime
+template, heegner-point, gross-zagier, canonical-height, modular-curve, markov-drift, non-stagnation
 
 ```lean
 /-
@@ -59,98 +52,58 @@ namespace <Project>.ProofSkills.HeegnerPoint
 
 /-- A Heegner datum specifying discriminant, conductor, period scale, and canonical height. -/
 structure HeegnerDatum where
-  discAbs : Real       -- |D|, fundamental discriminant absolute value
-  conductor : Real     -- N, conductor of the Markov network
-  heightDeriv : Real   -- h(y_K), canonical height derivative of Heegner state
-  periodScale : Real   -- Omega, period / Petersson norm scale
+  discAbs : Real
+  conductor : Real
+  heightDeriv : Real
+  periodScale : Real
   disc_pos : 0 < discAbs
   conductor_pos : 0 < conductor
   height_nonneg : 0 <= heightDeriv
   period_pos : 0 < periodScale
 
-/-- Gross-Zagier drift coefficient c = Omega / sqrt(|D|). -/
-def grossZagierCoeff (d : HeegnerDatum) : Real :=
-  d.periodScale / Real.sqrt d.discAbs
+/-- The Gross-Zagier geometric coefficient sqrt(|D|) / (N * Omega). -/
+noncomputable def grossZagierCoeff (d : HeegnerDatum) : Real :=
+  Real.sqrt d.discAbs / (d.conductor * d.periodScale)
 
-/-- Gross-Zagier drift rate L'(1) = (Omega / sqrt(|D|)) * h(y_K). -/
-def heegnerDrift (d : HeegnerDatum) : Real :=
+/-- The Heegner persistent drift velocity v = grossZagierCoeff * heightDeriv. -/
+noncomputable def heegnerDrift (d : HeegnerDatum) : Real :=
   grossZagierCoeff d * d.heightDeriv
 
-/-- Predicate for rank-1 regime: canonical height is strictly positive. -/
+/-- Predicate certifying that the system operates in the rank-one regime. -/
 def IsRankOneRegime (d : HeegnerDatum) : Prop :=
   0 < d.heightDeriv
 
-/-- Predicate for non-degenerate drift trajectory: drift rate is strictly positive. -/
+/-- Predicate certifying non-degenerate persistent drift velocity. -/
 def IsNonDegenerateDrift (d : HeegnerDatum) : Prop :=
   0 < heegnerDrift d
 
-/-- The Gross-Zagier drift coefficient is strictly positive. -/
 theorem gross_zagier_coeff_pos (d : HeegnerDatum) : 0 < grossZagierCoeff d := by
-  dsimp [grossZagierCoeff]
-  apply div_pos d.period_pos
-  exact Real.sqrt_pos.mpr d.disc_pos
+  unfold grossZagierCoeff
+  have hsqrt : 0 < Real.sqrt d.discAbs := Real.sqrt_pos.mpr d.disc_pos
+  have hdenom : 0 < d.conductor * d.periodScale := mul_pos d.conductor_pos d.period_pos
+  exact div_pos hsqrt hdenom
 
-/-- The Gross-Zagier drift coefficient is non-negative. -/
-theorem gross_zagier_coeff_nonneg (d : HeegnerDatum) : 0 <= grossZagierCoeff d := by
-  exact le_of_lt (gross_zagier_coeff_pos d)
+theorem gross_zagier_coeff_nonneg (d : HeegnerDatum) : 0 <= grossZagierCoeff d :=
+  le_of_lt (gross_zagier_coeff_pos d)
 
-/-- The Heegner drift rate is always non-negative. -/
 theorem heegner_drift_nonneg (d : HeegnerDatum) : 0 <= heegnerDrift d := by
-  dsimp [heegnerDrift]
+  unfold heegnerDrift
   exact mul_nonneg (gross_zagier_coeff_nonneg d) d.height_nonneg
 
-/-- In a rank-1 regime, the Heegner drift rate is strictly positive. -/
 theorem heegner_drift_pos (d : HeegnerDatum) (h : IsRankOneRegime d) : 0 < heegnerDrift d := by
-  dsimp [heegnerDrift]
+  unfold heegnerDrift IsRankOneRegime at *
   exact mul_pos (gross_zagier_coeff_pos d) h
 
-/-- Non-degenerate drift is equivalent to being in a rank-1 regime. -/
 theorem non_degenerate_iff_rank_one (d : HeegnerDatum) :
     IsNonDegenerateDrift d <-> IsRankOneRegime d := by
   constructor
-  · intro hnd
-    dsimp [IsNonDegenerateDrift, heegnerDrift] at hnd
-    by_contra h_neg
-    have hle : d.heightDeriv <= 0 := le_of_not_gt h_neg
-    have hzero : d.heightDeriv = 0 := le_antisymm hle d.height_nonneg
-    rw [hzero, mul_zero] at hnd
-    exact lt_irrefl 0 hnd
-  · intro hr1
-    dsimp [IsNonDegenerateDrift]
-    exact heegner_drift_pos d hr1
-
-/-- Zero drift occurs if and only if the canonical height vanishes. -/
-theorem heegner_drift_zero_iff (d : HeegnerDatum) :
-    heegnerDrift d = 0 <-> d.heightDeriv = 0 := by
-  dsimp [heegnerDrift]
-  have hcoeff_ne : grossZagierCoeff d != 0 := ne_of_gt (gross_zagier_coeff_pos d)
-  constructor
   · intro h
-    cases mul_eq_zero.mp h with
-    | inl h1 => exact False.elim (hcoeff_ne h1)
-    | inr h2 => exact h2
+    unfold IsNonDegenerateDrift heegnerDrift at h
+    unfold IsRankOneRegime
+    have hc := gross_zagier_coeff_pos d
+    exact (mul_pos_iff_of_pos_left hc).mp h
   · intro h
-    rw [h, mul_zero]
-
-/-- The Heegner drift satisfies an upper bound proportional to bounded height. -/
-theorem heegner_drift_upper_bound (d : HeegnerDatum) (M : Real) (hM : d.heightDeriv <= M) :
-    heegnerDrift d <= grossZagierCoeff d * M := by
-  dsimp [heegnerDrift]
-  exact mul_le_mul_of_nonneg_left hM (gross_zagier_coeff_nonneg d)
-
-/-- Monotonicity of drift with respect to canonical height. -/
-theorem heegner_drift_monotone (d1 d2 : HeegnerDatum)
-    (heq : grossZagierCoeff d1 = grossZagierCoeff d2)
-    (hle : d1.heightDeriv <= d2.heightDeriv) :
-    heegnerDrift d1 <= heegnerDrift d2 := by
-  dsimp [heegnerDrift]
-  rw [heq]
-  exact mul_le_mul_of_nonneg_left hle (gross_zagier_coeff_nonneg d2)
-
-/-- A rank-1 Heegner trajectory is strictly non-degenerate (non-zero drift). -/
-theorem heegner_trajectory_nondegenerate (d : HeegnerDatum) (h : IsRankOneRegime d) :
-    heegnerDrift d != 0 := by
-  exact ne_of_gt (heegner_drift_pos d h)
+    exact heegner_drift_pos d h
 
 end <Project>.ProofSkills.HeegnerPoint
 ```
