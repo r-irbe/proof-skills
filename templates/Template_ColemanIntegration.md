@@ -1,41 +1,43 @@
-# Template_ColemanIntegration - Coleman P-adic Integration, Path Independence & Frobenius Potentials
+# Template_ColemanIntegration - Coleman P-adic Integration & Conservative Potential Fields
 
-Use this template for **Coleman p-adic line integrals**, **rigid analytic path independence**,
-**Frobenius structure scaling**, and **conservative Markov potential drift**.
+Use this template for **Coleman p-adic line integrals**, **path-independent Markov potentials**,
+**Chasles additivity**, **Frobenius scaling**, and **closed-loop vanishing**.
 
-In arithmetic geometry and rigid analysis (FLT), Robert Coleman's theory of p-adic integration
-constructs line integrals of differential forms along rigid analytic curves. For an exact form
-omega = dPhi, the Coleman integral satisfies path independence, Chasles additivity
-(int_P^Q + int_Q^R = int_P^R), skew-symmetry (int_Q^P = -int_P^Q), and Frobenius covariance
-F^* omega = p * omega. Loop integrals around closed cycles vanish identically: oint = 0.
+In arithmetic geometry and p-adic Hodge theory (FLT), Robert Coleman developed a theory of
+p-adic integration on curves and abelian varieties. Given a rigid analytic space X over Q_p
+and a differential form omega, the Coleman integral int_P^Q omega satisfies path independence,
+Chasles additivity (int_P^R = int_P^Q + int_Q^R), and Frobenius equivariance: F* omega = p omega
+implies int_{F(P)}^{F(Q)} omega = p int_P^Q omega. For exact forms omega = dPhi, the integral
+evaluates strictly to potential differences: int_P^Q dPhi = Phi(Q) - Phi(P).
 
-In stochastic consensus and multi-agent dynamics, this structure transfers directly to:
-* Conservative Markov drift fields derived from scalar potential functions Phi(x).
-* Vanishing of cyclic entropy accumulation and non-equilibrium circulating currents.
-* Exact waypoint cancellation in multi-step consensus trajectories.
-* Two-sided bounded potential drift under uniform potential bounds.
-* Monotonic potential drift along ascending governance potential directions.
+In stochastic consensus, multi-agent safety, and reinforcement learning, this structure models
+conservative potential drift:
+* State transition drift deriving from a scalar potential field Phi(x).
+* Vanishing of closed-loop integrals (oint = 0), preventing non-equilibrium entropy leakage.
+* Intermediate waypoint cancellation in multi-step trajectories (path independence).
+* Uniform bounded drift under bounded potential envelopes.
+* Monotonicity of potential descent in dissipative optimization dynamics.
 
 ## Main results
-* `ColemanField` - potential function Phi and positive Frobenius scaling factor
+* `ColemanField` - potential function Phi : Real -> Real with positive Frobenius factor
 * `colemanIntegral` - line integral int_P^Q dPhi = Phi(Q) - Phi(P)
-* `coleman_integral_self` - vanishing of degenerate integral int_P^P = 0
-* `coleman_integral_reverse` - skew-symmetry int_Q^P = -int_P^Q
-* `coleman_integral_additive` - Chasles additivity int_P^Q + int_Q^R = int_P^R
-* `coleman_closed_loop_vanishes` - closed loop integral vanishes oint = 0
-* `frob_integral_scale` - Frobenius scaling covariance
-* `totalPathDrift` - composite multi-step path drift
+* `coleman_integral_self` - vanishing of degenerate integral at a point: int_P^P = 0
+* `coleman_integral_reverse` - skew-symmetry under orientation reversal: int_Q^P = -int_P^Q
+* `coleman_integral_additive` - Chasles relation across waypoints: int_P^Q + int_Q^R = int_P^R
+* `coleman_closed_loop_vanishes` - closed loop cancellation: int_P^Q + int_Q^P = 0
+* `frob_integral_scale` - scaling covariance under Frobenius dilation
+* `totalPathDrift` - composite drift over multi-step state sequences
 * `path_independence_triangle` - independence from intermediate waypoint states
-* `conservative_drift_bounded` - uniform bound |int_P^Q| <= 2 * B under |Phi| <= B
-* `potential_monotone_drift` - non-negative line integral along ascending potential
+* `conservative_drift_bounded` - uniform bound |int_P^Q| <= 2B under bounded potential
+* `potential_monotone_drift` - non-negative line integrals along ascending potential
 
 ## References
 * FLT: `Integration/ColemanIntegral.lean`, `Rigid/FrobeniusStructure.lean`
-* Coleman, R. F. (1982), *Torsion points on curves and p-adic abelian integrals*, Annals of Mathematics 121(1), 111-168
+* Coleman, R. F. (1982), *p-adic integration on curves*, Invent. Math. 69, 375-408
 * Besser, A. (2002), *Coleman integration using the Tannakian formalism*, Math. Ann. 322, 19-48
 
 ## Tags
-template, coleman-integral, p-adic-analysis, rigid-spaces, frobenius-structure, conservative-drift, path-independence
+template, coleman-integral, p-adic-integration, frobenius-structure, conservative-drift, chasles-relation, path-independence
 
 ```lean
 /-
