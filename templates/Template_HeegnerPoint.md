@@ -97,13 +97,14 @@ theorem heegner_drift_pos (d : HeegnerDatum) (h : IsRankOneRegime d) : 0 < heegn
 theorem non_degenerate_iff_rank_one (d : HeegnerDatum) :
     IsNonDegenerateDrift d <-> IsRankOneRegime d := by
   constructor
-  · intro h
+  - intro h
     unfold IsNonDegenerateDrift heegnerDrift at h
     unfold IsRankOneRegime
     have hc := gross_zagier_coeff_pos d
     exact (mul_pos_iff_of_pos_left hc).mp h
-  · intro h
+  - intro h
     exact heegner_drift_pos d h
+
 
 end <Project>.ProofSkills.HeegnerPoint
 ```
