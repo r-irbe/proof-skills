@@ -89,7 +89,7 @@ theorem coleman_closed_loop_vanishes (F : ColemanField) (P Q : Real) :
 
 /-- Frobenius scaling of Coleman integrals: scaling the potential scales line integrals. -/
 theorem frob_integral_scale (F : ColemanField) (c : Real) (hc : 0 < c) (P Q : Real) :
-    colemanIntegral ⟨fun x => c * F.potential x, c, hc⟩ P Q = c * colemanIntegral F P Q := by
+    colemanIntegral { potential := fun x => c * F.potential x, frob_eval := c, h_frob_pos := hc } P Q = c * colemanIntegral F P Q := by
   unfold colemanIntegral
   ring
 
