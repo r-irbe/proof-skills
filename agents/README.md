@@ -26,7 +26,10 @@ back to normal pi skill discovery.
   `lean-proof`, `lean-enforcement`; GUARDRAILS mandatory read.
 - `enforcement-auditor.md` — gate/harness audit binding `lean-enforcement`,
   `lean-quality-engine`; AOR-11 coverage-set discipline.
+- `formalization-breakdown-curator.md` — multi-wave formalization archaeology binding `lean-formalization-breakdown`,
+  `lean-blueprint`, `lean-enforcement`; census, DAG depth, landmark extraction.
+- `math-pedagogy-author.md` — mathematical narrative and textbook-grade exposition binding `lean-pedagogical-exposition`,
+  `lean-blueprint`, `lean-doc-improvement`.
 
-Both are read-only analysts (`tools: read, grep, find, ls, bash`) and
-package-qualified as `proof-skills.proof-reviewer` /
-`proof-skills.enforcement-auditor`.
+All are read-only analysts (`tools: read, grep, find, ls, bash`) and
+package-qualified under `proof-skills`.

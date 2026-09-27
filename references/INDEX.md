@@ -33,6 +33,8 @@ inspection, tactic execution, and module hygiene.
 | [lean4-tactic-hierarchy.md](lean4-tactic-hierarchy.md) | Canonical tactic dispatch order: rfl -> omega / linarith -> simp only -> aesop -> exact?. Reversibility and termination bounds. | lean-proof, lean-mwe |
 | [lean4-proof-strategy.md](lean4-proof-strategy.md) | Proof decomposition: have / suffices subgoal cuts, forward vs backward reasoning, induction structuring. | lean-proof, lean-specification |
 | [lean4-module-dependency-guide.md](lean4-module-dependency-guide.md) | Layer 0 to 4 DAG architecture, transitive import blast radius, forward and reverse module navigation. | lean-build, lean-blueprint |
+| [formalization_breakdown_guide.md](formalization_breakdown_guide.md) | 8-wave architectural deconstruction of monumental formalizations, static census, DAG depth, landmark extraction. | lean-formalization-breakdown |
+| [lean_to_math_exposition_patterns.md](lean_to_math_exposition_patterns.md) | Translation dictionary from Lean types and proof tactics to beautiful, standard mathematical prose and learning materials. | lean-pedagogical-exposition |
 | [mathlib4-conventions.md](mathlib4-conventions.md) | Mathlib4 style guide: snake_case for lemmas, camelCase for types, docstrings, binder hygiene, and implicit arguments. | lean-proof, lean-pr |
 | [AUTHORING.md](AUTHORING.md) | Authoring standards for proof-skills SKILL.md contracts, frontmatter validation, and evaluation rubrics. | lean-quality-engine |
 

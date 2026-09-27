@@ -55,6 +55,7 @@ diagnostic extraction, bisection, and pull-request hygiene.
 | [lean-enforcement](skills/lean-enforcement/SKILL.md) | Auditor | Tier 1 | Zero-sorry, zero-warning CI policy enforcement. |
 | [lean-quality-engine](skills/lean-quality-engine/SKILL.md) | Auditor | Tier 2 | Quality metrics, heartbeats monitoring, proof complexity scoring. |
 | [lean-tautology-triage](skills/lean-tautology-triage/SKILL.md) | Auditor | Tier 1 | Detection of circular proofs, vacuous hypotheses, and tautological goals. |
+| [lean-formalization-breakdown](skills/lean-formalization-breakdown/SKILL.md) | Auditor / Specifier | Tier 1 | Multi-wave formalization breakdown, static census, DAG depth, landmark extraction. |
 
 ---
 
@@ -110,7 +111,7 @@ Engineering operations, documentation review councils, and cross-session knowled
 | **Legal & Intelligence** | [applied-intelligence-analysis](skills/applied-intelligence-analysis/SKILL.md), [applied-legal-reasoning](skills/applied-legal-reasoning/SKILL.md), [applied-strategy-analysis](skills/applied-strategy-analysis/SKILL.md) |
 | **Strategy & Management** | [math-product-management](skills/math-product-management/SKILL.md), [math-project-management](skills/math-project-management/SKILL.md), [math-strategy-studio](skills/math-strategy-studio/SKILL.md) |
 | **Councils & Review** | [lean-review-council](skills/lean-review-council/SKILL.md), [research-council](skills/research-council/SKILL.md), [research-synthesis-engine](skills/research-synthesis-engine/SKILL.md), [epistemic-discovery-engine](skills/epistemic-discovery-engine/SKILL.md), [epistemic-mapping](skills/epistemic-mapping/SKILL.md) |
-| **Doc & Synthesis** | [lean-doc-feedback](skills/lean-doc-feedback/SKILL.md), [lean-doc-improvement](skills/lean-doc-improvement/SKILL.md), [lean-report](skills/lean-report/SKILL.md), [lean-research](skills/lean-research/SKILL.md), [lean-research-types](skills/lean-research-types/SKILL.md), [lean-package-research](skills/lean-package-research/SKILL.md), [lean-integration-protocol](skills/lean-integration-protocol/SKILL.md) |
+| **Doc & Synthesis** | [lean-doc-feedback](skills/lean-doc-feedback/SKILL.md), [lean-doc-improvement](skills/lean-doc-improvement/SKILL.md), [lean-report](skills/lean-report/SKILL.md), [lean-research](skills/lean-research/SKILL.md), [lean-research-types](skills/lean-research-types/SKILL.md), [lean-package-research](skills/lean-package-research/SKILL.md), [lean-integration-protocol](skills/lean-integration-protocol/SKILL.md), [lean-pedagogical-exposition](skills/lean-pedagogical-exposition/SKILL.md) |
 | **Gardening & Memory** | [lean-zettelkasten](skills/lean-zettelkasten/SKILL.md), [lean-retro-methodology](skills/lean-retro-methodology/SKILL.md), [lean-retroactive-audit](skills/lean-retroactive-audit/SKILL.md) |
 
 ---
