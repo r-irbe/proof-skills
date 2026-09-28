@@ -1,13 +1,13 @@
 # Template_ModularJacobianMordellWeil - Modular Jacobian Mordell-Weil Lattices & Regulators
 
-Use this template for **modular Jacobian Mordell-Weil lattices**, **Gram regulator determinants**,
-**finite generation decompositions**, and **non-degenerate quadratic energy envelopes**.
+Use this template for **modular Jacobian Mordell-Weil lattices**, **Gram regulator matrices**,
+**finitely generated abelian groups**, and **non-degenerate Markov flow quadratic energy envelopes**.
 
 In arithmetic geometry and Fermat's Last Theorem / modular forms:
-Let J_0(N) be the modular Jacobian of curve X_0(N) over a number field K.
+Let X_0(N) be a modular curve over a number field K, and let J_0(N) be its modular Jacobian.
 The Mordell-Weil theorem asserts that the group of K-rational points J_0(N)(K) is
 a finitely generated abelian group:
-  J_0(N)(K) = Z^r + J_0(N)(K)_tors.
+  J_0(N)(K) =~ Z^r + J_0(N)(K)_tors.
 The Mordell-Weil lattice Lambda = J_0(N)(K) / tors equipped with the Neron-Tate height pairing
 < ., . >_NT has rank r and strictly positive Gram regulator
   Reg(J_0(N)/K) = det(<P_i, P_j>_NT) > 0,
@@ -21,16 +21,16 @@ multi-agent drift remains confined within calibrated safety envelopes.
 
 ## Main results
 * `<ModularJacobianMordellWeilDatum>` - datum (mordellWeilNorm, mordellWeilBound, gramRegulator, latticeTolerance, curvatureWeight)
-* `<mordellWeilDefect>` - defect between theoretical bound ceiling and observed Mordell-Weil norm
+* `<mordellWeilDefect>` - defect between theoretical bound ceiling and observed Mordell-Weil lattice norm
 * `<normalizedMordellWeilRatio>` - normalized ratio of observed Mordell-Weil norm to bound ceiling
-* `<gramRegulatorBound>` - Gram regulator capacity bound scaled by bound ceiling and volume
+* `<gramRegulatorBound>` - Gram regulator capacity bound scaled by bound ceiling and Gram regulator volume
 * `<mordellWeilSlack>` - slack between tolerance-scaled bound and observed lattice norm
-* `<weightedMordellWeilBound>` - curvature-weighted bound accounting for non-degenerate Gram geometry
+* `<weightedMordellWeilBound>` - curvature-weighted bound accounting for non-degenerate Gram regulator geometry
 * `<IsMordellWeilBounded>` - predicate: observed Mordell-Weil norm is bounded by bound ceiling
 * `<IsExactMordellWeil>` - predicate: observed Mordell-Weil norm saturates theoretical bound ceiling
 * `<IsMordellWeilLatticeSafe>` - predicate: observed Mordell-Weil norm is within certified lattice tolerance
 * `<mordell_weil_defect_nonneg_of_bounded>` - Mordell-Weil defect is non-negative for bounded systems
-* `<mordell_weil_bounded_iff_defect_nonneg>` - boundedness is equivalent to non-negative defect
+* `<mordell_weil_bounded_iff_defect_nonneg>` - boundedness is equivalent to non-negative Mordell-Weil defect
 * `<normalized_mordell_weil_ratio_nonneg>` - normalized Mordell-Weil ratio is non-negative
 * `<normalized_mordell_weil_ratio_le_one_of_bounded>` - normalized ratio is bounded by 1 for bounded systems
 * `<gram_regulator_bound_pos>` - Gram regulator capacity bound is strictly positive
@@ -38,23 +38,23 @@ multi-agent drift remains confined within calibrated safety envelopes.
 * `<exact_mordell_weil_implies_bounded>` - exact saturation implies bounded system
 * `<exact_mordell_weil_defect_zero>` - exact defect vanishes identically
 * `<exact_mordell_weil_ratio_one>` - exact saturation has normalized ratio 1
-* `<mordell_weil_lattice_safe_iff_slack_nonneg>` - lattice safety is equivalent to non-negative slack
+* `<mordell_weil_lattice_safe_iff_slack_nonneg>` - lattice safety is equivalent to non-negative Mordell-Weil slack
 * `<mordell_weil_slack_nonneg_of_safe>` - slack is non-negative for lattice-safe systems
-* `<mordell_weil_norm_reconstruction>` - Mordell-Weil norm reconstructed from normalized ratio and bound
+* `<mordell_weil_reconstruction>` - Mordell-Weil norm reconstructed from normalized ratio and bound ceiling
 * `<weighted_mordell_weil_bound_pos>` - curvature-weighted bound is strictly positive
-* `<gram_regulator_capacity_scale>` - Gram regulator bound scales non-negatively with positive scaling
-* `<gram_regulator_capacity_monotone>` - Gram regulator bound is monotone in bound ceiling
-* `<mordell_weil_defect_monotone>` - defect is monotone in lower bounds on observed norm
+* `<gram_regulator_scale>` - Gram regulator capacity bound scales non-negatively with positive scaling
+* `<gram_regulator_monotone>` - Gram regulator capacity bound is monotone in bound ceiling
+* `<mordell_weil_defect_monotone>` - defect is monotone in lower bounds on observed lattice norm
 * `<mordell_weil_slack_monotone_tolerance>` - slack is monotone in lattice tolerance parameter
 
 ## References
 * FLT: `StochasticCCV/Core/ModularJacobianMordellWeil.lean`
 * Mordell, L. J. (1922), *On the rational solutions of the indeterminate equations of the third and fourth degrees*, Proc. Cambridge Philos. Soc. 21, 179-192.
 * Weil, A. (1928), *L'arithmetique sur les courbes algebriques*, Acta Math. 52, 281-315.
-* Mazur, B. (1977), *Modular curves and the Eisenstein ideal*, Publ. Math. IHES 47, 33-186.
+* Birch, B. J., Swinnerton-Dyer, H. P. F. (1965), *Notes on elliptic curves. II*, J. Reine Angew. Math. 218, 79-108.
 
 ## Tags
-template, modular-jacobian, mordell-weil, lattice, gram-regulator, quadratic-energy, markov-flow
+template, modular-jacobian, mordell-weil, gram-regulator, lattice-volume, quadratic-energy, markov-flow
 
 ```lean
 /-
@@ -167,7 +167,7 @@ theorem <mordell_weil_slack_nonneg_of_safe> (d : <ModularJacobianMordellWeilDatu
     (h : <IsMordellWeilLatticeSafe> d) : 0 <= <mordellWeilSlack> d :=
   (<mordell_weil_lattice_safe_iff_slack_nonneg> d).mp h
 
-theorem <mordell_weil_norm_reconstruction> (d : <ModularJacobianMordellWeilDatum>) :
+theorem <mordell_weil_reconstruction> (d : <ModularJacobianMordellWeilDatum>) :
     d.mordellWeilNorm = <normalizedMordellWeilRatio> d * d.mordellWeilBound := by
   dsimp [<normalizedMordellWeilRatio>]
   have h_ne : d.mordellWeilBound != 0 := ne_of_gt d.bound_pos
@@ -182,11 +182,11 @@ theorem <weighted_mordell_weil_bound_pos> (d : <ModularJacobianMordellWeilDatum>
   have h_sum : 0 < 1 + d.curvatureWeight * d.latticeTolerance := by linarith
   exact mul_pos d.bound_pos h_sum
 
-theorem <gram_regulator_capacity_scale> (d : <ModularJacobianMordellWeilDatum>) (c : Real) (hc : 0 <= c) :
+theorem <gram_regulator_scale> (d : <ModularJacobianMordellWeilDatum>) (c : Real) (hc : 0 <= c) :
     0 <= c * <gramRegulatorBound> d :=
   mul_nonneg hc (<gram_regulator_bound_nonneg> d)
 
-theorem <gram_regulator_capacity_monotone> (d : <ModularJacobianMordellWeilDatum>) (b : Real)
+theorem <gram_regulator_monotone> (d : <ModularJacobianMordellWeilDatum>) (b : Real)
     (hb : d.mordellWeilBound <= b) :
     <gramRegulatorBound> d <= b * d.gramRegulator := by
   dsimp [<gramRegulatorBound>]
