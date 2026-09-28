@@ -395,6 +395,85 @@ def generate_scaffold_blueprint(
     return "\n".join(out)
 
 
+def generate_graph_json(
+    target_dir: Path,
+    records: List[Dict[str, Any]],
+    forward_adj: Dict[str, List[str]],
+) -> str:
+    """Generate visualizer-compatible graph JSON with nodes and edges."""
+    blueprint_file = None
+    for candidate in [
+        target_dir / "blueprint" / "src" / "content.tex",
+        target_dir / "content.tex",
+        target_dir.parent / "blueprint" / "src" / "content.tex",
+    ]:
+        if candidate.is_file():
+            blueprint_file = candidate
+            break
+
+    nodes: List[Dict[str, Any]] = []
+    edges: List[Dict[str, str]] = []
+
+    if blueprint_file:
+        text = blueprint_file.read_text(encoding="utf-8")
+        decl_blocks = re.findall(
+            r"\\begin\{(theorem|lemma|definition)\}(?:\[(.*?)\])?(.*?)\\end\{\1\}",
+            text,
+            re.DOTALL,
+        )
+        for kind, title, body in decl_blocks:
+            lbl_match = re.search(r"\\label\{([^}]+)\}", body)
+            lean_match = re.search(r"\\lean\{([^}]+)\}", body)
+            uses_matches = re.findall(r"\\uses\{([^}]+)\}", body)
+
+            node_id = lbl_match.group(1) if lbl_match else (lean_match.group(1) if lean_match else (title or f"node_{len(nodes)}"))
+            label = title if title else (lean_match.group(1) if lean_match else node_id)
+
+            uses_list = []
+            for u in uses_matches:
+                for item in u.split(","):
+                    item = item.strip()
+                    if item:
+                        uses_list.append(item)
+
+            normalized_kind = "theorem" if kind in ("theorem", "lemma") else "definition"
+
+            nodes.append({
+                "id": node_id,
+                "label": label,
+                "kind": normalized_kind,
+                "module": lean_match.group(1) if lean_match else "",
+                "statement": f"{kind} {label}",
+                "docstring": f"Extracted from formal blueprint {blueprint_file.name}",
+                "uses": uses_list,
+            })
+
+            for u in uses_list:
+                edges.append({"source": u, "target": node_id})
+
+    if not nodes:
+        all_modules = {r["module_name"] for r in records}
+        for r in records:
+            mod_name = r["module_name"]
+            sorries = r["sorries"]
+            kind = "axiom" if sorries > 0 else ("theorem" if (r["theorems"] + r["lemmas"]) > 0 else "definition")
+            local_imports = [imp for imp in r["imports"] if imp in all_modules]
+
+            nodes.append({
+                "id": mod_name,
+                "label": mod_name,
+                "kind": kind,
+                "module": r["rel_path"],
+                "statement": f"Module {mod_name} | {r['total_lines']} lines | {r['theorems'] + r['lemmas']} thms | {r['defs'] + r['structures']} defs | {sorries} sorries",
+                "docstring": f"Lean 4 module located at {r['rel_path']}. Local imports: {len(local_imports)}.",
+                "uses": local_imports,
+            })
+            for imp in local_imports:
+                edges.append({"source": imp, "target": mod_name})
+
+    return json.dumps({"nodes": nodes, "edges": edges}, indent=2)
+
+
 def run_self_test() -> int:
     """Run internal sanity checks."""
     import tempfile
@@ -416,6 +495,14 @@ def run_self_test() -> int:
         assert max_d == 2, f"Expected depth 2, got {max_d}"
         assert l_path == ["A", "B"], f"Unexpected path {l_path}"
 
+        # Test graph generation
+        graph_str = generate_graph_json(p, [r1, r2], f_adj)
+        graph_data = json.loads(graph_str)
+        assert len(graph_data["nodes"]) == 2
+        assert len(graph_data["edges"]) == 1
+        assert graph_data["edges"][0]["source"] == "B"
+        assert graph_data["edges"][0]["target"] == "A"
+
     print("[formalization_breakdown: SELF-TEST PASSED]")
     return 0
 
@@ -425,7 +512,8 @@ def main() -> int:
         description="Lean 4 Universal Formalization Breakdown and Dependency Analyzer."
     )
     parser.add_argument("path", nargs="?", default=".", help="Target Lean project root directory")
-    parser.add_argument("--format", choices=["markdown", "json", "summary"], default="markdown", help="Output format")
+    parser.add_argument("--format", choices=["markdown", "json", "summary", "graph"], default="markdown", help="Output format")
+    parser.add_argument("--json-graph", help="Emit interactive visualizer graph JSON to specified file")
     parser.add_argument("--scaffold-plan", action="store_true", help="Emit scaffolded master investigation plan")
     parser.add_argument("--scaffold-blueprint", action="store_true", help="Emit Lean Blueprint LaTeX skeleton")
     parser.add_argument("--output", "-o", help="Write output to specified file")
@@ -441,7 +529,10 @@ def main() -> int:
         return 1
 
     t0 = time.time()
-    lean_files = sorted(target_dir.rglob("*.lean"))
+    lean_files = [
+        f for f in sorted(target_dir.rglob("*.lean"))
+        if not any(p.startswith(".") or p in ("lake-packages", ".lake") for p in f.relative_to(target_dir).parts[:-1])
+    ]
     if not lean_files:
         print(f"Error: No .lean files found under {target_dir}.", file=sys.stderr)
         return 1
@@ -453,8 +544,17 @@ def main() -> int:
     f_adj, r_adj, sccs, max_depth, longest_path = build_dependency_graph(records)
     elapsed = time.time() - t0
 
+    if args.json_graph:
+        graph_json = generate_graph_json(target_dir, records, f_adj)
+        jg_path = Path(args.json_graph).resolve()
+        jg_path.parent.mkdir(parents=True, exist_ok=True)
+        jg_path.write_text(graph_json, encoding="utf-8")
+        print(f"Visualizer graph JSON written to {jg_path}")
+
     if args.scaffold_blueprint:
         rendered = generate_scaffold_blueprint(target_dir, records)
+    elif args.format == "graph":
+        rendered = generate_graph_json(target_dir, records, f_adj)
     elif args.format == "json":
         data = {
             "root_path": str(target_dir),
@@ -482,7 +582,7 @@ def main() -> int:
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(rendered, encoding="utf-8")
         print(f"Report written to {out_path}")
-    else:
+    elif not args.json_graph:
         print(rendered)
 
     return 0
