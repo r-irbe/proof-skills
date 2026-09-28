@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lean 4 Formalization DAG Visualizer & Tufte Proof-Walk Explorer</title>
+    <!-- Strict 7-bit ASCII only (INV-001). Standalone zero-dependency visualizer. -->
+    <style>
+        :root {
+            --bg-color: #fffff8;
+            --text-color: #111111;
+            --text-muted: #555555;
+            --border-color: #d3d3d0;
+            --card-bg: #fcfcf6;
+            --code-bg: #f4f4ea;
+            --thm-color: #2b6cb0;
+            --def-color: #2f855a;
+            --axiom-color: #c53030;
+            --accent-color: #b7791f;
+            --sidebar-width: 440px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "ETBembo", "Palatino Linotype", "Palatino", "Georgia", serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            z-index: 10;
+        }
+
+        .header-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .header-title span {
+            color: var(--thm-color);
+            font-style: italic;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        select, input[type="text"], button {
+            font-family: inherit;
+            font-size: 0.85rem;
+            padding: 5px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: #ffffff;
+            color: var(--text-color);
+            outline: none;
+        }
+
+        button {
+            cursor: pointer;
+            background-color: var(--code-bg);
+            transition: background-color 0.15s ease;
+        }
+
+        button:hover {
+            background-color: #eaeada;
+        }
+
+        button.primary {
+            background-color: var(--thm-color);
+            color: #ffffff;
+            border-color: var(--thm-color);
+        }
+
+        button.primary:hover {
+            background-color: #23538a;
+        }
+
+        .search-box {
+            width: 220px;
+        }
+
+        main {
+            display: flex;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #viewport-container {
+            flex: 1;
+            position: relative;
+            background-color: var(--bg-color);
+            overflow: hidden;
+            cursor: grab;
+        }
+
+        #viewport-container:active {
+            cursor: grabbing;
+        }
+
+        svg#graph-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .zoom-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 5;
+        }
+
+        .zoom-controls button {
+            width: 32px;
+            height: 32px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--card-bg);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .legend {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(252, 252, 246, 0.92);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            z-index: 5;
+            backdrop-filter: blur(2px);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        #sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--card-bg);
+            border-left: 1px solid var(--border-color);
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: -2px 0 6px rgba(0,0,0,0.02);
+            z-index: 8;
+        }
+
+        .tufte-proof-card {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .card-header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .declaration-kind {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 3px;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+        }
+
+        .badge-theorem, .badge-lemma {
+            background-color: #ebf8ff;
+            color: var(--thm-color);
+            border: 1px solid #bee3f8;
+        }
+
+        .badge-definition, .badge-structure {
+            background-color: #f0fff4;
+            color: var(--def-color);
+            border: 1px solid #c6f6d5;
+        }
+
+        .badge-axiom {
+            background-color: #fff5f5;
+            color: var(--axiom-color);
+            border: 1px solid #fed7d7;
+        }
+
+        .declaration-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+            word-break: break-word;
+        }
+
+        .layer-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            font-size: 0.9rem;
+        }
+
+        .declaration-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .pedagogical-narrative {
+            background-color: var(--bg-color);
+            border-left: 3px solid var(--accent-color);
+            padding: 8px 12px;
+            font-style: italic;
+            color: #333333;
+        }
+
+        pre.lean-signature {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 10px;
+            overflow-x: auto;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            font-size: 0.82rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .section-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .milestone-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .milestone-list li {
+            padding: 4px 8px;
+            background-color: var(--code-bg);
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            border-left: 2px solid var(--thm-color);
+        }
+
+        .premise-tags, .dependent-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tufte-tag {
+            cursor: pointer;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.78rem;
+            font-family: monospace;
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            transition: all 0.15s ease;
+        }
+
+        .tufte-tag:hover {
+            background-color: #e2e8f0;
+            border-color: var(--thm-color);
+            color: var(--thm-color);
+        }
+
+        /* SVG Graph Styling */
+        g.edge line {
+            stroke: #a0aec0;
+            stroke-width: 1.5px;
+            transition: stroke 0.2s, stroke-width 0.2s;
+        }
+
+        g.edge.highlighted line {
+            stroke: var(--accent-color);
+            stroke-width: 2.5px;
+        }
+
+        g.node {
+            cursor: pointer;
+        }
+
+        g.node circle {
+            transition: transform 0.15s ease, stroke-width 0.15s ease, filter 0.15s ease;
+        }
+
+        g.node:hover circle {
+            stroke-width: 3px;
+            stroke: #1a202c;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+        }
+
+        g.node.selected circle {
+            stroke-width: 4px;
+            stroke: var(--accent-color);
+            filter: drop-shadow(0 0 6px rgba(183, 121, 31, 0.5));
+        }
+
+        g.node text {
+            user-select: none;
+            pointer-events: none;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 11px;
+            fill: #2d3748;
+        }
+
+        /* Modal styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #ffffff;
+            border-radius: 6px;
+            width: 560px;
+            max-width: 90vw;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .modal h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .modal textarea {
+            width: 100%;
+            height: 200px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title">
+            Formalization DAG Explorer &bull; <span>Lean 4 Proof Architecture</span>
+        </div>
+        <div class="controls">
+            <label for="dataset-select">Corpus:</label>
+            <select id="dataset-select">
+                <option value="nse">Navier-Stokes & Euler (3D Blowup)</option>
+                <option value="flt">Fermat's Last Theorem (Modularity)</option>
+                <option value="easci">EASCI (Stochastic CCV Contraction)</option>
+            </select>
+
+            <label for="direction-select">Layout:</label>
+            <select id="direction-select">
+                <option value="LR">Left to Right</option>
+                <option value="TB">Top to Bottom</option>
+            </select>
+
+            <input type="text" id="search-input" class="search-input" placeholder="Search declarations...">
+            
+            <button id="btn-load-custom">Load JSON...</button>
+            <button id="btn-export-svg">Export SVG</button>
+            <button id="btn-reset-view">Reset View</button>
+        </div>
+    </header>
+
+    <main>
+        <div id="viewport-container">
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-dot" style="background-color: var(--thm-color);"></div>
+                    <span>Theorem / Lemma</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background-color: var(--def-color);"></div>
+                    <span>Definition / Structure</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background-color: var(--axiom-color);"></div>
+                    <span>Challenge / Axiom</span>
+                </div>
+            </div>
+
+            <div class="zoom-controls">
+                <button id="btn-zoom-in" title="Zoom In">+</button>
+                <button id="btn-zoom-out" title="Zoom Out">&minus;</button>
+                <button id="btn-zoom-fit" title="Fit to Screen">&#x2922;</button>
+            </div>
+
+            <svg id="graph-canvas">
+                <defs>
+                    <marker id="arrow" viewBox="0 0 10 10" refX="22" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#a0aec0"/>
+                    </marker>
+                    <marker id="arrow-highlight" viewBox="0 0 10 10" refX="22" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#b7791f"/>
+                    </marker>
+                </defs>
+                <g id="transform-group">
+                    <g id="edges-group"></g>
+                    <g id="nodes-group"></g>
+                </g>
+            </svg>
+        </div>
+
+        <aside id="sidebar">
+            <div id="sidebar-content">
+                <p style="color: var(--text-muted); font-style: italic;">
+                    Select any declaration in the DAG to inspect its formal signature, mathematical intuition, proof strategy milestones, and premises.
+                </p>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Custom Graph Import Modal -->
+    <div id="modal-import" class="modal-overlay">
+        <div class="modal">
+            <h2>Import Formalization DAG JSON</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">
+                Paste JSON graph output from <code>formalization_breakdown.py --json-graph</code> or <code>lean_dependency_subgraph</code>.
+            </p>
+            <textarea id="import-json-text" placeholder='{"nodes": [...], "edges": [...]}'></textarea>
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <input type="file" id="import-file-input" accept=".json">
+                <div class="modal-actions">
+                    <button id="btn-cancel-import">Cancel</button>
+                    <button id="btn-apply-import" class="primary">Load Graph</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Embedded Datasets & Application Logic -->
+    <script>
+        const CORPUS_DATASETS = {
+            nse: {
+                nodes: [
+                    {
+                        id: "def:mat3",
+                        label: "EulerPacketPiola.Mat3",
+                        kind: "definition",
+                        module: "Euler.PacketPiolaAlgebra",
+                        line: 17,
+                        statement: "abbrev Mat3 := Matrix (Fin 3) (Fin 3) Real",
+                        docstring: "Algebra of 3x3 matrices over real space Euclidean coordinates."
+                    },
+                    {
+                        id: "def:matrix_antisym",
+                        label: "EulerPacketPiola.matrixAntisym",
+                        kind: "definition",
+                        module: "Euler.PacketPiolaAlgebra",
+                        line: 19,
+                        statement: "def matrixAntisym (A : Mat3) : Fin 3 -> Real :=\n  ![A 2 1 - A 1 2, A 0 2 - A 2 0, A 1 0 - A 0 1]",
+                        docstring: "Vector antisymmetrization of 3x3 real matrices."
+                    },
+                    {
+                        id: "thm:matrixantisym_congruence",
+                        label: "EulerPacketPiola.matrixAntisym_congruence",
+                        kind: "theorem",
+                        module: "Euler.PacketPiolaAlgebra",
+                        line: 23,
+                        statement: "theorem matrixAntisym_congruence (F A : Mat3) :\n  matrixAntisym (F.transpose * A * F) = F.adjugate.mulVec (matrixAntisym A)",
+                        docstring: "Polynomial identity establishing that congruence transformations act by algebraic adjugate without invertibility assumptions.",
+                        milestones: ["Line 25: ext i", "Line 26: fin_cases i", "Line 30: ring"],
+                        uses: ["def:matrix_antisym"]
+                    },
+                    {
+                        id: "def:transformed_curl",
+                        label: "EulerPacketPiola.transformedCurl",
+                        kind: "definition",
+                        module: "Euler.PacketPiola",
+                        line: 56,
+                        statement: "def transformedCurl (F : Space -> Space ~=L[Real] Space) (Q : Space -> Space) (x : Space) : Space :=\n  curlMatrix ((fderiv Real Q x).comp (F x).symm.toContinuousLinearMap)",
+                        docstring: "Slow transformed curl in deformed coordinate system."
+                    },
+                    {
+                        id: "thm:piola_curl",
+                        label: "EulerPacketPiola.piola_curl",
+                        kind: "theorem",
+                        module: "Euler.PacketPiola",
+                        line: 60,
+                        statement: "theorem piola_curl (Xi Q : Space -> Space) (hXi : ContDiff Real 2 Xi)\n  (F : Space ~=L[Real] Space) (x : Space) ... :\n  F.symm (curlMatrix ((fderiv Real Q x).comp F.symm.toContinuousLinearMap)) =\n    vectorCurl (pullbackCovector Xi Q) x",
+                        docstring: "Genuine Piola curl identity: second Frechet derivative symmetry eliminates derivative-of-Jacobian terms.",
+                        milestones: ["Line 67: rw [curl_pullbackCovector Xi Q hXi x hQ, hF]", "Line 68: exact (curlMatrix_piola F hdet (fderiv Real Q x)).symm"],
+                        uses: ["thm:matrixantisym_congruence", "def:transformed_curl"]
+                    },
+                    {
+                        id: "thm:divergence_piola_curl",
+                        label: "EulerPacketPiola.divergence_piola_curl",
+                        kind: "theorem",
+                        module: "Euler.PacketPiola",
+                        line: 77,
+                        statement: "theorem divergence_piola_curl (Xi Q : Space -> Space) ... (x : Space) :\n  divergence (fun y => (F y).symm (transformedCurl F Q y)) x = 0",
+                        docstring: "Exact solenoidal gauge without Biot-Savart nonlocal convolution.",
+                        milestones: ["Line 88: rw [he]", "Line 89: exact divergence_curl ..."],
+                        uses: ["thm:piola_curl"]
+                    },
+                    {
+                        id: "def:pair_lp",
+                        label: "EulerPacketConstructedPiola.pairLp",
+                        kind: "definition",
+                        module: "Euler.PacketConstructedPiola",
+                        line: 38,
+                        statement: "def pairLp (p : Nat) : LiftL2 P :=\n  piolaPairLp P kappa m0 Xi (field P (normal F m0) A) ... p",
+                        docstring: "High-frequency shear packet combined with slow-curl corrector field."
+                    },
+                    {
+                        id: "thm:pair_lp_mem",
+                        label: "EulerPacketConstructedPiola.pairLp_mem",
+                        kind: "theorem",
+                        module: "Euler.PacketConstructedPiola",
+                        line: 43,
+                        statement: "theorem pairLp_mem (p : Nat) :\n  pairLp ... p in divergenceFreeSpace P kappa m0",
+                        docstring: "Wave-packet iterates reside strictly inside divergence-free Hilbert space.",
+                        uses: ["def:pair_lp", "thm:divergence_piola_curl"]
+                    },
+                    {
+                        id: "thm:pair_lp_ae",
+                        label: "EulerPacketConstructedPiola.pairLp_ae",
+                        kind: "theorem",
+                        module: "Euler.PacketConstructedPiola",
+                        line: 50,
+                        statement: "theorem pairLp_ae ... (p : Nat) :\n  pairLp p =ae[liftMeasure P] fun x => (F x.1).symm (kappa^p * A x + kappa^(p+1) * corrector P F m0 A x)",
+                        docstring: "Pointwise formula of multiscale wave-packet cascade.",
+                        uses: ["thm:pair_lp_mem"]
+                    },
+                    {
+                        id: "thm:vorticity_lintegral_eq_top",
+                        label: "Euler.OrdinaryEulerBKM.vorticity_lintegral_eq_top",
+                        kind: "theorem",
+                        module: "Euler.OrdinaryEulerBKM",
+                        line: 35,
+                        statement: "theorem vorticity_lintegral_eq_top :\n  lintegral (fun t => (vorticityNorm t : ENNReal)) = top",
+                        docstring: "Beale-Kato-Majda integral divergence: accumulated vorticity exceeds any finite bound.",
+                        milestones: ["Line 37: exact enat_integral_diverge ..."],
+                        uses: ["thm:pair_lp_ae"]
+                    },
+                    {
+                        id: "thm:finite_lifespan_contradiction",
+                        label: "Euler.ComparatorBridge.finiteLifespan_contradiction_of_compact_vorticity",
+                        kind: "theorem",
+                        module: "Euler.CompactVorticityContradiction",
+                        line: 18,
+                        statement: "theorem finiteLifespan_contradiction_of_compact_vorticity ... : False",
+                        docstring: "Assuming a smooth global comparison solution contradicts super-exponential cascade growth.",
+                        milestones: ["Line 24: obtain <M, hM, hbound> := h.vorticity_bounded_on_compact", "Line 32: obtain <S, hS, hSL, t, hlarge> := L.vorticityIntegral_unbounded", "Line 39: exact (not_lt_of_ge ...) hlarge"],
+                        uses: ["thm:vorticity_lintegral_eq_top"]
+                    },
+                    {
+                        id: "thm:navier_stokes_breakdown_r3",
+                        label: "NavierStokes.Comparator.navier_stokes_breakdown_R3",
+                        kind: "theorem",
+                        module: "NavierStokes.ComparatorSolution",
+                        line: 55,
+                        statement: "theorem navier_stokes_breakdown_R3 (nu : Real) (hnu : 0 < nu) :\n  exists (u0 : Space -> Space) (f : Space -> Real -> Space), ... no global smooth solution",
+                        docstring: "Resolution of Millennium Prize Problem breakdown alternative (C) for Navier-Stokes on R^3.",
+                        uses: ["thm:finite_lifespan_contradiction"]
+                    }
+                ],
+                edges: [
+                    { source: "def:mat3", target: "def:matrix_antisym" },
+                    { source: "def:matrix_antisym", target: "thm:matrixantisym_congruence" },
+                    { source: "thm:matrixantisym_congruence", target: "thm:piola_curl" },
+                    { source: "def:transformed_curl", target: "thm:piola_curl" },
+                    { source: "thm:piola_curl", target: "thm:divergence_piola_curl" },
+                    { source: "def:pair_lp", target: "thm:pair_lp_mem" },
+                    { source: "thm:divergence_piola_curl", target: "thm:pair_lp_mem" },
+                    { source: "thm:pair_lp_mem", target: "thm:pair_lp_ae" },
+                    { source: "thm:pair_lp_ae", target: "thm:vorticity_lintegral_eq_top" },
+                    { source: "thm:vorticity_lintegral_eq_top", target: "thm:finite_lifespan_contradiction" },
+                    { source: "thm:finite_lifespan_contradiction", target: "thm:navier_stokes_breakdown_r3" }
+                ]
+            },
+
+            flt: {
+                nodes: [
+                    {
+                        id: "def:frey_curve",
+                        label: "WeierstrassCurve.Univ.Affine",
+                        kind: "definition",
+                        module: "FLT.FreyPackage",
+                        line: 45,
+                        statement: "def FreyCurve (a b c : Nat) (p : Nat) : WeierstrassCurve Rat :=\n  y^2 = x * (x - a^p) * (x + b^p)",
+                        docstring: "The Frey elliptic curve associated with a hypothetical counterexample to FLT."
+                    },
+                    {
+                        id: "thm:frey_minimal_discriminant",
+                        label: "FLT.FreyCurve.minimal_discriminant",
+                        kind: "theorem",
+                        module: "FLT.FreyPackage",
+                        line: 98,
+                        statement: "theorem minimal_discriminant (a b c : Nat) (p : Nat) (hp : 5 <= p) :\n  Delta = 2^(-8) * (a * b * c)^(2 * p)",
+                        docstring: "Minimal discriminant of the Frey curve demonstrating high powers in conductors.",
+                        uses: ["def:frey_curve"]
+                    },
+                    {
+                        id: "def:residual_galois_rep",
+                        label: "ResidualGaloisRep",
+                        kind: "definition",
+                        module: "FLT.GaloisRep",
+                        line: 30,
+                        statement: "def ResidualGaloisRep (E : EllipticCurve Rat) (p : Nat) : GaloisRep (ZMod p)",
+                        docstring: "Galois representation arising from action on p-torsion E[p]."
+                    },
+                    {
+                        id: "thm:mazur_irreducible",
+                        label: "FLT.Mazur.irreducible_of_prime_ge_five",
+                        kind: "theorem",
+                        module: "FLT.MazurTorsion",
+                        line: 62,
+                        statement: "theorem irreducible_of_prime_ge_five (E : FreyCurve a b c p) (hp : 5 <= p) :\n  IsAbsolutelyIrreducible (ResidualGaloisRep E p)",
+                        docstring: "Mazur's theorem on absence of rational torsion forces absolute irreducibility.",
+                        uses: ["def:residual_galois_rep", "thm:frey_minimal_discriminant"]
+                    },
+                    {
+                        id: "thm:ribet_level_lowering",
+                        label: "FLT.Ribet.level_lowering_to_level_two",
+                        kind: "theorem",
+                        module: "FLT.Ribet",
+                        line: 112,
+                        statement: "theorem level_lowering_to_level_two (E : FreyCurve a b c p) (hMod : IsModular E) :\n  exists f in S_2(Gamma0(2)), ResidualGaloisRep E p ~= ResidualGaloisRep f p",
+                        docstring: "Ribet level lowering removes all odd prime conductors, producing weight-2 eigenform at level 2.",
+                        uses: ["thm:mazur_irreducible"]
+                    },
+                    {
+                        id: "thm:taylor_wiles_r_eq_t",
+                        label: "TaylorWiles.isomorphism_R_eq_T",
+                        kind: "theorem",
+                        module: "FLT.ModularityLifting",
+                        line: 140,
+                        statement: "theorem isomorphism_R_eq_T (rho : ResidualGaloisRep) :\n  AlgEquiv R_universal T_hecke",
+                        docstring: "The celebrated numerical criterion establishing that semistable deformation rings match Hecke algebras.",
+                        uses: ["thm:mazur_irreducible"]
+                    },
+                    {
+                        id: "thm:s2_gamma0_two_zero",
+                        label: "ModularCurve.S2_Gamma0_two_trivial",
+                        kind: "theorem",
+                        module: "FLT.ModularForms",
+                        line: 55,
+                        statement: "theorem S2_Gamma0_two_trivial :\n  dim_C (CuspForms 2 (Gamma0 2)) = 0",
+                        docstring: "Topological genus of X_0(2) is zero, so no non-trivial weight-2 cusp forms exist."
+                    },
+                    {
+                        id: "thm:fermat_last_theorem",
+                        label: "fermat_last_theorem",
+                        kind: "theorem",
+                        module: "Theorems.Thm_fermat_last_theorem",
+                        line: 128,
+                        statement: "theorem fermat_last_theorem (n : Nat) (hn : 3 <= n) (a b c : Nat) (ha : 0 < a) (hb : 0 < b) (hc : 0 < c) :\n  a ^ n + b ^ n != c ^ n",
+                        docstring: "Elementary formulation of Fermat's Last Theorem checked from Lean axioms with zero sorry.",
+                        milestones: ["Line 128: p2m_exact_reverting @_root_.P2MW.S_fermat_last_theorem.solution"],
+                        uses: ["thm:ribet_level_lowering", "thm:taylor_wiles_r_eq_t", "thm:s2_gamma0_two_zero"]
+                    },
+                    {
+                        id: "thm:flt_mathlib",
+                        label: "FLT.fermatLastTheorem",
+                        kind: "theorem",
+                        module: "FinalCheck",
+                        line: 7,
+                        statement: "theorem flt_mathlib : FermatLastTheorem",
+                        docstring: "Mathlib's canonical FermatLastTheorem predicate derived in one line.",
+                        uses: ["thm:fermat_last_theorem"]
+                    }
+                ],
+                edges: [
+                    { source: "def:frey_curve", target: "thm:frey_minimal_discriminant" },
+                    { source: "def:residual_galois_rep", target: "thm:mazur_irreducible" },
+                    { source: "thm:frey_minimal_discriminant", target: "thm:mazur_irreducible" },
+                    { source: "thm:mazur_irreducible", target: "thm:ribet_level_lowering" },
+                    { source: "thm:mazur_irreducible", target: "thm:taylor_wiles_r_eq_t" },
+                    { source: "thm:ribet_level_lowering", target: "thm:fermat_last_theorem" },
+                    { source: "thm:taylor_wiles_r_eq_t", target: "thm:fermat_last_theorem" },
+                    { source: "thm:s2_gamma0_two_zero", target: "thm:fermat_last_theorem" },
+                    { source: "thm:fermat_last_theorem", target: "thm:flt_mathlib" }
+                ]
+            },
+
+            easci: {
+                nodes: [
+                    {
+                        id: "def:ccv",
+                        label: "EASCI.StochasticCCV.Core.CCV",
+                        kind: "structure",
+                        module: "EASCI.StochasticCCV.Core",
+                        line: 32,
+                        statement: "structure CCV where\n  r : Nat\n  s : Nat\n  k : Nat\n  hSimplex : r + s + k = 100",
+                        docstring: "Integer-scaled 3-simplex vector representing empirical belief states."
+                    },
+                    {
+                        id: "thm:ccvl1_signed_sum_zero",
+                        label: "EASCI.StochasticCCV.Core.ccvL1_signed_sum_zero",
+                        kind: "theorem",
+                        module: "EASCI.StochasticCCV.Core.Contraction",
+                        line: 88,
+                        statement: "theorem ccvL1_signed_sum_zero (c1 c2 : CCV) :\n  ((cast)c1.r - (cast)c2.r : Int) + ((cast)c1.s - (cast)c2.s) + ((cast)c1.k - (cast)c2.k) = 0",
+                        docstring: "Simplex zero-sum identity foundational for Doeblin coupling arguments.",
+                        milestones: ["Line 92: have h1 := c1.hSimplex; have h2 := c2.hSimplex; grind"],
+                        uses: ["def:ccv"]
+                    },
+                    {
+                        id: "def:okd_iterate",
+                        label: "EASCI.StochasticCCV.Core.okdIterate",
+                        kind: "definition",
+                        module: "EASCI.StochasticCCV.Core.Contraction",
+                        line: 140,
+                        statement: "def okdIterate (c : CCV) (P : StochMatrix3) : Nat -> CCV",
+                        docstring: "Markov iteration operator under transition probability matrix P."
+                    },
+                    {
+                        id: "thm:doeblin_coupling_contraction",
+                        label: "EASCI.StochasticCCV.Core.doeblin_L1_contraction_Q",
+                        kind: "theorem",
+                        module: "EASCI.StochasticCCV.Core.Banach",
+                        line: 110,
+                        statement: "theorem doeblin_L1_contraction_Q (P : StochMatrix3) (hP : IsErgodic P) :\n  ccvL1Dist (okdIterate c1 P 1) (okdIterate c2 P 1) <= (1 - delta) * ccvL1Dist c1 c2",
+                        docstring: "Strict L1 contraction coefficient derived from minimal row overlap delta.",
+                        uses: ["thm:ccvl1_signed_sum_zero", "def:okd_iterate"]
+                    },
+                    {
+                        id: "thm:stationary_fixpoint",
+                        label: "EASCI.StochasticCCV.Core.stationary_fixpoint",
+                        kind: "theorem",
+                        module: "EASCI.StochasticCCV.Core.Contraction",
+                        line: 195,
+                        statement: "theorem stationary_fixpoint (P : StochMatrix3) (hP : IsErgodic P) :\n  exists! pi : CCV, okdStep pi P = pi",
+                        docstring: "Unique stationary distribution existence guaranteed by Banach fixed-point theorem.",
+                        uses: ["thm:doeblin_coupling_contraction"]
+                    },
+                    {
+                        id: "thm:easci_convergence",
+                        label: "EASCI.Core.easciMap_convergence",
+                        kind: "theorem",
+                        module: "EASCI.Core",
+                        line: 250,
+                        statement: "theorem easciMap_convergence (history : Stream CCV) :\n  Tendsto (fun n => ccvL1Dist (history n) pi) atTop (nhds 0)",
+                        docstring: "Exponential geometric convergence of multi-agent belief trajectory.",
+                        uses: ["thm:stationary_fixpoint"]
+                    }
+                ],
+                edges: [
+                    { source: "def:ccv", target: "thm:ccvl1_signed_sum_zero" },
+                    { source: "thm:ccvl1_signed_sum_zero", target: "thm:doeblin_coupling_contraction" },
+                    { source: "def:okd_iterate", target: "thm:doeblin_coupling_contraction" },
+                    { source: "thm:doeblin_coupling_contraction", target: "thm:stationary_fixpoint" },
+                    { source: "thm:stationary_fixpoint", target: "thm:easci_convergence" }
+                ]
+            }
+        };
+
+        // Graph Layout & Visualization Controller
+        class GraphViewerApp {
+            constructor() {
+                this.currentGraph = null;
+                this.selectedNodeId = null;
+                this.nodes = new Map();
+                this.edges = [];
+                this.layers = [];
+                this.layoutDirection = "LR";
+                
+                // Pan/Zoom State
+                this.scale = 1.0;
+                this.panX = 100;
+                this.panY = 100;
+                this.isPanning = false;
+                this.startX = 0;
+                this.startY = 0;
+
+                this.dom = {
+                    container: document.getElementById("viewport-container"),
+                    svg: document.getElementById("graph-canvas"),
+                    transformGroup: document.getElementById("transform-group"),
+                    edgesGroup: document.getElementById("edges-group"),
+                    nodesGroup: document.getElementById("nodes-group"),
+                    sidebarContent: document.getElementById("sidebar-content"),
+                    datasetSelect: document.getElementById("dataset-select"),
+                    directionSelect: document.getElementById("direction-select"),
+                    searchInput: document.getElementById("search-input"),
+                    modal: document.getElementById("modal-import"),
+                    importText: document.getElementById("import-json-text"),
+                    importFile: document.getElementById("import-file-input")
+                };
+
+                this.initEvents();
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const corpusParam = urlParams.get("corpus");
+                const dirParam = urlParams.get("layout");
+                if (dirParam && (dirParam === "TB" || dirParam === "LR")) {
+                    this.layoutDirection = dirParam;
+                    this.dom.directionSelect.value = dirParam;
+                }
+
+                if (window.location.protocol.startsWith("http")) {
+                    fetch("/api/custom-graph.json")
+                        .then(r => r.ok ? r.json() : null)
+                        .then(data => {
+                            if (data && data.nodes && data.nodes.length) {
+                                const opt = document.createElement("option");
+                                opt.value = "cli-custom";
+                                opt.textContent = "Custom Graph (CLI Loaded)";
+                                this.dom.datasetSelect.prepend(opt);
+                                this.dom.datasetSelect.value = "cli-custom";
+                                this.loadGraph(data);
+                                return;
+                            }
+                            this.loadDefaultDataset(corpusParam);
+                        })
+                        .catch(() => {
+                            this.loadDefaultDataset(corpusParam);
+                        });
+                } else {
+                    this.loadDefaultDataset(corpusParam);
+                }
+            }
+
+            loadDefaultDataset(param) {
+                const target = (param && CORPUS_DATASETS[param]) ? param : "nse";
+                this.dom.datasetSelect.value = target;
+                this.loadDataset(target);
+            }
+
+            initEvents() {
+                this.dom.datasetSelect.addEventListener("change", (e) => this.loadDataset(e.target.value));
+                this.dom.directionSelect.addEventListener("change", (e) => {
+                    this.layoutDirection = e.target.value;
+                    this.relayout();
+                });
+
+                this.dom.searchInput.addEventListener("input", (e) => this.filterNodes(e.target.value));
+
+                // Pan & Zoom
+                this.dom.container.addEventListener("mousedown", (e) => {
+                    if (e.target.closest(".node")) return;
+                    this.isPanning = true;
+                    this.startX = e.clientX - this.panX;
+                    this.startY = e.clientY - this.panY;
+                });
+
+                window.addEventListener("mousemove", (e) => {
+                    if (!this.isPanning) return;
+                    this.panX = e.clientX - this.startX;
+                    this.panY = e.clientY - this.startY;
+                    this.updateTransform();
+                });
+
+                window.addEventListener("mouseup", () => {
+                    this.isPanning = false;
+                });
+
+                this.dom.container.addEventListener("wheel", (e) => {
+                    e.preventDefault();
+                    const zoomFactor = e.deltaY < 0 ? 1.12 : 0.89;
+                    const rect = this.dom.container.getBoundingClientRect();
+                    const mouseX = e.clientX - rect.left;
+                    const mouseY = e.clientY - rect.top;
+
+                    const newScale = Math.min(Math.max(0.2, this.scale * zoomFactor), 4.0);
+                    this.panX = mouseX - (mouseX - this.panX) * (newScale / this.scale);
+                    this.panY = mouseY - (mouseY - this.panY) * (newScale / this.scale);
+                    this.scale = newScale;
+                    this.updateTransform();
+                }, { passive: false });
+
+                // Buttons
+                document.getElementById("btn-zoom-in").addEventListener("click", () => this.zoomStep(1.2));
+                document.getElementById("btn-zoom-out").addEventListener("click", () => this.zoomStep(0.83));
+                document.getElementById("btn-zoom-fit").addEventListener("click", () => this.zoomFit());
+                document.getElementById("btn-reset-view").addEventListener("click", () => this.resetView());
+                document.getElementById("btn-export-svg").addEventListener("click", () => this.exportSvg());
+
+                // Modal
+                document.getElementById("btn-load-custom").addEventListener("click", () => {
+                    this.dom.modal.classList.add("active");
+                });
+                document.getElementById("btn-cancel-import").addEventListener("click", () => {
+                    this.dom.modal.classList.remove("active");
+                });
+                document.getElementById("btn-apply-import").addEventListener("click", () => this.applyCustomImport());
+                this.dom.importFile.addEventListener("change", (e) => this.handleFileSelect(e));
+            }
+
+            zoomStep(factor) {
+                const rect = this.dom.container.getBoundingClientRect();
+                const cx = rect.width / 2;
+                const cy = rect.height / 2;
+                const newScale = Math.min(Math.max(0.2, this.scale * factor), 4.0);
+                this.panX = cx - (cx - this.panX) * (newScale / this.scale);
+                this.panY = cy - (cy - this.panY) * (newScale / this.scale);
+                this.scale = newScale;
+                this.updateTransform();
+            }
+
+            zoomFit() {
+                if (this.nodes.size === 0) return;
+                let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+                for (const [, n] of this.nodes) {
+                    if (n.x < minX) minX = n.x;
+                    if (n.y < minY) minY = n.y;
+                    if (n.x > maxX) maxX = n.x;
+                    if (n.y > maxY) maxY = n.y;
+                }
+
+                const rect = this.dom.container.getBoundingClientRect();
+                const graphWidth = maxX - minX + 160;
+                const graphHeight = maxY - minY + 160;
+
+                const scaleX = rect.width / graphWidth;
+                const scaleY = rect.height / graphHeight;
+                this.scale = Math.min(Math.max(0.3, Math.min(scaleX, scaleY)), 1.5);
+
+                const centerX = (minX + maxX) / 2;
+                const centerY = (minY + maxY) / 2;
+                this.panX = rect.width / 2 - centerX * this.scale;
+                this.panY = rect.height / 2 - centerY * this.scale;
+                this.updateTransform();
+            }
+
+            resetView() {
+                this.scale = 1.0;
+                this.panX = 80;
+                this.panY = 120;
+                this.updateTransform();
+            }
+
+            updateTransform() {
+                this.dom.transformGroup.setAttribute("transform", `translate(${this.panX}, ${this.panY}) scale(${this.scale})`);
+            }
+
+            loadDataset(name) {
+                const data = CORPUS_DATASETS[name];
+                if (data) {
+                    this.loadGraph(data);
+                    this.zoomFit();
+                }
+            }
+
+            loadGraph(data) {
+                this.currentGraph = data;
+                this.nodes.clear();
+                this.edges = [];
+
+                const rawNodes = Array.isArray(data.nodes) ? data.nodes : [];
+                for (const n of rawNodes) {
+                    this.nodes.set(n.id, {
+                        ...n,
+                        x: 0,
+                        y: 0,
+                        layer: 0
+                    });
+                }
+
+                const rawEdges = Array.isArray(data.edges) ? data.edges : [];
+                for (const e of rawEdges) {
+                    const src = typeof e.source === "object" ? e.source.id : e.source;
+                    const tgt = typeof e.target === "object" ? e.target.id : e.target;
+                    if (this.nodes.has(src) && this.nodes.has(tgt)) {
+                        this.edges.push({ source: src, target: tgt });
+                    }
+                }
+
+                this.computeTopologicalLayers();
+                this.computeCoordinates();
+                this.render();
+
+                if (rawNodes.length > 0) {
+                    this.selectNode(rawNodes[rawNodes.length - 1].id);
+                }
+            }
+
+            computeTopologicalLayers() {
+                const inDeg = new Map();
+                const adj = new Map();
+                for (const [id] of this.nodes) {
+                    inDeg.set(id, 0);
+                    adj.set(id, []);
+                }
+
+                for (const e of this.edges) {
+                    inDeg.set(e.target, (inDeg.get(e.target) || 0) + 1);
+                    adj.get(e.source).push(e.target);
+                }
+
+                const rank = new Map();
+                const queue = [];
+                for (const [id, deg] of inDeg) {
+                    if (deg === 0) {
+                        queue.push(id);
+                        rank.set(id, 0);
+                    }
+                }
+
+                while (queue.length > 0) {
+                    const curr = queue.shift();
+                    const currRank = rank.get(curr);
+                    for (const nxt of adj.get(curr)) {
+                        const nextRank = Math.max(rank.get(nxt) || 0, currRank + 1);
+                        rank.set(nxt, nextRank);
+                        inDeg.set(nxt, inDeg.get(nxt) - 1);
+                        if (inDeg.get(nxt) === 0) {
+                            queue.push(nxt);
+                        }
+                    }
+                }
+
+                const maxLayer = Math.max(0, ...Array.from(rank.values()));
+                this.layers = Array.from({ length: maxLayer + 1 }, () => []);
+
+                for (const [id, node] of this.nodes) {
+                    const l = rank.get(id) || 0;
+                    node.layer = l;
+                    this.layers[l].push(id);
+                }
+            }
+
+            computeCoordinates() {
+                const layerSpacing = this.layoutDirection === "LR" ? 220 : 160;
+                const nodeSpacing = this.layoutDirection === "LR" ? 90 : 180;
+
+                for (let l = 0; l < this.layers.length; l++) {
+                    const ids = this.layers[l];
+                    const offset = (ids.length - 1) * nodeSpacing / 2;
+                    for (let i = 0; i < ids.length; i++) {
+                        const node = this.nodes.get(ids[i]);
+                        if (this.layoutDirection === "LR") {
+                            node.x = l * layerSpacing + 80;
+                            node.y = i * nodeSpacing - offset + 350;
+                        } else {
+                            node.x = i * nodeSpacing - offset + 500;
+                            node.y = l * layerSpacing + 80;
+                        }
+                    }
+                }
+            }
+
+            relayout() {
+                this.computeCoordinates();
+                this.render();
+                this.zoomFit();
+            }
+
+            render() {
+                // Clear existing
+                this.dom.edgesGroup.innerHTML = "";
+                this.dom.nodesGroup.innerHTML = "";
+
+                // Render edges
+                for (const e of this.edges) {
+                    const src = this.nodes.get(e.source);
+                    const tgt = this.nodes.get(e.target);
+                    if (!src || !tgt) continue;
+
+                    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                    g.classList.add("edge");
+                    g.dataset.source = e.source;
+                    g.dataset.target = e.target;
+
+                    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    line.setAttribute("x1", src.x);
+                    line.setAttribute("y1", src.y);
+                    line.setAttribute("x2", tgt.x);
+                    line.setAttribute("y2", tgt.y);
+                    line.setAttribute("marker-end", "url(#arrow)");
+
+                    g.appendChild(line);
+                    this.dom.edgesGroup.appendChild(g);
+                }
+
+                // Render nodes
+                for (const [id, n] of this.nodes) {
+                    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                    g.classList.add("node");
+                    g.dataset.id = id;
+
+                    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                    circle.setAttribute("cx", n.x);
+                    circle.setAttribute("cy", n.y);
+                    circle.setAttribute("r", 14);
+
+                    let fillColor = "#2b6cb0";
+                    if (n.kind === "definition" || n.kind === "structure") fillColor = "#2f855a";
+                    else if (n.kind === "axiom") fillColor = "#c53030";
+                    circle.setAttribute("fill", fillColor);
+                    circle.setAttribute("stroke", "#ffffff");
+                    circle.setAttribute("stroke-width", "2");
+
+                    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    text.setAttribute("x", n.x + 18);
+                    text.setAttribute("y", n.y + 4);
+                    text.textContent = n.label || id;
+
+                    g.appendChild(circle);
+                    g.appendChild(text);
+
+                    g.addEventListener("click", (evt) => {
+                        evt.stopPropagation();
+                        this.selectNode(id);
+                    });
+
+                    this.dom.nodesGroup.appendChild(g);
+                }
+
+                this.highlightConnections(this.selectedNodeId);
+            }
+
+            selectNode(id) {
+                this.selectedNodeId = id;
+
+                // Update node visual classes
+                const allNodes = this.dom.nodesGroup.querySelectorAll("g.node");
+                allNodes.forEach(el => {
+                    if (el.dataset.id === id) el.classList.add("selected");
+                    else el.classList.remove("selected");
+                });
+
+                this.highlightConnections(id);
+                this.renderSidebarCard(id);
+            }
+
+            highlightConnections(id) {
+                const allEdges = this.dom.edgesGroup.querySelectorAll("g.edge");
+                allEdges.forEach(el => {
+                    if (el.dataset.source === id || el.dataset.target === id) {
+                        el.classList.add("highlighted");
+                        el.querySelector("line").setAttribute("marker-end", "url(#arrow-highlight)");
+                    } else {
+                        el.classList.remove("highlighted");
+                        el.querySelector("line").setAttribute("marker-end", "url(#arrow)");
+                    }
+                });
+            }
+
+            renderSidebarCard(id) {
+                const node = this.nodes.get(id);
+                if (!node) {
+                    this.dom.sidebarContent.innerHTML = `<p style="color: var(--text-muted); font-style: italic;">No declaration selected.</p>`;
+                    return;
+                }
+
+                const incoming = this.edges.filter(e => e.target === id).map(e => e.source);
+                const outgoing = this.edges.filter(e => e.source === id).map(e => e.target);
+
+                let milestonesHtml = "";
+                if (node.milestones && node.milestones.length > 0) {
+                    milestonesHtml = `
+                    <div>
+                        <div class="section-label">Proof Strategy Milestones</div>
+                        <ul class="milestone-list">
+                            ${node.milestones.map(m => `<li>${this.escape(m)}</li>`).join("")}
+                        </ul>
+                    </div>`;
+                }
+
+                let usesHtml = "";
+                if (incoming.length > 0) {
+                    usesHtml = `
+                    <div>
+                        <div class="section-label">Uses Premises (\\uses{...})</div>
+                        <div class="premise-tags">
+                            ${incoming.map(p => {
+                                const pNode = this.nodes.get(p);
+                                const pLabel = pNode ? pNode.label : p;
+                                return `<span class="tufte-tag" data-id="${p}">${this.escape(pLabel)}</span>`;
+                            }).join("")}
+                        </div>
+                    </div>`;
+                }
+
+                let dependentHtml = "";
+                if (outgoing.length > 0) {
+                    dependentHtml = `
+                    <div>
+                        <div class="section-label">Enables Theorems</div>
+                        <div class="dependent-tags">
+                            ${outgoing.map(d => {
+                                const dNode = this.nodes.get(d);
+                                const dLabel = dNode ? dNode.label : d;
+                                return `<span class="tufte-tag" data-id="${d}">${this.escape(dLabel)}</span>`;
+                            }).join("")}
+                        </div>
+                    </div>`;
+                }
+
+                this.dom.sidebarContent.innerHTML = `
+                <article class="tufte-proof-card">
+                    <header class="card-header">
+                        <span class="declaration-kind badge-${node.kind}">${node.kind.toUpperCase()}</span>
+                        <h2 class="declaration-title">${this.escape(node.label || node.id)}</h2>
+                        <span class="layer-badge">Topological Layer ${node.layer}</span>
+                    </header>
+                    <div class="card-body">
+                        <div class="declaration-meta">
+                            <strong>Module:</strong> <code>${this.escape(node.module || "Unknown")}</code>
+                            ${node.line ? ` &bull; line ${node.line}` : ""}
+                        </div>
+                        ${node.docstring ? `<div class="pedagogical-narrative">${this.escape(node.docstring)}</div>` : ""}
+                        ${node.statement ? `
+                        <div>
+                            <div class="section-label">Formal Lean Type Signature</div>
+                            <pre class="lean-signature"><code>${this.escape(node.statement)}</code></pre>
+                        </div>` : ""}
+                        ${milestonesHtml}
+                        ${usesHtml}
+                        ${dependentHtml}
+                    </div>
+                </article>`;
+
+                // Attach click listeners to tags
+                this.dom.sidebarContent.querySelectorAll(".tufte-tag").forEach(tag => {
+                    tag.addEventListener("click", () => {
+                        const targetId = tag.dataset.id;
+                        if (targetId && this.nodes.has(targetId)) {
+                            this.selectNode(targetId);
+                            this.centerOnNode(targetId);
+                        }
+                    });
+                });
+            }
+
+            centerOnNode(id) {
+                const node = this.nodes.get(id);
+                if (!node) return;
+                const rect = this.dom.container.getBoundingClientRect();
+                this.panX = rect.width / 2 - node.x * this.scale;
+                this.panY = rect.height / 2 - node.y * this.scale;
+                this.updateTransform();
+            }
+
+            filterNodes(query) {
+                const q = query.trim().toLowerCase();
+                const allNodes = this.dom.nodesGroup.querySelectorAll("g.node");
+                allNodes.forEach(el => {
+                    const id = el.dataset.id;
+                    const node = this.nodes.get(id);
+                    if (!node) return;
+                    const match = !q || (node.label && node.label.toLowerCase().includes(q)) ||
+                                  (node.module && node.module.toLowerCase().includes(q)) ||
+                                  (node.statement && node.statement.toLowerCase().includes(q));
+                    el.style.opacity = match ? "1" : "0.15";
+                });
+            }
+
+            exportSvg() {
+                const svgClone = this.dom.svg.cloneNode(true);
+                svgClone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+                const blob = new Blob([svgClone.outerHTML], { type: "image/svg+xml;charset=utf-8" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `lean-dag-${this.dom.datasetSelect.value}.svg`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+
+            applyCustomImport() {
+                const text = this.dom.importText.value.trim();
+                if (!text) return;
+                try {
+                    const parsed = JSON.parse(text);
+                    this.loadGraph(parsed);
+                    this.dom.modal.classList.remove("active");
+                    this.zoomFit();
+                } catch (err) {
+                    alert("Invalid JSON: " + err.message);
+                }
+            }
+
+            handleFileSelect(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    this.dom.importText.value = event.target.result;
+                };
+                reader.readAsText(file);
+            }
+
+            escape(str) {
+                if (!str) return "";
+                return String(str)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+        }
+
+        // Initialize when DOM ready
+        window.addEventListener("DOMContentLoaded", () => {
+            window.app = new GraphViewerApp();
+        });
+    </script>
+</body>
+</html>
