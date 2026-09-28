@@ -1,14 +1,16 @@
 # Template_ModularJacobianBSD - Modular Jacobian Birch-Swinnerton-Dyer L-Series & Analytic Ranks
 
-Use this template for **modular Jacobian Birch-Swinnerton-Dyer leading coefficients**, **analytic ranks**,
-**regulator product volumes**, and **non-equilibrium Markov flow capacity envelopes**.
+Use this template for **modular Jacobian Birch-Swinnerton-Dyer leading coefficients**,
+**analytic ranks**, **canonical regulator products**, and **non-equilibrium Markov flow capacity envelopes**.
 
 In arithmetic geometry and Fermat's Last Theorem / modular forms:
 Let X_0(N) be a modular curve over Q, and let J_0(N) be its modular Jacobian.
-The Birch and Swinnerton-Dyer (BSD) conjecture relates the leading term of the L-series
-L(J_0(N), s) at s = 1 to the algebraic rank r and arithmetic invariants:
+The Birch and Swinnerton-Dyer (BSD) conjecture relates the behavior of the L-series
+L(J_0(N), s) at s = 1 to the algebraic rank r = rank J_0(N)(Q) and the arithmetic
+invariants (Neron-Tate regulator Reg, Shafarevich-Tate group order #Sha, real period Omega,
+and Tamagawa numbers c_p):
   lim_{s -> 1} L(J_0(N), s) / (s - 1)^r = (Omega * Reg * #Sha * prod c_p) / #J_0(N)(Q)_tors^2.
-Gross-Zagier and Kolyvagin proved this conjecture for modular curves when r <= 1.
+Gross-Zagier and Kolyvagin established this conjecture for modular curves when r <= 1.
 
 In stochastic consensus and Markov flow networks:
 The BSD leading coefficient and analytic rank govern the non-equilibrium steady state
@@ -21,7 +23,7 @@ stays within certified tolerances.
 * `<ModularJacobianBSDDatum>` - datum (bsdLeadingCoeff, bsdBound, regulatorProduct, bsdTolerance, periodWeight)
 * `<bsdDefect>` - defect between theoretical bound ceiling and observed BSD leading coefficient
 * `<normalizedBSDRatio>` - normalized ratio of observed BSD leading coefficient to bound ceiling
-* `<bsdCapacityBound>` - regulator capacity bound scaled by bound ceiling and regulator product volume
+* `<bsdCapacityBound>` - total regulator capacity bound scaled by bound ceiling and regulator product
 * `<bsdSlack>` - slack between tolerance-scaled bound and observed leading coefficient
 * `<weightedBSDBound>` - period-weighted bound accounting for BSD real period and Tamagawa factors
 * `<IsBSDBounded>` - predicate: observed BSD leading coefficient is bounded by bound ceiling
@@ -31,8 +33,8 @@ stays within certified tolerances.
 * `<bsd_bounded_iff_defect_nonneg>` - boundedness is equivalent to non-negative BSD defect
 * `<normalized_bsd_ratio_nonneg>` - normalized BSD ratio is non-negative
 * `<normalized_bsd_ratio_le_one_of_bounded>` - normalized ratio is bounded by 1 for bounded systems
-* `<bsd_capacity_bound_pos>` - regulator capacity bound is strictly positive
-* `<bsd_capacity_bound_nonneg>` - regulator capacity bound is non-negative
+* `<bsd_capacity_bound_pos>` - BSD regulator capacity bound is strictly positive
+* `<bsd_capacity_bound_nonneg>` - BSD regulator capacity bound is non-negative
 * `<exact_bsd_implies_bounded>` - exact saturation implies bounded system
 * `<exact_bsd_defect_zero>` - exact defect vanishes identically
 * `<exact_bsd_ratio_one>` - exact saturation has normalized ratio 1
@@ -40,8 +42,8 @@ stays within certified tolerances.
 * `<bsd_slack_nonneg_of_safe>` - slack is non-negative for flow-safe systems
 * `<bsd_coeff_reconstruction>` - BSD coefficient reconstructed from normalized ratio and bound ceiling
 * `<weighted_bsd_bound_pos>` - period-weighted bound is strictly positive
-* `<bsd_capacity_scale>` - regulator capacity bound scales non-negatively with positive scaling
-* `<bsd_capacity_monotone>` - regulator capacity bound is monotone in bound ceiling
+* `<bsd_capacity_scale>` - BSD capacity bound scales non-negatively with positive scaling
+* `<bsd_capacity_monotone>` - BSD capacity bound is monotone in bound ceiling
 * `<bsd_defect_monotone>` - defect is monotone in lower bounds on observed leading coefficient
 * `<bsd_slack_monotone_tolerance>` - slack is monotone in flow tolerance parameter
 
@@ -49,10 +51,10 @@ stays within certified tolerances.
 * FLT: `StochasticCCV/Core/ModularJacobianBSD.lean`
 * Birch, B. J., Swinnerton-Dyer, H. P. F. (1965), *Notes on elliptic curves. II*, J. Reine Angew. Math. 218, 79-108.
 * Gross, B. H., Zagier, D. B. (1986), *Heegner points and derivatives of L-series*, Invent. Math. 84, 225-320.
-* Kolyvagin, V. A. (1990), *Euler systems*, The Grothendieck Festschrift, Vol. II, 435-483.
+* Kolyvagin, V. A. (1988), *Euler systems*, The Grothendieck Festschrift, Vol. II, Progr. Math. 87, 435-483.
 
 ## Tags
-template, modular-jacobian, bsd, analytic-rank, l-series, regulator-product, markov-flow
+template, modular-jacobian, bsd-conjecture, l-series, analytic-rank, regulator-product, markov-flow
 
 ```lean
 /-
