@@ -106,6 +106,9 @@ placeholders and `# How to instantiate` slot.
 | [`Template_Calculus.md`](./Template_Calculus.md)                  | `HasDerivAt` / chain rule via `.comp` / polynomial derivatives         | `Template_Analysis.md`     |
 | [`Template_Tests.md`](./Template_Tests.md)                        | `Tests/` subtree, smoke aggregator, `#print axioms` audit driver       | `Template_Lakefile.md`     |
 | [`Template_Graph.md`](./Template_Graph.md)                        | Hamilton cycles, DAG layering, SCC partition, `Fin n` `decide` witness | `Template_Foundation.md`   |
+| [`Template_Bigraph.md`](./Template_Bigraph.md)                    | Milner bigraphs, place tree containment, link hyperedges, tensor prod  | `Template_Foundation.md`   |
+| [`Template_Lyapunov.md`](./Template_Lyapunov.md)                  | Discrete Lyapunov decay, GPU loop upper bounds, ceiling div Presburger  | `Template_Dynamics.md`     |
+| [`Template_FinalCheck.md`](./Template_FinalCheck.md)              | Compile-time `#guard_msgs in #print axioms` zero-axiom gate pattern    | `Template_Tests.md`        |
 
 `Template_Bridge.md` (already in the v2 set) is the 9th item from
 `all-templates.md` and covers the upstream-façade `abbrev` pattern.
