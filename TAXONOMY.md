@@ -1,36 +1,61 @@
-# proof-skills Taxonomy -- Hybrid Architecture (Kernel, Roles & Facets)
+# proof-skills Taxonomy -- 5-Tier Abstraction Hierarchy & Domain Facets
 
-Classification of all first-party skills across the Hybrid
-Architecture, combining Approach 1 (Kernel & Domain Facets) and Approach 2
-(Multi-Agent Role Lifecycle / Stanford ACE Swarm).
-
-
+Classification of all first-party skills across the 5-Tier Abstraction Hierarchy,
+combining deterministic compiler infrastructure, tactic discipline, domain formalization,
+knowledge graph integration, and multi-agent review governance.
 
 ---
 
-## 1. Architectural Model
+## 1. Five-Tier Abstraction Hierarchy
 
-For deep architectural rules and dispatch precedence, see [`references/architecture.md`](references/architecture.md).
+To eliminate sprawl and guarantee deterministic token economy (<1,200 tokens per dispatch),
+all proof skills are stratified into five explicit layers of abstraction:
 
 ```text
-+-----------------------------------------------------------------------------+
-|                            HYBRID ARCHITECTURE                              |
-+-----------------------------------------------------------------------------+
-| KERNEL (Core Lean 4 Compiler & Prover Lifecycle)                            |
-|   |-- Specifier:  blueprint, doc-requirements, mwe, specification           |
-|   |-- Prover:     build, gateway, proof, setup                              |
-|   |-- Auditor:    bisect, enforcement, pr, proof-review, quality-engine,    |
-|   |               tautology-triage                                          |
-|                                                                             |
-| FACETS (Domain-Specific Formalization & Analysis Packs)                     |
-|   |-- Math:       analysis, discrete, dynamical, foundations, optimization, |
-|   |               stochastic, algebra-category, graph-knowledge, etc.       |
-|   |-- AI:         agentic-evolving, causal-deontic, commonsense,            |
-|   |               high-stakes-verifiable, symbolic-neuro, ai-formalization  |
-|   |-- Governance: security, engineering, legal, strategy, review-council,   |
-|   |               zettelkasten, research-synthesis, epistemic-mapping       |
-+-----------------------------------------------------------------------------+
++-------------------------------------------------------------------------------+
+| L4: Governance, Audit & Review                                                |
+|     lean-quality-engine, lean-review-council, lean-retroactive-audit,         |
+|     lean-security-formalization, Biba integrity lattices, invariant audits    |
++-------------------------------------------------------------------------------+
+                                       ^
+                                       |
++-------------------------------------------------------------------------------+
+| L3: Knowledge & Blueprint Garden                                              |
+|     lean-blueprint, lean-dag-visualizer, lean-formalization-breakdown,        |
+|     lean-pedagogical-exposition, lean-zettelkasten, Kuzu graph engine (29 bks)|
++-------------------------------------------------------------------------------+
+                                       ^
+                                       |
++-------------------------------------------------------------------------------+
+| L2: Domain Formalization Facets                                               |
+|     Mathlib analysis, stochastic, discrete, dynamical, optimization,          |
+|     category theory, measure theory, game theory, neuro-symbolic AI           |
++-------------------------------------------------------------------------------+
+                                       ^
+                                       |
++-------------------------------------------------------------------------------+
+| L1: Tactic Discipline & Proof State                                           |
+|     lean-proof, lean-proof-review, lean-tautology-triage,                      |
+|     lean-tactic-discipline, lean-enforcement (zero sorry / zero warning)     |
++-------------------------------------------------------------------------------+
+                                       ^
+                                       |
++-------------------------------------------------------------------------------+
+| L0: Deterministic Infrastructure Substrate                                    |
+|     lean-setup (apm-configure), lean-build, lean-mwe, lean-bisect,             |
+|     lean-serve-broker, lean4-lsp-mcp (6 consolidated domain tools)           |
++-------------------------------------------------------------------------------+
 ```
+
+### Layer Responsibilities & Token Budgets
+
+| Tier | Abstraction Level | Scope & Responsibilities | Token Budget | Dependencies |
+| :--- | :--- | :--- | :--- | :--- |
+| **L0** | Infrastructure | Toolchain resolution, Lake compilation, MWE extraction, bisection, LSP broker, MCP server. | 0 tokens (pure deterministic CLI) | Host environment, Elan, Lake |
+| **L1** | Tactic Discipline | PlainGoal inspection, tactic state filtering, tautology detection, proof golfing. | <500 tokens / query | L0 (`lean4-lsp-mcp`) |
+| **L2** | Domain Formalization | Mathlib domain theories, lemma formulation, specification matching. | 800 - 1,500 tokens | L1, L0 |
+| **L3** | Knowledge & Blueprints | LaTeX blueprint synchronization, DAG traversal, pedagogical walkthroughs, Kuzu graph search. | <1,000 tokens (sub-ms graph) | L2, L1, Kuzu `.kz` |
+| **L4** | Governance & Review | Biba multi-level lattices, proof review councils, security proofs, CI gate audits. | Batch review / multi-agent | L3, L2, L1, L0 |
 
 ---
 

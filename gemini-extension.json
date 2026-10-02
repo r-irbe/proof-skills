@@ -1,0 +1,24 @@
+{
+  "name": "proof-skills",
+  "version": "0.1.0",
+  "description": "Lean 4 theorem proving, mathematical formalization, tactic discipline, and Kuzu knowledge graph skills library",
+  "author": "r-irbe",
+  "license": "Apache-2.0",
+  "skills": "./skills",
+  "mcpServers": {
+    "lean-lsp": {
+      "command": "node",
+      "args": [
+        "--experimental-strip-types",
+        "tools/lean-lsp-mcp/bin/lean-lsp-mcp.js"
+      ],
+      "env": {
+        "NODE_NO_WARNINGS": "1"
+      }
+    }
+  },
+  "capabilities": {
+    "abstractionTiers": ["L0", "L1", "L2", "L3", "L4"],
+    "knowledgeGraph": "kuzu/easci-knowledge.kz"
+  }
+}

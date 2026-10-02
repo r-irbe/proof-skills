@@ -1,4 +1,4 @@
-# AGENT.md — proof-skills repo contract
+# AGENTS.md — proof-skills repo contract
 
 Authoritative entry-point for any AI agent doing work inside this repo.
 
@@ -40,7 +40,7 @@ Conflict, Novelty, Governance}`); 5 categories empirically dominate
 | 2 | **Irreversible** | You are about to do anything in the reversibility table below at class ≥ `irreversible_*`. | **Hard — always ask**, regardless of confidence. |
 | 3 | **Conflict** | Two readings of the same source give materially different answers (spec vs. ADR, template vs. SKILL.md, two skills mutually contradicting). | Soft — `ask_user`, cite both. |
 | 4 | **Novelty** | The user's request mentions a pattern, tool, ADR slot, or skill name that is not present in the repo and not in the runtime knowledge cutoff. | Soft — `ask_user` for intent. |
-| 5 | **Governance** | The change touches `AGENT.md`, top-level layout, license, the public README, or this contract. | **Hard — always ask**. |
+| 5 | **Governance** | The change touches `AGENTS.md`, top-level layout, license, the public README, or this contract. | **Hard — always ask**. |
 
 ### 1.2.1 Trigger registry for skill authors
 

@@ -80,5 +80,5 @@ scripts:
   audit-axioms: python3 scripts/lean/axiom_audit.py --help
   templates-list: ls -1 templates/Template_*.md
   skills-count: bash -c 'find skills -maxdepth 2 -name SKILL.md -not -path "*_overrides*" | wc -l'
-  test-mcp: node --experimental-strip-types tools/lean_lsp_mcp/tests/test_lean_lsp_mcp.mjs
+  test-mcp: node --experimental-strip-types tools/lean-lsp-mcp/tests/test_lean_lsp_mcp.mjs
 

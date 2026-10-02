@@ -49,6 +49,7 @@ r_caveats: [F1]
 - **G-10** (MUST): The skill MUST persist (commit toolchain pins + state-tracker tick) before declaring setup complete. [Trace: AC-10]
 - **G-11** (MUST): In projects running interactive language servers, the skill MUST configure `moreServerArgs` in `lakefile.lean` with heap and stack caps (`#["-M", "4096", "-s", "32768", "-D", "maxHeartbeats=500000"]`) to prevent Linux OOM SIGKILL and stack overflow on FileWorkers. [Trace: AC-11]
 - **G-12** (SHOULD): When C FFI bindings or `clangd` language server support are required, the skill SHOULD query `lean --print-prefix` and supply `${prefix}/include` and `${prefix}/include/clang` to C compiler flags. [Trace: AC-12]
+- **G-13** (SHOULD): For autonomous agent environments (Antigravity CLI, Google ADK, Pi Coding Agent), the skill SHOULD execute the `apm-configure` action: register MCP servers from `gemini-extension.json` into `~/.gemini/config/mcp_config.json` and link `skills/` under `~/.gemini/config/plugins/proof-skills/skills` to activate native discovery. [Trace: AC-13]
 
 ## Workflow
 
@@ -57,6 +58,7 @@ r_caveats: [F1]
 3. **Execute** [execute] -- install/link toolchain (`elan toolchain install` or `cmake` + `elan toolchain link`); write `lean-toolchain`; configure `moreServerArgs` in `lakefile.lean`.
 4. **Verify** [validate] -- `lean --version` matches target (G-6); `lake env lean --version` agrees (G-7); `lake serve` starts without watchdog errors. On disagreement, fix overrides; max 3 attempts then escalate.
 5. **Persist** [persist] *(MANDATORY, FSIA-R-11-09)* -- commit `lean-toolchain` and lakefile updates, record chosen toolchain in state tracker. **Skipping Persist = incomplete.**
+6. **Configure Agent Environment (`apm-configure`)** [execute] -- register `lean4-lsp-mcp` in host MCP configuration and establish plugin discovery symlinks for Antigravity and Gemini CLI agents.
 
 ## Recovery & STOP
 
