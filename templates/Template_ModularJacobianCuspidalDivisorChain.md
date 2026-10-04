@@ -1,27 +1,26 @@
 # Template_ModularJacobianCuspidalDivisorChain - Modular Jacobian Cuspidal Divisor Chains & Degree Zero Cycles
 
-Use this template for **modular Jacobian cuspidal divisor chains**, **degree zero cycle bounds**,
-**circulation capacity bounds**, and **boundary loop charge balance**.
+Use this template for **modular Jacobian cuspidal divisor chains**, **degree zero homology cycles**,
+**circulation capacity bounds**, and **boundary circulation chain analysis**.
 
 In arithmetic geometry and Fermat's Last Theorem / modular forms:
-On modular curves X_0(N) and their modular Jacobians J_0(N), the cuspidal divisor chains
-consist of formal sums \sum_c n_c [c] of degree zero supported on the cusps of X_0(N).
-By the Manin-Drinfeld theorem and Kubert-Lang theory of cuspidal divisor units, every cuspidal
-divisor of degree zero has finite order in J_0(N)(Q). In Mazur's Eisenstein ideal theory,
-the cuspidal chain relations provide canonical generators for the kernel of the modular degree,
-bounding the exponent of the rational cuspidal subgroup and precluding modular deformation obstructions.
+On modular curves X_0(N) and their modular Jacobians J_0(N), cuspidal divisor chains
+D = \\sum c_i [P_i] with \\deg D = 0 define elements of the rational cuspidal divisor group
+C(N) \\subset J_0(N)(Q). By the Manin-Drinfeld theorem and Mazur's Eisenstein ideal analysis,
+cuspidal divisor chains generate finite torsion modules whose annihilator ideals bound the
+modular parametrization degree and eliminate potential Frey curve torsion obstructions.
 
 In stochastic consensus and Markov non-equilibrium networks:
-* Cuspidal divisor chains quantify discrete topological circulation charges along boundary chain cycles.
-* Degree zero cycle bounds certify exact conservation of cyclic flow across Markov boundaries.
-* The divisor chain slack certifies circulation safety margins under non-equilibrium chain potential loading.
+* Cuspidal divisor chains quantify discrete topological circulation chains along boundary transitions.
+* Boundary cycle bounds certify absence of non-harmonic periodic accumulation loops.
+* The divisor chain slack defines circulation safety margins under boundary flux variations.
 * The normalized divisor chain ratio bounds discrete circulation amplification relative to network capacity.
 
 ## Main results
-* `<ModularJacobianCuspidalDivisorChainDatum>` - datum (cuspidalDivisorChain, divisorChainCapacity, degreeZeroBound, divisorChainTolerance, divisorChainWeight)
+* `<ModularJacobianCuspidalDivisorChainDatum>` - datum (cuspidalDivisorChain, divisorChainCapacity, chainBound, divisorChainTolerance, divisorChainWeight)
 * `<cuspidalDivisorChainDefect>` - defect between divisor chain capacity ceiling and observed cuspidal divisor chain norm
 * `<normalizedCuspidalDivisorChainRatio>` - normalized ratio of observed cuspidal divisor chain norm to capacity ceiling
-* `<cuspidalDivisorChainCapacityBound>` - total cuspidal divisor chain capacity bound scaled by capacity ceiling and degree zero bound
+* `<cuspidalDivisorChainCapacityBound>` - total cuspidal divisor chain capacity bound scaled by capacity ceiling and chain bound
 * `<cuspidalDivisorChainSlack>` - divisor chain slack between tolerance-scaled capacity and observed cuspidal divisor chain norm
 * `<cuspidalDivisorChainWeightedMargin>` - weighted margin combining divisor chain weight and divisor chain tolerance
 * `<cuspidalDivisorChainCombinedIndex>` - combined index of normalized divisor chain ratio and divisor chain slack
@@ -43,7 +42,7 @@ In stochastic consensus and Markov non-equilibrium networks:
 * FLT: `StochasticCCV/Core/ModularJacobianCuspidalDivisorChain.lean`
 * Mazur, B. (1977), *Modular curves and the Eisenstein ideal*, Publ. Math. IHES.
 * Drinfeld, V. G. (1973), *Two theorems on modular curves*, Funktsional. Anal. i Prilozhen.
-* Kubert, D. S., Lang, S. (1981), *Modular Units*, Grundlehren der mathematischen Wissenschaften, Springer.
+* Manin, Yu. I. (1972), *Parabolic points and zeta functions of modular curves*, Izv. Akad. Nauk SSSR.
 
 ## Tags
 template, modular-jacobian, cuspidal-divisor-chain, degree-zero-cycles, manin-drinfeld, boundary-cycles, circulation-capacity
@@ -71,12 +70,12 @@ namespace <Project>.ModularJacobianCuspidalDivisorChain
 structure <ModularJacobianCuspidalDivisorChainDatum> where
   cuspidalDivisorChain : ℝ
   divisorChainCapacity : ℝ
-  degreeZeroBound : ℝ
+  chainBound : ℝ
   divisorChainTolerance : ℝ
   divisorChainWeight : ℝ
   chain_pos : 0 < cuspidalDivisorChain
   capacity_pos : 0 < divisorChainCapacity
-  bound_pos : 0 < degreeZeroBound
+  bound_pos : 0 < chainBound
   tolerance_pos : 0 < divisorChainTolerance
   weight_pos : 0 < divisorChainWeight
 
@@ -87,7 +86,7 @@ def <normalizedCuspidalDivisorChainRatio> (d : <ModularJacobianCuspidalDivisorCh
   d.cuspidalDivisorChain / d.divisorChainCapacity
 
 def <cuspidalDivisorChainCapacityBound> (d : <ModularJacobianCuspidalDivisorChainDatum>) : ℝ :=
-  d.divisorChainCapacity * d.degreeZeroBound
+  d.divisorChainCapacity * d.chainBound
 
 def <cuspidalDivisorChainSlack> (d : <ModularJacobianCuspidalDivisorChainDatum>) : ℝ :=
   d.divisorChainCapacity * d.divisorChainTolerance - d.cuspidalDivisorChain
