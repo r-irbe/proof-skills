@@ -1,0 +1,5 @@
+{
+  "name": "proof-skills",
+  "description": "Lean 4 theorem proving, mathematical formalization, tactic discipline, and Kuzu knowledge graph skills library",
+  "version": "0.1.0"
+}
