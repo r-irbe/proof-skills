@@ -120,6 +120,16 @@ in the order a real port typically hits them:
   → `Set.mem_ofPred_eq`). Root cause: pin-bump deprecation renames. Fix:
   sweep the whole vendored tree for the renamed names before the first build
   cycle.
+- **`unexpected token` / parse failure on `∑` or `∏` in code that compiled
+  at an older pin, or boilerplate `open scoped BigOperators` that now gates
+  nothing.** Root cause: Mathlib split the big-operator notation out of the
+  scoped `BigOperators` scope into root scope (and deleted the
+  `Mathlib.Algebra.BigOperators.Basic` umbrella import); the scope now gates
+  only the `𝔼` expectation notation. Fix: delete the vestigial open when only
+  sum/prod are used (keep it only for `Finset.expect`); import
+  `Mathlib.Algebra.BigOperators.Group.Finset.Basic` for the lemma set.
+  Notation-scope drift is elaboration-visibility drift: the syntax is live as
+  soon as any transitively imported module provides it.
 
 Two meta-rules that each cost a debugging cycle in a real port:
 
