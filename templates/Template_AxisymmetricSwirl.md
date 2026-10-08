@@ -12,7 +12,7 @@ Singularity formation in axisymmetric geometries depends crucially on the presen
 * In `CylinderAngleEvolution.lean`, `ActualSlowAxis.lean`, and `BaseAngularGrowth.lean`,
   the formalization establishes that critical swirl bounds control centrifugal destabilization.
 
-In EASCI multi-agent consensus and belief dynamics:
+In multi-agent consensus and belief dynamics:
 * Swirl velocity represents cross-cutting cyclic debate that produces non-equilibrium entropy.
 * Angular momentum measures the persistence of circular deliberation across agent clusters.
 * Centrifugal bifurcation bounds ensure that cyclic speculation does not trigger bimodal polarization.

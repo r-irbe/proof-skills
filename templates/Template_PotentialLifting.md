@@ -1,4 +1,4 @@
-<!-- generated for docs/easci/lean/skills/templates/Template_PotentialLifting.md -->
+<!-- generated for templates/Template_PotentialLifting.md -->
 
 # Template_PotentialLifting - Deligne-Serre Potential Lifting Template
 
@@ -20,8 +20,8 @@ satisfying dV*/dt < 0 strictly away from equilibria.
 ## References
 * Deligne & Serre (1974), "Formes modulaires de poids 1", Ann. Sci. ENS, 6.11.
 * Khalil (2002), Nonlinear Systems, Chapter 4 (Lyapunov Stability).
-* packages/cusp-catastrophe/CuspCatastrophe/Core.lean (gradient_flow_lyapunov).
-* docs/easci/lean/fermats-last-theorem/P2M/Sol/S_DeligneSerre_exists_charZero_eigenvector_of_residual_character.lean.
+* A gradient-flow Lyapunov core module (`gradient_flow_lyapunov`) in the downstream formalization packages.
+* The Deligne-Serre characteristic-zero eigenvector construction (a P2M solution module in the upstream formalization corpus).
 
 ## Tags
 template, dynamics, lyapunov, potential-lifting, deligne-serre, cusp-catastrophe, morse
@@ -36,7 +36,7 @@ import Mathlib.Data.Real.Basic
 
 set_option autoImplicit false
 
-namespace EASCI.PotentialLifting
+namespace MyProject.PotentialLifting
 
 open Real
 
@@ -110,5 +110,5 @@ theorem lift_weak_to_strict_lyapunov
     strict_decrease := h_decrease
   }
 
-end EASCI.PotentialLifting
+end MyProject.PotentialLifting
 ```

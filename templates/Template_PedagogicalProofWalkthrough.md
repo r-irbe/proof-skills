@@ -158,6 +158,6 @@ Instead of reciting mechanical tactic sequences (`simp`, `intro`, `linarith`), w
 
 - **Zettel ID:** `zet-lean-<slug>`
 - **Layer:** 4 (Concept)
-- **MOC Index:** `MOC-lean-and-easci`, `MOC-itp-master-ontology`
+- **MOC Index:** the project's Lean MOC index and its ITP-ontology companion
 - **Related Notes:** `zet-lean-<related1>`, `zet-lean-<related2>`
 ```

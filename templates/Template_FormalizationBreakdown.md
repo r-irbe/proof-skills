@@ -28,7 +28,7 @@ sources:
   - "<path/to/formalization/README.md>"
 indexed-by:
   - MOC-root-investigator
-  - MOC-lean-and-easci
+  - the project's Lean MOC index
 related:
   - PLAN-FLT-INVESTIGATION-AND-LEARNINGS
   - PLAN-NSE-INVESTIGATION-AND-LEARNINGS

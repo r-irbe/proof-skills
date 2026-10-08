@@ -3,7 +3,7 @@
 ## 1. Domain & Scope
 - **Category**: Asymptotic Analysis / Projective Limits / Dynamical Scaling.
 - **Role**: Formalizes transitions from discrete Markov towers, grid approximations, and auxiliary parameter sequences to continuous stationary states and generator invariants.
-- **Origin**: Adapted from the Taylor-Wiles-Diamond patching method in Fermat's Last Theorem (`Algebra.PatchingDatum`, `Algebra.PatchingLevel`, `nonempty_patchingLevel_bot`) and EASCI Markov scaling limits (`EASCI.ScalingLimit`).
+- **Origin**: Adapted from the Taylor-Wiles-Diamond patching method (patching datum/level constructions) and from Markov scaling-limit formalizations.
 
 ---
 

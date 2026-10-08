@@ -126,7 +126,7 @@ theorem coboundary_of_shapiro_eval
   abel
 
 /-!
-## Section 4: EASCI Concrete Case Study - Multi-Agent Consensus View-Change
+## Section 4: Concrete Case Study - Multi-Agent Consensus View-Change
 -/
 
 namespace ConsensusCaseStudy
@@ -160,7 +160,7 @@ theorem view_change_potential_discharge
 end ConsensusCaseStudy
 
 /-!
-## Section 5: EASCI Concrete Case Study - Markov Loop Currents & Cycle Affinities
+## Section 5: Concrete Case Study - Markov Loop Currents & Cycle Affinities
 -/
 
 namespace MarkovCurrentCaseStudy

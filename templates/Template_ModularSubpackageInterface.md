@@ -2,8 +2,8 @@
 
 ## 1. Context & Architectural Rationale
 
-In a multi-package Lean 4 ecosystem (e.g. `packages/tacit-foundations`, `packages/stochastic-ccv`, `packages/cusp-catastrophe`, `packages/reinforcement-learning`, `packages/provenance-chain`, `packages/agentic-safety`), multiple packages are developed in parallel as independent mini-projects.
-Directly importing the monolithic legacy codebase (`EASCI.*`) or creating circular imports between peer packages violates DAG modularity and triggers Lake build failures.
+In a multi-package Lean 4 ecosystem (a foundational package plus its downstream analysis, dynamics, learning, provenance, and safety packages), multiple packages are developed in parallel as independent mini-projects.
+Directly importing the monolithic legacy codebase (`Legacy.*`) or creating circular imports between peer packages violates DAG modularity and triggers Lake build failures.
 
 This template formalizes the **Cross-Package Interface Pattern** inspired by Wiles' complete intersection criterion (#(eta_T) = #(m_R / m_R^2)) and Mazur's cuspidal quotienting in Fermat's Last Theorem:
 - **Vertical Hierarchy**: Strict 4-tier DAG (Tier 0 -> Tier 1 -> Tier 2 -> Tier 3).
@@ -20,7 +20,7 @@ Every cross-package interface module must adhere to the following template:
 ```lean
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
--- 1. Tier 0 Foundational Imports (never import EASCI.*)
+-- 1. Tier 0 Foundational Imports (never import the legacy monolith)
 import Foundations.DiscreteValuation
 
 set_option autoImplicit false
@@ -57,8 +57,8 @@ end <PackageName>
 
 ## 3. Checklist for Subpackage Interface Authors
 
-1. **Monolith Isolation**: Confirm `git grep "import EASCI" packages/<name>/` returns 0 hits.
+1. **Monolith Isolation**: Confirm `git grep "import Legacy" packages/<name>/` returns 0 hits.
 2. **DAG Monotonicity**: Ensure your package only imports packages of strictly lower tier.
 3. **Integer Scaling**: Ensure parameters crossing boundaries use `Foundations.ScaledInt` or explicit integer scales (x 100).
-4. **Symbol Registry**: Register all new interface symbols in `docs/easci/lean/skills-overrides/subst_table.json`.
+4. **Symbol Registry**: Register all new interface symbols in the project's symbol-registry table (e.g. a `subst_table.json` under the project's overrides layer).
 5. **Zero Sorry Hard Invariant**: 0 unproven goals committed.

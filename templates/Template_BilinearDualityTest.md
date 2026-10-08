@@ -2,7 +2,7 @@
 
 > **Status:** Production template for non-linear and operator equality discharging in proof-skills.
 > **Audience:** Provers formalizing matrix equations, Lyapunov stability, Markov operators, or tensor contractions.
-> **Pattern Source:** Extracted from Serre duality in FLT (Def_AlgebraicCurve_SerrePairing.lean) and EASCI matrix/Lyapunov formalizations.
+> **Pattern Source:** Extracted from Serre duality for algebraic curves and from matrix/Lyapunov contraction formalizations.
 
 ---
 

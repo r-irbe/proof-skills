@@ -9,8 +9,8 @@
 ## 1. When to Use This Template
 
 Apply `Template_P2MProofReversion` when:
-- Refactoring large, monolithic files (e.g., `EASCI/LyapunovStability.lean` > 1,000 LOC).
-- Developing across multi-package boundaries (`packages/stochastic-ccv`, `packages/tacit-foundations`) where proof modifications must not invalidate downstream `.olean` caches.
+- Refactoring large, monolithic files (e.g., a legacy monolith module > 1,000 LOC).
+- Developing across multi-package boundaries (`packages/<downstream>`, `packages/<foundation>`) where proof modifications must not invalidate downstream `.olean` caches.
 - Operating multi-agent proof generation where an Architect agent issues formal specification cards and Worker agents prove them concurrently.
 - Standard `exact` fails due to local context instance divergence, binder name drift, or subtle implicit parameter mismatches.
 - Universe levels must be formally certified against undergeneralization (`P2M_UNDERGENERAL`).
@@ -51,17 +51,17 @@ Every theorem $X$ is split across two files:
 
 ```lean
 /-
-Copyright (c) 2026 EASCI Project. All rights reserved.
+Copyright (c) 2026 The Project Authors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 
 import Mathlib.Analysis.Calculus.Deriv.Basic
-import EASCI.Util.P2MUtil
+import MyProject.Util.P2MUtil
 
 set_option autoImplicit false
 set_option maxHeartbeats 400000
 
-namespace EASCI.Sol.S_MyTheorem
+namespace MyProject.Sol.S_MyTheorem
 
 universe u
 
@@ -77,24 +77,24 @@ theorem solution {alpha : Type u} [NormedAddCommGroup alpha] [NormedSpace Real a
 
 #print axioms solution
 
-end EASCI.Sol.S_MyTheorem
+end MyProject.Sol.S_MyTheorem
 ```
 
 ### 3.2 The Interface Card (`Theorems/Thm_MyTheorem.lean`)
 
 ```lean
 /-
-Copyright (c) 2026 EASCI Project. All rights reserved.
+Copyright (c) 2026 The Project Authors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 -/
 
 import Mathlib.Analysis.Calculus.Deriv.Basic
-import EASCI.Util.P2MUtil
-import EASCI.Sol.S_MyTheorem
+import MyProject.Util.P2MUtil
+import MyProject.Sol.S_MyTheorem
 
 set_option autoImplicit false
 
-namespace EASCI.Theorems
+namespace MyProject.Theorems
 
 universe u
 
@@ -103,12 +103,12 @@ universe u
 theorem MyTheorem {alpha : Type u} [NormedAddCommGroup alpha] [NormedSpace Real alpha]
     (f : Real -> alpha) (x : Real) (hf : DifferentiableAt Real f x) :
     ContinuousAt f x := by
-  p2m_exact_reverting @_root_.EASCI.Sol.S_MyTheorem.solution
+  p2m_exact_reverting @_root_.MyProject.Sol.S_MyTheorem.solution
 
 /-- Verification guard: confirms signature equality and prevents universe collapse -/
-#p2m_type_eq MyTheorem EASCI.Sol.S_MyTheorem.solution
+#p2m_type_eq MyTheorem MyProject.Sol.S_MyTheorem.solution
 
-end EASCI.Theorems
+end MyProject.Theorems
 ```
 
 ---

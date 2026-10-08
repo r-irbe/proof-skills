@@ -13,7 +13,7 @@ In the NavierStokesAndEuler corpus:
   transparency unfolding loops, or diamond conflicts when working with deeply nested
   function spaces (Sobolev $H^s$, Gevrey classes, or vector bundles).
 
-In EASCI multi-agent proof engineering:
+In multi-agent proof engineering:
 * Anchoring intermediate targets shields proof scripts from Mathlib definitional drift.
 * Explicit `change` steps provide clean syntax horizons that accelerate kernel checking.
 * Combining `have` with explicit `show` prevents goal pollution in multi-branch derivations.

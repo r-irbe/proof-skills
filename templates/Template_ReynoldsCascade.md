@@ -12,7 +12,7 @@ by turbulent velocity fluctuations. In the turbulent kinetic energy equation:
 * In the inertial subrange, inter-scale transfer flux $\Pi(k)$ carries energy conservatively across wave-number shells.
 * Subcritical stability holds when turbulent production does not outpace dissipation: $P \le \varepsilon$.
 
-In EASCI multi-agent consensus and belief dynamics:
+In multi-agent consensus and belief dynamics:
 * Turbulent production represents cross-agent variance injection driven by disagreement.
 * Viscous dissipation represents consensus contraction induced by empirical grounding and mixing.
 * Inter-scale flux represents propagation of belief updates across hierarchical abstraction layers.

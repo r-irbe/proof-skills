@@ -483,8 +483,8 @@ created: "YYYY-MM-DD"
 updated: "YYYY-MM-DD"
 author: "<agent-id>"
 source:
-  repo: "r-irbe/tacit-mui"
-  branch: "wave-3"
+  repo: "<org>/<project>"
+  branch: "<workstream-branch>"
   sha: "<short-sha>"
 toolchain:
   lean: "leanprover/lean4:vX.Y.Z"
@@ -1416,7 +1416,7 @@ authored_by: "<agent-id>"        # usually orchestrator
 wave: 0
 phase: ""                        # e.g. "Phase VII"
 session: "<session-id>"
-branch: "wave-3"
+branch: "<workstream-branch>"
 pin_head_at_close: "<short-sha>"
 predecessor_close: "<short-sha>" # previous wave's close commit
 mathlib_pin: "<short-sha>"

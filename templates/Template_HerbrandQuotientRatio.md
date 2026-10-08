@@ -110,7 +110,7 @@ theorem norm_comp_aug_eq_zero (x : Fin N -> Real) :
 end <Project>.ProofSkills.HerbrandQuotient
 ```
 
-## EASCI / Subpackage Case Study
+## Subpackage Case Study
 
 In `packages/stochastic-ccv/StochasticCCV/Core/HerbrandQuotient.lean`:
 1. The cyclic transition kernel $P$ and stationary distribution $\pi$ induce an edge flux:

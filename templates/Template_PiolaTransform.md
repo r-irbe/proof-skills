@@ -13,7 +13,7 @@ The Piola transformation preserves the divergence-free condition under nonlinear
 * In `Euler/PacketPiolaAlgebra.lean` and `Euler/PacketConstructedPiola.lean`, this finite-dimensional
   algebra governs the curl tensor transformation under volume-preserving changes of variables ($J = 1$).
 
-In EASCI multi-agent consensus and belief dynamics:
+In multi-agent consensus and belief dynamics:
 * Probability current represents the flow of collective belief across agent state spaces.
 * Nonlinear coordinate reparametrizations (such as log-odds transforms) must conserve total probability mass.
 * The Piola transform guarantees that stationary consensus currents remain divergence-free under manifold re-embeddings.

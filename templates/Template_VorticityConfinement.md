@@ -13,7 +13,7 @@ by the Beale-Kato-Majda (BKM) theorem:
   by constructing compact initial data $u_0$ whose vorticity remains confined within a finite
   topological ball $B(0, R_{vort})$ while its peak density diverges at finite lifespan $T^* \in (0, 1]$.
 
-In EASCI multi-agent consensus and belief dynamics:
+In multi-agent consensus and belief dynamics:
 * Vorticity represents ungrounded cyclic argument loops across decentralized agents.
 * Vorticity confinement bounds ensure that cyclic speculation is confined to an isolated cluster.
 * BKM blowup criteria define the exact threshold where cyclic deliberation cascades into epistemic collapse.

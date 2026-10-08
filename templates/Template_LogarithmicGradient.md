@@ -14,7 +14,7 @@ Sobolev norms:
   cannot diverge super-linearly, and all higher Sobolev norms ||u||_{H^s} remain bounded.
 * Consequently, singularity formation is governed entirely by the accumulation of vorticity.
 
-In EASCI multi-agent consensus and belief dynamics:
+In multi-agent consensus and belief dynamics:
 * Velocity gradient represents the sensitivity of agent belief updates to incoming peer signals.
 * Vorticity represents ungrounded circular debate loops among decentralized agents.
 * The logarithmic estimate ensures that belief sensitivity cannot spike arbitrarily

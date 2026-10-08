@@ -12,7 +12,7 @@ to a Gevrey class $G^\alpha$ of order $\alpha \ge 1$ with analyticity radius $\s
 * This ensures that no singular vorticity concentration or flat non-analytic boundary layer
   can form while the Gevrey radius remains strictly positive.
 
-In EASCI multi-agent consensus and governance dynamics:
+In multi-agent consensus and governance dynamics:
 * High-frequency modes represent microscopic agent vote flutter or rapid opinion oscillations.
 * Gevrey class smoothing ensures that localized disagreement decays at a sub-exponential rate
   governed by the consensus analyticity radius $\sigma$.

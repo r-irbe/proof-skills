@@ -27,7 +27,7 @@ sources:
   - "<path/to/formalization/CoreReduction.lean>"
 indexed-by:
   - MOC-root-investigator
-  - MOC-lean-and-easci
+  - the project's Lean MOC index
 related:
   - PLAN-<DOMAIN>-INVESTIGATION-AND-LEARNINGS
 ---
