@@ -79,6 +79,8 @@ diagnostic extraction, bisection, and pull-request hygiene.
 | [lean-proof-review](skills/lean-proof-review/SKILL.md) | Auditor | Tier 1 | Proof golfing, simp-set optimization, term-mode conversion. |
 | [lean-enforcement](skills/lean-enforcement/SKILL.md) | Auditor | Tier 1 | Zero-sorry, zero-warning CI policy enforcement. |
 | [lean-quality-engine](skills/lean-quality-engine/SKILL.md) | Auditor | Tier 2 | Quality metrics, heartbeats monitoring, proof complexity scoring. |
+| [lean-proof-refactor](skills/lean-proof-refactor/SKILL.md) | Editor | Tier 2 | Long-proof decomposition campaigns: findings, adjudication (cut / considered-negative), shared-lemma extraction, regression gates |
+| [lean-upstream-porting](skills/lean-upstream-porting/SKILL.md) | Editor | Tier 2 | Corpus-to-upstream porting: routing, dossiers, claim approval, module-system pitfalls, AI-disclosure conventions; defers PR mechanics to @lean-pr |
 | [lean-tautology-triage](skills/lean-tautology-triage/SKILL.md) | Auditor | Tier 1 | Detection of circular proofs, vacuous hypotheses, and tautological goals. |
 | [lean-formalization-breakdown](skills/lean-formalization-breakdown/SKILL.md) | Auditor / Specifier | Tier 1 | Multi-wave formalization breakdown, static census, DAG depth, landmark extraction. |
 
