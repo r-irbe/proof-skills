@@ -60,6 +60,8 @@ Systematic methodology for investigating proof strategies, API availability, tac
 
 ## Detailed reference
 
+- Mathlib master (module system) API notes - notation propagation, sealed instances, generated names, normed/measure construct pointers: `references/mathlib-module-system-notes.md`.
+
 Full methodology content (Parts 1–9) lives in
 [`references/lean-research-handbook.md`](../../references/lean-research-handbook.md).
 Load that file when the skill is convened; the SKILL.md only carries

@@ -92,6 +92,8 @@ r_caveats: [F1, F6]
 > attempt to name hygienic dagger variables (`x✝`) directly without `rename_i`;
 > never leave bare `exact?` or `simp?` un-expanded. Full registry:
 > `GUARDRAILS.md §Agent failure taxonomy`.
+- Porting proofs to mathlib master (module system): check `references/mathlib-module-system-notes.md` first - notation propagation, instance sealing, and positional-implicit failures each look like unrelated bugs.
+
 
 ## See also
 
