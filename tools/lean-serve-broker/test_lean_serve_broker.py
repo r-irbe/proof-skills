@@ -103,9 +103,7 @@ class PureFunctionTests(unittest.TestCase):
         self.assertIsNone(lsb.read_lsp_frame(io.BytesIO(b"X-Other: 1\r\n\r\n{}")))
 
     def test_read_frame_bad_content_length(self):
-        self.assertIsNone(
-            lsb.read_lsp_frame(io.BytesIO(b"Content-Length: NaN\r\n\r\n{}"))
-        )
+        self.assertIsNone(lsb.read_lsp_frame(io.BytesIO(b"Content-Length: NaN\r\n\r\n{}")))
 
     def test_read_frame_chunked_body(self):
         body = b"x" * 100
@@ -176,9 +174,7 @@ class PureFunctionTests(unittest.TestCase):
         self.assertEqual(leftovers, [])
 
     def test_atomic_write_status_swallows_oserror(self):
-        lsb.atomic_write_status(
-            os.path.join(_TMP, "no-such-dir", "s.json"), {"running": False}
-        )
+        lsb.atomic_write_status(os.path.join(_TMP, "no-such-dir", "s.json"), {"running": False})
 
     def test_build_gate_bounds_the_wait(self):
         broker = lsb.Broker(_TMP, ["true"])
@@ -212,16 +208,12 @@ class BrokerIntegrationTests(unittest.TestCase):
         stub_path = os.path.join(self.root, "stub_serve.py")
         with open(stub_path, "w") as f:
             f.write(STUB_SERVER)
-        self.broker = lsb.Broker(
-            self.root, [sys.executable, stub_path, self.stub_log]
-        )
+        self.broker = lsb.Broker(self.root, [sys.executable, stub_path, self.stub_log])
         self.broker.state = os.path.join(_TMP, "state-broker")
         os.makedirs(self.broker.state, exist_ok=True)
         self.broker.start_server()
         self.broker.real_initialize()
-        self.reader_thread = threading.Thread(
-            target=self.broker.server_reader, daemon=True
-        )
+        self.reader_thread = threading.Thread(target=self.broker.server_reader, daemon=True)
         self.reader_thread.start()
 
         self.client_sock, broker_side = socket.socketpair()
@@ -259,9 +251,7 @@ class BrokerIntegrationTests(unittest.TestCase):
             return []
 
     def test_initialize_handshake_cached_and_served(self):
-        self.assertEqual(
-            self.broker.cached_init_result, {"capabilities": {"stub": True}}
-        )
+        self.assertEqual(self.broker.cached_init_result, {"capabilities": {"stub": True}})
         self.client_sock.sendall(jmsg({"jsonrpc": "2.0", "id": 5, "method": "initialize"}))
         msg = self.recv_msg()
         self.assertEqual(msg["id"], 5)
@@ -289,14 +279,15 @@ class BrokerIntegrationTests(unittest.TestCase):
         # ...while the per-client id map is retained by design for
         # $/cancelRequest routing; it clears on drop_client
         with self.broker.clients_lock:
-            cp = self.broker.client_pending.get(
-                next(iter(self.broker.clients)), {}
-            )
+            cp = self.broker.client_pending.get(next(iter(self.broker.clients)), {})
         self.assertEqual(cp, {7: 1})
 
     def test_notification_broadcast_reaches_client(self):
-        note = {"jsonrpc": "2.0", "method": "textDocument/publishDiagnostics",
-                "params": {"uri": "file:///x.lean", "diagnostics": []}}
+        note = {
+            "jsonrpc": "2.0",
+            "method": "textDocument/publishDiagnostics",
+            "params": {"uri": "file:///x.lean", "diagnostics": []},
+        }
         self.broker.broadcast(note)
         msg = self.recv_msg()
         self.assertEqual(msg["method"], "textDocument/publishDiagnostics")
@@ -340,7 +331,7 @@ class StopCommandTests(unittest.TestCase):
         state = lsb.state_dir("/definitely/not/a/root")
         os.makedirs(state, exist_ok=True)
         with open(os.path.join(state, "broker.pid"), "w") as f:
-            f.write(str(2 ** 22))
+            f.write(str(2**22))
         buf = io.StringIO()
         old = sys.stdout
         sys.stdout = buf
