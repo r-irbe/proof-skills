@@ -26,6 +26,7 @@ For a full refresh:
 """
 
 import argparse
+import datetime
 import json
 import re
 import sys
@@ -574,7 +575,7 @@ def generate_report(theorems: dict[str, list[dict]], output: Path, analysis: dic
 
     report_lines = [
         '# Axiom Audit Report',
-        '## Generated: 2026-04-29',
+        '## Generated: ' + datetime.date.today().isoformat(),
         '',
         '## Summary',
         f'- Modules: {len(theorems)}',
