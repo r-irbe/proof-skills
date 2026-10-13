@@ -10,16 +10,16 @@ Use this template for **Euler system norm relations**, **Kolyvagin derivative cl
 * `<eulerSystemNormSlack>` - norm slack relative to tolerance threshold
 * `<eulerSystemNormEnergy>` - quadratic Euler system norm energy scaling with scale weight and conductor level
 * `<IsStableEulerSystemNorm>` - stability predicate: norm relation value strictly below capacity ceiling
-* `<defect_pos_of_isStable>` - stability implies positive relation defect
-* `<normalized_lt_one_of_isStable>` - stability implies normalized ratio strictly less than 1
-* `<energy_pos>` - Euler system norm energy is strictly positive
-* `<reconstruction_identity>` - defect + normRelationValue = ceiling
-* `<slack_pos_of_lt_tolerance>` - slack is positive when norm relation value is below tolerance
-* `<capacity_scaled_nonneg>` - capacity scaled nonnegativity
-* `<stability_preserved_under_shrink>` - stability preserved under positive relation reduction
-* `<energy_monotone_of_weight_le>` - energy is monotonic in scale weight
-* `<tolerance_slack_add_identity>` - tolerance slack add identity
-* `<defect_monotone_of_norm_le>` - defect is monotonic in norm relation value reduction
+* `<eulerSystemNormDefect_pos_of_isStable>` - stability implies positive relation defect
+* `<normalizedEulerSystemNormRatio_lt_one_of_isStable>` - stability implies normalized ratio strictly less than 1
+* `<eulerSystemNormEnergy_pos>` - Euler system norm energy is strictly positive
+* `<eulerSystemNorm_reconstruction_identity>` - defect + normRelationValue = ceiling
+* `<eulerSystemNormSlack_pos_of_lt_tolerance>` - slack is positive when norm relation value is below tolerance
+* `<eulerSystemNorm_capacity_scaled_nonneg>` - capacity scaled nonnegativity
+* `<eulerSystemNorm_stability_preserved_under_shrink>` - stability preserved under positive relation reduction
+* `<eulerSystemNormEnergy_monotone_of_weight_le>` - energy is monotonic in scale weight
+* `<eulerSystemNorm_tolerance_slack_add_identity>` - tolerance slack add identity
+* `<eulerSystemNormDefect_monotone_of_norm_le>` - defect is monotonic in norm relation value reduction
 
 ## References
 * FLT: `StochasticCCV/Core/EulerSystemNormRelation.lean`
