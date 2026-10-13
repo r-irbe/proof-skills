@@ -1,23 +1,33 @@
-# Template: Modular Jacobian Rosati Involution
+# Template_ModularJacobianRosatiInvolution - Modular Jacobian Rosati Involution Bounds
 
-## Formalization Pattern
-Formalization pattern for Modular Jacobian Rosati involution trace pairings, polarization conductors, and operator norm defect bounding in stochastic confidence cascades and Markov non-equilibrium networks.
+Use this template for **Modular Jacobian Rosati involution**, **canonical principal polarizations**,
+**positivity of trace pairing**, and **bounding stochastic circulation in confidence cascades**.
 
-## Mathematical Mapping
-- **Arithmetic Geometry**: For the Jacobian variety $J_0(N)$ of a modular curve $X_0(N)$, the canonical principal polarization $\theta : J_0(N) \to J_0(N)^\vee$ induces the Rosati involution $\phi \mapsto \phi^\dagger = \theta^{-1} \circ \phi^\vee \circ \theta$ on $\text{End}^0(J_0(N))$. The bilinear form $(x, y) \mapsto \text{Tr}(x \circ y^\dagger)$ is symmetric and positive definite (Albert classification).
-- **Stochastic CCV & Safety**: Trace pairing measures circulation flux across dual communication channels; involution ceiling bounds maximal permissible non-equilibrium flux before instability.
+## Main results
+* `<ModularJacobianRosatiInvolutionDatum>` - datum (tracePairing, involutionCeiling, polarizationConductor, involutionTolerance, scaleWeight)
+* `<modularJacobianRosatiInvolutionDefect>` - defect between involution ceiling and observed trace pairing
+* `<normalizedModularJacobianRosatiInvolutionRatio>` - normalized ratio of trace pairing to involution ceiling
+* `<modularJacobianRosatiInvolutionSlack>` - involution slack relative to tolerance threshold
+* `<modularJacobianRosatiInvolutionEnergy>` - quadratic Modular Jacobian Rosati involution energy scaling with scale weight and polarization conductor
+* `<IsStableModularJacobianRosatiInvolution>` - stability predicate: trace pairing strictly below involution ceiling
+* `<modularJacobianRosatiInvolutionDefect_pos_of_isStable>` - stability implies positive involution defect
+* `<normalizedModularJacobianRosatiInvolutionRatio_lt_one_of_isStable>` - stability implies normalized ratio strictly less than 1
+* `<modularJacobianRosatiInvolutionEnergy_pos>` - Modular Jacobian Rosati involution energy is strictly positive
+* `<modularJacobianRosatiInvolution_reconstruction_identity>` - defect + tracePairing = ceiling
+* `<modularJacobianRosatiInvolutionSlack_pos_of_lt_tolerance>` - slack is positive when trace pairing is below tolerance
+* `<modularJacobianRosatiInvolution_capacity_scaled_nonneg>` - capacity scaled nonnegativity
+* `<modularJacobianRosatiInvolution_stability_preserved_under_shrink>` - stability preserved under positive trace pairing reduction
+* `<modularJacobianRosatiInvolutionEnergy_monotone_of_weight_le>` - energy is monotonic in scale weight
+* `<modularJacobianRosatiInvolution_tolerance_slack_add_identity>` - tolerance slack add identity
+* `<modularJacobianRosatiInvolutionDefect_monotone_of_pairing_le>` - defect is monotonic in trace pairing reduction
+* `<modularJacobianRosatiInvolution_adjoint_positivity>` - trace pairing under canonical principal polarization is positive
+* `<modularJacobianRosatiInvolution_circulation_contraction>` - scaling by factor c with 0 < c < 1 strictly reduces trace pairing
 
-## Signature
-```lean
-structure ModularJacobianRosatiInvolutionDatum where
-  tracePairing : Real
-  involutionCeiling : Real
-  polarizationConductor : Real
-  involutionTolerance : Real
-  scaleWeight : Real
-  pairing_pos : 0 < tracePairing
-  ceiling_pos : 0 < involutionCeiling
-  conductor_pos : 0 < polarizationConductor
-  tolerance_pos : 0 < involutionTolerance
-  weight_pos : 0 < scaleWeight
-```
+## References
+* FLT: `StochasticCCV/Core/ModularJacobianRosatiInvolution.lean`
+* Shimura, G. (1971), *Introduction to the Arithmetic Theory of Automorphic Functions*, Princeton University Press.
+* Milne, J. S. (1986), *Abelian Varieties*, in Arithmetic Geometry, Springer-Verlag, 103-150.
+* Mumford, D. (1970), *Abelian Varieties*, Oxford University Press.
+
+## Tags
+template, modular-jacobian, rosati-involution, principal-polarization, trace-pairing, stochastic-ccv, circulation-contraction
