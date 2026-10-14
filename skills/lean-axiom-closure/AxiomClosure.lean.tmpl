@@ -1,0 +1,61 @@
+/-
+Copyright (c) 2026 the authors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+SPDX-License-Identifier: Apache-2.0
+-/
+import Lean
+
+/-!
+# Axiom-closure audit (generic, project-parameterized)
+
+Walks every declaration under a project root namespace and fails the
+build if any declaration's transitive axiom closure leaves the allowed
+set. This is the full-corpus generalization of `#print axioms` +
+`#guard_msgs` spot checks (the "FinalCheck discipline"): the consumer
+file wraps one `run_cmd` in `#guard_msgs (drop info) in`, so any
+violation - or any drift in the summary - fails the project's normal
+build. No external script; the kernel-adjacent elaborator itself is
+the checker.
+
+Usage (consumer file, after importing the project root):
+
+```lean
+import Audit.AxiomClosure   -- this module, vendored
+import PROJECT_ROOT_MODULE  -- the project root (module name)
+
+open Lean in
+#guard_msgs (drop info) in
+#eval axiomClosureAudit `PROJECT_ROOT #[`propext, `Quot.sound, `Classical.choice]
+```
+
+`#eval` prints the summary as an info line; `#guard_msgs (drop info)`
+drops it, so only unexpected `error` lines (the violations) can make
+the guard fail. A clean run is silent.
+-/
+
+namespace Audit
+
+open Lean Elab Command
+
+/-- Aux/implementation-detail filtering: any name component starting with
+`_` is internal (`_example`, `foo._eq_1`, `foo.proof_1`, ...). -/
+private def isAuditableName (root : Name) (name : Name) : Bool :=
+  name.getRoot == root && !name.isInternal
+
+/-- The audit: check every declaration under `root` against `allow`. -/
+def axiomClosureAudit (root : Name) (allow : Array Name) : CommandElabM Unit := do
+  let env ← getEnv
+  let allowStr := String.intercalate ", " (allow.toList.map (fun a => a.toString))
+  let mut checked : Nat := 0
+  let mut violations : Nat := 0
+  for (name, _) in env.constants.toList do
+    if isAuditableName root name then
+      checked := checked + 1
+      let axs ← liftCoreM (Lean.collectAxioms name)
+      for a in axs do
+        unless allow.contains a do
+          violations := violations + 1
+          throwError "{name.toString} : axiom closure contains {a.toString} (allowed: {allowStr})"
+  logInfo m!"axiom-closure audit: {checked} declarations checked under {root}, {violations} violation(s); allowed axioms: {allowStr}"
+
+end Audit

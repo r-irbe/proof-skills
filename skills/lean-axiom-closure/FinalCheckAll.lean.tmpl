@@ -1,0 +1,21 @@
+/-
+Copyright (c) 2026 the authors
+Released under Apache 2.0 license as described in the file LICENSE.
+SPDX-License-Identifier: Apache-2.0
+-/
+import Audit.AxiomClosure
+import <PROJECT_ROOT_MODULE>
+
+/-!
+# Full axiom-closure lockdown (the FinalCheck discipline)
+
+Every declaration under the project root must have its transitive
+axiom closure inside the strict allowlist. `#guard_msgs (drop info)`
+drops the summary info line, so any violation error - and only a
+violation error - fails this file's build. Keep this file inside the
+library's source globs so the project's normal build runs it.
+-/
+
+open Lean in
+#guard_msgs (drop info) in
+#eval Audit.axiomClosureAudit `<PROJECT_ROOT> #[`propext, `Quot.sound, `Classical.choice]

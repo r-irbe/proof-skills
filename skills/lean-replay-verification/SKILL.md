@@ -32,6 +32,10 @@ one incremental green build.
   expected-axioms allowlist). `sorryAx` and any non-standard axiom in
   the closure = FAIL. This bounds the trust base to the named axioms
   and catches sorries hiding behind wrappers or aliases.
+  EXECUTOR: the `lean-axiom-closure` skill supplies a compile-time
+  metaprogram that checks every declaration's closure inside the
+  project's normal build (the FinalCheck discipline) - prefer it over
+  per-theorem spot checks wherever the project can vendor one module.
 - **R3 - cross-version replay.** Rebuild the same proofs at the next
   toolchain pin when one is available. A different kernel RELEASE is
   the practical second opinion; institutionalize via the project's
