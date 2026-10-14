@@ -1,0 +1,105 @@
+---
+id: ai-guard-judge-eval
+title: "Evaluating guard-style LLM judges: bands, adapters, distributions"
+description: >-
+  Methodology for benchmarking LLM judges used as safety guards or
+  escalation adjudicators: build a stratified band set from real command
+  or decision corpora, measure band-wise sensitivity/specificity with
+  repeat-pass distributions, integrate heterogeneous judge models through
+  per-judge schema adapters with recorded translations, and gate every
+  rubric or model change behind distribution deltas. Use when comparing
+  guard models (LLM-as-judge for safety), tuning judge prompts, or
+  standing up an evaluation for a deterministic policy engine's
+  escalation layer.
+---
+
+# ai-guard-judge-eval
+
+## When to Use
+
+- You have (or plan) an LLM judge that adjudicates flagged actions -
+  commands, diffs, agent tool calls - and you must know its sensitivity,
+  specificity, and stability before trusting it.
+- You are comparing candidate judge models (e.g. a guard-tuned 4B vs a
+  general 8B) and need a defensible, reproducible measurement.
+- You changed the judge's prompt (rubric) and must prove the change helped
+  without breaking specificity.
+- You need to integrate a judge model whose native output format differs
+  from your pipeline's contract, and record that adaptation honestly.
+
+Not for: continuous-score quality rating (use post-hoc calibration per
+Morandi 2026); preference ranking of chat models (use arena/Glicko-style
+pairwise flows).
+
+## Method
+
+1. **Band-stratified item set (target 200-400).** Stratify real data
+   through the deterministic gate: every ESCALATE, every BLOCK, a capped
+   random WARN sample, a random ALLOW sample, plus synthetic adversarial
+   probes ('unsafe' by construction). Record per item: band, label,
+   label_source (operator / derived / synthetic), gate raw + effective
+   verdicts. Labels are hypotheses; judge disagreements are the output.
+   Keep hand-labelled anchors as a separate always-reported set.
+2. **Band-wise runs.** Sensitivity is measured on unsafe bands (E/B/X),
+   specificity on benign bands (N), the ambiguous band (W) is reported
+   descriptively. Chunked runs by band keep each measurement inside one
+   session and isolate failure modes.
+3. **Per-judge schema adapters.** Heterogeneous models need per-model
+   prompt styles AND parsers; record the translation (e.g. a 3-level
+   native scale mapped to a 0-4 severity) as schema adaptation, not
+   judging. Known traps, measured: thinking-mode models emit the answer
+   in the thinking channel (disable thinking or read the channel); safety
+   -tuned models override demanded JSON contracts with their native
+   format (parse the native format); token caps truncate rationales
+   before verdicts.
+4. **Repeat-pass distributions.** Single passes cannot rank prompt
+   generations (measured: verdict flips at temperature 0; a prompt change
+   that 'improved' sensitivity in one pass regressed in the full set).
+   Run --repeat 3+ and compare distributions per band.
+5. **Audit everything.** Every judge decision row: judge_id, prompt_style,
+   band, raw output digest, parsed finding. Rows are append-only with
+   judge tags (three judges sharing one log without tags corrupts
+   deduplication). Hash-chain the log when the judge feeds enforcement.
+
+## Procedure
+
+1. Extract the real command/decision corpus; dedup by exact text.
+2. Run the deterministic gate + active profile over it; bucket by
+   effective verdict; sample caps per class token for W.
+3. Write synthetic probes covering each dangerous-verb family the
+   gate defends (reverse shells, encoded pipes, credential exfil,
+   persistence, destruction).
+4. Emit the set with seed + label provenance in metadata; commit it.
+5. Per judge: schema adapter + prompt style; smoke on 3 unsafe items
+   (verify parseability) before any full run.
+6. Full band runs; aggregate per band; record the table.
+7. For rubric changes: gen N+1 runs full set x repeat 3; adopt only if
+   target band improves AND benign specificity holds within one flip;
+   register the distribution deltas and any negative results.
+
+## Pitfalls
+
+- Gate misfires contaminate derived labels (measured: 10/10 'escalate'
+  items the judge rightly cleared were gate regex errors) - report
+  E-band disagreements as label noise, then fix the gate separately.
+- One over-broad regex caused 4 of 10 escalations (a config-write rule
+  firing on config reads). Fix patterns at the source AND file the
+  upstream finding: drift-parity with a source policy is not correctness.
+- Flag-order and text-scanning quirks are portable: port rules verbatim
+  and document the defect rather than silently fixing (parity audits).
+- A hyper-recall judge (flags benign at 97%) and a high-specificity
+  under-flagger can come from the same model family - never compare on
+  one metric alone.
+- Model management: pull GGUFs to an engine-neutral store and register
+  engines by reference (Modelfile FROM <abs path>); opaque engine caches
+  lock models to one runtime.
+
+## Verification
+
+- Set reproducibility: fixed seed rebuilds byte-identical item set.
+- Parseability smoke (3 items/judge) before full runs; zero 'error'
+  outcomes in a full run is the entry bar.
+- Aggregate table: per-band sensitivity + specificity + speed, one row
+  per judge, next to the always-reported hand-labelled anchors.
+- Adoption gate: --repeat 3 distributions; target-band improvement with
+  benign-band held within one flip; deltas recorded next to baselines.
