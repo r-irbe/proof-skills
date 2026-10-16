@@ -532,7 +532,7 @@ def parse_axiom_output(theorems: dict[str, list[str]], axiom_output: Path,
     }
 
 
-def module_status(module_info: dict) -> tuple[str, str]:
+def module_status(module_info: dict, capture_stale: bool = False) -> tuple[str, str]:
     """Compute a human-readable status and notes cell for one module.
 
     `missing` is counted against the NAMED-decl cohort only; `_anon_*`
@@ -540,11 +540,23 @@ def module_status(module_info: dict) -> tuple[str, str]:
     bucket and never trigger `script-error`.  When a module has zero named
     decls but non-zero count_only decls, status is `count-only` (no axiom
     probe possible).
+
+    When `capture_stale` is true (the captured axiom output predates the
+    newest Lean source), unmatched declarations mean the output is simply
+    out of date rather than a script/lookup error, so the status reads
+    `stale-output` instead of the misleading `script-error` (W-harden-1,
+    2026-10-14: KalmanConsensus-style rows after concurrent corpus growth).
     """
     missing_count = len(module_info['missing'])
     named = module_info.get('named', module_info['theorems'])
     count_only = module_info.get('count_only', 0)
     if missing_count > 0:
+        if capture_stale:
+            return (
+                f'stale-output ({missing_count} missing)',
+                f"reported {module_info['reported']}/{named} (+{count_only} count-only);"
+                ' audit output predates source edits - rerun the refresh cycle'
+            )
         return (
             f'script-error ({missing_count} missing)',
             f"reported {module_info['reported']}/{named} (+{count_only} count-only)"
@@ -561,7 +573,8 @@ def module_status(module_info: dict) -> tuple[str, str]:
 
 
 def generate_report(theorems: dict[str, list[dict]], output: Path, analysis: dict | None,
-                    raw_axioms: dict[str, list[tuple[int, str]]] | None = None) -> None:
+                    raw_axioms: dict[str, list[tuple[int, str]]] | None = None,
+                    capture_stale: bool = False) -> None:
     """Generate the axiom audit report, optionally populated from audit output.
 
     W19-B1.5-a1 (B-01): table now carries a `decl_kind` breakdown column
@@ -633,7 +646,7 @@ def generate_report(theorems: dict[str, list[dict]], output: Path, analysis: dic
                 f'| {module} | {len(records)} | {kind_cell} | {co} | pending | awaiting audit output |'
             )
         else:
-            status, notes = module_status(analysis['modules'][module])
+            status, notes = module_status(analysis['modules'][module], capture_stale)
             report_lines.append(
                 f'| {module} | {len(records)} | {kind_cell} | {co} | {status} | {notes} |'
             )
@@ -743,7 +756,24 @@ def main():
     print(f"Source scan: {raw_total} `axiom` declarations across {len(raw_axioms)} modules")
 
     analysis = parse_axiom_output(theorems, args.axiom_output, raw_axioms=raw_axioms)
-    generate_report(theorems, args.output, analysis, raw_axioms=raw_axioms)
+    # W-harden-1 (2026-10-14): when the captured axiom output predates the
+    # newest Lean source, unmatched declarations are staleness, not script
+    # errors - label them `stale-output` instead of `script-error`.
+    capture_stale = False
+    if analysis is not None and args.axiom_output.exists():
+        capture_mtime = args.axiom_output.stat().st_mtime
+        newest_source = 0.0
+        for p in args.lean_dir.rglob('*.lean'):
+            try:
+                newest_source = max(newest_source, p.stat().st_mtime)
+            except OSError:
+                continue
+        capture_stale = newest_source > capture_mtime
+        if capture_stale:
+            print('Note: axiom output predates the newest Lean source; '
+                  'unmatched declarations are labelled stale-output.')
+    generate_report(theorems, args.output, analysis, raw_axioms=raw_axioms,
+                    capture_stale=capture_stale)
     print(f"Report written to {args.output}")
 
     all_raw = [qn for items in raw_axioms.values() for _, qn in items]
