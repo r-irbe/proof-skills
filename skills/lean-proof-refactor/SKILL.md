@@ -68,6 +68,11 @@ into short callers plus named, reusable lemmas - without regressions.
 - In shared build directories, stale-olean errors are transient -
   retry once before diagnosing.
 
+## Recovery
+
+- If a candidate helper extraction fails to compile or increases total proof complexity without reuse, revert the cut and record a `CONSIDERED-NEGATIVE` entry in the batch ledger.
+- On transient stale-`.olean` errors in shared build directories, retry the targeted build once before diagnosing a proof regression.
+
 ## Handoffs
 
 - **Predecessors:** `lean-proof` (the proof exists), `lean-quality-engine` (findings).

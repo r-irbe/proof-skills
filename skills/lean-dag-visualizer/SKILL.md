@@ -112,6 +112,11 @@ python3 scripts/lean/formalization_breakdown.py <path> --json-graph graph.json
 python3 tools/visualizer/serve_visualizer.py --graph graph.json --port 8090 --no-browser
 ```
 
+## Recovery
+
+- If graph extraction reports an import cycle, stop rendering and resolve the circular dependency before ratifying the DAG cache.
+- On headless or SSH hosts without a display server, pass `--no-browser` and inspect `.cache/graphs/<slug>.json` directly.
+
 ## Handoffs
 
 - **Predecessors**: `skill:lean-formalization-breakdown` (static census and topological depth), `skill:lean-blueprint` (declaration LaTeX scaffolding).

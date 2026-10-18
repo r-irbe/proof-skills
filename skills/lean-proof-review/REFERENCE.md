@@ -1,15 +1,15 @@
 ---
 name: lean-proof-review
-description: Review Lean 4 proofs for correctness, quality, and common pitfalls. Use when asked to review, audit, or validate Lean proofs. Covers the 4-layer verification checklist, the full Project automation stack (Mathlib tactics, lean-auto+Duper bridge, Canonical term search, Aesop, Qq custom tactics, CSLib), reusable Tactics.lean lemma library, lean-pitfalls, and proof quality assessment.
+description: Review Lean 4 proofs for correctness, quality, and common pitfalls. Use when asked to review, audit, or validate Lean proofs. Covers the 4-layer verification checklist, the Lean 4 automation stack (Mathlib tactics, lean-auto+Duper bridge, Canonical term search, Aesop, Qq custom tactics, CSLib), project helper libraries, lean-pitfalls, and proof quality assessment.
 ---
 
 # Lean 4 Proof Review
 
-Systematic review of Lean 4 proofs across four layers: formal soundness, statement correctness, non-triviality, and proof quality. Covers the complete Project automation stack from `Project.Tactics`.
+Systematic review of Lean 4 proofs across four layers: formal soundness, statement correctness, non-triviality, and proof quality. Covers the standard Lean 4 + Mathlib automation stack and optional project tactic libraries.
 
-## The Project Automation Stack
+## The Lean 4 Automation Stack
 
-All tools are available through `import Project.Tactics`, which imports:
+Commonly imported automation packages across Lean 4 projects:
 
 | Import | Package | What it provides |
 |---|---|---|
@@ -23,7 +23,7 @@ All tools are available through `import Project.Tactics`, which imports:
 
 ---
 
-## Proof Search Priority (Project-specific)
+## Proof Search Priority
 
 When a goal is not immediately obvious, try tactics in this order. **Prefer earlier entries** — they produce higher-quality, more readable proofs:
 
@@ -36,14 +36,7 @@ When a goal is not immediately obvious, try tactics in this order. **Prefer earl
 | 5 | `linarith` / `nlinarith` | Real-valued linear/nonlinear arithmetic (Lyapunov, convex) | Good — arithmetic |
 | 6 | `ring` / `ring_nf` | Polynomial identities (cusp potential, outer products) | Excellent — algebraic |
 | 7 | `positivity` | Non-negativity goals (`0 ≤ x^2`, `0 ≤ a * b`) | Good — structured |
-| 8 | `proj_lyapunov` **(DEPRECATED — 0 cross-module uses)** | Lyapunov non-negativity: positivity → nlinarith[sq_nonneg] → ring → norm_num → omega | Project custom |
-| 9 | `proj_contraction` **(DEPRECATED — 0 cross-module uses)** | Contraction factor < 1: nlinarith[sq_nonneg] → positivity → norm_num → omega | Project custom |
-| 10 | `proj_bellman` **(DEPRECATED — 0 cross-module uses)** | Bellman step: unfold bellmanStep/reward/pipelineHealth + omega | Project custom |
-| 11 | `proj_simplex` **(DEPRECATED — 0 cross-module uses)** | Simplex goals (sum=100): omega → simp_all+omega → nlinarith | Project custom |
-| 12 | `proj_cases` **(DEPRECATED — 0 cross-module uses)** | Exhaustive finite case analysis: decide → cases+simp_all+omega | Project custom |
-| 13 | `proj_nonneg` **(DEPRECATED — 0 cross-module uses)** | Non-negativity: positivity → nlinarith → omega | Project custom |
-| 14 | `proj_exhaust` **(DEPRECATED — 0 cross-module uses)** | Try everything: omega → simp → norm_num → nlinarith → ring → positivity → linarith → duper → auto | Project custom |
-| 15 | `decide` | Concrete finite evaluations (gate examples, enum cases) — **`native_decide` BANNED** (adds `Lean.trustCompiler`; all 23 former occurrences replaced with `decide`) | Opaque — evaluation |
+| 8 | `decide` | Concrete finite evaluations (enum cases, bounded checks) — prefer over `native_decide` (which adds `Lean.ofReduceBool` / `Lean.trustCompiler`) | Opaque — evaluation |
 | 16 | `auto [lemmas] u[unfolds]` | lean-auto bridge — monomorphizes then calls Duper | Opaque — first-order |
 | 17 | `duper [lemmas]` | Direct superposition (trust simplex, envelope commutativity) | Opaque — superposition |
 | 18 | `canonical [hints]` | Exhaustive DTT term search (small finite goals) | Semi-transparent |
@@ -84,7 +77,7 @@ example (x : ℝ) : 0 ≤ x ^ 2 + 1 := by positivity
 
 ### lean-auto + Duper Bridge (Priority 15–16)
 
-The `auto` tactic monomorphizes higher-order Lean goals into first-order logic, then calls Duper (superposition prover). The bridge is configured in Tactics.lean §1 via `Auto.duperRaw`.
+The `auto` tactic monomorphizes higher-order Lean goals into first-order logic, then calls Duper (superposition prover). The bridge monomorphizes goals and invokes `Auto.duperRaw`.
 
 ```lean
 -- auto: monomorphization + Duper (best for propositional/FOL goals)
@@ -174,20 +167,18 @@ example : P := by aesop?
 - Bare `aesop` in final proof → replace with `aesop?` output
 - `aesop` closing a "hard" goal instantly → re-check hypotheses
 - `aesop` on arithmetic goals → should use `omega`/`linarith`/`nlinarith` instead
-- `aesop` won't unfold custom Project definitions → use `simp [myDef]` first
+- `aesop` won't unfold custom project definitions → use `simp [myDef]` first
 
 ### Qq Metaprogramming (Custom Tactic Engine)
 
-All Project custom tactics (`proj_*`) are built with Qq (type-safe quotations) and the `Lean.Elab.Tactic.Meta` API. Qq provides `Q(...)` for type-level quotes and `q(...)` for term-level quotes.
+Custom project tactics are typically built with Qq (type-safe quotations) and the `Lean.Elab.Tactic.Meta` API. Qq provides `Q(...)` for type-level quotes and `q(...)` for term-level quotes.
 
 **Review flags for custom tactics:**
-- `proj_exhaust` used where a specific tactic would work → prefer the specific tactic for clarity
 - Custom tactic hiding a failing sub-step → check which inner tactic actually closes the goal
-- Over-reliance on `proj_exhaust` → proofs become opaque; prefer explicit tactic choice
 
 ### CSLib (CS Foundations)
 
-Provides automata theory, complexity classes, and algorithm foundations. Used in ProvenanceChain for DAG well-formedness.
+Provides automata theory, complexity classes, and algorithm foundations. Used for formalizing state machines, DAGs, and algorithmic bounds.
 
 **Review flags:**
 - CSLib extends list literal syntax → do NOT use `[` inside `/-- ... -/` doc comments on `unsafe def` blocks (use `--` comments instead)
@@ -195,79 +186,13 @@ Provides automata theory, complexity classes, and algorithm foundations. Used in
 
 ---
 
-## Project Custom Tactics Reference
+## Project Helper & Custom Tactic Libraries
 
-These are defined in `Project/Tactics.lean` and available in every module:
+Before proving a new helper lemma or introducing a custom tactic macro, check the target repository's shared tactic/lemma modules:
 
-| Tactic | Cascade | Use for |
-|---|---|---|
-| `proj_nonneg` **(DEPRECATED — 0 cross-module uses)** | positivity → nlinarith → omega | Goals of form `0 ≤ e` or `e ≥ 0` |
-| `proj_exhaust` **(DEPRECATED — 0 cross-module uses)** | omega → simp → norm_num → nlinarith → ring → positivity → linarith → duper → auto | "Try everything" closer for routine goals |
-| `proj_simplex` **(DEPRECATED — 0 cross-module uses)** | omega → simp_all+omega → nlinarith | Simplex goals: component bounds, sums, trust invariants |
-| `proj_cases` **(DEPRECATED — 0 cross-module uses)** | decide → cases+simp_all+omega → simp_all+omega | Exhaustive case analysis over finite types (Bool, Fin, regimes) |
-| `proj_lyapunov` **(DEPRECATED — 0 cross-module uses)** | positivity → nlinarith[sq_nonneg] → ring → norm_num → omega → linarith | Lyapunov reasoning: square non-negativity, contraction, polynomial bounds |
-| `proj_contraction` **(DEPRECATED — 0 cross-module uses)** | nlinarith[sq_nonneg] → positivity → norm_num → omega | Contraction factors: α<1 → α²<1, α^n≤1, products < 1 |
-| `proj_bellman` **(DEPRECATED — 0 cross-module uses)** | unfold bellmanStep/reward/pipelineHealth+omega → omega → linarith → ring | Bellman operator: monotonicity, non-negativity, contraction identity |
-
-**Review guidance:** All `proj_*` tactics are **DEPRECATED** (zero cross-module uses). Flag any occurrence and replace with the appropriate Mathlib tactic (see priority table above).
-
----
-
-## Reusable Lemmas from Tactics.lean
-
-Before proving a helper lemma, check if it already exists in `Project/Tactics.lean`:
-
-### Geometric Decay (§3)
-- `geometric_decay_nat` — `f(n+1) = c * f(n) → f(n) = c^n * f(0)` for Nat
-- `geometric_decay_int` — same for Int
-- `geometric_decay_real` — `|f(n+1) - t| = c * |f(n) - t| → ...` for Real
-
-### Simplex Arithmetic (§4, §17)
-- `simplex_component_le` — `a + b + c = 100 → a ≤ 100 ∧ b ≤ 100 ∧ c ≤ 100`
-- `simplex_diff_bounded` — `a + b + c = 100 → (a:Int) - b ∈ [-100, 100]`
-- `simplex_convex_combination` — `α*(sum₁) + (100-α)*(sum₂) = 100*100`
-- `simplex_abs_diff_le` — `|a - b|.natAbs ≤ 100` on simplex
-- `simplex4_component_le` — 4-component variant
-- `simplex_weight_split` — `w₁*a + w₂*b ≤ 10000` when weights sum to 100
-- `simplex_monotone_left` — weighted sum monotonicity
-
-### Contraction & Decay (§7, §11, §19)
-- `pow_succ_eq` — `α^(n+1) = α * α^n`
-- `iterated_contraction_le` — `α < 100 → α^n ≤ 100^n`
-- `strict_contraction` — `0 < α < 100 ∧ v > 0 → α*v/100 < v`
-- `real_strict_contraction` — `0 ≤ c < 1 ∧ x > 0 → c*x < x`
-- `pow_mul_antitone` — `c^(n+1)*x ≤ c^n*x` for `0 ≤ c ≤ 1`
-- `contraction_sq_lt_one` — `0 ≤ α < 1 → α² < 1`
-- `geometric_decay_le` — `α^n * M ≤ M` when `α ≤ 1`
-
-### Convex Combination (§9)
-- `weighted_sum_le_max` — `α*a + (100-α)*b ≤ 100 * max(a,b)`
-- `weighted_sum_ge_left` — `a ≤ b → 100*a ≤ α*a + (100-α)*b`
-
-### Distance & Contraction (§10)
-- `natDist` — Nat absolute difference, with `natDist_comm`, `natDist_self`, `natDist_triangle`
-- `contraction_reduces_dist` — contraction reduces `natDist`
-
-### Multi-Level Contraction (§12, §20)
-- `two_level_contraction` — `r₁*v₁ + r₂*v₂ ≤ v₁ + v₂` when rates < 1
-- `four_level_contraction` — 4-level variant
-- `multi_rate_contraction` — `α*β < 1` when both < 1
-- `three_level_contraction` — `α*β*γ < 1`
-
-### Cross-Module Bridges (§21, §29–§32)
-- `lyapunov_contraction_bridge` — `(α²)^n * V₀ ≤ V₀`
-- `severity_threshold_monotone` — `σ₁ ≤ σ₂ ∧ σ₁ ≥ τ → σ₂ ≥ τ`
-- `trust_ccv_combined_bound` — combined simplex dimensionality
-- `gate_monotone_generic` — generic gate threshold monotonicity
-- `gate_strict_implies_weak` — strict gate ⇒ weak gate
-
-### Other (§5, §6, §8, §27, §28, §30)
-- `regime_exhaustion` — `∀ r : Fin 4, P r` from 4 cases
-- `scaled_div_mul_le`, `nat_div_le_of_le` — division helpers
-- `foldl_add_nonneg` — monotone fold
-- `reward_lyapunov_dual_monotone` — dual objective alignment
-- `stochastic_sum_preserved` — row-stochastic matrix sum
-- `bounded_monotone_step_bounded` — pigeonhole convergence
+1. **Custom tactic macros:** Prefer transparent Mathlib or core tactics (`omega`, `simp only`, `norm_num`, `linarith`, `ring`, `positivity`, `decide`) over opaque catch-all cascade macros.
+2. **Shared helper lemmas:** Check existing domain helper modules before adding duplicate arithmetic, bound, or structural lemmas.
+3. **Core-only profile:** In core-only Lean 4 projects without Mathlib (see `@lean-core-only`), restrict tactics to `omega`, `decide`, `simp`, `rfl`, `exact`, `apply`, `rw`, and structural induction.
 
 ---
 
@@ -277,7 +202,7 @@ Before proving a helper lemma, check if it already exists in `Project/Tactics.le
 
 1. **`#print axioms my_theorem`** — must show only `propext`, `Classical.choice`, `Quot.sound`.
    - `sorryAx` → proof is incomplete (🔴 fatal).
-   - `Lean.trustCompiler` → `native_decide` used (**BANNED in the project — 🔴 block; replace with `decide`**; zero uses as of commit 05a5757).
+   - `Lean.ofReduceBool` / `Lean.trustCompiler` → `native_decide` used (🔴 block in standard-axiom-locked projects; replace with kernel-checked `decide`).
    - Any custom `axiom` → conditional validity; audit the axiom (🟠).
 2. **`lean4checker --fresh MyModule`** — independent kernel re-verification from `.olean` files.
 3. **No `sorry`, `admit`, `apply?`, `exact?`, `rw?`** left in the proof.
@@ -310,7 +235,7 @@ Note: Blue checkmarks (✓✓) appear even when a *dependency* uses `sorry`. Alw
    - Remove diagnostic search commands from the final proof.
 2. **Triviality classification:** vacuously true → definitionally trivial → computationally trivial → already exists → non-trivially correct → genuinely novel
 3. **Dead-end check:** Does this lemma get used downstream, or is it isolated?
-4. **Duplicate check in Tactics.lean:** Search the reusable lemma library above before adding new helpers.
+4. **Duplicate check:** Search the repository's shared lemma modules before adding new helpers.
 
 For high-risk non-triviality questions, route to
 [`lean-tautology-triage`](../lean-tautology-triage/SKILL.md). Use it when a
@@ -328,7 +253,7 @@ suggests a stronger mathematical claim.
    - `decide` taking more than a few seconds
    - Long `omega`/`linarith` with irrelevant hypotheses
    - Repeated `rw` chains without `calc` (> 4 rewrites)
-   - `native_decide` anywhere (**BANNED** — zero uses in the project; all replaced with `decide`)
+   - `native_decide` in standard-axiom-locked modules (adds `Lean.ofReduceBool` / `Lean.trustCompiler`; replace with `decide`)
    - Monolithic proofs > 20 tactic steps without named sub-lemmas
    - `duper` without lemma hints
    - any `proj_*` tactic use (all DEPRECATED — 0 uses; replace with specific Mathlib tactic)
@@ -344,7 +269,7 @@ suggests a stronger mathematical claim.
 
 ### Critical Pitfalls
 
-- **`autoImplicit` enabled:** Variables silently introduced as implicit. Project requires `set_option autoImplicit false` in every module.
+- **`autoImplicit` enabled:** Variables silently introduced as implicit. Prefer `set_option autoImplicit false` in every module.
 - **`sorry` in dependencies:** Blue checkmarks appear even when a dependency uses `sorry`. Always run `#print axioms`.
 - **`have` vs `let` for data:** `have` erases the value (proof irrelevance); use `let` when the computed value is needed later.
 - **Prop vs Bool confusion:** `Prop` is erased; `Bool` is computable. Mixing them causes subtle issues with `decide` and `if`.
@@ -362,7 +287,7 @@ suggests a stronger mathematical claim.
 - **Non-terminal `simp`:** Brittle mid-proof. Use `simp only [...]` or `simp_all`.
 - **Tactics don't unfold custom defs:** `simp`/`omega` don't unfold custom definitions. Use `unfold myDef` or `simp [myDef]`.
 - **Rewriting under binders:** `rw` cannot rewrite inside `fun x =>` or `∀ x,`. Use `simp only [lemma]`, `conv`, or `ext`.
-- **`native_decide` BANNED:** Adds `Lean.trustCompiler` to axioms. **Zero uses in the project** — all 23 former occurrences replaced with `decide` (kernel-checked).
+- **`native_decide` trust surface:** Adds `Lean.ofReduceBool` / `Lean.trustCompiler` to the axiom closure. Prefer kernel-checked `decide` unless explicitly carved out.
 - **`b > a` vs `a < b`:** Not definitionally equal. Use `show a < b` or `change a < b`.
 - **CSLib doc comment pitfall:** Do NOT use `[` inside `/-- ... -/` on `unsafe def` blocks (CSLib extends list literals).
 
@@ -375,18 +300,16 @@ suggests a stronger mathematical claim.
 
 ---
 
-## Project-specific Review Checks
+## Project-Level Review Checks
 
-1. **`set_option autoImplicit false`** — present in every module?
-2. **Nat-scaled arithmetic** — all quantities ×100 scale? No mixing Real/Nat without coercion bridges?
-3. **Simplex constraint `r + s + k = 100`** — carried through all trust vector theorems?
-4. **Module imports** — every module imports `Project.Tactics`?
-5. **Paper cross-reference** — theorem links to a claim in `project-tufte.tex`?
-6. **Naming conventions** — structures PascalCase, defs camelCase, theorems snake_case with domain prefix?
-7. **Section organization** — sequentially numbered `-- §N` sections?
-8. **Reusable lemma duplication** — is the helper already in Tactics.lean?
-9. **Deprecated tactic check** — no `proj_*` tactic should be used (all DEPRECATED — 0 uses); flag any occurrence and replace with the appropriate Mathlib tactic.
-10. **Automation transparency** — opaque `duper`/`auto`/`canonical`/`aesop` proofs replaced with suggested readable scripts?
+1. **`set_option autoImplicit false`** — present in modules where project conventions require explicit binders?
+2. **Representation consistency** — no unbridged mixing of numeric representations (`Nat` / `Int` / `Rat` / `Real`)?
+3. **Structural invariants** — domain invariants carried explicitly through theorem hypotheses or structure fields?
+4. **Minimal imports** — module imports match the project profile (e.g. Mathlib vs `@lean-core-only`)?
+5. **Specification traceability** — theorem links to its specification, blueprint node, or paper claim when applicable?
+6. **Naming conventions** — structures `PascalCase`, definitions `camelCase`, theorems `snake_case`?
+7. **Reusable lemma duplication** — is the helper already in Mathlib or the project's shared lemma modules?
+8. **Automation transparency** — opaque `duper`/`auto`/`canonical`/`aesop` proofs replaced with suggested readable scripts?
 
 ## Review Workflow
 
@@ -394,10 +317,10 @@ suggests a stronger mathematical claim.
 
 1. **Read the theorem statement** first. Translate to English. Check hypotheses.
 2. **Run `#print axioms`** on the theorem.
-3. **Check for Tactics.lean duplicates** — does a reusable lemma already cover this?
+3. **Check for duplicates** — does a Mathlib or project helper lemma already cover this?
 4. **Assess tactic choice** — is the highest-priority tactic used? (See priority table.)
 5. **Scan for pitfalls** from the checklist above.
-6. **Check Project conventions** — naming, scaling, paper references.
+6. **Check project conventions** — naming, imports, specification references.
 7. **Run `lake build`** — 0 errors, 0 warnings.
 8. **Report findings** with severity: 🔴 Fatal, 🟠 Warning, 🟡 Style, ✅ Clean.
 
@@ -409,7 +332,7 @@ For high-assurance reviews, this skill is executed by the **Review Council** (`l
 |---|---|---|---|
 | Kernel Guardian | Σ | Layer 1 | `#print axioms`, sorry/admit, build |
 | Statement Oracle | Φ | Layer 2 | English translation, missing hypotheses, vacuous truth |
-| Novelty Scout | Ν | Layer 3 | `exact?`, Loogle, Tactics.lean duplicates, triviality |
+| Novelty Scout | Ν | Layer 3 | `exact?`, Loogle, helper duplicates, triviality |
 | Quality Architect | Λ | Layer 4 | Tactic priority, step count, modularity, docstrings |
 | Integration Sentinel | Ω | Cross-cutting | autoImplicit, conventions, build, paper cross-refs |
 

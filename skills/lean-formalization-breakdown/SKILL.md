@@ -49,7 +49,7 @@ metadata:
 - **G-7** (MUST): Preserve strict 7-bit ASCII throughout all generated documentation and markdown plans (INV-001). Mathematical symbols in markdown must use standard LaTeX math syntax (`$ ... $` or `$$ ... $$`).
 - **G-8** (MUST): Resolve and verify all cited file paths against the physical filesystem before citing them (AOR-2 / INV-014).
 
-## 8-Wave Deconstruction Workflow
+## Workflow (8-Wave Deconstruction)
 
 ```
 +-----------------------------------------------------------------------------+
@@ -123,6 +123,11 @@ python3 scripts/lean/formalization_breakdown.py <path/to/formalization> --scaffo
 # 4. Export JSON metrics for knowledge graph ingestion
 python3 scripts/lean/formalization_breakdown.py <path/to/formalization> --format json -o breakdown-metrics.json
 ```
+
+## Recovery
+
+- If `formalization_breakdown.py` detects an import cycle or unresolvable path, halt downstream wave scaffolding and report the structural blocker first.
+- If `sorry` declarations appear in implementation modules, isolate them in Wave 2 before claiming substrate readiness.
 
 ## Handoffs
 

@@ -56,7 +56,7 @@ review surface intact.
    `references/mathlib-module-system-notes.md`.
 6. **PR lifecycle via REST**: `gh pr edit` (GraphQL path) can fail
    silently - verify every edit with a read-back, and use
-   `gh api -X PATCH repos/<owner>/<repo>/pulls/<n> -F body=@file.md`
+   `gh api -X PATCH repos/<owner>/<repo>/pulls/<n> -F body=@<body-file>`
    when it does. `gh pr create` on a branch that already has a PR
    surfaces the existing PR - update it rather than duplicating.
 
@@ -70,6 +70,11 @@ review surface intact.
 - Reviewers weight the generalization framing: state the general form
   once, show the corpus use as the motivating instance, and keep the
   body laconic - every sentence must survive a maintainer's skim.
+
+## Recovery
+
+- If `gh pr edit` silently drops body updates on the GraphQL path, read back the PR body and apply the update via `gh api -X PATCH repos/<owner>/<repo>/pulls/<n> -F body=@<body-file>`.
+- If upstream module-system visibility (`public import` or sealed instances) breaks a corpus proof, isolate and repair the proof against upstream master via `@lean-proof` before updating the PR.
 
 ## Handoffs
 

@@ -7,6 +7,9 @@ description: |
 tier: "warm"
 runtime_targets: [copilot-cli, claude-code]
 dispatch_targets: []
+handoffs:
+  predecessors: ["skill:lean-proof", "skill:lean-proof-review"]
+  successors: ["skill:lean-axiom-closure", "skill:lean-quality-engine"]
 ---
 
 # Replay Verification After Sorry Removal
@@ -105,3 +108,13 @@ one incremental green build.
   non-standard axioms.
 - R3 run or deferred-with-reason, recorded.
 - R4 (when applicable): checker name + version + caveat recorded.
+
+## Recovery
+
+- If R1 (`lake clean` + `lake build`) fails on a tree that passed incrementally, treat the proof as unverified and hand back to `@lean-proof` or `@lean-build` to fix the hidden stale-artifact dependency.
+- If R2 surfaces `sorryAx` or an unexpected axiom in the closure, block acceptance and route to `@lean-axiom-closure` / `@lean-proof`.
+
+## Handoffs
+
+- **Predecessors:** `@lean-proof` (sorry removed), `@lean-proof-review` (single-proof review).
+- **Successors:** `@lean-axiom-closure` (R2 compile-time lockdown), `@lean-quality-engine` (milestone QA gate).

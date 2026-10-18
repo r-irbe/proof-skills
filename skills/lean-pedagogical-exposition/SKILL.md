@@ -65,6 +65,11 @@ metadata:
 5. **Format Blueprint Block**: Write the LaTeX snippet with `\begin{theorem}[Name] \label{...} \lean{...} \uses{...} \leanok ... \end{theorem}`.
 6. **Synthesize Zettel**: Emit permanent concept note or reference zettel for the knowledge garden.
 
+## Recovery
+
+- If an informal translation appears weaker or stronger than the formal Lean signature, re-check the exact binder and hypothesis types via `@lean-proof-review` before publishing the exposition.
+- If dependency extraction is incomplete because `.ilean` artifacts are missing, run a targeted build via `@lean-build` first.
+
 ## Handoffs
 
 - **Predecessors**: `skill:lean-formalization-breakdown`, `skill:lean-blueprint`

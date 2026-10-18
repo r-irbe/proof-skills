@@ -7,6 +7,9 @@ description: |
 tier: "warm"
 runtime_targets: [copilot-cli, claude-code]
 dispatch_targets: []
+handoffs:
+  predecessors: ["skill:lean-replay-verification", "skill:lean-deep-audit"]
+  successors: ["skill:lean-proof-review", "skill:lean-enforcement"]
 ---
 
 # Axiom-Closure Audit (the FinalCheck discipline)
@@ -30,7 +33,7 @@ declaration for every axiom outside `allow`. Internal
 implementation-detail names are excluded. Full-corpus cost measured on
 a Mathlib-dependent corpus of ~9k named declarations: **seconds**.
 
-## Setup (the FinalCheck discipline)
+## Workflow (the FinalCheck setup discipline)
 
 1. Vendor `AxiomClosure.lean.tmpl` into the project (e.g. `<root>/Audit/AxiomClosure.lean`),
    adjusting only the module path of the example.
@@ -93,3 +96,13 @@ a Mathlib-dependent corpus of ~9k named declarations: **seconds**.
 - The summary line (dropped by the guard in CI) is printable by
   running the same `#eval` without the guard; quote checked/violation
   counts as the audit evidence.
+
+## Recovery
+
+- If `Audit.axiomClosureAudit` reports `sorryAx`, trace the offending declaration via `#print axioms` and hand off to `@lean-proof` to close the open subgoal.
+- If `Lean.ofReduceBool` appears, replace `native_decide` with kernel-checked `decide` / `omega` or obtain explicit owner sign-off before widening the allowlist.
+
+## Handoffs
+
+- **Predecessors:** `@lean-replay-verification` (R2 cadence), `@lean-deep-audit` (P1 trust-base lockdown).
+- **Successors:** `@lean-proof-review` (single-module audit), `@lean-enforcement` (CI gate execution).

@@ -62,7 +62,11 @@ native_decide` -- and gives it a governed home with an explicit carve-out.
 - **G-3** (SHOULD): The skill SHOULD run the improvement pass -- replace
   `native_decide` with a kernel-checked or structural proof along the ladder
   Bronze (`native_decide`) -> Silver (`decide` / `norm_num`) -> Gold
-  (characterising property / closed form). [Trace: AC-EM-03]
+  (characterising property / closed form). In `@lean-core-only` packages
+  (no Mathlib; see [`../../references/lean4-core-only-profile.md`](../../references/lean4-core-only-profile.md)),
+  `norm_num` is unavailable and `native_decide` introduces `Lean.ofReduceBool`
+  (`Lean.trustCompiler`), so Silver MUST use kernel-checked `decide`, `omega`,
+  or `rfl`. [Trace: AC-EM-03]
 - **G-4** (MUST): When a `native_decide` answer-check ships, the skill MUST record
   its justification -- the compiler-trust axiom (in current Lean a generated
   `<thm>._native.native_decide.ax_*`, underpinned by `Lean.ofReduceBool` /
