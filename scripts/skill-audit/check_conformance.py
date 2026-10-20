@@ -66,6 +66,7 @@ V2_BODY_MARKERS = [
     "## Handoffs",
 ]
 V2_DESC_MARKERS = ["USE FOR:", "DO NOT USE FOR", "TRIGGERS:"]
+MAX_DESCRIPTION_CHARS = 320
 REDIRECT_SIGNAL = "REDIRECT"
 REDIRECT_MAX_LOC = 60
 
@@ -126,22 +127,34 @@ def _load_one(path, out, is_override):
 # ------------------------------ 1. v2 conformance ------------------------------
 
 def audit_v2(skills):
-    results = {"v2": [], "redirect": [], "non_v2": [], "details": {}}
+    results = {
+        "v2": [],
+        "redirect": [],
+        "non_v2": [],
+        "over_budget_descriptions": [],
+        "total_description_chars": 0,
+        "details": {},
+    }
     for name, info in skills.items():
+        desc_len = len(info["description"].strip())
+        results["total_description_chars"] += desc_len
         if info["is_redirect"]:
             results["redirect"].append(name)
-            results["details"][name] = {"status": "REDIRECT"}
+            results["details"][name] = {"status": "REDIRECT", "description_chars": desc_len}
             continue
+        if desc_len > MAX_DESCRIPTION_CHARS:
+            results["over_budget_descriptions"].append({"skill": name, "chars": desc_len})
         body_ok = all(m in info["body"] for m in V2_BODY_MARKERS)
         desc_ok = all(m in info["description"] for m in V2_DESC_MARKERS)
         tier_ok = info["tier"] is not None
         if body_ok and desc_ok and tier_ok:
             results["v2"].append(name)
-            results["details"][name] = {"status": "v2"}
+            results["details"][name] = {"status": "v2", "description_chars": desc_len}
         else:
             results["non_v2"].append(name)
             results["details"][name] = {
                 "status": "non_v2",
+                "description_chars": desc_len,
                 "missing_body": [m for m in V2_BODY_MARKERS if m not in info["body"]],
                 "missing_desc": [m for m in V2_DESC_MARKERS if m not in info["description"]],
                 "missing_tier": not tier_ok,
@@ -401,6 +414,8 @@ def render_md(report):
     a(f"| v2-conformant | {len(v2['v2'])} |")
     a(f"| REDIRECT stubs | {len(v2['redirect'])} |")
     a(f"| Non-v2 (schema gap) | {len(v2['non_v2'])} |")
+    a(f"| Total description chars | {v2['total_description_chars']} |")
+    a(f"| Descriptions > {MAX_DESCRIPTION_CHARS} chars | {len(v2['over_budget_descriptions'])} |")
     a(f"| Invalid successor refs | {len(dag['invalid_successor_refs'])} |")
     a(f"| Invalid predecessor refs | {len(dag['invalid_predecessor_refs'])} |")
     a(f"| Mutual peer pairs | {len(dag['mutual_peer_pairs'])} |")
@@ -424,6 +439,10 @@ def render_md(report):
         for n in v2["non_v2"]:
             d = v2["details"][n]
             a(f"- **{n}**: missing_body={d['missing_body']}, missing_desc={d['missing_desc']}, missing_tier={d['missing_tier']}")
+    if v2.get("over_budget_descriptions"):
+        a(f"\n### Descriptions exceeding {MAX_DESCRIPTION_CHARS} chars")
+        for item in v2["over_budget_descriptions"]:
+            a(f"- ⚠ **{item['skill']}**: {item['chars']} chars (max {MAX_DESCRIPTION_CHARS})")
     a("")
     a("## 2. DAG findings")
     a("")
@@ -559,7 +578,11 @@ def main():
         or report["markdown_links"]["broken_links"]
         or report["v2"]["non_v2"]
     )
-    soft_fail = report["dag"]["orphans"] or report["dag"]["deadends"]
+    soft_fail = (
+        report["dag"]["orphans"]
+        or report["dag"]["deadends"]
+        or report["v2"]["over_budget_descriptions"]
+    )
     if args.fail_on == "hard" and hard_fail:
         sys.exit(1)
     if args.fail_on == "any" and (hard_fail or soft_fail):

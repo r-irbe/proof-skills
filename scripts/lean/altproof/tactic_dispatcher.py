@@ -43,6 +43,9 @@ WELLFORMED_RE = re.compile(r"(?:\bWellFormed\b|\bfin_cases\b.*?\bnorm_num\b)", r
 CHANNEL_RE = re.compile(r"(?:\bChannel\b|\bPrior\b|\bchannel_fields\b)")
 
 
+SCALE100_RE = re.compile(r"(?:\bScale100\b|\beasci_omega\b|\bEASCI\b)")
+
+
 def _extract_goal_target(goal_text: str) -> str:
     """Extract the target expression after the last `|-` or `\u22a2` turnstile if present."""
     raw = (goal_text or "").strip()
@@ -53,14 +56,20 @@ def _extract_goal_target(goal_text: str) -> str:
     return parts[-1].strip() if len(parts) > 1 else raw
 
 
-def recommend_tactics(goal_text: str, current_proof_text: str = "") -> list[TacticRecommendation]:
+def recommend_tactics(
+    goal_text: str,
+    current_proof_text: str = "",
+    *,
+    include_project_tactics: bool = True,
+    custom_plugins: list[TacticRecommendation] | None = None,
+) -> list[TacticRecommendation]:
     """Analyze goal and current proof script to recommend modernized tactic replacements."""
     recommendations: list[TacticRecommendation] = []
     goal = goal_text or ""
     target = _extract_goal_target(goal)
     proof = current_proof_text or ""
 
-    # 1. Presburger / Discrete Integer Arithmetic -> omega
+    # 1. Presburger / Discrete Integer Arithmetic -> omega (and easci_omega when Scale100/custom tactics enabled)
     target_no_arrows = target.replace("->", " ").replace("=>", " ")
     has_nat_context = bool(NAT_TYPE_RE.search(goal) or PURE_NUM_ARITH_RE.search(target_no_arrows))
     has_arith_op = bool(ARITH_OP_RE.search(target_no_arrows))
@@ -79,6 +88,16 @@ def recommend_tactics(goal_text: str, current_proof_text: str = "") -> list[Tact
                 confidence=0.92,
             )
         )
+        if include_project_tactics and (SCALE100_RE.search(goal) or SCALE100_RE.search(proof)):
+            recommendations.append(
+                TacticRecommendation(
+                    tactic="easci_omega",
+                    target_pattern="scaled-simplex-nat-arithmetic",
+                    rationale="Project-specific Scale100 wrapper unfolding scaled-integer definitions before omega.",
+                    estimated_heartbeats=170,
+                    confidence=0.94,
+                )
+            )
 
     # 2. Linear Real Arithmetic -> linarith / nlinarith
     if REAL_LIN_RE.search(goal) or "\u211d" in goal:
@@ -93,7 +112,7 @@ def recommend_tactics(goal_text: str, current_proof_text: str = "") -> list[Tact
         )
 
     # 3. Finset.sum linearity + pointwise ring congruence -> sum_congr_ring
-    if FINSET_SUM_RE.search(target) or FINSET_SUM_RE.search(proof):
+    if include_project_tactics and (FINSET_SUM_RE.search(target) or FINSET_SUM_RE.search(proof)):
         recommendations.append(
             TacticRecommendation(
                 tactic="sum_congr_ring",
@@ -105,7 +124,7 @@ def recommend_tactics(goal_text: str, current_proof_text: str = "") -> list[Tact
         )
 
     # 4. Finset.sum non-negativity -> finset_nonneg
-    if FINSET_NONNEG_RE.search(target) or re.search(r"\b(?:Finset\.sum_nonneg|finset_nonneg)\b", proof):
+    if include_project_tactics and (FINSET_NONNEG_RE.search(target) or re.search(r"\b(?:Finset\.sum_nonneg|finset_nonneg)\b", proof)):
         recommendations.append(
             TacticRecommendation(
                 tactic="finset_nonneg",
@@ -117,7 +136,7 @@ def recommend_tactics(goal_text: str, current_proof_text: str = "") -> list[Tact
         )
 
     # 4b. Finset.sum pointwise monotonicity -> finset_mono
-    if FINSET_MONO_RE.search(target) or re.search(r"\b(?:Finset\.sum_le_sum|finset_mono)\b", proof):
+    if include_project_tactics and (FINSET_MONO_RE.search(target) or re.search(r"\b(?:Finset\.sum_le_sum|finset_mono)\b", proof)):
         recommendations.append(
             TacticRecommendation(
                 tactic="finset_mono",
@@ -129,7 +148,7 @@ def recommend_tactics(goal_text: str, current_proof_text: str = "") -> list[Tact
         )
 
     # 5. Five-field Opinion/RatOpinion WellFormed fixture -> wellformed_tac
-    if WELLFORMED_RE.search(target) or WELLFORMED_RE.search(proof):
+    if include_project_tactics and (WELLFORMED_RE.search(target) or WELLFORMED_RE.search(proof)):
         recommendations.append(
             TacticRecommendation(
                 tactic="wellformed_tac",
@@ -141,7 +160,7 @@ def recommend_tactics(goal_text: str, current_proof_text: str = "") -> list[Tact
         )
 
     # 6. Channel / Prior constructor obligations -> channel_fields
-    if CHANNEL_RE.search(target) or CHANNEL_RE.search(proof):
+    if include_project_tactics and (CHANNEL_RE.search(target) or CHANNEL_RE.search(proof)):
         recommendations.append(
             TacticRecommendation(
                 tactic="channel_fields",
@@ -192,6 +211,9 @@ def recommend_tactics(goal_text: str, current_proof_text: str = "") -> list[Tact
                 confidence=0.95,
             )
         )
+
+    if custom_plugins:
+        recommendations.extend(custom_plugins)
 
     # Sort by estimated heartbeats ascending (lightest first)
     return sorted(recommendations, key=lambda r: r.estimated_heartbeats)

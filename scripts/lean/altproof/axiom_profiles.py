@@ -35,15 +35,44 @@ def parse_listing(path):
     return out
 
 
-def main():
-    listing = sys.argv[1] if len(sys.argv) > 1 else ('docs/tracking/axiom_output.txt' if __import__('os').path.exists('docs/tracking/axiom_output.txt') else 'docs/easci/lean/docs/tracking/axiom_output.txt')
+def main(argv=None):
+    import argparse
+    import os
+    default_listing = (
+        'docs/tracking/axiom_output.txt'
+        if os.path.exists('docs/tracking/axiom_output.txt')
+        else 'docs/easci/lean/docs/tracking/axiom_output.txt'
+    )
+    parser = argparse.ArgumentParser(description="Axiom-profile tiers over a Lean corpus's declaration listing.")
+    parser.add_argument("pos_listing", nargs="?", default=None, help="Optional positional path to axiom_output.txt")
+    parser.add_argument("--listing", default=default_listing, help="Path to axiom_output.txt")
+    parser.add_argument(
+        "--allow-axioms",
+        default=None,
+        help="Comma-separated allowed standard axioms (defaults to propext,Quot.sound,Classical.choice)",
+    )
+    parser.add_argument(
+        "--extra-axioms",
+        default=os.environ.get("ALTPROOF_EXTRA_AXIOMS", ""),
+        help="Comma-separated additional allowed custom axioms",
+    )
+    args = parser.parse_args(argv)
+    listing = args.pos_listing if args.pos_listing is not None else args.listing
+    allowed = (
+        {a.strip() for a in args.allow_axioms.split(",") if a.strip()}
+        if args.allow_axioms is not None
+        else set(STD)
+    )
+    if args.extra_axioms:
+        allowed |= {a.strip() for a in args.extra_axioms.split(",") if a.strip()}
+
     ax = parse_listing(listing)
     tiers = {'constructive': 0, 'standard-classical': 0, 'non-standard': 0}
     bad = []
     for name, deps in ax.items():
         if not deps:
             tiers['constructive'] += 1
-        elif set(deps) <= STD:
+        elif set(deps) <= allowed:
             tiers['standard-classical'] += 1
         else:
             tiers['non-standard'] += 1

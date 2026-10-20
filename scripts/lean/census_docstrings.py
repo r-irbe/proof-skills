@@ -12,14 +12,10 @@ Output: markdown with a per-file table + summary, on stdout.
   python3 census_docstrings.py > docstring-census-<date>.md
 """
 
+import argparse
 import os
 import re
 import sys
-
-ROOT = (
-    sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(__file__), "..")
-)  # -> docs/easci/lean
-assert os.path.isdir(os.path.join(ROOT, "EASCI")), f"EASCI not under {ROOT}"
 
 DECL = re.compile(
     r"^(theorem|lemma|def|instance|abbrev|structure|class)\s+([A-Za-z_][A-Za-z0-9_']*)"
@@ -56,10 +52,6 @@ def scan(path):
                     by_kind[kind] = by_kind.get(kind, 0) + 1
                     if kind in KIND_UPPER and name[0].isupper():
                         upper_flags.append(f"L{ln}: {kind} {name}")
-                if re.match(r"^example\b", line) or (
-                    re.search(r"\bexample\b\s*:?", line) and "example" in line.split("--")[0]
-                ):
-                    pass  # counted below, cheap and exact enough
                 if re.match(r"^example\b", line):
                     examples += 1
                 if re.match(r"^\s*sorry\s*$", line):
@@ -99,96 +91,113 @@ def collect(base, tag):
     return rows
 
 
-rows_easci = collect(os.path.join(ROOT, "EASCI"), "EASCI")
-rows_pkg = []
-pkg_root = os.path.join(ROOT, "..", "..", "..", "packages")  # -> repo packages/
-if os.path.isdir(pkg_root):
-    for pkg in sorted(os.listdir(pkg_root)):
-        pdir = os.path.join(pkg_root, pkg)
-        if (
-            os.path.isdir(os.path.join(pdir, "ReinforcementLearning"))
-            or os.path.isdir(os.path.join(pdir, "StochasticCCV"))
-            or os.path.isdir(os.path.join(pdir, "AgenticSafety"))
-            or os.path.isdir(os.path.join(pdir, "ProvenanceChain"))
-            or os.path.isdir(os.path.join(pdir, "CuspCatastrophe"))
-            or os.path.isdir(os.path.join(pdir, "PhasePortrait"))
-            or os.path.isdir(os.path.join(pdir, "Tacit"))
-        ):
-            for r in collect(os.path.join(pdir), f"packages/{pkg}"):
-                rows_pkg.append(r)
+def main(argv=None) -> int:
+    parser = argparse.ArgumentParser(description="U0 mechanical audit: docstring/naming census over the Lean corpus.")
+    parser.add_argument("pos_root", nargs="?", default=None, help="Optional positional Lean project root")
+    parser.add_argument("--root", default=os.environ.get("LEAN_ROOT", "."), help="Lean project root directory")
+    parser.add_argument("--lean-dir", "--corpus-dir", dest="lean_dir", default=os.environ.get("LEAN_DIR", "EASCI"), help="Corpus subdirectory under root")
+    args = parser.parse_args(argv)
 
-out = []
-out.append("# U0 docstring/naming census (generated)")
-out.append("")
-out.append(
-    "Generator: `docs/easci/lean/scripts/census_docstrings.py`. "
-    "Counts are line-based (a `/--` opener per docstring; decls by "
-    "leading keyword). Naming flags: theorem/lemma/def/instance "
-    "names beginning uppercase (mathlib reserves uppercase-first "
-    "for structures/classes). `example` = anonymous worked examples."
-)
-out.append("")
-tot = dict(decls=0, docstrings=0, moduledoc=0, examples=0, sorry=0)
-out.append("## EASCI tree")
-out.append("")
-out.append("| module | decls | /-- | /-! | examples | naming flags |")
-out.append("| --- | ---: | ---: | ---: | ---: | ---: |")
-for r in sorted(rows_easci, key=lambda r: r["path"]):
-    tot["decls"] += r["decls"]
-    tot["docstrings"] += r["docstrings"]
-    tot["moduledoc"] += 1 if r["moduledoc"] else 0
-    tot["examples"] += r["examples"]
-    tot["sorry"] += r["sorry"]
-    flag = f"{len(r['upper'])}" if r["upper"] else ""
+    root = args.pos_root if args.pos_root is not None else args.root
+    corpus_dir = os.path.join(root, args.lean_dir)
+    if not os.path.isdir(corpus_dir):
+        corpus_dir = root
+
+    rows_easci = collect(corpus_dir, args.lean_dir)
+    rows_pkg = []
+    pkg_root = os.path.join(root, "..", "..", "..", "packages")
+    if os.path.isdir(pkg_root):
+        for pkg in sorted(os.listdir(pkg_root)):
+            pdir = os.path.join(pkg_root, pkg)
+            if (
+                os.path.isdir(os.path.join(pdir, "ReinforcementLearning"))
+                or os.path.isdir(os.path.join(pdir, "StochasticCCV"))
+                or os.path.isdir(os.path.join(pdir, "AgenticSafety"))
+                or os.path.isdir(os.path.join(pdir, "ProvenanceChain"))
+                or os.path.isdir(os.path.join(pdir, "CuspCatastrophe"))
+                or os.path.isdir(os.path.join(pdir, "PhasePortrait"))
+                or os.path.isdir(os.path.join(pdir, "Tacit"))
+            ):
+                for r in collect(os.path.join(pdir), f"packages/{pkg}"):
+                    rows_pkg.append(r)
+
+    out = []
+    out.append("# U0 docstring/naming census (generated)")
+    out.append("")
     out.append(
-        f"| `{r['path']}` ({r['tag']}) | {r['decls']} | {r['docstrings']} | "
-        f"{1 if r['moduledoc'] else 0} | {r['examples']} | {flag} |"
+        "Generator: `docs/easci/lean/scripts/census_docstrings.py`. "
+        "Counts are line-based (a `/--` opener per docstring; decls by "
+        "leading keyword). Naming flags: theorem/lemma/def/instance "
+        "names beginning uppercase (mathlib reserves uppercase-first "
+        "for structures/classes). `example` = anonymous worked examples."
     )
-out.append("")
-ptot = dict(decls=0, docstrings=0, moduledoc=0, examples=0, sorry=0)
-out.append("## packages/ extractions")
-out.append("")
-out.append("| package | files | decls | /-- | /-! | examples | naming flags |")
-out.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: |")
-bypkg = {}
-for r in rows_pkg:
-    pkg = r["tag"].split("/")[1]
-    d = bypkg.setdefault(
-        pkg, dict(files=0, decls=0, docstrings=0, moduledoc=0, examples=0, upper=0, sorry=0)
-    )
-    d["files"] += 1
-    d["decls"] += r["decls"]
-    d["docstrings"] += r["docstrings"]
-    d["moduledoc"] += 1 if r["moduledoc"] else 0
-    d["examples"] += r["examples"]
-    d["upper"] += len(r["upper"])
-    d["sorry"] += r["sorry"]
-    ptot["decls"] += r["decls"]
-    ptot["docstrings"] += r["docstrings"]
-    ptot["moduledoc"] += 1 if r["moduledoc"] else 0
-    ptot["examples"] += r["examples"]
-    ptot["sorry"] += r["sorry"]
-for pkg, d in sorted(bypkg.items()):
+    out.append("")
+    tot = dict(decls=0, docstrings=0, moduledoc=0, examples=0, sorry=0)
+    out.append(f"## {args.lean_dir} tree")
+    out.append("")
+    out.append("| module | decls | /-- | /-! | examples | naming flags |")
+    out.append("| --- | ---: | ---: | ---: | ---: | ---: |")
+    for r in sorted(rows_easci, key=lambda r: r["path"]):
+        tot["decls"] += r["decls"]
+        tot["docstrings"] += r["docstrings"]
+        tot["moduledoc"] += 1 if r["moduledoc"] else 0
+        tot["examples"] += r["examples"]
+        tot["sorry"] += r["sorry"]
+        flag = f"{len(r['upper'])}" if r["upper"] else ""
+        out.append(
+            f"| `{r['path']}` ({r['tag']}) | {r['decls']} | {r['docstrings']} | "
+            f"{1 if r['moduledoc'] else 0} | {r['examples']} | {flag} |"
+        )
+    out.append("")
+    ptot = dict(decls=0, docstrings=0, moduledoc=0, examples=0, sorry=0)
+    out.append("## packages/ extractions")
+    out.append("")
+    out.append("| package | files | decls | /-- | /-! | examples | naming flags |")
+    out.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: |")
+    bypkg = {}
+    for r in rows_pkg:
+        pkg = r["tag"].split("/")[1]
+        d = bypkg.setdefault(
+            pkg, dict(files=0, decls=0, docstrings=0, moduledoc=0, examples=0, upper=0, sorry=0)
+        )
+        d["files"] += 1
+        d["decls"] += r["decls"]
+        d["docstrings"] += r["docstrings"]
+        d["moduledoc"] += 1 if r["moduledoc"] else 0
+        d["examples"] += r["examples"]
+        d["upper"] += len(r["upper"])
+        d["sorry"] += r["sorry"]
+        ptot["decls"] += r["decls"]
+        ptot["docstrings"] += r["docstrings"]
+        ptot["moduledoc"] += 1 if r["moduledoc"] else 0
+        ptot["examples"] += r["examples"]
+        ptot["sorry"] += r["sorry"]
+    for pkg, d in sorted(bypkg.items()):
+        out.append(
+            f"| {pkg} | {d['files']} | {d['decls']} | {d['docstrings']} | "
+            f"{d['moduledoc']} | {d['examples']} | {d['upper']} |"
+        )
+    out.append("")
+    out.append("## Summary")
+    out.append("")
     out.append(
-        f"| {pkg} | {d['files']} | {d['decls']} | {d['docstrings']} | "
-        f"{d['moduledoc']} | {d['examples']} | {d['upper']} |"
+        f"- {args.lean_dir} tree: {len(rows_easci)} files, {tot['decls']} declarations, "
+        f"{tot['docstrings']} `/--` docstrings, {tot['moduledoc']} modules with "
+        f"`/-!` module docs, {tot['examples']} anonymous examples, "
+        f"{tot['sorry']} sorry lines."
     )
-out.append("")
-out.append("## Summary")
-out.append("")
-out.append(
-    f"- EASCI tree: {len(rows_easci)} files, {tot['decls']} declarations, "
-    f"{tot['docstrings']} `/--` docstrings, {tot['moduledoc']} modules with "
-    f"`/-!` module docs, {tot['examples']} anonymous examples, "
-    f"{tot['sorry']} sorry lines."
-)
-out.append(
-    f"- packages/: {len(rows_pkg)} files, {ptot['decls']} declarations, "
-    f"{ptot['docstrings']} `/--` docstrings, {ptot['moduledoc']} modules with "
-    f"`/-!`, {ptot['examples']} examples, {ptot['sorry']} sorry lines."
-)
-nc = sum(len(r["upper"]) for r in rows_easci + rows_pkg)
-out.append(f"- Naming flags (uppercase-first non-structure names): {nc}.")
-out.append("- `sorry` must stay 0; any nonzero line above is a finding.")
-out.append("")
-sys.stdout.write("\n".join(out))
+    out.append(
+        f"- packages/: {len(rows_pkg)} files, {ptot['decls']} declarations, "
+        f"{ptot['docstrings']} `/--` docstrings, {ptot['moduledoc']} modules with "
+        f"`/-!`, {ptot['examples']} examples, {ptot['sorry']} sorry lines."
+    )
+    nc = sum(len(r["upper"]) for r in rows_easci + rows_pkg)
+    out.append(f"- Naming flags (uppercase-first non-structure names): {nc}.")
+    out.append("- `sorry` must stay 0; any nonzero line above is a finding.")
+    out.append("")
+    sys.stdout.write("\n".join(out))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

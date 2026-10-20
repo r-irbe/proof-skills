@@ -75,8 +75,13 @@ def scan_file(path):
     return out
 
 
-def main():
-    root = sys.argv[1] if len(sys.argv) > 1 else "EASCI"
+def main(argv=None):
+    import argparse
+    parser = argparse.ArgumentParser(description="U4 missing-API sweep: simp-lemma inventory, instance gaps, decidability.")
+    parser.add_argument("pos_root", nargs="?", default=None, help="Optional positional Lean corpus directory")
+    parser.add_argument("--root", "--lean-dir", dest="root", default=os.environ.get("LEAN_DIR", "EASCI"), help="Corpus directory to scan")
+    args = parser.parse_args(argv)
+    root = args.pos_root if args.pos_root is not None else args.root
     total = {"simp_nf": 0, "inst_gap": 0, "classical": 0, "doc_setopt": 0}
     for dirpath, dirnames, filenames in os.walk(root):
         dirnames[:] = [d for d in dirnames if d != ".scratch"]

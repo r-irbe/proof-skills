@@ -92,7 +92,9 @@ def check_skill(path: Path) -> tuple[list[str], list[str]]:
     long_lines = [
         index
         for index, line in enumerate(lines, start=1)
-        if len(line) > MAX_LINE_LENGTH and not line.startswith("description:")
+        if len(line) > MAX_LINE_LENGTH
+        and not line.startswith("description:")
+        and not line.strip().startswith("|")
     ]
     if long_lines:
         warnings.append(
@@ -140,7 +142,8 @@ def run_checks(root: Path) -> tuple[list[str], list[str], int]:
             descriptions[description] = skill_file
 
         tests = sorted((skill_file.parent / "tests").glob("*.yaml"))
-        if not tests:
+        smoke_case = root / "scripts" / "eval" / "cases" / f"{skill_file.parent.name}-smoke.yaml"
+        if not tests and not smoke_case.is_file():
             warnings.append(f"{skill_file.parent}: no tests/*.yaml files")
         for test_file in tests:
             test_errors, test_warnings = check_test(test_file)
