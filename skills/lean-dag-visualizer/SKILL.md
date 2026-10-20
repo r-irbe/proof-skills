@@ -1,7 +1,7 @@
 ---
 name: "lean-dag-visualizer"
 description: |
-  USE FOR: launching interactive standalone Lean 4 formalization DAG visualizers, extracting topological dependency graphs, inspecting Tufte proof-walk marginalia for Lean 4 projects, domain subpackages (packages/), and research formalizations (docs/easci/lean/EASCI).
+  USE FOR: launching interactive standalone Lean 4 formalization DAG visualizers, extracting topological dependency graphs, inspecting Tufte proof-walk marginalia for Lean 4 projects, domain subpackages, and research formalizations.
   DO NOT USE FOR: authoring new Lean proofs (use @lean-proof), compiling PlasTeX LaTeX PDFs (use @lean-blueprint).
   TRIGGERS: dag-visualizer, proof-walk, visualize-formalization, lean-visualizer, show-dag, formalization-dag.
 tier: "hot"
@@ -28,7 +28,7 @@ metadata:
   - Launching the standalone zero-dependency HTML5/SVG formalization DAG visualizer for any Lean 4 project or directory.
   - Inspecting topological layer depth, longest dependency paths, and landmark proof milestones.
   - Visualizing mathematical engines for domain subpackages (`packages/stochastic-ccv`, `packages/agentic-safety`, `packages/cusp-catastrophe`, etc.).
-  - Visualizing primary formalization repositories (`docs/easci/lean/EASCI`, `docs/easci/lean/fermats-last-theorem`, `docs/easci/lean/NavierStokesAndEuler`).
+  - Visualizing primary formalization repositories (`MyProject`, `fermats-last-theorem`, `NavierStokesAndEuler`).
   - Generating and caching visualizer-compatible graph JSONs (`nodes` and `edges`) via `formalization_breakdown.py --json-graph`.
   - Autonomous AI session configuration: serving graphs headlessly via `--no-browser` and retrieving network metrics without GUI dependencies.
 - **DO NOT USE FOR:**
@@ -84,10 +84,10 @@ Formalization DAGs serve two distinct operational purposes during the formalizat
 ### Workflow B: Interactive Human-in-the-Loop Visual Walk
 1. **Launch Target**:
    ```bash
-   python3 tools/visualizer/launch.py packages/stochastic-ccv
+   python3 scripts/lean/launch_visualizer.py packages/stochastic-ccv
    ```
 2. **Interact**:
-   - The launcher automatically builds the graph, starts the local server, and opens the default browser to `http://127.0.0.1:8088/`.
+   - The launcher automatically builds the graph, starts the local server (`tools/visualizer/serve.py`), and opens the default browser to `http://127.0.0.1:8088/`.
    - The operator inspects nodes, selects declarations to read Tufte cards, and navigates premise tags.
 3. **Export**: Click **"Export SVG"** to capture vector diagrams for papers, slides, or reports.
 
@@ -95,21 +95,21 @@ Formalization DAGs serve two distinct operational purposes during the formalizat
 
 ```bash
 # 1. Launch visualizer for any package
-python3 tools/visualizer/launch.py packages/stochastic-ccv
+python3 scripts/lean/launch_visualizer.py packages/stochastic-ccv
 
-# 2. Launch visualizer for EASCI formalization
-python3 tools/visualizer/launch.py docs/easci/lean/EASCI
+# 2. Launch visualizer for a project formalization
+python3 scripts/lean/launch_visualizer.py MyProject
 
 # 3. Launch preloaded corpus presets
-python3 tools/visualizer/launch.py --preset flt
-python3 tools/visualizer/launch.py --preset nse
-python3 tools/visualizer/launch.py --preset easci
+python3 tools/visualizer/serve.py --corpus flt
+python3 tools/visualizer/serve.py --corpus nse
+python3 tools/visualizer/serve.py --corpus markov
 
 # 4. Extract graph JSON without launching server
 python3 scripts/lean/formalization_breakdown.py <path> --json-graph graph.json
 
 # 5. Run headless server for SSH port forwarding
-python3 tools/visualizer/serve_visualizer.py --graph graph.json --port 8090 --no-browser
+python3 tools/visualizer/serve.py --graph graph.json --port 8090 --no-browser
 ```
 
 ## Recovery
@@ -121,4 +121,4 @@ python3 tools/visualizer/serve_visualizer.py --graph graph.json --port 8090 --no
 
 - **Predecessors**: `skill:lean-formalization-breakdown` (static census and topological depth), `skill:lean-blueprint` (declaration LaTeX scaffolding).
 - **Successors**: `skill:lean-pedagogical-exposition` (authoring mathematical narrative for nodes), `skill:lean-enforcement` (ratifying acyclicity in CI).
-- **Tool Location**: [`docs/easci/lean/skills/tools/visualizer/`](../../tools/visualizer/)
+- **Tool Location**: [`tools/visualizer/`](../../tools/visualizer/)

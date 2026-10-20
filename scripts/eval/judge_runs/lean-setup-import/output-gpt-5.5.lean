@@ -1,3 +1,0 @@
-import Mathlib
-
-open Nat

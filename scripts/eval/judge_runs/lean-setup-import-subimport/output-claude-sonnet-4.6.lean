@@ -1,3 +1,0 @@
-import MeasureTheory.Measure.ProbabilityMeasure
-
-open MeasureTheory ProbabilityMeasure

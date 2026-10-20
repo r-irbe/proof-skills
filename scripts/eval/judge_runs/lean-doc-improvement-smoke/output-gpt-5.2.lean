@@ -1,1 +1,0 @@
-Compute the theorem count from the codebase with a reproducible script (e.g., parse Lean source for `theorem` and `lemma` under the appendix scope), record the exact commit hash used, and update the appendix number and commit reference to match the script output.

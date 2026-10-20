@@ -49,7 +49,7 @@ This launches a local HTTP server on `http://127.0.0.1:8088/` and automatically 
 
 #### Launcher Options:
 * `--port <int>`: Custom port (default: 8088; auto-increments if port is busy).
-* `--corpus <nse|flt|easci>`: Launch directly with a specific preloaded corpus.
+* `--corpus <nse|flt|markov>`: Launch directly with a specific preloaded corpus.
 * `--graph <path.json>`: Automatically serve and display a custom formalization graph JSON.
 * `--no-browser`: Run headlessly without launching the browser window (useful for SSH port-forwarding).
 
@@ -74,7 +74,7 @@ The visualizer includes pre-packaged mathematical DAGs:
    * Mazur irreducibility theorem
    * Ribet level-lowering epsilon conjecture
    * Taylor-Wiles deformation ring isomorphism ($R = \mathbb{T}$)
-3. **EASCI Formalization**:
+3. **Stochastic CCV Formalization**:
    * Simplex invariant preservation
    * Stochastic CCV contraction mapping
 

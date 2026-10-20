@@ -76,7 +76,7 @@ includes: auto
 scripts:
   lint-conformance: python3 scripts/skill-audit/check_conformance.py
   validate-apm: python3 scripts/lint/apm_validate.py
-  lint-zk: python3 scripts/lean/zettelkasten_lint.py --zk-root zettelkasten --strict
+  lint-zk: python3 scripts/lean/zettelkasten_lint.py --zk-dir zettelkasten --strict
   audit-axioms: python3 scripts/lean/axiom_audit.py --help
   templates-list: ls -1 templates/Template_*.md
   skills-count: bash -c 'find skills -maxdepth 2 -name SKILL.md -not -path "*_overrides*" | wc -l'

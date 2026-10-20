@@ -1,7 +1,7 @@
 # Template_MathematicalEngineSynthesis.md -- Mathematical Engine Deep-Dive Reference
 
 > **Status:** Production template for technical deep-dives into mathematical proof engines.
-> Modeled on `REF-NSE-BLOWUP-MECHANISMS` (`docs/investigation-garden/references/navier-stokes-euler-blowup-mechanisms.md`).
+> Modeled on `REF-NSE-BLOWUP-MECHANISMS` (`docs/references/navier-stokes-euler-blowup-mechanisms.md`).
 
 ---
 

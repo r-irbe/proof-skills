@@ -23,7 +23,7 @@
 > **Formal Declaration:** `<Namespace.theorem_name>`  
 > **Source File:** [`<path/to/file.lean>`](file:///<path/to/file.lean>)  
 > **Lean Blueprint Anchor:** `\lean{<Namespace.theorem_name>}`, `\label{thm:<label>}`  
-> **Garden Concept Zettel:** [`zet-lean-<slug>`](file:///docs/investigation-garden/zettels/concepts/zet-lean-<slug>.md)  
+> **Garden Concept Zettel:** [`zet-lean-<slug>`](file:///zettelkasten/concepts/zet-lean-<slug>.md)  
 > **MSC2020 Classification:** <Primary Code> (e.g. 11G05, 35Q30, 03B35)
 
 ---

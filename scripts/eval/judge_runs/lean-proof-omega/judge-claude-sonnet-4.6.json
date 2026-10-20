@@ -1,8 +1,0 @@
-{
-  "score": 3,
-  "rationale": "Proof discharges the goal with a single rfl after intro but lacks explicit goal-state narration between the two tactics required by methodology.",
-  "rubric_evidence": [
-    "intro n",
-    "rfl"
-  ]
-}

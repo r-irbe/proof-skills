@@ -199,12 +199,8 @@ def recommend_tactics(goal_text: str, current_proof_text: str = "") -> list[Tact
 
 def dispatch_and_score(goal_text: str, current_proof_text: str = "") -> dict:
     """Combine tactic recommendations, legibility scoring, and two-axis cost estimation."""
-    try:
-        from altproof_cost_ranker import cost
-        from altproof_legibility import RENDERABLE_PATTERNS, score_block
-    except ImportError:
-        from tools.altproof.cost_ranker import cost
-        from tools.altproof.legibility import RENDERABLE_PATTERNS, score_block
+    from altproof_cost_ranker import cost
+    from altproof_legibility import RENDERABLE_PATTERNS, score_block
 
     recs = recommend_tactics(goal_text, current_proof_text)
     leg = score_block(current_proof_text or "", RENDERABLE_PATTERNS)

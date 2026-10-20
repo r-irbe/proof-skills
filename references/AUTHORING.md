@@ -328,4 +328,4 @@ This authoring guide consolidates the conventions established across:
   migration, audit-script promotion.
 
 See `lab/MASTER-PLAN.md` and the session checkpoints under
-`docs/easci/lean/lab/` for the historical design rationale.
+`lab/` for the historical design rationale.

@@ -2,7 +2,7 @@
 
 This directory contains the vendored, portable distribution of the
 **ITP Master Authority Ontology** for standalone use in proof assistant tools
-and LSP extensions without dependencies on the tacit-mui core repository.
+and LSP extensions.
 
 ## Contents
 - `master-authority-index.json`: 100 canonical formal concepts across Lean 4, Coq, Isabelle/HOL, HOL Light, and Metamath.

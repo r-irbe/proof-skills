@@ -1,1 +1,0 @@
-Salary is Confidentiality: high, Integrity: high, Availability: medium; under GDPR it's personal data (and typically sensitive in context), requiring purpose limitation, access control, encryption, and auditability.

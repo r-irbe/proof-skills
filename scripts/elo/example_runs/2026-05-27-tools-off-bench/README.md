@@ -133,4 +133,4 @@ python3 build.py                # reads ../coding/scores.json + ../lean/scores.j
 
 ## Authorship
 
-Driven autonomously by the GitHub Copilot CLI session at `/Users/radu/.copilot/session-state/e67b2c5b-66ce-4a86-8ffa-1f639dbe94b8/`. The 5 model agents were dispatched via the `task` tool with explicit `model:` overrides. Each agent ran in its own subprocess with no shared state.
+Driven autonomously by the GitHub Copilot CLI session at `<REPO_ROOT>/.copilot/session-state/e67b2c5b-66ce-4a86-8ffa-1f639dbe94b8/`. The 5 model agents were dispatched via the `task` tool with explicit `model:` overrides. Each agent ran in its own subprocess with no shared state.

@@ -1,1 +1,0 @@
-`Continuous.comp` — signature: `theorem Continuous.comp {X Y Z : Type*} [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] {g : Y → Z} {f : X → Y} (hg : Continuous g) (hf : Continuous f) : Continuous (g ∘ f)`

@@ -427,7 +427,7 @@
             <select id="dataset-select">
                 <option value="nse">Navier-Stokes & Euler (3D Blowup)</option>
                 <option value="flt">Fermat's Last Theorem (Modularity)</option>
-                <option value="easci">EASCI (Stochastic CCV Contraction)</option>
+                <option value="markov">Stochastic CCV (Markov Contraction)</option>
             </select>
 
             <label for="direction-select">Layout:</label>
@@ -756,22 +756,22 @@
                 ]
             },
 
-            easci: {
+            markov: {
                 nodes: [
                     {
                         id: "def:ccv",
-                        label: "EASCI.StochasticCCV.Core.CCV",
+                        label: "StochasticCCV.Core.CCV",
                         kind: "structure",
-                        module: "EASCI.StochasticCCV.Core",
+                        module: "StochasticCCV.Core",
                         line: 32,
                         statement: "structure CCV where\n  r : Nat\n  s : Nat\n  k : Nat\n  hSimplex : r + s + k = 100",
                         docstring: "Integer-scaled 3-simplex vector representing empirical belief states."
                     },
                     {
                         id: "thm:ccvl1_signed_sum_zero",
-                        label: "EASCI.StochasticCCV.Core.ccvL1_signed_sum_zero",
+                        label: "StochasticCCV.Core.ccvL1_signed_sum_zero",
                         kind: "theorem",
-                        module: "EASCI.StochasticCCV.Core.Contraction",
+                        module: "StochasticCCV.Core.Contraction",
                         line: 88,
                         statement: "theorem ccvL1_signed_sum_zero (c1 c2 : CCV) :\n  ((cast)c1.r - (cast)c2.r : Int) + ((cast)c1.s - (cast)c2.s) + ((cast)c1.k - (cast)c2.k) = 0",
                         docstring: "Simplex zero-sum identity foundational for Doeblin coupling arguments.",
@@ -780,18 +780,18 @@
                     },
                     {
                         id: "def:okd_iterate",
-                        label: "EASCI.StochasticCCV.Core.okdIterate",
+                        label: "StochasticCCV.Core.okdIterate",
                         kind: "definition",
-                        module: "EASCI.StochasticCCV.Core.Contraction",
+                        module: "StochasticCCV.Core.Contraction",
                         line: 140,
                         statement: "def okdIterate (c : CCV) (P : StochMatrix3) : Nat -> CCV",
                         docstring: "Markov iteration operator under transition probability matrix P."
                     },
                     {
                         id: "thm:doeblin_coupling_contraction",
-                        label: "EASCI.StochasticCCV.Core.doeblin_L1_contraction_Q",
+                        label: "StochasticCCV.Core.doeblin_L1_contraction_Q",
                         kind: "theorem",
-                        module: "EASCI.StochasticCCV.Core.Banach",
+                        module: "StochasticCCV.Core.Banach",
                         line: 110,
                         statement: "theorem doeblin_L1_contraction_Q (P : StochMatrix3) (hP : IsErgodic P) :\n  ccvL1Dist (okdIterate c1 P 1) (okdIterate c2 P 1) <= (1 - delta) * ccvL1Dist c1 c2",
                         docstring: "Strict L1 contraction coefficient derived from minimal row overlap delta.",
@@ -799,21 +799,21 @@
                     },
                     {
                         id: "thm:stationary_fixpoint",
-                        label: "EASCI.StochasticCCV.Core.stationary_fixpoint",
+                        label: "StochasticCCV.Core.stationary_fixpoint",
                         kind: "theorem",
-                        module: "EASCI.StochasticCCV.Core.Contraction",
+                        module: "StochasticCCV.Core.Contraction",
                         line: 195,
                         statement: "theorem stationary_fixpoint (P : StochMatrix3) (hP : IsErgodic P) :\n  exists! pi : CCV, okdStep pi P = pi",
                         docstring: "Unique stationary distribution existence guaranteed by Banach fixed-point theorem.",
                         uses: ["thm:doeblin_coupling_contraction"]
                     },
                     {
-                        id: "thm:easci_convergence",
-                        label: "EASCI.Core.easciMap_convergence",
+                        id: "thm:markov_convergence",
+                        label: "StochasticCCV.Core.markovMap_convergence",
                         kind: "theorem",
-                        module: "EASCI.Core",
+                        module: "StochasticCCV.Core",
                         line: 250,
-                        statement: "theorem easciMap_convergence (history : Stream CCV) :\n  Tendsto (fun n => ccvL1Dist (history n) pi) atTop (nhds 0)",
+                        statement: "theorem markovMap_convergence (history : Stream CCV) :\n  Tendsto (fun n => ccvL1Dist (history n) pi) atTop (nhds 0)",
                         docstring: "Exponential geometric convergence of multi-agent belief trajectory.",
                         uses: ["thm:stationary_fixpoint"]
                     }
@@ -823,7 +823,7 @@
                     { source: "thm:ccvl1_signed_sum_zero", target: "thm:doeblin_coupling_contraction" },
                     { source: "def:okd_iterate", target: "thm:doeblin_coupling_contraction" },
                     { source: "thm:doeblin_coupling_contraction", target: "thm:stationary_fixpoint" },
-                    { source: "thm:stationary_fixpoint", target: "thm:easci_convergence" }
+                    { source: "thm:stationary_fixpoint", target: "thm:markov_convergence" }
                 ]
             }
         };

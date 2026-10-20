@@ -22,11 +22,11 @@ loop consumes the window. Without the compact step, the burst becomes
 the failure mode "context burst" — too many irrelevant docs crowding
 out the task.
 
-**Evidence.** Anchored in filab `docs/conventions/context-management.md`
+**Evidence.** Anchored in `docs/conventions/context-management.md`
 (token budgets Identity 5-10% / Task 30-40% / Knowledge 20-30% /
 History 15-20% / Headroom 25-35%) and `GUARDRAILS.md:190-198` (context
 burst as a named collapse mode), as summarised in
-`lab/filab-survey/02-conventions.md` §2 and §3. In our internal runs
+`lab/design/02-conventions.md` §2 and §3. In our internal runs
 the compact step typically achieves a 4–8× reduction in working-set
 tokens before the reasoning phase begins.
 

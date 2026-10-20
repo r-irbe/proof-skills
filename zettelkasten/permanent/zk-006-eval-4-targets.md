@@ -24,7 +24,7 @@ targets, each with its own metric and failure mode: **Instructions**
 SK-10). Conflating them costs roughly 25pp of eval signal (R32 F1,
 cited in ADR-0076 §Evidence).
 
-**Evidence.** Table in `lab/filab-survey/01-adrs.md` §5.1. The
+**Evidence.** Table in `lab/design/01-adrs.md` §5.1. The
 mandatory rule: *"Every eval fixture under `lab/evals/` MUST declare
 which of these four it targets"* (ADR-0039 §"Four evaluation
 targets", line 42). The fork's harness layout under

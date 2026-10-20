@@ -1,8 +1,0 @@
-{
-  "score": 3,
-  "rationale": "Single-tactic rfl proof discharges the goal without banned tactics but provides no per-step goal-state narration as the methodology requires.",
-  "rubric_evidence": [
-    "theorem add_zero (n : Nat) : n + 0 = n := by",
-    "rfl"
-  ]
-}

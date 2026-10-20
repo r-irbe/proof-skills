@@ -10,7 +10,7 @@ Tactics · domain math · doc / review / research workflows · zettelkasten · g
 [![Lean 4](https://img.shields.io/badge/Lean-4-2D3748.svg?logo=lean&logoColor=white)](https://github.com/leanprover/lean4)
 [![Mathlib4](https://img.shields.io/badge/Mathlib-4-4E7CD0.svg)](https://github.com/leanprover-community/mathlib4)
 [![APM](https://img.shields.io/badge/APM-skill_collection-6e5494.svg)](https://github.com/microsoft/apm)
-[![First-party skills](https://img.shields.io/badge/first--party%20skills-63-2c974b.svg)](skills/)
+[![First-party skills](https://img.shields.io/badge/first--party%20skills-75-2c974b.svg)](skills/)
 [![Legacy Stubs](https://img.shields.io/badge/legacy%20stubs-4-6e5494.svg)](skills/_overrides/)
 [![Taxonomy](https://img.shields.io/badge/taxonomy-hybrid_architecture-blue.svg)](TAXONOMY.md)
 
@@ -48,7 +48,7 @@ git clone --recurse-submodules https://github.com/r-irbe/proof-skills
 
 | Directory | What it holds | Loaded by |
 |---|---|---|
-| [`skills/`](skills/) | 63 first-party `SKILL.md` files: toolchain setup, Lake building, proof tactics, MWE extraction, bisection, PR hygiene, Mathlib review, domain math, applied verticals, and end-to-end process workflows. | Harness, on demand. |
+| [`skills/`](skills/) | 75 first-party `SKILL.md` files: toolchain setup, Lake building, proof tactics, MWE extraction, bisection, PR hygiene, Mathlib review, domain math, applied verticals, and end-to-end process workflows. | Harness, on demand. |
 | [`skills/_overrides/`](skills/_overrides/) | 4 legacy REDIRECT stubs (`mathlib-build`, `mathlib-pr`, `mathlib-review`, `nightly-testing`) preserving deprecated slugs per Chesterton protocol. | Harness, on demand. |
 | [`TAXONOMY.md`](TAXONOMY.md) | Authoritative classification mapping skills into Kernel, Roles, and Facets. | Planning / routing. |
 | [`ROLES.md`](ROLES.md) | Stanford ACE Prover Swarm operational contracts (Specifier, Prover, Auditor, Gardener). | Multi-agent execution. |
@@ -63,7 +63,7 @@ git clone --recurse-submodules https://github.com/r-irbe/proof-skills
 
 ## Project Structure
 
-For a deep dive into the exact directory layout and the purpose of every folder, please see [`references/project_structure.md`](references/project_structure.md).
+For a deep dive into the exact directory layout and the purpose of every folder, please see [`references/project_structure.md`](references/project_structure.md) and [`USER_GUIDE.md`](USER_GUIDE.md).
 
 ## Tooling
 
@@ -93,7 +93,8 @@ generic source and lists only the deltas**.
 
 | Document | Covers |
 |---|---|
-| [`AGENT.md`](AGENT.md) | Full agent contract — belief threshold, reversibility tiers, dispatch precedence, confidentiality rules. **Required reading before any edit.** |
+| [`AGENTS.md`](AGENTS.md) | Full agent contract — belief threshold, reversibility tiers, dispatch precedence, confidentiality rules. **Required reading before any edit.** |
+| [`USER_GUIDE.md`](USER_GUIDE.md) | End-to-end operator guide for skill routing, MCP server integration, templates, and CI enforcement scripts. |
 | [`apm.yml`](apm.yml) | Package metadata: name, version, license, keywords, repository. |
 | [`templates/00-CONVENTIONS.md`](templates/00-CONVENTIONS.md) | Cross-template conventions: file-doc header, section skeleton, proof-comment tags, anti-patterns checklist. |
 

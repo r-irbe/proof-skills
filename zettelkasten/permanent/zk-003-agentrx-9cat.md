@@ -23,12 +23,12 @@ tool invocation, (4) misinterpretation of tool output, (5) intent–plan
 misalignment, (6) under-specified user intent, (7) intent not
 supported, (8) guardrails false-positive, (9) system/infra failure.
 
-**Evidence.** Lifted from `lab/filab-survey/01-adrs.md` §5.2 and
+**Evidence.** Lifted from `lab/design/01-adrs.md` §5.2 and
 mirrored in `02-conventions.md` §3.2. For Lean skills specifically,
 the survey predicts categories **2** (invented lemmas / hallucinated
 Mathlib names) and **4** (mis-reading `lake build` output) as the
 high-frequency classes — worth pre-budgeting fixtures for. Authority:
-ADR-0039 (Accepted) under `filab-doc-experiment/adrs/`.
+ADR-0039 (Accepted) in the architecture decision records.
 
 **Implication.** Three downstream uses lock in. The eval-target
 matrix in [[zk-006]] uses these labels as the "failure-mode signature"

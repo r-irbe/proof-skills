@@ -23,7 +23,7 @@ until fixtures go green; **MutationSmith** weakens rules (drop a
 G-rule, soften a `MUST` to `SHOULD`) to verify fixture strength; the
 **Built Agent** is the runtime consumer scored against the fixtures.
 
-**Evidence.** Distilled from `lab/filab-survey/01-adrs.md` §5.3. The
+**Evidence.** Distilled from `lab/design/01-adrs.md` §5.3. The
 ADR sets explicit per-skill targets: **HPR ≥ 97%** (human pass rate),
 **MS 86–100%** (mutation score), **SURS 97%** (skill-under-rule
 score). These are the bars each Lean-skill family eval should aim at

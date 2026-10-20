@@ -2,14 +2,14 @@
 """
 Unified Launcher for Lean 4 Formalization DAG Visualizer.
 
-Supports arbitrary Lean projects, subpackages (packages/*), EASCI, and presets.
+Supports arbitrary Lean projects, subpackages (packages/*), and presets.
 Automatically generates dependency graph JSON and launches the standalone web application.
 
 Strict 7-bit ASCII only (INV-001). Standard library only.
 
 Usage:
     python3 launch_visualizer.py packages/stochastic-ccv
-    python3 launch_visualizer.py docs/easci/lean/EASCI
+    python3 launch_visualizer.py MyProject
     python3 launch_visualizer.py --preset flt
     python3 launch_visualizer.py --preset nse --no-browser
     python3 launch_visualizer.py packages/agentic-safety --json-only
@@ -29,9 +29,9 @@ SERVE_SCRIPT = SKILLS_DIR / "tools" / "visualizer" / "serve.py"
 BREAKDOWN_SCRIPT = SCRIPT_DIR / "formalization_breakdown.py"
 
 PRESETS = {
-    "easci": "docs/easci/lean/EASCI",
-    "flt": "docs/easci/lean/fermats-last-theorem",
-    "nse": "docs/easci/lean/NavierStokesAndEuler",
+    "markov": "packages/stochastic-ccv",
+    "flt": "fermats-last-theorem",
+    "nse": "NavierStokesAndEuler",
 }
 
 
@@ -39,7 +39,7 @@ def find_repo_root() -> Path:
     """Find the root repository directory."""
     current = Path(__file__).resolve()
     for parent in [current] + list(current.parents):
-        if (parent / "docs" / "easci" / "lean").is_dir() and (parent / "packages").is_dir():
+        if (parent / "lakefile.lean").is_file() or (parent / "lakefile.toml").is_file() or (parent / "packages").is_dir():
             return parent
     return SKILLS_DIR.parent.parent.parent  # Fallback
 
@@ -120,12 +120,12 @@ def parse_args():
     parser.add_argument(
         "target",
         nargs="?",
-        default="docs/easci/lean/EASCI",
-        help="Target Lean formalization directory or package path (default: docs/easci/lean/EASCI)",
+        default=".",
+        help="Target Lean formalization directory or package path (default: .)",
     )
     parser.add_argument(
         "--preset",
-        choices=["easci", "flt", "nse"],
+        choices=["markov", "flt", "nse"],
         help="Target named benchmark preset",
     )
     parser.add_argument(

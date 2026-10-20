@@ -1,6 +1,6 @@
 ---
 id: zk-002
-title: Filab skill-template v2 frontmatter contract
+title: Skill-template v2 frontmatter contract
 created: 2026-05-27
 updated: 2026-05-29
 type: permanent
@@ -13,16 +13,16 @@ status: superseded-by-current-corpus
 confidence: high
 ---
 
-# Filab skill-template v2 frontmatter contract
+# Skill-template v2 frontmatter contract
 
-**Claim.** Under filab `specs/templates/skill-template-v2.md`, a
+**Claim.** Under `specs/templates/skill-template-v2.md`, a
 conforming SKILL.md must carry a dispatch triad plus a small, ordered
 body so that a router can decide *whether* to load the skill before
 reading any prose. The triad is `USE FOR:` (3–5 verb-object
 paraphrases), `DO NOT USE FOR:` (must name an alternative `@skill` for
 handoff), and `TRIGGERS:` (2–4 bare nouns, not phrases).
 
-**Evidence.** Pulled from `lab/filab-survey/02-conventions.md` §2.1–2.3,
+**Evidence.** Pulled from `lab/design/02-conventions.md` §2.1–2.3,
 which cites template-v2 lines 64-65 (triad), 88 (USE FOR cardinality),
 89 (handoff requirement), 90 (TRIGGERS grammar), 94-96 (G-rule
 MUST/SHOULD/MUST NOT prefix), 98 (≤14 G-rules gated / ≤6 advisory),

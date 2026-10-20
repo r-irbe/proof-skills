@@ -1,3 +1,0 @@
-# CI regenerates ensemble-ci.json on every run; don't commit it.
-*/ensemble-ci.json
-*/r21-verify.json

@@ -1,6 +1,6 @@
 # Template: AltProof Automated Tactics & Shape-Driven Simplex Closers
 
-> **Source**: Extracted from `EASCI/Tactics/AltProof.lean` and `EASCI/Tactics/Wellformed.lean`.
+> **Source**: Extracted from `<Project>/Tactics/AltProof.lean` and `<Project>/Tactics/Wellformed.lean`.
 > **Purpose**: Reusable Lean 4 meta-tactics (`sum_congr_ring`, `finset_mono`, `finset_nonneg`, `alt_proof`, `elegance?`) and finite-simplex structural closers (`wellformed_tac`, `channel_fields`).
 > **Dependencies**: Part 1 requires only `Mathlib.Tactic` and `Mathlib.Algebra.BigOperators.Ring.Finset`. Part 2 adapts to any finite-simplex / Markov-channel structure over `Fin 1..8`.
 
@@ -12,9 +12,9 @@ Drop into `YourProject/Tactics/AltProof.lean` (zero domain-specific imports):
 
 ```lean
 /-
-Copyright (c) 2026 EASCI Project. All rights reserved.
+Copyright (c) 2026 <Project>. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: EASCI Project Contributors
+Authors: <Project> Contributors
 SPDX-License-Identifier: Apache-2.0
 -/
 
@@ -25,7 +25,7 @@ import Mathlib.Algebra.BigOperators.Ring.Finset
 set_option autoImplicit false
 
 /-!
-# EASCI.Tactics.AltProof -- Speculative Alternative-Proof & Elegance Meta-Tactics
+# <Project>.Tactics.AltProof -- Speculative Alternative-Proof & Elegance Meta-Tactics
 
 Production Layer-0 implementation of the AltProof tactic suite
 (`SPEC-ALT-PROOF-DES`, `ALT_PROOF_SAIR_BRIDGE`):
@@ -72,7 +72,7 @@ Production Layer-0 implementation of the AltProof tactic suite
 open Lean Meta Elab Tactic
 open scoped BigOperators
 
-namespace EASCI.Tactics.AltProof
+namespace <Project>.Tactics.AltProof
 
 /-- An alternative proof route definition from the route table (`SPEC-ALT-PROOF-DES` Section 5b). -/
 structure Route where
@@ -467,7 +467,7 @@ def evalElegance : Tactic := fun stx => do
   else
     logInfo m!"[AltProof.elegance?] Goal requires multi-step decomposition (0 single-step closers succeeded)."
 
-end EASCI.Tactics.AltProof
+end <Project>.Tactics.AltProof
 ```
 
 ---
@@ -478,9 +478,9 @@ Adapt field names (`WellFormed`, `Channel`, `Prior`) to match your project's sim
 
 ```lean
 /-
-Copyright (c) 2026 EASCI Project. All rights reserved.
+Copyright (c) 2026 <Project>. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: EASCI Project Contributors
+Authors: <Project> Contributors
 SPDX-License-Identifier: Apache-2.0
 -/
 
@@ -493,24 +493,24 @@ Two tactic macros for the recurring "constructor field pin" proofs: a
 concrete fixture whose well-formedness obligation is a conjunction of
 quantified arithmetic facts, discharged by `fin_cases` case splitting
 plus `norm_num`.  The corpus wrote this composition by hand in
-`EASCI/Tests/Epistemics.lean` (`refine ⟨?_, ?_, ?_, ?_, ?_⟩` with
+`<Project>/Tests/Epistemics.lean` (`refine ⟨?_, ?_, ?_, ?_, ?_⟩` with
 per-field `intro i; fin_cases i <;> norm_num [...]` branches) and in
-`EASCI/Tests/PDG.lean` (`by_cases + simp + norm_num` channel fields);
+`<Project>/Tests/PDG.lean` (`by_cases + simp + norm_num` channel fields);
 this module factors it into `wellformed_tac` and `channel_fields`.
 
 The tactics are shape-driven: they never mention `Opinion`, `RatOpinion`,
 `Channel` or `Prior`, so this module imports only `Mathlib.Tactic` and
-stays a leaf under the Layer-0 `EASCIFoundation` glob
-(`.submodules EASCI.Tactics`), with no dependency on the epistemics or
-PDG layers.  `EASCI/Tests/TacticWellformed.lean` pins both tactics
+stays a leaf under the Layer-0 `<Project>Foundation` glob
+(`.submodules <Project>.Tactics`), with no dependency on the epistemics or
+PDG layers.  `<Project>/Tests/TacticWellformed.lean` pins both tactics
 against the real `Opinion.WellFormed` / `RatOpinion.WellFormed` /
 `Channel` / `Prior` fixture shapes.
 
 ## `wellformed_tac`
 
 Closes a five-field `WellFormed`-shaped goal -- exactly the body of
-`EASCI.Epistemics.Opinion.WellFormed` and
-`EASCI.Epistemics.RatOpinion.WellFormed`:
+`<Project>.Epistemics.Opinion.WellFormed` and
+`<Project>.Epistemics.RatOpinion.WellFormed`:
 `(∀ i, 0 ≤ belief i) ∧ 0 ≤ uncertainty ∧ (∀ i, 0 ≤ baseRate i) ∧
 uncertainty + ∑ belief = 1 ∧ ∑ baseRate = 1` -- by
 `refine ⟨?_, ?_, ?_, ?_, ?_⟩` followed, per field, by either
@@ -533,7 +533,7 @@ with none).  The summed-over type must be `Fin 2` or `Fin 3` for
 `rowMass` / `mass` so the sum rewrites to literal-dispatchable `if`s.
 -/
 
-namespace EASCI.Tactics
+namespace <Project>.Tactics
 
 /-- `wellformed_tac [lemmas]`: close a five-field `WellFormed`-shaped
     conjunction over a concrete fixture, forwarding `lemmas` (typically
@@ -579,5 +579,5 @@ macro_rules
               Fin.sum_univ_five, Fin.sum_univ_six, Fin.sum_univ_seven, Fin.sum_univ_eight,
               Finset.sum_ite_eq', Finset.mem_univ])
 
-end EASCI.Tactics
+end <Project>.Tactics
 ```

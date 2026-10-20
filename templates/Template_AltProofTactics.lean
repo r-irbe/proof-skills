@@ -1,7 +1,7 @@
 /-
-Copyright (c) 2026 EASCI Project. All rights reserved.
+Copyright (c) 2026 <Project>. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: EASCI Project Contributors
+Authors: <Project> Contributors
 SPDX-License-Identifier: Apache-2.0
 -/
 
@@ -12,7 +12,7 @@ import Mathlib.Algebra.BigOperators.Ring.Finset
 set_option autoImplicit false
 
 /-!
-# EASCI.Tactics.AltProof -- Speculative Alternative-Proof & Elegance Meta-Tactics
+# <Project>.Tactics.AltProof -- Speculative Alternative-Proof & Elegance Meta-Tactics
 
 Production Layer-0 implementation of the AltProof tactic suite
 (`SPEC-ALT-PROOF-DES`, `ALT_PROOF_SAIR_BRIDGE`):
@@ -59,7 +59,7 @@ Production Layer-0 implementation of the AltProof tactic suite
 open Lean Meta Elab Tactic
 open scoped BigOperators
 
-namespace EASCI.Tactics.AltProof
+namespace <Project>.Tactics.AltProof
 
 /-- An alternative proof route definition from the route table (`SPEC-ALT-PROOF-DES` Section 5b). -/
 structure Route where
@@ -454,4 +454,4 @@ def evalElegance : Tactic := fun stx => do
   else
     logInfo m!"[AltProof.elegance?] Goal requires multi-step decomposition (0 single-step closers succeeded)."
 
-end EASCI.Tactics.AltProof
+end <Project>.Tactics.AltProof

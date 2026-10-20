@@ -25,9 +25,7 @@ def find_ontology_index(start_path: Optional[Path] = None) -> Optional[Path]:
         here.parent.parent / "vendor/itp-ontology/master-authority-index.json",
         Path("vendor/itp-ontology/master-authority-index.json"),
         Path("data/itp-ontology/master-authority-index.json"),
-        Path("docs/investigation-garden/source-materials/indexes/master-authority-index.json"),
-        Path("../../../../docs/investigation-garden/source-materials/indexes/master-authority-index.json"),
-        Path("../docs/investigation-garden/source-materials/indexes/master-authority-index.json"),
+        Path("../vendor/itp-ontology/master-authority-index.json"),
     ]
     if start_path:
         candidates.insert(0, start_path)

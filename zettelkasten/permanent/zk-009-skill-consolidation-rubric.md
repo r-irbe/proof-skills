@@ -28,7 +28,7 @@ phases.
 grades the corpus **F** for v2 conformance (62/62 files non-compliant)
 and flags every SKILL.md over the 500-line threshold for split. The
 size cap traces to `specs/templates/skill-template-v2.md` (cited via
-`lab/filab-survey/02-conventions.md` §2.2). Co-invocation data is
+`lab/design/02-conventions.md` §2.2). Co-invocation data is
 sourced from the multi-model runner traces described in
 `lab/design/03-multi-model-runner.md`.
 

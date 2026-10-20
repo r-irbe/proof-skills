@@ -6,6 +6,7 @@ updated: 2026-05-29
 type: literature
 tags: [moc, index, seed]
 refs:
+  - zk-001
   - zk-002
   - zk-003
   - zk-004
@@ -40,7 +41,8 @@ filenames-as-IDs make this a mechanical migration.
 
 | ID | Title | Tier-1 tag | Confidence |
 |---|---|---|---|
-| [[zk-002]] | Filab skill-template v2 frontmatter contract | template-contract | high |
+| [[zk-001]] | Fork rationale and project-agnostic override architecture | provenance | high |
+| [[zk-002]] | Skill-template v2 frontmatter contract | template-contract | high |
 | [[zk-003]] | AgentRx 9-category failure taxonomy | concept | high |
 | [[zk-004]] | BACM — Burst-And-Compact-Memory context pattern | pattern | medium |
 | [[zk-005]] | TDAD — Test-Driven Agent Definition (4-role loop) | methodology | high |

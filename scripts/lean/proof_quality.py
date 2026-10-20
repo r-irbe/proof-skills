@@ -209,7 +209,7 @@ def extract_theorem_blocks(text: str) -> list[dict]:
     Earlier revisions only matched `theorem|lemma|private …` and only
     `:= by`, which (a) dropped every term-mode proof and (b) let a
     term-mode signature keep scanning forward, swallowing the following
-    declarations — together missing ~22% of declarations on EASCI.
+    declarations — together missing ~22% of declarations on large corpora.
     """
     blocks = []
     lines = text.splitlines()

@@ -1,1 +1,0 @@
-For any morphism `f : X ⟶ Y`, naturality of `η : F ⟶ G` is the commutative square `F.obj X --η_X--> G.obj X`, `| F.map f            | G.map f`, `v                    v`, `F.obj Y --η_Y--> G.obj Y`, equivalently `F.map f ≫ η.app Y = η.app X ≫ G.map f`.

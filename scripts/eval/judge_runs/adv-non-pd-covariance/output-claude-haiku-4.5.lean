@@ -1,1 +1,0 @@
-The matrix Σ = [[1, 2], [2, 1]] does not have a Cholesky decomposition. The Cholesky decomposition requires a symmetric positive definite matrix, but this matrix is indefinite. The determinant is 1·1 - 2·2 = -3 < 0, violating the positive definite requirement. The eigenvalues are 3 and -1, confirming one is negative. No lower triangular matrix L satisfying LL^T = Σ exists.

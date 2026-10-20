@@ -281,7 +281,7 @@ Key Mathlib pieces: `cauchySeq_tendsto_of_complete`, `tendsto_nhds_unique`,
 `ge_of_tendsto`, `tendsto_pow_atTop_nhds_zero_of_lt_one`,
 `Finset.sum_add_distrib` (the sum-of-sums vs sum-of-pointwise-sum trap:
 `Finset.sum_le_sum` gives `∑(a+b)`, the goal needs `∑a + ∑b`).
-Reference implementation: `EASCI/StochasticCCV/StageMatrix5.lean`
+Reference implementation: `<Project>/StochasticCCV/StageMatrix5.lean`
 `stationary_exists_of_strictlyPositive` (154 lines, 0 sorry/admit/axiom,
 LSpec-tested).  Uniqueness of the stationary distribution then follows
 from the same contraction (`stationary_unique` in the same module).

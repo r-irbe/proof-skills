@@ -71,7 +71,7 @@ def ewma (α : ℝ) (x : ℕ → ℝ) : ℕ → ℝ
 
 ## 4. Beyond EWS — double/triple exponential smoothing
 
-For completeness (not currently used in EASCI):
+For completeness (optional in standard formalizations):
 
 - **Holt's linear** : tracks level `S` + slope `B` separately;
   `S_n = α X_n + (1 - α)(S_{n-1} + B_{n-1})`.

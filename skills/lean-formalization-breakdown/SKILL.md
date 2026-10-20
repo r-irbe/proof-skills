@@ -115,7 +115,7 @@ metadata:
 python3 scripts/lean/formalization_breakdown.py <path/to/formalization>
 
 # 2. Emit scaffolded master investigation plan
-python3 scripts/lean/formalization_breakdown.py <path/to/formalization> --scaffold-plan -o docs/investigation-garden/plans/PLAN-<NAME>.md
+python3 scripts/lean/formalization_breakdown.py <path/to/formalization> --scaffold-plan -o docs/plans/PLAN-<NAME>.md
 
 # 3. Emit Lean Blueprint LaTeX skeleton
 python3 scripts/lean/formalization_breakdown.py <path/to/formalization> --scaffold-blueprint -o blueprint/src/content.tex

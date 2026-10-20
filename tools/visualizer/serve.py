@@ -90,9 +90,9 @@ def parse_args():
     parser.add_argument(
         "--corpus",
         type=str,
-        choices=["nse", "flt", "easci"],
+        choices=["nse", "flt", "markov"],
         default=None,
-        help="Default preloaded corpus to display (nse, flt, easci)",
+        help="Default preloaded corpus to display (nse, flt, markov)",
     )
     parser.add_argument(
         "--no-browser",
@@ -146,7 +146,7 @@ def main():
     print("  * Built-in preloaded corpora:")
     print("      - Navier-Stokes & Euler (3D Blowup, BKM contradiction)")
     print("      - Fermat's Last Theorem (Frey curve, Mazur, Ribet, Taylor-Wiles)")
-    print("      - EASCI (Stochastic CCV Contraction, simplex invariant)")
+    print("      - Stochastic CCV (Doeblin Markov contraction, simplex invariant)")
     print("  * Interactive pan/zoom, topological layering (Kahn/Tarjan), Tufte cards")
     print("  * SVG export for papers & presentations")
     print("  * Custom JSON graph import via 'Load JSON...' modal or --graph argument")
