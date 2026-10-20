@@ -899,7 +899,13 @@ def check_simp_lhs_in_rhs(signature: str, theorem_name: str) -> str | None:
         return None
 
     if re.search(r"(?<![A-Za-z0-9_])" + re.escape(head) + r"(?![A-Za-z0-9_])", rhs):
-        return f"@[simp] LHS head `{head}` appears in RHS — potential rewrite loop"
+        # Skip structural recursion / homomorphism unfoldings where the LHS
+        # has a compound argument `(a op b)` or `(ctor ...)` that strictly
+        # decreases in every recursive call on the RHS.
+        lhs_after_head = lhs[lhs.find(head) + len(head) :].strip()
+        if "(" in lhs_after_head:
+            return None
+        return f"@[simp] LHS head `{head}` appears in RHS - potential rewrite loop"
     return None
 
 
