@@ -1,6 +1,6 @@
 id: lean-tactic-discipline-no-decide-search
 title: "Tactic discipline: don't use decide as a brute-force search"
-skill: lean-quality
+skill: lean-proof
 ensemble_rubric: lean-tactic-discipline-quality
 difficulty: easy
 input:

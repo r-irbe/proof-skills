@@ -28,11 +28,36 @@ SKILLS_DIR = SCRIPT_DIR.parent.parent
 SERVE_SCRIPT = SKILLS_DIR / "tools" / "visualizer" / "serve.py"
 BREAKDOWN_SCRIPT = SCRIPT_DIR / "formalization_breakdown.py"
 
-PRESETS = {
+DEFAULT_PRESETS = {
     "markov": "packages/stochastic-ccv",
     "flt": "fermats-last-theorem",
     "nse": "NavierStokesAndEuler",
 }
+
+
+def load_presets(repo_root: Path, presets_file: str | None = None) -> dict[str, str]:
+    presets = dict(DEFAULT_PRESETS)
+    candidates = []
+    if presets_file:
+        candidates.append(Path(presets_file))
+    candidates.extend([
+        repo_root / "skills-overrides" / "visualizer_presets.json",
+        repo_root / "docs" / "easci" / "lean" / "skills-overrides" / "visualizer_presets.json",
+        SKILLS_DIR.parent / "skills-overrides" / "visualizer_presets.json",
+    ])
+    for cand in candidates:
+        if cand.is_file():
+            try:
+                data = json.loads(cand.read_text(encoding="utf-8"))
+                if isinstance(data, dict):
+                    presets.update({str(k): str(v) for k, v in data.items()})
+            except Exception:
+                pass
+            break
+    return presets
+
+
+PRESETS = dict(DEFAULT_PRESETS)
 
 
 def find_repo_root() -> Path:
@@ -125,8 +150,13 @@ def parse_args():
     )
     parser.add_argument(
         "--preset",
-        choices=["markov", "flt", "nse"],
-        help="Target named benchmark preset",
+        help="Target named benchmark preset (e.g. markov, flt, nse, or custom from --presets-file)",
+    )
+    parser.add_argument(
+        "--presets-file",
+        type=str,
+        default=None,
+        help="Optional JSON file mapping preset names to project directories",
     )
     parser.add_argument(
         "--port",
@@ -166,6 +196,7 @@ def parse_args():
 def main():
     args = parse_args()
     repo_root = find_repo_root()
+    PRESETS.update(load_presets(repo_root, getattr(args, "presets_file", None)))
 
     target_str = args.preset if args.preset else args.target
     target_path = resolve_target(target_str, repo_root)

@@ -1,11 +1,11 @@
 ---
 name: "lean-report"
 description: |
-  USE FOR: converting a Lean 4 project blueprint into a publication-grade LaTeX report — blueprint artifact ingestion (extracted LaTeX nodes, dependency DAG, JSON metadata), per-chapter narrative generation with mathematical prose, dependency-driven cross-referencing, figure generation (dependency graphs, module maps, coverage tables), and LaTeX → PDF compilation via the 6-stage INGEST → PLAN → NARRATE → ILLUSTRATE → ASSEMBLE → COMPILE pipeline.
-  DO NOT USE FOR: generating the blueprint itself (use @lean-blueprint); writing one chapter without the pipeline (use @lean-doc-improvement); reviewing a finished report (use @lean-review-council); spec lifecycle (use @lean-specification).
-  TRIGGERS: blueprint to report, generate report, latex pdf, project-report.tex, narrate chapter, dependency figure, blueprint compile.
+  USE FOR: converting a Lean 4 project blueprint into a publication-grade LaTeX report: blueprint artifact ingestion.
+  DO NOT USE FOR: generating the blueprint itself (@lean-blueprint).
+  TRIGGERS: blueprint to report, generate report, latex pdf.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["agent:gateway", "skill:lean-blueprint", "skill:lean-doc-requirements"]
@@ -19,14 +19,18 @@ metadata:
 
 # SK-62: Blueprint-to-Report Generator
 
-Convert a Lean 4 project blueprint (extracted LaTeX nodes, dependency graphs, JSON metadata) into a publication-grade LaTeX report with natural language narrative, mathematical exposition, and visual dependency maps.
+Convert a Lean 4 project blueprint (extracted LaTeX nodes, dependency graphs, JSON metadata) into a publication-grade LaTeX report with natural language
+narrative, mathematical exposition, and visual dependency maps.
 
 ---
 
 ## Routing
 
-- **USE FOR:** converting a Lean 4 project blueprint into a publication-grade LaTeX report via the 6-stage INGEST → PLAN → NARRATE → ILLUSTRATE → ASSEMBLE → COMPILE pipeline; ingesting blueprint artifacts (LaTeX nodes, dependency DAG, JSON metadata); generating per-chapter mathematical prose with `\leanref` cross-references; producing TikZ dependency figures; running `latexmk` to PDF.
-- **DO NOT USE FOR:** generating the blueprint itself (delegate to `@lean-blueprint`); writing one chapter without the pipeline (delegate to `@lean-doc-improvement`); reviewing a finished report (delegate to `@lean-review-council`); spec lifecycle (delegate to `@lean-specification`).
+- **USE FOR:** converting a Lean 4 project blueprint into a publication-grade LaTeX report via the 6-stage INGEST → PLAN → NARRATE → ILLUSTRATE → ASSEMBLE
+  → COMPILE pipeline; ingesting blueprint artifacts (LaTeX nodes, dependency DAG, JSON metadata); generating per-chapter mathematical prose with `\leanref`
+  cross-references; producing TikZ dependency figures; running `latexmk` to PDF.
+- **DO NOT USE FOR:** generating the blueprint itself (delegate to `@lean-blueprint`); writing one chapter without the pipeline (delegate to
+  `@lean-doc-improvement`); reviewing a finished report (delegate to `@lean-review-council`); spec lifecycle (delegate to `@lean-specification`).
 - **TRIGGERS:** blueprint to report, generate report, latex pdf, `project-report.tex`, narrate chapter, dependency figure, blueprint compile.
 
 ## Workflow
@@ -41,12 +45,16 @@ Convert a Lean 4 project blueprint (extracted LaTeX nodes, dependency graphs, JS
 
 - STOP if `\cref` references emit "??" after two latexmk passes — the blueprint is out of sync; re-run INGEST per Part 12.3.
 - STOP if narration drifts from Lean source (Part 13 final row) — the source changed after narration; re-run NARRATE for affected chapters only.
-- STOP if the figures stage produces empty TikZ outputs — `dot2tex` is optional but required for dependency graphs; install or fall back to module-map-only figures.
+- STOP if the figures stage produces empty TikZ outputs — `dot2tex` is optional but required for dependency graphs; install or fall back to module-map-only
+  figures.
 
 ## Handoffs
 
-- **Predecessors:** `agent:gateway` (top-level invocation), `skill:lean-blueprint` (produces the blueprint artifacts this skill consumes), `skill:lean-doc-requirements` (chapter-scope decisions).
-- **Successors:** `skill:lean-doc-feedback` (record the PDF artifact + cross-references), `skill:lean-doc-improvement` (per-chapter post-narration edits), `skill:lean-review-council` (review the report for project-level coherence), `skill:lean-enforcement` (CI gate that confirms PDF builds on a clean checkout).
+- **Predecessors:** `agent:gateway` (top-level invocation), `skill:lean-blueprint` (produces the blueprint artifacts this skill consumes),
+  `skill:lean-doc-requirements` (chapter-scope decisions).
+- **Successors:** `skill:lean-doc-feedback` (record the PDF artifact + cross-references), `skill:lean-doc-improvement` (per-chapter post-narration edits),
+  `skill:lean-review-council` (review the report for project-level coherence), `skill:lean-enforcement` (CI gate that confirms PDF builds on a clean
+  checkout).
 
 ---
 

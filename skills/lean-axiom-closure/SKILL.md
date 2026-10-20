@@ -1,11 +1,11 @@
 ---
 name: "lean-axiom-closure"
 description: |
-  USE FOR: enforcing a project-wide axiom lockdown - verifying that EVERY declaration's transitive axiom closure restricts strictly to the standard axioms (propext, Quot.sound, Classical.choice) via a compile-time metaprogram audit; setting up the FinalCheck discipline (a guard_msgs-wrapped audit module that runs inside the project's normal build); detecting sorryAx, Lean.ofReduceBool (native_decide), and custom axiom leakage across the whole environment, not just per-theorem spot checks.
-  DO NOT USE FOR: writing or fixing a proof (use @lean-proof); replay/verification-cadence policy (use @lean-replay-verification, which this skill supplies R2's executor for); finding tautological statements (use @lean-tautology-triage); running the build itself (use @lean-build).
-  TRIGGERS: axiom closure, axiom lockdown, FinalCheck, print axioms, trust base, sorryAx leak, native_decide ban, implemented_by, extern, whole-corpus axiom audit, "which theorems use which axioms", allowlist.
+  USE FOR: enforcing a project-wide axiom lockdown: verifying that EVERY declaration's transitive axiom closure restricts.
+  DO NOT USE FOR: writing or fixing a proof (@lean-proof).
+  TRIGGERS: axiom closure, axiom lockdown, FinalCheck, print axioms.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["skill:lean-replay-verification", "skill:lean-deep-audit"]
@@ -100,7 +100,8 @@ a Mathlib-dependent corpus of ~9k named declarations: **seconds**.
 ## Recovery
 
 - If `Audit.axiomClosureAudit` reports `sorryAx`, trace the offending declaration via `#print axioms` and hand off to `@lean-proof` to close the open subgoal.
-- If `Lean.ofReduceBool` appears, replace `native_decide` with kernel-checked `decide` / `omega` or obtain explicit owner sign-off before widening the allowlist.
+- If `Lean.ofReduceBool` appears, replace `native_decide` with kernel-checked `decide` / `omega` or obtain explicit owner sign-off before widening the
+  allowlist.
 
 ## Handoffs
 

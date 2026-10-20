@@ -1,11 +1,11 @@
 ---
 name: "lean-replay-verification"
 description: |
-  USE FOR: verifying that completed proofs are genuinely kernel-checked after `sorry` removal; running the replay ladder (fresh rebuild, axiom-closure audit, cross-version replay, independent-kernel recheck) so an acceptance is not an artifact of stale build state, a hidden axiom, or a single kernel's bug; recording replay evidence for review.
-  DO NOT USE FOR: writing or fixing the proof itself (use @lean-proof); reviewing statement faithfulness (use @lean-proof-review); routine incremental builds during development (use @lean-build); project QA scoring (use @lean-quality-engine).
-  TRIGGERS: sorry removed, proof completed, replay, fresh rebuild, kernel replay, independent verification, cross-version check, axiom audit, "is the proof really correct", load-bearing result, pre-merge proof gate.
+  USE FOR: verifying that completed proofs are genuinely kernel-checked after `sorry` removal.
+  DO NOT USE FOR: writing or fixing the proof itself (@lean-proof).
+  TRIGGERS: sorry removed, proof completed, replay, fresh rebuild.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["skill:lean-proof", "skill:lean-proof-review"]
@@ -111,7 +111,8 @@ one incremental green build.
 
 ## Recovery
 
-- If R1 (`lake clean` + `lake build`) fails on a tree that passed incrementally, treat the proof as unverified and hand back to `@lean-proof` or `@lean-build` to fix the hidden stale-artifact dependency.
+- If R1 (`lake clean` + `lake build`) fails on a tree that passed incrementally, treat the proof as unverified and hand back to `@lean-proof` or
+  `@lean-build` to fix the hidden stale-artifact dependency.
 - If R2 surfaces `sorryAx` or an unexpected axiom in the closure, block acceptance and route to `@lean-axiom-closure` / `@lean-proof`.
 
 ## Handoffs

@@ -1,22 +1,11 @@
 ---
 name: "lean-deep-audit"
 description: |
-  USE FOR: running a systematic whole-corpus quality audit over a large Lean
-  formalization project - trust-base lockdown, literature faithfulness
-  (free-record-proxy detection), spec-baking (tautology) scans, inhabitation
-  coverage, type-continuity/duplication censuses, sign/domain/ordering
-  reviews, and the remediation-queue discipline that closes findings.
-  DO NOT USE FOR: reviewing a single theorem's proof (@lean-proof-review);
-  the compile-time axiom lockdown itself (@lean-axiom-closure, this
-  program's P1 executor); replay/verification cadence
-  (@lean-replay-verification); naming/style conventions (the project's own, or
-  `templates/00-CONVENTIONS.md`).
-  TRIGGERS: deep audit, corpus audit, whole-corpus review, faithfulness
-  review, scalar proxy, free-record proxy, veneer, spec baking, tautology
-  scan, inhabitation census, duplication census, guest corpus triage,
-  placeholder authors, template-generated modules, remediation queue.
+  USE FOR: running a systematic whole-corpus quality audit over a large Lean formalization project: trust-base lockdown.
+  DO NOT USE FOR: reviewing a single theorem's proof (@lean-proof-review).
+  TRIGGERS: deep audit, corpus audit, whole-corpus review.
 tier: "cold"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["skill:lean-gateway", "skill:lean-quality-engine"]
@@ -130,9 +119,15 @@ an unregistered finding gets rediscovered.
 ## Recovery
 
 - If a census script times out or drifts after upstream edits, re-run the precompiled two-pass scanner on a clean tree before quoting line numbers or counts.
-- If a module family is guest or template material, register the finding in the remediation queue and escalate disposition to the owning lane rather than deleting modules unilaterally.
+- If a module family is guest or template material, register the finding in the remediation queue and escalate disposition to the owning lane rather than
+  deleting modules unilaterally.
 
 ## Handoffs
 
 - **Predecessors:** `@lean-gateway` (top-level routing), `@lean-quality-engine` (project QA orchestration).
 - **Successors:** `@lean-axiom-closure` (P1 executor), `@lean-tautology-triage` (P3 candidate triage), `@lean-proof-review` (per-module review).
+
+## See also
+
+- [`references/scripts/tautology_scan.py`](./references/scripts/tautology_scan.py) - P3 spec-baking and trivial-proof scanner.
+- [`references/scripts/deep_audit_census.py`](./references/scripts/deep_audit_census.py) - P4 inhabitation and P5 type-continuity census scanner.

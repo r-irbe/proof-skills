@@ -1,11 +1,11 @@
 ---
 name: "applied-engineering-disciplines"
 description: |
-  USE FOR: Engineering disciplines relevant to formal mathematical systems — control theory, systems engineering, reliability engineering, software verification, signal processing, and testing methodology. Use for bridging mathematical foundations to engineering practice, and for formalizing engineering requirements in Lean 4.
-  DO NOT USE FOR: formal verification in Lean (use @lean-ai-formalization); security-specific engineering (use @applied-data-information-security); strategy analysis (use @applied-strategy-analysis).
-  TRIGGERS: control theory, systems engineering, reliability engineering, software verification, engineering discipline.
+  USE FOR: Engineering disciplines relevant to formal mathematical systems: control theory, systems engineering.
+  DO NOT USE FOR: formal verification in Lean (@lean-ai-formalization).
+  TRIGGERS: control theory, systems engineering, reliability engineering.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,8 +25,11 @@ Engineering methods and frameworks that connect formal mathematics to practical 
 
 ## Routing
 
-- **USE FOR:** Engineering disciplines relevant to formal mathematical systems — control theory, systems engineering, reliability engineering, software verification, signal processing, and testing methodology. Use for bridging mathematical foundations to engineering practice, and for formalizing engineering requirements in Lean 4.
-- **DO NOT USE FOR:** formal verification in Lean (use @lean-ai-formalization); security-specific engineering (use @applied-data-information-security); strategy analysis (use @applied-strategy-analysis).
+- **USE FOR:** Engineering disciplines relevant to formal mathematical systems — control theory, systems engineering, reliability engineering, software
+  verification, signal processing, and testing methodology. Use for bridging mathematical foundations to engineering practice, and for formalizing
+  engineering requirements in Lean 4.
+- **DO NOT USE FOR:** formal verification in Lean (use @lean-ai-formalization); security-specific engineering (use @applied-data-information-security);
+  strategy analysis (use @applied-strategy-analysis).
 - **TRIGGERS:** control theory, systems engineering, reliability engineering, software verification, engineering discipline.
 
 ## Workflow
@@ -34,7 +37,8 @@ Engineering methods and frameworks that connect formal mathematics to practical 
 1. Identify the discipline match: control theory, systems engineering, reliability engineering, or software verification.
 2. Pick the relevant section of the body; trace the chosen methodology end-to-end.
 3. Produce the engineering artifact (control law, FMEA, reliability budget) in the form the caller needs.
-4. Hand off: to `@lean-ai-formalization` for formal proofs of correctness, to `@math-nonlinear-dynamics` if control-theoretic dynamics dominate, to `@lean-zettelkasten`.
+4. Hand off: to `@lean-ai-formalization` for formal proofs of correctness, to `@math-nonlinear-dynamics` if control-theoretic dynamics dominate, to
+   `@lean-zettelkasten`.
 
 ## Recovery & STOP
 
@@ -71,7 +75,8 @@ the dispatch contract and the parts index.
 
 ## See also
 
-- [`../../references/applied-engineering-disciplines-handbook.md`](../../references/applied-engineering-disciplines-handbook.md) — Full handbook (extracted from this skill)
+- [`../../references/applied-engineering-disciplines-handbook.md`](../../references/applied-engineering-disciplines-handbook.md) — Full handbook (extracted
+  from this skill)
 - [`../lean-ai-formalization/SKILL.md`](../lean-ai-formalization/SKILL.md) — Successor
 - [`../lean-security-formalization/SKILL.md`](../lean-security-formalization/SKILL.md) — Successor
 - [`../math-nonlinear-dynamics/SKILL.md`](../math-nonlinear-dynamics/SKILL.md) — Successor

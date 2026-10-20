@@ -1,11 +1,11 @@
 ---
 name: "applied-intelligence-analysis"
 description: |
-  USE FOR: Intelligence analysis methodology — structured analytic techniques (SATs), evidence reasoning, hypothesis generation, cognitive bias mitigation, competitive intelligence, and their formalization. Use for analysis of competing hypotheses (ACH), link analysis, timeline reconstruction, source reliability assessment, and connections to quality gates, provenance, and multi-agent trust.
-  DO NOT USE FOR: formalising intelligence reasoning in Lean (use @lean-applied-reasoning); strategy analysis (use @applied-strategy-analysis); legal reasoning (use @applied-legal-reasoning).
-  TRIGGERS: structured analytic techniques, SATs, evidence reasoning, hypothesis generation, cognitive bias, intelligence analysis, competing hypotheses.
+  USE FOR: Intelligence analysis methodology: structured analytic techniques (SATs), evidence reasoning.
+  DO NOT USE FOR: formalising intelligence reasoning in Lean (@lean-applied-reasoning).
+  TRIGGERS: structured analytic techniques, SATs, evidence reasoning.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,8 +25,11 @@ Structured analytic techniques and evidence-based reasoning frameworks for intel
 
 ## Routing
 
-- **USE FOR:** Intelligence analysis methodology — structured analytic techniques (SATs), evidence reasoning, hypothesis generation, cognitive bias mitigation, competitive intelligence, and their formalization. Use for analysis of competing hypotheses (ACH), link analysis, timeline reconstruction, source reliability assessment, and connections to quality gates, provenance, and multi-agent trust.
-- **DO NOT USE FOR:** formalising intelligence reasoning in Lean (use @lean-applied-reasoning); strategy analysis (use @applied-strategy-analysis); legal reasoning (use @applied-legal-reasoning).
+- **USE FOR:** Intelligence analysis methodology — structured analytic techniques (SATs), evidence reasoning, hypothesis generation, cognitive bias
+  mitigation, competitive intelligence, and their formalization. Use for analysis of competing hypotheses (ACH), link analysis, timeline reconstruction,
+  source reliability assessment, and connections to quality gates, provenance, and multi-agent trust.
+- **DO NOT USE FOR:** formalising intelligence reasoning in Lean (use @lean-applied-reasoning); strategy analysis (use @applied-strategy-analysis); legal
+  reasoning (use @applied-legal-reasoning).
 - **TRIGGERS:** structured analytic techniques, SATs, evidence reasoning, hypothesis generation, cognitive bias, intelligence analysis, competing hypotheses.
 
 ## Workflow
@@ -71,7 +74,8 @@ the dispatch contract and the parts index.
 
 ## See also
 
-- [`../../references/applied-intelligence-analysis-handbook.md`](../../references/applied-intelligence-analysis-handbook.md) — Full handbook (extracted from this skill)
+- [`../../references/applied-intelligence-analysis-handbook.md`](../../references/applied-intelligence-analysis-handbook.md) — Full handbook (extracted
+  from this skill)
 - [`../lean-applied-reasoning/SKILL.md`](../lean-applied-reasoning/SKILL.md) — Successor
 - [`../applied-strategy-analysis/SKILL.md`](../applied-strategy-analysis/SKILL.md) — Successor
 - [`../lean-knowledge-formalization/SKILL.md`](../lean-knowledge-formalization/SKILL.md) — Successor

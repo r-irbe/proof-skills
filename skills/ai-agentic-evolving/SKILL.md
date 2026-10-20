@@ -1,11 +1,11 @@
 ---
 name: "ai-agentic-evolving"
 description: |
-  USE FOR: Agentic AI systems, multi-agent coordination, evolving agents, agent lifecycle management, emergent behavior, and trust dynamics in autonomous systems. Use for reasoning about agent architectures, communication protocols, coalition formation, reputation systems, and the mathematical foundations of agentic safety and multi-agent trust formalization.
-  DO NOT USE FOR: formal verification of those AI systems (use @lean-ai-formalization); high-stakes / verifiable AI mode (use @ai-high-stakes-verifiable); causal/deontic reasoning (use @ai-causal-deontic).
-  TRIGGERS: agentic AI, multi-agent, evolving agent, agent lifecycle, emergent behavior, trust dynamics, autonomous system.
+  USE FOR: Agentic AI systems, multi-agent coordination, evolving agents, agent lifecycle management, emergent behavior.
+  DO NOT USE FOR: formal verification of those AI systems (@lean-ai-formalization).
+  TRIGGERS: agentic AI, multi-agent, evolving agent, agent lifecycle.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,21 +25,27 @@ Mathematical and architectural foundations for autonomous agents, multi-agent sy
 
 ## Routing
 
-- **USE FOR:** Agentic AI systems, multi-agent coordination, evolving agents, agent lifecycle management, emergent behavior, and trust dynamics in autonomous systems. Use for reasoning about agent architectures, communication protocols, coalition formation, reputation systems, and the mathematical foundations of agentic safety and multi-agent trust formalization.
-- **DO NOT USE FOR:** formal verification of those AI systems (use @lean-ai-formalization); high-stakes / verifiable AI mode (use @ai-high-stakes-verifiable); causal/deontic reasoning (use @ai-causal-deontic).
+- **USE FOR:** Agentic AI systems, multi-agent coordination, evolving agents, agent lifecycle management, emergent behavior, and trust dynamics in
+  autonomous systems. Use for reasoning about agent architectures, communication protocols, coalition formation, reputation systems, and the mathematical
+  foundations of agentic safety and multi-agent trust formalization.
+- **DO NOT USE FOR:** formal verification of those AI systems (use @lean-ai-formalization); high-stakes / verifiable AI mode (use
+  @ai-high-stakes-verifiable); causal/deontic reasoning (use @ai-causal-deontic).
 - **TRIGGERS:** agentic AI, multi-agent, evolving agent, agent lifecycle, emergent behavior, trust dynamics, autonomous system.
 
 ## Workflow
 
-1. Frame the system: how many agents, what each agent optimises for, what coordination signal exists, and which lifecycle phase (spawn / coordinate / evolve / retire) the question is about.
+1. Frame the system: how many agents, what each agent optimises for, what coordination signal exists, and which lifecycle phase (spawn / coordinate /
+   evolve / retire) the question is about.
 2. Pick the matching theoretical lens from the body — emergence, multi-agent game theory, mechanism design, evolutionary dynamics, or trust dynamics.
 3. Run the reasoning at the methodological level; do not attempt formal proofs here. Belief floor 0.90 before publishing.
-4. Hand off: to `@lean-ai-formalization` if a property needs Lean proof, to `@ai-high-stakes-verifiable` if the agents are safety-critical, to `@lean-zettelkasten` for the durable note.
+4. Hand off: to `@lean-ai-formalization` if a property needs Lean proof, to `@ai-high-stakes-verifiable` if the agents are safety-critical, to
+   `@lean-zettelkasten` for the durable note.
 
 ## Recovery & STOP
 
 - STOP if the question is about formal AI verification rather than agentic dynamics — hand to `@lean-ai-formalization`.
-- STOP if the system collapses to single-agent — switch to whichever non-agentic AI skill matches (e.g., `@ai-symbolic-neuro` for KR, `@ai-commonsense-reasoning` for reasoning).
+- STOP if the system collapses to single-agent — switch to whichever non-agentic AI skill matches (e.g., `@ai-symbolic-neuro` for KR,
+  `@ai-commonsense-reasoning` for reasoning).
 - STOP if emergence analysis would require empirical simulation rather than methodological reasoning — escalate to `@research-council`.
 
 ## Handoffs

@@ -1,11 +1,11 @@
 ---
 name: "lean-retroactive-audit"
 description: |
-  USE FOR: Apply the review council system retroactively to an existing large Lean 4 project. Use when onboarding an existing codebase to the council review framework. Covers module discovery, dependency analysis, incremental audit scheduling, baseline establishment, gap analysis, and the catch-up RALPH cycle for bringing an existing project to full review coverage.
-  DO NOT USE FOR: building a new council (use @lean-review-council); single proof review (use @lean-proof-review); RETRO methodology (use @lean-retro-methodology).
-  TRIGGERS: retroactive audit, council onboarding, existing project audit, legacy Lean review.
+  USE FOR: Apply the review council system retroactively to an existing large Lean 4 project.
+  DO NOT USE FOR: building a new council (@lean-review-council).
+  TRIGGERS: retroactive audit, council onboarding, existing project audit.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -19,14 +19,18 @@ metadata:
 
 # Lean 4 Retroactive Audit
 
-Systematic methodology for applying the 5-member review council, Zettelkasten, and specification framework to a large existing Lean 4 codebase that was developed before these systems were in place.
+Systematic methodology for applying the 5-member review council, Zettelkasten, and specification framework to a large existing Lean 4 codebase that was
+developed before these systems were in place.
 
 ---
 
 ## Routing
 
-- **USE FOR:** Apply the review council system retroactively to an existing large Lean 4 project. Use when onboarding an existing codebase to the council review framework. Covers module discovery, dependency analysis, incremental audit scheduling, baseline establishment, gap analysis, and the catch-up RALPH cycle for bringing an existing project to full review coverage.
-- **DO NOT USE FOR:** building a new council (use @lean-review-council); single proof review (use @lean-proof-review); RETRO methodology (use @lean-retro-methodology).
+- **USE FOR:** Apply the review council system retroactively to an existing large Lean 4 project. Use when onboarding an existing codebase to the council
+  review framework. Covers module discovery, dependency analysis, incremental audit scheduling, baseline establishment, gap analysis, and the catch-up
+  RALPH cycle for bringing an existing project to full review coverage.
+- **DO NOT USE FOR:** building a new council (use @lean-review-council); single proof review (use @lean-proof-review); RETRO methodology (use
+  @lean-retro-methodology).
 - **TRIGGERS:** retroactive audit, council onboarding, existing project audit, legacy Lean review.
 
 ## Workflow

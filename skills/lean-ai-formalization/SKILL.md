@@ -1,11 +1,11 @@
 ---
 name: "lean-ai-formalization"
 description: |
-  USE FOR: Formal verification of AI systems — agentic AI safety, alignment, high-stakes AI, evolving agents, neural network properties, and AI governance constraints. Use when formalizing safety envelopes, trust dynamics, multi-agent composition, AI act compliance, reward specifications, alignment properties, or any AI system property that must be formally verified.
-  DO NOT USE FOR: AI methodology itself (use @ai-high-stakes-verifiable or @ai-agentic-evolving); security-specific formalisation (use @lean-security-formalization); knowledge formalisation (use @lean-knowledge-formalization).
-  TRIGGERS: AI formalization, agentic safety, alignment proof, high-stakes AI, neural network property, AI governance.
+  USE FOR: Formal verification of AI systems: agentic AI safety, alignment, high-stakes AI, evolving agents.
+  DO NOT USE FOR: AI methodology itself (@ai-high-stakes-verifiable).
+  TRIGGERS: AI formalization, agentic safety, alignment proof.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,8 +25,11 @@ Guide to formally verifying properties of AI systems, from safety envelopes to a
 
 ## Routing
 
-- **USE FOR:** Formal verification of AI systems — agentic AI safety, alignment, high-stakes AI, evolving agents, neural network properties, and AI governance constraints. Use when formalizing safety envelopes, trust dynamics, multi-agent composition, AI act compliance, reward specifications, alignment properties, or any AI system property that must be formally verified.
-- **DO NOT USE FOR:** AI methodology itself (use @ai-high-stakes-verifiable or @ai-agentic-evolving); security-specific formalisation (use @lean-security-formalization); knowledge formalisation (use @lean-knowledge-formalization).
+- **USE FOR:** Formal verification of AI systems — agentic AI safety, alignment, high-stakes AI, evolving agents, neural network properties, and AI
+  governance constraints. Use when formalizing safety envelopes, trust dynamics, multi-agent composition, AI act compliance, reward specifications,
+  alignment properties, or any AI system property that must be formally verified.
+- **DO NOT USE FOR:** AI methodology itself (use @ai-high-stakes-verifiable or @ai-agentic-evolving); security-specific formalisation (use
+  @lean-security-formalization); knowledge formalisation (use @lean-knowledge-formalization).
 - **TRIGGERS:** AI formalization, agentic safety, alignment proof, high-stakes AI, neural network property, AI governance.
 
 ## Workflow

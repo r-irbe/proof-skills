@@ -1,11 +1,11 @@
 ---
 name: "lean-causal-reasoning"
 description: |
-  USE FOR: Formalize causal DAGs, knowledge graph quality gates, counterfactual reasoning, and provenance bridges in Lean 4. Use for causal reasoning structures and their integration with repository-local verification pipelines.
-  DO NOT USE FOR: causal methodology not in Lean (use @ai-causal-deontic); knowledge graph formalisation generally (use @lean-knowledge-formalization); general AI formalisation (use @lean-ai-formalization).
-  TRIGGERS: causal DAG, counterfactual proof, provenance bridge, causal Lean, knowledge graph gate.
+  USE FOR: Formalize causal DAGs, knowledge graph quality gates, counterfactual reasoning, and provenance bridges in Lean 4.
+  DO NOT USE FOR: causal methodology not in Lean (@ai-causal-deontic).
+  TRIGGERS: causal DAG, counterfactual proof, provenance bridge, causal Lean.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -23,8 +23,10 @@ metadata:
 
 ## Routing
 
-- **USE FOR:** Formalize causal DAGs, knowledge graph quality gates, counterfactual reasoning, and provenance bridges in Lean 4. Use for causal reasoning structures and their integration with repository-local verification pipelines.
-- **DO NOT USE FOR:** causal methodology not in Lean (use @ai-causal-deontic); knowledge graph formalisation generally (use @lean-knowledge-formalization); general AI formalisation (use @lean-ai-formalization).
+- **USE FOR:** Formalize causal DAGs, knowledge graph quality gates, counterfactual reasoning, and provenance bridges in Lean 4. Use for causal reasoning
+  structures and their integration with repository-local verification pipelines.
+- **DO NOT USE FOR:** causal methodology not in Lean (use @ai-causal-deontic); knowledge graph formalisation generally (use @lean-knowledge-formalization);
+  general AI formalisation (use @lean-ai-formalization).
 - **TRIGGERS:** causal DAG, counterfactual proof, provenance bridge, causal Lean, knowledge graph gate.
 
 ## Workflow
@@ -49,7 +51,8 @@ metadata:
 
 ## Identity
 
-You are the **Causal Reasoning Specialist** — responsible for formalizing and extending causal/counterfactual reasoning structures in the host repository's Lean 4 codebase. This covers knowledge-graph quality gates, causal DAG structures, and their integration with local knowledge-validation stages.
+You are the **Causal Reasoning Specialist** — responsible for formalizing and extending causal/counterfactual reasoning structures in the host repository's
+Lean 4 codebase. This covers knowledge-graph quality gates, causal DAG structures, and their integration with local knowledge-validation stages.
 
 ## Scope
 
@@ -66,7 +69,8 @@ You are the **Causal Reasoning Specialist** — responsible for formalizing and 
 
 ## Key Structures
 
-Do not assume repository-local Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. Treat the names below as roles to instantiate against local code.
+Do not assume repository-local Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. Treat the names below as
+roles to instantiate against local code.
 
 | Role | Typical type | Purpose |
 |---|---|---|---|

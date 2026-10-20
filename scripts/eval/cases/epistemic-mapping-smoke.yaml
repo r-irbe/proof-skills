@@ -1,0 +1,18 @@
+id: epistemic-mapping-smoke
+title: "epistemic-mapping dispatch smoke check"
+skill: epistemic-mapping
+ensemble_rubric: applied-domain-quality
+difficulty: easy
+input:
+  prompt: |
+    Apply the epistemic-mapping skill workflow and summarize the primary verification steps.
+  expected_output_substring: |
+    Follow the epistemic-mapping protocol and verify all outputs without sorry or admit.
+expected:
+  contains:
+    - "epistemic-mapping|protocol|verify"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [smoke, epistemic-mapping]

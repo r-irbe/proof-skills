@@ -1,11 +1,11 @@
 ---
 name: "lean-proof-refactor"
 description: |
-  USE FOR: slimming long proofs after they are proven (decomposition into reusable lemmas), adjudicating long-proof findings (cut vs considered-negative), extracting shared helper lemmas without regressions, running a proof-refactor campaign with quality gates.
-  DO NOT USE FOR: reviewing proofs for correctness (use @lean-proof-review); writing a first proof (use @lean-proof); finding tautology/vacuity candidates (use @lean-tautology-triage); project-wide QA orchestration (use @lean-quality-engine).
-  TRIGGERS: long-proof, decompose proof, slim proof, helper-lemma extraction, proof is too long, proof_quality, refactor campaign.
+  USE FOR: slimming long proofs after they are proven (decomposition into reusable lemmas).
+  DO NOT USE FOR: reviewing proofs for correctness (@lean-proof-review).
+  TRIGGERS: long-proof, decompose proof, slim proof, helper-lemma extraction.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["skill:lean-proof", "skill:lean-quality-engine"]
@@ -57,16 +57,22 @@ into short callers plus named, reusable lemmas - without regressions.
 
 ## AltProof 3-Tier Tactic Slimming & Advisor
 
-When refactoring verbose algebraic, big-operator (`Finset.sum`), or finite-simplex proofs, combine helper-lemma extraction with the 3-tier AltProof pipeline (template: [Template_AltProofTactics.md](../../templates/Template_AltProofTactics.md)):
+When refactoring verbose algebraic, big-operator (`Finset.sum`), or finite-simplex proofs, combine helper-lemma extraction with the 3-tier AltProof
+pipeline (template: [Template_AltProofTactics.md](../../templates/Template_AltProofTactics.md)):
 
 1. **Tier 1 (Live Lean 4 Meta-Tactics)**:
-   - `sum_congr_ring`: normalizes `Finset.sum` linearity (`sum_add_distrib`, `sum_sub_distrib`, `mul_sum`, `sum_mul`, `sum_neg_distrib`) and closes equalities of sums by pointwise `ring` inside `Finset.sum_congr rfl`.
-   - `finset_mono`: discharges `Finset.sum s f <= Finset.sum s g` (including nested double sums) via `Finset.sum_le_sum`, automatic specialization of universally quantified context hypotheses (`h : forall i, ...`), and ordered-ring monotonicity closers (`gcongr`, `linarith`, `nlinarith`, `positivity`, `omega`).
+   - `sum_congr_ring`: normalizes `Finset.sum` linearity (`sum_add_distrib`, `sum_sub_distrib`, `mul_sum`, `sum_mul`, `sum_neg_distrib`) and closes
+     equalities of sums by pointwise `ring` inside `Finset.sum_congr rfl`.
+   - `finset_mono`: discharges `Finset.sum s f <= Finset.sum s g` (including nested double sums) via `Finset.sum_le_sum`, automatic specialization of
+     universally quantified context hypotheses (`h : forall i, ...`), and ordered-ring monotonicity closers (`gcongr`, `linarith`, `nlinarith`,
+     `positivity`, `omega`).
    - `finset_nonneg`: discharges `0 <= Finset.sum s f` (single or nested sums) via `Finset.sum_nonneg` + `positivity` / `linarith` / `nlinarith` / `omega`.
    - `wellformed_tac` & `channel_fields`: shape-driven structural closers for finite-simplex and Markov-channel obligations over `Fin 1..8`.
-   - `elegance?` / `alt_proof`: speculative search (`withoutModifyingState`) across 13 ranked closers, reporting the highest-ranked closer via `Try this: <tactic>`.
+   - `elegance?` / `alt_proof`: speculative search (`withoutModifyingState`) across 13 ranked closers, reporting the highest-ranked closer via `Try this:
+     <tactic>`.
 2. **Tier 2 (MCP Goal Advisor & Two-Axis Scorer)**:
-   - Query `lean_goal(file, line, target="altproof")` or `lean_metrics(file, action="altproof", goal=..., proof=...)` to obtain ranked tactic recommendations, verbose-lean4 legibility scores (`verbose_score`), and two-axis elegance/kernel-cost dominance verdicts.
+   - Query `lean_goal(file, line, target="altproof")` or `lean_metrics(file, action="altproof", goal=..., proof=...)` to obtain ranked tactic
+     recommendations, verbose-lean4 legibility scores (`verbose_score`), and two-axis elegance/kernel-cost dominance verdicts.
    - Offline CLI fallback: `python3 scripts/lean/altproof_tactic_advisor.py --goal "<goal>" --proof "<block>"`.
 
 ## Pitfalls
@@ -84,7 +90,8 @@ When refactoring verbose algebraic, big-operator (`Finset.sum`), or finite-simpl
 
 ## Recovery
 
-- If a candidate helper extraction fails to compile or increases total proof complexity without reuse, revert the cut and record a `CONSIDERED-NEGATIVE` entry in the batch ledger.
+- If a candidate helper extraction fails to compile or increases total proof complexity without reuse, revert the cut and record a `CONSIDERED-NEGATIVE`
+  entry in the batch ledger.
 - On transient stale-`.olean` errors in shared build directories, retry the targeted build once before diagnosing a proof regression.
 
 ## Handoffs

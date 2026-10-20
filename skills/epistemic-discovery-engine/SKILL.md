@@ -1,11 +1,11 @@
 ---
 name: "epistemic-discovery-engine"
 description: |
-  USE FOR: epistemic discovery — picking a discovery mode (Census / Dependency / Literature / Cross-domain / Community), running an Unknown-Unknown (UU) hunting protocol at the right depth (Shallow / Standard / Deep / Exhaustive), emitting census + probe + trigger reports, anti-stagnation mechanisms, project relevance scoring.
-  DO NOT USE FOR: a known research question (use @lean-research); council convocation on a known artifact (use @lean-review-council or @research-council); synthesis emission of known content (use @research-synthesis-engine).
-  TRIGGERS: discovery, unknown unknown, UU hunt, epistemic discovery, census, dependency probe, cross-domain probe, community probe, anti-stagnation.
+  USE FOR: epistemic discovery: picking a discovery mode (Census / Dependency / Literature / Cross-domain / Community).
+  DO NOT USE FOR: a known research question (@lean-research).
+  TRIGGERS: discovery, unknown unknown, UU hunt, epistemic discovery, census.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:research-council', 'skill:lean-research']
@@ -19,7 +19,8 @@ metadata:
 
 # Epistemic Discovery Engine — Active UU Hunting
 
-The Discovery Engine is the **operational arm** of epistemic-mapping. Where epistemic-mapping defines quadrants, scores, and transitions, the Discovery Engine executes the search protocols that keep the epistemic map current and the UU zone shrinking.
+The Discovery Engine is the **operational arm** of epistemic-mapping. Where epistemic-mapping defines quadrants, scores, and transitions, the Discovery
+Engine executes the search protocols that keep the epistemic map current and the UU zone shrinking.
 
 ```
 epistemic-mapping (the map) ←──updates──← epistemic-discovery-engine (the explorer)
@@ -30,9 +31,13 @@ research-council  (the strategists)  ←──feeds──← epistemic-discovery
 
 ## Routing
 
-- **USE FOR / DO NOT USE FOR / TRIGGERS** — see the `description` field in the YAML frontmatter above. Same dispatch contract is restated here for in-skill discovery.
-- **USE FOR:** epistemic discovery — picking a discovery mode (Census / Dependency / Literature / Cross-domain / Community), running an Unknown-Unknown (UU) hunting protocol at the right depth (Shallow / Standard / Deep / Exhaustive), emitting census + probe + trigger reports, anti-stagnation mechanisms, project relevance scoring.
-- **DO NOT USE FOR:** a known research question (use @lean-research); council convocation on a known artifact (use @lean-review-council or @research-council); synthesis emission of known content (use @research-synthesis-engine).
+- **USE FOR / DO NOT USE FOR / TRIGGERS** — see the `description` field in the YAML frontmatter above. Same dispatch contract is restated here for in-skill
+  discovery.
+- **USE FOR:** epistemic discovery — picking a discovery mode (Census / Dependency / Literature / Cross-domain / Community), running an Unknown-Unknown
+  (UU) hunting protocol at the right depth (Shallow / Standard / Deep / Exhaustive), emitting census + probe + trigger reports, anti-stagnation mechanisms,
+  project relevance scoring.
+- **DO NOT USE FOR:** a known research question (use @lean-research); council convocation on a known artifact (use @lean-review-council or
+  @research-council); synthesis emission of known content (use @research-synthesis-engine).
 - **TRIGGERS:** discovery, unknown unknown, UU hunt, epistemic discovery, census, dependency probe, cross-domain probe, community probe, anti-stagnation.
 
 ## Workflow
@@ -77,7 +82,8 @@ the dispatch contract and a parts index.
 
 ## See also
 
-- [`../../references/epistemic-discovery-engine-handbook.md`](../../references/epistemic-discovery-engine-handbook.md) — Full handbook (extracted from this skill)
+- [`../../references/epistemic-discovery-engine-handbook.md`](../../references/epistemic-discovery-engine-handbook.md) — Full handbook (extracted from this
+  skill)
 - [`../research-council/SKILL.md`](../research-council/SKILL.md) — Successor
 - [`../research-synthesis-engine/SKILL.md`](../research-synthesis-engine/SKILL.md) — Successor
 - [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) — Successor

@@ -1,11 +1,11 @@
 ---
 name: "lean-doc-improvement"
 description: |
-  USE FOR: Update academic papers, technical reports, and documentation based on results from Lean 4 formalization. Use when formal verification reveals paper imprecisions, missing hypotheses, sharper bounds, new insights, or when metrics need synchronization. Covers paper appendix updates, verification tables, erratum entries, insight propagation, and metric synchronization between Lean and documents.
-  DO NOT USE FOR: extracting requirements from papers (use @lean-doc-requirements); blueprint generation (use @lean-blueprint); report compilation (use @lean-report).
-  TRIGGERS: update paper, doc improvement, paper revision, documentation update from Lean, doc-feedback consumer.
+  USE FOR: Update academic papers, technical reports, and documentation based on results from Lean 4 formalization.
+  DO NOT USE FOR: extracting requirements from papers (@lean-doc-requirements).
+  TRIGGERS: update paper, doc improvement, paper revision.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,8 +25,11 @@ Systematically update documents when Lean formalization produces new insights, c
 
 ## Routing
 
-- **USE FOR:** Update academic papers, technical reports, and documentation based on results from Lean 4 formalization. Use when formal verification reveals paper imprecisions, missing hypotheses, sharper bounds, new insights, or when metrics need synchronization. Covers paper appendix updates, verification tables, erratum entries, insight propagation, and metric synchronization between Lean and documents.
-- **DO NOT USE FOR:** extracting requirements from papers (use @lean-doc-requirements); blueprint generation (use @lean-blueprint); report compilation (use @lean-report).
+- **USE FOR:** Update academic papers, technical reports, and documentation based on results from Lean 4 formalization. Use when formal verification
+  reveals paper imprecisions, missing hypotheses, sharper bounds, new insights, or when metrics need synchronization. Covers paper appendix updates,
+  verification tables, erratum entries, insight propagation, and metric synchronization between Lean and documents.
+- **DO NOT USE FOR:** extracting requirements from papers (use @lean-doc-requirements); blueprint generation (use @lean-blueprint); report compilation (use
+  @lean-report).
 - **TRIGGERS:** update paper, doc improvement, paper revision, documentation update from Lean, doc-feedback consumer.
 
 ## Workflow

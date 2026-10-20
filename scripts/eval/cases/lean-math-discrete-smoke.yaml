@@ -1,0 +1,18 @@
+id: lean-math-discrete-smoke
+title: "lean-math-discrete dispatch smoke check"
+skill: lean-math-discrete
+ensemble_rubric: applied-domain-quality
+difficulty: easy
+input:
+  prompt: |
+    Apply the lean-math-discrete skill workflow and summarize the primary verification steps.
+  expected_output_substring: |
+    Follow the lean-math-discrete protocol and verify all outputs without sorry or admit.
+expected:
+  contains:
+    - "lean-math-discrete|protocol|verify"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [smoke, lean-math-discrete]

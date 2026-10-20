@@ -1,11 +1,11 @@
 ---
 name: "lean-upstream-porting"
 description: |
-  USE FOR: porting corpus lemmas or modules to mathlib/stdlib upstream - branch hygiene, PR body conventions, AI-assistance disclosure, module-system pitfalls, claim-approval flow, PR lifecycle management via REST.
-  DO NOT USE FOR: the generic PR mechanics (open/label/bors/maintainer-merge - use @lean-pr); writing the Lean proofs themselves (use @lean-proof); refactoring within the corpus (use @lean-proof-refactor); toolchain setup (use @lean-setup).
-  TRIGGERS: upstream, mathlib PR, port lemma, PR body, AI disclosure, draft PR, branch hygiene, squash merge.
+  USE FOR: porting corpus lemmas or modules to mathlib/stdlib upstream: branch hygiene, PR body conventions.
+  DO NOT USE FOR: the generic PR mechanics (open/label/bors/maintainer-merge - use @lean-pr).
+  TRIGGERS: upstream, mathlib PR, port lemma, PR body, AI disclosure.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["skill:lean-proof", "skill:lean-proof-refactor", "skill:lean-pr"]
@@ -73,8 +73,10 @@ review surface intact.
 
 ## Recovery
 
-- If `gh pr edit` silently drops body updates on the GraphQL path, read back the PR body and apply the update via `gh api -X PATCH repos/<owner>/<repo>/pulls/<n> -F body=@<body-file>`.
-- If upstream module-system visibility (`public import` or sealed instances) breaks a corpus proof, isolate and repair the proof against upstream master via `@lean-proof` before updating the PR.
+- If `gh pr edit` silently drops body updates on the GraphQL path, read back the PR body and apply the update via `gh api -X PATCH
+  repos/<owner>/<repo>/pulls/<n> -F body=@<body-file>`.
+- If upstream module-system visibility (`public import` or sealed instances) breaks a corpus proof, isolate and repair the proof against upstream master
+  via `@lean-proof` before updating the PR.
 
 ## Handoffs
 

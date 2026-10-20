@@ -1,9 +1,9 @@
 ---
 name: "lean-formalization-breakdown"
 description: |
-  USE FOR: multi-wave architectural deconstruction of monumental Lean 4 codebases, static/kernel censuses, DAG topology & depth analysis, landmark theorem extraction, mathematical engine decomposition, substrate mapping, and dual-kernel verification audits.
-  DO NOT USE FOR: authoring new Lean proofs (use @lean-proof), simple typo fixes (use @lean-doc-improvement).
-  TRIGGERS: formalization-breakdown, proof-breakdown, census, landmark-dag, flt-breakdown, nse-breakdown, blowup-breakdown, lean-breakdown.
+  USE FOR: architectural deconstruction of Lean 4 codebases, censuses, DAG analysis, and verification audits.
+  DO NOT USE FOR: authoring new Lean proofs (@lean-proof), simple typo fixes (@lean-doc-improvement).
+  TRIGGERS: formalization-breakdown, proof-breakdown, census, landmark-dag, lean-breakdown.
 tier: "hot"
 runtime_targets: [copilot-cli, claude-code]
 dispatch_targets: []
@@ -40,13 +40,18 @@ metadata:
 
 ## Behavioural Rules (G-*)
 
-- **G-1** (MUST): Always run an automated static census (`scripts/lean/formalization_breakdown.py`) before formulating qualitative claims or estimates. Never cite declaration counts from memory or stale documentation.
-- **G-2** (MUST): Verify strict Directed Acyclic Graph (DAG) topology. Report cycle violations immediately as hard blockers. Measure topological depth and identify the critical dependency path.
-- **G-3** (MUST): Audit the complete axiom profile. Implementation modules must have zero `sorry` and rely exclusively on foundational Lean 4 axioms (`propext`, `Quot.sound`, `Classical.choice`). Any custom axiom must be flagged.
-- **G-4** (MUST): Formulate the mathematical proof engine in a clear multi-stage architecture (e.g., Incompressible coordinate deformation -> Anisotropic packet scaling -> BKM logarithmic Gronwall reduction).
+- **G-1** (MUST): Always run an automated static census (`scripts/lean/formalization_breakdown.py`) before formulating qualitative claims or estimates.
+  Never cite declaration counts from memory or stale documentation.
+- **G-2** (MUST): Verify strict Directed Acyclic Graph (DAG) topology. Report cycle violations immediately as hard blockers. Measure topological depth and
+  identify the critical dependency path.
+- **G-3** (MUST): Audit the complete axiom profile. Implementation modules must have zero `sorry` and rely exclusively on foundational Lean 4 axioms
+  (`propext`, `Quot.sound`, `Classical.choice`). Any custom axiom must be flagged.
+- **G-4** (MUST): Formulate the mathematical proof engine in a clear multi-stage architecture (e.g., Incompressible coordinate deformation -> Anisotropic
+  packet scaling -> BKM logarithmic Gronwall reduction).
 - **G-5** (MUST): Map extracted substrates into downstream modules using standardized proof templates and domain substitution tables (`subst_table.json`).
 - **G-6** (MUST): Generate dual-kernel verification contracts and automated pytest / shell test gates for every transferred substrate.
-- **G-7** (MUST): Preserve strict 7-bit ASCII throughout all generated documentation and markdown plans (INV-001). Mathematical symbols in markdown must use standard LaTeX math syntax (`$ ... $` or `$$ ... $$`).
+- **G-7** (MUST): Preserve strict 7-bit ASCII throughout all generated documentation and markdown plans (INV-001). Mathematical symbols in markdown must
+  use standard LaTeX math syntax (`$ ... $` or `$$ ... $$`).
 - **G-8** (MUST): Resolve and verify all cited file paths against the physical filesystem before citing them (AOR-2 / INV-014).
 
 ## Workflow (8-Wave Deconstruction)
@@ -132,5 +137,6 @@ python3 scripts/lean/formalization_breakdown.py <path/to/formalization> --format
 ## Handoffs
 
 - **Predecessors**: `agent:gateway`, `skill:lean-blueprint`
-- **Successors**: `skill:lean-pedagogical-exposition` (human-readable math and pedagogical synthesis), `skill:lean-zettelkasten` (knowledge graph storage), `skill:lean-enforcement` (CI gate enforcement).
+- **Successors**: `skill:lean-pedagogical-exposition` (human-readable math and pedagogical synthesis), `skill:lean-zettelkasten` (knowledge graph storage),
+  `skill:lean-enforcement` (CI gate enforcement).
 - **Source Guide**: [`references/formalization_breakdown_guide.md`](../../references/formalization_breakdown_guide.md)

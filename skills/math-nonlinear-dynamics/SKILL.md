@@ -1,11 +1,11 @@
 ---
 name: "math-nonlinear-dynamics"
 description: |
-  USE FOR: General nonlinear dynamics, chaos theory, bifurcation analysis, catastrophe theory, attractor geometry, Lyapunov methods, phase portraits, and control-theoretic stability. Use for any mathematical reasoning about dynamical systems BEFORE or BEYOND Lean formalization. Covers theory, intuition, calculation techniques, and connections to phase portraits, catastrophe models, and governance dynamics.
-  DO NOT USE FOR: Lean proofs in this domain (use @lean-math-dynamical); optimization theory (use @math-optimization-game); topology methods (use @math-topology-analysis).
-  TRIGGERS: nonlinear dynamics, chaos theory, bifurcation, catastrophe theory, attractor, Lyapunov, phase portrait.
+  USE FOR: General nonlinear dynamics, chaos theory, bifurcation analysis, catastrophe theory, attractor geometry.
+  DO NOT USE FOR: Lean proofs in this domain (@lean-math-dynamical).
+  TRIGGERS: nonlinear dynamics, chaos theory, bifurcation.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -19,14 +19,18 @@ metadata:
 
 # General Nonlinear Dynamics & Catastrophe Theory
 
-Comprehensive mathematical methodology for nonlinear dynamics — the theoretical backbone of phase portraits, catastrophe models, Lyapunov stability, and governance convergence modules.
+Comprehensive mathematical methodology for nonlinear dynamics — the theoretical backbone of phase portraits, catastrophe models, Lyapunov stability, and
+governance convergence modules.
 
 ---
 
 ## Routing
 
-- **USE FOR:** General nonlinear dynamics, chaos theory, bifurcation analysis, catastrophe theory, attractor geometry, Lyapunov methods, phase portraits, and control-theoretic stability. Use for any mathematical reasoning about dynamical systems BEFORE or BEYOND Lean formalization. Covers theory, intuition, calculation techniques, and connections to phase portraits, catastrophe models, and governance dynamics.
-- **DO NOT USE FOR:** Lean proofs in this domain (use @lean-math-dynamical); optimization theory (use @math-optimization-game); topology methods (use @math-topology-analysis).
+- **USE FOR:** General nonlinear dynamics, chaos theory, bifurcation analysis, catastrophe theory, attractor geometry, Lyapunov methods, phase portraits,
+  and control-theoretic stability. Use for any mathematical reasoning about dynamical systems BEFORE or BEYOND Lean formalization. Covers theory,
+  intuition, calculation techniques, and connections to phase portraits, catastrophe models, and governance dynamics.
+- **DO NOT USE FOR:** Lean proofs in this domain (use @lean-math-dynamical); optimization theory (use @math-optimization-game); topology methods (use
+  @math-topology-analysis).
 - **TRIGGERS:** nonlinear dynamics, chaos theory, bifurcation, catastrophe theory, attractor, Lyapunov, phase portrait.
 
 ## Workflow

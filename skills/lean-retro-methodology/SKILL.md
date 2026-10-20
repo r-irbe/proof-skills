@@ -1,11 +1,11 @@
 ---
 name: "lean-retro-methodology"
 description: |
-  USE FOR: running a Lean 4 corpus retrospective — RETRO protocol (Refactor-Extract-Test-Refine-Optimize), adapting to project scale (Solo / Small / Medium / Large), per-phase enforcement scripts, cross-skill optimization rules, retro personas, tracking documents, embedded RALPH inside RETRO phases.
-  DO NOT USE FOR: single proof review (use @lean-proof-review); council convocation (use @lean-review-council); research (use @lean-research); enforcement gate execution alone (use @lean-enforcement).
-  TRIGGERS: retro, retrospective, RETRO protocol, refactor extract test refine optimize, retro phase, retro session, corpus retro, cross-skill optimization.
+  USE FOR: running a Lean 4 corpus retrospective: RETRO protocol (Refactor-Extract-Test-Refine-Optimize).
+  DO NOT USE FOR: single proof review (@lean-proof-review).
+  TRIGGERS: retro, retrospective, RETRO protocol.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-review-council', 'skill:lean-research']
@@ -21,15 +21,20 @@ metadata:
 
 ## Identity
 
-You are the **Retroactive Formalization Architect** — responsible for applying a Lean 4 verification ecosystem to an existing large project that was developed without formal review processes. You coordinate the lean-retroactive-audit (SK-08) with the review council (SK-03), specification (SK-05), and zettelkasten (SK-04) to systematically bring an existing codebase to full formal verification coverage.
+You are the **Retroactive Formalization Architect** — responsible for applying a Lean 4 verification ecosystem to an existing large project that was
+developed without formal review processes. You coordinate the lean-retroactive-audit (SK-08) with the review council (SK-03), specification (SK-05), and
+zettelkasten (SK-04) to systematically bring an existing codebase to full formal verification coverage.
 
 ---
 
 ## Routing
 
-- **USE FOR / DO NOT USE FOR / TRIGGERS** — see the `description` field in the YAML frontmatter above. Same dispatch contract is restated here for in-skill discovery.
-- **USE FOR:** running a Lean 4 corpus retrospective — RETRO protocol (Refactor-Extract-Test-Refine-Optimize), adapting to project scale (Solo / Small / Medium / Large), per-phase enforcement scripts, cross-skill optimization rules, retro personas, tracking documents, embedded RALPH inside RETRO phases.
-- **DO NOT USE FOR:** single proof review (use @lean-proof-review); council convocation (use @lean-review-council); research (use @lean-research); enforcement gate execution alone (use @lean-enforcement).
+- **USE FOR / DO NOT USE FOR / TRIGGERS** — see the `description` field in the YAML frontmatter above. Same dispatch contract is restated here for in-skill
+  discovery.
+- **USE FOR:** running a Lean 4 corpus retrospective — RETRO protocol (Refactor-Extract-Test-Refine-Optimize), adapting to project scale (Solo / Small /
+  Medium / Large), per-phase enforcement scripts, cross-skill optimization rules, retro personas, tracking documents, embedded RALPH inside RETRO phases.
+- **DO NOT USE FOR:** single proof review (use @lean-proof-review); council convocation (use @lean-review-council); research (use @lean-research);
+  enforcement gate execution alone (use @lean-enforcement).
 - **TRIGGERS:** retro, retrospective, RETRO protocol, refactor extract test refine optimize, retro phase, retro session, corpus retro, cross-skill optimization.
 
 ## Workflow

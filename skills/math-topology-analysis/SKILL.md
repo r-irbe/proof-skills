@@ -1,11 +1,11 @@
 ---
 name: "math-topology-analysis"
 description: |
-  USE FOR: Point-set topology, functional analysis, real analysis, and topological methods for dynamical systems. Use for reasoning about continuity, compactness, fixed-point theorems, Banach spaces, metric spaces, convergence, and the topological foundations underlying Lyapunov stability, contraction mappings, and phase portrait analysis.
-  DO NOT USE FOR: Lean analysis proofs (use @lean-math-analysis); algebraic structures (use @math-algebra-category); measure theory (use @math-measure-probability).
-  TRIGGERS: point-set topology, functional analysis, real analysis, continuity, compactness, topological method.
+  USE FOR: Point-set topology, functional analysis, real analysis, and topological methods for dynamical systems.
+  DO NOT USE FOR: Lean analysis proofs (@lean-math-analysis).
+  TRIGGERS: point-set topology, functional analysis, real analysis.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,8 +25,11 @@ Topological and analytic foundations for dynamical systems, convergence proofs, 
 
 ## Routing
 
-- **USE FOR:** Point-set topology, functional analysis, real analysis, and topological methods for dynamical systems. Use for reasoning about continuity, compactness, fixed-point theorems, Banach spaces, metric spaces, convergence, and the topological foundations underlying Lyapunov stability, contraction mappings, and phase portrait analysis.
-- **DO NOT USE FOR:** Lean analysis proofs (use @lean-math-analysis); algebraic structures (use @math-algebra-category); measure theory (use @math-measure-probability).
+- **USE FOR:** Point-set topology, functional analysis, real analysis, and topological methods for dynamical systems. Use for reasoning about continuity,
+  compactness, fixed-point theorems, Banach spaces, metric spaces, convergence, and the topological foundations underlying Lyapunov stability, contraction
+  mappings, and phase portrait analysis.
+- **DO NOT USE FOR:** Lean analysis proofs (use @lean-math-analysis); algebraic structures (use @math-algebra-category); measure theory (use
+  @math-measure-probability).
 - **TRIGGERS:** point-set topology, functional analysis, real analysis, continuity, compactness, topological method.
 
 ## Workflow
@@ -199,7 +202,8 @@ Filter.Tendsto f F (nhds L) ↔ ∀ U ∈ nhds L, f⁻¹(U) ∈ F
 
 ## Part 6 — Host-Repository Lean Extension Points
 
-Do not assume repository-local Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. Map local modules by mathematical role:
+Do not assume repository-local Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. Map local modules by
+mathematical role:
 
 | Local extension point | Topological foundation | Typical structures |
 |---|---|---|

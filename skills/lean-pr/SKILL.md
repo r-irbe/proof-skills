@@ -1,11 +1,11 @@
 ---
 name: "lean-pr"
 description: |
-  USE FOR: opening, titling, or labelling a PR against any Lean ecosystem repo (`leanprover/lean4`, `leanprover-community/mathlib4`, Batteries, or downstream projects), pre-flight build and sorry checks, picking commit-message conventions, applying upstream labels, cross-linking dependent PRs.
-  DO NOT USE FOR: in-tree proof review (use @lean-proof-review), Mathlib PR-review checklists (use `references/upstream/mathlib4-review.md`), writing the actual proof (use @lean-proof), building the change locally (use @lean-build), minimising an upstream-bug repro (use @lean-mwe).
-  TRIGGERS: PR, pull request, "open a PR", changelog label, bors, maintainer-merge, `lake exe mk_all`, upstream filing, ready to merge.
+  USE FOR: opening, titling, or labelling a PR against any Lean ecosystem repo (`leanprover/lean4`.
+  DO NOT USE FOR: in-tree proof review (@lean-proof-review).
+  TRIGGERS: PR, pull request, "open a PR", changelog label, bors.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors:
@@ -33,17 +33,26 @@ metadata:
 
 ## Routing
 
-- **USE FOR:** any PR action against a Lean-ecosystem repo: branch-from-fork, title shaping (`<type>: <subject>` for Lean core, `<type>(<scope>): <subject>` for Mathlib), description authoring (first paragraph = changelog text), pre-flight validation (clean build, 0 sorry, 0 warnings, 0 debug probes), label selection per repo, running `lake exe mk_all` after Mathlib file renames, cross-linking dependent PRs via `- [ ] depends on: #XXXX`.
-- **DO NOT USE FOR:** in-tree proof review (`@lean-proof-review`); Mathlib-specific review checklists (`references/upstream/mathlib4-review.md`); writing or fixing the proof itself (`@lean-proof`); validating the build before pushing (`@lean-build`); creating a bug-report repro (`@lean-mwe`).
+- **USE FOR:** any PR action against a Lean-ecosystem repo: branch-from-fork, title shaping (`<type>: <subject>` for Lean core, `<type>(<scope>):
+  <subject>` for Mathlib), description authoring (first paragraph = changelog text), pre-flight validation (clean build, 0 sorry, 0 warnings, 0 debug
+  probes), label selection per repo, running `lake exe mk_all` after Mathlib file renames, cross-linking dependent PRs via `- [ ] depends on: #XXXX`.
+- **DO NOT USE FOR:** in-tree proof review (`@lean-proof-review`); Mathlib-specific review checklists (`references/upstream/mathlib4-review.md`); writing
+  or fixing the proof itself (`@lean-proof`); validating the build before pushing (`@lean-build`); creating a bug-report repro (`@lean-mwe`).
 - **TRIGGERS:** PR, pull request, "open a PR", changelog label, bors, `maintainer-merge`, `lake exe mk_all`, "file upstream", "ready to merge".
 
 ## Workflow
 
-1. **Pre-flight verification** -- ensure local build passes cleanly via `lake build`. Confirm zero `sorry`, zero `admit`, zero unproven goals, and no leftover `trace_state` or `#check` probes.
-2. **Pick conventions** -- consult the dispatch table (Lean 4 core / Mathlib 4 / Batteries / downstream). Read the relevant `references/upstream/<repo>-pr.md` if unfamiliar. STOP and ask if the target repo isn't in the table.
-3. **Title + description** -- imperative present tense, lowercase subject, no period. First paragraph of description = changelog text, starts with "This PR ...". Skip `## Summary` / `## Test plan` headers -- CI and git diff carry that.
-4. **Labels + commands** -- apply the repo's label conventions (Mathlib: `t-<topic>` / `easy` / `awaiting-author`; Lean core: `changelog-language` / `changelog-tactics` for `feat`/`fix`). For Mathlib file moves: `lake exe mk_all`. For Lean core: confirm copyright header on new `.lean` files in `src/`.
-5. **Cross-link + handoff** -- declare `- [ ] depends on: #XXXX` for any predecessor PR. On merge, history is squash-rewritten -> keep the PR description complete (it becomes the merge commit body). For review feedback received during PR review, hand to `@lean-proof-review`.
+1. **Pre-flight verification** -- ensure local build passes cleanly via `lake build`. Confirm zero `sorry`, zero `admit`, zero unproven goals, and no
+   leftover `trace_state` or `#check` probes.
+2. **Pick conventions** -- consult the dispatch table (Lean 4 core / Mathlib 4 / Batteries / downstream). Read the relevant
+   `references/upstream/<repo>-pr.md` if unfamiliar. STOP and ask if the target repo isn't in the table.
+3. **Title + description** -- imperative present tense, lowercase subject, no period. First paragraph of description = changelog text, starts with "This PR
+   ...". Skip `## Summary` / `## Test plan` headers -- CI and git diff carry that.
+4. **Labels + commands** -- apply the repo's label conventions (Mathlib: `t-<topic>` / `easy` / `awaiting-author`; Lean core: `changelog-language` /
+   `changelog-tactics` for `feat`/`fix`). For Mathlib file moves: `lake exe mk_all`. For Lean core: confirm copyright header on new `.lean` files in
+   `src/`.
+5. **Cross-link + handoff** -- declare `- [ ] depends on: #XXXX` for any predecessor PR. On merge, history is squash-rewritten -> keep the PR description
+   complete (it becomes the merge commit body). For review feedback received during PR review, hand to `@lean-proof-review`.
 
 ## Recovery & STOP
 
@@ -55,7 +64,9 @@ metadata:
 
 ## Handoffs
 
-- **Predecessors / successors**: see FM `handoffs`. Typical inbound: `@lean-build` (clean local build), `@lean-mwe` (for upstream bug-report PRs), `@lean-bisect` (when filing a known-version regression), `@lean-proof-review` (when review green-lit a contribution). Typical outbound: `@lean-proof-review` (for in-tree feedback) or `@lean-zettelkasten` (recording PR-process lessons).
+- **Predecessors / successors**: see FM `handoffs`. Typical inbound: `@lean-build` (clean local build), `@lean-mwe` (for upstream bug-report PRs),
+  `@lean-bisect` (when filing a known-version regression), `@lean-proof-review` (when review green-lit a contribution). Typical outbound:
+  `@lean-proof-review` (for in-tree feedback) or `@lean-zettelkasten` (recording PR-process lessons).
 - **REDIRECT pointer:** `mathlib-pr` slug routes here (preserved per Chesterton-protocol).
 
 ---

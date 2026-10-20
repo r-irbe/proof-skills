@@ -1,11 +1,11 @@
 ---
 name: "applied-legal-reasoning"
 description: |
-  USE FOR: Legal reasoning formalization — statutory interpretation, case-based reasoning, argumentation frameworks, defeasible rules, deontic norms, regulatory compliance, and their connection to provenance chains, governance structures, and formal verification for legal-adjacent AI systems.
-  DO NOT USE FOR: formalising those legal models in Lean (use @lean-applied-reasoning); deontic reasoning specifically (use @ai-causal-deontic); security policy (use @applied-data-information-security).
-  TRIGGERS: statutory interpretation, case-based reasoning, argumentation framework, defeasible rule, deontic norm, legal reasoning, regulatory.
+  USE FOR: Legal reasoning formalization: statutory interpretation, case-based reasoning, argumentation frameworks.
+  DO NOT USE FOR: formalising those legal models in Lean (@lean-applied-reasoning).
+  TRIGGERS: statutory interpretation, case-based reasoning.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,8 +25,10 @@ Formal frameworks for legal analysis, argumentation, normative reasoning, and th
 
 ## Routing
 
-- **USE FOR:** Legal reasoning formalization — statutory interpretation, case-based reasoning, argumentation frameworks, defeasible rules, deontic norms, regulatory compliance, and their connection to provenance chains, governance structures, and formal verification for legal-adjacent AI systems.
-- **DO NOT USE FOR:** formalising those legal models in Lean (use @lean-applied-reasoning); deontic reasoning specifically (use @ai-causal-deontic); security policy (use @applied-data-information-security).
+- **USE FOR:** Legal reasoning formalization — statutory interpretation, case-based reasoning, argumentation frameworks, defeasible rules, deontic norms,
+  regulatory compliance, and their connection to provenance chains, governance structures, and formal verification for legal-adjacent AI systems.
+- **DO NOT USE FOR:** formalising those legal models in Lean (use @lean-applied-reasoning); deontic reasoning specifically (use @ai-causal-deontic);
+  security policy (use @applied-data-information-security).
 - **TRIGGERS:** statutory interpretation, case-based reasoning, argumentation framework, defeasible rule, deontic norm, legal reasoning, regulatory.
 
 ## Workflow

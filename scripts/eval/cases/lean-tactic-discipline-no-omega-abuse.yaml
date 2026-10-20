@@ -1,6 +1,6 @@
 id: lean-tactic-discipline-no-omega-abuse
 title: "Tactic discipline: don't reach for omega on non-linear goals"
-skill: lean-quality
+skill: lean-proof
 ensemble_rubric: lean-tactic-discipline-quality
 difficulty: medium
 input:

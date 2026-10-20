@@ -1,11 +1,11 @@
 ---
 name: "ai-causal-deontic"
 description: |
-  USE FOR: Causal reasoning, counterfactual analysis, and deontic logic for AI systems. Use for formalizing cause-effect relationships (Pearl's hierarchy), interventional reasoning, structural causal models, counterfactual simulation, obligation/permission/prohibition reasoning, normative systems, and legal/ethical rule formalization in Lean 4.
-  DO NOT USE FOR: formalising those models in Lean (use @lean-causal-reasoning); agentic AI behaviour (use @ai-agentic-evolving); commonsense reasoning (use @ai-commonsense-reasoning).
-  TRIGGERS: causal, counterfactual, Pearl hierarchy, deontic, obligation, permission, structural causal model.
+  USE FOR: Causal reasoning, counterfactual analysis, and deontic logic for AI systems.
+  DO NOT USE FOR: formalising those models in Lean (@lean-causal-reasoning).
+  TRIGGERS: causal, counterfactual, Pearl hierarchy, deontic, obligation.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,8 +25,11 @@ Formal frameworks for reasoning about causes, effects, counterfactuals, and norm
 
 ## Routing
 
-- **USE FOR:** Causal reasoning, counterfactual analysis, and deontic logic for AI systems. Use for formalizing cause-effect relationships (Pearl's hierarchy), interventional reasoning, structural causal models, counterfactual simulation, obligation/permission/prohibition reasoning, normative systems, and legal/ethical rule formalization in Lean 4.
-- **DO NOT USE FOR:** formalising those models in Lean (use @lean-causal-reasoning); agentic AI behaviour (use @ai-agentic-evolving); commonsense reasoning (use @ai-commonsense-reasoning).
+- **USE FOR:** Causal reasoning, counterfactual analysis, and deontic logic for AI systems. Use for formalizing cause-effect relationships (Pearl's
+  hierarchy), interventional reasoning, structural causal models, counterfactual simulation, obligation/permission/prohibition reasoning, normative
+  systems, and legal/ethical rule formalization in Lean 4.
+- **DO NOT USE FOR:** formalising those models in Lean (use @lean-causal-reasoning); agentic AI behaviour (use @ai-agentic-evolving); commonsense reasoning
+  (use @ai-commonsense-reasoning).
 - **TRIGGERS:** causal, counterfactual, Pearl hierarchy, deontic, obligation, permission, structural causal model.
 
 ## Workflow
@@ -214,7 +217,8 @@ Common application: quality gates as I/O norms mapping observation states to act
 
 ## Part 6 — Host-Repository Lean Extension Points
 
-Do not assume repository-local Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. When local modules exist, map them by role:
+Do not assume repository-local Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. When local modules exist,
+map them by role:
 
 | Local extension point | Causal/deontic aspect |
 |---|---|

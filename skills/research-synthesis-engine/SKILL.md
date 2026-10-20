@@ -1,11 +1,11 @@
 ---
 name: "research-synthesis-engine"
 description: |
-  USE FOR: running the 5-role synthesis engine (Α-S Scanner / Β-S Clusterer / Γ-S Distiller / Δ-S Verifier / Ε-S Publisher) — Scan-Cluster-Distill-Verify-Publish (SYNTHESIZE) loop, four product tiers (Quick / Standard / Deep / Comprehensive), duality with the review-council RALPH loop, domain cross-references, Mathlib coverage tracking.
-  DO NOT USE FOR: single-source literature review (use @lean-research); proof or formalization work (use @lean-proof or @lean-ai-formalization); review of a finished synthesis (use @lean-review-council); Zettelkasten card emission only (use @lean-zettelkasten).
-  TRIGGERS: synthesis, SYNTHESIZE loop, synthesis council, Α-S, Β-S, Γ-S, Δ-S, Ε-S, scanner, clusterer, distiller, verifier, publisher, quick synthesis, deep synthesis.
+  USE FOR: running the 5-role synthesis engine (Α-S Scanner / Β-S Clusterer / Γ-S Distiller / Δ-S Verifier / Ε-S Publisher).
+  DO NOT USE FOR: single-source literature review (@lean-research).
+  TRIGGERS: synthesis, SYNTHESIZE loop, synthesis council, Α-S, Β-S, Γ-S.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research', 'skill:research-council', 'skill:epistemic-discovery-engine']
@@ -33,16 +33,22 @@ Research Synthesis Engine                            Review Council
    SYNTHESIZE loop                                   RALPH loop
 ```
 
-The Research Synthesis Engine is the **generative counterpart** to the Review Council. It transforms raw research findings, literature, cross-domain knowledge, and epistemic-discovery-engine outputs into structured, actionable specification packages that feed the formalization pipeline.
+The Research Synthesis Engine is the **generative counterpart** to the Review Council. It transforms raw research findings, literature, cross-domain
+knowledge, and epistemic-discovery-engine outputs into structured, actionable specification packages that feed the formalization pipeline.
 
 ---
 
 ## Routing
 
-- **USE FOR / DO NOT USE FOR / TRIGGERS** — see the `description` field in the YAML frontmatter above. Same dispatch contract is restated here for in-skill discovery.
-- **USE FOR:** running the 5-role synthesis engine (Α-S Scanner / Β-S Clusterer / Γ-S Distiller / Δ-S Verifier / Ε-S Publisher) — Scan-Cluster-Distill-Verify-Publish (SYNTHESIZE) loop, four product tiers (Quick / Standard / Deep / Comprehensive), duality with the review-council RALPH loop, domain cross-references, Mathlib coverage tracking.
-- **DO NOT USE FOR:** single-source literature review (use @lean-research); proof or formalization work (use @lean-proof or @lean-ai-formalization); review of a finished synthesis (use @lean-review-council); Zettelkasten card emission only (use @lean-zettelkasten).
-- **TRIGGERS:** synthesis, SYNTHESIZE loop, synthesis council, Α-S, Β-S, Γ-S, Δ-S, Ε-S, scanner, clusterer, distiller, verifier, publisher, quick synthesis, deep synthesis.
+- **USE FOR / DO NOT USE FOR / TRIGGERS** — see the `description` field in the YAML frontmatter above. Same dispatch contract is restated here for in-skill
+  discovery.
+- **USE FOR:** running the 5-role synthesis engine (Α-S Scanner / Β-S Clusterer / Γ-S Distiller / Δ-S Verifier / Ε-S Publisher) —
+  Scan-Cluster-Distill-Verify-Publish (SYNTHESIZE) loop, four product tiers (Quick / Standard / Deep / Comprehensive), duality with the review-council
+  RALPH loop, domain cross-references, Mathlib coverage tracking.
+- **DO NOT USE FOR:** single-source literature review (use @lean-research); proof or formalization work (use @lean-proof or @lean-ai-formalization); review
+  of a finished synthesis (use @lean-review-council); Zettelkasten card emission only (use @lean-zettelkasten).
+- **TRIGGERS:** synthesis, SYNTHESIZE loop, synthesis council, Α-S, Β-S, Γ-S, Δ-S, Ε-S, scanner, clusterer, distiller, verifier, publisher, quick
+  synthesis, deep synthesis.
 
 ## Workflow
 

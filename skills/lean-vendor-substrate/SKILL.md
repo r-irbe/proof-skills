@@ -1,24 +1,11 @@
 ---
 name: "lean-vendor-substrate"
 description: |
-  USE FOR: executing a decided vendoring of a permissively-licensed Lean 4
-  formalization into a project tree — verifying license and provenance, pinning
-  the upstream commit, rewriting imports and namespaces, handling module-local
-  options/instances during a toolchain-version migration, registering the
-  vendored subtree in the build, and running the correctness gates over the
-  result. Use this once a package-research decision (ADOPT-NOW for vendoring)
-  has been made and the operator is authorized to mutate project files.
-  DO NOT USE FOR: deciding whether to adopt or vendor a package (use
-  @lean-package-research); running the verification suite as the gate owner
-  (use @lean-enforcement under an edit claim); searching for a theorem without
-  a vendoring decision (use @lean-research); license litigation (STOP and ask a
-  human).
-  TRIGGERS: vendor, vendoring, vendored code, upstream formalization, import
-  rewrite, namespace rename, commit pin, upstream pin, license vendoring,
-  Apache-2.0 vendor, MIT vendor, re-vendor, vendor upgrade, port upstream file,
-  pin adaptation, sorry-free upstream.
+  USE FOR: executing a decided vendoring of a permissively-licensed Lean 4 formalization into a project tree: verifying.
+  DO NOT USE FOR: deciding whether to adopt or vendor a package (@lean-package-research).
+  TRIGGERS: vendor, vendoring, vendored code, upstream formalization.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["skill:lean-package-research", "skill:lean-research", "agent:gateway"]

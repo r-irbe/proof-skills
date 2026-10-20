@@ -1,0 +1,18 @@
+id: lean-upstream-porting-smoke
+title: "lean-upstream-porting dispatch smoke check"
+skill: lean-upstream-porting
+ensemble_rubric: applied-domain-quality
+difficulty: easy
+input:
+  prompt: |
+    Apply the lean-upstream-porting skill workflow and summarize the primary verification steps.
+  expected_output_substring: |
+    Follow the lean-upstream-porting protocol and verify all outputs without sorry or admit.
+expected:
+  contains:
+    - "lean-upstream-porting|protocol|verify"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [smoke, lean-upstream-porting]

@@ -1,11 +1,11 @@
 ---
 name: "math-project-management"
 description: |
-  USE FOR: Project and product management for mathematical formalization projects. Covers dependency-aware scheduling, risk management for unprovable theorems, progress tracking, milestone planning, resource allocation across proof workstreams, technical debt management, and stakeholder communication. Use when planning formalization campaigns, tracking multi-module efforts, or managing the intersection of research and engineering in formal mathematics.
-  DO NOT USE FOR: product-level PM (use @math-product-management); retro methodology (use @lean-retro-methodology); engineering discipline view (use @applied-engineering-disciplines).
-  TRIGGERS: project management, dependency scheduling, risk management for proofs, formalization PM.
+  USE FOR: Project and product management for mathematical formalization projects.
+  DO NOT USE FOR: product-level PM (@math-product-management).
+  TRIGGERS: project management, dependency scheduling.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,8 +25,11 @@ Methodology for managing large-scale formal mathematics projects as engineering 
 
 ## Routing
 
-- **USE FOR:** Project and product management for mathematical formalization projects. Covers dependency-aware scheduling, risk management for unprovable theorems, progress tracking, milestone planning, resource allocation across proof workstreams, technical debt management, and stakeholder communication. Use when planning formalization campaigns, tracking multi-module efforts, or managing the intersection of research and engineering in formal mathematics.
-- **DO NOT USE FOR:** product-level PM (use @math-product-management); retro methodology (use @lean-retro-methodology); engineering discipline view (use @applied-engineering-disciplines).
+- **USE FOR:** Project and product management for mathematical formalization projects. Covers dependency-aware scheduling, risk management for unprovable
+  theorems, progress tracking, milestone planning, resource allocation across proof workstreams, technical debt management, and stakeholder communication.
+  Use when planning formalization campaigns, tracking multi-module efforts, or managing the intersection of research and engineering in formal mathematics.
+- **DO NOT USE FOR:** product-level PM (use @math-product-management); retro methodology (use @lean-retro-methodology); engineering discipline view (use
+  @applied-engineering-disciplines).
 - **TRIGGERS:** project management, dependency scheduling, risk management for proofs, formalization PM.
 
 ## Workflow

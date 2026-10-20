@@ -1,0 +1,18 @@
+id: lean-proof-refactor-smoke
+title: "lean-proof-refactor dispatch smoke check"
+skill: lean-proof-refactor
+ensemble_rubric: applied-domain-quality
+difficulty: easy
+input:
+  prompt: |
+    Apply the lean-proof-refactor skill workflow and summarize the primary verification steps.
+  expected_output_substring: |
+    Follow the lean-proof-refactor protocol and verify all outputs without sorry or admit.
+expected:
+  contains:
+    - "lean-proof-refactor|protocol|verify"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [smoke, lean-proof-refactor]

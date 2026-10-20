@@ -1,11 +1,11 @@
 ---
 name: "math-measure-probability"
 description: |
-  USE FOR: Measure theory, probability theory, stochastic processes, ergodic theory, and concentration inequalities. Use for mathematical reasoning about probability spaces, random variables, convergence, mixing, and probabilistic arguments. Covers both theoretical foundations and applied probabilistic methodology.
-  DO NOT USE FOR: Lean proofs in this domain (use @lean-math-stochastic); time-series analysis (use @math-time-series); topology/analysis (use @math-topology-analysis).
-  TRIGGERS: measure theory, probability, stochastic process, ergodic theory, concentration inequality, Radon-Nikodym.
+  USE FOR: Measure theory, probability theory, stochastic processes, ergodic theory, and concentration inequalities.
+  DO NOT USE FOR: Lean proofs in this domain (@lean-math-stochastic).
+  TRIGGERS: measure theory, probability, stochastic process, ergodic theory.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -19,14 +19,18 @@ metadata:
 
 # Measure Theory & Probability Mathematics
 
-Measure-theoretic and probabilistic foundations for stochastic models, convergence guarantees, mixing time analysis, ergodic properties, and uncertainty quantification.
+Measure-theoretic and probabilistic foundations for stochastic models, convergence guarantees, mixing time analysis, ergodic properties, and uncertainty
+quantification.
 
 ---
 
 ## Routing
 
-- **USE FOR:** Measure theory, probability theory, stochastic processes, ergodic theory, and concentration inequalities. Use for mathematical reasoning about probability spaces, random variables, convergence, mixing, and probabilistic arguments. Covers both theoretical foundations and applied probabilistic methodology.
-- **DO NOT USE FOR:** Lean proofs in this domain (use @lean-math-stochastic); time-series analysis (use @math-time-series); topology/analysis (use @math-topology-analysis).
+- **USE FOR:** Measure theory, probability theory, stochastic processes, ergodic theory, and concentration inequalities. Use for mathematical reasoning
+  about probability spaces, random variables, convergence, mixing, and probabilistic arguments. Covers both theoretical foundations and applied
+  probabilistic methodology.
+- **DO NOT USE FOR:** Lean proofs in this domain (use @lean-math-stochastic); time-series analysis (use @math-time-series); topology/analysis (use
+  @math-topology-analysis).
 - **TRIGGERS:** measure theory, probability, stochastic process, ergodic theory, concentration inequality, Radon-Nikodym.
 
 ## Workflow

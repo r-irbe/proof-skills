@@ -1,11 +1,11 @@
 ---
 name: "lean-knowledge-formalization"
 description: |
-  USE FOR: Knowledge representation, ontology engineering, symbolic AI, commonsense reasoning, causal reasoning, legal reasoning, and abductive inference in Lean 4. Use when formalizing knowledge structures, reasoning systems, argumentation frameworks, deontic logic, defeasible reasoning, or any domain where structured knowledge and inference must be formally verified. Core skill for knowledge-lifecycle and provenance architectures.
-  DO NOT USE FOR: KRR methodology not in Lean (use @ai-symbolic-neuro); commonsense reasoning methodology (use @ai-commonsense-reasoning); causal/deontic methodology (use @ai-causal-deontic).
-  TRIGGERS: knowledge formalisation, ontology in Lean, symbolic AI Lean, abductive inference Lean, legal reasoning Lean.
+  USE FOR: Knowledge representation, ontology engineering, symbolic AI, commonsense reasoning, causal reasoning.
+  DO NOT USE FOR: KRR methodology not in Lean (@ai-symbolic-neuro).
+  TRIGGERS: knowledge formalisation, ontology in Lean, symbolic AI Lean.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,8 +25,11 @@ Guide to formalizing knowledge representation, reasoning systems, and domain-spe
 
 ## Routing
 
-- **USE FOR:** Knowledge representation, ontology engineering, symbolic AI, commonsense reasoning, causal reasoning, legal reasoning, and abductive inference in Lean 4. Use when formalizing knowledge structures, reasoning systems, argumentation frameworks, deontic logic, defeasible reasoning, or any domain where structured knowledge and inference must be formally verified. Core skill for knowledge-lifecycle and provenance architectures.
-- **DO NOT USE FOR:** KRR methodology not in Lean (use @ai-symbolic-neuro); commonsense reasoning methodology (use @ai-commonsense-reasoning); causal/deontic methodology (use @ai-causal-deontic).
+- **USE FOR:** Knowledge representation, ontology engineering, symbolic AI, commonsense reasoning, causal reasoning, legal reasoning, and abductive
+  inference in Lean 4. Use when formalizing knowledge structures, reasoning systems, argumentation frameworks, deontic logic, defeasible reasoning, or any
+  domain where structured knowledge and inference must be formally verified. Core skill for knowledge-lifecycle and provenance architectures.
+- **DO NOT USE FOR:** KRR methodology not in Lean (use @ai-symbolic-neuro); commonsense reasoning methodology (use @ai-commonsense-reasoning);
+  causal/deontic methodology (use @ai-causal-deontic).
 - **TRIGGERS:** knowledge formalisation, ontology in Lean, symbolic AI Lean, abductive inference Lean, legal reasoning Lean.
 
 ## Workflow
@@ -69,7 +72,8 @@ the dispatch contract and the parts index.
 
 ## See also
 
-- [`../../references/lean-knowledge-formalization-handbook.md`](../../references/lean-knowledge-formalization-handbook.md) — Full handbook (extracted from this skill)
+- [`../../references/lean-knowledge-formalization-handbook.md`](../../references/lean-knowledge-formalization-handbook.md) — Full handbook (extracted from
+  this skill)
 - [`../lean-proof-review/SKILL.md`](../lean-proof-review/SKILL.md) — Successor
 - [`../lean-causal-reasoning/SKILL.md`](../lean-causal-reasoning/SKILL.md) — Successor
 - [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) — Successor

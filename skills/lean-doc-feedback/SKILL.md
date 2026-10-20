@@ -1,11 +1,11 @@
 ---
 name: "lean-doc-feedback"
 description: |
-  USE FOR: reviewing a Lean documentation draft, flagging undefined terms, suggesting cross-links, scoring readability against a rubric.
-  DO NOT USE FOR: rewriting prose end-to-end (use @lean-doc-improvement), generating new blueprints (use @lean-blueprint).
+  USE FOR: reviewing a Lean documentation draft, flagging undefined terms, suggesting cross-links.
+  DO NOT USE FOR: rewriting prose end-to-end (@lean-doc-improvement).
   TRIGGERS: doc-review, readability, doc-feedback.
 tier: "cold"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["skill:lean-doc-improvement"]
@@ -20,7 +20,8 @@ metadata:
 
 ## Routing
 
-- **USE FOR:** reviewing a Lean documentation draft; flagging undefined terms; suggesting cross-links to blueprint nodes; scoring readability against the project rubric.
+- **USE FOR:** reviewing a Lean documentation draft; flagging undefined terms; suggesting cross-links to blueprint nodes; scoring readability against the
+  project rubric.
 - **DO NOT USE FOR:** rewriting prose end-to-end (use `@lean-doc-improvement`); generating new blueprints (use `@lean-blueprint`).
 - **TRIGGERS:** doc-review, readability, doc-feedback.
 

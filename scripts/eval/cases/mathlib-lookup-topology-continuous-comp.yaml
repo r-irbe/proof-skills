@@ -1,6 +1,6 @@
 id: mathlib-lookup-topology-continuous-comp
 title: "Identify Mathlib lemma about continuity of function composition"
-skill: mathlib-lookup
+skill: lean-research
 ensemble_rubric: mathlib-lookup-quality
 difficulty: medium
 input:

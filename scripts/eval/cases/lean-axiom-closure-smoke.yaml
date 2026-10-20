@@ -1,0 +1,18 @@
+id: lean-axiom-closure-smoke
+title: "lean-axiom-closure dispatch smoke check"
+skill: lean-axiom-closure
+ensemble_rubric: applied-domain-quality
+difficulty: easy
+input:
+  prompt: |
+    Apply the lean-axiom-closure skill workflow and summarize the primary verification steps.
+  expected_output_substring: |
+    Follow the lean-axiom-closure protocol and verify all outputs without sorry or admit.
+expected:
+  contains:
+    - "lean-axiom-closure|protocol|verify"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [smoke, lean-axiom-closure]

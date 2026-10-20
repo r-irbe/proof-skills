@@ -1,11 +1,11 @@
 ---
 name: "lean-math-analysis"
 description: |
-  USE FOR: real analysis, functional analysis, topology, and measure theory in Lean 4 / Mathlib — continuous functions, derivatives, integrals, metric / normed spaces, filter-based convergence, contraction mappings, convex analysis, spectral theory, and the real-valued bridges from a Nat-scaled model.
-  DO NOT USE FOR: stochastic / probabilistic convergence (use @lean-math-stochastic); deterministic dynamical-system stability proofs (use @lean-math-dynamical); pure optimization (use @lean-math-optimization); typeclass-tower reasoning (use @lean-math-foundations); writing one specific proof (use @lean-proof).
-  TRIGGERS: continuous, derivative, integral, metric space, normed space, filter, convergence, topology, measure space, contraction, Banach.
+  USE FOR: real analysis, functional analysis, topology, and measure theory in Lean 4 / Mathlib: continuous functions.
+  DO NOT USE FOR: stochastic / probabilistic convergence (@lean-math-stochastic).
+  TRIGGERS: continuous, derivative, integral, metric space, normed space.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["agent:gateway", "skill:lean-proof", "skill:lean-research"]
@@ -22,8 +22,11 @@ Guide to formalizing analysis and topology in Lean 4 using Mathlib's filter-base
 
 ## Routing
 
-- **USE FOR:** real analysis, functional analysis, topology, and measure theory in Lean 4 / Mathlib — continuous functions, derivatives, integrals, metric / normed spaces, filter-based convergence, contraction mappings, convex analysis, spectral theory, and the real-valued bridges from a Nat-scaled model.
-- **DO NOT USE FOR:** stochastic / probabilistic convergence (delegate to `@lean-math-stochastic`); deterministic dynamical-system stability proofs (delegate to `@lean-math-dynamical`); pure optimization (delegate to `@lean-math-optimization`); typeclass-tower reasoning (delegate to `@lean-math-foundations`); writing one specific proof (delegate to `@lean-proof`).
+- **USE FOR:** real analysis, functional analysis, topology, and measure theory in Lean 4 / Mathlib — continuous functions, derivatives, integrals, metric
+  / normed spaces, filter-based convergence, contraction mappings, convex analysis, spectral theory, and the real-valued bridges from a Nat-scaled model.
+- **DO NOT USE FOR:** stochastic / probabilistic convergence (delegate to `@lean-math-stochastic`); deterministic dynamical-system stability proofs
+  (delegate to `@lean-math-dynamical`); pure optimization (delegate to `@lean-math-optimization`); typeclass-tower reasoning (delegate to
+  `@lean-math-foundations`); writing one specific proof (delegate to `@lean-proof`).
 - **TRIGGERS:** continuous, derivative, integral, metric space, normed space, filter, convergence, topology, measure space, contraction, Banach.
 
 ## Workflow
@@ -40,7 +43,8 @@ Guide to formalizing analysis and topology in Lean 4 using Mathlib's filter-base
 ## Handoffs
 
 - **Predecessors:** `agent:gateway`, `skill:lean-proof` (mid-proof convergence goal), `skill:lean-research` (when a survey turns up an analysis API).
-- **Successors:** `skill:lean-proof` (apply the analysis pattern), `skill:lean-proof-review` (audit the resulting proof), `skill:lean-math-foundations` (when the goal collapses to a typeclass-tower issue).
+- **Successors:** `skill:lean-proof` (apply the analysis pattern), `skill:lean-proof-review` (audit the resulting proof), `skill:lean-math-foundations`
+  (when the goal collapses to a typeclass-tower issue).
 
 ## Detailed reference
 
@@ -77,7 +81,8 @@ the high-frequency pitfalls / recipes (kept inline below).
 
 When a goal sits in the analysis family, try these in order before reaching for manual `.comp` chains:
 
-1. **`fun_prop`** — Mathlib's general property-prover for `Continuous`, `Measurable`, `Differentiable`, `StronglyMeasurable` on composed functions. Prefer this over manual `Continuous.comp` / `Differentiable.comp` chains.
+1. **`fun_prop`** — Mathlib's general property-prover for `Continuous`, `Measurable`, `Differentiable`, `StronglyMeasurable` on composed functions. Prefer
+   this over manual `Continuous.comp` / `Differentiable.comp` chains.
 2. **`continuity`** — older specialised continuity solver; still helpful when `fun_prop` misses a Mathlib lemma.
 3. **`measurability`** — for `Measurable` / `AEMeasurable` / `StronglyMeasurable` goals; complements `fun_prop`.
 4. **`positivity`** — for `0 < x` / `0 ≤ x` goals involving `exp`, `log`, norms, integrals; pairs well with `gcongr` for inequality chaining.
@@ -109,7 +114,8 @@ When integration limits won't compute:
 
 ## See also
 
-- [`../../references/lean4-math-analysis.md`](../../references/lean4-math-analysis.md) — Real Analysis & Topology Encyclopaedia (full encyclopaedia, extracted from this skill)
+- [`../../references/lean4-math-analysis.md`](../../references/lean4-math-analysis.md) — Real Analysis & Topology Encyclopaedia (full encyclopaedia,
+  extracted from this skill)
 - [`../../templates/Template_Analysis.md`](../../templates/Template_Analysis.md) — Template: Real analysis (continuity, Lipschitz, sqrt)
 - [`../../references/lean4-proof-strategy.md`](../../references/lean4-proof-strategy.md) — Proof strategy & error priority
 - [`../../references/lean4-tactic-hierarchy.md`](../../references/lean4-tactic-hierarchy.md) — Tactic priority for analysis goals

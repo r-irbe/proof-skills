@@ -1,11 +1,11 @@
 ---
 name: "lean-bigraph-modeling"
 description: |
-  USE FOR: Robin Milner Bigraphical Reactive Systems (BRS), orthogonal Place Graph (containment forest) and Link Graph (relational hyperedges), tensor product, categorical composition, interface faces, and structural well-formedness proofs in Lean 4.
-  DO NOT USE FOR: standard simple graphs without containment hierarchy (use @lean-math-discrete); abstract monoidal category theory without bigraphs (use @lean-math-foundations).
-  TRIGGERS: bigraph, place graph, link graph, hyperedge, containment forest, milner, tensor product, categorical composition, port rewiring.
+  USE FOR: Robin Milner Bigraphical Reactive Systems (BRS).
+  DO NOT USE FOR: standard simple graphs without containment hierarchy (@lean-math-discrete).
+  TRIGGERS: bigraph, place graph, link graph, hyperedge, containment forest.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["agent:gateway", "skill:lean-math-discrete", "skill:lean-proof"]
@@ -22,8 +22,10 @@ Guide to formalizing Milner Bigraphs (Place Graphs + Link Graphs), interface fac
 
 ## Routing
 
-- **USE FOR:** Robin Milner Bigraphical Reactive Systems (BRS), orthogonal Place Graph (containment forest) and Link Graph (relational hyperedges), tensor product, categorical composition, interface faces, and structural well-formedness proofs in Lean 4.
-- **DO NOT USE FOR:** standard simple graphs without containment hierarchy (delegate to `@lean-math-discrete`); abstract monoidal category theory without bigraphs (delegate to `@lean-math-foundations`).
+- **USE FOR:** Robin Milner Bigraphical Reactive Systems (BRS), orthogonal Place Graph (containment forest) and Link Graph (relational hyperedges), tensor
+  product, categorical composition, interface faces, and structural well-formedness proofs in Lean 4.
+- **DO NOT USE FOR:** standard simple graphs without containment hierarchy (delegate to `@lean-math-discrete`); abstract monoidal category theory without
+  bigraphs (delegate to `@lean-math-foundations`).
 - **TRIGGERS:** bigraph, place graph, link graph, hyperedge, containment forest, milner, tensor product, categorical composition, port rewiring.
 
 ## Workflow

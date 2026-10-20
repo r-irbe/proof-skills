@@ -1,11 +1,11 @@
 ---
 name: "lean-math-dynamical"
 description: |
-  USE FOR: nonlinear dynamical systems, Lyapunov stability, bifurcation theory, catastrophe theory, control theory, phase-portrait analysis, attractor classification, and any deterministic system with state evolution over time in Lean 4.
-  DO NOT USE FOR: stochastic dynamics (use @lean-math-stochastic); pure analysis / topology (use @lean-math-analysis); optimization-only control problems (use @lean-math-optimization); writing one specific proof (use @lean-proof).
-  TRIGGERS: Lyapunov, stability, bifurcation, cusp catastrophe, attractor, phase portrait, dynamical system, control theory, equilibrium.
+  USE FOR: nonlinear dynamical systems, Lyapunov stability, bifurcation theory, catastrophe theory, control theory.
+  DO NOT USE FOR: stochastic dynamics (@lean-math-stochastic).
+  TRIGGERS: Lyapunov, stability, bifurcation, cusp catastrophe, attractor.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["agent:gateway", "skill:lean-proof", "skill:lean-research"]
@@ -22,8 +22,10 @@ Guide to formalizing dynamical systems, stability theory, and bifurcation in Lea
 
 ## Routing
 
-- **USE FOR:** nonlinear dynamical systems, Lyapunov stability, bifurcation theory, catastrophe theory, control theory, phase-portrait analysis, attractor classification, and any deterministic system with state evolution over time in Lean 4.
-- **DO NOT USE FOR:** stochastic dynamics (delegate to `@lean-math-stochastic`); pure analysis / topology (delegate to `@lean-math-analysis`); optimization-only control problems (delegate to `@lean-math-optimization`); writing one specific proof (delegate to `@lean-proof`).
+- **USE FOR:** nonlinear dynamical systems, Lyapunov stability, bifurcation theory, catastrophe theory, control theory, phase-portrait analysis, attractor
+  classification, and any deterministic system with state evolution over time in Lean 4.
+- **DO NOT USE FOR:** stochastic dynamics (delegate to `@lean-math-stochastic`); pure analysis / topology (delegate to `@lean-math-analysis`);
+  optimization-only control problems (delegate to `@lean-math-optimization`); writing one specific proof (delegate to `@lean-proof`).
 - **TRIGGERS:** Lyapunov, stability, bifurcation, cusp catastrophe, attractor, phase portrait, dynamical system, control theory, equilibrium.
 
 ## Workflow
@@ -40,7 +42,8 @@ Guide to formalizing dynamical systems, stability theory, and bifurcation in Lea
 ## Handoffs
 
 - **Predecessors:** `agent:gateway`, `skill:lean-proof` (mid-proof stability goal), `skill:lean-research` (catastrophe-theory result survey).
-- **Successors:** `skill:lean-proof` (apply the dynamical pattern), `skill:lean-proof-review` (audit Lyapunov candidate), `skill:lean-math-analysis` (continuous-derivative or contraction reduction).
+- **Successors:** `skill:lean-proof` (apply the dynamical pattern), `skill:lean-proof-review` (audit Lyapunov candidate), `skill:lean-math-analysis`
+  (continuous-derivative or contraction reduction).
 
 ## Detailed reference
 
@@ -92,8 +95,10 @@ prerequisite.
 
 - Host-repository Lyapunov modules — quadratic-form Lyapunov constructions for local cusp + phase-portrait models.
 - Host-repository catastrophe modules — cusp-form polynomial bifurcation (the 3-real-roots case).
-- [`references/lean4-ivt-patterns.md`](../../references/lean4-ivt-patterns.md) — `asymmetric_three_roots_ivt` walk-through (canonical entry-point for sign-change existence).
-- [`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md) — catalog of contraction-mapping templates (uses `ContractingWith` / `LipschitzWith`).
+- [`references/lean4-ivt-patterns.md`](../../references/lean4-ivt-patterns.md) — `asymmetric_three_roots_ivt` walk-through (canonical entry-point for
+  sign-change existence).
+- [`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md) — catalog of contraction-mapping templates (uses
+  `ContractingWith` / `LipschitzWith`).
 
 ---
 
@@ -121,6 +126,7 @@ Project-relevant adaptations:
 
 ## See also
 
-- [`../../references/lean4-math-dynamical.md`](../../references/lean4-math-dynamical.md) — Nonlinear Dynamics Encyclopaedia (full encyclopaedia, extracted from this skill)
+- [`../../references/lean4-math-dynamical.md`](../../references/lean4-math-dynamical.md) — Nonlinear Dynamics Encyclopaedia (full encyclopaedia, extracted
+  from this skill)
 - [`../../templates/Template_Dynamics.md`](../../templates/Template_Dynamics.md) — Template: Lyapunov / Markov / contraction mappings
 - [`../../references/lean4-proof-strategy.md`](../../references/lean4-proof-strategy.md) — Proof strategy: real-valued contraction patterns

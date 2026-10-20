@@ -1,11 +1,11 @@
 ---
 name: "lean-math-discrete"
 description: |
-  USE FOR: graph theory, applied lattice theory, combinatorics, DAGs, posets, provenance chains, dependency orders, lattice operations (severity / quality-gate / trust-vector / information-flow lattices), combinatorial bounds, and finite structures in Lean 4. Owns all applied lattice instances.
-  DO NOT USE FOR: the abstract algebraic typeclass tower (use @lean-math-foundations); continuous structures (use @lean-math-analysis); writing one specific proof (use @lean-proof).
-  TRIGGERS: graph, DAG, lattice, poset, combinatorics, provenance, dependency graph, severity lattice, knowledge graph, finite set bound.
+  USE FOR: graph theory, applied lattice theory, combinatorics, DAGs, posets, provenance chains, dependency orders.
+  DO NOT USE FOR: the abstract algebraic typeclass tower (@lean-math-foundations).
+  TRIGGERS: graph, DAG, lattice, poset, combinatorics, provenance.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["agent:gateway", "skill:lean-proof", "skill:lean-research"]
@@ -22,8 +22,10 @@ Guide to formalizing graphs, lattices, combinatorics, and discrete structures in
 
 ## Routing
 
-- **USE FOR:** graph theory, applied lattice theory, combinatorics, DAGs, posets, provenance chains, dependency orders, lattice operations (severity / quality-gate / trust-vector / information-flow lattices), combinatorial bounds, and finite structures in Lean 4. Owns all applied lattice instances.
-- **DO NOT USE FOR:** the abstract algebraic typeclass tower (delegate to `@lean-math-foundations`); continuous structures (delegate to `@lean-math-analysis`); writing one specific proof (delegate to `@lean-proof`).
+- **USE FOR:** graph theory, applied lattice theory, combinatorics, DAGs, posets, provenance chains, dependency orders, lattice operations (severity /
+  quality-gate / trust-vector / information-flow lattices), combinatorial bounds, and finite structures in Lean 4. Owns all applied lattice instances.
+- **DO NOT USE FOR:** the abstract algebraic typeclass tower (delegate to `@lean-math-foundations`); continuous structures (delegate to
+  `@lean-math-analysis`); writing one specific proof (delegate to `@lean-proof`).
 - **TRIGGERS:** graph, DAG, lattice, poset, combinatorics, provenance, dependency graph, severity lattice, knowledge graph, finite set bound.
 
 ## Workflow
@@ -40,7 +42,8 @@ Guide to formalizing graphs, lattices, combinatorics, and discrete structures in
 ## Handoffs
 
 - **Predecessors:** `agent:gateway`, `skill:lean-proof` (mid-proof graph or lattice goal), `skill:lean-research` (combinatorial result survey).
-- **Successors:** `skill:lean-proof` (apply the discrete pattern), `skill:lean-proof-review` (audit the instance), `skill:lean-math-foundations` (typeclass / decidability plumbing).
+- **Successors:** `skill:lean-proof` (apply the discrete pattern), `skill:lean-proof-review` (audit the instance), `skill:lean-math-foundations` (typeclass
+  / decidability plumbing).
 
 ## Detailed reference
 
@@ -107,6 +110,7 @@ Concrete entry-points for the most common discrete-math goals:
 
 ## See also
 
-- [`../../references/lean4-math-discrete.md`](../../references/lean4-math-discrete.md) — Discrete Mathematics Encyclopaedia (full encyclopaedia, extracted from this skill)
+- [`../../references/lean4-math-discrete.md`](../../references/lean4-math-discrete.md) — Discrete Mathematics Encyclopaedia (full encyclopaedia, extracted
+  from this skill)
 - [`../../templates/Template_Arithmetic.md`](../../templates/Template_Arithmetic.md) — Template: Nat/Int arithmetic and simplex constraints
 - [`../../templates/Template_Foundation.md`](../../templates/Template_Foundation.md) — Template: Decidable predicates and case analysis

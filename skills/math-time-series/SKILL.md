@@ -1,11 +1,11 @@
 ---
 name: "math-time-series"
 description: |
-  USE FOR: Time series analysis, signal processing, temporal pattern detection, and multi-scale temporal dynamics. Use for mathematical reasoning about time-varying data, smoothing, derivative estimation, spectral analysis, changepoint detection, and temporal trajectory computation. Covers both theory and computational methodology.
-  DO NOT USE FOR: measure-theoretic / probabilistic basis (use @math-measure-probability); Lean proofs (use @lean-math-stochastic); nonlinear dynamics (use @math-nonlinear-dynamics).
-  TRIGGERS: time series, signal processing, temporal pattern, multi-scale temporal, spectral analysis.
+  USE FOR: Time series analysis, signal processing, temporal pattern detection, and multi-scale temporal dynamics.
+  DO NOT USE FOR: measure-theoretic / probabilistic basis (@math-measure-probability).
+  TRIGGERS: time series, signal processing, temporal pattern.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -19,14 +19,18 @@ metadata:
 
 # Time Series Analysis & Temporal Mathematics
 
-Comprehensive methodology for temporal mathematics — the computational backbone of phase trajectory computation, early warning signal detection, and multi-timescale architectures.
+Comprehensive methodology for temporal mathematics — the computational backbone of phase trajectory computation, early warning signal detection, and
+multi-timescale architectures.
 
 ---
 
 ## Routing
 
-- **USE FOR:** Time series analysis, signal processing, temporal pattern detection, and multi-scale temporal dynamics. Use for mathematical reasoning about time-varying data, smoothing, derivative estimation, spectral analysis, changepoint detection, and temporal trajectory computation. Covers both theory and computational methodology.
-- **DO NOT USE FOR:** measure-theoretic / probabilistic basis (use @math-measure-probability); Lean proofs (use @lean-math-stochastic); nonlinear dynamics (use @math-nonlinear-dynamics).
+- **USE FOR:** Time series analysis, signal processing, temporal pattern detection, and multi-scale temporal dynamics. Use for mathematical reasoning about
+  time-varying data, smoothing, derivative estimation, spectral analysis, changepoint detection, and temporal trajectory computation. Covers both theory
+  and computational methodology.
+- **DO NOT USE FOR:** measure-theoretic / probabilistic basis (use @math-measure-probability); Lean proofs (use @lean-math-stochastic); nonlinear dynamics
+  (use @math-nonlinear-dynamics).
 - **TRIGGERS:** time series, signal processing, temporal pattern, multi-scale temporal, spectral analysis.
 
 ## Workflow
@@ -34,7 +38,8 @@ Comprehensive methodology for temporal mathematics — the computational backbon
 1. Classify the signal: stationary / non-stationary, univariate / multivariate, discrete / continuous time.
 2. Pick the matching section (autocorrelation, spectral, wavelet, change-point, multi-scale).
 3. Produce the analytical answer; identify the Mathlib (or external) tool needed for implementation.
-4. Hand off: to `@lean-math-stochastic` if a probabilistic guarantee is needed, to `@math-measure-probability` for measure-theoretic basis, to `@lean-zettelkasten`.
+4. Hand off: to `@lean-math-stochastic` if a probabilistic guarantee is needed, to `@math-measure-probability` for measure-theoretic basis, to
+   `@lean-zettelkasten`.
 
 ## Recovery & STOP
 

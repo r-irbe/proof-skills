@@ -1,0 +1,80 @@
+{
+  "families": {
+    "algorithm-class-substitution": [
+      {
+        "cost_hint": "highest kernel yield: 20-30x reduction in kernel steps / rfl time",
+        "family": "algorithm-class-substitution",
+        "id": "algorithm-class-substitution",
+        "match": "exponential or unhoisted recursion with an equivalent closed-form or DP reduction",
+        "provenance": "SAIR Lean Kernel Challenge lanes (partition in-place DP S1/S1b, primecount sieve S6)",
+        "rewrite": "substitute algorithm class (e.g. in-place DP or structural sieve) and prove equivalence to spec"
+      }
+    ],
+    "extraction": [
+      {
+        "cost_hint": "high-yield: counts once, serves N sites",
+        "family": "extraction",
+        "id": "extract-shared-block",
+        "match": "a >=3-line proof block reused verbatim or modulo renaming",
+        "provenance": "long-proof campaign fixtures 1-15, 17 (36 shared lemmas)",
+        "rewrite": "name the block as a lemma; call it at each site"
+      },
+      {
+        "cost_hint": "highest yield: reusable beyond the corpus",
+        "family": "extraction",
+        "id": "extract-mathlib-absent",
+        "match": "a generic block with no Mathlib equivalent (verified absent before naming)",
+        "provenance": "fixtures 10-11 (cesaro_tendsto_of_geometric_bound -> PR #44591; sum_mul_le_sum_mul_sum)",
+        "rewrite": "name it in the owning module; flag as an upstreaming candidate"
+      },
+      {
+        "cost_hint": "high-yield: the Doeblin package pattern",
+        "family": "extraction",
+        "id": "extract-horizon-package",
+        "match": "three or more inline steps serving one standing theorem family",
+        "provenance": "fixture 12 (doeblin_card_mul_le_one, realStep_iterate_mul, stationary_ge_of_doeblin)",
+        "rewrite": "package the steps as a named lemma trio in the theorem's module"
+      },
+      {
+        "cost_hint": "high-yield: the GAP-7 pattern (154 -> ~40)",
+        "family": "extraction",
+        "id": "extract-cauchy-toolkit",
+        "match": "a Cauchy/convergence argument assembled from pointwise and sum-level lemmas",
+        "provenance": "fixture 17 (iterate_sum_cauchy, pointwise_cauchy_of_sum_cauchy, sum_dist_tendsto_of_pointwise, step_fixedpoint_of_sum_dist_tendsto)",
+        "rewrite": "extract the four standard sub-steps as reusable convergence lemmas"
+      }
+    ],
+    "kernel-friendly-term-design": [
+      {
+        "cost_hint": "high kernel yield: reduces defeq heartbeats and avoids WellFounded.fix traps",
+        "family": "kernel-friendly-term-design",
+        "id": "kernel-friendly-term-design",
+        "match": "structural recursion or helper calls with heavy defeq unfolding overhead",
+        "provenance": "SAIR Lean Kernel Challenge lanes (primecount L1 structural trial division S5)",
+        "rewrite": "refactor to kernel-friendly primitives (structural Nat.rec, unrolled trial division, import-minimal path)"
+      }
+    ],
+    "redirect": [
+      {
+        "cost_hint": "reserved: no corpus fixture yet - the tool's first hit becomes it",
+        "family": "redirect",
+        "id": "redirect-by-contradiction",
+        "match": "by_contra-heavy proofs with a constructible direct witness",
+        "provenance": "JAR16 redirect procedure; ballot B3",
+        "rewrite": "restate as a direct construction (the JAR 2016 redirect class)"
+      }
+    ],
+    "reflection": [
+      {
+        "cost_hint": "high-yield: 76 lines/6 branches -> cleared (fixture 16)",
+        "family": "reflection",
+        "id": "uniform-simp-collapse",
+        "match": "branched case analysis where one uniform simp set closes every branch",
+        "provenance": "fixture 16 (gate_row_diff_bound)",
+        "rewrite": "replace the branches with one uniform simp call (the boolean-reflection pattern)"
+      }
+    ]
+  },
+  "total": 8,
+  "version": 1
+}

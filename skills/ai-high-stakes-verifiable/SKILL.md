@@ -1,11 +1,11 @@
 ---
 name: "ai-high-stakes-verifiable"
 description: |
-  USE FOR: Formally verifiable AI, high-stakes AI systems, safety-critical deployment, certification, and regulatory compliance. Use for reasoning about AI systems that must be provably correct, auditable, or certifiable — medical AI, autonomous vehicles, legal decision support, military/intelligence systems, and mathematically rigorous AI governance.
-  DO NOT USE FOR: formal verification proofs in Lean (use @lean-ai-formalization); agentic AI dynamics (use @ai-agentic-evolving); causal/deontic reasoning (use @ai-causal-deontic).
-  TRIGGERS: high stakes, verifiable AI, safety critical, certification, regulatory compliance, AI assurance.
+  USE FOR: Formally verifiable AI, high-stakes AI systems, safety-critical deployment, certification.
+  DO NOT USE FOR: formal verification proofs in Lean (@lean-ai-formalization).
+  TRIGGERS: high stakes, verifiable AI, safety critical, certification.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,15 +25,19 @@ Mathematical frameworks for AI systems where correctness, safety, and auditabili
 
 ## Routing
 
-- **USE FOR:** Formally verifiable AI, high-stakes AI systems, safety-critical deployment, certification, and regulatory compliance. Use for reasoning about AI systems that must be provably correct, auditable, or certifiable — medical AI, autonomous vehicles, legal decision support, military/intelligence systems, and mathematically rigorous AI governance.
-- **DO NOT USE FOR:** formal verification proofs in Lean (use @lean-ai-formalization); agentic AI dynamics (use @ai-agentic-evolving); causal/deontic reasoning (use @ai-causal-deontic).
+- **USE FOR:** Formally verifiable AI, high-stakes AI systems, safety-critical deployment, certification, and regulatory compliance. Use for reasoning
+  about AI systems that must be provably correct, auditable, or certifiable — medical AI, autonomous vehicles, legal decision support,
+  military/intelligence systems, and mathematically rigorous AI governance.
+- **DO NOT USE FOR:** formal verification proofs in Lean (use @lean-ai-formalization); agentic AI dynamics (use @ai-agentic-evolving); causal/deontic
+  reasoning (use @ai-causal-deontic).
 - **TRIGGERS:** high stakes, verifiable AI, safety critical, certification, regulatory compliance, AI assurance.
 
 ## Workflow
 
 1. Identify the verification class: certification (regulatory), assurance case (engineering), or formal property (mathematical).
 2. Pick the matching framework from the body (ISO 21448, ASIL, formal-property catalog).
-3. Produce the verification artifact appropriate for the class — assurance argument, requirement decomposition, or property statement ready for `@lean-ai-formalization`.
+3. Produce the verification artifact appropriate for the class — assurance argument, requirement decomposition, or property statement ready for
+   `@lean-ai-formalization`.
 4. Hand off: to `@lean-ai-formalization` for the proof, to `@applied-data-information-security` for security-specific properties, to `@lean-zettelkasten`.
 
 ## Recovery & STOP

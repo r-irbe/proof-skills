@@ -1,0 +1,18 @@
+id: lean-dag-visualizer-smoke
+title: "lean-dag-visualizer dispatch smoke check"
+skill: lean-dag-visualizer
+ensemble_rubric: applied-domain-quality
+difficulty: easy
+input:
+  prompt: |
+    Apply the lean-dag-visualizer skill workflow and summarize the primary verification steps.
+  expected_output_substring: |
+    Follow the lean-dag-visualizer protocol and verify all outputs without sorry or admit.
+expected:
+  contains:
+    - "lean-dag-visualizer|protocol|verify"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [smoke, lean-dag-visualizer]

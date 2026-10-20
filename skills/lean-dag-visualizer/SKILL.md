@@ -1,9 +1,9 @@
 ---
 name: "lean-dag-visualizer"
 description: |
-  USE FOR: launching interactive standalone Lean 4 formalization DAG visualizers, extracting topological dependency graphs, inspecting Tufte proof-walk marginalia for Lean 4 projects, domain subpackages, and research formalizations.
-  DO NOT USE FOR: authoring new Lean proofs (use @lean-proof), compiling PlasTeX LaTeX PDFs (use @lean-blueprint).
-  TRIGGERS: dag-visualizer, proof-walk, visualize-formalization, lean-visualizer, show-dag, formalization-dag.
+  USE FOR: launching interactive Lean 4 formalization DAG visualizers and Tufte proof-walk marginalia.
+  DO NOT USE FOR: authoring new Lean proofs (@lean-proof), compiling PlasTeX PDFs (@lean-blueprint).
+  TRIGGERS: dag-visualizer, proof-walk, visualize-formalization, lean-visualizer, show-dag.
 tier: "hot"
 runtime_targets: [copilot-cli, claude-code]
 dispatch_targets: []
@@ -39,12 +39,16 @@ metadata:
 
 ## Behavioural Rules (G-*)
 
-- **G-1** (MUST): The visualizer application MUST remain 100% self-contained and zero-dependency (no Node.js runtime, no npm packages, no external CDN requests). It must function completely offline and adhere strictly to 7-bit ASCII (`INV-001`).
+- **G-1** (MUST): The visualizer application MUST remain 100% self-contained and zero-dependency (no Node.js runtime, no npm packages, no external CDN
+  requests). It must function completely offline and adhere strictly to 7-bit ASCII (`INV-001`).
 - **G-2** (MUST): Graph extraction MUST verify Directed Acyclic Graph (DAG) topology. Cycles must be reported as critical structural failures before rendering.
-- **G-3** (MUST): When blueprint LaTeX exists (`blueprint/src/content.tex`), declaration-level graph extraction MUST be prioritized over module-level import graphs.
+- **G-3** (MUST): When blueprint LaTeX exists (`blueprint/src/content.tex`), declaration-level graph extraction MUST be prioritized over module-level
+  import graphs.
 - **G-4** (SHOULD): AI sessions running headlessly MUST supply `--no-browser` to avoid GUI process hangs on headless hosts or remote SSH terminals.
-- **G-5** (MUST): The two-phase DAG lifecycle MUST be respected: on-demand graph generation during orientation/discovery, and authoritative cache ratification during the verification phase.
-- **G-6** (MUST): Every declaration node MUST link its formal signature, module file path, line number, mathematical intuition narrative, proof milestones, and bidirectional premise/dependent tags.
+- **G-5** (MUST): The two-phase DAG lifecycle MUST be respected: on-demand graph generation during orientation/discovery, and authoritative cache
+  ratification during the verification phase.
+- **G-6** (MUST): Every declaration node MUST link its formal signature, module file path, line number, mathematical intuition narrative, proof milestones,
+  and bidirectional premise/dependent tags.
 
 ## Two-Phase Lifecycle: Entry Analysis vs. Verification Ratchet
 
@@ -87,7 +91,8 @@ Formalization DAGs serve two distinct operational purposes during the formalizat
    python3 scripts/lean/launch_visualizer.py packages/stochastic-ccv
    ```
 2. **Interact**:
-   - The launcher automatically builds the graph, starts the local server (`tools/visualizer/serve.py`), and opens the default browser to `http://127.0.0.1:8088/`.
+   - The launcher automatically builds the graph, starts the local server (`tools/visualizer/serve.py`), and opens the default browser to
+     `http://127.0.0.1:8088/`.
    - The operator inspects nodes, selects declarations to read Tufte cards, and navigates premise tags.
 3. **Export**: Click **"Export SVG"** to capture vector diagrams for papers, slides, or reports.
 

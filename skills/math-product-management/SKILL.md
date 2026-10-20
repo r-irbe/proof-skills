@@ -1,11 +1,11 @@
 ---
 name: "math-product-management"
 description: |
-  USE FOR: Product management for mathematical formalization projects — roadmap creation, stakeholder management, feature prioritization for formal verification artifacts, theorem portfolio management, release planning, and the business/academic value analysis of formal proofs. Complements math-project-management (scheduling/execution) with strategic product thinking.
-  DO NOT USE FOR: project-level scheduling (use @math-project-management); strategy methodology (use @applied-strategy-analysis); engineering discipline view (use @applied-engineering-disciplines).
-  TRIGGERS: product management, roadmap, stakeholder management, feature prioritization, formal verification PM.
+  USE FOR: Product management for mathematical formalization projects: roadmap creation, stakeholder management.
+  DO NOT USE FOR: project-level scheduling (@math-project-management).
+  TRIGGERS: product management, roadmap, stakeholder management.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -19,14 +19,18 @@ metadata:
 
 # Math Product Management
 
-Strategic product thinking applied to formal verification projects. While math-project-management handles execution (schedules, tasks, milestones), this skill handles strategy (what to build, for whom, why, and in what order).
+Strategic product thinking applied to formal verification projects. While math-project-management handles execution (schedules, tasks, milestones), this
+skill handles strategy (what to build, for whom, why, and in what order).
 
 ---
 
 ## Routing
 
-- **USE FOR:** Product management for mathematical formalization projects — roadmap creation, stakeholder management, feature prioritization for formal verification artifacts, theorem portfolio management, release planning, and the business/academic value analysis of formal proofs. Complements math-project-management (scheduling/execution) with strategic product thinking.
-- **DO NOT USE FOR:** project-level scheduling (use @math-project-management); strategy methodology (use @applied-strategy-analysis); engineering discipline view (use @applied-engineering-disciplines).
+- **USE FOR:** Product management for mathematical formalization projects — roadmap creation, stakeholder management, feature prioritization for formal
+  verification artifacts, theorem portfolio management, release planning, and the business/academic value analysis of formal proofs. Complements
+  math-project-management (scheduling/execution) with strategic product thinking.
+- **DO NOT USE FOR:** project-level scheduling (use @math-project-management); strategy methodology (use @applied-strategy-analysis); engineering
+  discipline view (use @applied-engineering-disciplines).
 - **TRIGGERS:** product management, roadmap, stakeholder management, feature prioritization, formal verification PM.
 
 ## Workflow

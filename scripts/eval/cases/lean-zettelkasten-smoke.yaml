@@ -1,0 +1,18 @@
+id: lean-zettelkasten-smoke
+title: "lean-zettelkasten dispatch smoke check"
+skill: lean-zettelkasten
+ensemble_rubric: applied-domain-quality
+difficulty: easy
+input:
+  prompt: |
+    Apply the lean-zettelkasten skill workflow and summarize the primary verification steps.
+  expected_output_substring: |
+    Follow the lean-zettelkasten protocol and verify all outputs without sorry or admit.
+expected:
+  contains:
+    - "lean-zettelkasten|protocol|verify"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [smoke, lean-zettelkasten]

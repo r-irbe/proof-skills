@@ -1,0 +1,18 @@
+id: lean-quality-engine-smoke
+title: "lean-quality-engine dispatch smoke check"
+skill: lean-quality-engine
+ensemble_rubric: applied-domain-quality
+difficulty: easy
+input:
+  prompt: |
+    Apply the lean-quality-engine skill workflow and summarize the primary verification steps.
+  expected_output_substring: |
+    Follow the lean-quality-engine protocol and verify all outputs without sorry or admit.
+expected:
+  contains:
+    - "lean-quality-engine|protocol|verify"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [smoke, lean-quality-engine]

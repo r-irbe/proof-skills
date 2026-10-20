@@ -1,11 +1,11 @@
 ---
 name: "lean-math-optimization"
 description: |
-  USE FOR: optimization theory, convex optimization, game theory, reinforcement-learning theory (Bellman equations, value / policy iteration), Nash equilibria, minimax theorems, decision theory, and fixed-point iterations in Lean 4.
-  DO NOT USE FOR: stochastic policies / Markov chains (use @lean-math-stochastic); pure analysis (use @lean-math-analysis); Lyapunov / control-stability proofs (use @lean-math-dynamical); writing one specific proof (use @lean-proof).
-  TRIGGERS: optimization, convex, game theory, Bellman, value iteration, policy iteration, Nash, minimax, fixed point, KKT.
+  USE FOR: optimization theory, convex optimization, game theory, reinforcement-learning theory (Bellman equations.
+  DO NOT USE FOR: stochastic policies / Markov chains (@lean-math-stochastic).
+  TRIGGERS: optimization, convex, game theory, Bellman, value iteration.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["agent:gateway", "skill:lean-proof", "skill:lean-research"]
@@ -22,8 +22,10 @@ Guide to formalizing optimization, game theory, RL theory, and decision-making i
 
 ## Routing
 
-- **USE FOR:** optimization theory, convex optimization, game theory, reinforcement-learning theory (Bellman equations, value / policy iteration), Nash equilibria, minimax theorems, decision theory, and fixed-point iterations in Lean 4.
-- **DO NOT USE FOR:** stochastic policies / Markov chains (delegate to `@lean-math-stochastic`); pure analysis (delegate to `@lean-math-analysis`); Lyapunov / control-stability proofs (delegate to `@lean-math-dynamical`); writing one specific proof (delegate to `@lean-proof`).
+- **USE FOR:** optimization theory, convex optimization, game theory, reinforcement-learning theory (Bellman equations, value / policy iteration), Nash
+  equilibria, minimax theorems, decision theory, and fixed-point iterations in Lean 4.
+- **DO NOT USE FOR:** stochastic policies / Markov chains (delegate to `@lean-math-stochastic`); pure analysis (delegate to `@lean-math-analysis`);
+  Lyapunov / control-stability proofs (delegate to `@lean-math-dynamical`); writing one specific proof (delegate to `@lean-proof`).
 - **TRIGGERS:** optimization, convex, game theory, Bellman, value iteration, policy iteration, Nash, minimax, fixed point, KKT.
 
 ## Workflow
@@ -40,7 +42,8 @@ Guide to formalizing optimization, game theory, RL theory, and decision-making i
 ## Handoffs
 
 - **Predecessors:** `agent:gateway`, `skill:lean-proof` (mid-proof optimization goal), `skill:lean-research` (Bellman / Nash-equilibrium API survey).
-- **Successors:** `skill:lean-proof` (apply the optimization pattern), `skill:lean-proof-review` (audit fixed-point claim), `skill:lean-math-analysis` (contraction / normed-space reduction).
+- **Successors:** `skill:lean-proof` (apply the optimization pattern), `skill:lean-proof-review` (audit fixed-point claim), `skill:lean-math-analysis`
+  (contraction / normed-space reduction).
 
 ## Detailed reference
 
@@ -82,8 +85,10 @@ council member, cite that table rather than restating the rows here.
 ### RL-theory escape hatches
 
 - **Finite horizon:** `Finset.sum_range_succ` unfolding usually beats induction on a `valueFn`.
-- **Infinite horizon:** only meaningful with `0 ≤ γ < 1`; the geometric-series bound is `Real.geom_series_lt` / `tsum_geometric_lt_one` / `summable_geometric_of_lt_one`.
-- **Value-iteration convergence:** prove the Bellman backup is a contraction in `‖·‖∞`, then apply the Banach fixed-point theorem (see `@lean-math-dynamical` Part 10 for the recipe).
+- **Infinite horizon:** only meaningful with `0 ≤ γ < 1`; the geometric-series bound is `Real.geom_series_lt` / `tsum_geometric_lt_one` /
+  `summable_geometric_of_lt_one`.
+- **Value-iteration convergence:** prove the Bellman backup is a contraction in `‖·‖∞`, then apply the Banach fixed-point theorem (see
+  `@lean-math-dynamical` Part 10 for the recipe).
 - **Policy iteration:** equivalence to value iteration is *not* in Mathlib — author a local lemma in the host repository and cite it.
 
 ---
@@ -103,7 +108,8 @@ council member, cite that table rather than restating the rows here.
 
 ## See also
 
-- [`../../references/lean4-math-optimization.md`](../../references/lean4-math-optimization.md) — Optimization & Decision Theory Encyclopaedia (full encyclopaedia, extracted from this skill)
+- [`../../references/lean4-math-optimization.md`](../../references/lean4-math-optimization.md) — Optimization & Decision Theory Encyclopaedia (full
+  encyclopaedia, extracted from this skill)
 - [`../../templates/Template_Dynamics.md`](../../templates/Template_Dynamics.md) — Template: Fixed-point and contraction iterations
 - [`../../templates/Template_Arithmetic.md`](../../templates/Template_Arithmetic.md) — Template: Scaled-Nat thresholds and convex bounds
 - [`../../references/lean4-tactic-hierarchy.md`](../../references/lean4-tactic-hierarchy.md) — Tactic priority for arithmetic goals

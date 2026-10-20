@@ -1,11 +1,11 @@
 ---
 name: "lean-pedagogical-exposition"
 description: |
-  USE FOR: translating Lean 4 formal proofs into human-readable textbook-grade mathematical descriptions, creating learning materials, pedagogical proof walkthroughs, Lean Blueprint LaTeX chapters, and concept zettels.
-  DO NOT USE FOR: closing open goals in Lean (use @lean-proof), automated static code census (use @lean-formalization-breakdown).
-  TRIGGERS: pedagogical-math, math-exposition, proof-narrative, human-readable-proof, lean-learning-materials, blueprint-chapter.
+  USE FOR: translating Lean 4 formal proofs into human-readable textbook-grade mathematical descriptions.
+  DO NOT USE FOR: closing open goals in Lean (@lean-proof).
+  TRIGGERS: pedagogical-math, math-exposition, proof-narrative.
 tier: "hot"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["skill:lean-formalization-breakdown", "skill:lean-blueprint"]
@@ -42,7 +42,8 @@ metadata:
    - Do not recite mechanical tactic sequences (such as 'then apply simp only and linarith').
    - Instead, state the mathematical reason: 'The divergence vanishes because the adjugate transformation is divergence-free under a unit Jacobian'.
 2. **Standard Mathematical Notation**:
-   - Translate Lean types to conventional mathematics: `SmoothL2Field Space` becomes $u \in C^\infty(\mathbb{R}^3) \cap L^2(\mathbb{R}^3)$; `fderiv R A.field x` becomes $\nabla u(x)$; `vectorCurl A.field x` becomes $\nabla \times u(x)$.
+   - Translate Lean types to conventional mathematics: `SmoothL2Field Space` becomes $u \in C^\infty(\mathbb{R}^3) \cap L^2(\mathbb{R}^3)$; `fderiv R
+     A.field x` becomes $\nabla u(x)$; `vectorCurl A.field x` becomes $\nabla \times u(x)$.
 3. **Structured Proof Walkthroughs (Three-Stage Engine)**:
    - Break monumental arguments into three intuitive stages: Setup / Coordinate Geometry -> Energy Concentration / Asymptotics -> Contradiction / Conclusion.
 4. **Lean Blueprint Tight Integration**:
@@ -50,11 +51,13 @@ metadata:
 
 ## Behavioural Rules (G-*)
 
-- **G-1** (MUST): Every formal theorem cited must be accompanied by its standard informal mathematical statement and an intuitive explanation of why the theorem is true.
+- **G-1** (MUST): Every formal theorem cited must be accompanied by its standard informal mathematical statement and an intuitive explanation of why the
+  theorem is true.
 - **G-2** (MUST): Proof walkthroughs must identify the key invariant, Lyapunov function, or geometric transformation driving the proof.
 - **G-3** (MUST): Keep mathematical exposition strictly 7-bit ASCII in Markdown files (INV-001); use standard LaTeX math syntax (`$ ... $` or `$$ ... $$`).
 - **G-4** (SHOULD): Include a schematic ASCII or mermaid diagram showing data flow or scale interactions for proofs longer than 50 lines.
-- **G-5** (MUST): Preserve fidelity with Lean formal semantics: never over-simplify a statement to the point where it asserts something different from the Lean signature.
+- **G-5** (MUST): Preserve fidelity with Lean formal semantics: never over-simplify a statement to the point where it asserts something different from the
+  Lean signature.
 
 ## Workflow
 
@@ -67,7 +70,8 @@ metadata:
 
 ## Recovery
 
-- If an informal translation appears weaker or stronger than the formal Lean signature, re-check the exact binder and hypothesis types via `@lean-proof-review` before publishing the exposition.
+- If an informal translation appears weaker or stronger than the formal Lean signature, re-check the exact binder and hypothesis types via
+  `@lean-proof-review` before publishing the exposition.
 - If dependency extraction is incomplete because `.ilean` artifacts are missing, run a targeted build via `@lean-build` first.
 
 ## Handoffs

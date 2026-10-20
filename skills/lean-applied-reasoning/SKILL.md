@@ -1,11 +1,11 @@
 ---
 name: "lean-applied-reasoning"
 description: |
-  USE FOR: Applied reasoning for intelligence analysis, strategy creation and analysis, brainstorming methodologies, investigative reasoning, and domain-specific decision-making. Use when formalizing strategic frameworks, situational analysis, hypothesis generation workflows, decision-under-uncertainty models, or when connecting theoretical formalization to practical operational contexts. Bridges mathematical formalization to real-world application domains.
-  DO NOT USE FOR: pure intelligence-analysis methodology (use @applied-intelligence-analysis); strategy analysis methodology (use @applied-strategy-analysis); legal reasoning methodology (use @applied-legal-reasoning).
-  TRIGGERS: applied reasoning, intelligence formalisation, strategy formalisation, investigative reasoning, domain-specific reasoning.
+  USE FOR: Applied reasoning for intelligence analysis, strategy creation and analysis, brainstorming methodologies.
+  DO NOT USE FOR: pure intelligence-analysis methodology (@applied-intelligence-analysis).
+  TRIGGERS: applied reasoning, intelligence formalisation.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,8 +25,12 @@ Guide to formalizing applied reasoning — from intelligence analysis to strateg
 
 ## Routing
 
-- **USE FOR:** Applied reasoning for intelligence analysis, strategy creation and analysis, brainstorming methodologies, investigative reasoning, and domain-specific decision-making. Use when formalizing strategic frameworks, situational analysis, hypothesis generation workflows, decision-under-uncertainty models, or when connecting theoretical formalization to practical operational contexts. Bridges mathematical formalization to real-world application domains.
-- **DO NOT USE FOR:** pure intelligence-analysis methodology (use @applied-intelligence-analysis); strategy analysis methodology (use @applied-strategy-analysis); legal reasoning methodology (use @applied-legal-reasoning).
+- **USE FOR:** Applied reasoning for intelligence analysis, strategy creation and analysis, brainstorming methodologies, investigative reasoning, and
+  domain-specific decision-making. Use when formalizing strategic frameworks, situational analysis, hypothesis generation workflows,
+  decision-under-uncertainty models, or when connecting theoretical formalization to practical operational contexts. Bridges mathematical formalization to
+  real-world application domains.
+- **DO NOT USE FOR:** pure intelligence-analysis methodology (use @applied-intelligence-analysis); strategy analysis methodology (use
+  @applied-strategy-analysis); legal reasoning methodology (use @applied-legal-reasoning).
 - **TRIGGERS:** applied reasoning, intelligence formalisation, strategy formalisation, investigative reasoning, domain-specific reasoning.
 
 ## Workflow

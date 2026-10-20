@@ -1,11 +1,11 @@
 ---
 name: "lean-core-only"
 description: |
-  USE FOR: Lean 4 work in a CORE-ONLY lane -- a project whose artifact may import nothing but the Lean toolchain (no Mathlib, no Batteries, no aesop, no Plausible), typically a contest/judge artifact, a vendored submission, or a `lakefile.toml` package with no dependencies. Owns the core-vs-Mathlib tactic boundary, the `lake env lean` invocation rule for `lakefile.toml` roots, deep-recursion / heartbeat triage (`maximum recursion depth`, `maximum heartbeats`), and the goal-state introspection loop for a stuck core-only proof.
-  DO NOT USE FOR: Mathlib-dependent proving (use @lean-proof or the @lean-math-analysis family), project-wide trust-base audits (use @lean-axiom-closure / @lean-deep-audit), minimising a failure into an upstream bug report (use @lean-mwe), toolchain or Lake installation problems (use @lean-setup).
-  TRIGGERS: core Lean, no Mathlib, unknown module prefix, unknown tactic, maximum recursion depth, maxRecDepth, maxHeartbeats, lakefile.toml, bare lean, core-only, judge artifact.
+  USE FOR: Lean 4 work in a CORE-ONLY lane -- a project whose artifact may import nothing but the Lean toolchain (no Mathlib.
+  DO NOT USE FOR: Mathlib-dependent proving (@lean-proof).
+  TRIGGERS: core Lean, no Mathlib, unknown module prefix, unknown tactic.
 tier: "hot"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors:

@@ -1,11 +1,11 @@
 ---
 name: "lean-math-stochastic"
 description: |
-  USE FOR: probability theory, stochastic processes, Markov chains, time-series analysis, ergodic theory, row-stochastic matrices, mixing times, spectral gaps, stationary distributions, and any stochastic dynamics in Lean 4.
-  DO NOT USE FOR: deterministic dynamical systems (use @lean-math-dynamical); abstract measure-theoretic typeclass plumbing (use @lean-math-foundations); pure topology (use @lean-math-analysis); writing one specific proof (use @lean-proof).
-  TRIGGERS: probability, stochastic, Markov chain, time series, ergodic, mixing time, spectral gap, stationary distribution, row-stochastic, martingale.
+  USE FOR: probability theory, stochastic processes, Markov chains, time-series analysis, ergodic theory.
+  DO NOT USE FOR: deterministic dynamical systems (@lean-math-dynamical).
+  TRIGGERS: probability, stochastic, Markov chain, time series, ergodic.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["agent:gateway", "skill:lean-proof", "skill:lean-research"]
@@ -22,25 +22,30 @@ Guide to formalizing probability, stochastic processes, and time series in Lean 
 
 ## Routing
 
-- **USE FOR:** probability theory, stochastic processes, Markov chains, time-series analysis, ergodic theory, row-stochastic matrices, mixing times, spectral gaps, stationary distributions, and any stochastic dynamics in Lean 4.
-- **DO NOT USE FOR:** deterministic dynamical systems (delegate to `@lean-math-dynamical`); abstract measure-theoretic typeclass plumbing (delegate to `@lean-math-foundations`); pure topology (delegate to `@lean-math-analysis`); writing one specific proof (delegate to `@lean-proof`).
+- **USE FOR:** probability theory, stochastic processes, Markov chains, time-series analysis, ergodic theory, row-stochastic matrices, mixing times,
+  spectral gaps, stationary distributions, and any stochastic dynamics in Lean 4.
+- **DO NOT USE FOR:** deterministic dynamical systems (delegate to `@lean-math-dynamical`); abstract measure-theoretic typeclass plumbing (delegate to
+  `@lean-math-foundations`); pure topology (delegate to `@lean-math-analysis`); writing one specific proof (delegate to `@lean-proof`).
 - **TRIGGERS:** probability, stochastic, Markov chain, time series, ergodic, mixing time, spectral gap, stationary distribution, row-stochastic, martingale.
 
 ## Workflow
 
 1. Identify the stochastic class (Part 1) — discrete-time chain, continuous-time process, martingale, stationary process, time-series model.
 2. Pick the matching Mathlib API (`Probability.*`, `MeasureTheory.*`) and apply the pattern below.
-3. Handoff to `@lean-proof`; if a measurability-instance gap blocks the proof, handoff to `@lean-math-foundations`; if a convergence step needs an analytic lemma, handoff to `@lean-math-analysis`.
+3. Handoff to `@lean-proof`; if a measurability-instance gap blocks the proof, handoff to `@lean-math-foundations`; if a convergence step needs an analytic
+   lemma, handoff to `@lean-math-analysis`.
 
 ## Recovery & STOP
 
-- STOP if the proof needs a measurability instance not yet synthesised — handoff to `@lean-math-foundations`. (Recall `IsFiniteMeasure.toSigmaFinite` is a priority-100 instance — `[SigmaFinite μ]` is usually free given `[IsFiniteMeasure μ]`.)
+- STOP if the proof needs a measurability instance not yet synthesised — handoff to `@lean-math-foundations`. (Recall `IsFiniteMeasure.toSigmaFinite` is a
+  priority-100 instance — `[SigmaFinite μ]` is usually free given `[IsFiniteMeasure μ]`.)
 - STOP if the result you need is a deterministic dynamical-systems claim — re-route to `@lean-math-dynamical`.
 
 ## Handoffs
 
 - **Predecessors:** `agent:gateway`, `skill:lean-proof` (mid-proof probabilistic goal), `skill:lean-research` (ergodic / martingale API survey).
-- **Successors:** `skill:lean-proof` (apply the stochastic pattern), `skill:lean-proof-review` (audit the proof), `skill:lean-math-foundations` (measurability / SigmaFinite plumbing), `skill:lean-math-analysis` (convergence step).
+- **Successors:** `skill:lean-proof` (apply the stochastic pattern), `skill:lean-proof-review` (audit the proof), `skill:lean-math-foundations`
+  (measurability / SigmaFinite plumbing), `skill:lean-math-analysis` (convergence step).
 
 ## Detailed reference
 
@@ -77,17 +82,27 @@ the high-frequency pitfalls / recipes (kept inline below).
 
 These are concrete pin-relative facts that have bitten downstream projects in the past — keep them in mind when reading "old" Mathlib citations:
 
-- **`IsFiniteMeasure.toSigmaFinite`** — priority-100 instance at `MeasureTheory/Measure/Typeclasses/SFinite.lean:577`. Don't manually `apply` it; let typeclass synthesis handle it. Used in `Mathlib/Probability/Independence/Basic.lean:704` as a reference example.
-- **`supermartingale_of_condExp_sub_nonneg_nat`** — at `Probability/Martingale/Basic.lean:424` at pin `949174649e0f` (drifted from `:431`). Preferred over `submartingale_nat` for `ConditionalRS`-style bridges.
-- **`stdSimplex.le_one`** — at `Mathlib/Analysis/Convex/StdSimplex.lean:304`, inside `namespace stdSimplex` (requires `[IsOrderedRing S]`). Returns single-coordinate `s x ≤ 1`; prefer this over `(mem_Icc_of_mem_stdSimplex h x).2` for single-coord queries.
-- **Big-operator binder notation scope** — at Mathlib `d13f23b` (Lean v4.34.1) the `∑`/`∏` binder notation is declared *unscoped* (`Algebra/BigOperators/Group/Finset/Defs.lean:181,192`): it is available with no `open` of any kind, and `open scoped BigOperators` gates only the `𝔼` (Finset.expect) notation. The umbrella import `Mathlib.Algebra.BigOperators.Basic` is deleted; use `Mathlib.Algebra.BigOperators.Group.Finset.Basic`. Binder forms (`x ∈ s`, `x < n`, `x ≤ n`, `with p x` filters, the `(a, b) with a + b = n` antidiagonal, product binders) come from the `bigOpBinder` grammar; body precedence is 67 (between `*` at 70 and `+` at 65), so a body with top-level `+` or `=` needs parens. Re-verify at your pin; notation-scope drift is a recurring pin-drift class.
+- **`IsFiniteMeasure.toSigmaFinite`** — priority-100 instance at `MeasureTheory/Measure/Typeclasses/SFinite.lean:577`. Don't manually `apply` it; let
+  typeclass synthesis handle it. Used in `Mathlib/Probability/Independence/Basic.lean:704` as a reference example.
+- **`supermartingale_of_condExp_sub_nonneg_nat`** — at `Probability/Martingale/Basic.lean:424` at pin `949174649e0f` (drifted from `:431`). Preferred over
+  `submartingale_nat` for `ConditionalRS`-style bridges.
+- **`stdSimplex.le_one`** — at `Mathlib/Analysis/Convex/StdSimplex.lean:304`, inside `namespace stdSimplex` (requires `[IsOrderedRing S]`). Returns
+  single-coordinate `s x ≤ 1`; prefer this over `(mem_Icc_of_mem_stdSimplex h x).2` for single-coord queries.
+- **Big-operator binder notation scope** — at Mathlib `d13f23b` (Lean v4.34.1) the `∑`/`∏` binder notation is declared *unscoped*
+  (`Algebra/BigOperators/Group/Finset/Defs.lean:181,192`): it is available with no `open` of any kind, and `open scoped BigOperators` gates only the `𝔼`
+  (Finset.expect) notation. The umbrella import `Mathlib.Algebra.BigOperators.Basic` is deleted; use `Mathlib.Algebra.BigOperators.Group.Finset.Basic`.
+  Binder forms (`x ∈ s`, `x < n`, `x ≤ n`, `with p x` filters, the `(a, b) with a + b = n` antidiagonal, product binders) come from the `bigOpBinder`
+  grammar; body precedence is 67 (between `*` at 70 and `+` at 65), so a body with top-level `+` or `=` needs parens. Re-verify at your pin; notation-scope
+  drift is a recurring pin-drift class.
 
-When a Mathlib-symbol claim in a project doc reads as "this lemma does not exist at the pin", **re-verify before chain-trusting**. Grep `.lake/packages/mathlib/Mathlib/...` at the current pin; stale verdicts are the most common source of W19/W20-style design errors.
+When a Mathlib-symbol claim in a project doc reads as "this lemma does not exist at the pin", **re-verify before chain-trusting**. Grep
+`.lake/packages/mathlib/Mathlib/...` at the current pin; stale verdicts are the most common source of W19/W20-style design errors.
 
 ---
 
 ## See also
 
-- [`../../references/lean4-math-stochastic.md`](../../references/lean4-math-stochastic.md) — Stochastic Mathematics Encyclopaedia (full encyclopaedia, extracted from this skill)
+- [`../../references/lean4-math-stochastic.md`](../../references/lean4-math-stochastic.md) — Stochastic Mathematics Encyclopaedia (full encyclopaedia,
+  extracted from this skill)
 - [`../../templates/Template_Dynamics.md`](../../templates/Template_Dynamics.md) — Template: Markov chains, mixing time, ergodic patterns
 - [`../../templates/Template_Analysis.md`](../../templates/Template_Analysis.md) — Template: Measure-theoretic and analytic patterns

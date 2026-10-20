@@ -3,10 +3,12 @@ name: "ai-guard-judge-eval"
 id: ai-guard-judge-eval
 title: "Evaluating guard-style LLM judges: bands, adapters, distributions"
 description: |
-  USE FOR: benchmarking LLM judges used as safety guards or escalation adjudicators - building a stratified band set from real command or decision corpora, measuring band-wise sensitivity/specificity with repeat-pass distributions, integrating heterogeneous judge models through per-judge schema adapters with recorded translations, and gating rubric or model changes behind distribution deltas.
-  DO NOT USE FOR: continuous-score quality rating or preference ranking of chat models; formal verification of AI systems in Lean (use @lean-ai-formalization).
-  TRIGGERS: LLM judge, safety guard eval, escalation adjudicator, stratified band set, judge rubric, repeat-pass distribution, schema adapter.
+  USE FOR: benchmarking LLM judges used as safety guards or escalation adjudicators: building a stratified band set from real.
+  DO NOT USE FOR: continuous-score quality rating or preference ranking of chat models.
+  TRIGGERS: LLM judge, safety guard eval, escalation adjudicator.
 tier: "warm"
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+dispatch_targets: []
 handoffs:
   predecessors: ["skill:applied-data-information-security", "skill:ai-high-stakes-verifiable"]
   successors: ["skill:ai-high-stakes-verifiable", "skill:applied-engineering-disciplines"]
@@ -105,8 +107,10 @@ pairwise flows).
 
 ## Recovery
 
-- If a judge emits unparseable output during the 3-item smoke check, stop the full run and fix the per-judge schema adapter or disable thinking-channel capture before spending full-set compute.
-- If E-band disagreements trace to deterministic gate regex false positives, record them as label noise and fix the gate pattern separately rather than tuning the judge rubric to mimic gate bugs.
+- If a judge emits unparseable output during the 3-item smoke check, stop the full run and fix the per-judge schema adapter or disable thinking-channel
+  capture before spending full-set compute.
+- If E-band disagreements trace to deterministic gate regex false positives, record them as label noise and fix the gate pattern separately rather than
+  tuning the judge rubric to mimic gate bugs.
 
 ## Handoffs
 

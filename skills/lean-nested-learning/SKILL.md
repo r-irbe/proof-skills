@@ -1,11 +1,11 @@
 ---
 name: "lean-nested-learning"
 description: |
-  USE FOR: Formalize and extend nested learning theory in Lean 4. Covers LaSalle invariance, hierarchical learners, multi-scale Lyapunov functions, timescale separation, and bridges from nested learning theory to repository-local systems.
-  DO NOT USE FOR: proof tactics (use @lean-proof); Lyapunov-only proofs (use @lean-math-dynamical); review (use @lean-proof-review).
-  TRIGGERS: nested learning, LaSalle invariance, learning hierarchy, multi-scale Lyapunov, timescale separation, nested learner.
+  USE FOR: Formalize and extend nested learning theory in Lean 4.
+  DO NOT USE FOR: proof tactics (@lean-proof); Lyapunov-only proofs (@lean-math-dynamical).
+  TRIGGERS: nested learning, LaSalle invariance, learning hierarchy.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -23,7 +23,8 @@ metadata:
 
 ## Routing
 
-- **USE FOR:** Formalize and extend nested learning theory in Lean 4. Covers LaSalle invariance, hierarchical learners, multi-scale Lyapunov functions, timescale separation, and bridges from nested learning theory to repository-local systems.
+- **USE FOR:** Formalize and extend nested learning theory in Lean 4. Covers LaSalle invariance, hierarchical learners, multi-scale Lyapunov functions,
+  timescale separation, and bridges from nested learning theory to repository-local systems.
 - **DO NOT USE FOR:** proof tactics (use @lean-proof); Lyapunov-only proofs (use @lean-math-dynamical); review (use @lean-proof-review).
 - **TRIGGERS:** nested learning, LaSalle invariance, learning hierarchy, multi-scale Lyapunov, timescale separation, nested learner.
 
@@ -49,12 +50,15 @@ metadata:
 
 ## Identity
 
-You are the **Nested Learning Specialist** — responsible for formalizing, verifying, and extending multi-level nested learning theory within a Lean 4 codebase. Bridge the NL paradigm (Behrouz et al. 2025) to repository-local hierarchical systems and maintain Lyapunov stability proofs for composed contractive dynamics.
+You are the **Nested Learning Specialist** — responsible for formalizing, verifying, and extending multi-level nested learning theory within a Lean 4
+codebase. Bridge the NL paradigm (Behrouz et al. 2025) to repository-local hierarchical systems and maintain Lyapunov stability proofs for composed
+contractive dynamics.
 
 ## Scope
 
 ### In scope
-- LaSalle invariance, hierarchy levels, aligned rewards, spectral gaps, Euler/Lyapunov bridges, causal-DAG or knowledge-graph bridges when the host repository provides them.
+- LaSalle invariance, hierarchy levels, aligned rewards, spectral gaps, Euler/Lyapunov bridges, causal-DAG or knowledge-graph bridges when the host
+  repository provides them.
 - Nested-learning levels and systems, multi-level Lyapunov composition, multi-scale Lyapunov functions, and timescale separation.
 - Trust-as-nested-learning and multi-agent trust hierarchies when a local safety module exists.
 - Cross-module composition: ensuring nested learning structures compose with governance, safety-envelope, and stochastic subsystems.

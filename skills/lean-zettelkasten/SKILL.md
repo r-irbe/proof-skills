@@ -1,11 +1,11 @@
 ---
 name: "lean-zettelkasten"
 description: |
-  USE FOR: creating fleeting/literature/permanent ZK notes during Lean proof reviews, linking notes bidirectionally, running synthesis after a council session, detecting orphan and island notes, maintaining `_index.md` and `_tags.md`.
-  DO NOT USE FOR: running the review council itself (use @lean-review-council), reviewing a single proof (use @lean-proof-review), updating external papers from results (use @lean-doc-improvement), authoring the review methodology retro (use @lean-retro-methodology), generating a project blueprint (use @lean-blueprint).
+  USE FOR: creating fleeting/literature/permanent ZK notes during Lean proof reviews, linking notes bidirectionally.
+  DO NOT USE FOR: running the review council itself (@lean-review-council).
   TRIGGERS: zettel, ZK-, fleeting note, permanent note, synthesis.
 tier: "cold"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors:
@@ -33,8 +33,12 @@ r_caveats: [F1, F6]
 
 ## Routing
 
-- **USE FOR:** creating a fleeting note from a council observation; creating a literature note when citing lean-pitfalls / Mathlib docs / a paper; promoting a cluster of ≥3 notes to a permanent note via the Synthesizer; bidirectional linking (`Related`, `Contradicts`, `Supports`, `Supersedes`); running orphan / island / contradiction / staleness / coverage scans; updating `_index.md` and `_tags.md`.
-- **DO NOT USE FOR:** running the review council itself (use `@lean-review-council`); reviewing a specific proof (use `@lean-proof-review`); updating external papers from Lean results (use `@lean-doc-improvement`); authoring the council retro / methodology (use `@lean-retro-methodology`); generating a project blueprint (use `@lean-blueprint`).
+- **USE FOR:** creating a fleeting note from a council observation; creating a literature note when citing lean-pitfalls / Mathlib docs / a paper;
+  promoting a cluster of ≥3 notes to a permanent note via the Synthesizer; bidirectional linking (`Related`, `Contradicts`, `Supports`, `Supersedes`);
+  running orphan / island / contradiction / staleness / coverage scans; updating `_index.md` and `_tags.md`.
+- **DO NOT USE FOR:** running the review council itself (use `@lean-review-council`); reviewing a specific proof (use `@lean-proof-review`); updating
+  external papers from Lean results (use `@lean-doc-improvement`); authoring the council retro / methodology (use `@lean-retro-methodology`); generating a
+  project blueprint (use `@lean-blueprint`).
 - **TRIGGERS:** zettel, ZK-, fleeting note, permanent note, synthesis.
 
 ## Behavioural rules (G-*)
@@ -44,15 +48,20 @@ r_caveats: [F1, F6]
 - **G-3** (SHOULD): Fleeting notes SHOULD remain minimal — capture the observation; do not perfect prose. [Trace: AC-03]
 - **G-4** (MUST): A permanent note MUST link to all source fleeting/literature notes it synthesises, and the sources MUST be marked `superseded`. [Trace: AC-04]
 - **G-5** (MUST NOT): The skill MUST NOT promote a cluster to a permanent note unless ≥3 source notes converge on the pattern. [Trace: AC-05]
-- **G-6** (SHOULD): The skill SHOULD propose a downstream `@lean-proof-review` or `@lean-quality-engine` skill update when a permanent note implies a methodology change. [Trace: AC-06]
+- **G-6** (SHOULD): The skill SHOULD propose a downstream `@lean-proof-review` or `@lean-quality-engine` skill update when a permanent note implies a
+  methodology change. [Trace: AC-06]
 
 ## Workflow
 
-1. **Discover** [discover] — read the triggering event (council session, new literature citation, scheduled scan). Locate `_index.md`, current note counts, recent tag activity.
-2. **Plan** [discover] — pick note type (fleeting / literature / permanent) or scan type (orphan / island / contradiction / staleness / coverage). For permanent promotion, verify ≥3 source notes (G-5). STOP if cluster size < 3 and downgrade to literature note.
-3. **Execute** [execute] — write the note(s) under the correct directory (`fleeting/`, `literature/`, or `permanent/<category>/`); establish bidirectional links; flag contradictions for SDR.
+1. **Discover** [discover] — read the triggering event (council session, new literature citation, scheduled scan). Locate `_index.md`, current note counts,
+   recent tag activity.
+2. **Plan** [discover] — pick note type (fleeting / literature / permanent) or scan type (orphan / island / contradiction / staleness / coverage). For
+   permanent promotion, verify ≥3 source notes (G-5). STOP if cluster size < 3 and downgrade to literature note.
+3. **Execute** [execute] — write the note(s) under the correct directory (`fleeting/`, `literature/`, or `permanent/<category>/`); establish bidirectional
+   links; flag contradictions for SDR.
 4. **Verify** [validate] — re-check ID uniqueness, link reciprocity, tag presence (G-1, G-2). Max 3 re-checks then escalate.
-5. **Persist** [persist] — commit the new/updated notes, update `_index.md` and `_tags.md`, and (if applicable) open a skill-update proposal for `@lean-proof-review` or `@lean-quality-engine` (G-6). Persist is local to `docs/project/lean/docs/zettelkasten/`.
+5. **Persist** [persist] — commit the new/updated notes, update `_index.md` and `_tags.md`, and (if applicable) open a skill-update proposal for
+   `@lean-proof-review` or `@lean-quality-engine` (G-6). Persist is local to `docs/project/lean/docs/zettelkasten/`.
 
 ## Recovery & STOP
 
@@ -63,7 +72,9 @@ r_caveats: [F1, F6]
 
 ## Handoffs
 
-- **Predecessors / successors**: see FM `handoffs`. Inbound: `@lean-proof-review`, `@lean-review-council`, `@lean-retro-methodology`, and `@lean-proof` (post-proof pattern capture) seed fleeting notes. Outbound: `@lean-doc-improvement` consumes permanent notes that imply paper updates; `@lean-quality-engine` consumes permanent notes that imply skill or methodology changes.
+- **Predecessors / successors**: see FM `handoffs`. Inbound: `@lean-proof-review`, `@lean-review-council`, `@lean-retro-methodology`, and `@lean-proof`
+  (post-proof pattern capture) seed fleeting notes. Outbound: `@lean-doc-improvement` consumes permanent notes that imply paper updates;
+  `@lean-quality-engine` consumes permanent notes that imply skill or methodology changes.
 - **Source spec**: `specs/lean/zettelkasten/requirements.md` — every G-rule traces to an AC there.
 - **Related ADRs**: ADR-0076 (skill-as-contract), ADR-0080 (handoff DAG), ADR-0079 (cold-tier loading rationale).
 

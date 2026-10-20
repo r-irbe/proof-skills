@@ -1,11 +1,11 @@
 ---
 name: "lean-competitive-math"
 description: |
-  USE FOR: formalizing a Project-Euler / competition-math problem as a Lean 4 theorem that asserts a concrete numeric answer, proving it, verifying the answer actually computes (native_decide / #eval), then improving the proof from a compiler-trusted answer-check toward a kernel-checked or structural (closed-form) proof. Owns the answer-check-to-structural ladder (Bronze native_decide -> Silver decide / norm_num -> Gold characterising property / closed form) and its L3 non-triviality carve-out for legitimate native_decide answer-checks. Alias: euler-prover.
-  DO NOT USE FOR: writing the theorem statement in isolation (use @lean-specification); one-tactic-at-a-time proof authoring or error triage (use @lean-proof); generic single-proof audit outside the carve-out (use @lean-proof-review); Mathlib API / lemma discovery (use @lean-research); project-wide quality scoring (use @lean-quality-engine); open problems with no known numeric answer (this skill requires a known target).
-  TRIGGERS: Project Euler, competition math, euler-prover, numeric answer theorem, answer = N, native_decide answer-check, computed constant, closed-form proof.
+  USE FOR: formalizing a Project-Euler / competition-math problem as a Lean 4 theorem that asserts a concrete numeric answer.
+  DO NOT USE FOR: writing the theorem statement in isolation (@lean-specification).
+  TRIGGERS: Project Euler, competition math, euler-prover.
 tier: "hot"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["skill:lean-gateway", "skill:lean-specification", "skill:lean-research"]
@@ -157,7 +157,8 @@ Discover -> Plan -> Execute -> Validate -> Persist.
 
 ## See also
 
-- [`references/lean4-number-theory.md`](references/lean4-number-theory.md) -- Mathlib number-theory facilities + Bronze/Silver/Gold ladder + axiom-audit trust note (this skill's handbook).
+- [`references/lean4-number-theory.md`](references/lean4-number-theory.md) -- Mathlib number-theory facilities + Bronze/Silver/Gold ladder + axiom-audit
+  trust note (this skill's handbook).
 - [`Template_Euler.md`](Template_Euler.md) -- per-problem Lean file template with a verified Euler-1 example.
 - [`../lean-specification/SKILL.md`](../lean-specification/SKILL.md) -- Predecessor (theorem statement).
 - [`../lean-research/SKILL.md`](../lean-research/SKILL.md) -- Predecessor (Mathlib encoding).

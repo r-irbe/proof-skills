@@ -50,7 +50,7 @@ The gateway is the single entry point for all Lean 4 formalization work. It coor
 | `SK-35` | `lean-retro-methodology` | RETRO protocol for retroactive formalization | RETRO Architect |
 | `SK-36` | `lean-enforcement` | Programmatic quality enforcement (Python/shell) | Enforcement Engine |
 | `SK-37` | `lean-doc-feedback` | Bidirectional document ↔ Lean feedback loop | Feedback Coordinator |
-| `SK-38` | `lean-research-types` | Typed research protocols (M/T/L/S/D/X/E) | Research Specialist |
+| `SK-38` | `lean-research-types` | Typed research protocols (M/T/L/S/D/X/E) (**REDIRECT** — folded into `lean-research` Part 9) | Research Specialist |
 | `SK-39` | `lean-quality-engine` | Unified QA lifecycle, quality scoring, gates | QA Orchestrator |
 | `SK-40` | `lean-integration-protocol` | Cross-skill integration, lifecycle templates, personas | Integration Architect |
 | `SK-41` | `math-nonlinear-dynamics` | Nonlinear dynamics, bifurcation, chaos, attractors | Domain expert (nonlinear) |
@@ -76,6 +76,24 @@ The gateway is the single entry point for all Lean 4 formalization work. It coor
 | `SK-61` | `lean-blueprint` | Blueprint generation (LeanArchitect + leanblueprint) | Blueprint Architect |
 | `SK-62` | `lean-report` | Blueprint-to-report (LaTeX with NL text) | Report Author |
 | `SK-63` | `lean-build` | Agnostic Lake build skill (W4 Wave 2 — replaces `mathlib-build`) | Build Engineer |
+| `SK-64` | `lean-proof-refactor` | Long-proof decomposition, helper-lemma extraction, regression gates | Editor / Refactor Specialist |
+| `SK-65` | `lean-upstream-porting` | Corpus-to-Mathlib/stdlib upstream porting, branch hygiene, AI disclosure | Editor / Upstream Porter |
+| `SK-66` | `lean-tautology-triage` | Triage of vacuous, tautological, `: True`, or bare `decide`/`rfl` theorems | Auditor / Triage Specialist |
+| `SK-67` | `lean-package-research` | Upstream package ecosystem evaluation, dependency readiness, version pins | Researcher |
+| `SK-68` | `lean-vendor-substrate` | Vendored upstream mathematical libraries, read-only boundary, fork sync | Substrate Steward |
+| `SK-69` | `lean-formalization-breakdown` | Multi-wave architectural breakdown, static/kernel census, landmark DAG | Breakdown Curator |
+| `SK-70` | `lean-dag-visualizer` | Interactive formalization DAG visualizer, topological depth, Tufte proof-walk | DAG Navigator |
+| `SK-71` | `lean-pedagogical-exposition` | Textbook-grade mathematical narrative, proof walkthroughs, concept zettels | Pedagogy Author |
+| `SK-72` | `lean-bigraph-modeling` | Robin Milner Bigraphical Reactive Systems (Place Graph + Link hyperedges) | Domain expert (bigraphs) |
+| `SK-73` | `lean-convergence-verification` | Discrete Lyapunov energy contraction, loop bounds, ceiling division | Domain expert (convergence) |
+| `SK-74` | `lean-core-only` | Stdlib/Core-only Lean 4 proving without Mathlib (`omega`, `grind`, induction) | Implementer (core-only) |
+| `SK-75` | `lean-axiom-closure` | Compile-time transitive axiom closure lockdown (`#guard_msgs in #print axioms`) | Auditor (trust closure) |
+| `SK-76` | `lean-deep-audit` | Whole-corpus 7-lens quality audit (trust lockdown, faithfulness, inhabitation) | Audit Director |
+| `SK-77` | `lean-replay-verification` | Independent kernel replay (`lean4checker --fresh`, Comparator) | Auditor (kernel replay) |
+| `SK-78` | `ai-guard-judge-eval` | Guard-style LLM judge benchmarking, band-stratified eval, schema adapters | Domain expert (AI guard eval) |
+| `SK-79` | `lean-competitive-math` | Olympiad / contest formalization (MiniF2F, Putnam, IMO) | Domain expert (competition math) |
+
+> **Note on registry counts:** The registry spans `SK-01`..`SK-79` (`75` first-party skills in `skills/<name>/` [74 active v2 + `SK-38 lean-research-types` redirect stub] + `4` legacy override redirect stubs in `skills/_overrides/` [`SK-29 mathlib-build`, `SK-30 mathlib-pr`, `SK-31 mathlib-review`, `SK-34 nightly-testing`]).
 
 ---
 
@@ -482,7 +500,7 @@ Each level can resolve issues within its scope. Escalation occurs when:
 |---|---|---|---|
 | Dispatch agents | ✅ | ✅ (within own skill) | ❌ |
 | Modify SKILL.md | ✅ (after vote) | Propose only | ❌ |
-| Modify AGENT.md | ✅ (after vote) | Propose only | ❌ |
+| Modify AGENTS.md | ✅ (after vote) | Propose only | ❌ |
 | Create todos | ✅ | ✅ | ✅ |
 | Block a review | ❌ | ✅ (chair) | ✅ (veto power) |
 | Escalate to human | ✅ | ✅ | ✅ |
@@ -581,7 +599,7 @@ python3 scripts/workflow_gate.py --status
 ```
                         ┌─────────────────────────┐
                         │  lean-gateway (SK-07)    │
-                        │  Orchestrator (62 skills)│
+                        │  Orchestrator (75 skills)│
                         └──────────┬──────────────┘
                                    │
     ┌──────────────┬───────────────┼───────────────┬──────────────┐
@@ -591,32 +609,33 @@ python3 scripts/workflow_gate.py --status
 │cluster│    │ cluster   │   │ cluster │   │ cluster     │ │cluster  │
 └───┬───┘    └─────┬─────┘   └────┬────┘   └──────┬──────┘ └────┬────┘
     │              │              │                │              │
- SK-02,03,05   SK-11,22,38    SK-09,10,37      SK-04,23,25   SK-36,39,08
- proof,council  research,      doc-req,         ZK,epist,     enforce,QA,
- spec           r.council,     doc-imp,         strategy      retro-aud
-                types          feedback
+ SK-02,03,05   SK-11,22,38    SK-09,10,37      SK-04,23,25   SK-08,35,36,39
+ SK-66         SK-67          SK-61,62,70,71   ZK,epist,     SK-75,76,77
+ proof,council  research,      doc,blueprint,   strategy      enforce,QA,
+ spec,triage    pkg-research   report,viz,ped                 axiom,replay
     │              │                                             │
 ┌───▼───┐    ┌─────▼─────┐                                 ┌────▼────┐
 │DOMAIN │    │ EPISTEMIC │                                 │ INFRA   │
 │cluster│    │ cluster   │                                 │ cluster │
 └───┬───┘    └─────┬─────┘                                 └────┬────┘
     │              │                                             │
- SK-12..21      SK-23,59,60                                  SK-06,34,35
- SK-32,33       epist-map,                                   setup,CI,
- domain         discovery,                                   RETRO
- specialists    synthesis
+ SK-12..21      SK-23,59,60                                  SK-01,06,26..28
+ SK-32,33       epist-map,                                   SK-63..65,68,69,74
+ SK-72,73,79    discovery,                                   prove,build,setup,
+ specialists    synthesis                                    refactor,port,core
     │
 ┌───▼───────────────────────────────┐
 │ EXPANDED DOMAIN SKILLS            │
-│ SK-41..58                         │
+│ SK-41..58, SK-78                  │
 ├───────────────────────────────────┤
 │ Math: SK-41..47                   │
 │  nonlinear, timeseries, graph/KG, │
 │  measure/prob, algebra/cat,       │
 │  optim/game, topology             │
-│ AI: SK-48..52                     │
+│ AI: SK-48..52, SK-78              │
 │  symbolic, agentic, verifiable,   │
-│  causal/deontic, commonsense      │
+│  causal/deontic, commonsense,     │
+│  guard-judge-eval                 │
 │ Applied: SK-53..57                │
 │  legal, intelligence, strategy,   │
 │  security, engineering            │
@@ -624,7 +643,7 @@ python3 scripts/workflow_gate.py --status
 │  product management               │
 └───────────────────────────────────┘
 
-  Fan-in to gateway: ALL 62 skills report status/escalations ← SK-07
+  Fan-in to gateway: ALL 75 first-party skills report status/escalations ← SK-07
   Fan-out from gateway: SK-07 dispatches to ANY skill →
 ```
 
@@ -632,15 +651,15 @@ python3 scripts/workflow_gate.py --status
 
 | Cluster | Skills | Primary Function |
 |---|---|---|
-| **Review** | SK-02, SK-03, SK-05 | Verify proof correctness and specification |
-| **Research** | SK-11, SK-22, SK-38 | Find knowledge, methods, literature |
-| **Document** | SK-09, SK-10, SK-37 | Bidirectional paper ↔ Lean synchronization |
-| **Quality** | SK-36, SK-39, SK-08, SK-35 | Enforce quality, audit, QA gates |
-| **Domain (core)** | SK-12..21, SK-32, SK-33 | Lean formalization domain expertise |
+| **Review** | SK-02, SK-03, SK-05, SK-66 | Verify proof correctness, specification, and non-triviality |
+| **Research** | SK-11, SK-22, SK-38, SK-67 | Find knowledge, methods, literature, and package ecosystem readiness |
+| **Document & Blueprint** | SK-09, SK-10, SK-37, SK-61, SK-62, SK-70, SK-71 | Bidirectional paper ↔ Lean sync, blueprints, DAG visualizer, pedagogy |
+| **Quality & Audit** | SK-08, SK-35, SK-36, SK-39, SK-69, SK-75, SK-76, SK-77 | Enforce quality, axiom lockdown, kernel replay, deep audit, QA gates |
+| **Domain (core)** | SK-12..21, SK-32, SK-33, SK-72, SK-73, SK-79 | Lean formalization domain expertise (incl. bigraphs, convergence, contest math) |
 | **Domain (math)** | SK-41..47 | Pure/applied math domain knowledge |
-| **Domain (AI)** | SK-48..52 | AI domain knowledge (symbolic, agentic, causal, ...) |
-| **Domain (applied)** | SK-53..57 | Applied domain knowledge (legal, intel, strategy, ...) |
+| **Domain (AI)** | SK-48..52, SK-78 | AI domain knowledge (symbolic, agentic, causal, verifiable, guard-judge eval) |
+| **Domain (applied)** | SK-53..57 | Applied domain knowledge (legal, intel, strategy, security, engineering) |
 | **Domain (mgmt)** | SK-24, SK-58 | Project + product management |
 | **Knowledge** | SK-04, SK-25 | Knowledge management, brainstorming |
 | **Epistemic** | SK-23, SK-59, SK-60 | Epistemic mapping, UU discovery, research synthesis |
-| **Infrastructure** | SK-06, SK-34 | Build, CI, toolchain |
+| **Infrastructure & Editor** | SK-01, SK-06, SK-26..28, SK-63..65, SK-68, SK-74 | Proving, core-only profile, Lake build, MWE, bisect, PRs, refactoring, porting, vendor substrate |

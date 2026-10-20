@@ -1,0 +1,18 @@
+id: lean-review-council-smoke
+title: "lean-review-council dispatch smoke check"
+skill: lean-review-council
+ensemble_rubric: applied-domain-quality
+difficulty: easy
+input:
+  prompt: |
+    Apply the lean-review-council skill workflow and summarize the primary verification steps.
+  expected_output_substring: |
+    Follow the lean-review-council protocol and verify all outputs without sorry or admit.
+expected:
+  contains:
+    - "lean-review-council|protocol|verify"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [smoke, lean-review-council]

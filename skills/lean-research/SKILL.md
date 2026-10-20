@@ -1,15 +1,21 @@
 ---
 name: "lean-research"
 description: |
-  USE FOR: per-question Lean 4 research — picking a research method (Mathlib grep / Web / repo grep / sub-agent), running the discovery ladder for Mathlib/Loogle/Reservoir/GitHub/literature lookups, choosing depth (Shallow / Standard / Deep / Exhaustive), emitting a findings + recommended-strategy + Zettel triple, integrating with the Rumsfeld epistemic matrix and the review council, running a typed protocol (M / T / L / S / D / X / E).
-  DO NOT USE FOR: full council convocation (use @research-council); synthesis emission (use @research-synthesis-engine); package adoption or Lake dependency decisions (use @lean-package-research); proof writing (use @lean-proof); review (use @lean-review-council).
-  TRIGGERS: research, mathlib lookup, find lemma, theorem search, Loogle, Moogle, Reservoir, package search, literature search, web search, what does X mean, typed research, M protocol, T protocol, L protocol.
+  USE FOR: per-question Lean 4 research: picking a research method (Mathlib grep / Web / repo grep / sub-agent).
+  DO NOT USE FOR: full council convocation (@research-council).
+  TRIGGERS: research, mathlib lookup, find lemma, theorem search, Loogle.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-proof', 'skill:lean-proof-review', 'skill:lean-specification', 'skill:lean-blueprint']
-  successors: ['skill:lean-zettelkasten', 'skill:research-council', 'skill:research-synthesis-engine', 'skill:lean-package-research', 'skill:lean-proof', 'skill:lean-proof-review']
+  successors:
+    - 'skill:lean-zettelkasten'
+    - 'skill:research-council'
+    - 'skill:research-synthesis-engine'
+    - 'skill:lean-package-research'
+    - 'skill:lean-proof'
+    - 'skill:lean-proof-review'
 metadata:
   version: "0.2.0"
   source_spec: "skills/lean-research/SKILL.md (this file)"
@@ -25,10 +31,15 @@ Systematic methodology for investigating proof strategies, API availability, tac
 
 ## Routing
 
-- **USE FOR / DO NOT USE FOR / TRIGGERS** — see the `description` field in the YAML frontmatter above. Same dispatch contract is restated here for in-skill discovery.
-- **USE FOR:** per-question Lean 4 research — picking a research method (Mathlib grep / Web / repo grep / sub-agent), running the discovery ladder for Mathlib/Loogle/Reservoir/GitHub/literature lookups, choosing depth (Shallow / Standard / Deep / Exhaustive), emitting a findings + recommended-strategy + Zettel triple, integrating with the Rumsfeld epistemic matrix and the review council, running a typed protocol (M / T / L / S / D / X / E).
-- **DO NOT USE FOR:** full council convocation (use @research-council); synthesis emission (use @research-synthesis-engine); package adoption or Lake dependency decisions (use @lean-package-research); proof writing (use @lean-proof); review (use @lean-review-council).
-- **TRIGGERS:** research, mathlib lookup, find lemma, theorem search, Loogle, Moogle, Reservoir, package search, literature search, web search, what does X mean, typed research, M protocol, T protocol, L protocol.
+- **USE FOR / DO NOT USE FOR / TRIGGERS** — see the `description` field in the YAML frontmatter above. Same dispatch contract is restated here for in-skill
+  discovery.
+- **USE FOR:** per-question Lean 4 research — picking a research method (Mathlib grep / Web / repo grep / sub-agent), running the discovery ladder for
+  Mathlib/Loogle/Reservoir/GitHub/literature lookups, choosing depth (Shallow / Standard / Deep / Exhaustive), emitting a findings + recommended-strategy +
+  Zettel triple, integrating with the Rumsfeld epistemic matrix and the review council, running a typed protocol (M / T / L / S / D / X / E).
+- **DO NOT USE FOR:** full council convocation (use @research-council); synthesis emission (use @research-synthesis-engine); package adoption or Lake
+  dependency decisions (use @lean-package-research); proof writing (use @lean-proof); review (use @lean-review-council).
+- **TRIGGERS:** research, mathlib lookup, find lemma, theorem search, Loogle, Moogle, Reservoir, package search, literature search, web search, what does X
+  mean, typed research, M protocol, T protocol, L protocol.
 
 ## Workflow
 
@@ -39,7 +50,8 @@ Systematic methodology for investigating proof strategies, API availability, tac
    [`references/discovery-ladder.md`](../../references/discovery-ladder.md)
    whenever the answer depends on an existing theorem, package, or literature
    anchor. Record misses with the negative-result block from that reference.
-4. If the question is typed, switch to the typed protocol (handbook Part 9: M = Mathlib, T = Tactic, L = Literature, S = Strategy, D = Domain, X = Cross-domain, E = Empirical).
+4. If the question is typed, switch to the typed protocol (handbook Part 9: M = Mathlib, T = Tactic, L = Literature, S = Strategy, D = Domain, X =
+   Cross-domain, E = Empirical).
 5. Emit the standard output triple (handbook Part 3): Findings + Recommended Strategy + Zettel notes.
 6. Hand off the recommended strategy to the consumer skill (handbook Part 7 mapping).
 
@@ -54,13 +66,15 @@ Systematic methodology for investigating proof strategies, API availability, tac
 ## Handoffs
 
 - **Predecessors:** `agent:gateway`, `skill:lean-proof`, `skill:lean-proof-review`, `skill:lean-specification`, `skill:lean-blueprint`.
-- **Successors:** `skill:lean-zettelkasten`, `skill:research-council`, `skill:research-synthesis-engine`, `skill:lean-package-research`, `skill:lean-proof`, `skill:lean-proof-review`.
+- **Successors:** `skill:lean-zettelkasten`, `skill:research-council`, `skill:research-synthesis-engine`, `skill:lean-package-research`,
+  `skill:lean-proof`, `skill:lean-proof-review`.
 
 ---
 
 ## Detailed reference
 
-- Mathlib master (module system) API notes - notation propagation, sealed instances, generated names, normed/measure construct pointers: `references/mathlib-module-system-notes.md`.
+- Mathlib master (module system) API notes - notation propagation, sealed instances, generated names, normed/measure construct pointers:
+  `references/mathlib-module-system-notes.md`.
 
 Full methodology content (Parts 1–9) lives in
 [`references/lean-research-handbook.md`](../../references/lean-research-handbook.md).

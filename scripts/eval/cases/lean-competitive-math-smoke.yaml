@@ -1,0 +1,18 @@
+id: lean-competitive-math-smoke
+title: "lean-competitive-math dispatch smoke check"
+skill: lean-competitive-math
+ensemble_rubric: applied-domain-quality
+difficulty: easy
+input:
+  prompt: |
+    Apply the lean-competitive-math skill workflow and summarize the primary verification steps.
+  expected_output_substring: |
+    Follow the lean-competitive-math protocol and verify all outputs without sorry or admit.
+expected:
+  contains:
+    - "lean-competitive-math|protocol|verify"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [smoke, lean-competitive-math]

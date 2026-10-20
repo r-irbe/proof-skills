@@ -1,11 +1,11 @@
 ---
 name: "applied-strategy-analysis"
 description: |
-  USE FOR: Strategy creation, analysis, and evaluation — game-theoretic foundations, competitive analysis, decision frameworks, SWOT/PESTLE, wargaming, and their mathematical underpinnings. Use for strategic reasoning about complex multi-agent scenarios, organizational strategy, research strategy, and mathematical planning for governance and optimization layers.
-  DO NOT USE FOR: formalising strategic models in Lean (use @lean-applied-reasoning); intelligence analysis (use @applied-intelligence-analysis); game-theoretic optimization (use @math-optimization-game).
-  TRIGGERS: strategy, SWOT, PESTLE, wargaming, decision framework, competitive analysis, game-theoretic strategy.
+  USE FOR: Strategy creation, analysis, and evaluation: game-theoretic foundations, competitive analysis.
+  DO NOT USE FOR: formalising strategic models in Lean (@lean-applied-reasoning).
+  TRIGGERS: strategy, SWOT, PESTLE, wargaming, decision framework.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,8 +25,11 @@ Mathematical and systematic frameworks for creating, evaluating, and executing s
 
 ## Routing
 
-- **USE FOR:** Strategy creation, analysis, and evaluation — game-theoretic foundations, competitive analysis, decision frameworks, SWOT/PESTLE, wargaming, and their mathematical underpinnings. Use for strategic reasoning about complex multi-agent scenarios, organizational strategy, research strategy, and mathematical planning for governance and optimization layers.
-- **DO NOT USE FOR:** formalising strategic models in Lean (use @lean-applied-reasoning); intelligence analysis (use @applied-intelligence-analysis); game-theoretic optimization (use @math-optimization-game).
+- **USE FOR:** Strategy creation, analysis, and evaluation — game-theoretic foundations, competitive analysis, decision frameworks, SWOT/PESTLE, wargaming,
+  and their mathematical underpinnings. Use for strategic reasoning about complex multi-agent scenarios, organizational strategy, research strategy, and
+  mathematical planning for governance and optimization layers.
+- **DO NOT USE FOR:** formalising strategic models in Lean (use @lean-applied-reasoning); intelligence analysis (use @applied-intelligence-analysis);
+  game-theoretic optimization (use @math-optimization-game).
 - **TRIGGERS:** strategy, SWOT, PESTLE, wargaming, decision framework, competitive analysis, game-theoretic strategy.
 
 ## Workflow
@@ -34,7 +37,8 @@ Mathematical and systematic frameworks for creating, evaluating, and executing s
 1. Frame the strategic situation: competitors, payoffs, information structure, time horizon.
 2. Pick the matching framework (SWOT, PESTLE, Porter, wargame, game-theoretic equilibrium) from the body.
 3. Run the analysis; produce the strategic recommendation with explicit assumptions + sensitivities.
-4. Hand off: to `@lean-applied-reasoning` if formalisation is needed, to `@math-optimization-game` if game-theoretic structure dominates, to `@lean-zettelkasten`.
+4. Hand off: to `@lean-applied-reasoning` if formalisation is needed, to `@math-optimization-game` if game-theoretic structure dominates, to
+   `@lean-zettelkasten`.
 
 ## Recovery & STOP
 

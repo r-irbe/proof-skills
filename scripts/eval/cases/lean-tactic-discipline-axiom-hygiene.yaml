@@ -1,6 +1,6 @@
 id: lean-tactic-discipline-axiom-hygiene
 title: "Tactic discipline: no Classical.choice when constructive proof exists"
-skill: lean-quality
+skill: lean-proof
 ensemble_rubric: lean-tactic-discipline-quality
 difficulty: medium
 input:

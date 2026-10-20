@@ -1,11 +1,11 @@
 ---
 name: "ai-commonsense-reasoning"
 description: |
-  USE FOR: Commonsense reasoning for AI systems — world knowledge, naive physics, folk psychology, temporal/spatial reasoning, default reasoning, and their formalization. Use for reasoning about everyday knowledge that humans take for granted but AI systems need explicitly, especially when a downstream project must make implicit context explicit.
-  DO NOT USE FOR: formal KR/ontology engineering (use @ai-symbolic-neuro); causal/deontic reasoning (use @ai-causal-deontic); formalisation in Lean (use @lean-knowledge-formalization).
-  TRIGGERS: commonsense, naive physics, folk psychology, temporal reasoning, spatial reasoning, default reasoning.
+  USE FOR: Commonsense reasoning for AI systems: world knowledge, naive physics, folk psychology, temporal/spatial reasoning.
+  DO NOT USE FOR: formal KR/ontology engineering (@ai-symbolic-neuro).
+  TRIGGERS: commonsense, naive physics, folk psychology, temporal reasoning.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,8 +25,11 @@ Formalizing the vast body of everyday knowledge that underlies human reasoning a
 
 ## Routing
 
-- **USE FOR:** Commonsense reasoning for AI systems — world knowledge, naive physics, folk psychology, temporal/spatial reasoning, default reasoning, and their formalization. Use for reasoning about everyday knowledge that humans take for granted but AI systems need explicitly, especially when a downstream project must make implicit context explicit.
-- **DO NOT USE FOR:** formal KR/ontology engineering (use @ai-symbolic-neuro); causal/deontic reasoning (use @ai-causal-deontic); formalisation in Lean (use @lean-knowledge-formalization).
+- **USE FOR:** Commonsense reasoning for AI systems — world knowledge, naive physics, folk psychology, temporal/spatial reasoning, default reasoning, and
+  their formalization. Use for reasoning about everyday knowledge that humans take for granted but AI systems need explicitly, especially when a downstream
+  project must make implicit context explicit.
+- **DO NOT USE FOR:** formal KR/ontology engineering (use @ai-symbolic-neuro); causal/deontic reasoning (use @ai-causal-deontic); formalisation in Lean
+  (use @lean-knowledge-formalization).
 - **TRIGGERS:** commonsense, naive physics, folk psychology, temporal reasoning, spatial reasoning, default reasoning.
 
 ## Workflow

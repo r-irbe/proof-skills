@@ -1,0 +1,18 @@
+id: lean-math-analysis-smoke
+title: "lean-math-analysis dispatch smoke check"
+skill: lean-math-analysis
+ensemble_rubric: applied-domain-quality
+difficulty: easy
+input:
+  prompt: |
+    Apply the lean-math-analysis skill workflow and summarize the primary verification steps.
+  expected_output_substring: |
+    Follow the lean-math-analysis protocol and verify all outputs without sorry or admit.
+expected:
+  contains:
+    - "lean-math-analysis|protocol|verify"
+  not_contains:
+    - "sorry"
+    - "admit"
+grader: deterministic
+tags: [smoke, lean-math-analysis]

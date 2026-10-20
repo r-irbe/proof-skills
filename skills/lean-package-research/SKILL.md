@@ -1,11 +1,11 @@
 ---
 name: "lean-package-research"
 description: |
-  USE FOR: Lean 4 package and toolchain research — evaluating Reservoir/GitHub packages, Mathlib/cslib pin changes, Lake dependency health, package adoption classes, update sequencing, and external theorem-substrate candidates. Use this whenever the user asks whether to add, update, fork, pin, vendor, or reject a Lean package, even if they phrase it as "can we use this repo?" or "does mathlib have this now?".
-  DO NOT USE FOR: ordinary theorem lookup without a package decision (use @lean-research); package-file mutation or `lake update` execution (use @lean-enforcement plus a project-specific edit claim); proof writing (use @lean-proof); general project QA (use @lean-quality-engine).
-  TRIGGERS: Lean package, Reservoir, GitHub Lean repo, Lake dependency, lake-manifest, lean-toolchain, mathlib update, cslib update, package adoption, package pin, dependency health, external theorem substrate.
+  USE FOR: Lean 4 package and toolchain research: evaluating Reservoir/GitHub packages, Mathlib/cslib pin changes.
+  DO NOT USE FOR: ordinary theorem lookup without a package decision (@lean-research).
+  TRIGGERS: Lean package, Reservoir, GitHub Lean repo, Lake dependency.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["skill:lean-research", "skill:lean-integration-protocol", "agent:gateway"]

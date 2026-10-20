@@ -1,11 +1,11 @@
 ---
 name: "math-strategy-studio"
 description: |
-  USE FOR: Strategic mathematical thinking — brainstorming, problem decomposition, proof strategy design, creative hypothesis generation, and mathematical intuition development. Use when facing novel formalization challenges, when standard approaches fail, when exploring connections between domains, or when the theorem specification needs creative mathematical insight. The creative counterpart to the systematic research-council and review-council skills.
-  DO NOT USE FOR: strategy analysis methodology generally (use @applied-strategy-analysis); research synthesis (use @research-synthesis-engine); Lean specification (use @lean-specification).
-  TRIGGERS: strategy studio, brainstorming, problem decomposition, proof strategy, creative hypothesis, mathematical intuition.
+  USE FOR: Strategic mathematical thinking: brainstorming, problem decomposition, proof strategy design.
+  DO NOT USE FOR: strategy analysis methodology generally (@applied-strategy-analysis).
+  TRIGGERS: strategy studio, brainstorming, problem decomposition.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,8 +25,12 @@ Creative mathematical thinking and proof strategy design for Lean 4 formalizatio
 
 ## Routing
 
-- **USE FOR:** Strategic mathematical thinking — brainstorming, problem decomposition, proof strategy design, creative hypothesis generation, and mathematical intuition development. Use when facing novel formalization challenges, when standard approaches fail, when exploring connections between domains, or when the theorem specification needs creative mathematical insight. The creative counterpart to the systematic research-council and review-council skills.
-- **DO NOT USE FOR:** strategy analysis methodology generally (use @applied-strategy-analysis); research synthesis (use @research-synthesis-engine); Lean specification (use @lean-specification).
+- **USE FOR:** Strategic mathematical thinking — brainstorming, problem decomposition, proof strategy design, creative hypothesis generation, and
+  mathematical intuition development. Use when facing novel formalization challenges, when standard approaches fail, when exploring connections between
+  domains, or when the theorem specification needs creative mathematical insight. The creative counterpart to the systematic research-council and
+  review-council skills.
+- **DO NOT USE FOR:** strategy analysis methodology generally (use @applied-strategy-analysis); research synthesis (use @research-synthesis-engine); Lean
+  specification (use @lean-specification).
 - **TRIGGERS:** strategy studio, brainstorming, problem decomposition, proof strategy, creative hypothesis, mathematical intuition.
 
 ## Workflow

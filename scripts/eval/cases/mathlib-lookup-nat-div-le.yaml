@@ -1,6 +1,6 @@
 id: mathlib-lookup-nat-div-le
 title: "Identify Mathlib lemma about Nat division upper bound"
-skill: mathlib-lookup
+skill: lean-research
 ensemble_rubric: mathlib-lookup-quality
 difficulty: easy
 input:

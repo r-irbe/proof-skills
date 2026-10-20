@@ -1,11 +1,11 @@
 ---
 name: "math-graph-knowledge"
 description: |
-  USE FOR: Graph theory, knowledge graphs, ontology engineering, provenance structures, network analysis, and formal knowledge representation. Use for mathematical reasoning about DAGs, KGs, trust networks, provenance chains, and any graph-structured knowledge. Covers both pure graph theory and applied knowledge graph methodology.
-  DO NOT USE FOR: KRR / symbolic AI (use @ai-symbolic-neuro); causal DAGs (use @ai-causal-deontic); discrete math (use @lean-math-discrete).
-  TRIGGERS: graph theory, knowledge graph, ontology, provenance, network analysis, formal knowledge representation.
+  USE FOR: Graph theory, knowledge graphs, ontology engineering, provenance structures, network analysis.
+  DO NOT USE FOR: KRR / symbolic AI (@ai-symbolic-neuro); causal DAGs (@ai-causal-deontic).
+  TRIGGERS: graph theory, knowledge graph, ontology, provenance.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,7 +25,9 @@ Graph-theoretic and knowledge representation foundations for provenance chains, 
 
 ## Routing
 
-- **USE FOR:** Graph theory, knowledge graphs, ontology engineering, provenance structures, network analysis, and formal knowledge representation. Use for mathematical reasoning about DAGs, KGs, trust networks, provenance chains, and any graph-structured knowledge. Covers both pure graph theory and applied knowledge graph methodology.
+- **USE FOR:** Graph theory, knowledge graphs, ontology engineering, provenance structures, network analysis, and formal knowledge representation. Use for
+  mathematical reasoning about DAGs, KGs, trust networks, provenance chains, and any graph-structured knowledge. Covers both pure graph theory and applied
+  knowledge graph methodology.
 - **DO NOT USE FOR:** KRR / symbolic AI (use @ai-symbolic-neuro); causal DAGs (use @ai-causal-deontic); discrete math (use @lean-math-discrete).
 - **TRIGGERS:** graph theory, knowledge graph, ontology, provenance, network analysis, formal knowledge representation.
 

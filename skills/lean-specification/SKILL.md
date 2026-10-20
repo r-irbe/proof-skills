@@ -1,11 +1,11 @@
 ---
 name: "lean-specification"
 description: |
-  USE FOR: Design theorem specifications for Lean 4 proofs. Use when planning new theorems, lemmas, definitions, or tactics. Covers the three-part specification (requirements, design, documentation), lifecycle management, dependency analysis, and integration with the review council.
-  DO NOT USE FOR: actual proof writing (use @lean-proof); requirement extraction (use @lean-doc-requirements); review (use @lean-proof-review).
-  TRIGGERS: specification, theorem spec, three-part spec, lemma plan, tactic plan.
+  USE FOR: Design theorem specifications for Lean 4 proofs.
+  DO NOT USE FOR: actual proof writing (@lean-proof).
+  TRIGGERS: specification, theorem spec, three-part spec, lemma plan.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -19,13 +19,15 @@ metadata:
 
 # Lean 4 Theorem Specification
 
-Structured process for specifying theorems before implementation. Every theorem passes through Specify → Design → Implement → Review → Merge, with each stage tracked by document templates.
+Structured process for specifying theorems before implementation. Every theorem passes through Specify → Design → Implement → Review → Merge, with each
+stage tracked by document templates.
 
 ---
 
 ## Routing
 
-- **USE FOR:** Design theorem specifications for Lean 4 proofs. Use when planning new theorems, lemmas, definitions, or tactics. Covers the three-part specification (requirements, design, documentation), lifecycle management, dependency analysis, and integration with the review council.
+- **USE FOR:** Design theorem specifications for Lean 4 proofs. Use when planning new theorems, lemmas, definitions, or tactics. Covers the three-part
+  specification (requirements, design, documentation), lifecycle management, dependency analysis, and integration with the review council.
 - **DO NOT USE FOR:** actual proof writing (use @lean-proof); requirement extraction (use @lean-doc-requirements); review (use @lean-proof-review).
 - **TRIGGERS:** specification, theorem spec, three-part spec, lemma plan, tactic plan.
 

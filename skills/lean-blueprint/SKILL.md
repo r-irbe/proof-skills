@@ -1,11 +1,11 @@
 ---
 name: "lean-blueprint"
 description: |
-  USE FOR: generating Lean blueprint, annotating theorems with @[blueprint], scaffolding blueprint directory, building blueprint LaTeX, rendering blueprint web.
+  USE FOR: generating Lean blueprint, annotating theorems with @[blueprint], scaffolding blueprint directory.
   DO NOT USE FOR: writing Lean proofs (use @lean-proof), opening Lean/Mathlib PRs (use @lean-pr).
   TRIGGERS: blueprint, leanblueprint, LeanArchitect, dependency-graph.
 tier: "hot"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["agent:gateway", "skill:lean-specification"]
@@ -24,8 +24,10 @@ metadata:
 
 ## Routing
 
-- **USE FOR:** generating a navigable formal blueprint from a Lean 4 codebase; annotating definitions and theorems with `@[blueprint]`; scaffolding `blueprint/` with `leanblueprint new`; building blueprint LaTeX via `lake build :blueprint`; rendering the dependency graph and web view.
-- **DO NOT USE FOR:** authoring new Lean proofs (use `@lean-proof`); opening Lean/Mathlib PRs (use `@lean-pr`); editing prose docs (use `@lean-doc-improvement`).
+- **USE FOR:** generating a navigable formal blueprint from a Lean 4 codebase; annotating definitions and theorems with `@[blueprint]`; scaffolding
+  `blueprint/` with `leanblueprint new`; building blueprint LaTeX via `lake build :blueprint`; rendering the dependency graph and web view.
+- **DO NOT USE FOR:** authoring new Lean proofs (use `@lean-proof`); opening Lean/Mathlib PRs (use `@lean-pr`); editing prose docs (use
+  `@lean-doc-improvement`).
 - **TRIGGERS:** blueprint, leanblueprint, LeanArchitect, dependency-graph.
 
 ## Behavioural rules (G-*)
@@ -41,11 +43,15 @@ metadata:
 
 ## Workflow
 
-1. **Discover** [discover] — read inputs, list Lean modules, locate `lakefile.lean` and prior `blueprint/`.
-2. **Plan** [discover] — propose per-module annotator fan-out; STOP if confidence < 80 %.
-3. **Annotate** [execute] — apply `@[blueprint]` annotations and LaTeX statements inside owned scope.
+1. **Discover** [discover] — read inputs, list Lean modules, locate `lakefile.lean` and prior `blueprint/`, and audit current coverage via `lean_blueprint`
+   (`{"action": "status", "formalizationDir": "...", "blueprintDir": "..."}`).
+2. **Plan** [discover] — propose per-module annotator fan-out; generate proof outlines with `lean_blueprint` (`{"action": "skeleton", "symbol": "..."}`) or
+   `lean_proof_skeleton`; STOP if confidence < 80 %.
+3. **Annotate** [execute] — scaffold LaTeX entries via `lean_blueprint` (`{"action": "scaffold", "symbol": "..."}`) or `lean_blueprint_scaffold`, and apply
+   `@[blueprint]` annotations and LaTeX statements inside owned scope.
 4. **Build** [execute] — run `lake build :blueprint`.
-5. **Verify** [validate] — confirm artefacts exist; max 3 retries then escalate.
+5. **Verify** [validate] — confirm artefacts exist and re-run `lean_blueprint(action: "status")` to verify 0 premature `\leanok` and 0 ghost nodes; max 3
+   retries then escalate.
 6. **Render** [execute] — run `leanblueprint pdf` and `leanblueprint web`.
 7. **Persist** [persist] *(MANDATORY, FSIA-R-11-09)* — commit changes, update state tracker, tick `tasks.md`. Skipping Persist = incomplete.
 

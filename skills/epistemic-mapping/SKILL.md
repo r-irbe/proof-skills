@@ -1,11 +1,11 @@
 ---
 name: "epistemic-mapping"
 description: |
-  USE FOR: mapping a domain's concept lattice, identifying load-bearing assumptions, surfacing implicit ontologies, drafting an epistemic terrain map.
-  DO NOT USE FOR: producing formal proofs (use @lean-proof), gathering primary research data (use @applied-intelligence-analysis).
+  USE FOR: mapping a domain's concept lattice, identifying load-bearing assumptions, surfacing implicit ontologies.
+  DO NOT USE FOR: producing formal proofs (@lean-proof).
   TRIGGERS: concept-map, ontology, terrain, epistemic-survey.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["skill:epistemic-discovery-engine"]
@@ -20,7 +20,8 @@ metadata:
 
 ## Routing
 
-- **USE FOR:** mapping the concept lattice of an unfamiliar domain; identifying load-bearing assumptions; surfacing implicit ontologies; drafting an epistemic terrain map to seed downstream formalization.
+- **USE FOR:** mapping the concept lattice of an unfamiliar domain; identifying load-bearing assumptions; surfacing implicit ontologies; drafting an
+  epistemic terrain map to seed downstream formalization.
 - **DO NOT USE FOR:** producing formal proofs (use `@lean-proof`); gathering primary research data (use `@applied-intelligence-analysis`).
 - **TRIGGERS:** concept-map, ontology, terrain, epistemic-survey.
 

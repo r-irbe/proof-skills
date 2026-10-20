@@ -1,11 +1,11 @@
 ---
 name: "lean-security-formalization"
 description: |
-  USE FOR: Data security, information security, access control, cryptographic properties, and privacy in Lean 4. Use when formalizing information flow policies, access control models, confidentiality/integrity/availability properties, data protection compliance (GDPR/LED), or trust model properties.
-  DO NOT USE FOR: security policy design not in Lean (use @applied-data-information-security); AI safety formalisation (use @lean-ai-formalization); general knowledge formalisation (use @lean-knowledge-formalization).
-  TRIGGERS: security formalization, information flow Lean, access control proof, cryptographic Lean, privacy proof.
+  USE FOR: Data security, information security, access control, cryptographic properties, and privacy in Lean 4.
+  DO NOT USE FOR: security policy design not in Lean (@applied-data-information-security).
+  TRIGGERS: security formalization, information flow Lean.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,8 +25,10 @@ Guide to formalizing security properties, access control, information flow, and 
 
 ## Routing
 
-- **USE FOR:** Data security, information security, access control, cryptographic properties, and privacy in Lean 4. Use when formalizing information flow policies, access control models, confidentiality/integrity/availability properties, data protection compliance (GDPR/LED), or trust model properties.
-- **DO NOT USE FOR:** security policy design not in Lean (use @applied-data-information-security); AI safety formalisation (use @lean-ai-formalization); general knowledge formalisation (use @lean-knowledge-formalization).
+- **USE FOR:** Data security, information security, access control, cryptographic properties, and privacy in Lean 4. Use when formalizing information flow
+  policies, access control models, confidentiality/integrity/availability properties, data protection compliance (GDPR/LED), or trust model properties.
+- **DO NOT USE FOR:** security policy design not in Lean (use @applied-data-information-security); AI safety formalisation (use @lean-ai-formalization);
+  general knowledge formalisation (use @lean-knowledge-formalization).
 - **TRIGGERS:** security formalization, information flow Lean, access control proof, cryptographic Lean, privacy proof.
 
 ## Workflow
@@ -70,7 +72,8 @@ the dispatch contract and the parts index.
 
 ## See also
 
-- [`../../references/lean-security-formalization-handbook.md`](../../references/lean-security-formalization-handbook.md) — Full handbook (extracted from this skill)
+- [`../../references/lean-security-formalization-handbook.md`](../../references/lean-security-formalization-handbook.md) — Full handbook (extracted from
+  this skill)
 - [`../lean-proof-review/SKILL.md`](../lean-proof-review/SKILL.md) — Successor
 - [`../lean-enforcement/SKILL.md`](../lean-enforcement/SKILL.md) — Successor
 - [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) — Successor

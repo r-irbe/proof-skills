@@ -1,11 +1,11 @@
 ---
 name: "lean-integration-protocol"
 description: |
-  USE FOR: Cross-skill integration protocol defining how all 39 skills work together. Covers the complete lifecycle from document to proof to document, inter-cluster communication, workflow templates for common tasks, and the master orchestration patterns. Use when coordinating multi-skill workflows or diagnosing cross-skill issues.
-  DO NOT USE FOR: any single-skill execution (use that skill directly); the review council itself (use @lean-review-council); the gateway (use @lean-gateway).
-  TRIGGERS: integration protocol, skill integration, cross-skill, skill lifecycle, inter-cluster routing.
+  USE FOR: Cross-skill integration protocol defining how all 39 skills work together.
+  DO NOT USE FOR: any single-skill execution (use that skill directly).
+  TRIGGERS: integration protocol, skill integration, cross-skill.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,8 +25,11 @@ Defines how all skills in the project ecosystem work together as a coherent syst
 
 ## Routing
 
-- **USE FOR:** Cross-skill integration protocol defining how all 39 skills work together. Covers the complete lifecycle from document to proof to document, inter-cluster communication, workflow templates for common tasks, and the master orchestration patterns. Use when coordinating multi-skill workflows or diagnosing cross-skill issues.
-- **DO NOT USE FOR:** any single-skill execution (use that skill directly); the review council itself (use @lean-review-council); the gateway (use @lean-gateway).
+- **USE FOR:** Cross-skill integration protocol defining how all 39 skills work together. Covers the complete lifecycle from document to proof to document,
+  inter-cluster communication, workflow templates for common tasks, and the master orchestration patterns. Use when coordinating multi-skill workflows or
+  diagnosing cross-skill issues.
+- **DO NOT USE FOR:** any single-skill execution (use that skill directly); the review council itself (use @lean-review-council); the gateway (use
+  @lean-gateway).
 - **TRIGGERS:** integration protocol, skill integration, cross-skill, skill lifecycle, inter-cluster routing.
 
 ## Workflow

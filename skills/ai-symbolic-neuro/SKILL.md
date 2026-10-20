@@ -1,11 +1,11 @@
 ---
 name: "ai-symbolic-neuro"
 description: |
-  USE FOR: Symbolic AI, neuro-symbolic integration, knowledge representation and reasoning (KRR), ontology engineering, description logics, and hybrid symbolic-neural architectures. Use for reasoning about formal knowledge structures, rule-based systems, logic programming, semantic web technologies, and their integration with neural approaches in knowledge graphs and structured reasoning pipelines.
-  DO NOT USE FOR: formalising the ontology in Lean (use @lean-knowledge-formalization); commonsense reasoning (use @ai-commonsense-reasoning); agentic AI (use @ai-agentic-evolving).
-  TRIGGERS: symbolic AI, neuro-symbolic, knowledge representation, KRR, ontology engineering, description logic, hybrid AI.
+  USE FOR: Symbolic AI, neuro-symbolic integration, knowledge representation and reasoning (KRR), ontology engineering.
+  DO NOT USE FOR: formalising the ontology in Lean (@lean-knowledge-formalization).
+  TRIGGERS: symbolic AI, neuro-symbolic, knowledge representation, KRR.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,8 +25,11 @@ Formal knowledge representation, symbolic reasoning, and their integration with 
 
 ## Routing
 
-- **USE FOR:** Symbolic AI, neuro-symbolic integration, knowledge representation and reasoning (KRR), ontology engineering, description logics, and hybrid symbolic-neural architectures. Use for reasoning about formal knowledge structures, rule-based systems, logic programming, semantic web technologies, and their integration with neural approaches in knowledge graphs and structured reasoning pipelines.
-- **DO NOT USE FOR:** formalising the ontology in Lean (use @lean-knowledge-formalization); commonsense reasoning (use @ai-commonsense-reasoning); agentic AI (use @ai-agentic-evolving).
+- **USE FOR:** Symbolic AI, neuro-symbolic integration, knowledge representation and reasoning (KRR), ontology engineering, description logics, and hybrid
+  symbolic-neural architectures. Use for reasoning about formal knowledge structures, rule-based systems, logic programming, semantic web technologies, and
+  their integration with neural approaches in knowledge graphs and structured reasoning pipelines.
+- **DO NOT USE FOR:** formalising the ontology in Lean (use @lean-knowledge-formalization); commonsense reasoning (use @ai-commonsense-reasoning); agentic
+  AI (use @ai-agentic-evolving).
 - **TRIGGERS:** symbolic AI, neuro-symbolic, knowledge representation, KRR, ontology engineering, description logic, hybrid AI.
 
 ## Workflow
@@ -198,7 +201,8 @@ Quality gates at each transition enforce:
 
 ## Part 5 — Host-Repository Lean Extension Points
 
-Do not assume repository-local Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. When a repository has local knowledge-graph or quality-gate modules, map them to this generic checklist:
+Do not assume repository-local Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. When a repository has local
+knowledge-graph or quality-gate modules, map them to this generic checklist:
 
 | Local extension point | Symbolic AI aspect | Typical structures |
 |---|---|---|

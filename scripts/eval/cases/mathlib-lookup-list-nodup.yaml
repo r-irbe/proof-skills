@@ -1,6 +1,6 @@
 id: mathlib-lookup-list-nodup
 title: "Identify Mathlib lemma about List.Nodup append"
-skill: mathlib-lookup
+skill: lean-research
 ensemble_rubric: mathlib-lookup-quality
 difficulty: medium
 input:

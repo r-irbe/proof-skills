@@ -1,11 +1,11 @@
 ---
 name: "lean-doc-requirements"
 description: |
-  USE FOR: Extract formal requirements from academic papers, technical reports, and design documents. Use when converting informal mathematical claims into Lean 4 theorem specifications. Covers claim extraction from LaTeX sources, equation identification, proposition mapping, hypothesis inference, and requirement traceability from document to formal specification.
-  DO NOT USE FOR: paper update post-Lean (use @lean-doc-improvement); specification design (use @lean-specification); blueprint generation (use @lean-blueprint).
-  TRIGGERS: doc requirements, requirement extraction, informal-to-Lean, claim extraction, paper-to-spec.
+  USE FOR: Extract formal requirements from academic papers, technical reports, and design documents.
+  DO NOT USE FOR: paper update post-Lean (@lean-doc-improvement).
+  TRIGGERS: doc requirements, requirement extraction, informal-to-Lean.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,8 +25,11 @@ Extract formal specification requirements from informal documents (papers, repor
 
 ## Routing
 
-- **USE FOR:** Extract formal requirements from academic papers, technical reports, and design documents. Use when converting informal mathematical claims into Lean 4 theorem specifications. Covers claim extraction from LaTeX sources, equation identification, proposition mapping, hypothesis inference, and requirement traceability from document to formal specification.
-- **DO NOT USE FOR:** paper update post-Lean (use @lean-doc-improvement); specification design (use @lean-specification); blueprint generation (use @lean-blueprint).
+- **USE FOR:** Extract formal requirements from academic papers, technical reports, and design documents. Use when converting informal mathematical claims
+  into Lean 4 theorem specifications. Covers claim extraction from LaTeX sources, equation identification, proposition mapping, hypothesis inference, and
+  requirement traceability from document to formal specification.
+- **DO NOT USE FOR:** paper update post-Lean (use @lean-doc-improvement); specification design (use @lean-specification); blueprint generation (use
+  @lean-blueprint).
 - **TRIGGERS:** doc requirements, requirement extraction, informal-to-Lean, claim extraction, paper-to-spec.
 
 ## Workflow

@@ -1,11 +1,11 @@
 ---
 name: "math-optimization-game"
 description: |
-  USE FOR: Mathematical optimization, game theory, decision theory, mechanism design, multi-objective optimization, convex optimization, and reinforcement learning theory. Use for reasoning about Bellman equations, Nash equilibria, Pareto optimality, gradient methods, linear/convex/integer programming, and optimization-related mathematics. Covers both pure theory and computational methodology.
-  DO NOT USE FOR: Lean optimization proofs (use @lean-math-optimization); strategy methodology (use @applied-strategy-analysis); general nonlinear dynamics (use @math-nonlinear-dynamics).
-  TRIGGERS: optimization, game theory, decision theory, mechanism design, convex optimization, reinforcement learning.
+  USE FOR: Mathematical optimization, game theory, decision theory, mechanism design, multi-objective optimization.
+  DO NOT USE FOR: Lean optimization proofs (@lean-math-optimization).
+  TRIGGERS: optimization, game theory, decision theory, mechanism design.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ['agent:gateway', 'skill:lean-research']
@@ -25,8 +25,11 @@ Mathematical optimization and strategic interaction theory, applied to reinforce
 
 ## Routing
 
-- **USE FOR:** Mathematical optimization, game theory, decision theory, mechanism design, multi-objective optimization, convex optimization, and reinforcement learning theory. Use for reasoning about Bellman equations, Nash equilibria, Pareto optimality, gradient methods, linear/convex/integer programming, and optimization-related mathematics. Covers both pure theory and computational methodology.
-- **DO NOT USE FOR:** Lean optimization proofs (use @lean-math-optimization); strategy methodology (use @applied-strategy-analysis); general nonlinear dynamics (use @math-nonlinear-dynamics).
+- **USE FOR:** Mathematical optimization, game theory, decision theory, mechanism design, multi-objective optimization, convex optimization, and
+  reinforcement learning theory. Use for reasoning about Bellman equations, Nash equilibria, Pareto optimality, gradient methods, linear/convex/integer
+  programming, and optimization-related mathematics. Covers both pure theory and computational methodology.
+- **DO NOT USE FOR:** Lean optimization proofs (use @lean-math-optimization); strategy methodology (use @applied-strategy-analysis); general nonlinear
+  dynamics (use @math-nonlinear-dynamics).
 - **TRIGGERS:** optimization, game theory, decision theory, mechanism design, convex optimization, reinforcement learning.
 
 ## Workflow

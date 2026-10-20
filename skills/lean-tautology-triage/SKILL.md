@@ -1,11 +1,11 @@
 ---
 name: "lean-tautology-triage"
 description: |
-  USE FOR: triaging Lean 4 theorem statements or proof sites that may be vacuous, tautological, smoke-test-only, reflexive-by-rfl, `: True` placeholders, bare `decide` closures, or automation-only proofs of supposedly substantive claims. Use this skill whenever proof review reports "vacuous", "tautology", "trivial", "placeholder", "smoke theorem", "rfl self-projection", "DEFINITE", or "HIGH" proof-quality risk.
-  DO NOT USE FOR: ordinary proof writing (use @lean-proof); whole-project QA lifecycle (use @lean-quality-engine); running one enforcement script without interpretation (use @lean-enforcement); theorem search (use @lean-research).
-  TRIGGERS: tautology, vacuous, trivial proof, smoke theorem, placeholder theorem, proof quality, `: True`, `by decide`, `by rfl`, rfl self-projection, suspicious automation, non-triviality audit.
+  USE FOR: triaging Lean 4 theorem statements or proof sites that may be vacuous, tautological, smoke-test-only.
+  DO NOT USE FOR: ordinary proof writing (@lean-proof).
+  TRIGGERS: tautology, vacuous, trivial proof, smoke theorem.
 tier: "warm"
-runtime_targets: [copilot-cli, claude-code]
+runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["skill:lean-proof-review", "skill:lean-quality-engine", "skill:lean-enforcement"]
@@ -41,7 +41,7 @@ removal.
 ## Workflow
 
 1. **Locate the claim** [discover] — capture theorem name, statement, proof body,
-   surrounding docstring, imports, and downstream uses. A claim with downstream
+   surrounding docstring, imports, and downstream uses (via `lean_decl_references` with `{"symbol": "...", "direction": "usedBy"}`). A claim with downstream
    uses is not automatically substantive, but the use sites explain risk.
 2. **Classify statement content** [validate] — use:
    - VALID-CONTENT: theorem states the intended mathematical/program property.
@@ -55,9 +55,17 @@ removal.
    DEFINITE. `: True` placeholders and named smoke tests with theorem-like names
    are usually DEFINITE; bare `decide` or `rfl` on substantive names is HIGH until
    statement review explains it.
-4. **Run static support** [execute] — use
-   `scripts/lean/proof_quality.py` for candidate discovery, then manually inspect
-   each P1/P2 result. The script is a triage helper, not a final verdict.
+4. **Run static & counterexample support** [execute] — use
+   `scripts/lean/proof_quality.py`, `lean-rules` (`node tools/lean-lsp-mcp/bin/lean-rules.js` for `lean-tautology-reflexive-eq`,
+   `lean-smoke-true-theorem`), and `pi-lens` (`pilens_ast_grep_search`, `pilens_diagnostics`) for sub-second structural candidate discovery;
+   `lean_diagnostics` (`lean-analyzer` static abstract interpretation: `NatSubTruncation`, `NatDivModByZero`, Zone DBM `decreasing_by` synthesis, Octagon
+   conservation `±x_i ± x_j <= c`, Bourdoncle WTO loop widening, trace partitioning)
+   for vacuity checks; and `lean_counterexample_search`
+   (`{"filePath": "...", "theoremName": "...", "strategy": "dense"}`) with Galois-guided hypothesis domain pruning (`analyzeHeaderHypothesisDomains` /
+   `pruneHeaderNatDomain`) to test
+   SUSPECT-FALSE or strengthened candidate statements via Plausible in an isolated
+   scratch file. Then manually inspect each P1/P2 result. The scripts are triage
+   helpers, not a final verdict.
 5. **Choose remediation** [persist] — recommend one of: keep as smoke and rename,
    restate/strengthen, replace with a real theorem, quarantine as research-only,
    delete/retire, or ask HITL.
