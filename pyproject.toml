@@ -1,0 +1,73 @@
+# --------------------------------------------------------------------
+# pyproject.toml -- PEP 621 Python Packaging Manifest for proof-skills
+# --------------------------------------------------------------------
+# DEPENDENCY FOOTPRINT SUMMARY FOR CUSTOMERS:
+#
+#   1. Core Lean 4 / Blueprint / AltProof / Visualizer / SQLite Ontology
+#      scripts require ZERO third-party pip packages (100% Python >=3.10
+#      standard library: sqlite3, json, re, ast, pathlib, argparse,
+#      subprocess, http.server, unittest):
+#        - scripts/lean/*.py          (44 enforcement, census & audit scripts)
+#        - scripts/lean/altproof/*.py (20 AltProof analysis & routing modules)
+#        - graph/graph_query.py       (SQLite + .kz archive ontology queries)
+#        - tools/lean-serve-broker/*  (singleton lake serve broker)
+#        - tools/visualizer/*         (interactive DAG & bigraph visualizer)
+#        - scripts/check-structure    (has pure-stdlib YAML fallback)
+#        - scripts/lint/apm_validate.py (has pure-stdlib YAML fallback)
+#
+#   2. Skill-authoring conformance linters & evaluation harnesses
+#      (scripts/skill-audit/check_conformance.py, scripts/eval/*,
+#      scripts/elo/per_rubric_elo.py) use `PyYAML>=6.0`.
+#
+#   3. Optional native Kuzu graph DB federation (graph/kuzu_federation.py,
+#      graph/export_kuzu.py) uses `kuzu>=0.7.0`.
+# --------------------------------------------------------------------
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "proof-skills"
+version = "0.1.0"
+description = "Lean 4 / Mathlib4 agent-skill toolkit -- proof tactics, math-domain workflows, doc/review/research patterns, zettelkasten, and generic tooling."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [
+  { name = "r-irbe" }
+]
+keywords = [
+  "lean4",
+  "mathlib4",
+  "agent-skills",
+  "formal-verification",
+  "proof-engineering",
+  "zettelkasten",
+  "mcp"
+]
+dependencies = [
+  "PyYAML>=6.0"
+]
+
+[project.optional-dependencies]
+kuzu = [
+  "kuzu>=0.7.0"
+]
+dev = [
+  "pytest>=8.0",
+  "PyYAML>=6.0"
+]
+all = [
+  "PyYAML>=6.0",
+  "kuzu>=0.7.0",
+  "pytest>=8.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/r-irbe/proof-skills"
+Repository = "https://github.com/r-irbe/proof-skills"
+Issues = "https://github.com/r-irbe/proof-skills/issues"
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "scripts"]

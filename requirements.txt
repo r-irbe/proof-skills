@@ -1,0 +1,26 @@
+# ====================================================================
+# requirements.txt -- Python Dependencies for proof-skills
+# ====================================================================
+# NOTE FOR CUSTOMERS:
+#   Core Lean 4 / Blueprint / AltProof / Visualizer / SQLite Ontology
+#   scripts require ZERO third-party pip packages (100% Python >=3.10
+#   standard library: sqlite3, json, re, ast, pathlib, argparse,
+#   subprocess, http.server, unittest):
+#     - scripts/lean/*.py          (44 Lean enforcement, census & audit scripts)
+#     - scripts/lean/altproof/*.py (20 AltProof analysis & routing modules)
+#     - graph/graph_query.py       (SQLite + .kz archive ontology queries)
+#     - tools/lean-serve-broker/*  (singleton lake serve broker)
+#     - tools/visualizer/*         (interactive DAG & bigraph visualizer)
+#     - scripts/check-structure & scripts/lint/apm_validate.py (stdlib fallback)
+#
+#   Install this file ONLY if you run the skill-authoring conformance
+#   audit (`scripts/skill-audit/check_conformance.py`) or evaluation
+#   harnesses (`scripts/eval/*`, `scripts/elo/per_rubric_elo.py`).
+#
+#   Optional extras (see pyproject.toml):
+#     pip install ".[kuzu]"   # adds kuzu>=0.7.0 for graph/kuzu_federation.py
+#     pip install ".[dev]"    # adds pytest>=8.0 + PyYAML>=6.0
+#     pip install ".[all]"    # adds PyYAML>=6.0 + kuzu>=0.7.0 + pytest>=8.0
+# ====================================================================
+
+PyYAML>=6.0

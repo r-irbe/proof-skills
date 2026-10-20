@@ -16,6 +16,43 @@ from collections import defaultdict
 from pathlib import Path
 
 
+def _strip_lean_comments(lines: list[str]) -> list[str]:
+    """Replace text inside Lean comments (`--` and `/- ... -/`) with spaces,
+    preserving line count and line positions so `sorry` inside docstrings or
+    block comments is not counted as an unproven goal.
+    """
+    out: list[str] = []
+    in_block = False
+    for raw in lines:
+        chars = list(raw)
+        i = 0
+        n = len(chars)
+        while i < n:
+            if in_block:
+                if i + 1 < n and chars[i] == "-" and chars[i + 1] == "/":
+                    chars[i] = " "
+                    chars[i + 1] = " "
+                    in_block = False
+                    i += 2
+                    continue
+                chars[i] = " "
+                i += 1
+                continue
+            if i + 1 < n and chars[i] == "-" and chars[i + 1] == "-":
+                for j in range(i, n):
+                    chars[j] = " "
+                break
+            if i + 1 < n and chars[i] == "/" and chars[i + 1] == "-":
+                in_block = True
+                chars[i] = " "
+                chars[i + 1] = " "
+                i += 2
+                continue
+            i += 1
+        out.append("".join(chars))
+    return out
+
+
 def census(lean_dir: Path) -> dict[str, dict]:
     """Count theorems, defs, sorry, lines, sections per module."""
     results = {}
@@ -31,12 +68,13 @@ def census(lean_dir: Path) -> dict[str, dict]:
     for f in sorted(lean_dir.glob("*.lean")):
         text = f.read_text(encoding="utf-8")
         lines = text.splitlines()
+        stripped_lines = _strip_lean_comments(lines)
         thms = thm_pattern.findall(text)
         defs = def_pattern.findall(text)
         sorry_matches = [
-            (i + 1, line.strip())
-            for i, line in enumerate(lines)
-            if sorry_pattern.search(line) and not line.strip().startswith("--")
+            (i + 1, lines[i].strip())
+            for i, sline in enumerate(stripped_lines)
+            if sorry_pattern.search(sline)
         ]
         sections = section_pattern.findall(text)
         privates = private_pattern.findall(text)
@@ -69,12 +107,15 @@ def dependency_graph(lean_dir: Path, project: str | None = None) -> dict:
         module = f.stem
         modules.add(module)
         deps = []
+        seen_deps = set()
         for line in f.read_text(encoding="utf-8").splitlines():
             m = re.match(rf"^import\s+{re.escape(proj)}\.(\w+)", line)
             if m:
                 target = m.group(1)
-                edges.append({"from": module, "to": target})
-                deps.append(target)
+                if target != module and target not in seen_deps:
+                    seen_deps.add(target)
+                    edges.append({"from": module, "to": target})
+                    deps.append(target)
         imports_map[module] = deps
 
     # Topological sort (Kahn's algorithm)
@@ -162,7 +203,7 @@ def convention_check(lean_dir: Path) -> list[dict]:
                     "module": module,
                     "severity": "P3",
                     "rule": "sections",
-                    "message": "No section headers (-- §N ...)",
+                    "message": "No section headers (-- section N ...)",
                 }
             )
 

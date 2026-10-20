@@ -71,9 +71,11 @@ dependencies:
 includes: auto
 
 # Convenience scripts a consumer can run via `apm run <name>`
-# (experimental in APM 0.x). All scripts are read-only / non-mutating
-# and safe under the Section 1.4 autopilot belief floor.
+# (experimental in APM 0.x). `doctor` and all lint/audit scripts are
+# read-only / non-mutating; `setup` bootstraps submodules + Python/Node deps.
 scripts:
+  setup: bash scripts/setup-env.sh
+  doctor: bash scripts/setup-env.sh --doctor
   lint-conformance: python3 scripts/skill-audit/check_conformance.py
   validate-apm: python3 scripts/lint/apm_validate.py
   lint-zk: python3 scripts/lean/zettelkasten_lint.py --zk-dir zettelkasten --strict

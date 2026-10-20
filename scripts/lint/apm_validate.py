@@ -28,7 +28,12 @@ import re
 import sys
 from pathlib import Path
 
-import yaml
+try:
+    import yaml  # type: ignore
+    _HAVE_YAML = True
+except ImportError:  # pragma: no cover - stdlib fallback when PyYAML is absent
+    yaml = None  # type: ignore
+    _HAVE_YAML = False
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 APM_YML = REPO_ROOT / "apm.yml"
@@ -38,20 +43,78 @@ REQUIRED_APM_KEYS = ("name", "version", "description")
 REQUIRED_SKILL_KEYS = ("name", "description")
 
 
+def _stdlib_yaml_load(text: str) -> dict:
+    """Minimal stdlib YAML loader for apm.yml and SKILL.md frontmatter."""
+    raw_lines = text.splitlines()
+    out: dict = {}
+    i = 0
+    while i < len(raw_lines):
+        line = raw_lines[i]
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            i += 1
+            continue
+        indent = len(line) - len(line.lstrip(" "))
+        if indent > 0 or ":" not in line:
+            i += 1
+            continue
+        key_part, val_part = line.split(":", 1)
+        key = key_part.strip()
+        val = val_part.strip()
+        if val in ("|", "|-", "|+", ">", ">-", ">+"):
+            block_lines: list[str] = []
+            block_indent: int | None = None
+            j = i + 1
+            while j < len(raw_lines):
+                bl = raw_lines[j]
+                s_bl = bl.lstrip(" ")
+                this_indent = len(bl) - len(s_bl)
+                if s_bl == "":
+                    block_lines.append("")
+                    j += 1
+                    continue
+                if this_indent <= indent:
+                    break
+                if block_indent is None:
+                    block_indent = this_indent
+                block_lines.append(
+                    bl[block_indent:] if this_indent >= block_indent else s_bl
+                )
+                j += 1
+            while block_lines and block_lines[-1] == "":
+                block_lines.pop()
+            sep = " " if val.startswith(">") else "\n"
+            out[key] = sep.join(block_lines) + ("\n" if not val.endswith("-") else "")
+            i = j
+            continue
+        if len(val) >= 2 and val[0] == val[-1] and val[0] in ('"', "'"):
+            val = val[1:-1]
+        out[key] = val
+        i += 1
+    return out
+
+
+def _safe_load_yaml(text: str) -> dict | None:
+    if _HAVE_YAML and yaml is not None:
+        try:
+            res = yaml.safe_load(text)
+            return res if isinstance(res, dict) else {}
+        except yaml.YAMLError:
+            return None
+    return _stdlib_yaml_load(text)
+
+
 def load_yaml_frontmatter(path: Path) -> dict | None:
     """Extract the YAML frontmatter block from a SKILL.md."""
     text = path.read_text(encoding="utf-8")
     match = re.match(r"^---\n(.*?)\n---\n", text, re.DOTALL)
     if not match:
         return None
-    try:
-        return yaml.safe_load(match.group(1)) or {}
-    except yaml.YAMLError:
-        return None
+    return _safe_load_yaml(match.group(1))
 
 
 def validate() -> tuple[list[str], dict]:
-    """Return (errors, summary). Empty errors ⇒ package is valid."""
+    """Return (errors, summary). Empty errors => package is valid."""
     errors: list[str] = []
     summary: dict = {
         "apm_yml": False,
@@ -65,10 +128,9 @@ def validate() -> tuple[list[str], dict]:
         errors.append("MISSING apm.yml at repo root")
         return errors, summary
 
-    try:
-        manifest = yaml.safe_load(APM_YML.read_text(encoding="utf-8"))
-    except yaml.YAMLError as exc:
-        errors.append(f"apm.yml is not valid YAML: {exc}")
+    manifest = _safe_load_yaml(APM_YML.read_text(encoding="utf-8"))
+    if manifest is None:
+        errors.append("apm.yml is not valid YAML")
         return errors, summary
 
     summary["apm_yml"] = True

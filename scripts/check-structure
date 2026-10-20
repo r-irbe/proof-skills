@@ -9,7 +9,12 @@ import sys
 import tempfile
 from pathlib import Path
 
-import yaml
+try:
+    import yaml  # type: ignore
+    _HAVE_YAML = True
+except ImportError:  # pragma: no cover - stdlib fallback when PyYAML is absent
+    yaml = None  # type: ignore
+    _HAVE_YAML = False
 
 
 MAX_SKILL_LINES = 500
@@ -19,6 +24,57 @@ PLACEHOLDER_PROMPTS = {
     "your prompt here",
     "the prompt to test.",
 }
+
+
+def _stdlib_parse_frontmatter_yaml(block: str) -> dict[str, str]:
+    """Minimal stdlib YAML frontmatter parser supporting literal/folded block scalars."""
+    raw_lines = block.splitlines()
+    out: dict[str, str] = {}
+    i = 0
+    while i < len(raw_lines):
+        line = raw_lines[i]
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            i += 1
+            continue
+        indent = len(line) - len(line.lstrip(" "))
+        if indent > 0 or ":" not in line:
+            i += 1
+            continue
+        key_part, val_part = line.split(":", 1)
+        key = key_part.strip()
+        val = val_part.strip()
+        if val in ("|", "|-", "|+", ">", ">-", ">+"):
+            block_lines: list[str] = []
+            block_indent: int | None = None
+            j = i + 1
+            while j < len(raw_lines):
+                bl = raw_lines[j]
+                s_bl = bl.lstrip(" ")
+                this_indent = len(bl) - len(s_bl)
+                if s_bl == "":
+                    block_lines.append("")
+                    j += 1
+                    continue
+                if this_indent <= indent:
+                    break
+                if block_indent is None:
+                    block_indent = this_indent
+                block_lines.append(
+                    bl[block_indent:] if this_indent >= block_indent else s_bl
+                )
+                j += 1
+            while block_lines and block_lines[-1] == "":
+                block_lines.pop()
+            sep = " " if val.startswith(">") else "\n"
+            out[key] = sep.join(block_lines) + ("\n" if not val.endswith("-") else "")
+            i = j
+            continue
+        if len(val) >= 2 and val[0] == val[-1] and val[0] in ('"', "'"):
+            val = val[1:-1]
+        out[key] = val
+        i += 1
+    return out
 
 
 def parse_frontmatter(path: Path) -> tuple[dict[str, str], list[str], bool]:
@@ -40,20 +96,23 @@ def parse_frontmatter(path: Path) -> tuple[dict[str, str], list[str], bool]:
     # the old parser stored the indicator string "|" as the description and
     # mass-reported false "duplicate normalized description" errors across
     # all skills sharing the style (55 false errors at the time of the fix).
-    # Parse the frontmatter block with a real YAML parser instead — same
-    # approach as skill-audit/check_conformance.py and lint/apm_validate.py.
-    try:
-        parsed = yaml.safe_load("\n".join(lines[1:end])) or {}
-    except yaml.YAMLError:
-        return {}, lines, closed
-    if not isinstance(parsed, dict):
-        return {}, lines, closed
+    # Parse the frontmatter block with PyYAML when installed, or with the
+    # block-scalar-aware stdlib fallback in bare Python environments.
+    block = "\n".join(lines[1:end])
+    if _HAVE_YAML and yaml is not None:
+        try:
+            parsed = yaml.safe_load(block) or {}
+        except yaml.YAMLError:
+            return {}, lines, closed
+        if not isinstance(parsed, dict):
+            return {}, lines, closed
+        frontmatter: dict[str, str] = {
+            str(key): value if isinstance(value, str) else str(value)
+            for key, value in parsed.items()
+        }
+        return frontmatter, lines, closed
 
-    frontmatter: dict[str, str] = {
-        str(key): value if isinstance(value, str) else str(value)
-        for key, value in parsed.items()
-    }
-    return frontmatter, lines, closed
+    return _stdlib_parse_frontmatter_yaml(block), lines, closed
 
 
 def normalized_description(value: str) -> str:
@@ -177,12 +236,24 @@ def self_test() -> int:
             skill_dir.mkdir(parents=True)
             (skill_dir / "SKILL.md").write_text(body, encoding="utf-8")
         errors, warnings, n_skills = run_checks(root)
+        global _HAVE_YAML
+        orig_have_yaml = _HAVE_YAML
+        try:
+            _HAVE_YAML = False
+            fb_errors, fb_warnings, fb_n_skills = run_checks(root)
+        finally:
+            _HAVE_YAML = orig_have_yaml
 
     failures: list[str] = []
 
     def assert_true(condition: bool, message: str) -> None:
         if not condition:
             failures.append(message)
+
+    assert_true(
+        fb_errors == errors and fb_warnings == warnings and fb_n_skills == n_skills,
+        "stdlib fallback parser must match primary YAML parser on all self-test fixtures",
+    )
 
     joined_errors = "\n".join(errors)
     assert_true(n_skills == 4, f"expected 4 skills, saw {n_skills}")
