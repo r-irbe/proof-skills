@@ -4,7 +4,7 @@ This document provides a comprehensive, layered map of the repository structure.
 
 ## Root Configurations and Contracts
 *   `apm.yml`: The APM manifest holding package metadata (version, license, keywords).
-*   `AGENT.md`: The strict, machine-readable contract defining HITL (Human-In-The-Loop) triggers, reversibility tiers, and dispatch precedence.
+*   `AGENTS.md`: The strict, machine-readable contract defining HITL (Human-In-The-Loop) triggers, reversibility tiers, and dispatch precedence.
 *   `ROLES.md`: The operational contract defining the multi-agent Stanford ACE Prover Swarm pipeline (Specifier, Prover, Auditor, Gardener).
 *   `GUARDRAILS.md`: The dense, machine-readable taxonomy of measured agent failure classes.
 *   `TAXONOMY.md`: Human-readable classification mapping skills into Kernel, Roles, and Facets.

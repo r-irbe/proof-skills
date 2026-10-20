@@ -1,0 +1,310 @@
+{
+  "schema_version": "v1.0",
+  "corpus_id": "COUSOT-2021-ABSTRACT-INTERPRETATION",
+  "prover_family": "lean4",
+  "book_title": "Principles of Abstract Interpretation (Cousot 2021) & Numeric Domain Reference Corpus (Mine 2017, Rival & Yi 2020, Simon 2008, Moller & Schwartzbach 2024, Warren 2013)",
+  "authors": [
+    "Patrick Cousot",
+    "Antoine Mine",
+    "Xavier Rival",
+    "Kwangkeun Yi",
+    "Axel Simon",
+    "Anders Moller",
+    "Michael I. Schwartzbach",
+    "Henry S. Warren Jr."
+  ],
+  "publication_year": 2021,
+  "edition_or_version": "MIT Press / Now Publishers / Addison-Wesley",
+  "index_metadata": {
+    "entry_count": 10,
+    "source_page_range": "1-820",
+    "has_subterms": true,
+    "has_definitive_styling": true,
+    "ocr_or_source_format": "SALA Anchor & Book Index Extraction"
+  },
+  "entries": [
+    {
+      "term": "galois connection",
+      "category": "concept",
+      "primary_references": [
+        {
+          "page": 195,
+          "section_anchor": "COUSOT s11.1 p1",
+          "is_definitive": true,
+          "prover_anchor": "EASCI.Foundations.CS.NatInterval.gamma",
+          "context_note": "Abstraction alpha and concretization gamma monotonicity and adjointness"
+        }
+      ],
+      "cross_references": [
+        "see also abstract interpretation",
+        "see also reduced product"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "GaloisConnection",
+          "target_tactic_or_primitive": "EASCI.Foundations.CS.AbstractInterpretation",
+          "mapping_confidence": 0.98,
+          "notes": "Mechanized via gamma soundness theorems in EASCI/Foundations/CS/AbstractInterpretation.lean"
+        }
+      ]
+    },
+    {
+      "term": "interval domain",
+      "category": "domain",
+      "primary_references": [
+        {
+          "page": 480,
+          "section_anchor": "COUSOT s38.1 p1",
+          "is_definitive": true,
+          "prover_anchor": "EASCI.Foundations.CS.NatInterval",
+          "context_note": "Closed natural-number intervals [lo, hi] with saturating subtraction and division-by-zero totality"
+        },
+        {
+          "page": 42,
+          "section_anchor": "RIVALYI s5.1 p1",
+          "is_definitive": false,
+          "prover_anchor": "lean_analyzer::nat_interval::IntervalBound",
+          "context_note": "Non-relational numeric interval lattice and best abstract transformers"
+        }
+      ],
+      "cross_references": [
+        "see also widening",
+        "see also granger reduction"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "NatInterval",
+          "target_tactic_or_primitive": "EASCI.Foundations.CS.NatInterval",
+          "mapping_confidence": 0.99,
+          "notes": "Verified against 20,311-row Lean 4.34.1 oracle in crates/lean-analyzer"
+        }
+      ]
+    },
+    {
+      "term": "congruence domain",
+      "category": "domain",
+      "primary_references": [
+        {
+          "page": 512,
+          "section_anchor": "COUSOT s40.1 p1",
+          "is_definitive": true,
+          "prover_anchor": "EASCI.Foundations.CS.NatCongruence",
+          "context_note": "Granger (1989) arithmetic congruence lattice a*Z + b with GCD join and Extended-GCD CRT meet"
+        }
+      ],
+      "cross_references": [
+        "see also granger reduction",
+        "see also interval domain"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "NatCongruence",
+          "target_tactic_or_primitive": "EASCI.Foundations.CS.NatCongruence",
+          "mapping_confidence": 0.99,
+          "notes": "Mechanized in EASCI.Foundations.CS.NatCongruence and crates/lean-analyzer/src/congruence.rs"
+        }
+      ]
+    },
+    {
+      "term": "granger reduction",
+      "category": "algorithm",
+      "primary_references": [
+        {
+          "page": 485,
+          "section_anchor": "COUSOT s38.1 p1",
+          "is_definitive": true,
+          "prover_anchor": "EASCI.Foundations.CS.NatCongruence.reduce_point_sound",
+          "context_note": "Bidirectional reduced product between IntervalBound [a, b] and NatCongruence (stride*N + offset)"
+        },
+        {
+          "page": 118,
+          "section_anchor": "RIVALYI s8.2 p1",
+          "is_definitive": false,
+          "prover_anchor": "lean_analyzer::congruence::reduce_interval_congruence",
+          "context_note": "Mutual endpoint tightening and singleton congruence collapse"
+        }
+      ],
+      "cross_references": [
+        "see also congruence domain",
+        "see also interval domain"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "NatCongruence.reduce_point_sound",
+          "target_tactic_or_primitive": "EASCI.Foundations.CS.NatCongruence.reduce_point_sound",
+          "mapping_confidence": 0.98,
+          "notes": "Exposed via WASM C-ABI lean_analyzer_reduce_interval_congruence"
+        }
+      ]
+    },
+    {
+      "term": "widening with thresholds",
+      "category": "algorithm",
+      "primary_references": [
+        {
+          "page": 560,
+          "section_anchor": "COUSOT s44.1 p1",
+          "is_definitive": true,
+          "prover_anchor": "EASCI.Foundations.CS.NatInterval.widenThreshold",
+          "context_note": "Cousot-Cousot widening stepped through AST-harvested threshold constants T before jumping to +infty"
+        },
+        {
+          "page": 78,
+          "section_anchor": "MOLLERSPA s5.12 p1",
+          "is_definitive": false,
+          "prover_anchor": "lean_analyzer::nat_interval::IntervalBound::widen_with_thresholds",
+          "context_note": "AST literal constant harvesting for widening and bounded counterexample probing"
+        }
+      ],
+      "cross_references": [
+        "see also interval domain"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "NatInterval.widenThreshold_sound_next",
+          "target_tactic_or_primitive": "EASCI.Foundations.CS.NatInterval.widenThreshold",
+          "mapping_confidence": 0.98,
+          "notes": "Wired into computeWideningFixpoint and buildCesCandidates (harvestHeaderNatMaxSize)"
+        }
+      ]
+    },
+    {
+      "term": "zone domain",
+      "category": "domain",
+      "primary_references": [
+        {
+          "page": 540,
+          "section_anchor": "COUSOT s42.1 p1",
+          "is_definitive": true,
+          "prover_anchor": "EASCI.Foundations.CS.ZoneBound",
+          "context_note": "Mine (2001) Difference-Bound Matrix (DBM) relational domain x_i - x_j <= c with Floyd-Warshall O(n^3) closure"
+        },
+        {
+          "page": 64,
+          "section_anchor": "SIMONVRA s4.1 p1",
+          "is_definitive": false,
+          "prover_anchor": "lean_analyzer::zone::ZoneDomain",
+          "context_note": "Relational difference bounds for proving structural recursion termination n - k < n"
+        }
+      ],
+      "cross_references": [
+        "see also interval domain"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "ZoneBound.check_sub_decreasing_sound",
+          "target_tactic_or_primitive": "EASCI.Foundations.CS.ZoneBound",
+          "mapping_confidence": 0.99,
+          "notes": "Exposed via WASM C-ABI lean_analyzer_zone_check_sub_decreasing"
+        }
+      ]
+    },
+    {
+      "term": "bitwise interval propagation",
+      "category": "algorithm",
+      "primary_references": [
+        {
+          "page": 73,
+          "section_anchor": "WARREN s4.3 p1",
+          "is_definitive": true,
+          "prover_anchor": "lean_analyzer::nat_interval::IntervalBound::nat_land",
+          "context_note": "Hacker's Delight MSB-to-LSB tight bounds for bitwise AND, OR, XOR and shift operators over unsigned intervals"
+        }
+      ],
+      "cross_references": [
+        "see also interval domain"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "Nat.land / Nat.lor / Nat.xor / Nat.shiftLeft / Nat.shiftRight",
+          "target_tactic_or_primitive": "lean_analyzer::nat_interval::IntervalBound",
+          "mapping_confidence": 0.99,
+          "notes": "Exhaustively verified for best-transformer optimality on [0..15]^2 in test_interval_soundness.rs"
+        }
+      ]
+    },
+    {
+      "term": "diagnostic certificate",
+      "category": "concept",
+      "primary_references": [
+        {
+          "page": 96,
+          "section_anchor": "RIVALYI s6.4 p1",
+          "is_definitive": true,
+          "prover_anchor": "EASCI.Foundations.CS.NatInterval.natSubTruncation_cert_sound",
+          "context_note": "Static alarm classification: NatSubTruncation, NatDivModByZero, UnreachableBranch, DivisionByZeroGuardProven"
+        }
+      ],
+      "cross_references": [
+        "see also interval domain"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "NatInterval.natSubTruncation_cert_sound",
+          "target_tactic_or_primitive": "EASCI.Foundations.CS.NatInterval.natSubTruncation_cert_sound",
+          "mapping_confidence": 0.99,
+          "notes": "Surfaced in lean_diagnostics via scanSourceForNatCertificates"
+        }
+      ]
+    },
+    {
+      "term": "octagon domain",
+      "category": "domain",
+      "primary_references": [
+        {
+          "page": 45,
+          "section_anchor": "PELLEAU2015 s2.4 p1",
+          "is_definitive": true,
+          "prover_anchor": "EASCI.Foundations.CS.OctagonBound",
+          "context_note": "Mine (2006) / Pelleau (2015) relational octagon domain +-x_i +- x_j <= c with 2N x 2N coherent DBM and integer strong closure"
+        }
+      ],
+      "cross_references": [
+        "see also zone domain",
+        "see also interval domain"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "OctagonBound.simplex_complement_sound",
+          "target_tactic_or_primitive": "EASCI.Foundations.CS.OctagonBound",
+          "mapping_confidence": 0.99,
+          "notes": "Mechanized in EASCI.Foundations.CS.AbstractInterpretation and crates/lean-analyzer/src/octagon.rs"
+        }
+      ]
+    },
+    {
+      "term": "weak topological ordering",
+      "category": "algorithm",
+      "primary_references": [
+        {
+          "page": 68,
+          "section_anchor": "RIVALYI s5.1 p1",
+          "is_definitive": true,
+          "prover_anchor": "lean_analyzer::wto::WtoOrdering",
+          "context_note": "Bourdoncle (1993) hierarchical SCC decomposition for chaotic iteration with component-head threshold widening and bounded trace partitioning"
+        }
+      ],
+      "cross_references": [
+        "see also widening with thresholds"
+      ],
+      "cross_itp_concordance": [
+        {
+          "target_prover": "lean4",
+          "target_term": "LeanAbstractInterpreter.compute_wto_fixpoint",
+          "target_tactic_or_primitive": "lean_analyzer::wto::WtoOrdering",
+          "mapping_confidence": 0.98,
+          "notes": "Implemented in crates/lean-analyzer/src/wto.rs"
+        }
+      ]
+    }
+  ]
+}

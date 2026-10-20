@@ -1,5 +1,19 @@
 {
   "name": "proof-skills",
   "description": "Lean 4 theorem proving, mathematical formalization, tactic discipline, and Kuzu knowledge graph skills library",
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "skills": "./skills",
+  "agents": "./agents",
+  "mcpServers": {
+    "lean-lsp": {
+      "command": "node",
+      "args": [
+        "--experimental-strip-types",
+        "tools/lean-lsp-mcp/bin/lean-lsp-mcp.js"
+      ],
+      "env": {
+        "NODE_NO_WARNINGS": "1"
+      }
+    }
+  }
 }

@@ -5,8 +5,12 @@
   "license": "Apache-2.0",
   "files": {
     "master-authority-index.json": {
-      "sha256": "2cf40d8dfe092e2b42ed36fe9ce5a2896ae69922dbf8f6293cc5560ec8d98561",
-      "size_bytes": 243611
+      "sha256": "aa7dd00b6b5a3ecccfe67a29529a9e8a7c5dcd33e0419918c9c6fb2e76e0fcfe",
+      "size_bytes": 215073
+    },
+    "cross-itp-concordance.v1.json": {
+      "sha256": "32dac385530b643c5e4f9f2e1bc5f597de048a603c1448ba54c3a0070c8e42ff",
+      "size_bytes": 45875
     },
     "itp_ontology_graph.db": {
       "sha256": "ceb29ba02145f101223145aa65060f67c83e6fc012b3007ebb3ede9e7e427b74",
@@ -14,8 +18,8 @@
     },
     "book-indexes": {
       "avigad-lamr-2024.index.json": {
-        "sha256": "4c840e91906e770b95a90c0942e2effa70fa9d728798240e45706456e85934f1",
-        "size_bytes": 3046
+        "sha256": "52be5ed84a3c2c29efaa60e564c5155d2e75cde605c5bcbb274f0941a09ed4b5",
+        "size_bytes": 3034
       },
       "avigad-massot-mathematics-in-lean.index.json": {
         "sha256": "8c470fac731cd612b16980e1a4fb54996e0df430150ce3219f2aa69b21f51ce0",
@@ -32,6 +36,10 @@
       "chlipala-cpdt-2013.index.json": {
         "sha256": "1573605ba45e244abb3d47645969717b349a0c4f1c81e676dbc3d3df352541db",
         "size_bytes": 3580
+      },
+      "cousot-abstract-interpretation-2021.index.json": {
+        "sha256": "e8e2d5b0d88db33aa26c9c18d7ddfca68543a10e3af2749f0bd9b701ed97f86a",
+        "size_bytes": 11225
       },
       "harrison-logic-2009.index.json": {
         "sha256": "f152767e2f9a392561327f37b4dfbf97ba9115365299a18b687f46273fb5a6de",

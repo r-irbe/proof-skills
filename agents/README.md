@@ -30,6 +30,8 @@ back to normal pi skill discovery.
   `lean-blueprint`, `lean-enforcement`; census, DAG depth, landmark extraction.
 - `math-pedagogy-author.md` — mathematical narrative and textbook-grade exposition binding `lean-pedagogical-exposition`,
   `lean-blueprint`, `lean-doc-improvement`.
+- `formalization-dag-navigator.md` — autonomous DAG archaeologist and interactive proof visualizer binding `lean-dag-visualizer`,
+  `lean-formalization-breakdown`, `lean-blueprint`, `lean-pedagogical-exposition`; topological depth, critical path detection, and Tufte proof-walk cards.
 
 All are read-only analysts (`tools: read, grep, find, ls, bash`) and
 package-qualified under `proof-skills`.

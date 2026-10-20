@@ -172,7 +172,32 @@ When reviewing compiler and LSP diagnostics, resolve them in strict priority ord
 |---|---|---|
 | **1** | **Syntax Error** | FileWorker cannot build AST. All downstream diagnostics in the declaration are phantom noise. Fix immediately. |
 | **2** | **Elaboration / Type Mismatch** | Tactic or argument fails type-checking. Fix before evaluating goal counts. |
-| **3** | **Unsolved Goals (`done`)** | Proof is incomplete. Inspect via `$/lean/plainGoal`. |
-| **4** | **Linter Warnings** | Unused variables, naming conventions, doc warnings. Non-blocking; address during cleanup. |
+| **3** | **Unsolved Goals (`done`)** | Proof is incomplete. Inspect via `$/lean/plainGoal` (`lean_goal`). |
+| **4** | **Linter & Static Abstract Interpretation** | `NatSubTruncation` (`a - b` on `Nat` without `b <= a`), `NatDivModByZero`, unused variables, naming conventions. Inspect via `lean_diagnostics`. |
 
 > **The Golden Rule of Proving**: Never attempt to fix an "unsolved goals" diagnostic at a `by` line when an elaboration error or tactic failure is active on a later line. Always fix the lowest error line first.
+
+---
+
+## 13. Mapping Raw LSP Methods to `lean-lsp` (`r-irbe/lean4-lsp-mcp`) Tools
+
+Agents should invoke the `lean-lsp` MCP tools directly rather than constructing raw JSON-RPC frames:
+
+| Raw LSP / Engine Capability | `lean-lsp` MCP Tool | Example JSON Arguments |
+|---|---|---|
+| `$/lean/plainGoal` | `lean_goal` | `{"filePath": "Foo.lean", "line": 42, "col": 3, "target": "filtered"}` |
+| `$/lean/plainTermGoal` | `lean_goal` | `{"filePath": "Foo.lean", "line": 42, "col": 10, "target": "term"}` |
+| AltProof Tactic & Route Advisor | `lean_goal` or `lean_metrics` | `{"filePath": "Foo.lean", "line": 42, "target": "altproof"}` |
+| `textDocument/publishDiagnostics` + Abstract Interpretation | `lean_diagnostics` | `{"filePath": "Foo.lean", "maxWaitMs": 4000}` |
+| Plausible Counterexample Harness (Galois-pruned) | `lean_counterexample_search` | `{"filePath": "Foo.lean", "theoremName": "my_thm", "strategy": "dense"}` |
+| `.ilean` Go-to-Definition (< 5 ms) | `lean_lookup_symbol` | `{"symbol": "MyNamespace.my_thm"}` |
+| `.ilean` Declaration References (< 5 ms) | `lean_decl_references` | `{"symbol": "MyNamespace.my_thm", "direction": "both"}` |
+| `$/lean/moduleHierarchy` (`imports` / `importedBy`) | `lean_module_hierarchy` | `{"moduleName": "MyProject.QualityGates", "direction": "importedBy", "transitive": true}` |
+| Multi-Source Search (Local, Loogle, Ontology, Reservoir, arXiv) | `lean_search` | `{"query": "Finset.sum_le_sum", "source": "code"}` |
+| Textbook Index Lookup (65+ curated indexes) | `lean_book_index_lookup` | `{"term": "octagon domain", "book": "cousot"}` |
+| Cross-ITP Prover Concordance | `lean_cross_itp_concordance` | `{"concept": "generalizing induction", "source_prover": "coq", "target_prover": "lean4"}` |
+| Kernel Trust-Base Check (`#print axioms`) | `lean_axiom_closure` | `{"symbol": "MyNamespace.my_thm", "module": "MyModule"}` |
+| Ephemeral `lake env lean --stdin` Probe | `lean_exec` | `{"code": "import Mathlib.Data.Nat.Basic\n#check Nat.sub_add_cancel"}` |
+| Force Document Re-Sync | `lean_resync` | `{"filePath": "Foo.lean"}` |
+| Broker & Worker Health Status | `lean_server_status` | `{}` |
+

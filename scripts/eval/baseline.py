@@ -164,26 +164,34 @@ def _print_diff(d: Diff, *, baseline_path: Path) -> int:
 
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0] if __doc__ else "")
-    p.add_argument("--run-dir", required=True, type=Path,
+    p.add_argument("--run-dir", default=Path("/tmp/eval-smoke-test"), type=Path,
                    help="Directory containing <case>.json from run_eval.py")
     p.add_argument("--baseline", type=Path, default=None,
-                   help="Path to baseline.json (default: <run-dir>/baseline.json)")
-    p.add_argument("--mode", choices=["write", "diff"], required=True,
+                   help="Path to baseline.json (default: <run-dir>/baseline.json or scripts/eval/baseline.json)")
+    p.add_argument("--mode", choices=["write", "diff"], default=None,
                    help="write: persist current run as baseline; diff: compare")
+    p.add_argument("--check", action="store_true",
+                   help="Alias for --mode diff")
     args = p.parse_args()
+    mode = args.mode or ("diff" if args.check else None)
+    if not mode:
+        p.error("one of --mode {write,diff} or --check is required")
 
     run_dir: Path = args.run_dir
     if not run_dir.is_dir():
         print(f"ERROR: --run-dir {run_dir} is not a directory", file=sys.stderr)
         return 2
-    baseline_path: Path = args.baseline or (run_dir / "baseline.json")
+    default_bl = run_dir / "baseline.json"
+    if not default_bl.exists() and (Path(__file__).parent / "baseline.json").exists():
+        default_bl = Path(__file__).parent / "baseline.json"
+    baseline_path: Path = args.baseline or default_bl
 
     runs = _read_run(run_dir)
     if not runs:
         print(f"ERROR: no per-case JSON files found in {run_dir}", file=sys.stderr)
         return 2
 
-    if args.mode == "write":
+    if mode == "write":
         out = _write_baseline(baseline_path, runs)
         print(f"wrote baseline: {out}  ({len(runs)} cases)")
         return 0

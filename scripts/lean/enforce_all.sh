@@ -145,9 +145,9 @@ echo ""
 echo "=== Phase 7: Build Timing ==="
 
 TIMING_JSON="${LAKE_TIMING_JSON:-/tmp/w14b2-baseline/w14b2-slice-0-build-timing.json}"
-if [ -f "$TIMING_JSON" ] && [ -f "$CALLER_SCRIPTS/build_timing_report.py" ]; then
+if [ -f "$TIMING_JSON" ]; then
     echo "--- Build Timing Report ---"
-    if python3 "$CALLER_SCRIPTS/build_timing_report.py" "$TIMING_JSON" "$TRACKING_DIR/lake_timing.md" 2>&1; then
+    if run_py build_timing_report.py "$TIMING_JSON" "$TRACKING_DIR/lake_timing.md" 2>&1; then
         echo "[PASS] Build timing: generated ($TRACKING_DIR/lake_timing.md)"
     else
         echo "[WARN] Build timing: report generation failed"

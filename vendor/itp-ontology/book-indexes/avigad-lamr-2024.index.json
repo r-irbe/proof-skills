@@ -2,7 +2,7 @@
   "schema_version": "v1.0",
   "corpus_id": "AVIGAD-LAMR-2024",
   "prover_family": "lean4",
-  "book_title": "Logic and Automated Mathematical Reasoning",
+  "book_title": "Logic and Mechanized Reasoning",
   "authors": [
     "Jeremy Avigad"
   ],

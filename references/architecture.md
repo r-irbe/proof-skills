@@ -17,7 +17,7 @@ The routing of agent skills and the handling of safety gates are informed by str
 
 1.  **FrugalGPT and Cascade Routing**: Utilizing a hierarchy of models or fallback mechanisms based on confidence thresholds and task difficulty.
     *   *Reference*: Chen et al. (2023)
-    *   *Application*: Applied in our `AGENT.md` dispatch fallback rules, where agents degrade gracefully based on human-in-the-loop (HITL) availability.
+    *   *Application*: Applied in our `AGENTS.md` dispatch fallback rules, where agents degrade gracefully based on human-in-the-loop (HITL) availability.
 
 2.  **Safety and Reversibility Tiers**:
     *   *Reference*: OWASP Foundation (2023)

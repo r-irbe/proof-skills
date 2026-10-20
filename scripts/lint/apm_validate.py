@@ -123,9 +123,11 @@ def validate() -> tuple[list[str], dict]:
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     p.add_argument("--report", action="store_true",
-                   help="Print human-readable report (always exits 0)")
+                   help="Print human-readable report (always exits 0 unless --strict)")
     p.add_argument("--json", action="store_true",
                    help="Emit JSON summary (exit 0/1 by validity)")
+    p.add_argument("--strict", action="store_true",
+                   help="Fail with exit code 1 if any validation errors are found")
     args = p.parse_args()
 
     errors, summary = validate()
@@ -134,7 +136,7 @@ def main() -> int:
         print(json.dumps({"errors": errors, "summary": summary}, indent=2))
         return 0 if not errors else 1
 
-    if args.report:
+    if args.report or args.strict:
         print(f"apm.yml present .......... {summary['apm_yml']}")
         print(f"skills discovered ........ {summary['skill_count']}")
         print(f"skills validated ......... {summary['valid_skills']}")
@@ -142,8 +144,10 @@ def main() -> int:
             print(f"\nERRORS ({len(errors)}):")
             for e in errors:
                 print(f"  - {e}")
+            if args.strict:
+                return 1
         else:
-            print("\nOK — package is a valid APM skill collection.")
+            print("\nOK -- package is a valid APM skill collection.")
         return 0
 
     # Default: silent on success, errors to stderr, exit 0/1.

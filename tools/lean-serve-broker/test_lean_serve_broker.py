@@ -342,5 +342,331 @@ class StopCommandTests(unittest.TestCase):
         self.assertIn("already gone", buf.getvalue())
 
 
+import hashlib
+import select
+import shutil
+import subprocess
+
+BROKER_SCRIPT = os.path.join(_HERE, "lean_serve_broker.py")
+FAKE_SERVER = os.path.join(_HERE, "fake_lake_serve.py")
+
+
+class BrokerEnv:
+    """One broker daemon over a fake server in an isolated state home."""
+
+    def __init__(self, tmp_root, idle_s=60, build_wait_ms=1000):
+        os.makedirs(tmp_root, exist_ok=True)
+        self.root = tmp_root
+        with open(os.path.join(tmp_root, "lakefile.lean"), "w") as f:
+            f.write("import Lake\nopen Lake DSL\n")
+        self.state_home = tempfile.mkdtemp(prefix="lsb_")
+        self.fake_log = os.path.join(tmp_root, "fake-server.log")
+        self.env = dict(os.environ)
+        self.env.update(
+            {
+                "LEAN_SERVE_BROKER_SERVER": f"{sys.executable} {FAKE_SERVER}",
+                "LEAN_SERVE_STATE_HOME": self.state_home,
+                "LEAN_SERVE_IDLE_S": str(idle_s),
+                "LEAN_SERVE_BUILD_WAIT_MS": str(build_wait_ms),
+                "FAKE_LOG": self.fake_log,
+            }
+        )
+
+    def state_dir(self):
+        key = hashlib.sha1(self.root.encode()).hexdigest()[:16]
+        return os.path.join(self.state_home, key)
+
+    def sock_path(self):
+        return os.path.join(self.state_dir(), "server.sock")
+
+    def status_path(self):
+        return os.path.join(self.state_dir(), "status.json")
+
+    def start(self, timeout=15):
+        subprocess.Popen(
+            [sys.executable, BROKER_SCRIPT, "serve", "--root", self.root],
+            env=self.env,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True,
+        )
+        deadline = time.time() + timeout
+        while time.time() < deadline:
+            try:
+                with open(self.status_path()) as f:
+                    st = json.load(f)
+                if st.get("running") and os.path.exists(self.sock_path()):
+                    return
+            except (OSError, ValueError):
+                pass
+            time.sleep(0.2)
+        raise RuntimeError("broker did not come up")
+
+    def attach(self, timeout=15):
+        proc = subprocess.Popen(
+            [sys.executable, BROKER_SCRIPT, "attach", "--root", self.root],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            env=self.env,
+        )
+        return LspClient(proc, timeout)
+
+    def read_status(self):
+        try:
+            with open(self.status_path()) as f:
+                return json.load(f)
+        except (OSError, ValueError):
+            return {}
+
+    def fake_methods(self):
+        try:
+            with open(self.fake_log) as f:
+                return [line.strip() for line in f if line.strip()]
+        except OSError:
+            return []
+
+    def stop(self):
+        subprocess.run(
+            [sys.executable, BROKER_SCRIPT, "stop", "--root", self.root],
+            env=self.env,
+            capture_output=True,
+            timeout=15,
+        )
+        shutil.rmtree(self.state_home, ignore_errors=True)
+
+
+class LspClient:
+    """LSP client over an attach process stdio."""
+
+    def __init__(self, proc, default_timeout):
+        self.proc = proc
+        self.timeout = default_timeout
+        self.buf = b""
+        self.next_id = 1
+
+    def send(self, obj):
+        body = json.dumps(obj).encode("utf-8")
+        self.proc.stdin.write(f"Content-Length: {len(body)}\r\n\r\n".encode("ascii"))
+        self.proc.stdin.write(body)
+        self.proc.stdin.flush()
+
+    def request(self, method, params):
+        rid = self.next_id
+        self.next_id += 1
+        self.send({"jsonrpc": "2.0", "id": rid, "method": method, "params": params})
+        return rid
+
+    def notify(self, method, params):
+        self.send({"jsonrpc": "2.0", "method": method, "params": params})
+
+    def read_message(self, timeout=None):
+        deadline = time.time() + (self.timeout if timeout is None else timeout)
+        while time.time() < deadline:
+            while b"\r\n\r\n" in self.buf:
+                head, _, rest = self.buf.partition(b"\r\n\r\n")
+                length = None
+                for line in head.split(b"\r\n"):
+                    if line.lower().startswith(b"content-length:"):
+                        length = int(line.split(b":", 1)[1].strip())
+                if length is None or len(rest) < length:
+                    break
+                body, self.buf = rest[:length], rest[length:]
+                return json.loads(body.decode("utf-8"))
+            ready, _, _ = select.select([self.proc.stdout], [], [], 0.3)
+            if not ready:
+                continue
+            chunk = os.read(self.proc.stdout.fileno(), 65536)
+            if not chunk:
+                raise RuntimeError("attach process closed stdout")
+            self.buf += chunk
+        raise TimeoutError("no LSP message within timeout")
+
+    def wait_response(self, rid, timeout=None):
+        deadline = time.time() + (self.timeout if timeout is None else timeout)
+        while time.time() < deadline:
+            msg = self.read_message(timeout=max(0.1, deadline - time.time()))
+            if msg.get("id") == rid and ("result" in msg or "error" in msg):
+                return msg
+        raise TimeoutError(f"no response for id {rid!r}")
+
+    def close(self):
+        with contextlib.suppress(OSError):
+            self.proc.stdin.close()
+        try:
+            self.proc.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            self.proc.kill()
+
+
+class SubprocessE2ETests(unittest.TestCase):
+    def setUp(self):
+        self.tmp_dir = tempfile.mkdtemp(prefix="lsb_e2e_")
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp_dir, ignore_errors=True)
+
+    def test_canned_initialize_and_id_routing(self):
+        env = BrokerEnv(os.path.join(self.tmp_dir, "root"))
+        env.start()
+        try:
+            a = env.attach()
+            b = env.attach()
+            try:
+                for cli in (a, b):
+                    rid = cli.request("initialize", {"rootUri": "file://" + env.root})
+                    resp = cli.wait_response(rid)
+                    self.assertEqual(resp["result"]["serverInfo"]["name"], "fake-lake-serve")
+                    cli.notify("initialized", {})
+
+                rid_a = a.request("initialize", {})
+                ra = a.wait_response(rid_a)
+                self.assertEqual(ra["id"], rid_a)
+
+                pa = {"from": "client-a"}
+                pb = {"from": "client-b"}
+                a.send({"jsonrpc": "2.0", "id": 77, "method": "work/echo", "params": pa})
+                b.send({"jsonrpc": "2.0", "id": 77, "method": "work/echo", "params": pb})
+                got = []
+                for cli in (a, b):
+                    while True:
+                        msg = cli.read_message()
+                        if msg.get("id") == 77 and "result" in msg:
+                            got.append((cli, msg["result"]["echo"]["from"]))
+                            break
+                self.assertEqual({src for _, src in got}, {"client-a", "client-b"})
+            finally:
+                a.close()
+                b.close()
+        finally:
+            env.stop()
+
+    def test_did_open_broadcasts_diagnostics(self):
+        env = BrokerEnv(os.path.join(self.tmp_dir, "root"))
+        env.start()
+        try:
+            a = env.attach()
+            b = env.attach()
+            try:
+                rid = a.request("initialize", {})
+                a.wait_response(rid)
+                rid = b.request("initialize", {})
+                b.wait_response(rid)
+                uri = "file://" + os.path.join(env.root, "Foo.lean")
+                a.notify(
+                    "textDocument/didOpen",
+                    {
+                        "textDocument": {
+                            "uri": uri,
+                            "languageId": "lean",
+                            "version": 1,
+                            "text": "theorem foo : True := trivial",
+                        }
+                    },
+                )
+                msg = b.read_message()
+                self.assertEqual(msg["method"], "textDocument/publishDiagnostics")
+                self.assertEqual(msg["params"]["uri"], uri)
+            finally:
+                a.close()
+                b.close()
+        finally:
+            env.stop()
+
+    def test_shutdown_interception(self):
+        env = BrokerEnv(os.path.join(self.tmp_dir, "root"))
+        env.start()
+        try:
+            a = env.attach()
+            rid = a.request("initialize", {})
+            a.wait_response(rid)
+            a.send({"jsonrpc": "2.0", "id": 55, "method": "shutdown"})
+            resp = a.wait_response(55)
+            self.assertIsNone(resp["result"])
+            a.notify("exit", {})
+            a.close()
+            b = env.attach()
+            try:
+                rid = b.request("initialize", {})
+                resp = b.wait_response(rid)
+                self.assertIn("capabilities", resp["result"])
+                self.assertNotIn("shutdown", env.fake_methods())
+            finally:
+                b.close()
+        finally:
+            env.stop()
+
+    def test_build_detection_and_status(self):
+        env = BrokerEnv(os.path.join(self.tmp_dir, "root"))
+        env.start()
+        try:
+            fake_bin = os.path.join(self.tmp_dir, "bin")
+            os.makedirs(fake_bin, exist_ok=True)
+            fake_lake = os.path.join(fake_bin, "lake")
+            with open(fake_lake, "w") as f:
+                f.write("#!/bin/sh\nsleep 3\n")
+            os.chmod(fake_lake, 0o755)
+            build_proc = subprocess.Popen(
+                [fake_lake, "build"],
+                cwd=env.root,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            try:
+                deadline = time.time() + 10
+                seen_building = False
+                while time.time() < deadline:
+                    if env.read_status().get("building"):
+                        seen_building = True
+                        break
+                    time.sleep(0.2)
+                self.assertTrue(seen_building, "broker did not detect the running build")
+                build_proc.wait(timeout=10)
+                deadline = time.time() + 10
+                while time.time() < deadline:
+                    if not env.read_status().get("building"):
+                        break
+                    time.sleep(0.2)
+                self.assertFalse(env.read_status().get("building"))
+            finally:
+                if build_proc.poll() is None:
+                    build_proc.kill()
+        finally:
+            env.stop()
+
+    def test_idle_expiry_shuts_broker_down(self):
+        env = BrokerEnv(os.path.join(self.tmp_dir, "root"), idle_s=2)
+        env.start()
+        try:
+            cli = env.attach()
+            rid = cli.request("initialize", {})
+            cli.wait_response(rid)
+            cli.close()
+            deadline = time.time() + 20
+            gone = False
+            while time.time() < deadline:
+                st = env.read_status()
+                if st.get("running") is False or not os.path.exists(env.sock_path()):
+                    gone = True
+                    break
+                time.sleep(0.5)
+            self.assertTrue(gone, "broker did not idle out")
+        finally:
+            env.stop()
+
+    def test_second_broker_fails_lock(self):
+        env = BrokerEnv(os.path.join(self.tmp_dir, "root"))
+        env.start()
+        try:
+            dup = subprocess.run(
+                [sys.executable, BROKER_SCRIPT, "serve", "--root", env.root],
+                env=env.env,
+                capture_output=True,
+                timeout=15,
+            )
+            self.assertEqual(dup.returncode, 3)
+        finally:
+            env.stop()
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

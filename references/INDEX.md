@@ -37,6 +37,19 @@ inspection, tactic execution, and module hygiene.
 | [lean_to_math_exposition_patterns.md](lean_to_math_exposition_patterns.md) | Translation dictionary from Lean types and proof tactics to beautiful, standard mathematical prose and learning materials. | lean-pedagogical-exposition |
 | [mathlib4-conventions.md](mathlib4-conventions.md) | Mathlib4 style guide: snake_case for lemmas, camelCase for types, docstrings, binder hygiene, and implicit arguments. | lean-proof, lean-pr |
 | [AUTHORING.md](AUTHORING.md) | Authoring standards for proof-skills SKILL.md contracts, frontmatter validation, and evaluation rubrics. | lean-quality-engine |
+| [architecture.md](architecture.md) | Hybrid architecture overview (Kernel + Domain Facets), cascade routing, and skill dispatch precedence. | lean-gateway |
+| [project_structure.md](project_structure.md) | Comprehensive directory map of root configurations, skill directories, templates, references, and tooling. | lean-setup, lean-gateway |
+| [contributing.md](contributing.md) | Contribution guidelines, confidentiality rules, and verification requirements for proof-skills authors. | lean-pr, lean-quality-engine |
+| [eval_history.md](eval_history.md) | Historical synthesis of sub-agent fleet patterns, model calibration rounds, and evaluation findings. | lean-gateway, lean-quality-engine |
+| [swarm_methodology.md](swarm_methodology.md) | Stanford ACE Prover Swarm methodology, role specialization (Specifier, Prover, Auditor, Gardener), and handoff protocols. | lean-gateway, lean-review-council |
+| [bibliography.md](bibliography.md) | Academic bibliography and foundational literature backing formalization, agent routing, and verification protocols. | lean-research |
+| [lean4-core-only-profile.md](lean4-core-only-profile.md) | Stdlib/Core-only Lean 4 profile without Mathlib: available tactics, structural induction idioms, and arithmetic rules. | lean-core-only, lean-proof |
+| [mathlib-module-system-notes.md](mathlib-module-system-notes.md) | Mathlib4 module-system migration notes: notation propagation, instance sealing, and positional-implicit pitfalls. | lean-upstream-porting, lean-proof |
+| [upstream/lean-bug-report-pipeline.md](upstream/lean-bug-report-pipeline.md) | Upstream Lean 4 bug report extraction, MWE reduction, and bisect-to-issue pipeline reference. | lean-mwe, lean-bisect, lean-pr |
+| [upstream/lean-nightly-infrastructure.md](upstream/lean-nightly-infrastructure.md) | Upstream Lean 4 nightly CI, radar, and toolchain bisect infrastructure reference. | lean-bisect, lean-setup |
+| [upstream/lean4-pr.md](upstream/lean4-pr.md) | Upstream `leanprover/lean4` pull request workflow, commit conventions, and CI validation reference. | lean-pr, lean-upstream-porting |
+| [upstream/mathlib4-pr.md](upstream/mathlib4-pr.md) | Upstream Mathlib4 pull request authoring, bors commands, and review lifecycle reference. | lean-pr, lean-upstream-porting |
+| [upstream/mathlib4-review.md](upstream/mathlib4-review.md) | Upstream Mathlib4 reviewer checklist, golf idioms, and style conventions reference. | lean-proof-review, lean-pr |
 
 ---
 
@@ -63,7 +76,7 @@ Domain-specific lemma patterns, formalization templates, and tactic idioms.
 ### 3.3 Topology and Dynamical Systems
 | Reference File | Domain Scope | Associated Skill |
 | --- | --- | --- |
-| [math-topology-analysis-handbook.md](math-topology-analysis-handbook.md) | General topology, topological spaces, compactness, connected components. | math-topology-analysis |
+| [../skills/math-topology-analysis/SKILL.md](../skills/math-topology-analysis/SKILL.md) | General topology, topological spaces, compactness, connected components (inline v2 skill). | math-topology-analysis |
 | [lean4-math-dynamical.md](lean4-math-dynamical.md) | Dynamical systems, flow invariants, fixed points, stability analysis. | lean-math-dynamical |
 | [math-nonlinear-dynamics-handbook.md](math-nonlinear-dynamics-handbook.md) | Nonlinear bifurcations, phase space portraits, Lyapunov stability. | math-nonlinear-dynamics |
 | [lean4-ergodic-theory.md](lean4-ergodic-theory.md) | Measure-preserving transformations, Birkhoff ergodic theorem idioms. | lean-math-dynamical |
@@ -85,10 +98,10 @@ Formalization contracts bridging symbolic reasoning, agent architectures, and ca
 | Reference File | Domain Scope | Associated Skill |
 | --- | --- | --- |
 | [ai-agentic-evolving-handbook.md](ai-agentic-evolving-handbook.md) | Self-modifying and evolving agent loops, safety invariants. | ai-agentic-evolving |
-| [ai-causal-deontic-handbook.md](ai-causal-deontic-handbook.md) | Causal inference, do-calculus, deontic logic, normative obligations. | ai-causal-deontic |
+| [../skills/ai-causal-deontic/SKILL.md](../skills/ai-causal-deontic/SKILL.md) | Causal inference, do-calculus, deontic logic, normative obligations (inline v2 skill). | ai-causal-deontic |
 | [ai-commonsense-reasoning-handbook.md](ai-commonsense-reasoning-handbook.md) | Default reasoning, non-monotonic logic, commonsense knowledge frames. | ai-commonsense-reasoning |
 | [ai-high-stakes-verifiable-handbook.md](ai-high-stakes-verifiable-handbook.md) | High-assurance verification, formal safety guarantees, fault trees. | ai-high-stakes-verifiable |
-| [ai-symbolic-neuro-handbook.md](ai-symbolic-neuro-handbook.md) | Neuro-symbolic integration, differentiable theorem proving, embedding logic. | ai-symbolic-neuro |
+| [../skills/ai-symbolic-neuro/SKILL.md](../skills/ai-symbolic-neuro/SKILL.md) | Neuro-symbolic integration, differentiable theorem proving, embedding logic (inline v2 skill). | ai-symbolic-neuro |
 | [lean-ai-formalization-handbook.md](lean-ai-formalization-handbook.md) | Autoformalization workflows, natural language to Lean translation. | lean-ai-formalization |
 | [lean-applied-reasoning-handbook.md](lean-applied-reasoning-handbook.md) | Applied multi-step deductive reasoning and theorem structuring. | lean-applied-reasoning |
 | [lean-knowledge-formalization-handbook.md](lean-knowledge-formalization-handbook.md) | Domain knowledge encoding, ontological hierarchy construction. | lean-knowledge-formalization |
@@ -113,7 +126,7 @@ and retrospective audits.
 | [lean-retroactive-audit-handbook.md](lean-retroactive-audit-handbook.md) | Post-hoc audit trails, theorem deprecation tracking, dependency drift. | lean-retroactive-audit |
 | [lean-retro-methodology-handbook.md](lean-retro-methodology-handbook.md) | Retrospective analysis of proof campaigns, failure taxonomy generation. | lean-retro-methodology |
 | [lean-review-council-handbook.md](lean-review-council-handbook.md) | Multi-agent review councils, consensus protocols, gate signoffs. | lean-review-council |
-| [lean-review-council-skill-map.md](lean-review-council-skill-map.md) | Topology map of skills governed by the review council. | lean-review-council |
+| [research-council-skill-map.md](research-council-skill-map.md) | Topology map of skills governed by the research and review councils. | research-council, lean-review-council |
 | [lean-security-formalization-handbook.md](lean-security-formalization-handbook.md) | Security policy verification, access control invariants. | lean-security-formalization |
 | [lean-specification-handbook.md](lean-specification-handbook.md) | Formal specification authoring, axiomatic boundaries, consistency checks. | lean-specification |
 | [lean-doc-improvement-handbook.md](lean-doc-improvement-handbook.md) | Documentation refinement, docstring coverage, cross-module links. | lean-doc-improvement |

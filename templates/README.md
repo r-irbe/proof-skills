@@ -113,6 +113,32 @@ placeholders and `# How to instantiate` slot.
 `Template_Bridge.md` (already in the v2 set) is the 9th item from
 `all-templates.md` and covers the upstream-façade `abbrev` pattern.
 
+### Tactic, Reversion & Architecture Templates
+
+Specialized starters for meta-tactics, proof reversion, formalization breakdowns, and pedagogical exposition:
+
+| File | Use for | Pairs with skill |
+|------|---------|------------------|
+| [`Template_AltProofTactics.md`](./Template_AltProofTactics.md) | Speculative alternative-proof (`alt_proof`, `elegance?`, `sum_congr_ring`, `finset_mono`, `finset_nonneg`) and simplex closers (`wellformed_tac`, `channel_fields`) | `lean-proof`, `lean-proof-refactor` |
+| [`Template_ClosedTermReversion.md`](./Template_ClosedTermReversion.md) | Closed-term reversion (`revert` / `generalize`) for induction and dependent rewrites | `lean-proof` |
+| [`Template_ConfluenceSimpOnly.md`](./Template_ConfluenceSimpOnly.md) | Confluent `simp only [...]` normal forms and deterministic rewrite sets | `lean-proof`, `lean-proof-refactor` |
+| [`Template_DefinitionalChangeShow.md`](./Template_DefinitionalChangeShow.md) | Definitional unfolding via `change` / `show` without `rw` motive failures | `lean-proof` |
+| [`Template_ForwardCalculation_Calc.md`](./Template_ForwardCalculation_Calc.md) | Structured forward calculation chains (`calc`) with explicit intermediate steps | `lean-proof` |
+| [`Template_P2MProofReversion.md`](./Template_P2MProofReversion.md) | Paper-to-math (P2M) proof reversion and goal-state alignment | `lean-proof`, `lean-doc-requirements` |
+| [`Template_FormalizationBreakdown.md`](./Template_FormalizationBreakdown.md) | 8-wave architectural deconstruction, static/kernel census, and landmark extraction | `lean-formalization-breakdown` |
+| [`Template_LeanBlueprintChapter.md`](./Template_LeanBlueprintChapter.md) | Lean Blueprint LaTeX chapter with `\lean{}` and `\uses{}` dependency tags | `lean-blueprint`, `lean-pedagogical-exposition` |
+| [`Template_MathematicalEngineSynthesis.md`](./Template_MathematicalEngineSynthesis.md) | Cross-module mathematical engine synthesis and interface boundary map | `lean-formalization-breakdown` |
+| [`Template_ModularSubpackageInterface.md`](./Template_ModularSubpackageInterface.md) | Downstream standalone Lake subpackage public interface and re-export facade | `lean-package-research`, `lean-build` |
+| [`Template_PedagogicalProofWalkthrough.md`](./Template_PedagogicalProofWalkthrough.md) | Textbook-grade mathematical narrative and Tufte proof-walk cards | `lean-pedagogical-exposition` |
+
+### PDE, Fluid Dynamics & Differential Topology Templates
+
+Specialized templates extracted from the Navier-Stokes / Euler blowup and catastrophe theory formalizations (`Template_AxisymmetricSwirl.md`, `Template_BilinearDualityTest.md`, `Template_GevreyClass.md`, `Template_LogarithmicGradient.md`, `Template_PiolaTransform.md`, `Template_PotentialLifting.md`, `Template_ReynoldsCascade.md`, `Template_ScalingLimit.md`, `Template_ThomMatherControlledVectorFieldFlow.md`, `Template_VorticityConfinement.md`).
+
+### Number Theory, Arithmetic Geometry & Modular Jacobian Templates
+
+Specialized templates (140+ files) covering Hecke algebras, modular curves and Jacobians (`Template_ModularJacobian*.md`), Eichler-Shimura periods, Fontaine-Laffaille modules, Euler systems (`Template_FlachSystemBound.md`, `Template_KolyvaginEulerSystemDerivation.md`), Gross-Zagier heights, Mazur control theorem, and Ribet level-lowering (`Template_RibetLevelLowering.md`, `Template_SerreModularityWeight.md`).
+
 ---
 
 ## Reference Templates

@@ -31,8 +31,8 @@ Before initiating a visualization or proof-walk task, consult these core referen
    - Annotate landmark nodes with their proof milestone tactics (`fin_cases`, `ring`, `rw`, `exact`).
 
 3. **Visualizer Launch & CLI Configuration**:
-   - **For Human Interactive Sessions**: Launch via `python3 tools/visualizer/launch.py <target_path>`. The tool binds an open port and launches the user's web browser automatically.
-   - **For Autonomous AI Sessions**: Launch headlessly via `python3 tools/visualizer/launch.py <target_path> --no-browser` or inspect the generated graph JSON directly. Retrieve metrics and summarize topology without blocking on browser GUI interactions.
+   - **For Human Interactive Sessions**: Launch via `python3 scripts/lean/launch_visualizer.py <target_path>` (or serve an existing graph via `python3 tools/visualizer/serve.py --graph <out.json>`). The tool binds an open port and launches the user's web browser automatically.
+   - **For Autonomous AI Sessions**: Launch headlessly via `python3 scripts/lean/launch_visualizer.py <target_path> --no-browser` or inspect the generated graph JSON directly. Retrieve metrics and summarize topology without blocking on browser GUI interactions.
 
 4. **Tufte Proof-Walk Integration**:
    - Ensure every landmark declaration in the visualizer graph links its formal signature, module coordinates, line numbers, pedagogical intuition narrative, and bidirectional premise tags.

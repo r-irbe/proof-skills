@@ -20,11 +20,35 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install PyYAML
-        run: python -m pip install --upgrade pip pyyaml
+      - name: Install Python and Node.js dependencies
+        run: python -m pip install --upgrade pip pyyaml pytest
 
-      - name: Validate apm.yml + skills/<name>/SKILL.md
-        run: python scripts/lint/apm_validate.py --report
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate apm.yml + skills/<name>/SKILL.md (strict)
+        run: python scripts/lint/apm_validate.py --strict
 
       - name: Emit JSON summary
         run: python scripts/lint/apm_validate.py --json
+
+      - name: Check repository structure (strict + self-test)
+        run: python scripts/check-structure --strict --self-test
+
+      - name: Check skill conformance
+        run: python scripts/skill-audit/check_conformance.py --fail-on any
+
+      - name: Run proof quality tests
+        run: python scripts/lean/proof_quality_test.py
+
+      - name: Run graph query ontology tests
+        run: python tests/test_graph_query_ontology.py
+
+      - name: Run lean-serve-broker unit and E2E tests
+        run: python tools/lean-serve-broker/test_lean_serve_broker.py
+
+      - name: Run Lean DAG visualizer tests
+        run: node tools/visualizer/test_lean_dag_visualizer.mjs
+

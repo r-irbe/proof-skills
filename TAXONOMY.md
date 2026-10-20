@@ -15,6 +15,7 @@ all proof skills are stratified into five explicit layers of abstraction:
 +-------------------------------------------------------------------------------+
 | L4: Governance, Audit & Review                                                |
 |     lean-quality-engine, lean-review-council, lean-retroactive-audit,         |
+|     lean-deep-audit, lean-axiom-closure, lean-replay-verification,            |
 |     lean-security-formalization, Biba integrity lattices, invariant audits    |
 +-------------------------------------------------------------------------------+
                                        ^
@@ -22,20 +23,21 @@ all proof skills are stratified into five explicit layers of abstraction:
 +-------------------------------------------------------------------------------+
 | L3: Knowledge & Blueprint Garden                                              |
 |     lean-blueprint, lean-dag-visualizer, lean-formalization-breakdown,        |
-|     lean-pedagogical-exposition, lean-zettelkasten, Kuzu graph engine (29 bks)|
+|     lean-pedagogical-exposition, lean-zettelkasten,                           |
+|     Kuzu graph engine & ITP Ontology (65 books)                               |
 +-------------------------------------------------------------------------------+
                                        ^
                                        |
 +-------------------------------------------------------------------------------+
 | L2: Domain Formalization Facets                                               |
 |     Mathlib analysis, stochastic, discrete, dynamical, optimization,          |
-|     category theory, measure theory, game theory, neuro-symbolic AI           |
+|     bigraphs, convergence bounds, category theory, neuro-symbolic AI          |
 +-------------------------------------------------------------------------------+
                                        ^
                                        |
 +-------------------------------------------------------------------------------+
 | L1: Tactic Discipline & Proof State                                           |
-|     lean-proof, lean-proof-review, lean-tautology-triage,                      |
+|     lean-proof, lean-proof-review, lean-tautology-triage, lean-core-only,     |
 |     lean-tactic-discipline, lean-enforcement (zero sorry / zero warning)     |
 +-------------------------------------------------------------------------------+
                                        ^
@@ -43,7 +45,7 @@ all proof skills are stratified into five explicit layers of abstraction:
 +-------------------------------------------------------------------------------+
 | L0: Deterministic Infrastructure Substrate                                    |
 |     lean-setup (apm-configure), lean-build, lean-mwe, lean-bisect,             |
-|     lean-serve-broker, lean4-lsp-mcp (6 consolidated domain tools)           |
+|     lean-serve-broker, lean4-lsp-mcp (21 MCP tools + Rust/WASM lean-analyzer) |
 +-------------------------------------------------------------------------------+
 ```
 
@@ -69,16 +71,21 @@ diagnostic extraction, bisection, and pull-request hygiene.
 | [lean-setup](skills/lean-setup/SKILL.md) | Prover | Tier 1 | Toolchain resolution, elan installation, lean-toolchain pins. |
 | [lean-build](skills/lean-build/SKILL.md) | Prover | Tier 1 | Lake compilation, olean artifact management, cache fetching. |
 | [lean-proof](skills/lean-proof/SKILL.md) | Prover | Tier 1 | Interactive tactic proving, LSP plainGoal queries, Try this code actions. |
+| [lean-core-only](skills/lean-core-only/SKILL.md) | Prover | Tier 1 | Stdlib/Core-only Lean 4 proving without Mathlib (omega, grind, induction). |
 | [lean-gateway](skills/lean-gateway/SKILL.md) | Prover | Tier 1 | Central dispatch gateway routing proof requests to specialized skills. |
 | [lean-mwe](skills/lean-mwe/SKILL.md) | Specifier | Tier 1 | Minimal Working Example extraction and dependency isolation. |
 | [lean-specification](skills/lean-specification/SKILL.md) | Specifier | Tier 1 | Formal specification authoring, consistency checks, axiom minimization. |
 | [lean-blueprint](skills/lean-blueprint/SKILL.md) | Specifier | Tier 2 | Formal blueprint construction and dependency DAG visualization. |
+| [lean-dag-visualizer](skills/lean-dag-visualizer/SKILL.md) | Specifier / Auditor | Tier 2 | Interactive formalization DAG visualizer, topological depth, Tufte proof-walk cards. |
 | [lean-doc-requirements](skills/lean-doc-requirements/SKILL.md) | Specifier | Tier 2 | Formal requirement traceability matrices and documentation gates. |
 | [lean-bisect](skills/lean-bisect/SKILL.md) | Auditor | Tier 1 | Git bisection of compiler regressions and broken proofs across toolchains. |
 | [lean-pr](skills/lean-pr/SKILL.md) | Auditor | Tier 1 | Mathlib and upstream PR preparation, branch hygiene, CI validation. |
 | [lean-proof-review](skills/lean-proof-review/SKILL.md) | Auditor | Tier 1 | Proof golfing, simp-set optimization, term-mode conversion. |
 | [lean-enforcement](skills/lean-enforcement/SKILL.md) | Auditor | Tier 1 | Zero-sorry, zero-warning CI policy enforcement. |
+| [lean-axiom-closure](skills/lean-axiom-closure/SKILL.md) | Auditor | Tier 1 | Compile-time transitive axiom closure lockdown via `#guard_msgs in #print axioms`. |
+| [lean-replay-verification](skills/lean-replay-verification/SKILL.md) | Auditor | Tier 1 | Independent kernel replay verification (`lean4checker --fresh`, Comparator). |
 | [lean-quality-engine](skills/lean-quality-engine/SKILL.md) | Auditor | Tier 2 | Quality metrics, heartbeats monitoring, proof complexity scoring. |
+| [lean-deep-audit](skills/lean-deep-audit/SKILL.md) | Auditor | Tier 2 | Whole-corpus 7-lens quality audit (trust lockdown, faithfulness, inhabitation, duplication). |
 | [lean-proof-refactor](skills/lean-proof-refactor/SKILL.md) | Editor | Tier 2 | Long-proof decomposition campaigns: findings, adjudication (cut / considered-negative), shared-lemma extraction, regression gates |
 | [lean-upstream-porting](skills/lean-upstream-porting/SKILL.md) | Editor | Tier 2 | Corpus-to-upstream porting: routing, dossiers, claim approval, module-system pitfalls, AI-disclosure conventions; defers PR mechanics to @lean-pr |
 | [lean-tautology-triage](skills/lean-tautology-triage/SKILL.md) | Auditor | Tier 1 | Detection of circular proofs, vacuous hypotheses, and tautological goals. |
@@ -94,6 +101,8 @@ Specialized formalization contracts aligned with Mathlib4 namespaces.
 | --- | --- | --- |
 | [lean-math-foundations](skills/lean-math-foundations/SKILL.md) | Foundations | Logic, SetTheory, Cardinal, Ordinal |
 | [lean-math-discrete](skills/lean-math-discrete/SKILL.md) | Discrete Math | Combinatorics, Data.Finset, GraphTheory |
+| [lean-bigraph-modeling](skills/lean-bigraph-modeling/SKILL.md) | Milner Bigraphs | Place Graph forests, Link hyperedges, tensor product, composition |
+| [lean-convergence-verification](skills/lean-convergence-verification/SKILL.md) | Discrete Convergence | Discrete Lyapunov decay, ceiling division bounds (`Nat.div_add_mod`) |
 | [math-algebra-category](skills/math-algebra-category/SKILL.md) | Abstract Algebra | Algebra.Group, Algebra.Ring, CategoryTheory |
 | [math-graph-knowledge](skills/math-graph-knowledge/SKILL.md) | Graph Theory | Combinatorics.SimpleGraph, Hypergraphs |
 | [lean-math-analysis](skills/lean-math-analysis/SKILL.md) | Real Analysis | Topology.MetricSpace, Analysis.Calculus |
@@ -124,6 +133,7 @@ Contracts for autoformalization, neural proof search, and verifiable agents.
 | [ai-causal-deontic](skills/ai-causal-deontic/SKILL.md) | Normative ethics, obligations, permissions, and causal bounds. |
 | [ai-commonsense-reasoning](skills/ai-commonsense-reasoning/SKILL.md) | Non-monotonic logics and qualitative reasoning. |
 | [ai-high-stakes-verifiable](skills/ai-high-stakes-verifiable/SKILL.md) | High-assurance formal safety criteria. |
+| [ai-guard-judge-eval](skills/ai-guard-judge-eval/SKILL.md) | Guard-style LLM judge benchmarking, band-stratified evaluation, schema adapters. |
 | [ai-symbolic-neuro](skills/ai-symbolic-neuro/SKILL.md) | Neuro-symbolic bridges and differentiable logic. |
 
 ---

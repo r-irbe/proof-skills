@@ -59,7 +59,7 @@ with the repo-wide contract and avoids hidden "continue anyway" paths.
 - `reversible`: Read-only, temp-file, local build, `lake exe`, `git status`, `view`, `grep`. -> **No gate**.
 - `mostly_reversible`: New file in draft, branch creation, local commit on personal branch, `lake update` on lockfile. -> **No gate**, but log action.
 - `irreversible_data`: `rm -rf`, `git push --force`, history rewrite. -> **Hard HITL gate**.
-- `irreversible_trust`: PR merge, branch push to default, tag, docs change, edit AGENT.md. -> **Hard HITL gate**.
+- `irreversible_trust`: PR merge, branch push to default, tag, docs change, edit AGENTS.md. -> **Hard HITL gate**.
 - `irreversible_economic`: Paid API call >= $1, billing action. -> **Hard HITL gate**.
 
 ### 1.4 When the user is unavailable (autopilot fallback)
@@ -86,7 +86,7 @@ timeout.
 > reruns, and large eval loops are all fine.  Time-irreversibility is
 > *not* on the reversibility table in §1.3 and is **not** a HITL trigger
 > on its own.  Use *content* irreversibility (history rewrites, push to
-> default, paid API calls, AGENT.md edits) to decide whether to stop —
+> default, paid API calls, AGENTS.md edits) to decide whether to stop —
 > never wall-clock cost.  If the human operator explicitly imposes a
 > wall-clock cap for a specific request, treat it as a §1.2#4 (Novelty)
 > constraint and confirm before exceeding it; otherwise, slowness alone
