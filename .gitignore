@@ -13,3 +13,8 @@ apm_modules/
 apm.lock.yaml
 _judge_prompts_workspace/
 lab/.r24-judge-prompts/
+.venv/
+venv/
+*.egg-info/
+build/
+dist/

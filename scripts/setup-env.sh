@@ -77,22 +77,31 @@ run_doctor() {
   # 1. Python >= 3.10 + PyYAML + optional kuzu
   echo ""
   echo "1. Python Runtime & Packages"
-  if command -v python3 >/dev/null 2>&1; then
-    PY_VER="$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")')"
-    PY_OK="$(python3 -c 'import sys; print(int(sys.version_info >= (3, 10)))')"
+  local py_cmd=""
+  if [[ -x "${REPO_ROOT}/.venv/bin/python3" ]]; then
+    py_cmd="${REPO_ROOT}/.venv/bin/python3"
+  elif [[ -n "${VIRTUAL_ENV:-}" && -x "${VIRTUAL_ENV}/bin/python3" ]]; then
+    py_cmd="${VIRTUAL_ENV}/bin/python3"
+  elif command -v python3 >/dev/null 2>&1; then
+    py_cmd="python3"
+  fi
+
+  if [[ -n "${py_cmd}" ]]; then
+    PY_VER="$("${py_cmd}" -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")')"
+    PY_OK="$("${py_cmd}" -c 'import sys; print(int(sys.version_info >= (3, 10)))')"
     if [[ "${PY_OK}" == "1" ]]; then
-      pass_msg "python3 ${PY_VER} (>= 3.10; 44 Lean/AltProof/Visualizer/SQLite scripts work with 0 pip deps)"
+      pass_msg "${py_cmd} ${PY_VER} (>= 3.10; 44 Lean/AltProof/Visualizer/SQLite scripts work with 0 pip deps)"
     else
-      fail_msg "python3 ${PY_VER} is older than 3.10"
+      fail_msg "${py_cmd} ${PY_VER} is older than 3.10"
     fi
 
-    if python3 -c "import yaml" >/dev/null 2>&1; then
+    if "${py_cmd}" -c "import yaml" >/dev/null 2>&1; then
       pass_msg "PyYAML installed (skill conformance & eval scripts ready)"
     else
-      warn_msg "PyYAML not installed in current python3 (optional; check-structure & apm_validate have stdlib fallback; install with: pip install -r requirements.txt)"
+      warn_msg "PyYAML not installed in ${py_cmd} (optional; check-structure & apm_validate have stdlib fallback; install with: pip install -r requirements.txt)"
     fi
 
-    if python3 -c "import kuzu" >/dev/null 2>&1; then
+    if "${py_cmd}" -c "import kuzu" >/dev/null 2>&1; then
       pass_msg "kuzu Python package installed (optional native Kuzu DB federation ready)"
     else
       pass_msg "kuzu Python package not installed (optional; graph/graph_query.py uses stdlib sqlite3 + .kz archives with 0 pip deps)"

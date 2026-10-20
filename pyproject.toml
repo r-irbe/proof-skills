@@ -69,5 +69,8 @@ Homepage = "https://github.com/r-irbe/proof-skills"
 Repository = "https://github.com/r-irbe/proof-skills"
 Issues = "https://github.com/r-irbe/proof-skills/issues"
 
+[tool.setuptools]
+packages = []
+
 [tool.pytest.ini_options]
 testpaths = ["tests", "scripts"]
