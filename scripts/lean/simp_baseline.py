@@ -19,11 +19,24 @@ from pathlib import Path
 
 import os as _os
 REPO = Path(_os.environ.get("LEAN_PROJECT_ROOT", Path.cwd())).resolve()
-CORE_REL = "EASCI/ReinforcementLearning/Core.lean"
-BELLMAN_REL = "EASCI/ReinforcementLearning/Core/Bellman.lean"
-TARGET_RELS = (CORE_REL, BELLMAN_REL)
+CORE_REL = _os.environ.get("SIMP_BASELINE_CORE_REL", "EASCI/ReinforcementLearning/Core.lean")
+BELLMAN_REL = _os.environ.get("SIMP_BASELINE_BELLMAN_REL", "EASCI/ReinforcementLearning/Core/Bellman.lean")
+TARGET_RELS = (
+    tuple(
+        t.strip()
+        for t in _os.environ["SIMP_BASELINE_TARGETS"].split(",")
+        if t.strip()
+    )
+    if _os.environ.get("SIMP_BASELINE_TARGETS")
+    else (CORE_REL, BELLMAN_REL)
+)
 TARGET_PATHS = tuple(REPO / rel for rel in TARGET_RELS)
-ROUTING_PATH = REPO / "docs" / "refactor" / "wave-14" / "b2-phase2-script-routing-v2.json"
+ROUTING_PATH = Path(
+    _os.environ.get(
+        "SIMP_BASELINE_ROUTING_PATH",
+        str(REPO / "docs" / "refactor" / "wave-14" / "b2-phase2-script-routing-v2.json"),
+    )
+)
 DEFAULT_JSON_OUT = REPO / "docs" / "refactor" / "findings" / "wave-14-b2-simp-baseline.json"
 DEFAULT_SUMMARY_OUT = REPO / "docs" / "refactor" / "findings" / "wave-14-b2-simp-baseline.md"
 

@@ -47,22 +47,40 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Sequence
 
-REQUESTED_MODULES = (
-    "EASCI.AgenticSafety",
-    "EASCI.CCVGating",
-    "EASCI.CuspCatastrophe",
-    "EASCI.LyapunovStability",
-    "EASCI.PhasePortrait",
-    "EASCI.PipelineAdaptive",
-    "EASCI.Probability",
-    "EASCI.ProvenanceChain",
-    "EASCI.QualityGates",
-    "EASCI.ReinforcementLearning",
-    "EASCI.StochasticCCV",
-)
+import os
 
+DEFAULT_ROOT_MODULE = os.environ.get("LAKE_MICROBENCH_ROOT_MODULE", "EASCI")
+DEFAULT_REQUESTED_MODULES = (
+    tuple(
+        m.strip()
+        for m in os.environ["LAKE_MICROBENCH_MODULES"].split(",")
+        if m.strip()
+    )
+    if os.environ.get("LAKE_MICROBENCH_MODULES")
+    else (
+        f"{DEFAULT_ROOT_MODULE}.AgenticSafety",
+        f"{DEFAULT_ROOT_MODULE}.CCVGating",
+        f"{DEFAULT_ROOT_MODULE}.CuspCatastrophe",
+        f"{DEFAULT_ROOT_MODULE}.LyapunovStability",
+        f"{DEFAULT_ROOT_MODULE}.PhasePortrait",
+        f"{DEFAULT_ROOT_MODULE}.PipelineAdaptive",
+        f"{DEFAULT_ROOT_MODULE}.Probability",
+        f"{DEFAULT_ROOT_MODULE}.ProvenanceChain",
+        f"{DEFAULT_ROOT_MODULE}.QualityGates",
+        f"{DEFAULT_ROOT_MODULE}.ReinforcementLearning",
+        f"{DEFAULT_ROOT_MODULE}.StochasticCCV",
+    )
+)
+SYNTHETIC_MODULES = set(
+    m.strip()
+    for m in os.environ.get(
+        "LAKE_MICROBENCH_SYNTHETIC_MODULES", f"{DEFAULT_ROOT_MODULE}.Probability"
+    ).split(",")
+    if m.strip()
+)
+REQUESTED_MODULES = DEFAULT_REQUESTED_MODULES
 NON_SYNTHETIC_MODULES = tuple(
-    module for module in REQUESTED_MODULES if module != "EASCI.Probability"
+    module for module in REQUESTED_MODULES if module not in SYNTHETIC_MODULES
 )
 
 
@@ -81,7 +99,7 @@ def now_iso() -> str:
 
 def parse_args(argv: Sequence[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Capture W14-B2 lake build microbenchmarks for the EASCI corpus.",
+        description="Capture Lake build microbenchmarks for a Lean 4 corpus.",
     )
     parser.add_argument(
         "--quick",
@@ -92,6 +110,16 @@ def parse_args(argv: Sequence[str]) -> argparse.Namespace:
         "--output",
         type=Path,
         help="Write the JSON snapshot to this path (default: docs/refactor/findings/lake-microbench-<timestamp>.json).",
+    )
+    parser.add_argument(
+        "--root-module",
+        default=DEFAULT_ROOT_MODULE,
+        help=f"Root umbrella module name (default: {DEFAULT_ROOT_MODULE}).",
+    )
+    parser.add_argument(
+        "--modules",
+        default=None,
+        help="Comma-separated list of benchmark modules (overrides default target list).",
     )
     return parser.parse_args(list(argv))
 
