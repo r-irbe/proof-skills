@@ -275,3 +275,39 @@ When specifying a group of related theorems (e.g., all lemmas for a paper sectio
 | Implementation complete | Full council review (Star topology RALPH) |
 | Revision needed | Planner creates todos; assigned agent implements fixes |
 | Specification merged | Ω updates AGENT.md metrics; DOC updates paper appendix |
+
+
+## Specification Fidelity Gates (Checks 5–7) & Automated Defect Detection
+
+Every specification and theorem statement must pass seven structural fidelity checks before sign-off:
+
+1. **Check 1–4 (Core Soundness & Faithfulness):** Zero `sorry`/`admit`, zero unauthorized axioms, exact alignment between docstring claims and formal conclusion (`MISALIGNED_DOCSTRING` guard), and non-vacuous hypotheses.
+2. **Check 5 (Necessity & Sufficiency `↔` Pairing — `ONE_WAY_BOOL_CHECKER`):**
+   - Whenever a module defines an executable `Bool`-returning checker `def checkX (...) : Bool`, the specification MUST require a bidirectional `↔` theorem (`checkX ... = true ↔ Spec ...`) or paired soundness (`checkX ... = true → Spec ...`) and completeness (`Spec ... → checkX ... = true` / negative witness `checkX ... = false`).
+   - One-way soundness theorems alone are rejected because a constant-`false` function vacuously satisfies `checkX x = true → Spec x`.
+3. **Check 6 (Precondition Tightness & Boundary Counterexample Witness):**
+   - **`HYPOTHESIS_ECHO`:** The conclusion must not syntactically repeat a hypothesis binder type (or a trivial `And`/`Eq.symm` projection) closed by `exact h`, `assumption`, `⟨h1, h2⟩`, or `h.symm`.
+   - **`REFLEXIVE_TAUTOLOGY`:** The conclusion must not be a literal `lhs = lhs` or `(a == b) = (a == b)` closed by `rfl`.
+   - **`NAT_NONNEG_TRIVIALITY`:** Never state `0 ≤ e` or `e ≥ 0` over `Nat` expressions (such as `a - b ≥ 0` on `Nat`) as a theorem conclusion.
+   - **`NAT_SUB_UNGUARDED`:** Every `Nat` subtraction `a - b` in a specification must be guarded by an explicit hypothesis `b ≤ a` (or `b < a`) unless saturating truncation at `0` is the explicit subject of the theorem.
+   - **`UNUSED_VALUE_OR_UNDERSCORE_BINDER`:** Every value binder `(x : T)` and hypothesis binder `(h : P)` (including underscore-prefixed `(_h : P)`) must appear in the conclusion, another binder's type, or the proof body.
+   - **Boundary Counterexample Witness:** Non-trivial precondition thresholds should be accompanied by an explicit boundary `example` or `lean_counterexample_search` witness demonstrating that dropping or weakening the guard falsifies the conclusion.
+4. **Check 7 (100% Barrel Completeness & `Classical.choice`-Free Constructive Gate):**
+   - Every `.lean` module in the library tree must be imported by the root barrel file so `Audit.axiomClosureAudit` inspects 100% of declarations.
+   - First-order decidable theorems over `Nat`, `Int`, `Bool`, `Fin`, and `BitVec` must avoid accidental `Classical.choice` contamination (e.g. from `split` on `&&`); use `Bool.and_eq_true`, `decide_eq_true_eq`, `omega`, or `bv_decide`.
+
+### Automated Detection Commands
+
+```bash
+# 1. Proof-skills static proof quality & 7-defect fidelity scan
+python3 scripts/lean/proof_quality.py --lean-dir <ProjectDir> --output proof_quality.md
+
+# 2. Deep-audit tautology and specification-baking scan
+python3 scripts/lean/tautology_scan.py --corpus <ProjectDir>
+
+# 3. Rust static abstract interpreter & specification lint suite
+cargo test --manifest-path crates/lean-analyzer/Cargo.toml
+
+# 4. MCP / lean-analysis proof fidelity audit (action: "proof_fidelity" or "census")
+node tools/lean-lsp-mcp/bin/lean-rules.js <ProjectDir>
+```

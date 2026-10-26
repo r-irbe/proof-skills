@@ -49,17 +49,9 @@ metadata:
 2. **L1 soundness** [validate] — confirm no `sorry`, no `admit`, no `sorryAx`, and no unauthorized `Lean.ofReduceBool` via `lean_axiom_closure`
    (`{"symbol": "...", "module": "..."}`) and `lean_diagnostics` (`{"filePath": "..."}`); defer to `@lean-enforcement` for full-module axiom audit if
    needed.
-3. **L2 statement** [validate] — diff the theorem statement against the spec / paper; check `lean-analyzer` static abstract interpretation diagnostics
-   (`NatSubTruncation`, `NatDivModByZero`, Zone DBM `decreasing_by` synthesis, Octagon conservation `±x_i ± x_j <= c`, Bourdoncle WTO loop widening, trace
-   partitioning) for silent statement distortions; halt if it has drifted.
-4. **L3 non-triviality** [validate] — confirm the hypothesis is non-vacuous; spot pattern-match for hidden trivialities (`: True`, reflexive `rfl`); use
-   `lean_counterexample_search` (`{"filePath": "...", "theoremName": "...", "strategy": "dense"}`, backed by Galois-guided hypothesis domain pruning via
-   `analyzeHeaderHypothesisDomains` / `pruneHeaderNatDomain`) when a statement or helper lemma looks suspect, and hand off to `@lean-tautology-triage` on
-   P1/P2 flags.
-5. **L4 quality** [validate] — run `lean-rules` (`node tools/lean-lsp-mcp/bin/lean-rules.js`) and `pi-lens` (`pilens_ast_grep_search`,
-   `pilens_diagnostics`) as sub-second structural pre-checks before `lake build`, plus `lean_goal` (`target: "altproof"`) to evaluate proof-search priority
-   and two-axis elegance/heartbeat cost; flag tactic mis-selection, bare `simp`, dagger-variable references, unused hypothesis, and fragile rewrite chains;
-   suggest improvements but do NOT apply them.
+3. **L2 statement** [validate] — diff the theorem statement against the spec / paper; enforce **Check 5** (Necessity & Sufficiency `↔` Pairing for executable `Bool` checkers — no `ONE_WAY_BOOL_CHECKER`), **Check 6** (Precondition Tightness & Boundary Counterexample Witness — no `NAT_SUB_UNGUARDED` or `MISALIGNED_DOCSTRING`), and **Check 7** (100% Barrel Completeness & `Classical.choice`-Free Constructive Gate); check `lean-analyzer` static diagnostics (`NatSubTruncation`, `NatDivModByZero`, `HypothesisEcho`, `ReflexiveTautology`, `NatNonnegTriviality`, `UnusedUnderscoreBinder`, `OneWayBoolChecker`, Zone DBM `decreasing_by` synthesis, Octagon conservation `±x_i ± x_j <= c`, Bourdoncle WTO loop widening, trace partitioning) for silent statement distortions; halt if it has drifted.
+4. **L3 non-triviality** [validate] — confirm the hypothesis is non-vacuous; run automated vacuity and specification-fidelity detectors (`python3 scripts/lean/proof_quality.py`, `python3 scripts/lean/tautology_scan.py`, and `lean_metrics` with `action: "proof_fidelity"` in `lean-lsp-mcp`) to catch `HYPOTHESIS_ECHO`, `REFLEXIVE_TAUTOLOGY`, `NAT_NONNEG_TRIVIALITY`, `NAT_SUB_UNGUARDED`, `MISALIGNED_DOCSTRING`, `UNUSED_VALUE_OR_UNDERSCORE_BINDER`, and `ONE_WAY_BOOL_CHECKER`; use `lean_counterexample_search` (`{"filePath": "...", "theoremName": "...", "strategy": "dense"}`, backed by Galois-guided hypothesis domain pruning via `analyzeHeaderHypothesisDomains` / `pruneHeaderNatDomain`) when a statement or helper lemma looks suspect, and hand off to `@lean-tautology-triage` on P1/P2 flags.
+5. **L4 quality** [validate] — run `lean-rules` (`node tools/lean-lsp-mcp/bin/lean-rules.js`) and `pi-lens` (`pilens_ast_grep_search`, `pilens_diagnostics`) as sub-second structural pre-checks before `lake build`, plus `lean_goal` (`target: "altproof"`) to evaluate proof-search priority (`bv_decide` for `BitVec`/SWAR goals, `constructive-decidable-reduction` to eliminate `Classical.choice` leakage, `SWAR_BIT_PACKING_SUBSTITUTION`) and two-axis elegance/heartbeat cost; flag tactic mis-selection, bare `simp`, dagger-variable references, unused hypothesis, and fragile rewrite chains; suggest improvements but do NOT apply them.
 6. **Persist** [persist] *(MANDATORY)* — write the review record (per-layer status, findings, suggestions) to the repository's review log, link it from the
    theorem, update sign-off state. Skipping Persist = incomplete.
 

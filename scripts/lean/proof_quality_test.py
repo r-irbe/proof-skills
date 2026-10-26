@@ -27,8 +27,16 @@ sys.path.insert(0, str(Path(__file__).parent))
 from proof_quality import (
     _is_concrete_decide_target,
     _structural_branch_points,
+    detect_hypothesis_echo,
+    detect_misaligned_docstring,
+    detect_nat_nonneg_triviality,
+    detect_nat_sub_unguarded,
+    detect_reflexive_tautology,
     extract_theorem_blocks,
+    find_one_way_bool_checkers,
     find_tautology_candidates,
+    find_unused_hypotheses,
+    is_vacuous_candidate,
 )
 
 
@@ -140,6 +148,67 @@ def test_structural_branch_points() -> bool:
     return ok
 
 
+def test_seven_defect_detectors() -> bool:
+    ok = True
+    ok &= _check(
+        bool(detect_hypothesis_echo("theorem t1 (x : Nat) (h : x > 0) : x > 0", "exact h")),
+        "HYPOTHESIS_ECHO detected on exact h",
+    )
+    ok &= _check(
+        bool(detect_hypothesis_echo("theorem t1b (a b : Nat) (h : a = b) : b = a", "h.symm")),
+        "HYPOTHESIS_ECHO detected on h.symm",
+    )
+    ok &= _check(
+        bool(detect_reflexive_tautology("theorem t2 (x : Nat) : x + 1 = x + 1", "rfl")),
+        "REFLEXIVE_TAUTOLOGY detected on x + 1 = x + 1",
+    )
+    ok &= _check(
+        bool(detect_nat_nonneg_triviality("theorem t3 (a b : Nat) : a - b >= 0", "omega")),
+        "NAT_NONNEG_TRIVIALITY detected on a - b >= 0",
+    )
+    ok &= _check(
+        bool(detect_nat_sub_unguarded("theorem t4 (a b : Nat) : a - b + b = a")),
+        "NAT_SUB_UNGUARDED detected on unguarded a - b",
+    )
+    ok &= _check(
+        not bool(detect_nat_sub_unguarded("theorem t4_ok (a b : Nat) (h : b <= a) : a - b + b = a")),
+        "NAT_SUB_UNGUARDED clean when guarded by b <= a",
+    )
+    ok &= _check(
+        bool(
+            detect_misaligned_docstring(
+                "/-- Proves Kuratowski planarity and Byzantine quorum safety. -/",
+                "theorem t5 (n : Nat) : n = n",
+                "rfl",
+            )
+        ),
+        "MISALIGNED_DOCSTRING detected on overclaiming docstring + 1-line rfl",
+    )
+    ok &= _check(
+        "x" in find_unused_hypotheses("theorem t6 (x : Nat) : 1 + 1 = 2", "omega"),
+        "UNUSED_VALUE_OR_UNDERSCORE_BINDER flags unused value binder even with omega",
+    )
+    ok &= _check(
+        "_h" in find_unused_hypotheses("theorem t6b (a : Nat) (_h : a > 0) : a = a", "rfl"),
+        "UNUSED_VALUE_OR_UNDERSCORE_BINDER flags explicit underscore hypothesis binder",
+    )
+    src_bool = (
+        "def isEvenCheck (n : Nat) : Bool := n % 2 == 0\n"
+        "theorem isEvenCheck_sound (n : Nat) (h : isEvenCheck n = true) : n % 2 == 0 := by exact h\n"
+    )
+    blocks = extract_theorem_blocks(src_bool)
+    ow = find_one_way_bool_checkers(src_bool, blocks)
+    ok &= _check(
+        len(ow) == 1 and ow[0]["type"] == "ONE_WAY_BOOL_CHECKER",
+        "ONE_WAY_BOOL_CHECKER detected on one-way Bool soundness theorem",
+    )
+    ok &= _check(
+        is_vacuous_candidate("theorem v (x : Nat) (h : x > 0) : x > 0", "exact h"),
+        "is_vacuous_candidate expanded to catch hypothesis echo",
+    )
+    return ok
+
+
 def main() -> int:
     print("=" * 60)
     print("proof_quality acceptance probes")
@@ -151,6 +220,7 @@ def main() -> int:
         test_truth_stub_term(),
         test_decide_severity_recalibration(),
         test_structural_branch_points(),
+        test_seven_defect_detectors(),
     ]
     passed = sum(results)
     total = len(results)

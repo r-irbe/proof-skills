@@ -52,6 +52,14 @@
         "match": "structural recursion or helper calls with heavy defeq unfolding overhead",
         "provenance": "SAIR Lean Kernel Challenge lanes (primecount L1 structural trial division S5)",
         "rewrite": "refactor to kernel-friendly primitives (structural Nat.rec, unrolled trial division, import-minimal path)"
+      },
+      {
+        "cost_hint": "high kernel & trust yield: eliminates Classical.choice from decidable first-order theorems",
+        "family": "kernel-friendly-term-design",
+        "id": "constructive-decidable-reduction",
+        "match": "Classical.choice leakage in first-order Nat/Int/Bool/BitVec theorems caused by split on &&/And or classical by_cases",
+        "provenance": "lean_rules constructive-gate audit & AltProof bidirectional cross-pollination",
+        "rewrite": "replace split/by_cases with Bool.and_eq_true, decide_eq_true_eq, omega, or bv_decide to keep axiom closure Classical.choice-free"
       }
     ],
     "redirect": [
@@ -75,6 +83,6 @@
       }
     ]
   },
-  "total": 8,
+  "total": 9,
   "version": 1
 }

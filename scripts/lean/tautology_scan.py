@@ -27,6 +27,19 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from proof_quality import (
+    _extract_preceding_docstring,
+    detect_hypothesis_echo,
+    detect_misaligned_docstring,
+    detect_nat_nonneg_triviality,
+    detect_nat_sub_unguarded,
+    detect_reflexive_tautology,
+    extract_theorem_blocks,
+    find_one_way_bool_checkers,
+    find_unused_hypotheses,
+)
+
 THM_RE = re.compile(
     r"^(?:@\[[^\]]*\]\s*)?(?:noncomputable\s+)?(?:private\s+|protected\s+)?"
     r"(theorem|lemma)\s+([A-Za-z_][A-Za-z0-9_'.]*)"
@@ -320,7 +333,61 @@ def parse_file(
                     "stmt": stmt_display[:160],
                 }
             )
+        # Also attach structured defect classifications if applicable
+        body_without_by = norm[3:].strip() if norm.startswith("by ") else norm
+        doc = _extract_preceding_docstring(lines, start + 1)
+        defect_tags: list[str] = []
+        if detect_hypothesis_echo(stmt_clean, body_without_by):
+            defect_tags.append("HYPOTHESIS_ECHO")
+        if detect_reflexive_tautology(stmt_clean, body_without_by) and (
+            include_definitional or not _is_definitional_unfolding(stmt_clean, norm, has_simp)
+        ):
+            defect_tags.append("REFLEXIVE_TAUTOLOGY")
+        if detect_nat_nonneg_triviality(stmt_clean, body_without_by):
+            defect_tags.append("NAT_NONNEG_TRIVIALITY")
+        if detect_nat_sub_unguarded(stmt_clean):
+            defect_tags.append("NAT_SUB_UNGUARDED")
+        if detect_misaligned_docstring(doc, stmt_clean, body_without_by):
+            defect_tags.append("MISALIGNED_DOCSTRING")
+        unused_b = find_unused_hypotheses(stmt_clean, body_without_by)
+        if unused_b:
+            defect_tags.append(f"UNUSED_VALUE_OR_UNDERSCORE_BINDER({','.join(unused_b)})")
+
+        if defect_tags:
+            if candidates and candidates[-1]["line"] == start + 1 and candidates[-1]["name"] == name:
+                candidates[-1]["why"] = f"{candidates[-1]['why']} [{', '.join(defect_tags)}]"
+                candidates[-1]["defects"] = defect_tags
+            else:
+                stmt_display = (
+                    lines[i].strip() if ":=" in lines[i] else stmt_clean.strip()
+                )
+                candidates.append(
+                    {
+                        "module": module,
+                        "line": start + 1,
+                        "name": name,
+                        "why": ", ".join(defect_tags),
+                        "defects": defect_tags,
+                        "body": norm[:80],
+                        "stmt": stmt_display[:160],
+                    }
+                )
         i = body_start + 1 if k > body_start else i + 1
+
+    raw_text = "\n".join(lines)
+    thm_blocks = extract_theorem_blocks(raw_text)
+    for ow in find_one_way_bool_checkers(raw_text, thm_blocks):
+        candidates.append(
+            {
+                "module": module,
+                "line": ow["line"],
+                "name": ow["theorem"],
+                "why": "ONE_WAY_BOOL_CHECKER",
+                "defects": ["ONE_WAY_BOOL_CHECKER"],
+                "body": "one-way soundness only",
+                "stmt": ow["detail"][:160],
+            }
+        )
     return candidates
 
 

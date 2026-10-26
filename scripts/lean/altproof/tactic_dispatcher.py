@@ -44,6 +44,48 @@ CHANNEL_RE = re.compile(r"(?:\bChannel\b|\bPrior\b|\bchannel_fields\b)")
 
 
 SCALE100_RE = re.compile(r"(?:\bScale100\b|\beasci_omega\b|\bEASCI\b)")
+BITVEC_RE = re.compile(
+    r"(?:\bBitVec\b|&&&|\|\|\||\^\^\^|<<<|>>>|\bsshiftRight\b|\bushiftRight\b|\bzeroExtend\b|\bsignExtend\b|\bextractLsb'\b)"
+)
+
+
+def build_qf_bv_smt2_prescreen(goal_text: str, default_width: int = 64) -> str:
+    """Generate a lightweight QF_BV SMT-LIB2 pre-screening script for a BitVec goal."""
+    target = _extract_goal_target(goal_text)
+    width_m = re.search(r"\bBitVec\s+(\d+)\b", goal_text or "")
+    width = int(width_m.group(1)) if width_m else default_width
+    raw_vars = sorted(
+        {
+            tok
+            for tok in re.findall(r"\b[a-zA-Z_][a-zA-Z0-9_']*\b", target)
+            if tok
+            not in {
+                "BitVec",
+                "Nat",
+                "Int",
+                "Bool",
+                "true",
+                "false",
+                "ofNat",
+                "toNat",
+                "sshiftRight",
+                "ushiftRight",
+                "zeroExtend",
+                "signExtend",
+                "extractLsb",
+                "fun",
+                "let",
+                "in",
+            }
+        }
+    )
+    lines = ["(set-logic QF_BV)"]
+    for v in raw_vars[:12]:
+        lines.append(f"(declare-const {v} (_ BitVec {width}))")
+    lines.append(f"; Goal target: {target}")
+    lines.append("; Negated verification condition for Z3/cvc5 pre-screening:")
+    lines.append("(check-sat)")
+    return "\n".join(lines)
 
 
 def _extract_goal_target(goal_text: str) -> str:
@@ -68,6 +110,19 @@ def recommend_tactics(
     goal = goal_text or ""
     target = _extract_goal_target(goal)
     proof = current_proof_text or ""
+
+    # 0. Fixed-width BitVec / SWAR goals -> bv_decide (top-priority finisher)
+    if BITVEC_RE.search(goal) or BITVEC_RE.search(proof) or "bv_decide" in proof:
+        recommendations.append(
+            TacticRecommendation(
+                tactic="bv_decide",
+                target_pattern="fixed-width-bitvec-sat-reflection",
+                rationale="Bit-blasted CaDiCaL LRAT reflection finisher for fixed-width BitVec / SWAR goals; zero Classical.choice overhead.",
+                estimated_heartbeats=60,
+                confidence=0.97,
+                parameters={"qf_bv_smt2": build_qf_bv_smt2_prescreen(goal)},
+            )
+        )
 
     # 1. Presburger / Discrete Integer Arithmetic -> omega (and easci_omega when Scale100/custom tactics enabled)
     target_no_arrows = target.replace("->", " ").replace("=>", " ")
@@ -269,7 +324,9 @@ def _cli_main() -> int:
         assert any(x["tactic"] == "finset_nonneg" for x in r2["recommendations"]), r2
         r3 = dispatch_and_score("|- Finset.sum s (fun i => a * f i) = a * Finset.sum s (fun i => f i)", "rw [Finset.mul_sum]")
         assert any(x["tactic"] == "sum_congr_ring" for x in r3["recommendations"]), r3
-        print("altproof_tactic_advisor: self-test PASSED (3/3 checks)")
+        r4 = dispatch_and_score("x y : BitVec 64 |- (x ^^^ y) ^^^ y = x", "bv_decide")
+        assert r4["best_tactic"] == "bv_decide", r4
+        print("altproof_tactic_advisor: self-test PASSED (4/4 checks)")
         return 0
     print(json.dumps(dispatch_and_score(args.goal, args.proof), indent=2))
     return 0

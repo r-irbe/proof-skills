@@ -35,8 +35,11 @@ stage tracked by document templates.
 
 1. Identify the artifact: new theorem, new lemma, new definition, or new tactic.
 2. Apply the three-part specification template from the body (signature, intent, traceability); verify Mathlib primitives exist at the pin.
-3. Produce the spec; add explicit non-goals + dependencies.
-4. Hand off: to `@lean-proof` for the proof, to `@lean-proof-review` once proven, to `@lean-zettelkasten`.
+3. Run mandatory specification fidelity checks before approving:
+   - **Check 5 (Necessity & Sufficiency `↔` Pairing):** Every executable `Bool` checker `f ... : Bool` or decidable predicate MUST specify both soundness and completeness (`f x = true ↔ Spec x`), never a one-way `f x = true -> ...` implication alone (`ONE_WAY_BOOL_CHECKER`).
+   - **Check 6 (Precondition Tightness & Boundary Counterexample Witness):** Every `Nat` subtraction `a - b` MUST carry an explicit ordering guard `b ≤ a` (`NAT_SUB_UNGUARDED`), every hypothesis/value binder MUST be consumed (`UNUSED_VALUE_OR_UNDERSCORE_BINDER`), conclusions MUST NOT echo hypotheses (`HYPOTHESIS_ECHO`), reduce to reflexive `lhs = lhs` (`REFLEXIVE_TAUTOLOGY`), or assert trivial `Nat` non-negativity `0 ≤ e` (`NAT_NONNEG_TRIVIALITY`), and boundary tightness SHOULD be witnessed by a counterexample when a hypothesis is dropped.
+   - **Check 7 (100% Barrel Completeness & `Classical.choice`-Free Constructive Gate):** Every module MUST be imported in the package root barrel (`Rules.lean` / `Project.lean`), and first-order `Nat`/`Int`/`Bool`/`BitVec` specifications MUST stay `Classical.choice`-free (`Bool.and_eq_true` / `decide_eq_true_eq` / `bv_decide` instead of `split` on `&&`).
+4. Run automated fidelity scanners (`python3 scripts/lean/proof_quality.py`, `python3 scripts/lean/tautology_scan.py`, `lean-analyzer`, and `lean_metrics` in `lean-lsp-mcp`) and hand off: to `@lean-proof` for the proof, to `@lean-proof-review` once proven, to `@lean-zettelkasten`.
 
 ## Recovery & STOP
 

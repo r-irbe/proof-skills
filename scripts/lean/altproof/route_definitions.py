@@ -67,7 +67,7 @@ ROUTES = [
         "cost_hint": "highest kernel yield: 20-30x reduction in kernel steps / rfl time",
         "provenance": "SAIR Lean Kernel Challenge lanes (partition in-place DP S1/S1b, primecount sieve S6)",
     },
-    # --- kernel-friendly term design family (SAIR calibration case S5) ---
+    # --- kernel-friendly term design family (SAIR calibration case S5 + constructive decidable reduction) ---
     {
         "id": "kernel-friendly-term-design",
         "family": "kernel-friendly-term-design",
@@ -75,6 +75,14 @@ ROUTES = [
         "rewrite": "refactor to kernel-friendly primitives (structural Nat.rec, unrolled trial division, import-minimal path)",
         "cost_hint": "high kernel yield: reduces defeq heartbeats and avoids WellFounded.fix traps",
         "provenance": "SAIR Lean Kernel Challenge lanes (primecount L1 structural trial division S5)",
+    },
+    {
+        "id": "constructive-decidable-reduction",
+        "family": "kernel-friendly-term-design",
+        "match": "Classical.choice leakage in first-order Nat/Int/Bool/BitVec theorems caused by split on &&/And or classical by_cases",
+        "rewrite": "replace split/by_cases with Bool.and_eq_true, decide_eq_true_eq, omega, or bv_decide to keep axiom closure Classical.choice-free",
+        "cost_hint": "high kernel & trust yield: eliminates Classical.choice from decidable first-order theorems",
+        "provenance": "lean_rules constructive-gate audit & AltProof bidirectional cross-pollination",
     },
 ]
 

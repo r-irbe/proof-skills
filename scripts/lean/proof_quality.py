@@ -49,6 +49,8 @@ def analyze_module(filepath: Path) -> dict:
     # heuristic that was unsafe inside `by`-blocks.)
     stripped_text = "\n".join(_strip_lean_comments(lines))
     theorem_blocks = extract_theorem_blocks(stripped_text)
+    for thm in theorem_blocks:
+        thm["docstring"] = _extract_preceding_docstring(lines, thm["line"])
 
     for thm in theorem_blocks:
         stats["theorem_count"] += 1
@@ -143,16 +145,18 @@ def analyze_module(filepath: Path) -> dict:
 
         findings.extend(find_tautology_candidates(thm))
 
-        # Check hypothesis usage
+        # Check hypothesis and value/underscore binder usage
         unused = find_unused_hypotheses(thm["signature"], thm["body"])
         for hyp in unused:
             findings.append(
                 {
-                    "type": "unused-hypothesis",
+                    "type": "UNUSED_VALUE_OR_UNDERSCORE_BINDER"
+                    if (hyp.startswith("_") or len(hyp) == 1)
+                    else "unused-hypothesis",
                     "severity": "P2",
                     "theorem": thm["name"],
                     "line": thm["line"],
-                    "detail": f"Hypothesis {hyp} appears unused in proof body",
+                    "detail": f"Binder `{hyp}` is unused in conclusion, other hypotheses, and proof body",
                 }
             )
 
@@ -162,6 +166,7 @@ def analyze_module(filepath: Path) -> dict:
     # for terminating simp lemmas that recurse on a strictly smaller
     # argument; manual review of any flagged rule is required.
     findings.extend(find_simp_loops(text, theorem_blocks))
+    findings.extend(find_one_way_bool_checkers(text, theorem_blocks))
 
     # Heartbeat-budget scan (W10 r27): file-level `set_option maxHeartbeats N`
     # values that exceed sane review thresholds are flagged. The rule is:
@@ -402,27 +407,529 @@ def extract_tactics(body: str) -> list[str]:
     return found
 
 
+
+
+FIDELITY_ECHO_BODIES = {
+    "assumption",
+    "by assumption",
+    "trivial",
+    "by trivial",
+}
+
+DOCSTRING_OVERCLAIM_KEYWORDS = (
+    "kuratowski",
+    "bipartite",
+    "quorum",
+    "byzantine",
+    "non-empty",
+    "8 nibbles",
+    "bijection",
+)
+
+
+def _extract_binders_list(signature: str) -> list[dict]:
+    """Extract top-level binders (names, type, raw) before the conclusion colon."""
+    sig = signature
+    m = re.match(
+        r"^\s*(?:@\[[^\]]*\]\s*)*(?:(?:private|protected|public|scoped|noncomputable)\s+)*"
+        r"(?:theorem|lemma|example)\b(?:\s+\S+)?",
+        sig,
+    )
+    if m:
+        sig = sig[m.end() :]
+
+    depth = 0
+    in_string = False
+    i = 0
+    colon_pos = -1
+    while i < len(sig):
+        c = sig[i]
+        if c == '"':
+            in_string = not in_string
+            i += 1
+            continue
+        if in_string:
+            i += 1
+            continue
+        if c in "([{⟨":
+            depth += 1
+        elif c in ")]}⟩":
+            depth -= 1
+        elif c == ":" and depth == 0:
+            if i + 1 < len(sig) and sig[i + 1] == "=":
+                break
+            colon_pos = i
+            break
+        i += 1
+
+    header = sig[:colon_pos] if colon_pos >= 0 else sig
+    binders: list[dict] = []
+    j = 0
+    while j < len(header):
+        if header[j] in "({[⦃":
+            open_ch = header[j]
+            close_ch = {"(": ")", "{": "}", "[": "]", "⦃": "⦄"}[open_ch]
+            d = 1
+            k = j + 1
+            in_s = False
+            top_colon = -1
+            while k < len(header) and d > 0:
+                ch = header[k]
+                if ch == '"':
+                    in_s = not in_s
+                elif not in_s:
+                    if ch == open_ch:
+                        d += 1
+                    elif ch == close_ch:
+                        d -= 1
+                        if d == 0:
+                            break
+                    elif ch == ":" and d == 1 and top_colon < 0:
+                        if k + 1 < len(header) and header[k + 1] == "=":
+                            k += 1
+                        else:
+                            top_colon = k
+                k += 1
+            if d == 0 and top_colon > j:
+                names_str = header[j + 1 : top_colon].strip()
+                type_str = header[top_colon + 1 : k].strip()
+                names = [
+                    tok
+                    for tok in names_str.split()
+                    if re.match(r"^[A-Za-z_][A-Za-z0-9_']*$", tok)
+                ]
+                binders.append(
+                    {
+                        "names": names,
+                        "type": _normalize_ws(type_str),
+                        "bracket": open_ch,
+                        "raw": header[j : k + 1],
+                    }
+                )
+            j = k + 1
+        else:
+            j += 1
+    return binders
+
+
+def _strip_outer_parens_balanced(s: str) -> str:
+    s = s.strip()
+    while s.startswith("(") and s.endswith(")"):
+        d = 0
+        ok = True
+        for idx, ch in enumerate(s):
+            if ch == "(":
+                d += 1
+            elif ch == ")":
+                d -= 1
+                if d == 0 and idx < len(s) - 1:
+                    ok = False
+                    break
+        if ok and d == 0:
+            s = s[1:-1].strip()
+        else:
+            break
+    return s
+
+
+def _norm_prop_expr(s: str) -> str:
+    return _normalize_ws(_strip_outer_parens_balanced(s))
+
+
+def _swap_eq_sides(s: str) -> str | None:
+    s_clean = _norm_prop_expr(s)
+    eq = _find_top_level_eq(s_clean)
+    if eq is None:
+        return None
+    idx, op = eq
+    lhs = _norm_prop_expr(s_clean[:idx])
+    rhs = _norm_prop_expr(s_clean[idx + len(op) :])
+    if lhs and rhs:
+        return f"{rhs} {op} {lhs}"
+    return None
+
+
+def _is_value_type(type_str: str) -> bool:
+    t = _norm_prop_expr(type_str)
+    if re.search(
+        r"(?:=|≠|!=|<=|>=|<|>|≤|≥|↔|∧|∨|/\\|\\/|→|->|\bTrue\b|\bFalse\b|\bAnd\b|\bOr\b|\bNot\b|\bProp\b|¬)",
+        t,
+    ):
+        return False
+    value_heads = {
+        "Nat",
+        "ℕ",
+        "Int",
+        "ℤ",
+        "Rat",
+        "ℚ",
+        "Real",
+        "ℝ",
+        "Bool",
+        "String",
+        "Char",
+        "UInt8",
+        "UInt16",
+        "UInt32",
+        "UInt64",
+        "USize",
+        "Float",
+        "BitVec",
+        "Fin",
+        "List",
+        "Array",
+        "Vector",
+        "Option",
+        "Finset",
+    }
+    head = t.split()[0] if t.split() else ""
+    if head in value_heads:
+        return True
+    if re.match(r"^[A-Z][A-Za-z0-9_.]*$", head) and not head.startswith(
+        ("Is", "Has", "WellFormed", "Valid", "Type", "Sort")
+    ):
+        return True
+    return False
+
+
+def _extract_preceding_docstring(raw_lines: list[str], decl_line_1based: int) -> str:
+    """Extract `/-- ... -/` docstring immediately preceding `decl_line_1based`."""
+    idx = decl_line_1based - 2
+    while idx >= 0 and (
+        not raw_lines[idx].strip() or raw_lines[idx].strip().startswith("@[")
+    ):
+        idx -= 1
+    if idx < 0 or "-/" not in raw_lines[idx]:
+        return ""
+    end_idx = idx
+    start_idx = end_idx
+    while start_idx >= 0:
+        if "/--" in raw_lines[start_idx]:
+            return "\n".join(raw_lines[start_idx : end_idx + 1])
+        if (
+            start_idx < end_idx
+            and raw_lines[start_idx].strip()
+            and not raw_lines[start_idx].startswith((" ", "\t", "*", "|"))
+        ):
+            if any(
+                raw_lines[start_idx].lstrip().startswith(k)
+                for k in ("theorem ", "lemma ", "def ", "structure ", "inductive ")
+            ):
+                break
+        start_idx -= 1
+    return ""
+
+
+def detect_hypothesis_echo(signature: str, body: str) -> str | None:
+    """Detect HYPOTHESIS_ECHO: conclusion is syntactically identical (or direct And/symm wrapper)
+    to a hypothesis binder type and closed by exact h, assumption, ⟨h1, h2⟩, And.intro, or h.symm."""
+    conclusion = _norm_prop_expr(_extract_conclusion(signature))
+    if not conclusion:
+        return None
+    binders = _extract_binders_list(signature)
+    hyp_types = [_norm_prop_expr(b["type"]) for b in binders if b["type"]]
+    if not hyp_types:
+        return None
+    body_lines = [
+        ln.strip()
+        for ln in body.splitlines()
+        if ln.strip() and not ln.strip().startswith("--")
+    ]
+    body_norm = _normalize_ws(" ".join(body_lines))
+    if body_norm.startswith("by "):
+        body_norm = body_norm[3:].strip()
+
+    echo_closer = bool(
+        body_norm in FIDELITY_ECHO_BODIES
+        or re.match(
+            r"^(?:exact\s+)?(?:[A-Za-z_][A-Za-z0-9_']*(?:\.(?:symm|mp|mpr|left|right|1|2))?|"
+            r"⟨\s*[A-Za-z0-9_'.\s,]+\s*⟩|"
+            r"And\.intro\s+[A-Za-z0-9_'.]+\s+[A-Za-z0-9_'.]+|"
+            r"Iff\.intro\s+.*|"
+            r"Eq\.symm\s+[A-Za-z0-9_'.]+)$",
+            body_norm,
+        )
+    )
+    if not echo_closer:
+        return None
+
+    for ht in hyp_types:
+        if conclusion == ht:
+            return f"Conclusion `{conclusion}` echoes hypothesis `{ht}` and is closed by `{body_norm}`"
+        swapped = _swap_eq_sides(ht)
+        if swapped and conclusion == swapped:
+            return f"Conclusion `{conclusion}` is the symmetric echo of hypothesis `{ht}` closed by `{body_norm}`"
+        for sep in ("∧", "/\\", "And"):
+            if sep in ht:
+                parts = [_norm_prop_expr(p) for p in ht.split(sep)]
+                if conclusion in parts:
+                    return f"Conclusion `{conclusion}` projects conjunct from hypothesis `{ht}` via `{body_norm}`"
+
+    for sep in ("∧", "/\\"):
+        if sep in conclusion:
+            c_parts = [_norm_prop_expr(p) for p in conclusion.split(sep) if _norm_prop_expr(p)]
+            if c_parts and all(cp in hyp_types for cp in c_parts):
+                return f"Conjunction conclusion `{conclusion}` directly echoes hypotheses via `{body_norm}`"
+    return None
+
+
+def detect_reflexive_tautology(signature: str, body: str) -> str | None:
+    """Detect REFLEXIVE_TAUTOLOGY: conclusion is `lhs = rhs` (or `(lhs == rhs) = (lhs' == rhs')`)
+    with `lhs == rhs` closed by `rfl`."""
+    conclusion = _norm_prop_expr(_extract_conclusion(signature))
+    if not conclusion:
+        return None
+    body_lines = [
+        ln.strip()
+        for ln in body.splitlines()
+        if ln.strip() and not ln.strip().startswith("--")
+    ]
+    body_norm = _normalize_ws(" ".join(body_lines))
+    if body_norm not in {
+        "rfl",
+        "by rfl",
+        "exact rfl",
+        "by exact rfl",
+        "Eq.refl",
+        "Iff.rfl",
+        "by exact Iff.rfl",
+    }:
+        return None
+    refl = _reflexive_conclusion(conclusion)
+    if refl:
+        return f"Conclusion `{refl}` has identical LHS and RHS and is closed by `{body_norm}`"
+    m_beq = re.match(
+        r"^\(?(.+?)\s*==\s*(.+?)\)?\s*=\s*\(?(.+?)\s*==\s*(.+?)\)?$", conclusion
+    )
+    if m_beq:
+        l1, r1, l2, r2 = (
+            _norm_prop_expr(m_beq.group(1)),
+            _norm_prop_expr(m_beq.group(2)),
+            _norm_prop_expr(m_beq.group(3)),
+            _norm_prop_expr(m_beq.group(4)),
+        )
+        if l1 == l2 and r1 == r2:
+            return f"Boolean equality conclusion `{conclusion}` is syntactically reflexive (`{body_norm}`)"
+    return None
+
+
+def detect_nat_nonneg_triviality(signature: str, body: str = "") -> str | None:
+    """Detect NAT_NONNEG_TRIVIALITY: conclusion is `e >= 0`, `e ≥ 0`, `0 <= e`, or `0 ≤ e` over Nat binders."""
+    conclusion = _norm_prop_expr(_extract_conclusion(signature))
+    if not conclusion:
+        return None
+    binders = _extract_binders_list(signature)
+    nat_vars: set[str] = set()
+    for b in binders:
+        if b["type"] in {"Nat", "ℕ"}:
+            nat_vars.update(b["names"])
+    if not nat_vars and not re.search(r"\b(?:Nat|ℕ)\b", signature):
+        return None
+
+    m_ge = re.match(r"^(.+?)\s*(?:>=|≥)\s*0$", conclusion)
+    m_le = re.match(r"^0\s*(?:<=|≤)\s*(.+)$", conclusion)
+    expr = _norm_prop_expr(
+        m_ge.group(1) if m_ge else (m_le.group(1) if m_le else "")
+    )
+    if not expr:
+        return None
+    if (
+        "Finset.sum" in expr
+        or "∑" in expr
+        or re.search(r"\b(?:Real|ℝ|Int|ℤ|Rat|ℚ)\b", signature)
+    ):
+        return None
+    tokens = set(re.findall(r"\b[A-Za-z_][A-Za-z0-9_']*\b", expr))
+    if tokens & nat_vars or re.search(r"\bNat\.", expr):
+        return f"Conclusion `{conclusion}` is a trivial Nat non-negativity bound (`0 <= e` holds for all `Nat`)"
+    return None
+
+
+def detect_nat_sub_unguarded(signature: str) -> str | None:
+    """Detect NAT_SUB_UNGUARDED: theorem signature contains `a - b` over Nat binders without
+    any ordering guard (`b <= a`, `b ≤ a`, `b < a`, `a >= b`, `a ≥ b`, `a > b`) in hypotheses."""
+    binders = _extract_binders_list(signature)
+    nat_vars: set[str] = set()
+    hyp_texts: list[str] = []
+    for b in binders:
+        if b["type"] in {"Nat", "ℕ"}:
+            nat_vars.update(b["names"])
+        elif not _is_value_type(b["type"]):
+            hyp_texts.append(b["type"])
+    if not nat_vars:
+        return None
+
+    conclusion = _norm_prop_expr(_extract_conclusion(signature))
+    for arrow in ("→", "->"):
+        if arrow in conclusion:
+            parts = conclusion.split(arrow)
+            hyp_texts.extend(parts[:-1])
+            conclusion = parts[-1].strip()
+
+    all_hyps = " ; ".join(hyp_texts)
+    for m in re.finditer(
+        r"\b([A-Za-z_][A-Za-z0-9_']*)\s*-\s*([A-Za-z_][A-Za-z0-9_']*|\d+)\b",
+        conclusion,
+    ):
+        lhs, rhs = m.group(1), m.group(2)
+        if lhs not in nat_vars:
+            continue
+        if rhs == "0":
+            continue
+        guard_patterns = [
+            rf"\b{re.escape(rhs)}\s*(?:<=|≤|<)\s*{re.escape(lhs)}\b",
+            rf"\b{re.escape(lhs)}\s*(?:>=|≥|>)\s*{re.escape(rhs)}\b",
+            rf"\b{re.escape(lhs)}\s*(?:>=|≥|>|<=|≤|<)\s*[^;]*\b{re.escape(rhs)}\b",
+            rf"\b{re.escape(rhs)}\s*(?:<=|≤|<|>=|≥|>)\s*[^;]*\b{re.escape(lhs)}\b",
+        ]
+        if rhs.isdigit():
+            guard_patterns.extend(
+                [
+                    rf"\b{re.escape(lhs)}\s*(?:>=|≥|>)\s*\d+",
+                    rf"\d+\s*(?:<=|≤|<)\s*{re.escape(lhs)}\b",
+                ]
+            )
+        if not any(re.search(gp, all_hyps) for gp in guard_patterns):
+            return f"Nat subtraction `{lhs} - {rhs}` in `{conclusion}` has no ordering guard (`{rhs} <= {lhs}`) in hypotheses"
+    return None
+
+
+def detect_misaligned_docstring(
+    docstring: str, signature: str, body: str
+) -> str | None:
+    """Detect MISALIGNED_DOCSTRING: docstring claims complex domain properties while the
+    theorem statement is a 1-operator inequality/equality proved in 1 line by rfl or omega."""
+    if not docstring:
+        return None
+    doc_lower = docstring.lower()
+    matched_kw = [kw for kw in DOCSTRING_OVERCLAIM_KEYWORDS if kw in doc_lower]
+    if not matched_kw:
+        return None
+
+    body_lines = [
+        ln.strip()
+        for ln in body.splitlines()
+        if ln.strip() and not ln.strip().startswith("--")
+    ]
+    if len(body_lines) != 1:
+        return None
+    body_norm = _normalize_ws(body_lines[0])
+    if body_norm not in {
+        "rfl",
+        "by rfl",
+        "omega",
+        "by omega",
+        "decide",
+        "by decide",
+        "trivial",
+        "by trivial",
+    }:
+        return None
+
+    conclusion = _norm_prop_expr(_extract_conclusion(signature))
+    if any(
+        q in conclusion
+        for q in ("∀", "∃", "↔", "∧", "∨", "Finset", "Set", "Graph", "Bijective")
+    ):
+        return None
+    return (
+        f"Docstring claims domain property ({', '.join(matched_kw)}) but theorem `{conclusion}` "
+        f"is a 1-line `{body_norm}` arithmetic/reflexive check"
+    )
+
+
+def find_one_way_bool_checkers(text: str, theorem_blocks: list[dict]) -> list[dict]:
+    """Detect ONE_WAY_BOOL_CHECKER: executable `Bool`-returning function `def f ... : Bool`
+    that only has a one-way `f ... = true -> ...` theorem in the module without a companion
+    `↔` (`iff`) or completeness (`... -> f ... = true` / `f ... = false`) theorem."""
+    stripped = "\n".join(_strip_lean_comments(text.splitlines()))
+    def_re = re.compile(
+        r"^\s*(?:@\[[^\]]*\]\s*)*(?:(?:private|protected|public|scoped|noncomputable)\s+)*def\s+([A-Za-z_][A-Za-z0-9_']*)\b[\s\S]*?:\s*Bool\s*:=",
+        re.MULTILINE,
+    )
+    bool_defs: dict[str, int] = {}
+    for m in def_re.finditer(stripped):
+        # Ensure we didn't cross another top-level declaration between `def` and `: Bool :=`
+        span_text = m.group(0)
+        if len(re.findall(r"(?m)^\s*(?:def|theorem|lemma|structure|inductive)\b", span_text)) > 1:
+            continue
+        fn_name = m.group(1)
+        line_no = stripped[: m.start()].count("\n") + 1
+        bool_defs[fn_name] = line_no
+
+    if not bool_defs:
+        return []
+
+    findings: list[dict] = []
+    for fn_name, def_line in bool_defs.items():
+        one_way_soundness: list[dict] = []
+        has_iff_or_complete = False
+        fn_pat = re.compile(rf"\b{re.escape(fn_name)}\b")
+        for thm in theorem_blocks:
+            sig = thm["signature"]
+            if not fn_pat.search(sig):
+                continue
+            conc = _norm_prop_expr(_extract_conclusion(sig))
+            if (
+                "↔" in sig
+                or "<->" in sig
+                or re.search(r"\bIff\b", sig)
+                or thm["name"].endswith("_iff")
+            ):
+                has_iff_or_complete = True
+                break
+            for arrow in ("→", "->"):
+                if arrow in conc:
+                    rhs = conc.split(arrow)[-1]
+                    if fn_pat.search(rhs):
+                        has_iff_or_complete = True
+                        break
+            if has_iff_or_complete:
+                break
+            if re.search(
+                rf"\b{re.escape(fn_name)}\b[\s\S]*?=\s*false", sig
+            ) and _bound_variable_names(sig):
+                has_iff_or_complete = True
+                break
+            if re.search(rf"\b{re.escape(fn_name)}\b[\s\S]*?=\s*true", sig):
+                one_way_soundness.append(thm)
+
+        if one_way_soundness and not has_iff_or_complete:
+            first_thm = one_way_soundness[0]
+            findings.append(
+                {
+                    "type": "ONE_WAY_BOOL_CHECKER",
+                    "severity": "P2",
+                    "theorem": first_thm["name"],
+                    "line": first_thm["line"],
+                    "detail": (
+                        f"Executable Bool checker `{fn_name}` (line {def_line}) only has one-way "
+                        f"soundness (`{first_thm['name']}`) without a companion `↔` (`iff`) or completeness theorem"
+                    ),
+                }
+            )
+    return findings
+
+
 def is_vacuous_candidate(signature: str, body: str) -> bool:
-    """Heuristic: check if proof might be vacuously true.
+    """Heuristic: check if proof might be vacuously true or a specification echo/tautology.
 
-    Only flags proofs where:
-    1. The conclusion is `False` (disjointness/impossibility), AND
-    2. The body doesn't use `rw [..._iff]` (which means the
-       hypotheses are being rewritten to extract real content).
-
-    Intentional disjointness proofs (e.g., two regimes can't overlap)
-    that use `rw [classify_stable_iff]` etc. are NOT flagged, because
-    they derive `False` from genuinely contradictory semantic conditions
-    rather than from structurally impossible hypotheses.
+    Flags proofs where:
+    1. The conclusion is `False` (disjointness/impossibility) with structurally impossible
+       hypotheses (`False`, `0 > 1`, `¬ True`), OR
+    2. The theorem exhibits `HYPOTHESIS_ECHO`, `REFLEXIVE_TAUTOLOGY`, or `NAT_NONNEG_TRIVIALITY`.
     """
     if "False.elim" in body or "absurd" in body or "exfalso" in body:
-        # If conclusion is False and proof rewrites iff-lemmas,
-        # it's an intentional disjointness proof → skip
         if re.search(r"rw\s*\[.*_iff", body):
             return False
-        # Only flag if the hypotheses look structurally impossible
         if "False" in signature or "0 > 1" in signature or "¬ True" in signature:
             return True
+    if detect_hypothesis_echo(signature, body):
+        return True
+    if detect_reflexive_tautology(signature, body):
+        return True
+    if detect_nat_nonneg_triviality(signature, body):
+        return True
     return False
 
 
@@ -519,6 +1026,68 @@ def find_tautology_candidates(thm: dict) -> list[dict]:
                 }
             )
 
+    refl_taut = detect_reflexive_tautology(signature, body)
+    if refl_taut:
+        findings.append(
+            {
+                "type": "REFLEXIVE_TAUTOLOGY",
+                "severity": "P2",
+                "theorem": thm["name"],
+                "line": thm["line"],
+                "detail": refl_taut,
+            }
+        )
+
+    hyp_echo = detect_hypothesis_echo(signature, body)
+    if hyp_echo:
+        findings.append(
+            {
+                "type": "HYPOTHESIS_ECHO",
+                "severity": "P2",
+                "theorem": thm["name"],
+                "line": thm["line"],
+                "detail": hyp_echo,
+            }
+        )
+
+    nat_nonneg = detect_nat_nonneg_triviality(signature, body)
+    if nat_nonneg:
+        findings.append(
+            {
+                "type": "NAT_NONNEG_TRIVIALITY",
+                "severity": "P2",
+                "theorem": thm["name"],
+                "line": thm["line"],
+                "detail": nat_nonneg,
+            }
+        )
+
+    nat_sub = detect_nat_sub_unguarded(signature)
+    if nat_sub:
+        findings.append(
+            {
+                "type": "NAT_SUB_UNGUARDED",
+                "severity": "P2",
+                "theorem": thm["name"],
+                "line": thm["line"],
+                "detail": nat_sub,
+            }
+        )
+
+    doc_misaligned = detect_misaligned_docstring(
+        thm.get("docstring", ""), signature, body
+    )
+    if doc_misaligned:
+        findings.append(
+            {
+                "type": "MISALIGNED_DOCSTRING",
+                "severity": "P2",
+                "theorem": thm["name"],
+                "line": thm["line"],
+                "detail": doc_misaligned,
+            }
+        )
+
     return findings
 
 
@@ -535,35 +1104,20 @@ def _is_concrete_decide_target(signature: str) -> bool:
 
 
 def find_unused_hypotheses(signature: str, body: str) -> list[str]:
-    """Find named hypotheses that don't appear in the proof body.
+    """Find named hypotheses or value binders that don't appear in the proof body or statement.
 
-    Heuristic — precision-over-recall.  The detector intentionally
-    suppresses ALL findings for a theorem whose proof body contains
-    any whole-context automation tactic (`omega`, `simp`, `simpa`,
-    `nlinarith`, `linarith`, `ring`, `decide`, `positivity`, `norm_num`,
-    `aesop`, `tauto`, `trivial`, `assumption`, `simp_all`, `grind`,
-    `exact_mod_cast`).  These tactics consume the entire local context
-    without naming individual hypotheses; deciding *which* hypothesis is
-    actually unused would require running Lean.  We accept the precision
-    tradeoff: a hypothesis that is genuinely unused but happens to live
-    in a `grind`-using proof will not be flagged.  False positives are
-    much more harmful than missed findings here, because every false
-    positive prompts a manual investigation that confirms "consumed by
-    automation".
-
-    Other accounting:
-    - Parameters starting with `_` are intentionally unused by convention
-    - Parameters appearing in the goal/conclusion (after the last
-      top-level `:`) are needed by the type system even if the proof
-      text never names them
-    - `unfold`/`rfl`/`rw`/`cases`/`simp_all` similarly consume structure
-      parameters
+    Accounting rules:
+    - Value binders `(x : T)` (e.g. `Nat`, `Int`, `Bool`, domain structures) that do not appear
+      anywhere in the conclusion, in any other binder's type, or in the proof body are ALWAYS
+      flagged even when whole-context automation (`omega`, `simp`, `decide`, `grind`) is used,
+      because an unreferenced value parameter cannot constrain a closed arithmetic goal.
+    - Explicit underscore-prefixed hypothesis/value binders `(_h : P)` that are never referenced
+      in the conclusion, other binder types, or the proof body are ALWAYS flagged as
+      `UNUSED_VALUE_OR_UNDERSCORE_BINDER` candidates.
+    - For non-underscore proposition hypotheses `(h : P)`, whole-context automation tactics
+      (`omega`, `simp`, `decide`, `grind`, etc.) may consume `h` from the local context without
+      naming it, so only non-automated bodies flag those.
     """
-    # Precision-over-recall: any whole-context automation tactic in the
-    # body suppresses unused-hyp findings for this theorem (see
-    # docstring).  `grind` is Mathlib's modern hammer (Lean 4.x+) and
-    # `simpa` is `simp ... using h`; both behave like simp/linarith.
-    # (W12 r01.)
     AUTOMATION_TACTICS = [
         "omega",
         "simp",
@@ -584,86 +1138,42 @@ def find_unused_hypotheses(signature: str, body: str) -> list[str]:
         "simp_all",
         "grind",
     ]
-    for tactic in AUTOMATION_TACTICS:
-        if re.search(rf"\b{re.escape(tactic)}\b", body):
-            return []  # cannot determine unused-ness via text matching
+    has_automation = any(
+        re.search(rf"\b{re.escape(tactic)}\b", body) for tactic in AUTOMATION_TACTICS
+    ) or ("unfold" in body)
 
-    # Also skip if proof uses `unfold` (consumes structure parameters)
-    if "unfold" in body:
-        return []
+    conclusion = _extract_conclusion(signature)
+    binders = _extract_binders_list(signature)
+    unused: list[str] = []
 
-    # Extract the conclusion/goal part (after the last top-level `:`)
-    # Parameters appearing in the conclusion are needed by the type system
-    conclusion = ""
-    # Find conclusion: everything after the last `:` that's not inside parens
-    # OR braces (the latter matters for struct-literal `{ field := ... }` in
-    # the goal, where ad-hoc `:` characters appear inside `{...}` and would
-    # otherwise displace `last_colon_pos` away from the true top-level
-    # signature colon).  (W12 r02.)
-    paren_depth = 0
-    brace_depth = 0
-    bracket_depth = 0
-    last_colon_pos = -1
-    i = 0
-    while i < len(signature):
-        ch = signature[i]
-        # Skip `:=` (binding marker), it must not be counted as a top-level `:`
-        if ch == ":" and i + 1 < len(signature) and signature[i + 1] == "=":
-            i += 2
+    for idx, b in enumerate(binders):
+        if b["bracket"] != "(":
             continue
-        if ch == "(":
-            paren_depth += 1
-        elif ch == ")":
-            paren_depth -= 1
-        elif ch == "{":
-            brace_depth += 1
-        elif ch == "}":
-            brace_depth -= 1
-        elif ch == "[":
-            bracket_depth += 1
-        elif ch == "]":
-            bracket_depth -= 1
-        elif ch == ":" and paren_depth == 0 and brace_depth == 0 and bracket_depth == 0:
-            last_colon_pos = i
-        i += 1
-    if last_colon_pos >= 0:
-        conclusion = signature[last_colon_pos:]
-
-    unused = []
-    # Extract hypothesis names: (hName : Type)
-    hyp_pattern = re.compile(r"\((\w+)\s*:")
-    hyps = list(hyp_pattern.finditer(signature))
-    for m in hyps:
-        hyp_name = m.group(1)
-        # Skip single-char type variables
-        if len(hyp_name) <= 1:
-            continue
-        # Skip intentionally unused (underscore prefix)
-        if hyp_name.startswith("_"):
-            continue
-        # Skip if appears in the conclusion (needed by type system)
-        if hyp_name in conclusion:
-            continue
-        # Skip if appears in any OTHER hypothesis's type in the signature
-        # (the text between this param's `:` and the next `(` or end)
-        used_in_other_hyp = False
-        for other in hyps:
-            if other.start() == m.start():
+        b_type = b["type"]
+        is_val = _is_value_type(b_type)
+        for name in b["names"]:
+            if name == "_":
                 continue
-            # Check the type text of the other hypothesis
-            other_start = other.end()  # after the `:`
-            other_end = signature.find(")", other_start)
-            if other_end == -1:
-                other_end = len(signature)
-            other_type = signature[other_start:other_end]
-            if hyp_name in other_type:
-                used_in_other_hyp = True
-                break
-        if used_in_other_hyp:
-            continue
-        # Check if hypothesis name appears in body
-        if hyp_name not in body:
-            unused.append(hyp_name)
+            is_underscore = name.startswith("_")
+            if len(name) == 1 and not is_val and not is_underscore:
+                continue
+            word_re = re.compile(rf"(?<![A-Za-z0-9_']){re.escape(name)}(?![A-Za-z0-9_'])")
+            if word_re.search(conclusion):
+                continue
+            used_in_other = False
+            for other_idx, other_b in enumerate(binders):
+                if other_idx == idx:
+                    continue
+                if word_re.search(other_b["type"]):
+                    used_in_other = True
+                    break
+            if used_in_other:
+                continue
+            if word_re.search(body):
+                continue
+            if is_underscore or is_val or not has_automation:
+                unused.append(name)
+
     return unused
 
 

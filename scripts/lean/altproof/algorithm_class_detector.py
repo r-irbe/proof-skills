@@ -31,6 +31,14 @@ PIPELINE_RE = re.compile(r"\bList\.range\b[^\n]*?(?:List\.(?:map|foldl|filter)|\
 ACC_OPP_RE = re.compile(r"\bdef\s+(\w+)[^:=]*?:=[^\n]*?\b(\1)\b[^\n]*?\b(\1)\b")
 TYPE_SPECIALIZATION_RE = re.compile(r"\b\w+\s*:\s*(?:[αa-zA-Z0-9_]+\s*→\s*ℝ|\(g\s*:\s*[αa-zA-Z0-9_]+\s*→\s*ℝ\))\b")
 TACTIC_BLOAT_RE = re.compile(r"\bunfold\s+\w+[^\n]*\n\s*refine\b")
+SWAR_BIT_PACKING_SUBSTITUTION_RE = re.compile(
+    r"(?:\bmatch\b[\s\S]{0,240}?\|[^\n]+=>[^\n]+\n\s*\|[^\n]+=>[^\n]+\n\s*\|[^\n]+=>|"
+    r"\b(?:nibble|bitplane|grayCode|xorParity|packNibbles|unpackNibbles)\b|"
+    r"(?:>>>|<<<)\s*(?:4|8|12|16|24|32)\b[^\n]*?(?:&&&|\|\|\||\^\^\^))"
+)
+CLASSICAL_SPLIT_LEAK_RE = re.compile(
+    r"(?:\bsplit\b[\s\S]{0,120}?&&|\bClassical\.choice\b|\bby_cases\b[^\n]*\bdecide\b)"
+)
 
 
 @dataclass
@@ -137,6 +145,38 @@ def detect_algorithm_opportunities(source_text: str, theorem: str = "") -> list[
                 evidence=matched,
                 suggested_replacement="direct-term-exact-or-fun-composition",
                 estimated_kernel_speedup=1.5,
+                legibility_tradeoff="high",
+                details={"match": matched, "line_offset": m.start()},
+            )
+        )
+
+    # 7. SWAR bit-packing substitution (multi-branch lookup tables, nibble/bitplane loops, Gray-code/XOR parity)
+    for m in SWAR_BIT_PACKING_SUBSTITUTION_RE.finditer(text):
+        matched = m.group(0).strip().splitlines()[0][:80]
+        candidates.append(
+            AlgorithmCandidate(
+                theorem=theorem,
+                route="algorithm-class-substitution",
+                pattern="SWAR_BIT_PACKING_SUBSTITUTION",
+                evidence=matched,
+                suggested_replacement="branchless-swar-bitvec-packing-with-bv_decide",
+                estimated_kernel_speedup=12.0,
+                legibility_tradeoff="medium",
+                details={"match": matched, "line_offset": m.start()},
+            )
+        )
+
+    # 8. Constructive decidable reduction (Classical.choice leakage from split on &&)
+    for m in CLASSICAL_SPLIT_LEAK_RE.finditer(text):
+        matched = m.group(0).strip().splitlines()[0][:80]
+        candidates.append(
+            AlgorithmCandidate(
+                theorem=theorem,
+                route="constructive-decidable-reduction",
+                pattern="CONSTRUCTIVE_DECIDABLE_REDUCTION",
+                evidence=matched,
+                suggested_replacement="Bool.and_eq_true-or-decide_eq_true_eq-or-bv_decide",
+                estimated_kernel_speedup=2.5,
                 legibility_tradeoff="high",
                 details={"match": matched, "line_offset": m.start()},
             )

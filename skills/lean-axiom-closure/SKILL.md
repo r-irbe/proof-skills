@@ -73,6 +73,17 @@ a Mathlib-dependent corpus of ~9k named declarations: **seconds**.
 - **G-4** (SHOULD): pair with `@lean-replay-verification` R2: the
   closure audit is the per-build instrument; the replay ladder is the
   cadence.
+- **G-5** (MUST — Check 7 Barrel Completeness): verify 100% barrel
+  completeness before trusting `Audit.axiomClosureAudit` — every `.lean`
+  file in the package directory MUST be transitively imported by the
+  root barrel module imported by `FinalCheckAll.lean`, otherwise
+  unimported orphan modules silently bypass `Lean.collectAxioms`.
+- **G-6** (SHOULD — Check 7 Constructive Gate): for first-order
+  decidable `Nat`/`Int`/`Bool`/`BitVec` modules, audit with a tightened
+  constructive allowlist `#[`propext, `Quot.sound]` (excluding
+  `Classical.choice`) and eliminate accidental `Classical.choice`
+  leakage via `Bool.and_eq_true`, `decide_eq_true_eq`, `omega`, or
+  `bv_decide` (`constructive-decidable-reduction`).
 
 ## Pitfalls
 
