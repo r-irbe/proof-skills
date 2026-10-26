@@ -206,6 +206,22 @@ def test_seven_defect_detectors() -> bool:
         is_vacuous_candidate("theorem v (x : Nat) (h : x > 0) : x > 0", "exact h"),
         "is_vacuous_candidate expanded to catch hypothesis echo",
     )
+    ok &= _check(
+        bool(detect_nat_sub_unguarded("theorem t4_hyp (a b : Nat) (h : a - b = 3) : a >= 3")),
+        "NAT_SUB_UNGUARDED detected when unguarded a - b is in hypothesis",
+    )
+    ok &= _check(
+        not bool(detect_nat_sub_unguarded("theorem t4_add (a b : Nat) (h : b + 1 <= a) : a - b >= 1")),
+        "NAT_SUB_UNGUARDED clean when guarded by b + 1 <= a",
+    )
+    ok &= _check(
+        bool(detect_reflexive_tautology("theorem t2_iff (P : Prop) : P <-> P", "Iff.rfl")),
+        "REFLEXIVE_TAUTOLOGY detected on ASCII <-> with Iff.rfl",
+    )
+    ok &= _check(
+        "_h" in find_unused_hypotheses("theorem t6_imp {a : Nat} {_h : a > 0} (b : Nat) : b = b", "rfl"),
+        "UNUSED_VALUE_OR_UNDERSCORE_BINDER flags implicit {_h : P}",
+    )
     return ok
 
 

@@ -147,11 +147,19 @@ def analyze_module(filepath: Path) -> dict:
 
         # Check hypothesis and value/underscore binder usage
         unused = find_unused_hypotheses(thm["signature"], thm["body"])
+        binder_types = {
+            name: b["type"]
+            for b in _extract_binders_list(thm["signature"])
+            for name in b["names"]
+        }
         for hyp in unused:
+            is_val_or_under = hyp.startswith("_") or _is_value_type(
+                binder_types.get(hyp, "")
+            )
             findings.append(
                 {
                     "type": "UNUSED_VALUE_OR_UNDERSCORE_BINDER"
-                    if (hyp.startswith("_") or len(hyp) == 1)
+                    if is_val_or_under
                     else "unused-hypothesis",
                     "severity": "P2",
                     "theorem": thm["name"],
@@ -750,47 +758,48 @@ def detect_nat_sub_unguarded(signature: str) -> str | None:
     any ordering guard (`b <= a`, `b ≤ a`, `b < a`, `a >= b`, `a ≥ b`, `a > b`) in hypotheses."""
     binders = _extract_binders_list(signature)
     nat_vars: set[str] = set()
-    hyp_texts: list[str] = []
+    prop_clauses: list[str] = []
     for b in binders:
         if b["type"] in {"Nat", "ℕ"}:
             nat_vars.update(b["names"])
         elif not _is_value_type(b["type"]):
-            hyp_texts.append(b["type"])
+            prop_clauses.append(b["type"])
     if not nat_vars:
         return None
 
     conclusion = _norm_prop_expr(_extract_conclusion(signature))
-    for arrow in ("→", "->"):
-        if arrow in conclusion:
-            parts = conclusion.split(arrow)
-            hyp_texts.extend(parts[:-1])
-            conclusion = parts[-1].strip()
+    arrow_parts = re.split(r"→|->", conclusion)
+    for part in arrow_parts:
+        if part.strip():
+            prop_clauses.append(part.strip())
 
-    all_hyps = " ; ".join(hyp_texts)
-    for m in re.finditer(
-        r"\b([A-Za-z_][A-Za-z0-9_']*)\s*-\s*([A-Za-z_][A-Za-z0-9_']*|\d+)\b",
-        conclusion,
-    ):
-        lhs, rhs = m.group(1), m.group(2)
-        if lhs not in nat_vars:
-            continue
-        if rhs == "0":
-            continue
-        guard_patterns = [
-            rf"\b{re.escape(rhs)}\s*(?:<=|≤|<)\s*{re.escape(lhs)}\b",
-            rf"\b{re.escape(lhs)}\s*(?:>=|≥|>)\s*{re.escape(rhs)}\b",
-            rf"\b{re.escape(lhs)}\s*(?:>=|≥|>|<=|≤|<)\s*[^;]*\b{re.escape(rhs)}\b",
-            rf"\b{re.escape(rhs)}\s*(?:<=|≤|<|>=|≥|>)\s*[^;]*\b{re.escape(lhs)}\b",
-        ]
-        if rhs.isdigit():
-            guard_patterns.extend(
-                [
-                    rf"\b{re.escape(lhs)}\s*(?:>=|≥|>)\s*\d+",
-                    rf"\d+\s*(?:<=|≤|<)\s*{re.escape(lhs)}\b",
-                ]
-            )
-        if not any(re.search(gp, all_hyps) for gp in guard_patterns):
-            return f"Nat subtraction `{lhs} - {rhs}` in `{conclusion}` has no ordering guard (`{rhs} <= {lhs}`) in hypotheses"
+    for idx, clause in enumerate(prop_clauses):
+        other_hyps = " ; ".join(prop_clauses[:idx] + prop_clauses[idx + 1 :])
+        for m in re.finditer(
+            r"\b([A-Za-z_][A-Za-z0-9_']*)\s*-\s*([A-Za-z_][A-Za-z0-9_']*|\d+)\b",
+            clause,
+        ):
+            lhs, rhs = m.group(1), m.group(2)
+            if lhs not in nat_vars:
+                continue
+            if rhs == "0" or lhs == rhs:
+                continue
+            guard_patterns = [
+                rf"\b{re.escape(rhs)}\b[^;]*(?:<=|≤|<)\s*[^;]*\b{re.escape(lhs)}\b",
+                rf"\b{re.escape(lhs)}\b[^;]*(?:>=|≥|>)\s*[^;]*\b{re.escape(rhs)}\b",
+            ]
+            if rhs.isdigit():
+                guard_patterns.extend(
+                    [
+                        rf"\b{re.escape(lhs)}\b[^;]*(?:>=|≥|>)\s*\d+",
+                        rf"\d+\s*(?:<=|≤|<)\s*[^;]*\b{re.escape(lhs)}\b",
+                        rf"\b{re.escape(lhs)}\s*!=\s*0",
+                        rf"\b{re.escape(lhs)}\s*≠\s*0",
+                        rf"0\s*<\s*\b{re.escape(lhs)}\b",
+                    ]
+                )
+            if not any(re.search(gp, other_hyps) for gp in guard_patterns):
+                return f"Nat subtraction `{lhs} - {rhs}` in `{clause}` has no ordering guard (`{rhs} <= {lhs}`) in hypotheses"
     return None
 
 
@@ -880,8 +889,12 @@ def find_one_way_bool_checkers(text: str, theorem_blocks: list[dict]) -> list[di
                 break
             for arrow in ("→", "->"):
                 if arrow in conc:
-                    rhs = conc.split(arrow)[-1]
-                    if fn_pat.search(rhs):
+                    parts = [p.strip() for p in conc.split(arrow)]
+                    lhs_parts = " -> ".join(parts[:-1])
+                    rhs = parts[-1]
+                    if fn_pat.search(rhs) and not fn_pat.search(lhs_parts) and not any(
+                        fn_pat.search(b["type"]) for b in _extract_binders_list(sig)
+                    ):
                         has_iff_or_complete = True
                         break
             if has_iff_or_complete:
@@ -1147,14 +1160,14 @@ def find_unused_hypotheses(signature: str, body: str) -> list[str]:
     unused: list[str] = []
 
     for idx, b in enumerate(binders):
-        if b["bracket"] != "(":
-            continue
         b_type = b["type"]
         is_val = _is_value_type(b_type)
         for name in b["names"]:
             if name == "_":
                 continue
             is_underscore = name.startswith("_")
+            if b["bracket"] != "(" and not is_underscore:
+                continue
             if len(name) == 1 and not is_val and not is_underscore:
                 continue
             word_re = re.compile(rf"(?<![A-Za-z0-9_']){re.escape(name)}(?![A-Za-z0-9_'])")
@@ -1440,7 +1453,7 @@ def _extract_conclusion(signature: str) -> str:
     """
     sig = signature
     m = re.match(
-        r"^\s*(?:(?:private|protected|public|scoped|noncomputable)\s+)*"
+        r"^\s*(?:@\[[^\]]*\]\s*)*(?:(?:private|protected|public|scoped|noncomputable)\s+)*"
         r"(?:theorem|lemma|example)\b(?:\s+\S+)?",
         sig,
     )
@@ -1508,6 +1521,8 @@ def _find_top_level_eq(text: str) -> tuple[int, str] | None:
             continue
         if text[i : i + 1] == "↔":
             return (i, "↔")
+        if text[i : i + 3] == "<->":
+            return (i, "<->")
         if c == "=":
             prev = text[i - 1] if i > 0 else ""
             nxt = text[i + 1] if i + 1 < len(text) else ""
