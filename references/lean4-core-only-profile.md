@@ -145,3 +145,70 @@ Two verification traps to check in whatever tool you use:
       tree.
 - [ ] Recursion/heartbeat findings recorded with the declaration name and the
       option tripped.
+
+---
+
+## 6. C++ Kernel Reduction (`type_checker.cpp`, `m_whnf` caching, `eval_nat%` elaborator)
+
+When a core-only artifact is scored on kernel reduction instructions (or must
+pass `rfl` / `decide` over large closed terms without hitting recursion or
+heartbeat limits), three C++ kernel mechanisms in `src/kernel/type_checker.cpp`
+and `src/kernel/instantiate.cpp` govern runtime cost:
+
+### 6.1 `whnf` vs `whnf_core` and `m_st->m_whnf` Memoization
+
+In `src/kernel/type_checker.cpp`, `type_checker::whnf(expr const & e)` caches
+results in `m_st->m_whnf` (an `expr_map<expr>` keyed by pointer/hash equality),
+whereas `whnf_core` does not:
+
+- **`ExprKind::Let` zeta-reduction penalty**: `whnf_core` treats `let y := v; b`
+  as a head redex and calls `instantiate(b, v)` on every evaluation step, while
+  while-unreduced `let` bindings hide sharing (`m_rc == 1`) from
+  `replace_rec_fn::m_cache`. Prefer passing shared subterms via lambda arguments
+  or hash-consed inline expressions (`m_rc > 1`) so `m_st->m_whnf` caches the
+  reduced normal form after one evaluation.
+- **Closed top-level definitions (`def C : Nat := <formula>`)**: Because a
+  closed `Const` has `get_loose_bvar_range(e) == 0`, `instantiate_rev` skips it
+  in `O(1)` inside `Nat.rec` / `List.rec` step lambdas (`!has_loose_bvars(e)`),
+  and `whnf` evaluates `C` at most once per kernel invocation, caching the
+  resulting `nat_lit` in `m_st->m_whnf` (~160K instructions once per check, 0
+  per loop iteration).
+- **Constant-left partial application**: In curried binary kernel primitives
+  (`Nat.add`, `Nat.mul`, `Nat.land`, `Nat.lor`, `Nat.xor`, `Nat.beq`), placing
+  the closed argument on the left (`App(Const(op), closed_arg)`) forms a closed
+  partial application subtree (`get_loose_bvar_range == 0`) that `instantiate_rev`
+  short-circuits in `O(1)` at every recursion step.
+
+### 6.2 Elaboration-Time `eval_nat%` and `preunfold%` (Zero Runtime & Export Footprint)
+
+To eliminate multi-hundred-digit magic `nat_lit` constants (such as SWAR masks,
+Kronecker packing polynomials, or SHA-256 padding words) with **zero** runtime
+kernel instruction overhead and **zero** exported `Lean.*` dependencies:
+
+```lean
+import Lean
+
+open Lean Elab Term Meta in
+elab "eval_nat% " t:term : term => do
+  let e <- elabTerm t (some (mkConst ``Nat))
+  let e <- instantiateMVars e
+  let v <- whnf e
+  match v.rawNatLit? with
+  | some n => return mkRawNatLit n
+  | none => throwError "eval_nat% failed to reduce to rawNatLit: {v}"
+```
+
+- **Zero runtime unfold cost**: `eval_nat% <closed_formula>` reduces the readable
+  mathematical specification during elaboration and emits a raw `Expr.lit (.natVal n)`
+  (`nat_lit n`) into the `.olean` / kernel environment.
+- **Zero `Lean.*` export footprint**: Because the `elab` macro runs at
+  elaboration time and produces a pure `mkRawNatLit`, `#print axioms` and the
+  exported declaration cone contain zero `Lean.*` references.
+- **Bridge to spec (`:= rfl`)**: Pair `def C : Nat := eval_nat% cSpec` with
+  `theorem C_eq_spec : C = cSpec := rfl` so proofs rewrite against `cSpec` while
+  the runtime computation uses `C` at 0 instruction overhead.
+- **SWAR word packing & `preunfold%` combinators**: When packing `k` fixed-width
+  lanes into a single GMP `Nat` word (Kronecker substitution or bitboard ANF),
+  combine binary-doubling step combinators (`t0..t6`) with an elaboration-time
+  `preunfold%` / `unroll_top%` reducer (`Meta.transform` + `ShareCommon`) to
+  match manual inlining performance without multi-thousand-line source bloat.
