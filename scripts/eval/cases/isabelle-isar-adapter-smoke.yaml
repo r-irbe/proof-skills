@@ -1,0 +1,10 @@
+name: isabelle-isar-adapter-smoke
+skill: isabelle-isar-adapter
+description: Smoke test verifying routing, workflow, and handbook link for @isabelle-isar-adapter.
+prompt: "Apply @isabelle-isar-adapter workflow and consult references/isabelle-isar-adapter-handbook.md."
+expected_sections:
+  - "## Routing"
+  - "## Workflow"
+  - "## Recovery & STOP"
+  - "## Handoffs"
+  - "## Detailed reference"

@@ -72,5 +72,5 @@ These scripts are project-agnostic and portable across any Lean 4 repository. Ru
 ## Skill Catalog Token Budget & Plugin Deduplication
 
 - Every active v2 `skills/*/SKILL.md` frontmatter `description:` block is constrained to `<= 320` characters (`USE FOR: ...`, `DO NOT USE FOR: ...`, `TRIGGERS: ...`) and gated by `scripts/skill-audit/check_conformance.py --fail-on any` (`MAX_DESCRIPTION_CHARS = 320`).
-- When working in a workspace that embeds `proof-skills` (e.g., `docs/easci/lean/skills/skills`) while also having `/home/radu/.gemini/config/plugins/proof-skills/skills` installed globally, Antigravity discovers both trees and lists each skill twice in `<skills>`. Keeping all 74 v2 descriptions under 300 chars (~19.8 KB total per tree) ensures that even under dual workspace + global discovery, the skill catalog remains well within the `<skills>` context budget.
+- When working in a workspace that embeds `proof-skills` (e.g., `docs/easci/lean/skills/skills`) while also having `~/.gemini/config/plugins/proof-skills/skills` installed globally, Antigravity discovers both trees and lists each skill twice in `<skills>`. Keeping all 65 v2 descriptions under 300 chars (~16.1 KB total per tree) ensures that even under dual workspace + global discovery, the skill catalog remains well within the `<skills>` context budget.
 

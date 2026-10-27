@@ -1,0 +1,516 @@
+{
+  "schema_version": "1.0.0",
+  "dialect_id": "isabelle",
+  "prover_key": "isabelle_hol",
+  "display_name": "Isabelle/HOL (Isar)",
+  "foundation": "Simple Typed Higher-Order Logic with Hindley-Milner Polymorphism & Type Classes",
+  "file_extension": ".thy",
+  "verification_gate": "isabelle build -v -D .",
+  "adapter_skill": "isabelle-isar-adapter",
+  "trust_axioms": [
+    "Hilbert_Choice.Eps",
+    "ext",
+    "iff"
+  ],
+  "concordance_ref": "vendor/itp-ontology/cross-itp-concordance.v1.json",
+  "mechanisms_count": 20,
+  "mechanisms": [
+    {
+      "id": "CONC-01-CASE-INDUCTION",
+      "canonical_name": "Case Analysis & Structural Induction",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "proof (induct ... arbitrary:)",
+        "cases",
+        "induction rule:"
+      ],
+      "dialect_syntax_pattern": "proof (induct n arbitrary: m rule: nat.induct)",
+      "dialect_semantics": "Higher-order resolution against the datatype induction theorem with universal quantification over arbitrary variables.",
+      "dialect_idiom": "Structured Isar calculation with case (Suc n) keeping hypothesis names explicit.",
+      "dialect_pitfalls": [
+        "Failure to declare arbitrary variables causing unprovable induction hypotheses",
+        "Rule selection ambiguity when inductive predicate shadows datatype"
+      ],
+      "lean4_target_tactics": [
+        "rcases",
+        "cases",
+        "induction",
+        "nomatch"
+      ],
+      "lean4_target_syntax": "induction n with | zero => h0 | succ n' ih => hsucc"
+    },
+    {
+      "id": "CONC-02-BOOLEAN-REFLECTION",
+      "canonical_name": "Boolean Reflection & Computation",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "eval",
+        "normalization",
+        "simp",
+        "code_simp"
+      ],
+      "dialect_syntax_pattern": "by (simp add: eval)",
+      "dialect_semantics": "Code generator translation to Poly/ML or target language, compiled and executed out-of-band via oracle.",
+      "dialect_idiom": "Define executable functions via fun and discharge finite instances via eval.",
+      "dialect_pitfalls": [
+        "Reliance on code generation oracle introduces trust boundary beyond Pure logic kernel"
+      ],
+      "lean4_target_tactics": [
+        "decide",
+        "omega",
+        "rfl",
+        "dsimp"
+      ],
+      "lean4_target_syntax": "by decide"
+    },
+    {
+      "id": "CONC-03-EQUALITY-REWRITING",
+      "canonical_name": "Equality Rewriting & Simplifier Sets",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "simp add:",
+        "simp only:",
+        "subst",
+        "unfold"
+      ],
+      "dialect_syntax_pattern": "apply (simp add: my_lemma del: bad_lemma)",
+      "dialect_semantics": "Higher-order conditional term rewriting system with confluent ordered rewriting for AC-operators.",
+      "dialect_idiom": "Use simp add: with controlled declarations; use subst with positional coordinates for exact non-confluent substitutions.",
+      "dialect_pitfalls": [
+        "Simp loops caused by mutual equational cycles",
+        "Looped simplification of conditional rewrite rules whose premises diverge"
+      ],
+      "lean4_target_tactics": [
+        "rw",
+        "rewrite",
+        "simp only",
+        "simp_all",
+        "dsimp"
+      ],
+      "lean4_target_syntax": "simp only [add_comm, mul_zero]"
+    },
+    {
+      "id": "CONC-04-TYPECLASS-TOWERS",
+      "canonical_name": "Typeclass Towers vs Packed Classes",
+      "category": "type_construct",
+      "dialect_tactics": [
+        "class",
+        "subclass",
+        "instantiation",
+        "locale"
+      ],
+      "dialect_syntax_pattern": "class group = monoid + inverse + assumes ...",
+      "dialect_semantics": "Order-sorted algebra with single-parameter axiomatic type classes and multi-parameter locales with interpretation morphisms.",
+      "dialect_idiom": "Combine axiomatic type classes for arithmetic with locales for advanced abstract algebra (e.g. rings, modules).",
+      "dialect_pitfalls": [
+        "Inability of Isabelle type classes to take multiple type parameters directly without locales",
+        "Hidden locale interpretation obligations"
+      ],
+      "lean4_target_tactics": [
+        "class",
+        "instance",
+        "inferInstance",
+        "synthInstance"
+      ],
+      "lean4_target_syntax": "class Group (G : Type u) extends Monoid G, Inv G where ..."
+    },
+    {
+      "id": "CONC-05-AUTOMATION-SEARCH",
+      "canonical_name": "Automation & Search Heuristics",
+      "category": "automation",
+      "dialect_tactics": [
+        "blast",
+        "metis",
+        "auto",
+        "fastforce",
+        "sledgehammer"
+      ],
+      "dialect_syntax_pattern": "by (metis add.commute mult.assoc) or by blast",
+      "dialect_semantics": "Generic tableaux reasoning (blast), ordered resolution provers (metis), and external ATP/SMT reconstruction (sledgehammer).",
+      "dialect_idiom": "Use sledgehammer interactively to discover minimal lemma sets, then reconstruct with deterministic metis.",
+      "dialect_pitfalls": [
+        "Metis timeouts on complex higher-order goals",
+        "Sledgehammer finding proofs that fail local reconstruction"
+      ],
+      "lean4_target_tactics": [
+        "aesop",
+        "omega",
+        "linarith",
+        "ring",
+        "tauto"
+      ],
+      "lean4_target_syntax": "aesop (add safe ...) or omega"
+    },
+    {
+      "id": "CONC-06-CALCULATION-BLOCKS",
+      "canonical_name": "Calculation Blocks & Transitivity Chains",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "also",
+        "finally",
+        "have",
+        "show"
+      ],
+      "dialect_syntax_pattern": "have \"a = b\" proof ... also have \"... <= c\" proof ... finally show \"a <= c\" .",
+      "dialect_semantics": "Isar calculation rules registered via [trans] attribute, accumulating intermediate terms in the calculation register.",
+      "dialect_idiom": "Chain also have statements culminating in finally show; use ellipsis ... for the antecedent term.",
+      "dialect_pitfalls": [
+        "Order of terms reversed, breaking transitivity rule matching",
+        "Forgetting the final . or by assumption"
+      ],
+      "lean4_target_tactics": [
+        "calc",
+        "trans"
+      ],
+      "lean4_target_syntax": "calc a = b := h1 _ <= c := h2 _ < d := h3"
+    },
+    {
+      "id": "CONC-07-QUOTIENTS-SETOIDS",
+      "canonical_name": "Quotients & Setoids",
+      "category": "type_construct",
+      "dialect_tactics": [
+        "quotient_type",
+        "quotient_definition",
+        "lifting",
+        "transfer"
+      ],
+      "dialect_syntax_pattern": "quotient_type 'a quottype = \"'a rawtype\" / \"rel\"",
+      "dialect_semantics": "Lifting and Transfer package automating the correspondence between raw representation types and quotiented abstract types.",
+      "dialect_idiom": "Declare the quotient with quotient_type, define operations with quotient_definition, and transfer proofs with transfer.",
+      "dialect_pitfalls": [
+        "Equivalence relation reflexivity/symmetry/transitivity proof obligations must be discharged before type definition"
+      ],
+      "lean4_target_tactics": [
+        "Quot.sound",
+        "Quotient.lift",
+        "Quotient.ind",
+        "Setoid"
+      ],
+      "lean4_target_syntax": "Quot.sound (h : a ~ b) or Quotient.lift f h_resp"
+    },
+    {
+      "id": "CONC-08-INVERSION-CONSTRUCTOR",
+      "canonical_name": "Inversion & Constructor Discrimination",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "cases",
+        "rule_tac",
+        "simp"
+      ],
+      "dialect_syntax_pattern": "apply (cases t) or by simp (with datatype distinctness rules)",
+      "dialect_semantics": "Datatype distinctness (distinct) and injectivity (inject) theorems loaded automatically into the simplifier.",
+      "dialect_idiom": "Invoke simp to automatically refute contradictory constructor equations like Suc n = 0.",
+      "dialect_pitfalls": [
+        "Complex nested inductive predicates not recognized as datatypes requiring explicit elimination rules"
+      ],
+      "lean4_target_tactics": [
+        "injection",
+        "contradiction",
+        "nomatch",
+        "cases"
+      ],
+      "lean4_target_syntax": "injection h with h1 h2 or contradiction"
+    },
+    {
+      "id": "CONC-09-GALOIS-LATTICES",
+      "canonical_name": "Galois Connections & Lattices",
+      "category": "domain_theory",
+      "dialect_tactics": [
+        "galois_connection",
+        "Complete_Lattices",
+        "lfp",
+        "gfp"
+      ],
+      "dialect_syntax_pattern": "galois_connection l u",
+      "dialect_semantics": "Axiomatic type classes order, lattice, complete_lattice with Knaster-Tarski fixed-point operators lfp and gfp.",
+      "dialect_idiom": "Use lfp_induct for structural fixpoint induction over inductive relations.",
+      "dialect_pitfalls": [
+        "Monotonicity proof obligations must precede any fixpoint unfolding"
+      ],
+      "lean4_target_tactics": [
+        "Order.GaloisConnection",
+        "CompleteLattice",
+        "OrderHom",
+        "lfp",
+        "gfp"
+      ],
+      "lean4_target_syntax": "GaloisConnection l u meaning l a <= b <-> a <= u b"
+    },
+    {
+      "id": "CONC-10-SUBTYPES-SIGMA",
+      "canonical_name": "Subtype Extraction & Sigma Types",
+      "category": "type_construct",
+      "dialect_tactics": [
+        "typedef",
+        "Collect",
+        "Abs_",
+        "Rep_"
+      ],
+      "dialect_syntax_pattern": "typedef 'a my_subtype = \"{x::'a. P x}\"",
+      "dialect_semantics": "Simple Type Theory type definition via non-empty predicate sets, creating bijective abstraction and representation morphisms.",
+      "dialect_idiom": "Prove non-emptiness exists x. P x to create the type; manipulate elements via Rep_ and Abs_.",
+      "dialect_pitfalls": [
+        "Subtypes in Isabelle are separate, distinct types; no implicit subtyping or subtyping coercions exist without explicit coercion functions"
+      ],
+      "lean4_target_tactics": [
+        "Subtype",
+        "Subtype.val",
+        "Subtype.property",
+        "Sigma",
+        "PSigma"
+      ],
+      "lean4_target_syntax": "{ x : A // P x } or <val, prop>"
+    },
+    {
+      "id": "CONC-11-CLASSICAL-CHOICE",
+      "canonical_name": "Classical Choice & Noncomputability",
+      "category": "logic_foundation",
+      "dialect_tactics": [
+        "SOME x. P x",
+        "HOL.choice",
+        "rule ccontr"
+      ],
+      "dialect_syntax_pattern": "SOME x. P x",
+      "dialect_semantics": "Higher-Order Logic is classical by default; Hilbert's epsilon operator Eps is built into the core logic.",
+      "dialect_idiom": "Use SOME x. P x whenever an existential witness must be named; use by blast or by (rule ccontr) for classical refutation.",
+      "dialect_pitfalls": [
+        "Functions defined via SOME cannot be executed by the code generator without explicit executable alternative equations"
+      ],
+      "lean4_target_tactics": [
+        "Classical.choice",
+        "Classical.em",
+        "noncomputable def",
+        "open Classical"
+      ],
+      "lean4_target_syntax": "Classical.choose (h : exists x, P x) and Classical.choose_spec h"
+    },
+    {
+      "id": "CONC-12-INVARIANTS-LYAPUNOV",
+      "canonical_name": "Invariant Certificates & Lyapunov Energy Functions",
+      "category": "verification_logic",
+      "dialect_tactics": [
+        "inductive",
+        "AFP Markov_Models",
+        "Lyapunov_Invariants",
+        "pGCL"
+      ],
+      "dialect_syntax_pattern": "inductive_set invariant where ... and lemma step_preserves: \"s : invariant ==> step s : invariant\"",
+      "dialect_semantics": "Inductive set definitions with automatic monotonic fixed-point calculations; probabilistic program verification packages.",
+      "dialect_idiom": "Use induct on transition systems with auto-generated case rules.",
+      "dialect_pitfalls": [
+        "Measure theory obligations when extending to continuous or uncountably infinite state spaces"
+      ],
+      "lean4_target_tactics": [
+        "EASCI/StochasticCCV/ contraction bounds",
+        "inductive invariant preservation",
+        "Nat.div_add_mod"
+      ],
+      "lean4_target_syntax": "theorem invariant_step (s : State) (h_inv : Inv s) : Inv (step s) and V (step s) <= alpha * V s"
+    },
+    {
+      "id": "CONC-13-LINEAR-NONLINEAR-ARITHMETIC",
+      "canonical_name": "Linear, Nonlinear & Positivity Arithmetic Solvers",
+      "category": "automation",
+      "dialect_tactics": [
+        "arith",
+        "linarith",
+        "presburger",
+        "algebra",
+        "sos"
+      ],
+      "dialect_syntax_pattern": "by linarith | by presburger | by algebra | by sos",
+      "dialect_semantics": "Cooper's algorithm (`presburger`), Simplex/Fourier-Motzkin (`linarith`), Groebner bases (`algebra`), and sum-of-squares (`sos`).",
+      "dialect_idiom": "Map `by presburger` -> `by omega`, `by linarith` -> `by linarith`, and `by algebra` -> `by ring`.",
+      "dialect_pitfalls": [
+        "`sos` relies on external CSDP certificates unless reconstructed; use `nlinarith` or `polyrith` in Lean 4"
+      ],
+      "lean4_target_tactics": [
+        "omega",
+        "linarith",
+        "nlinarith",
+        "ring",
+        "positivity",
+        "norm_num"
+      ],
+      "lean4_target_syntax": "by omega | by linarith [h1, h2] | by ring | by positivity"
+    },
+    {
+      "id": "CONC-14-COERCIONS-CAST-NORMALIZATION",
+      "canonical_name": "Numeric Coercions, Cast Normalization & Denominator Clearing",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "of_nat_add",
+        "of_int_mult",
+        "divide_simps",
+        "field_simps"
+      ],
+      "dialect_syntax_pattern": "by (simp add: field_simps of_nat_add)",
+      "dialect_semantics": "Simp-set collections (`field_simps`, `divide_simps`) that cross-multiply denominators under `if d = 0` splits, plus `of_nat_*` homomorphisms.",
+      "dialect_idiom": "Translate `simp add: field_simps` to `field_simp; ring` and `of_nat_*` simp chains to `norm_cast` / `push_cast`.",
+      "dialect_pitfalls": [
+        "Isabelle's `field_simps` splits on `d = 0 \\/ d != 0` automatically, whereas Lean's `field_simp` looks for `d != 0` in context"
+      ],
+      "lean4_target_tactics": [
+        "norm_cast",
+        "push_cast",
+        "exact_mod_cast",
+        "zify",
+        "qify",
+        "field_simp"
+      ],
+      "lean4_target_syntax": "push_cast; ring | zify [h_le] at *; omega | field_simp [hne]; ring"
+    },
+    {
+      "id": "CONC-15-WELL-FOUNDED-RECURSION",
+      "canonical_name": "Well-Founded Recursion, Termination Measures & Functional Induction",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "fun",
+        "function (sequential)",
+        "termination by (relation ...)",
+        "f.induct"
+      ],
+      "dialect_syntax_pattern": "function f where ... by pat_completeness auto termination by (relation \"measure g\") auto | proof (induct rule: f.induct)",
+      "dialect_semantics": "Krauss's `function` package generating `.simps` and custom computation induction `f.induct`.",
+      "dialect_idiom": "Map `termination by (relation \"measure g\")` to `termination_by g x` and `induct rule: f.induct` to `fun_induction f`.",
+      "dialect_pitfalls": [
+        "Isabelle `<*mlex*>` lexicographic measures map to tuple measures `(m1 x, m2 x)` in Lean 4 `termination_by`"
+      ],
+      "lean4_target_tactics": [
+        "termination_by",
+        "decreasing_by",
+        "fun_induction",
+        "fun_cases",
+        "WellFounded.induction"
+      ],
+      "lean4_target_syntax": "def f (x : alpha) : beta := ... termination_by measure x decreasing_by omega | fun_induction f x with ..."
+    },
+    {
+      "id": "CONC-16-MEASURE-INTEGRATION-BOCHNER",
+      "canonical_name": "Measure Spaces, Lebesgue/Bochner Integration & Almost-Everywhere Filters",
+      "category": "domain_theory",
+      "dialect_tactics": [
+        "measurable",
+        "AE_mp",
+        "bochner_integral",
+        "nn_integral_mono_AE"
+      ],
+      "dialect_syntax_pattern": "LINT x:M. f x | integral⇧N M f | AE x in M. P x",
+      "dialect_semantics": "Hölzl-Himmelmann `HOL-Analysis` / `HOL-Probability` non-negative integral (`integral⇧N` on `ennreal`) and Bochner integral (`LINT`).",
+      "dialect_idiom": "Mathlib's `MeasureTheory` is a direct descendant of Isabelle's `HOL-Analysis`: `integral⇧N M f` -> `∫⁻ x, f x ∂μ`, `LINT x:M. f x` -> `∫ x, f x ∂μ`, `AE x in M` -> `∀ᵐ x ∂μ`.",
+      "dialect_pitfalls": [
+        "Isabelle measures carry an explicit carrier set `space M` (`x ∈ space M`), whereas Mathlib uses the full type `α` with `[MeasurableSpace α]`"
+      ],
+      "lean4_target_tactics": [
+        "measurability",
+        "fun_prop",
+        "filter_upwards",
+        "integral_add",
+        "lintegral_mono_ae"
+      ],
+      "lean4_target_syntax": "∫ x in s, f x ∂μ | ∫⁻ x, g x ∂μ | ∀ᵐ x ∂μ, P x | filter_upwards [h1, h2] with x hx1 hx2"
+    },
+    {
+      "id": "CONC-17-BIG-OPERATORS-FINSET",
+      "canonical_name": "Big Operators, Finite Sums/Products & Indexed Monoid Folding",
+      "category": "domain_theory",
+      "dialect_tactics": [
+        "sum.cong",
+        "sum.reindex_bij_betw",
+        "sum.union_disjoint",
+        "sum.swap"
+      ],
+      "dialect_syntax_pattern": "(∑x∈A. f x) | (∏x∈A. f x)",
+      "dialect_semantics": "`Groups_Big.sum` over `'a set` (returning `0` automatically when `infinite A`).",
+      "dialect_idiom": "Translate `(∑x∈A. f x)` under `finite A` to `∑ x ∈ A, f x` over `A : Finset α`.",
+      "dialect_pitfalls": [
+        "Isabelle `∑x∈A. f x` defaults to `0` on infinite sets; if finiteness is not obvious in Lean 4, use `finsum` (`∑ᶠ x, f x`) or carry `A : Finset α`"
+      ],
+      "lean4_target_tactics": [
+        "Finset.sum_congr",
+        "Finset.sum_bij",
+        "Finset.sum_comm",
+        "Finset.sum_union",
+        "Finset.sum_filter"
+      ],
+      "lean4_target_syntax": "∑ x ∈ s, f x | ∏ x ∈ s, f x | ∑ x ∈ s with P x, f x"
+    },
+    {
+      "id": "CONC-18-BITVEC-SWAR-DECISION",
+      "canonical_name": "Bitvectors, Machine Words, SWAR & Bit-Blasting Decision Procedures",
+      "category": "automation",
+      "dialect_tactics": [
+        "word_bitwise",
+        "unat_arith",
+        "uint_arith",
+        "bit_eqI"
+      ],
+      "dialect_syntax_pattern": "x :: 64 word | by word_bitwise | by unat_arith",
+      "dialect_semantics": "`HOL-Library.Word` (`'a::len word` inside seL4 / l4v) with `word_bitwise` and `unat_arith`.",
+      "dialect_idiom": "Map `by word_bitwise` -> `by bv_decide`, `by unat_arith` -> `by bv_omega`, and `bit_eqI` -> `BitVec.ext`.",
+      "dialect_pitfalls": [
+        "Isabelle `'a::len word` enforces `0 < LENGTH('a)` via the `len` sort, whereas Lean `BitVec 0` is valid"
+      ],
+      "lean4_target_tactics": [
+        "bv_decide",
+        "bv_omega",
+        "BitVec.ext",
+        "decide"
+      ],
+      "lean4_target_syntax": "by bv_decide | by bv_omega | ext i hi; simp [BitVec.getLsbD]"
+    },
+    {
+      "id": "CONC-19-EXTENSIONALITY-CONGRUENCE",
+      "canonical_name": "Function, Proposition, Set & Structure Extensionality",
+      "category": "logic_foundation",
+      "dialect_tactics": [
+        "ext",
+        "set_eqI",
+        "iffI",
+        "cong",
+        "arg_cong"
+      ],
+      "dialect_syntax_pattern": "by (rule ext) | by (auto intro!: set_eqI) | arg_cong",
+      "dialect_semantics": "HOL primitive axiom `ext : (\\<And>x. f x = g x) \\<Longrightarrow> f = g` and set extensionality `set_eqI`.",
+      "dialect_idiom": "Map `rule ext`, `set_eqI`, and record `.equality` rules to a single `ext` call in Lean 4.",
+      "dialect_pitfalls": [
+        "Isabelle `cong` inside `simp` requires explicit `[cong]` registration"
+      ],
+      "lean4_target_tactics": [
+        "ext",
+        "funext",
+        "propext",
+        "congr",
+        "congrArg",
+        "iff_of_eq"
+      ],
+      "lean4_target_syntax": "ext x y | funext x | congr 1"
+    },
+    {
+      "id": "CONC-20-FILTERS-TOPOLOGICAL-LIMITS",
+      "canonical_name": "Filters, Nets, Eventualities & Topological Limit Convergence",
+      "category": "domain_theory",
+      "dialect_tactics": [
+        "tendsto_intros",
+        "eventually_mono",
+        "nhds",
+        "at_top",
+        "LIMSEQ"
+      ],
+      "dialect_syntax_pattern": "(f ⤏ l) (at x within s) | (u ⇢ l) | ∀⇩F n in sequentially. P n",
+      "dialect_semantics": "Hölzl-Immler-Huffman filter hierarchy (`(f ⤏ l) F`, `nhds x`, `at x within s`, `sequentially` / `at_top`).",
+      "dialect_idiom": "Translate `(u ⇢ l)` -> `Tendsto u atTop (𝓝 l)`, `(f ⤏ l) (nhds x)` -> `Tendsto f (𝓝 x) (𝓝 l)`, and `eventually_mono` -> `filter_upwards`.",
+      "dialect_pitfalls": [
+        "CRITICAL SEMANTIC DELTA: Isabelle's `at x within s` is the *punctured* filter `𝓝[s \\ {x}] x` (and `at x` is `𝓝[≠] x`), whereas Mathlib's `𝓝[s] x` (`nhdsWithin x s`) *includes* `x`!"
+      ],
+      "lean4_target_tactics": [
+        "fun_prop",
+        "continuity",
+        "filter_upwards",
+        "Tendsto.comp",
+        "Tendsto.add"
+      ],
+      "lean4_target_syntax": "Tendsto f (𝓝 x) (𝓝 y) | Tendsto u atTop (𝓝 l) | ∀ᶠ n in atTop, P n"
+    }
+  ]
+}

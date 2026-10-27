@@ -1,0 +1,502 @@
+{
+  "schema_version": "1.0.0",
+  "dialect_id": "agda",
+  "prover_key": "agda",
+  "display_name": "Agda (Intensional MLTT / Cubical Agda)",
+  "foundation": "Intensional Martin-Lof Type Theory / Cubical Type Theory (--safe / --cubical)",
+  "file_extension": ".agda",
+  "verification_gate": "agda --safe",
+  "adapter_skill": "itp-cross-porting",
+  "trust_axioms": [
+    "--safe (0 postulates)",
+    "--cubical interval I"
+  ],
+  "concordance_ref": "vendor/itp-ontology/cross-itp-concordance.v1.json",
+  "mechanisms_count": 20,
+  "mechanisms": [
+    {
+      "id": "CONC-01-CASE-INDUCTION",
+      "canonical_name": "Case Analysis & Structural Induction",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "pattern-matching",
+        "with",
+        "wfRec",
+        "absurd ()"
+      ],
+      "dialect_syntax_pattern": "thm zero = h0 ; thm (suc n) = hsucc n (thm n)",
+      "dialect_semantics": "Dependent clausal pattern matching and structural recursion verified by Agda's termination checker.",
+      "dialect_idiom": "Write explicit clausal equations over constructors (`zero`, `suc n`), using `with` for intermediate scrutiny and `()` for empty patterns.",
+      "dialect_pitfalls": [
+        "Dot patterns or `with`-abstractions failing when indices depend on non-variable terms",
+        "Non-structural recursion rejected without an explicit `WellFounded` accessibility witness"
+      ],
+      "lean4_target_tactics": [
+        "rcases",
+        "cases",
+        "induction",
+        "nomatch"
+      ],
+      "lean4_target_syntax": "induction n with | zero => h0 | succ n' ih => hsucc"
+    },
+    {
+      "id": "CONC-02-BOOLEAN-REFLECTION",
+      "canonical_name": "Boolean Reflection & Computation",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "Dec",
+        "yes",
+        "no",
+        "from-yes",
+        "does",
+        "reflects"
+      ],
+      "dialect_syntax_pattern": "P? x : Dec (P x) | from-yes (P? x)",
+      "dialect_semantics": "`Relation.Nullary.Decidable` (`Dec P` wrapping `does : Bool` and `proof : Reflects P does`) enabling proof by computation (`from-yes`).",
+      "dialect_idiom": "Use `from-yes (m <=? n)` for closed decidable goals and `with P? x` to split on `(yes p)` vs `(no ~p)`.",
+      "dialect_pitfalls": [
+        "Computing with unary `Nat` decision procedures blows up on large numerals unless `Builtin.Nat` is used"
+      ],
+      "lean4_target_tactics": [
+        "decide",
+        "omega",
+        "rfl",
+        "dsimp"
+      ],
+      "lean4_target_syntax": "by decide"
+    },
+    {
+      "id": "CONC-03-EQUALITY-REWRITING",
+      "canonical_name": "Equality Rewriting & Simplifier Sets",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "rewrite",
+        "subst",
+        "cong",
+        "sym",
+        "trans"
+      ],
+      "dialect_syntax_pattern": "prf lhs | rewrite eq1 | rewrite eq2 = refl",
+      "dialect_semantics": "`rewrite eq` desugars into a `with`-abstraction over the LHS of `eq` followed by matching on `refl`.",
+      "dialect_idiom": "Prefer explicit `cong` / `subst` or `≡-Reasoning` chains over deeply nested `rewrite` clauses.",
+      "dialect_pitfalls": [
+        "`rewrite` fails with ill-typed `with`-abstraction when the goal's type depends on the rewritten subterm in a non-generalizable way"
+      ],
+      "lean4_target_tactics": [
+        "rw",
+        "rewrite",
+        "simp only",
+        "simp_all",
+        "dsimp"
+      ],
+      "lean4_target_syntax": "simp only [add_comm, mul_zero]"
+    },
+    {
+      "id": "CONC-04-TYPECLASS-TOWERS",
+      "canonical_name": "Typeclass Towers vs Packed Classes",
+      "category": "type_construct",
+      "dialect_tactics": [
+        "record",
+        "instance",
+        "{{...}}",
+        "openRecord"
+      ],
+      "dialect_syntax_pattern": "record IsGroup (G : Set) : Set where ... | {{_ : IsGroup G}}",
+      "dialect_semantics": "Explicit bundle/unbundled record hierarchies (`Algebra.Bundles`, `Algebra.Structures`) in `agda-stdlib` with optional `{{...}}` instance search.",
+      "dialect_idiom": "Translate `agda-stdlib` bundled records (`Group c l`, `Ring c l`) to Lean 4 `[Group G]` / `[Ring R]` typeclass binders.",
+      "dialect_pitfalls": [
+        "Opening multiple algebraic records simultaneously in Agda causes field name shadowing unless renamed"
+      ],
+      "lean4_target_tactics": [
+        "class",
+        "instance",
+        "inferInstance",
+        "synthInstance"
+      ],
+      "lean4_target_syntax": "class Group (G : Type u) extends Monoid G, Inv G where ..."
+    },
+    {
+      "id": "CONC-05-AUTOMATION-SEARCH",
+      "canonical_name": "Automation & Search Heuristics",
+      "category": "automation",
+      "dialect_tactics": [
+        "Mimer (C-c C-a)",
+        "RingSolver",
+        "+-*-Solver"
+      ],
+      "dialect_syntax_pattern": "{! -m !} | solve 2 (\\ x y -> lhs := rhs) refl",
+      "dialect_semantics": "Edit-time proof-term synthesis via Mimer/Agsy and reflective algebraic solvers (`Data.Nat.Solver`, `Algebra.Solver.Ring`).",
+      "dialect_idiom": "Replace reflective `+-*-Solver.solve` calls with `ring` / `omega` and Mimer-generated term trees with `aesop` / `grind` in Lean 4.",
+      "dialect_pitfalls": [
+        "Agda has no runtime tactic engine; all search happens at edit time or via explicit reflection"
+      ],
+      "lean4_target_tactics": [
+        "aesop",
+        "omega",
+        "linarith",
+        "ring",
+        "tauto"
+      ],
+      "lean4_target_syntax": "aesop (add safe ...) or omega"
+    },
+    {
+      "id": "CONC-06-CALCULATION-BLOCKS",
+      "canonical_name": "Calculation Blocks & Transitivity Chains",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "begin_∎",
+        "≡⟨_⟩_",
+        "≡⟨⟩_",
+        "≤⟨_⟩_"
+      ],
+      "dialect_syntax_pattern": "begin a ≡⟨ h1 ⟩ b ≤⟨ h2 ⟩ c ∎",
+      "dialect_semantics": "Mixfix preorder and equational reasoning combinators from `Relation.Binary.Reasoning.Preorder`.",
+      "dialect_idiom": "Translate `begin a ≡⟨ h1 ⟩ b ≤⟨ h2 ⟩ c ∎` directly to a Lean 4 `calc` block.",
+      "dialect_pitfalls": [
+        "Mixing `≡⟨_⟩_` and `≤⟨_⟩_` requires opening the preorder reasoning module rather than propositional equality reasoning"
+      ],
+      "lean4_target_tactics": [
+        "calc",
+        "trans"
+      ],
+      "lean4_target_syntax": "calc a = b := h1 _ <= c := h2 _ < d := h3"
+    },
+    {
+      "id": "CONC-07-QUOTIENTS-SETOIDS",
+      "canonical_name": "Quotients & Setoids",
+      "category": "type_construct",
+      "dialect_tactics": [
+        "Setoid",
+        "_/_ (Cubical HIT)",
+        "elimProp",
+        "Func"
+      ],
+      "dialect_syntax_pattern": "record Setoid c l : Set (suc (c ⊔ l)) | data _/_ (A : Type) (R : A -> A -> Type)",
+      "dialect_semantics": "Explicit Bishop `Setoid` records in standard Agda (`--without-K`) or Higher Inductive Type quotients `A / R` in Cubical Agda (`--cubical`).",
+      "dialect_idiom": "Map Agda `Setoid` carriers + `≈` to Lean 4 `Setoid α` and `Quotient s`, or Cubical `elimProp`/`rec` to `Quotient.ind`/`Quotient.lift`.",
+      "dialect_pitfalls": [
+        "Standard Agda lacks kernel quotients; every function on a Setoid carries an explicit `cong` field"
+      ],
+      "lean4_target_tactics": [
+        "Quot.sound",
+        "Quotient.lift",
+        "Quotient.ind",
+        "Setoid"
+      ],
+      "lean4_target_syntax": "Quot.sound (h : a ~ b) or Quotient.lift f h_resp"
+    },
+    {
+      "id": "CONC-08-INVERSION-CONSTRUCTOR",
+      "canonical_name": "Inversion & Constructor Discrimination",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "()",
+        "pattern-matching on index",
+        "cong-injective"
+      ],
+      "dialect_syntax_pattern": "inv (step h) = h ; inv ()",
+      "dialect_semantics": "First-class dependent pattern matching with built-in constructor disjointness (absurd pattern `()`) and injectivity.",
+      "dialect_idiom": "Match directly on the indexed family constructor; impossible branches are discharged with `()`.",
+      "dialect_pitfalls": [
+        "`--without-K` restricts pattern unification when self-equality of indices would require Streicher's K axiom"
+      ],
+      "lean4_target_tactics": [
+        "injection",
+        "contradiction",
+        "nomatch",
+        "cases"
+      ],
+      "lean4_target_syntax": "injection h with h1 h2 or contradiction"
+    },
+    {
+      "id": "CONC-09-GALOIS-LATTICES",
+      "canonical_name": "Galois Connections & Lattices",
+      "category": "domain_theory",
+      "dialect_tactics": [
+        "GaloisConnection",
+        "Poset",
+        "Lattice"
+      ],
+      "dialect_syntax_pattern": "record GaloisConnection (P Q : Poset c l1 l2) : Set ...",
+      "dialect_semantics": "Order-theoretic records in `Relation.Binary.Lattice` and `Relation.Binary.Structures`.",
+      "dialect_idiom": "Map Agda `GaloisConnection` records to Mathlib `GaloisConnection l u`.",
+      "dialect_pitfalls": [
+        "Agda parameterizes posets by both underlying equality `≈` and order `≤` (`Poset c l1 l2`), whereas Lean 4 uses `PartialOrder α` on `=`"
+      ],
+      "lean4_target_tactics": [
+        "Order.GaloisConnection",
+        "CompleteLattice",
+        "OrderHom",
+        "lfp",
+        "gfp"
+      ],
+      "lean4_target_syntax": "GaloisConnection l u meaning l a <= b <-> a <= u b"
+    },
+    {
+      "id": "CONC-10-SUBTYPES-SIGMA",
+      "canonical_name": "Subtype Extraction & Sigma Types",
+      "category": "type_construct",
+      "dialect_tactics": [
+        "Σ",
+        "∃",
+        "proj₁",
+        "proj₂",
+        "_,_"
+      ],
+      "dialect_syntax_pattern": "Σ[ x ∈ A ] P x | (x , px) | proj₁ s | proj₂ s",
+      "dialect_semantics": "Dependent pair record `Σ A B` with projections `proj₁` and `proj₂` and definitional eta-equality.",
+      "dialect_idiom": "Map `Σ[ x ∈ A ] P x` where `P x : Prop` to `{x : A // P x}` (`Subtype`) in Lean 4, and where `P x : Type` to `(x : A) × P x` (`Sigma`).",
+      "dialect_pitfalls": [
+        "In standard Agda without `Prop`, `proj₂` is proof-relevant (`Set`), so equality of `Σ A P` requires proving equality of the second component unless `P` is in `Prop` or `Irrelevant`"
+      ],
+      "lean4_target_tactics": [
+        "Subtype",
+        "Subtype.val",
+        "Subtype.property",
+        "Sigma",
+        "PSigma"
+      ],
+      "lean4_target_syntax": "{ x : A // P x } or <val, prop>"
+    },
+    {
+      "id": "CONC-11-CLASSICAL-CHOICE",
+      "canonical_name": "Classical Choice & Noncomputability",
+      "category": "logic_foundation",
+      "dialect_tactics": [
+        "postulate",
+        "ExcludedMiddle",
+        "Choice"
+      ],
+      "dialect_syntax_pattern": "postulate em : ∀ {P : Set} → Dec P",
+      "dialect_semantics": "Constructive by default (`--safe` forbids `postulate`); classical reasoning is passed as an explicit module parameter or local hypothesis `em : ExcludedMiddle`.",
+      "dialect_idiom": "Drop explicit `em : ExcludedMiddle` module parameters when porting to Lean 4 `Prop` theorems and use `Classical.em` / `by_cases` / `Classical.choose`.",
+      "dialect_pitfalls": [
+        "Never translate an Agda `postulate` into a Lean `axiom`; use Lean's built-in `Classical.choice` (`noncomputable` + `Classical.choose`)"
+      ],
+      "lean4_target_tactics": [
+        "Classical.choice",
+        "Classical.em",
+        "noncomputable def",
+        "open Classical"
+      ],
+      "lean4_target_syntax": "Classical.choose (h : exists x, P x) and Classical.choose_spec h"
+    },
+    {
+      "id": "CONC-12-INVARIANTS-LYAPUNOV",
+      "canonical_name": "Invariant Certificates & Lyapunov Energy Functions",
+      "category": "verification_logic",
+      "dialect_tactics": [
+        "Step*",
+        "Invariant",
+        "≤-Reasoning"
+      ],
+      "dialect_syntax_pattern": "inv-preserved : ∀ {s s'} → Inv s → Step s s' → Inv s'",
+      "dialect_semantics": "Indexed reflexive-transitive closure `Star Step s s'` (`Relation.Binary.Construct.Closure.ReflexiveTransitive`) with inductive invariant preservation.",
+      "dialect_idiom": "Map `Star Step` induction to `Relation.ReflTransGen.head_induction_on` and energy decrease `V s' <= V s` to `linarith`/`nlinarith` in Lean 4.",
+      "dialect_pitfalls": [
+        "Manual polynomial energy inequalities in Agda require long `≤-Reasoning` chains that collapse to `nlinarith` or `positivity` in Lean 4"
+      ],
+      "lean4_target_tactics": [
+        "EASCI/StochasticCCV/ contraction bounds",
+        "inductive invariant preservation",
+        "Nat.div_add_mod"
+      ],
+      "lean4_target_syntax": "theorem invariant_step (s : State) (h_inv : Inv s) : Inv (step s) and V (step s) <= alpha * V s"
+    },
+    {
+      "id": "CONC-13-LINEAR-NONLINEAR-ARITHMETIC",
+      "canonical_name": "Linear, Nonlinear & Positivity Arithmetic Solvers",
+      "category": "automation",
+      "dialect_tactics": [
+        "+-*-Solver",
+        "RingSolver",
+        "+-mono-≤",
+        "*-mono-≤"
+      ],
+      "dialect_syntax_pattern": "solve 3 (\\ a b c -> lhs := rhs) refl x y z",
+      "dialect_semantics": "Reflective semiring/ring equality solvers in `Data.Nat.Solver` and explicit monotonicity combinators for inequalities.",
+      "dialect_idiom": "Collapse Agda `+-*-Solver` calls to `ring` and multi-line `+-mono-≤` trees to `omega` or `linarith`.",
+      "dialect_pitfalls": [
+        "Agda lacks built-in `linarith` or `positivity`; inequality trees in Agda shrink by 90% when ported to Lean 4"
+      ],
+      "lean4_target_tactics": [
+        "omega",
+        "linarith",
+        "nlinarith",
+        "ring",
+        "positivity",
+        "norm_num"
+      ],
+      "lean4_target_syntax": "by omega | by linarith [h1, h2] | by ring | by positivity"
+    },
+    {
+      "id": "CONC-14-COERCIONS-CAST-NORMALIZATION",
+      "canonical_name": "Numeric Coercions, Cast Normalization & Denominator Clearing",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "+-pos",
+        "*-pos",
+        "fromℕ",
+        "*-cancelʳ-≡"
+      ],
+      "dialect_syntax_pattern": "rewrite +-pos m n | *-cancelʳ-≡ _ _ hnz",
+      "dialect_semantics": "Explicit constructor homomorphisms (`+-pos : (+ m) + (+ n) ≡ + (m + n)`) without implicit coercion search.",
+      "dialect_idiom": "Replace explicit `+-pos` / `*-pos` rewrites with `push_cast` or `norm_cast` in Lean 4.",
+      "dialect_pitfalls": [
+        "Agda terms contain explicit embedding constructors that disappear into `↑` coercions in Lean 4"
+      ],
+      "lean4_target_tactics": [
+        "norm_cast",
+        "push_cast",
+        "exact_mod_cast",
+        "zify",
+        "qify",
+        "field_simp"
+      ],
+      "lean4_target_syntax": "push_cast; ring | zify [h_le] at *; omega | field_simp [hne]; ring"
+    },
+    {
+      "id": "CONC-15-WELL-FOUNDED-RECURSION",
+      "canonical_name": "Well-Founded Recursion, Termination Measures & Functional Induction",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "Acc",
+        "WfRec",
+        "<-wellFounded"
+      ],
+      "dialect_syntax_pattern": "go : (x : A) -> Acc _<_ x -> B",
+      "dialect_semantics": "Structural recursion over an explicit accessibility proof `Acc _<_ x`.",
+      "dialect_idiom": "Drop the explicit `Acc _<_ x` parameter when porting to Lean 4 and write a clean `termination_by` clause.",
+      "dialect_pitfalls": [
+        "Agda functions parameterized by `Acc` carry the accessibility proof in their type signature unless wrapped"
+      ],
+      "lean4_target_tactics": [
+        "termination_by",
+        "decreasing_by",
+        "fun_induction",
+        "fun_cases",
+        "WellFounded.induction"
+      ],
+      "lean4_target_syntax": "def f (x : alpha) : beta := ... termination_by measure x decreasing_by omega | fun_induction f x with ..."
+    },
+    {
+      "id": "CONC-16-MEASURE-INTEGRATION-BOCHNER",
+      "canonical_name": "Measure Spaces, Lebesgue/Bochner Integration & Almost-Everywhere Filters",
+      "category": "domain_theory",
+      "dialect_tactics": [
+        "SigmaAlgebra",
+        "IsMeasure"
+      ],
+      "dialect_syntax_pattern": "record Measure (X : Set) : Set₁",
+      "dialect_semantics": "Constructive or postulated sigma-algebra records in specialized Agda libraries.",
+      "dialect_idiom": "Lift Agda sigma-algebra definitions into Mathlib `[MeasurableSpace α]` and `(μ : Measure α)`.",
+      "dialect_pitfalls": [
+        "Agda has no standard Bochner integration library; port abstract measure axioms to Mathlib `MeasureTheory`"
+      ],
+      "lean4_target_tactics": [
+        "measurability",
+        "fun_prop",
+        "filter_upwards",
+        "integral_add",
+        "lintegral_mono_ae"
+      ],
+      "lean4_target_syntax": "∫ x in s, f x ∂μ | ∫⁻ x, g x ∂μ | ∀ᵐ x ∂μ, P x | filter_upwards [h1, h2] with x hx1 hx2"
+    },
+    {
+      "id": "CONC-17-BIG-OPERATORS-FINSET",
+      "canonical_name": "Big Operators, Finite Sums/Products & Indexed Monoid Folding",
+      "category": "domain_theory",
+      "dialect_tactics": [
+        "Data.List.sum",
+        "Data.Vec.sum",
+        "foldr"
+      ],
+      "dialect_syntax_pattern": "sum (map f (upTo n))",
+      "dialect_semantics": "List or `Vec` folds over explicit enumeration lists (`upTo n`, `allFin n`).",
+      "dialect_idiom": "Convert list-based `sum (map f (allFin n))` into `∑ i : Fin n, f i` (`Fintype.sum`) in Lean 4.",
+      "dialect_pitfalls": [
+        "List folds lack built-in `sum_bij` or `sum_comm` lemmas unless lifted to `Finset`"
+      ],
+      "lean4_target_tactics": [
+        "Finset.sum_congr",
+        "Finset.sum_bij",
+        "Finset.sum_comm",
+        "Finset.sum_union",
+        "Finset.sum_filter"
+      ],
+      "lean4_target_syntax": "∑ x ∈ s, f x | ∏ x ∈ s, f x | ∑ x ∈ s with P x, f x"
+    },
+    {
+      "id": "CONC-18-BITVEC-SWAR-DECISION",
+      "canonical_name": "Bitvectors, Machine Words, SWAR & Bit-Blasting Decision Procedures",
+      "category": "automation",
+      "dialect_tactics": [
+        "Word64",
+        "Vec Bool n",
+        "refl"
+      ],
+      "dialect_syntax_pattern": "Word64 | Vec Bool 64",
+      "dialect_semantics": "Builtin `Word64` primitives or length-indexed `Vec Bool n` operations.",
+      "dialect_idiom": "Port `Word64` / `Vec Bool 64` lemmas to `BitVec 64` and discharge with `by bv_decide`.",
+      "dialect_pitfalls": [
+        "Agda lacks an integrated SAT bit-blaster with LRAT proof reconstruction"
+      ],
+      "lean4_target_tactics": [
+        "bv_decide",
+        "bv_omega",
+        "BitVec.ext",
+        "decide"
+      ],
+      "lean4_target_syntax": "by bv_decide | by bv_omega | ext i hi; simp [BitVec.getLsbD]"
+    },
+    {
+      "id": "CONC-19-EXTENSIONALITY-CONGRUENCE",
+      "canonical_name": "Function, Proposition, Set & Structure Extensionality",
+      "category": "logic_foundation",
+      "dialect_tactics": [
+        "funext",
+        "cong",
+        "cong₂",
+        "⇔-≡"
+      ],
+      "dialect_syntax_pattern": "funext (\\ x -> ...) | cong f eq",
+      "dialect_semantics": "Theorem `funext h i x = h x i` in Cubical Agda (`--cubical`) or explicit postulate/Setoid pointwise equality `_≗_` in `--without-K` Agda.",
+      "dialect_idiom": "Replace Agda pointwise function equality `f ≗ g` (`∀ x → f x ≡ g x`) with standard `f = g` proved via `funext x` in Lean 4.",
+      "dialect_pitfalls": [
+        "Standard `--safe --without-K` Agda cannot prove `funext`, forcing libraries to thread `_≗_` congruence proofs that are unnecessary in Lean 4"
+      ],
+      "lean4_target_tactics": [
+        "ext",
+        "funext",
+        "propext",
+        "congr",
+        "congrArg",
+        "iff_of_eq"
+      ],
+      "lean4_target_syntax": "ext x y | funext x | congr 1"
+    },
+    {
+      "id": "CONC-20-FILTERS-TOPOLOGICAL-LIMITS",
+      "canonical_name": "Filters, Nets, Eventualities & Topological Limit Convergence",
+      "category": "domain_theory",
+      "dialect_tactics": [
+        "IsContinuous",
+        "Tendsto-ε-δ"
+      ],
+      "dialect_syntax_pattern": "∀ ε → 0 < ε → Σ[ δ ∈ ℝ ] (0 < δ × ∀ x → dist x a < δ → dist (f x) l < ε)",
+      "dialect_semantics": "Direct `(ε, δ)` metric convergence predicates in Agda analysis libraries.",
+      "dialect_idiom": "Refactor explicit `(ε, δ)` proofs into `Filter.Tendsto` and `fun_prop` when porting to Lean 4.",
+      "dialect_pitfalls": [
+        "Translating `(ε, δ)` proofs literally into Mathlib misses 95% of `Filter.Tendsto` and `fun_prop` automation"
+      ],
+      "lean4_target_tactics": [
+        "fun_prop",
+        "continuity",
+        "filter_upwards",
+        "Tendsto.comp",
+        "Tendsto.add"
+      ],
+      "lean4_target_syntax": "Tendsto f (𝓝 x) (𝓝 y) | Tendsto u atTop (𝓝 l) | ∀ᶠ n in atTop, P n"
+    }
+  ]
+}

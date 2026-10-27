@@ -1,5 +1,5 @@
 {
-  "handoff_version": "1.1",
+  "handoff_version": "2.0",
   "required_fields": [
     "from_role",
     "to_role",
@@ -21,6 +21,49 @@
     "review_bundle_sha256",
     "axiom_closure",
     "analyzer_diagnostics",
-    "counterexample_status"
-  ]
+    "counterexample_status",
+    "soul_overlay",
+    "facet_pack",
+    "facet_registry_ref"
+  ],
+  "role_containers": [
+    "specifier",
+    "prover",
+    "auditor",
+    "editor",
+    "gardener"
+  ],
+  "soul_overlays": [
+    "proof-reviewer",
+    "enforcement-auditor",
+    "formalization-breakdown-curator",
+    "math-pedagogy-author",
+    "formalization-dag-navigator",
+    "lean-proof-builder",
+    "lean-spec-architect",
+    "counterexample-falsification-hunter",
+    "abstract-interp-vacuity-auditor",
+    "sair-kernel-optimizer",
+    "premise-retrieval-specialist",
+    "cross-itp-porter",
+    "lean-retro-facilitator",
+    "council-sigma-soundness",
+    "council-phi-faithfulness",
+    "council-nu-novelty",
+    "council-tau-tactics",
+    "council-omega-chair",
+    "research-alpha-foundations",
+    "research-beta-dynamics",
+    "research-gamma-epistemics",
+    "research-delta-systems",
+    "research-epsilon-bridge"
+  ],
+  "facet_packs": [
+    "core",
+    "math",
+    "ai",
+    "governance",
+    "multi-prover"
+  ],
+  "facet_registry_ref": "agents/facets/registry.json"
 }

@@ -28,5 +28,3 @@ The routing of agent skills and the handling of safety gates are informed by str
 When an agent requests a skill by its slug (`<X>`), the runtime must resolve the path strictly in the following order. This ensures project-specific overrides supersede upstream tools without breaking stable slug names.
 
 1.  `skills/<X>/` (First-party skills authored in this repo)
-2.  `skills/_overrides/<X>/` (Local project overrides)
-3.  `vendor/leanprover-skills/skills/<X>/` (Read-only upstream fallback)

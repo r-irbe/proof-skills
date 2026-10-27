@@ -1,0 +1,530 @@
+{
+  "schema_version": "1.0.0",
+  "dialect_id": "metamath",
+  "prover_key": "metamath",
+  "display_name": "Metamath (set.mm / iset.mm)",
+  "foundation": "First-Order Tarski-Grothendieck Set Theory (ZFC + Grothendieck Universes)",
+  "file_extension": ".mm",
+  "verification_gate": "metamath 'read set.mm' 'verify proof *' 'exit'",
+  "adapter_skill": "hol-metamath-adapter",
+  "trust_axioms": [
+    "ax-1..ax-13",
+    "ax-ext..ax-ac",
+    "ax-groth"
+  ],
+  "concordance_ref": "vendor/itp-ontology/cross-itp-concordance.v1.json",
+  "mechanisms_count": 20,
+  "mechanisms": [
+    {
+      "id": "CONC-01-CASE-INDUCTION",
+      "canonical_name": "Case Analysis & Structural Induction",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "nnind",
+        "uzind",
+        "sfind",
+        "pm2.61i",
+        "jaoi"
+      ],
+      "dialect_syntax_pattern": "$( Mathematical induction & case elimination: nnind, uzind, jaoi $)",
+      "dialect_semantics": "Explicit induction theorems (`nnind` on `N`, `uzind` on `Z>=M`, `sfind` on finite sets) paired with explicit substitution lemmas (`fveq`).",
+      "dialect_idiom": "Construct explicit substitution lemmas for `P(0)`, `P(k)`, `P(k+1)`, and `P(n)` before applying `nnind` or `uzind`.",
+      "dialect_pitfalls": [
+        "All 4 substitution hypotheses must be proven explicitly before invoking `nnind` or `uzind`",
+        "Forgetting disjoint-variable `$d` constraints on the induction variable"
+      ],
+      "lean4_target_tactics": [
+        "rcases",
+        "cases",
+        "induction",
+        "nomatch"
+      ],
+      "lean4_target_syntax": "induction n with | zero => h0 | succ n' ih => hsucc"
+    },
+    {
+      "id": "CONC-02-BOOLEAN-REFLECTION",
+      "canonical_name": "Boolean Reflection & Computation",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "df-tru",
+        "tru",
+        "fal",
+        "decadd",
+        "decmul",
+        "prmo"
+      ],
+      "dialect_syntax_pattern": "$( Truth value & decimal computation theorems: tru, decadd, decmul $)",
+      "dialect_semantics": "Propositional truth constant `T.` (`df-tru`) and explicit decimal arithmetic / Pratt certificate theorems (`decadd`, `decmul`, `prmo`).",
+      "dialect_idiom": "Collapse multi-step decimal evaluation (`decadd`, `decmul`) or finite truth-table checks into `decide` or `norm_num` in Lean 4.",
+      "dialect_pitfalls": [
+        "Metamath has no kernel reduction; every computational step is an explicit theorem application"
+      ],
+      "lean4_target_tactics": [
+        "decide",
+        "omega",
+        "rfl",
+        "dsimp"
+      ],
+      "lean4_target_syntax": "by decide"
+    },
+    {
+      "id": "CONC-03-EQUALITY-REWRITING",
+      "canonical_name": "Equality Rewriting & Simplifier Sets",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "eqtr",
+        "eqtri",
+        "3eqtr4i",
+        "fveq2i",
+        "breq2i",
+        "bibi12i"
+      ],
+      "dialect_syntax_pattern": "$( Congruence & transitivity rewriting: eqtri, 3eqtr4i, fveq2i $)",
+      "dialect_semantics": "Explicit equality transitivity (`eqtri`, `3eqtr4i`) and explicit functorial congruence lemmas (`fveq1i`, `fveq2i`, `oveq12i`).",
+      "dialect_idiom": "Replace Metamath congruence chains (`fveq2i`, `oveq12i`, `3eqtr4i`) with `rw [...]` or `simp only [...]` in Lean 4.",
+      "dialect_pitfalls": [
+        "Every subterm position requires its own congruence theorem (`oveq1i` vs `oveq2i`) in Metamath"
+      ],
+      "lean4_target_tactics": [
+        "rw",
+        "rewrite",
+        "simp only",
+        "simp_all",
+        "dsimp"
+      ],
+      "lean4_target_syntax": "simp only [add_comm, mul_zero]"
+    },
+    {
+      "id": "CONC-04-TYPECLASS-TOWERS",
+      "canonical_name": "Typeclass Towers vs Packed Classes",
+      "category": "type_construct",
+      "dialect_tactics": [
+        "elgrp",
+        "elrng",
+        "elfld",
+        "abl",
+        "lmod",
+        "base",
+        "plusg"
+      ],
+      "dialect_syntax_pattern": "G e. Grp , B = ( Base ` G ) , .+ = ( +g ` G )",
+      "dialect_semantics": "Extensible structure tuples encoded as functions on numeric slot indices (`Base`, `+g`, `.r`, `0g`) with class membership `G e. Grp`.",
+      "dialect_idiom": "Convert `G e. Grp` and slot projections `(Base ` G)`, `(+g ` G)` into `(G : Type*) [Group G]` in Lean 4.",
+      "dialect_pitfalls": [
+        "Metamath structure operations are untyped total class functions outside `(Base ` G)`"
+      ],
+      "lean4_target_tactics": [
+        "class",
+        "instance",
+        "inferInstance",
+        "synthInstance"
+      ],
+      "lean4_target_syntax": "class Group (G : Type u) extends Monoid G, Inv G where ..."
+    },
+    {
+      "id": "CONC-05-AUTOMATION-SEARCH",
+      "canonical_name": "Automation & Search Heuristics",
+      "category": "automation",
+      "dialect_tactics": [
+        "mmj2 !derive",
+        "syl",
+        "mpd",
+        "imp",
+        "ex"
+      ],
+      "dialect_syntax_pattern": "$( Hilbert propositional & first-order chains: ax-1..3, mp, syl, mpd $)",
+      "dialect_semantics": "Explicit Hilbert-style deduction chains synthesized by `mmj2` unification search.",
+      "dialect_idiom": "Collapse 10-100 step Hilbert propositional/syllogism subproofs in `set.mm` into `tauto`, `aesop`, `omega`, or `ring` in Lean 4.",
+      "dialect_pitfalls": [
+        "Never port raw `syl`/`mpd`/`com12` plumbing lemmas 1-to-1 into Lean 4"
+      ],
+      "lean4_target_tactics": [
+        "aesop",
+        "omega",
+        "linarith",
+        "ring",
+        "tauto"
+      ],
+      "lean4_target_syntax": "aesop (add safe ...) or omega"
+    },
+    {
+      "id": "CONC-06-CALCULATION-BLOCKS",
+      "canonical_name": "Calculation Blocks & Transitivity Chains",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "3eqtri",
+        "4eqtri",
+        "eqletr",
+        "lelttr",
+        "letr"
+      ],
+      "dialect_syntax_pattern": "$( Transitive calculation chain: 3eqtri, eqletr, lelttr $)",
+      "dialect_semantics": "N-ary transitive chain theorems (`3eqtri`, `3eqtr4i`, `eqletr`, `lelttr`, `ltletr`).",
+      "dialect_idiom": "Unpack nested `3eqtri` / `eqletr` / `lelttr` applications into a linear `calc` block in Lean 4.",
+      "dialect_pitfalls": [
+        "Keep track of strict (`<`, `ltletr`) vs weak (`<=`, `letr`) steps when flattening tree-structured transitivity proofs"
+      ],
+      "lean4_target_tactics": [
+        "calc",
+        "trans"
+      ],
+      "lean4_target_syntax": "calc a = b := h1 _ <= c := h2 _ < d := h3"
+    },
+    {
+      "id": "CONC-07-QUOTIENTS-SETOIDS",
+      "canonical_name": "Quotients & Setoids",
+      "category": "type_construct",
+      "dialect_tactics": [
+        "qs",
+        "qseleq",
+        "ecid",
+        "eqvreleq"
+      ],
+      "dialect_syntax_pattern": "( A /. R ) , [ x ] R",
+      "dialect_semantics": "ZFC equivalence-class quotient `A /. R = { [x]_R | x e. A }` where `R` is an equivalence relation (`R EqvRel A`).",
+      "dialect_idiom": "Translate `(A /. R)` to `Quotient s` and `[x]_R = [y]_R <-> x R y` (`qseleq`) to `Quotient.eq`.",
+      "dialect_pitfalls": [
+        "Metamath `[x]_R` is a set of elements `⊆ A`, whereas Lean `Quotient s` is an abstract type"
+      ],
+      "lean4_target_tactics": [
+        "Quot.sound",
+        "Quotient.lift",
+        "Quotient.ind",
+        "Setoid"
+      ],
+      "lean4_target_syntax": "Quot.sound (h : a ~ b) or Quotient.lift f h_resp"
+    },
+    {
+      "id": "CONC-08-INVERSION-CONSTRUCTOR",
+      "canonical_name": "Inversion & Constructor Discrimination",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "peano2",
+        "peano5",
+        "opth",
+        "opi1",
+        "pm2.21i"
+      ],
+      "dialect_syntax_pattern": "$( Constructor injectivity & disjointness: peano2, peano5, opth $)",
+      "dialect_semantics": "Explicit Peano/Kuratowski injectivity theorems (`peano5`: `suc m = suc n -> m = n`, `opth` for ordered pairs) and explosion (`pm2.21i`).",
+      "dialect_idiom": "Translate `peano5`/`opth` to `cases h` or `injection h` and `peano2` (`suc n != 0`) to `nomatch h` / `contradiction`.",
+      "dialect_pitfalls": [
+        "Set-theoretic encodings of constructors in `set.mm` can have accidental junk equalities outside the intended domain"
+      ],
+      "lean4_target_tactics": [
+        "injection",
+        "contradiction",
+        "nomatch",
+        "cases"
+      ],
+      "lean4_target_syntax": "injection h with h1 h2 or contradiction"
+    },
+    {
+      "id": "CONC-09-GALOIS-LATTICES",
+      "canonical_name": "Galois Connections & Lattices",
+      "category": "domain_theory",
+      "dialect_tactics": [
+        "poset",
+        "lat",
+        "clat",
+        "sup",
+        "inf"
+      ],
+      "dialect_syntax_pattern": "P e. Poset , L e. Lat , L e. CLat",
+      "dialect_semantics": "Extensible lattice structures (`Lat`, `CLat`) with join/meet slots and order closures.",
+      "dialect_idiom": "Translate `L e. CLat` to `[CompleteLattice α]` and adjoined monotone maps to `GaloisConnection l u`.",
+      "dialect_pitfalls": [
+        "Metamath `sup`/`inf` slots require explicit closure and non-emptiness proofs unless `L e. CLat` is established"
+      ],
+      "lean4_target_tactics": [
+        "Order.GaloisConnection",
+        "CompleteLattice",
+        "OrderHom",
+        "lfp",
+        "gfp"
+      ],
+      "lean4_target_syntax": "GaloisConnection l u meaning l a <= b <-> a <= u b"
+    },
+    {
+      "id": "CONC-10-SUBTYPES-SIGMA",
+      "canonical_name": "Subtype Extraction & Sigma Types",
+      "category": "type_construct",
+      "dialect_tactics": [
+        "rab",
+        "elrab",
+        "ssrab2",
+        "opelopab"
+      ],
+      "dialect_syntax_pattern": "{ x e. A | ph } , elrab",
+      "dialect_semantics": "Restricted class abstraction `{ x e. A | ph }` (`df-rab`) carving out a subset of `A`.",
+      "dialect_idiom": "Translate `x e. { y e. A | ph(y) }` (`elrab`) into either a subtype `{x : A // P x}` or a `Set A` membership `x ∈ {y | P y}` in Lean 4.",
+      "dialect_pitfalls": [
+        "Choose `Set α` (predicates) rather than `Subtype` (`{x : α // P x}`) when frequent subset unions/intersections occur"
+      ],
+      "lean4_target_tactics": [
+        "Subtype",
+        "Subtype.val",
+        "Subtype.property",
+        "Sigma",
+        "PSigma"
+      ],
+      "lean4_target_syntax": "{ x : A // P x } or <val, prop>"
+    },
+    {
+      "id": "CONC-11-CLASSICAL-CHOICE",
+      "canonical_name": "Classical Choice & Noncomputability",
+      "category": "logic_foundation",
+      "dialect_tactics": [
+        "ax-ac",
+        "ac6s",
+        "iotacl",
+        "df-iota",
+        "pm2.61i"
+      ],
+      "dialect_syntax_pattern": "$( Axiom of Choice & definite description: ax-ac, iotacl, pm2.61i $)",
+      "dialect_semantics": "ZFC Axiom of Choice (`ax-ac`), Russell's definite description binder `( iota x ph )` (`df-iota`), and classical LEM (`pm2.61i`).",
+      "dialect_idiom": "Translate `( iota x ph )` (under uniqueness `E! x ph`) or `ax-ac` selection to `Classical.choose` + `Classical.choose_spec` in Lean 4.",
+      "dialect_pitfalls": [
+        "Metamath `( iota x ph )` returns the empty set `(/\\)` when uniqueness `E! x ph` fails, whereas `Classical.choose` picks an arbitrary element from any non-empty `∃ x, P x`"
+      ],
+      "lean4_target_tactics": [
+        "Classical.choice",
+        "Classical.em",
+        "noncomputable def",
+        "open Classical"
+      ],
+      "lean4_target_syntax": "Classical.choose (h : exists x, P x) and Classical.choose_spec h"
+    },
+    {
+      "id": "CONC-12-INVARIANTS-LYAPUNOV",
+      "canonical_name": "Invariant Certificates & Lyapunov Energy Functions",
+      "category": "verification_logic",
+      "dialect_tactics": [
+        "rtrcl",
+        "uzind",
+        "subge0",
+        "sqge0"
+      ],
+      "dialect_syntax_pattern": "$( Discrete trajectory & energy bounds: rtrcl, uzind, sqge0 $)",
+      "dialect_semantics": "Reflexive-transitive closure (`rtrcl`) and integer-indexed recurrence inequalities via `uzind` and `sqge0`.",
+      "dialect_idiom": "Translate `uzind` recurrence energy bounds into inductive Lyapunov certificates discharged by `omega`, `linarith`, or `nlinarith`.",
+      "dialect_pitfalls": [
+        "When scaling real Lyapunov energies to `Nat` in Lean 4 (`x 100`), guard all subtraction steps `(V s' <= V s)` against `Nat.sub` truncation"
+      ],
+      "lean4_target_tactics": [
+        "EASCI/StochasticCCV/ contraction bounds",
+        "inductive invariant preservation",
+        "Nat.div_add_mod"
+      ],
+      "lean4_target_syntax": "theorem invariant_step (s : State) (h_inv : Inv s) : Inv (step s) and V (step s) <= alpha * V s"
+    },
+    {
+      "id": "CONC-13-LINEAR-NONLINEAR-ARITHMETIC",
+      "canonical_name": "Linear, Nonlinear & Positivity Arithmetic Solvers",
+      "category": "automation",
+      "dialect_tactics": [
+        "leadd1i",
+        "ltmul1i",
+        "sqge0",
+        "addass",
+        "distr",
+        "subge0"
+      ],
+      "dialect_syntax_pattern": "$( Ordered field & ring axioms: leadd1i, sqge0, addass, distr $)",
+      "dialect_semantics": "First-principles ring and ordered-field theorems in `set.mm`.",
+      "dialect_idiom": "Replace 20-line `set.mm` algebraic/inequality subproofs with a single `ring`, `linarith`, `omega`, or `positivity` call.",
+      "dialect_pitfalls": [
+        "`set.mm` `N` is a subset of `C` so `a - b` is never truncated; guard `Nat.sub` when porting to Lean 4 `Nat`"
+      ],
+      "lean4_target_tactics": [
+        "omega",
+        "linarith",
+        "nlinarith",
+        "ring",
+        "positivity",
+        "norm_num"
+      ],
+      "lean4_target_syntax": "by omega | by linarith [h1, h2] | by ring | by positivity"
+    },
+    {
+      "id": "CONC-14-COERCIONS-CAST-NORMALIZATION",
+      "canonical_name": "Numeric Coercions, Cast Normalization & Denominator Clearing",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "nnz",
+        "zcn",
+        "reccn",
+        "adddiv",
+        "divcan2"
+      ],
+      "dialect_syntax_pattern": "$( Subset tower N c_ Z c_ Q c_ R c_ C: nnz, zcn, adddiv, divcan2 $)",
+      "dialect_semantics": "Untyped ZFC subset inclusions (`N c_ Z c_ R c_ C`) where all numeric operations are complex operations `+`, `-`, `x.`, `/`.",
+      "dialect_idiom": "Introduce explicit types `(n : Nat)`, `(z : Int)`, `(x : Real)` when porting `set.mm`, using `push_cast`/`norm_cast` at type boundaries and `field_simp` for `adddiv`/`divcan2`.",
+      "dialect_pitfalls": [
+        "CRITICAL: `set.mm` `m - n` on `m, n e. N` produces a negative integer in `Z` when `m < n`, whereas Lean `(m - n : Nat)` truncates to `0`! Always cast `(m : Int) - (n : Int)` or add `n <= m`"
+      ],
+      "lean4_target_tactics": [
+        "norm_cast",
+        "push_cast",
+        "exact_mod_cast",
+        "zify",
+        "qify",
+        "field_simp"
+      ],
+      "lean4_target_syntax": "push_cast; ring | zify [h_le] at *; omega | field_simp [hne]; ring"
+    },
+    {
+      "id": "CONC-15-WELL-FOUNDED-RECURSION",
+      "canonical_name": "Well-Founded Recursion, Termination Measures & Functional Induction",
+      "category": "proof_method",
+      "dialect_tactics": [
+        "frfi",
+        "wfrlem",
+        "sfind",
+        "uzind"
+      ],
+      "dialect_syntax_pattern": "$( Set-theoretic well-founded recursion: frfi, wfrlem $)",
+      "dialect_semantics": "Set-theoretic transfinite/well-founded recursion theorem (`frfi`) constructing a function class as a union of approximations.",
+      "dialect_idiom": "Replace `frfi` approximation unions with native `termination_by` recursive definitions in Lean 4.",
+      "dialect_pitfalls": [
+        "`frfi` restricts the recursive call via function restriction `( F |` Pred(R, A, x) )`"
+      ],
+      "lean4_target_tactics": [
+        "termination_by",
+        "decreasing_by",
+        "fun_induction",
+        "fun_cases",
+        "WellFounded.induction"
+      ],
+      "lean4_target_syntax": "def f (x : alpha) : beta := ... termination_by measure x decreasing_by omega | fun_induction f x with ..."
+    },
+    {
+      "id": "CONC-16-MEASURE-INTEGRATION-BOCHNER",
+      "canonical_name": "Measure Spaces, Lebesgue/Bochner Integration & Almost-Everywhere Filters",
+      "category": "domain_theory",
+      "dialect_tactics": [
+        "itgadd",
+        "itgle",
+        "mbfadd",
+        "volun",
+        "oms"
+      ],
+      "dialect_syntax_pattern": "( S _|_ F ) , F e. Mbf , F e. Itg",
+      "dialect_semantics": "Lebesgue measure (`vol`) and integral (`itg1`, `itg2`, `Mbf`, `Itg`) on `R` plus general outer measure spaces (`oms`).",
+      "dialect_idiom": "Translate `F e. Mbf` -> `Measurable f` (`by measurability`), `F e. Itg` -> `Integrable f volume`, and `(S _|_ F)` -> `∫ x in S, f x`.",
+      "dialect_pitfalls": [
+        "Default `set.mm` `itg` is 1D Lebesgue integration over `R`; multidimensional integrals use product measures"
+      ],
+      "lean4_target_tactics": [
+        "measurability",
+        "fun_prop",
+        "filter_upwards",
+        "integral_add",
+        "lintegral_mono_ae"
+      ],
+      "lean4_target_syntax": "∫ x in s, f x ∂μ | ∫⁻ x, g x ∂μ | ∀ᵐ x ∂μ, P x | filter_upwards [h1, h2] with x hx1 hx2"
+    },
+    {
+      "id": "CONC-17-BIG-OPERATORS-FINSET",
+      "canonical_name": "Big Operators, Finite Sums/Products & Indexed Monoid Folding",
+      "category": "domain_theory",
+      "dialect_tactics": [
+        "fsum",
+        "fsumadd",
+        "fsumshft",
+        "fsumsplit",
+        "fsumcom"
+      ],
+      "dialect_syntax_pattern": "sum_ k e. ( M ... N ) A(k) , sum_ x e. S F(x)",
+      "dialect_semantics": "Indexed sum `sum_ k e. A B` (`df-fsum`) over integer intervals `(M ... N)` (`df-fz`) or finite sets.",
+      "dialect_idiom": "Translate `sum_ k e. (M ... N) A(k)` to `∑ k ∈ Finset.Icc M N, A k` and `fsumshft` to `Finset.sum_Ico_add`.",
+      "dialect_pitfalls": [
+        "In `set.mm`, `(M ... N)` is Over `Z` (integers), so `M` and `N` can be negative"
+      ],
+      "lean4_target_tactics": [
+        "Finset.sum_congr",
+        "Finset.sum_bij",
+        "Finset.sum_comm",
+        "Finset.sum_union",
+        "Finset.sum_filter"
+      ],
+      "lean4_target_syntax": "∑ x ∈ s, f x | ∏ x ∈ s, f x | ∑ x ∈ s with P x, f x"
+    },
+    {
+      "id": "CONC-18-BITVEC-SWAR-DECISION",
+      "canonical_name": "Bitvectors, Machine Words, SWAR & Bit-Blasting Decision Procedures",
+      "category": "automation",
+      "dialect_tactics": [
+        "bits",
+        "sadadd",
+        "smumul",
+        "df-bits"
+      ],
+      "dialect_syntax_pattern": "$( Set of binary bit positions: ( bits ` N ) $)",
+      "dialect_semantics": "Set-theoretic representation `(bits ` N) = { k e. N0 | floor(N / 2^k) mod 2 = 1 }`.",
+      "dialect_idiom": "Translate `k e. (bits ` N)` to `Nat.testBit n k = true` or `BitVec.getLsbD x k`.",
+      "dialect_pitfalls": [
+        "Metamath `bits` models arbitrary-precision natural numbers rather than fixed-width two's complement words"
+      ],
+      "lean4_target_tactics": [
+        "bv_decide",
+        "bv_omega",
+        "BitVec.ext",
+        "decide"
+      ],
+      "lean4_target_syntax": "by bv_decide | by bv_omega | ext i hi; simp [BitVec.getLsbD]"
+    },
+    {
+      "id": "CONC-19-EXTENSIONALITY-CONGRUENCE",
+      "canonical_name": "Function, Proposition, Set & Structure Extensionality",
+      "category": "logic_foundation",
+      "dialect_tactics": [
+        "eqrdv",
+        "fneqi",
+        "abbi",
+        "fveq2i",
+        "oveq12i"
+      ],
+      "dialect_syntax_pattern": "$( Class & function extensionality: eqrdv, fneqi, abbi $)",
+      "dialect_semantics": "ZFC Axiom of Extensionality (`ax-ext`, `eqrdv`) and function graph extensionality (`fneqi`).",
+      "dialect_idiom": "Translate `eqrdv` and `fneqi` to `ext x` and `fveq2i`/`oveq12i` to `congrArg` / `congr`.",
+      "dialect_pitfalls": [
+        "Metamath functions are sets of ordered pairs, so `F = G` is literally set extensionality on pairs `<x, y>`"
+      ],
+      "lean4_target_tactics": [
+        "ext",
+        "funext",
+        "propext",
+        "congr",
+        "congrArg",
+        "iff_of_eq"
+      ],
+      "lean4_target_syntax": "ext x y | funext x | congr 1"
+    },
+    {
+      "id": "CONC-20-FILTERS-TOPOLOGICAL-LIMITS",
+      "canonical_name": "Filters, Nets, Eventualities & Topological Limit Convergence",
+      "category": "domain_theory",
+      "dialect_tactics": [
+        "cn",
+        "clim",
+        "flim",
+        "fcls"
+      ],
+      "dialect_syntax_pattern": "F : A -cn-> B , ( F ~> L ) , F e. ( J -cn-> K )",
+      "dialect_semantics": "Topological continuity (`cn`), sequence convergence (`clim`: `F ~> L`), and general filter convergence (`flim`).",
+      "dialect_idiom": "Translate `(F ~> L)` to `Tendsto F atTop (𝓝 L)` and `F : A -cn-> B` to `ContinuousOn f A` (`by fun_prop`).",
+      "dialect_pitfalls": [
+        "`set.mm` `(F ~> L)` is a relational symbol (since limits need not be unique in non-Hausdorff spaces) and becomes a function value only under `T2`"
+      ],
+      "lean4_target_tactics": [
+        "fun_prop",
+        "continuity",
+        "filter_upwards",
+        "Tendsto.comp",
+        "Tendsto.add"
+      ],
+      "lean4_target_syntax": "Tendsto f (𝓝 x) (𝓝 y) | Tendsto u atTop (𝓝 l) | ∀ᶠ n in atTop, P n"
+    }
+  ]
+}

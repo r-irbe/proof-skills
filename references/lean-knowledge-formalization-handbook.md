@@ -304,3 +304,578 @@ structure Indicator (Hyp : Type) where
 | Intelligence methodology | Ε (Applications Bridge) |
 | Symbolic AI integration | Γ (Methods Scholar) |
 | Knowledge graph formalization | Β (Structure Strategist) + Ε (Applications Bridge) |
+
+---
+
+## Merged Domain Companion: `lean-knowledge-formalization` (Unified into `@lean-knowledge-formalization`)
+
+# Commonsense Reasoning
+
+Formalizing the vast body of everyday knowledge that underlies human reasoning and is critical for AI systems operating in real-world contexts.
+
+---
+
+## Routing
+
+- **USE FOR:** Commonsense reasoning for AI systems — world knowledge, naive physics, folk psychology, temporal/spatial reasoning, default reasoning, and
+  their formalization. Use for reasoning about everyday knowledge that humans take for granted but AI systems need explicitly, especially when a downstream
+  project must make implicit context explicit.
+- **DO NOT USE FOR:** formal KR/ontology engineering (use @lean-knowledge-formalization); causal/deontic reasoning (use @lean-causal-reasoning); formalisation in Lean
+  (use @lean-knowledge-formalization).
+- **TRIGGERS:** commonsense, naive physics, folk psychology, temporal reasoning, spatial reasoning, default reasoning.
+
+## Workflow
+
+1. Classify the commonsense gap: naive physics, folk psychology, temporal, spatial, or default reasoning.
+2. Pick the matching paradigm from the body (qualitative reasoning, situation calculus, default logic, etc.) and the representative formalism.
+3. Apply the formalism to the concrete scenario; document where it does or doesn't yield the human-intuitive answer.
+4. Hand off: to `@lean-knowledge-formalization` for ontology grounding, to `@lean-knowledge-formalization` for a Lean encoding, to `@lean-zettelkasten`.
+
+## Recovery & STOP
+
+- STOP if the question is purely about KR/ontology — delegate to `@lean-knowledge-formalization`.
+- STOP if the answer would require world-model data not in the body — escalate to `@research-council`.
+- STOP if the question is about causal/deontic norms — delegate to `@lean-causal-reasoning`.
+
+## Handoffs
+
+- **Predecessors:** `agent:gateway`, `skill:lean-research`.
+- **Successors:** `skill:lean-knowledge-formalization`, `skill:lean-knowledge-formalization`, `skill:lean-zettelkasten`.
+
+---
+
+## Detailed reference
+
+Full content for `lean-knowledge-formalization` lives in
+[`references/lean-knowledge-formalization-handbook.md`](../../references/lean-knowledge-formalization-handbook.md).
+Load that file when the skill is convened; the SKILL.md only carries
+the dispatch contract and the parts index.
+
+| Section | Topic |
+|---|---|
+| Part 1 | Commonsense Knowledge Domains |
+| Part 2 | Formal Commonsense Frameworks |
+| Part 3 | Qualitative Reasoning |
+| Part 4 | Theory of Mind & BDI |
+| Part 5 | Temporal Commonsense |
+| Part 6 | Commonsense Physics & Spatial Reasoning |
+| Part 7 | Integration with Lean Formalization |
+| Part 8 | Research Directions |
+| Part 9 | Skill Cross-References |
+
+---
+
+## See also
+
+- [`../../references/lean-knowledge-formalization-handbook.md`](../../references/lean-knowledge-formalization-handbook.md) — Full handbook (extracted from this skill)
+- [`../lean-knowledge-formalization/SKILL.md`](../lean-knowledge-formalization/SKILL.md) — Successor
+- [`../lean-knowledge-formalization/SKILL.md`](../lean-knowledge-formalization/SKILL.md) — Successor
+- [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) — Successor
+
+# Ai Commonsense Reasoning Handbook
+
+> **Layering note.** This file holds the deep content previously
+> embedded in [`skills/lean-knowledge-formalization/SKILL.md`](../skills/lean-knowledge-formalization/SKILL.md).
+> The SKILL.md keeps the dispatch contract (Routing / Workflow /
+> Recovery / Handoffs) + a parts index. This file holds the full
+> encyclopaedia. Zero fidelity loss vs the pre-layering revision.
+
+---
+
+## Part 1 — Commonsense Knowledge Domains
+
+### 1.1 Core Commonsense Categories
+
+| Category | Examples | Formalization Approach |
+|---|---|---|
+| **Naive physics** | Objects fall, water flows downhill, containers hold things | Qualitative physics (Forbus), constraint systems |
+| **Folk psychology** | People have beliefs/desires/intentions, deception is possible | BDI logic, theory of mind models |
+| **Temporal reasoning** | Events have duration, causes precede effects, habits form | Allen's interval algebra, temporal logic (LTL/CTL) |
+| **Spatial reasoning** | Objects have extent, containment, proximity, orientation | Region Connection Calculus (RCC-8), qualitative spatial reasoning |
+| **Social reasoning** | Norms, roles, obligations, reputational effects | Deontic logic (see ai-causal-deontic), social choice theory |
+| **Teleological reasoning** | Artifacts have purposes, actions serve goals | Functional reasoning, means-end analysis |
+| **Taxonomic knowledge** | Dogs are animals, animals breathe, inheritance defaults | Description logic, default logic, typicality operators |
+
+### 1.2 Project Relevance Map
+
+| Project Concept | Commonsense Aspect | Why It Matters |
+|---|---|---|
+| Tacit knowledge externalization | Folk psychology: knowing WHAT you know tacitly | Identifying what needs capturing |
+| Quality gates | Teleological: gates SERVE a purpose | Understanding gate function vs. structure |
+| Phase classification | Temporal: phases progress, don't regress arbitrarily | Temporal common sense constrains phase transitions |
+| Pipeline adaptation | Causal: interventions have expected effects | Commonsense causal reasoning guides adaptation |
+| Trust dynamics | Social: trust is earned incrementally, lost quickly | Asymmetric trust is a commonsense phenomenon |
+| Knowledge graphs | Taxonomic: IS-A, PART-OF, HAS-PURPOSE hierarchies | Commonsense ontology structures KGs |
+| Provenance chains | Temporal + social: who did what when and why | Provenance requires folk psychology + temporal reasoning |
+
+---
+
+## Part 2 — Formal Commonsense Frameworks
+
+### 2.1 Non-Monotonic Reasoning
+
+Classical logic is monotonic (adding premises never retracts conclusions). Commonsense reasoning is non-monotonic:
+
+```
+Default: Birds fly.
+Exception: Penguins don't fly.
+Exception to exception: Penguins in a catapult fly (briefly).
+```
+
+**Formalisms:**
+
+| Framework | Key Idea | Lean Approach |
+|---|---|---|
+| **Default logic** (Reiter) | Default rules with justifications | Structure with prerequisite, justification, consequent |
+| **Circumscription** (McCarthy) | Minimize abnormality predicates | Second-order axiom, approximate with finite models |
+| **Answer set programming** | Stable models of logic programs | Encode as Prop-valued functions, check stability |
+| **Typicality operators** | "Typical birds fly" | Conditional assertions with defeat conditions |
+
+### 2.2 Lean 4 Encoding Patterns
+
+```lean
+-- Default rule structure
+structure DefaultRule (α : Type) where
+  prerequisite : α → Prop  -- Must hold
+  justification : α → Prop -- Must be consistent (not known false)
+  consequent : α → Prop    -- Conclude this
+
+-- Commonsense world model
+structure WorldModel where
+  objects : Type
+  properties : objects → Set String
+  relations : objects → objects → Set String
+  defaults : List (DefaultRule objects)
+  exceptions : List (DefaultRule objects → Prop) -- When to block defaults
+```
+
+### 2.3 Scripts and Frames (Schank/Minsky)
+
+| Concept | Definition | Formalization |
+|---|---|---|
+| **Frame** | Stereotypical situation with default slot fillers | Structure with optional fields + defaults |
+| **Script** | Stereotypical event sequence | Finite state machine with labeled transitions |
+| **Plan** | Goal-directed action sequence | Partially ordered set of actions with preconditions |
+
+---
+
+## Part 3 — Qualitative Reasoning
+
+### 3.1 Qualitative Process Theory (Forbus)
+
+Instead of exact quantities, reason about signs and directions of change:
+
+| Quantity Space | Values | Operations |
+|---|---|---|
+| **Sign** | {−, 0, +} | Addition, multiplication tables |
+| **Ordinal** | {low, medium, high} | Comparison, bounded transitions |
+| **Interval** | Named intervals + landmarks | Contains, overlaps, transitions |
+
+**Project application:** Quality scores don't need exact values for commonsense reasoning about system behavior — "high quality + low risk = good outcome" is qualitative.
+
+### 3.2 Qualitative Simulation
+
+```
+Given: quantity Q is increasing
+Given: Q has landmark value L at which behavior changes
+Infer: Q will eventually reach L (unless other factor intervenes)
+Infer: After L, behavior regime changes
+```
+
+This directly maps to the project's phase transitions: quality metrics cross thresholds → phase changes.
+
+---
+
+## Part 4 — Theory of Mind & BDI
+
+### 4.1 Belief-Desire-Intention (BDI) Architecture
+
+| Component | Description | Formal Type |
+|---|---|---|
+| **Beliefs** | Agent's model of the world | `Agent → World → Prop` (epistemic) |
+| **Desires** | Preferred world states | `Agent → World → Prop` (motivational) |
+| **Intentions** | Committed-to plans | `Agent → Plan → Prop` (volitional) |
+
+### 4.2 Epistemic Logic for Multi-Agent Commonsense
+
+```
+K_i(φ)     = Agent i knows φ
+B_i(φ)     = Agent i believes φ
+C(φ)       = φ is common knowledge
+E(φ)       = everyone knows φ (but not necessarily commonly)
+```
+
+**Key axioms:**
+- Knowledge implies truth: `K_i(φ) → φ`
+- Positive introspection: `K_i(φ) → K_i(K_i(φ))`
+- Belief doesn't imply truth: `B_i(φ) ↛ φ` (agents can be wrong)
+- Common knowledge is closed under logical consequence
+
+### 4.3 Project Multi-Agent Trust Connection
+
+The trust dynamics in `AgenticSafety.lean` formalize a simplified version of BDI:
+- Trust = belief about agent reliability
+- Safety envelope = constraint on intentions
+- Consensus distance = convergence of beliefs across agents
+
+---
+
+## Part 5 — Temporal Commonsense
+
+### 5.1 Allen's Interval Algebra
+
+13 relations between temporal intervals:
+
+| Relation | Notation | Inverse |
+|---|---|---|
+| Before | A < B | After |
+| Meets | A m B | Met-by |
+| Overlaps | A o B | Overlapped-by |
+| Starts | A s B | Started-by |
+| During | A d B | Contains |
+| Finishes | A f B | Finished-by |
+| Equals | A = B | Equals |
+
+**Project Pipeline:** Pipeline stages have temporal interval structure — stages don't overlap arbitrarily; there's a dependency ordering.
+
+### 5.2 Temporal Reasoning Patterns
+
+| Pattern | Commonsense Rule | Formal |
+|---|---|---|
+| Inertia | Things stay the same unless changed | Default persistence axiom |
+| Ramification | Actions have indirect effects | Frame axiom + causal closure |
+| Qualification | External factors can block actions | Exception handling in plan execution |
+| Narrative | Events told in order happened | Temporal ordering = narrative ordering (default) |
+
+---
+
+## Part 6 — Commonsense Physics & Spatial Reasoning
+
+### 6.1 Region Connection Calculus (RCC-8)
+
+8 topological relations for spatial regions:
+
+```
+DC (disconnected), EC (externally connected), PO (partial overlap),
+EQ (equal), TPP (tangential proper part), NTPP (non-tangential proper part),
+TPPi (inverse TPP), NTPPi (inverse NTPP)
+```
+
+### 6.2 Naive Physics for Project
+
+| Physics Concept | Commonsense | Project Analog |
+|---|---|---|
+| Containment | A container holds things | Phases contain quality states |
+| Flow | Liquids flow from high to low | Information flows through pipeline |
+| Momentum | Moving objects resist stopping | Quality improvement has momentum |
+| Friction | Movement generates resistance | Process overhead slows pipeline |
+| Equilibrium | Systems tend toward balance | CCV balanced state |
+
+---
+
+## Part 7 — Integration with Lean Formalization
+
+### 7.1 What CAN Be Formalized
+
+| Aspect | Formalizability | Approach |
+|---|---|---|
+| Taxonomic hierarchies | High | Lean typeclasses and instances |
+| Temporal constraints | High | Lean structures + ordering proofs |
+| Qualitative inequality | High | Nat-scaled ×100 approximation |
+| Default reasoning | Medium | Explicit exception lists |
+| Theory of mind | Medium | BDI structures with decidable belief |
+| Naive physics | Low-Medium | Qualitative constraint satisfaction |
+| Open-world commonsense | Low | Cannot formalize the open world |
+
+### 7.2 Bridge to Project Modules
+
+| Module | Commonsense Concept Used | Formalizability |
+|---|---|---|
+| QualityGates | Threshold commonsense (above/below) | High — already done |
+| PhaseClassification | Taxonomic (3 regimes) | High — already done |
+| PipelineAdaptive | Teleological (pipeline serves a purpose) | Medium |
+| ProvenanceChain | Temporal + social (who did what when) | High — partially done |
+| AgenticSafety | BDI + social (trust, intention) | Medium — partially done |
+| StochasticCCV | Qualitative convergence (trending toward balance) | Medium |
+
+---
+
+## Part 8 — Research Directions
+
+### 8.1 Open Problems
+
+1. **Commonsense benchmark gap**: No standard for commonsense in formal verification
+2. **Scalability**: Non-monotonic reasoning is computationally expensive
+3. **Acquisition bottleneck**: Extracting commonsense knowledge from text/experience
+4. **Contextual defaults**: When to apply which default in which context
+5. **Cross-cultural commonsense**: Different cultures have different "obvious" knowledge
+
+### 8.2 Key References
+
+| Area | Key Work | Relevance |
+|---|---|---|
+| CYC project | Lenat (1995) | Largest commonsense KB, millions of assertions |
+| ConceptNet | Speer & Havasi (2012) | Open commonsense knowledge graph |
+| ATOMIC | Sap et al. (2019) | If-then commonsense about events |
+| Commonsense Transformers | Bosselut et al. (2019) | Neural commonsense generation |
+| Qualitative Process Theory | Forbus (1984) | Foundation of qualitative reasoning |
+| Circumscription | McCarthy (1980) | Formal approach to defaults |
+
+---
+
+## Part 9 — Skill Cross-References
+
+| If working on... | Also consult... |
+|---|---|
+| Default reasoning | `lean-causal-reasoning` (deontic defaults) |
+| Spatial reasoning | `lean-math-analysis` (topological foundations) |
+| Temporal reasoning | `lean-math-stochastic` (time-series formalization) |
+| Knowledge representation | `lean-knowledge-formalization` (KRR frameworks) |
+| Agent beliefs | `lean-ai-formalization` (BDI architectures) |
+| Trust as commonsense | `lean-ai-formalization` (trust formalization) |
+| Qualitative physics | `lean-math-dynamical` (dynamical systems) |
+| Commonsense for legal | `applied-legal-reasoning` (legal commonsense) |
+
+---
+
+## Merged Domain Companion: `lean-knowledge-formalization` (Unified into `@lean-knowledge-formalization`)
+
+# Symbolic AI & Neuro-Symbolic Integration
+
+Formal knowledge representation, symbolic reasoning, and their integration with neural methods for knowledge structuring and consolidation pipelines.
+
+---
+
+## Routing
+
+- **USE FOR:** Symbolic AI, neuro-symbolic integration, knowledge representation and reasoning (KRR), ontology engineering, description logics, and hybrid
+  symbolic-neural architectures. Use for reasoning about formal knowledge structures, rule-based systems, logic programming, semantic web technologies, and
+  their integration with neural approaches in knowledge graphs and structured reasoning pipelines.
+- **DO NOT USE FOR:** formalising the ontology in Lean (use @lean-knowledge-formalization); commonsense reasoning (use @lean-knowledge-formalization); agentic
+  AI (use @lean-ai-formalization).
+- **TRIGGERS:** symbolic AI, neuro-symbolic, knowledge representation, KRR, ontology engineering, description logic, hybrid AI.
+
+## Workflow
+
+1. Identify the integration question: symbolic-only, neural-only, or hybrid; pick the integration pattern (loose / tight / unified) from the body.
+2. Pick the KRR formalism (description logic, RDF/OWL, conceptual graph, neural-symbolic embedding) that matches the application.
+3. Apply the formalism; document where neural and symbolic components communicate + their semantic guarantees.
+4. Hand off: to `@lean-knowledge-formalization` for Lean encoding, to `@lean-math-discrete` for graph-theoretic foundations, to `@lean-zettelkasten`.
+
+## Recovery & STOP
+
+- STOP if the question is purely commonsense-reasoning — delegate to `@lean-knowledge-formalization`.
+- STOP if the question is about causal/deontic logic — delegate to `@lean-causal-reasoning`.
+- STOP if the neural component requires empirical evaluation beyond methodological reasoning — escalate to `@research-council`.
+
+## Handoffs
+
+- **Predecessors:** `agent:gateway`, `skill:lean-research`.
+- **Successors:** `skill:lean-knowledge-formalization`, `skill:lean-knowledge-formalization`, `skill:lean-math-discrete`.
+
+---
+
+## Part 1 — Knowledge Representation Foundations
+
+### 1.1 Representation Languages
+
+| Language | Expressiveness | Decidability | Common relevance |
+|---|---|---|---|
+| Propositional logic | Low | P (SAT: NP-complete) | Gate predicates and finite checks |
+| First-order logic (FOL) | High | Semi-decidable | Theorem formalization |
+| Description logic (ALC) | Medium | ExpTime | Ontology TBoxes |
+| OWL-DL | Medium-high | 2NExpTime | Semantic web ontologies |
+| Datalog | Limited FOL | P (data complexity) | Recursive queries on knowledge graphs |
+| Answer Set Programming | Nonmonotonic | ΣP2-complete | Default reasoning |
+| Modal logic | FOL + modalities | Varies | Epistemic/deontic reasoning |
+
+### 1.2 Ontology Engineering
+
+**Foundational ontologies:**
+- DOLCE (Descriptive Ontology for Linguistic and Cognitive Engineering)
+- BFO (Basic Formal Ontology) — ISO 21838
+- SUMO (Suggested Upper Merged Ontology)
+
+**Design patterns:**
+- Parthood and mereology
+- Temporal entities (endurants vs perdurants)
+- Roles and role-playing
+- Quality and quality spaces
+
+**Common application:** knowledge-graph quality gates validate ontological consistency:
+- TBox coherence (no unsatisfiable concepts)
+- ABox consistency (instances satisfy TBox constraints)
+- Schema-instance alignment
+
+### 1.3 Formal Reasoning Systems
+
+| System | Approach | Completeness | Use |
+|---|---|---|---|
+| Tableaux | Model construction attempt | Complete for DL | Ontology reasoning |
+| Resolution | Refutation | Complete for FOL | Theorem proving |
+| Sequent calculus | Structural proof | Complete for FOL | Proof theory |
+| Natural deduction | Introduction/elimination | Complete for FOL | Human-like proofs |
+| Type theory | Curry-Howard | ??? (depends on system) | Lean 4 foundation |
+
+---
+
+## Part 2 — Neuro-Symbolic Integration
+
+### 2.1 Integration Spectrum (Kautz 2020)
+
+| Level | Description | Example | Pipeline role |
+|---|---|---|---|
+| 1 | Symbolic ← Neural | Neural generates symbolic output | Experience → symbols |
+| 2 | Symbolic → Neural | Symbolic knowledge guides neural | Structuring → embedding |
+| 3 | Hybrid pipeline | Neural + symbolic sequential | Full Project pipeline |
+| 4 | Tightly coupled | Neural and symbolic share representation | Graph of Thoughts |
+| 5 | Unified | Single system with both capabilities | Target architecture |
+
+### 2.2 Key Architectures
+
+- **Neural theorem proving**: Neural guide for tactic selection (GPT-f, AlphaProof)
+- **Knowledge graph embeddings**: TransE, RotatE, CompGCN — vector representations of KG
+- **Graph neural networks**: Message passing on knowledge structures
+- **Neurosymbolic concept learner**: Learn visual concepts as logical programs
+- **Logic tensor networks**: Differentiable first-order logic
+
+### 2.3 Typical Neuro-Symbolic Position
+
+Many verification-oriented pipelines operate at Level 3-4:
+- **Ingest phase**: neural perception, extraction, or embedding.
+- **Articulation**: neural-to-symbolic conversion from natural language to structured claims.
+- **Structuring**: symbolic knowledge graph construction and validation.
+- **Consolidation**: hybrid formal verification plus neural synthesis.
+- **Application**: symbolic-to-neural feedback from validated knowledge to new tasks.
+
+---
+
+## Part 3 — Commonsense Reasoning
+
+### 3.1 Commonsense Knowledge Types
+
+| Type | Description | Formalization Challenge |
+|---|---|---|
+| Physical | Objects fall, liquids flow | Qualitative physics, spatial reasoning |
+| Social | People have intentions, emotions | Theory of mind, folk psychology |
+| Temporal | Events have duration, causation | Allen's interval algebra |
+| Taxonomic | Dogs are animals | Inheritance hierarchies |
+| Default | Birds fly (unless penguin) | Nonmonotonic logic |
+| Causal | Pushing causes movement | Causal models (Pearl) |
+
+### 3.2 Formal Approaches
+
+- **Circumscription** (McCarthy): Minimize abnormality
+- **Default logic** (Reiter): Default rules with exceptions
+- **Answer set programming**: Stable models with negation-as-failure
+- **Probabilistic logic**: Weight rules by confidence
+- **Large language models**: Implicit commonsense from training data
+
+### 3.3 Pipeline Integration
+
+Commonsense reasoning commonly enters structured-AI pipelines in:
+- **Articulation**: Interpreting tacit knowledge requires commonsense context
+- **Structuring**: Default rules for knowledge graph completion
+- **Quality gates**: Commonsense consistency checks on extracted knowledge
+- **Trust dynamics**: Social commonsense for multi-agent coordination
+
+---
+
+## Part 4 — Knowledge Graph Reasoning
+
+### 4.1 Reasoning Tasks
+
+| Task | Input | Output | Method |
+|---|---|---|---|
+| Link prediction | $(h, r, ?)$ | Missing tail entity | Embedding + scoring |
+| Type inference | Entity features | Entity type | Classification |
+| Rule mining | KG triples | Horn rules | AMIE, AnyBURL |
+| Query answering | Complex query | Answer entities | Query embedding |
+| KG completion | Partial KG | Complete KG | Combination methods |
+| Consistency checking | KG + constraints | Violations | DL reasoning |
+
+### 4.2 Formal Quality Metrics
+
+| Metric | Formula | Interpretation |
+|---|---|---|
+| Precision | TP / (TP + FP) | Fraction of predicted links that are correct |
+| Recall | TP / (TP + FN) | Fraction of true links predicted |
+| MRR | $\frac{1}{|Q|}\sum_{q \in Q} \frac{1}{\text{rank}_q}$ | Mean reciprocal rank of correct answers |
+| Hits@K | Fraction of correct in top-K | Retrieval quality |
+| Semantic validity | Ontology-consistency rate | Structural soundness |
+
+### 4.3 Knowledge Graph Architecture
+
+```
+Experience → Raw triples (LLM extraction)
+  → Articulation → Candidate assertions with confidence
+    → Structuring → Validated KG with ontological constraints
+      → Consolidation → Proven properties (Lean formalization)
+        → Innovation → Novel inferences from verified base
+```
+
+Quality gates at each transition enforce:
+- Confidence thresholds (configurable per domain)
+- Ontological consistency (TBox reasoning)
+- Provenance tracking (W3C PROV-O)
+- Temporal validity (assertions expire)
+
+---
+
+## Part 5 — Host-Repository Lean Extension Points
+
+Do not assume repository-local Lean modules, tactics, or namespaces exist unless the host repository explicitly provides them. When a repository has local
+knowledge-graph or quality-gate modules, map them to this generic checklist:
+
+| Local extension point | Symbolic AI aspect | Typical structures |
+|---|---|---|
+| Provenance / audit trail module | DAG well-formedness, trust composition | stages, edges, well-formedness predicates |
+| Causal / knowledge-graph module | Causal DAG and graph formalization | causal links, typed edges, confidence scores |
+| Quality-gate module | Predicate logic on quality measures | gates, thresholds, monotonicity theorems |
+| Classification / regime module | Decision procedures for regimes | regime types, decidability, monotonicity |
+| Causal-reasoning skill handoff | Causal DAGs and counterfactual reasoning | delegate to `@lean-causal-reasoning` |
+
+---
+
+## Part 6 — Research Connections
+
+### 6.1 Epistemic Mapping Targets
+
+| KK (Known) | KU (Gap) | UU (To Discover) |
+|---|---|---|
+| DAG formalization | Full DL reasoning in Lean | OWL-to-Lean translation |
+| Propositional gates | Nonmonotonic formalization | Commonsense integration |
+| Trust composition | Neuro-symbolic verification | LLM-generated proof verification |
+| Provenance chains | Temporal knowledge evolution | Ontology evolution formalization |
+
+### 6.2 Key References
+
+- Brachman & Levesque (2004) — Knowledge Representation and Reasoning
+- Hitzler et al. (2020) — Neuro-Symbolic AI: state of the art
+- Marcus & Davis (2019) — Rebooting AI (commonsense perspective)
+- Hogan et al. (2021) — Knowledge Graphs (comprehensive survey)
+- Davis (2015) — Commonsense reasoning: an event calculus perspective
+
+---
+## Goal-Shape Templates (templates)
+
+| Goal Shape | Target Mechanism | Proof Template |
+| :--- | :--- | :--- |
+| Concept lattice subsumption `C ⊑ D` | `PartialOrder` / `Lattice` | `exact le_trans hCD hDE` |
+| Frame / interval temporal relation `Allen.Before i j` | Interval endpoint inequalities `i.hi < j.lo` | `rcases hi with ...; omega` |
+| Epistemic knowledge `K_a φ → φ` (T-axiom / truthfulness) | Reflexive Kripke accessibility `R a w w` | `intro hK; exact hK w (h_refl a w)` |
+
+## Intent-to-Tactic Phrasebook (phrasebook)
+
+| KRR / Commonsense Intent | Lean 4 Tactic / Pattern | Notes |
+| :--- | :--- | :--- |
+| Prove ontology taxonomy is cycle-free | Assign integer stratum/depth and close with `omega` | Fast kernel check |
+| Verify Allen interval algebra composition table | Unfold endpoint bounds `(lo, hi)` with `lo < hi` and run `omega` | Reduces all 13 Allen relations to linear arithmetic |
+| Prove Kripke S5 epistemic property | Unfold `Knows` over equivalence relation `Equivalence (R a)` | Use `.refl`, `.symm`, `.trans` |
+
+## Error-to-Fix Table (errors)
+
+| Error / Symptom | Root Cause | Fix |
+| :--- | :--- | :--- |
+| Degenerate empty interval breaks Allen transitivity | Missing `i.lo < i.hi` well-formedness invariant | Bundle `lo < hi` inside `structure Interval` |
+| Belief (`KD45`) vs Knowledge (`S5`) conflation | Used reflexive `R` for fallible belief | Use serial, transitive, Euclidean (`KD45`) frame for belief |

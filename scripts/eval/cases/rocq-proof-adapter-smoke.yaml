@@ -1,0 +1,10 @@
+name: rocq-proof-adapter-smoke
+skill: rocq-proof-adapter
+description: Smoke test verifying routing, workflow, and handbook link for @rocq-proof-adapter.
+prompt: "Apply @rocq-proof-adapter workflow and consult references/rocq-proof-adapter-handbook.md."
+expected_sections:
+  - "## Routing"
+  - "## Workflow"
+  - "## Recovery & STOP"
+  - "## Handoffs"
+  - "## Detailed reference"

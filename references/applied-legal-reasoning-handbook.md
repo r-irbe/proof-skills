@@ -238,9 +238,9 @@ The safety envelope in `AgenticSafety.lean` can be viewed as regulatory complian
 
 | If working on... | Also consult... |
 |---|---|
-| Deontic logic (obligation/permission) | `ai-causal-deontic` |
-| Argumentation attack graphs | `math-graph-knowledge` |
-| Defeasible reasoning | `ai-commonsense-reasoning` (default logic) |
-| Regulatory AI | `ai-high-stakes-verifiable` |
+| Deontic logic (obligation/permission) | `lean-causal-reasoning` |
+| Argumentation attack graphs | `lean-math-discrete` |
+| Defeasible reasoning | `lean-knowledge-formalization` (default logic) |
+| Regulatory AI | `lean-ai-formalization` |
 | Provenance as audit trail | `lean-knowledge-formalization` |
-| Trust in legal contexts | `ai-agentic-evolving` (trust dynamics) |
+| Trust in legal contexts | `lean-ai-formalization` (trust dynamics) |

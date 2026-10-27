@@ -1,0 +1,10 @@
+name: lean-proof-repair-smoke
+skill: lean-proof-repair
+description: Smoke test verifying routing, workflow, and handbook link for @lean-proof-repair.
+prompt: "Apply @lean-proof-repair workflow and consult references/lean-proof-repair-handbook.md."
+expected_sections:
+  - "## Routing"
+  - "## Workflow"
+  - "## Recovery & STOP"
+  - "## Handoffs"
+  - "## Detailed reference"

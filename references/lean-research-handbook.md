@@ -425,7 +425,7 @@ For domain-specific research, delegate to the appropriate specialized skill:
 ## Part 9 — Typed Research Protocols (M / T / L / S / D / X / E)
 
 This skill absorbs the 7-type dispatch matrix previously hosted in
-the standalone `lean-research-types` skill (now a redirect stub).  Use
+the standalone `lean-research` skill (now a redirect stub).  Use
 the matrix when classifying an incoming research question; each type
 has its own protocol headline, output template, and council routing.
 

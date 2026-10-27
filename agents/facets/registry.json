@@ -1,0 +1,484 @@
+{
+  "schema_version": "2.0.0",
+  "description": "Canonical 5 Role-Actor Containers + 23 Soul Overlays + Domain Facet Registry for proof-skills.",
+  "role_containers": {
+    "specifier": {
+      "role_index": 1,
+      "file": "agents/specifier.md",
+      "tools": [
+        "read",
+        "write",
+        "edit",
+        "bash",
+        "mcp:lean-lsp"
+      ],
+      "mcp_allowlist": [
+        "lean_search",
+        "lean_lookup_symbol",
+        "lean_decl_references",
+        "lean_module_hierarchy",
+        "lean_diagnostics",
+        "lean_counterexample_search",
+        "lean_blueprint",
+        "lean_metrics"
+      ],
+      "primary_skills": [
+        "lean-gateway",
+        "lean-specification",
+        "lean-blueprint",
+        "lean-formalization-breakdown",
+        "lean-dag-visualizer",
+        "lean-doc-requirements",
+        "lean-research",
+        "epistemic-discovery-engine",
+        "epistemic-mapping",
+        "research-council"
+      ],
+      "soul_overlays": [
+        "lean-spec-architect",
+        "formalization-breakdown-curator",
+        "formalization-dag-navigator",
+        "premise-retrieval-specialist",
+        "research-alpha-foundations",
+        "research-beta-dynamics",
+        "research-gamma-epistemics",
+        "research-delta-systems",
+        "research-epsilon-bridge"
+      ]
+    },
+    "prover": {
+      "role_index": 2,
+      "file": "agents/prover.md",
+      "tools": [
+        "read",
+        "write",
+        "edit",
+        "bash",
+        "mcp:lean-lsp"
+      ],
+      "mcp_allowlist": [
+        "lean_goal",
+        "lean_diagnostics",
+        "lean_counterexample_search",
+        "lean_lookup_symbol",
+        "lean_decl_references",
+        "lean_search",
+        "lean_exec",
+        "lean_resync"
+      ],
+      "primary_skills": [
+        "lean-proof",
+        "lean-proof-repair",
+        "lean-core-only",
+        "lean-build",
+        "lean-setup",
+        "lean-bisect",
+        "lean-mwe",
+        "counterexample-first-proving",
+        "lean-sair-kernel-optimization",
+        "itp-cross-porting",
+        "rocq-proof-adapter",
+        "isabelle-isar-adapter",
+        "hol-metamath-adapter",
+        "lean-math-foundations",
+        "lean-math-discrete",
+        "lean-math-stochastic",
+        "lean-math-dynamical",
+        "lean-math-optimization",
+        "lean-math-analysis",
+        "lean-ai-formalization",
+        "lean-causal-reasoning",
+        "lean-knowledge-formalization",
+        "lean-applied-reasoning",
+        "lean-competitive-math",
+        "lean-bigraph-modeling",
+        "lean-convergence-verification",
+        "lean-nested-learning",
+        "lean-security-formalization"
+      ],
+      "soul_overlays": [
+        "lean-proof-builder",
+        "counterexample-falsification-hunter",
+        "sair-kernel-optimizer",
+        "cross-itp-porter"
+      ]
+    },
+    "auditor": {
+      "role_index": 3,
+      "file": "agents/auditor.md",
+      "tools": [
+        "read",
+        "grep",
+        "find",
+        "ls",
+        "bash",
+        "mcp:lean-lsp"
+      ],
+      "mcp_allowlist": [
+        "lean_diagnostics",
+        "lean_axiom_closure",
+        "lean_metrics",
+        "lean_counterexample_search",
+        "lean_lookup_symbol",
+        "lean_decl_references",
+        "lean_module_hierarchy",
+        "lean_search"
+      ],
+      "primary_skills": [
+        "lean-proof-review",
+        "lean-enforcement",
+        "lean-axiom-closure",
+        "lean-replay-verification",
+        "lean-tautology-triage",
+        "lean-quality-engine",
+        "lean-review-council",
+        "lean-deep-audit",
+        "lean-retroactive-audit"
+      ],
+      "soul_overlays": [
+        "proof-reviewer",
+        "enforcement-auditor",
+        "abstract-interp-vacuity-auditor",
+        "council-sigma-soundness",
+        "council-phi-faithfulness",
+        "council-nu-novelty",
+        "council-tau-tactics",
+        "council-omega-chair"
+      ]
+    },
+    "editor": {
+      "role_index": 4,
+      "file": "agents/editor.md",
+      "tools": [
+        "read",
+        "write",
+        "edit",
+        "bash",
+        "mcp:lean-lsp"
+      ],
+      "mcp_allowlist": [
+        "lean_goal",
+        "lean_diagnostics",
+        "lean_lookup_symbol",
+        "lean_decl_references",
+        "lean_search",
+        "lean_blueprint",
+        "lean_metrics"
+      ],
+      "primary_skills": [
+        "lean-proof-refactor",
+        "lean-pedagogical-exposition",
+        "lean-report",
+        "lean-doc-improvement",
+        "lean-doc-feedback",
+        "research-synthesis-engine"
+      ],
+      "soul_overlays": [
+        "math-pedagogy-author"
+      ]
+    },
+    "gardener": {
+      "role_index": 5,
+      "file": "agents/gardener.md",
+      "tools": [
+        "read",
+        "write",
+        "edit",
+        "bash",
+        "mcp:lean-lsp"
+      ],
+      "mcp_allowlist": [
+        "lean_search",
+        "lean_lookup_symbol",
+        "lean_decl_references",
+        "lean_module_hierarchy",
+        "lean_metrics",
+        "lean_axiom_closure"
+      ],
+      "primary_skills": [
+        "lean-zettelkasten",
+        "lean-retro-methodology",
+        "lean-upstream-porting",
+        "lean-pr",
+        "lean-package-research",
+        "lean-vendor-substrate",
+        "lean-integration-protocol",
+        "math-project-management",
+        "math-product-management",
+        "math-strategy-studio",
+        "applied-engineering-disciplines",
+        "applied-legal-reasoning",
+        "applied-data-information-security"
+      ],
+      "soul_overlays": [
+        "lean-retro-facilitator"
+      ]
+    }
+  },
+  "soul_overlays": {
+    "proof-reviewer": {
+      "file": "agents/souls/proof-reviewer.md",
+      "role_container": "auditor",
+      "overlay_type": "analyst",
+      "primary_skill": "lean-proof-review",
+      "description": "Read-only 4-layer Lean 4 proof reviewer (Soundness, Faithfulness, Non-Vacuity, Hygiene)."
+    },
+    "enforcement-auditor": {
+      "file": "agents/souls/enforcement-auditor.md",
+      "role_container": "auditor",
+      "overlay_type": "analyst",
+      "primary_skill": "lean-enforcement",
+      "description": "Read-only CI gatekeeper and axiom-closure auditor."
+    },
+    "formalization-breakdown-curator": {
+      "file": "agents/souls/formalization-breakdown-curator.md",
+      "role_container": "specifier",
+      "overlay_type": "analyst",
+      "primary_skill": "lean-formalization-breakdown",
+      "description": "Curator of theorem formalization breakdown registries and fidelity tables."
+    },
+    "math-pedagogy-author": {
+      "file": "agents/souls/math-pedagogy-author.md",
+      "role_container": "editor",
+      "overlay_type": "analyst",
+      "primary_skill": "lean-pedagogical-exposition",
+      "description": "Textbook-grade mathematical exposition author translating Lean 4 proofs into clear prose."
+    },
+    "formalization-dag-navigator": {
+      "file": "agents/souls/formalization-dag-navigator.md",
+      "role_container": "specifier",
+      "overlay_type": "analyst",
+      "primary_skill": "lean-dag-visualizer",
+      "description": "Module dependency DAG navigator, cycle detector, and critical-path analyzer."
+    },
+    "lean-proof-builder": {
+      "file": "agents/souls/lean-proof-builder.md",
+      "role_container": "prover",
+      "overlay_type": "operational",
+      "primary_skill": "lean-proof",
+      "description": "Step-by-step interactive Lean 4 tactic synthesis specialist."
+    },
+    "lean-spec-architect": {
+      "file": "agents/souls/lean-spec-architect.md",
+      "role_container": "specifier",
+      "overlay_type": "operational",
+      "primary_skill": "lean-specification",
+      "description": "Three-part Lean 4 theorem specification and `@[blueprint]` architect."
+    },
+    "counterexample-falsification-hunter": {
+      "file": "agents/souls/counterexample-falsification-hunter.md",
+      "role_container": "prover",
+      "overlay_type": "operational",
+      "primary_skill": "counterexample-first-proving",
+      "description": "Plausible property-based testing and boundary-witness falsification hunter."
+    },
+    "abstract-interp-vacuity-auditor": {
+      "file": "agents/souls/abstract-interp-vacuity-auditor.md",
+      "role_container": "auditor",
+      "overlay_type": "operational",
+      "primary_skill": "lean-tautology-triage",
+      "description": "Abstract-interpretation auditor for Nat subtraction truncation, division-by-zero, and vacuous hypotheses."
+    },
+    "sair-kernel-optimizer": {
+      "file": "agents/souls/sair-kernel-optimizer.md",
+      "role_container": "prover",
+      "overlay_type": "operational",
+      "primary_skill": "lean-sair-kernel-optimization",
+      "description": "SAIR Middle-IR, kernel reduction, and BitVec/SWAR proof-term optimizer."
+    },
+    "premise-retrieval-specialist": {
+      "file": "agents/souls/premise-retrieval-specialist.md",
+      "role_container": "specifier",
+      "overlay_type": "operational",
+      "primary_skill": "lean-research",
+      "description": "Multi-source premise retrieval specialist across Loogle, Mathlib, Kuzu book graphs, and arXiv."
+    },
+    "cross-itp-porter": {
+      "file": "agents/souls/cross-itp-porter.md",
+      "role_container": "prover",
+      "overlay_type": "operational",
+      "primary_skill": "itp-cross-porting",
+      "description": "Cross-ITP proof translator across Lean 4, Rocq/MathComp, Isabelle/HOL, HOL Light, Agda, and Metamath."
+    },
+    "lean-retro-facilitator": {
+      "file": "agents/souls/lean-retro-facilitator.md",
+      "role_container": "gardener",
+      "overlay_type": "operational",
+      "primary_skill": "lean-retro-methodology",
+      "description": "RETRO cycle facilitator for corpus consolidation, lemma extraction, and Zettelkasten curation."
+    },
+    "council-sigma-soundness": {
+      "file": "agents/souls/council-sigma-soundness.md",
+      "role_container": "auditor",
+      "overlay_type": "council-review",
+      "primary_skill": "lean-review-council",
+      "description": "Review Council Member Sigma (Kernel Guardian): axiom closure, sorry-freedom, and trust-base lockdown."
+    },
+    "council-phi-faithfulness": {
+      "file": "agents/souls/council-phi-faithfulness.md",
+      "role_container": "auditor",
+      "overlay_type": "council-review",
+      "primary_skill": "lean-review-council",
+      "description": "Review Council Member Phi (Statement Oracle): semantic faithfulness, non-vacuity, and Nat-truncation audit."
+    },
+    "council-nu-novelty": {
+      "file": "agents/souls/council-nu-novelty.md",
+      "role_container": "auditor",
+      "overlay_type": "council-review",
+      "primary_skill": "lean-review-council",
+      "description": "Review Council Member Nu (Novelty Scout): Mathlib/corpus deduplication and generalization readiness."
+    },
+    "council-tau-tactics": {
+      "file": "agents/souls/council-tau-tactics.md",
+      "role_container": "auditor",
+      "overlay_type": "council-review",
+      "primary_skill": "lean-review-council",
+      "description": "Review Council Member Tau (Tactic Ergonomist): proof maintainability, simp hygiene, and refactoring."
+    },
+    "council-omega-chair": {
+      "file": "agents/souls/council-omega-chair.md",
+      "role_container": "auditor",
+      "overlay_type": "council-review",
+      "primary_skill": "lean-review-council",
+      "description": "Review Council Member Omega (Synthesis Chair): RALPH loop arbitration, SDR calculation, and final sign-off."
+    },
+    "research-alpha-foundations": {
+      "file": "agents/souls/research-alpha-foundations.md",
+      "role_container": "specifier",
+      "overlay_type": "council-research",
+      "primary_skill": "research-council",
+      "description": "Research Council Member Alpha (Foundations & Type Theory): universes, algebra, categories, and logic."
+    },
+    "research-beta-dynamics": {
+      "file": "agents/souls/research-beta-dynamics.md",
+      "role_container": "specifier",
+      "overlay_type": "council-research",
+      "primary_skill": "research-council",
+      "description": "Research Council Member Beta (Analysis, Dynamics & PDEs): topology, measure theory, Lyapunov, and stochastic systems."
+    },
+    "research-gamma-epistemics": {
+      "file": "agents/souls/research-gamma-epistemics.md",
+      "role_container": "specifier",
+      "overlay_type": "council-research",
+      "primary_skill": "research-council",
+      "description": "Research Council Member Gamma (Epistemics, Causal & AI Safety): KRR, causal DAGs, deontic logic, and verifiable AI."
+    },
+    "research-delta-systems": {
+      "file": "agents/souls/research-delta-systems.md",
+      "role_container": "specifier",
+      "overlay_type": "council-research",
+      "primary_skill": "research-council",
+      "description": "Research Council Member Delta (Discrete Systems, Security & Optimization): graphs, bigraphs, games, and security."
+    },
+    "research-epsilon-bridge": {
+      "file": "agents/souls/research-epsilon-bridge.md",
+      "role_container": "specifier",
+      "overlay_type": "council-research",
+      "primary_skill": "research-council",
+      "description": "Research Council Member Epsilon (Cross-ITP & Literature Bridge): concordance mapping, book indexing, and synthesis."
+    }
+  },
+  "domain_facets": {
+    "core": {
+      "description": "Core Lean 4 proving, specification, build, and repair lifecycle.",
+      "skills": [
+        "lean-gateway",
+        "lean-specification",
+        "lean-blueprint",
+        "lean-proof",
+        "lean-proof-repair",
+        "lean-core-only",
+        "lean-build",
+        "lean-setup",
+        "lean-bisect",
+        "lean-mwe",
+        "counterexample-first-proving",
+        "lean-sair-kernel-optimization"
+      ],
+      "default_souls": [
+        "lean-spec-architect",
+        "lean-proof-builder",
+        "counterexample-falsification-hunter"
+      ]
+    },
+    "math": {
+      "description": "Unified mathematical formalization domains (Foundations, Discrete, Stochastic, Dynamical, Optimization, Analysis, Competitive, Convergence).",
+      "skills": [
+        "lean-math-foundations",
+        "lean-math-discrete",
+        "lean-math-stochastic",
+        "lean-math-dynamical",
+        "lean-math-optimization",
+        "lean-math-analysis",
+        "lean-competitive-math",
+        "lean-convergence-verification"
+      ],
+      "default_souls": [
+        "research-alpha-foundations",
+        "research-beta-dynamics",
+        "lean-proof-builder"
+      ]
+    },
+    "ai": {
+      "description": "Verifiable AI, causal/deontic reasoning, KRR, bigraphs, nested learning, security, and applied reasoning.",
+      "skills": [
+        "lean-ai-formalization",
+        "lean-causal-reasoning",
+        "lean-knowledge-formalization",
+        "lean-applied-reasoning",
+        "lean-bigraph-modeling",
+        "lean-nested-learning",
+        "lean-security-formalization"
+      ],
+      "default_souls": [
+        "research-gamma-epistemics",
+        "research-delta-systems",
+        "lean-proof-builder"
+      ]
+    },
+    "governance": {
+      "description": "Soundness review, enforcement gates, axiom lockdown, Review/Research Councils, RETRO, and Zettelkasten.",
+      "skills": [
+        "lean-proof-review",
+        "lean-enforcement",
+        "lean-axiom-closure",
+        "lean-replay-verification",
+        "lean-tautology-triage",
+        "lean-quality-engine",
+        "lean-review-council",
+        "lean-deep-audit",
+        "lean-retroactive-audit",
+        "lean-retro-methodology",
+        "lean-zettelkasten",
+        "lean-upstream-porting",
+        "lean-pr",
+        "lean-formalization-breakdown",
+        "lean-dag-visualizer"
+      ],
+      "default_souls": [
+        "proof-reviewer",
+        "enforcement-auditor",
+        "abstract-interp-vacuity-auditor",
+        "council-sigma-soundness",
+        "council-phi-faithfulness",
+        "council-nu-novelty",
+        "council-tau-tactics",
+        "council-omega-chair",
+        "lean-retro-facilitator"
+      ]
+    },
+    "multi-prover": {
+      "description": "Cross-ITP porting across Lean 4, Rocq/MathComp, Isabelle/HOL, HOL Light, Agda, and Metamath (CONC-01..20).",
+      "skills": [
+        "itp-cross-porting",
+        "rocq-proof-adapter",
+        "isabelle-isar-adapter",
+        "hol-metamath-adapter"
+      ],
+      "default_souls": [
+        "cross-itp-porter",
+        "research-epsilon-bridge"
+      ]
+    }
+  }
+}

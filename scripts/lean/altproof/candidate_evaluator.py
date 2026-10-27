@@ -106,3 +106,38 @@ def rank_algorithm_substitutions(
     ]
     # Rank descending by net improvement
     return sorted(evaluated, key=lambda ec: ec.net_improvement, reverse=True)
+
+
+
+def score_tactic_branch(
+    subgoal_texts: list[str],
+    state_history: list[str] | None = None,
+    current_state: str = "",
+    model_fn=None,
+) -> dict:
+    """Evaluate a multi-subgoal tactic transition using `nanoproof`'s hardest-subgoal
+    bottleneck (`min(subgoal_scores)`) + `LeanProgress` remaining-step scoring +
+    semantic cycle detection."""
+    from cost_ranker import (
+        is_cycling,
+        leanprogress_scorer,
+        score_subgoal_bottleneck,
+    )
+
+    cycling = is_cycling(state_history or [], current_state) if current_state else False
+    if cycling:
+        return {
+            "bottleneck_score": 0.0,
+            "subgoal_scores": [],
+            "is_cycling": True,
+            "recommended": False,
+        }
+    scores = [leanprogress_scorer(sg, model_fn=model_fn) for sg in subgoal_texts]
+    b_score = score_subgoal_bottleneck(scores)
+    return {
+        "bottleneck_score": b_score,
+        "subgoal_scores": scores,
+        "is_cycling": False,
+        "recommended": b_score > 0.0,
+    }
+

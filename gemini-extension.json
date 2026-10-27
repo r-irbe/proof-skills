@@ -18,7 +18,14 @@
     }
   },
   "capabilities": {
-    "abstractionTiers": ["L0", "L1", "L2", "L3", "L4"],
+    "abstractionTiers": [
+      "L0",
+      "L1",
+      "L2",
+      "L3",
+      "L4"
+    ],
     "knowledgeGraph": "kuzu/lean-knowledge.kz"
-  }
+  },
+  "agents": "./agents"
 }

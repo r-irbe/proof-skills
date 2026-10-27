@@ -1,0 +1,10 @@
+name: itp-cross-porting-smoke
+skill: itp-cross-porting
+description: Smoke test verifying routing, workflow, and handbook link for @itp-cross-porting.
+prompt: "Apply @itp-cross-porting workflow and consult references/itp-cross-porting-handbook.md."
+expected_sections:
+  - "## Routing"
+  - "## Workflow"
+  - "## Recovery & STOP"
+  - "## Handoffs"
+  - "## Detailed reference"

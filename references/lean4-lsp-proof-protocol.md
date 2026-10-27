@@ -55,26 +55,26 @@ In Claude Code / Cursor / Copilot, invoke `mcp__lean-lsp__<ToolName>` directly.
 | `lean_lookup_symbol` | `symbol` | *(accepts alias `name` / `query`)* | Offline `.ilean` jump-to-definition: exact file path, line/col range, and module (< 5 ms) |
 | `lean_decl_references` | `symbol` | `direction` (`"uses" \| "usedBy" \| "both"`), `limit` (default `50`) | Offline declaration-level reference graph from `.ilean` (< 5 ms) |
 | `lean_module_hierarchy` | `moduleName` | `direction` (`"imports" \| "importedBy" \| "both"`), `transitive` (bool), `maxDepth` | Forward `imports` and reverse `importedBy` DAG traversal with cycle detection (< 5 ms) |
-| `lean_dependency_subgraph` | `moduleName` | `maxDepth` (default `5`), `format` (`"mermaid" \| "dot" \| "json"`) | Renders local import subgraph around a module (< 10 ms) |
+| `lean_module_hierarchy` (`direction: "subgraph"`) | `moduleName` | `direction: "subgraph"`, `maxDepth`, `format` | Renders local import subgraph around a module (< 10 ms) |
 
 ### 2.3 Unified Search, Book Indexes & Cross-ITP Concordance Tools
 
 | Tool Name | Required Args | Key Optional Args | Purpose & Speed |
 | :--- | :--- | :--- | :--- |
 | `lean_search` | `query` | `source` (`"code" \| "loogle" \| "ontology" \| "arxiv" \| "datasets" \| "reservoir" \| "book" \| "concordance" \| "symbol" \| "graph"`), `limit`, `prover`, `book` | Unified search across local code, Loogle, LeanSearch, Reservoir, arXiv, Kuzu graph, and ITP ontology |
-| `lean_book_index_lookup` | `term` | `book` (corpus substring, e.g. `"cousot"`), `prover` (`"lean4" \| "coq" \| "isabelle" \| "hol_light"`) | Searches 65+ author-curated back-of-the-book indexes (`*.index.json`) (< 10 ms) |
-| `lean_cross_itp_concordance` | `concept` | `source_prover`, `target_prover` | Translates proof concepts & tactics across Lean 4, Coq/Rocq, Isabelle, HOL Light, Agda (< 10 ms) |
+| `lean_search` (`source: "book"`) | `query` | `source: "book"`, `book` (10 standalone JSON book indexes + 42 Kuzu-indexed books) | Searches curated back-of-the-book indexes and Kuzu book graph (< 10 ms) |
+| `lean_search` (`source: "concordance"`) | `query` | `source: "concordance"`, `source_prover`, `target_prover` | Translates 20 proof mechanisms (`CONC-01..20`) across 6 provers (Lean 4, Rocq, Isabelle, HOL Light, Agda, Metamath) |
 
 ### 2.4 Metrics, Audits, Blueprints & FFI Tools
 
 | Tool Name | Required Args | Key Optional Args | Purpose & Speed |
 | :--- | :--- | :--- | :--- |
 | `lean_metrics` | `target` | `action` (`"census" \| "hierarchy" \| "subgraph" \| "bigraph" \| "axiom_audit" \| "altproof"`), `format`, `goal`, `proof` | Consolidated census, Milner Place-Link bigraph projection, static axiom/sorry audit, and AltProof analysis |
-| `lean_module_census` | `targetPath` | `format` (`"markdown" \| "json" \| "summary"`) | Fast declaration & line census over a file or directory |
+| `lean_metrics` (`action: "census"`) | `target` | `action: "census"`, `format` (`"markdown" \| "json" \| "summary"`) | Fast declaration & line census over a file or directory |
 | `lean_axiom_closure` | `symbol` | `module` (declaring module to import first) | Kernel trust-base check via `#print axioms <symbol>` |
 | `lean_blueprint` | *(none)* | `action` (`"status" \| "scaffold" \| "zettel" \| "skeleton" \| "walkthrough" \| "graph_neighborhood"`), `symbol`, `filePath`, `formalizationDir`, `blueprintDir` | Audits `\leanok` / `\uses` coverage or generates LaTeX scaffolds, proof skeletons, walkthroughs, and Zettels |
-| `lean_blueprint_scaffold` | `symbol` | `filePath`, `line` | Generates LaTeX `\begin{theorem}...\leanok` scaffold for a declaration |
-| `lean_proof_skeleton` | `filePath` or `symbol` | *(none)* | Extracts statement + `have`/`obtain`/`calc`/`induction` milestone outline |
+| `lean_blueprint` (`action: "scaffold"`) | `symbol` | `action: "scaffold"`, `filePath`, `line` | Generates LaTeX `\begin{theorem}...\leanok` scaffold for a declaration |
+| `lean_blueprint` (`action: "skeleton"`) | `target` | `action: "skeleton"` | Extracts statement + `have`/`obtain`/`calc`/`induction` milestone outline |
 | `lean_ffi` | *(none)* | `action` (`"inspect_env" \| "resolve_symbol" \| "verify_headers" \| "sysroot"`), `externName`, `cHeaderPath` | Inspects Lean 4 `@[extern]` C FFI bindings and `lean --print-prefix` sysroot headers |
 
 ---

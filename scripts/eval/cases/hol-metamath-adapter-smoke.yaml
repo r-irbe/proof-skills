@@ -1,0 +1,10 @@
+name: hol-metamath-adapter-smoke
+skill: hol-metamath-adapter
+description: Smoke test verifying routing, workflow, and handbook link for @hol-metamath-adapter.
+prompt: "Apply @hol-metamath-adapter workflow and consult references/hol-metamath-adapter-handbook.md."
+expected_sections:
+  - "## Routing"
+  - "## Workflow"
+  - "## Recovery & STOP"
+  - "## Handoffs"
+  - "## Detailed reference"

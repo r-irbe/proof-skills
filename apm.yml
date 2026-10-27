@@ -1,86 +1,152 @@
-# --------------------------------------------------------------------
-# apm.yml -- Agent Package Manager manifest (microsoft/apm)
-# --------------------------------------------------------------------
-# This file makes `proof-skills` installable with one command in any
-# project that uses APM:
-#
-#   apm install r-irbe/proof-skills                       # entire bundle
-#   apm install r-irbe/proof-skills --skill lean-proof    # single skill
-#   apm install r-irbe/proof-skills#v0.1.0                # version-pinned
-#
-# Package layout: SKILL COLLECTION
-# (per https://microsoft.github.io/apm/reference/package-types/
-#  -- "skills/<name>/SKILL.md" -- many independent skills in one repo.)
-#
-# APM auto-discovers every `skills/<name>/SKILL.md`; no skill list is
-# required here. A consumer's `--skill X` selection is persisted into
-# THEIR apm.yml + apm.lock.yaml, not this file.
-# --------------------------------------------------------------------
-
+# apm.yml -- Agent Package Manager manifest for proof-skills
+# Spec: https://github.com/microsoft/apm
 name: proof-skills
-version: 0.1.0
-description: |
-  Lean 4 / Mathlib4 agent-skill toolkit -- proof tactics, math-domain
-  workflows, doc/review/research patterns, zettelkasten, and generic
-  tooling. Project-agnostic; instantiable via `<Project>` placeholders.
-
-author: r-irbe
+version: 0.3.0
+description: "First-party toolkit of 65 active v2 skills, 5 Role-Actor Containers, 23 soul overlays, 6-prover concordance (CONC-01..20), and modular template packs for Lean 4 formalization, AI/KRR reasoning, and cross-ITP verification."
+author: "Radu Irbe"
 license: Apache-2.0
+type: hybrid
 
-# Pointers a registry / `apm view` will surface.
-keywords:
-  - lean4
-  - mathlib4
-  - agent-skills
-  - formal-verification
-  - proof-engineering
-  - zettelkasten
+# First-party skill packs & modular APM profiles:
+#   - core: Core Lean 4 proving, repair, build, setup, bisect, MWE, and kernel optimization
+#   - math: Unified Lean 4 mathematical domain skills (foundations, discrete, stochastic, dynamical, optimization, analysis, competitive, convergence)
+#   - ai: Verifiable AI, causal/deontic reasoning, KRR, bigraphs, nested learning, security, and applied reasoning
+#   - governance: Review/Research councils, enforcement, axiom closure, tautology triage, RETRO, Zettelkasten, and upstream porting
+#   - multi-prover: Cross-ITP concordance router and dialect adapters (Lean 4, Rocq, Isabelle, HOL Light, Agda, Metamath)
+#   - pack-arithmetic-geometry: 131 ModularJacobian & FLT templates in templates/packs/arithmetic-geometry/
+#   - pack-fluid-pde: 10 Fluid PDE templates in templates/packs/fluid-pde/
+profiles:
+  core:
+    description: "Core Lean 4 proving, specification, proof repair, build, and SAIR kernel optimization."
+    agents:
+      - agents/specifier.md
+      - agents/prover.md
+    skills:
+      - skills/lean-gateway
+      - skills/lean-specification
+      - skills/lean-blueprint
+      - skills/lean-proof
+      - skills/lean-proof-repair
+      - skills/lean-core-only
+      - skills/lean-build
+      - skills/lean-setup
+      - skills/lean-bisect
+      - skills/lean-mwe
+      - skills/counterexample-first-proving
+      - skills/lean-sair-kernel-optimization
+    templates:
+      - templates/Template_*.lean
+      - templates/Template_*.md
+  math:
+    description: "Unified Lean 4 mathematical formalization skills and 3-table lookup handbooks."
+    agents:
+      - agents/specifier.md
+      - agents/prover.md
+    skills:
+      - skills/lean-math-foundations
+      - skills/lean-math-discrete
+      - skills/lean-math-stochastic
+      - skills/lean-math-dynamical
+      - skills/lean-math-optimization
+      - skills/lean-math-analysis
+      - skills/lean-competitive-math
+      - skills/lean-convergence-verification
+  ai:
+    description: "Formal AI safety, causal/deontic reasoning, knowledge formalization, bigraphs, nested learning, and security."
+    agents:
+      - agents/specifier.md
+      - agents/prover.md
+    skills:
+      - skills/lean-ai-formalization
+      - skills/lean-causal-reasoning
+      - skills/lean-knowledge-formalization
+      - skills/lean-applied-reasoning
+      - skills/lean-bigraph-modeling
+      - skills/lean-nested-learning
+      - skills/lean-security-formalization
+      - skills/ai-guard-judge-eval
+  governance:
+    description: "Read-only auditing, axiom lockdown, Review/Research Councils, pedagogical exposition, RETRO, and Zettelkasten."
+    agents:
+      - agents/auditor.md
+      - agents/editor.md
+      - agents/gardener.md
+    skills:
+      - skills/lean-proof-review
+      - skills/lean-enforcement
+      - skills/lean-axiom-closure
+      - skills/lean-replay-verification
+      - skills/lean-tautology-triage
+      - skills/lean-quality-engine
+      - skills/lean-review-council
+      - skills/lean-deep-audit
+      - skills/lean-retroactive-audit
+      - skills/lean-proof-refactor
+      - skills/lean-pedagogical-exposition
+      - skills/lean-report
+      - skills/lean-doc-improvement
+      - skills/lean-doc-requirements
+      - skills/lean-doc-feedback
+      - skills/lean-research
+      - skills/lean-package-research
+      - skills/epistemic-discovery-engine
+      - skills/epistemic-mapping
+      - skills/research-council
+      - skills/research-synthesis-engine
+      - skills/lean-retro-methodology
+      - skills/lean-zettelkasten
+      - skills/lean-upstream-porting
+      - skills/lean-pr
+      - skills/lean-vendor-substrate
+      - skills/lean-formalization-breakdown
+      - skills/lean-dag-visualizer
+      - skills/lean-integration-protocol
+      - skills/math-project-management
+      - skills/math-product-management
+      - skills/math-strategy-studio
+      - skills/applied-engineering-disciplines
+      - skills/applied-legal-reasoning
+      - skills/applied-data-information-security
+  multi-prover:
+    description: "6-prover concordance (CONC-01..20) and dialect adapters for Rocq, Isabelle/Isar, HOL Light, Agda, and Metamath."
+    agents:
+      - agents/prover.md
+    skills:
+      - skills/itp-cross-porting
+      - skills/rocq-proof-adapter
+      - skills/isabelle-isar-adapter
+      - skills/hol-metamath-adapter
+    dialects:
+      - references/dialects/lean4.json
+      - references/dialects/rocq.json
+      - references/dialects/isabelle.json
+      - references/dialects/hol_light.json
+      - references/dialects/agda.json
+      - references/dialects/metamath.json
+  pack-arithmetic-geometry:
+    description: "131 ModularJacobian, Euler System, Heegner Point, and FLT templates."
+    templates:
+      - templates/packs/arithmetic-geometry/*.md
+  pack-fluid-pde:
+    description: "10 Fluid PDE, Vorticity, Gevrey Class, and Reynolds Cascade templates."
+    templates:
+      - templates/packs/fluid-pde/*.md
 
-repository:
-  type: git
-  url: https://github.com/r-irbe/proof-skills
-
-homepage: https://github.com/r-irbe/proof-skills
-issues: https://github.com/r-irbe/proof-skills/issues
-
-# Auto-detect harnesses on the consumer side. Uncomment to force a
-# specific target on every install:
-# targets:
-#   - copilot
-#   - claude
-#   - cursor
-#   - opencode
-#   - codex
-#   - gemini
-#   - windsurf
-
-# This repo authors skills directly; no transitive APM dependencies.
-# The vendored upstream `leanprover/skills` lives under
-# `vendor/leanprover-skills/` as a plain git submodule (read-only,
-# referenced by `skills/_overrides/<X>/`), NOT as an APM dep -- APM
-# would re-publish those skills, but the override layer needs them
-# verbatim. Convert to apm-dep once upstream ships `apm.yml`.
 dependencies:
   apm: []
   mcp:
-    - lean-lsp
+    - name: lean-lsp
+      registry: false
+      transport: stdio
+      command: node
+      args:
+        - "${PROOF_SKILLS_ROOT}/tools/lean-lsp-mcp/dist/index.js"
+      description: "Bundled Lean 4 LSP + .ilean + Kuzu knowledge-graph MCP server (14 consolidated tools across 6 prover families)"
 
-# Ship any in-repo `.apm/` content the author drops in later (none
-# today). The skill-collection layout under `skills/` is hoisted
-# automatically by APM regardless of this setting.
-includes: auto
-
-# Convenience scripts a consumer can run via `apm run <name>`
-# (experimental in APM 0.x). `doctor` and all lint/audit scripts are
-# read-only / non-mutating; `setup` bootstraps submodules + Python/Node deps.
 scripts:
-  setup: bash scripts/setup-env.sh
-  doctor: bash scripts/setup-env.sh --doctor
-  lint-conformance: python3 scripts/skill-audit/check_conformance.py
-  validate-apm: python3 scripts/lint/apm_validate.py
-  lint-zk: python3 scripts/lean/zettelkasten_lint.py --zk-dir zettelkasten --strict
-  audit-axioms: python3 scripts/lean/axiom_audit.py --help
-  templates-list: ls -1 templates/Template_*.md
-  skills-count: bash -c 'find skills -maxdepth 2 -name SKILL.md -not -path "*_overrides*" | wc -l'
-  test-mcp: node --experimental-strip-types tools/lean-lsp-mcp/tests/test_lean_lsp_mcp.mjs
-
+  setup: "bash scripts/setup-env.sh"
+  doctor: "bash scripts/setup-env.sh --doctor"
+  validate: "python3 scripts/lint/apm_validate.py --strict"
+  conformance: "python3 scripts/skill-audit/check_conformance.py --fail-on any"
+  structure: "python3 scripts/check-structure --strict"
+  zk-lint: "python3 scripts/lean/zettelkasten_lint.py --zk-dir zettelkasten --strict"

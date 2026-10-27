@@ -27,15 +27,40 @@ ALIASES = {
     "profile": "profile_build",
     "tautology": "tautology_scan",
     "council": "council_stv",
+    "repair-proof": "apollo_repair",
+    "sorry2lemma": "apollo_repair",
+    "verify-statement": "verify_statement",
+    "validate-patch": "verify_statement",
+    "run-persist": "run_persist",
+    "disprove-artifact-txn": "run_persist",
+    "evolve-lemma": "lemma_evolver",
+    "conjecture": "lemma_evolver",
+    "check-citations": "check_citations",
+    "check-validation": "check_canary_validation",
+    "check-canary": "check_canary_validation",
+    "detect-v4": "altproof/detect_v4",
 }
+
+FORWARD_SUBCOMMAND_TOOLS = frozenset(
+    {
+        "repair-proof",
+        "sorry2lemma",
+        "verify-statement",
+        "validate-patch",
+        "run-persist",
+        "disprove-artifact-txn",
+        "evolve-lemma",
+        "conjecture",
+    }
+)
 
 
 def main(argv):
     if len(argv) < 2 or argv[1] in ("-h", "--help", "list"):
         print("usage: lean-skills <tool> [args]\ntools:")
         for k in sorted(ALIASES):
-            print("  %-16s -> %s" % (k, ALIASES[k]))
-        print("  %-16s -> %s" % ("altproof <mod>", "altproof/<mod>.py"))
+            print("  %-22s -> %s" % (k, ALIASES[k]))
+        print("  %-22s -> %s" % ("altproof <mod>", "altproof/<mod>.py"))
         return 0
     if argv[1] == "altproof":
         if len(argv) < 3:
@@ -46,14 +71,16 @@ def main(argv):
             return subprocess.call([sys.executable, str(mod)] + argv[3:])
         print("unknown altproof module: " + argv[2], file=sys.stderr)
         return 2
-    name = ALIASES.get(argv[1], argv[1].replace("-", "_"))
+    subcmd = argv[1]
+    name = ALIASES.get(subcmd, subcmd.replace("-", "_"))
+    forwarded_args = argv[1:] if subcmd in FORWARD_SUBCOMMAND_TOOLS else argv[2:]
     for ext, cmd in ((".py", [sys.executable]), (".sh", ["bash"])):
         p = HERE / (name + ext)
         if p.exists():
-            return subprocess.call(cmd + [str(p)] + argv[2:])
+            return subprocess.call(cmd + [str(p)] + forwarded_args)
     p_alt = HERE / "altproof" / (name + ".py")
     if p_alt.exists():
-        return subprocess.call([sys.executable, str(p_alt)] + argv[2:])
+        return subprocess.call([sys.executable, str(p_alt)] + forwarded_args)
     print("unknown tool: " + argv[1], file=sys.stderr)
     return 2
 

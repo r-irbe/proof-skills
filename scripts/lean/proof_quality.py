@@ -899,6 +899,57 @@ def detect_misaligned_docstring(
     )
 
 
+def _split_trailing_digits(ident: str) -> tuple[str, int] | None:
+    """Split `ident` (with optional trailing `'`) into `(alpha_prefix, trailing_number)`."""
+    base = ident.rstrip("'")
+    m = re.match(r"^([A-Za-z_][A-Za-z0-9_]*?)(\d+)$", base)
+    if not m:
+        return None
+    prefix, digits = m.group(1), m.group(2)
+    if not prefix or prefix == "_":
+        return None
+    return prefix, int(digits)
+
+
+def detect_over_concrete_fixed_arity(signature: str) -> str | None:
+    """Detect OVER_CONCRETE_FIXED_ARITY (FIDELITY-08): 4+ sequential numbered scalar
+    parameters with identical prefix (`a0 a1 a2 a3`, `w1 w2 w3 w4`), or 3+ when the
+    prefix contains an underscore (`q1_n1 q1_n2 q1_n3`), encoding a fixed-N instance
+    instead of an arbitrary `Fin n -> T` or `List T` collection."""
+    binders = _extract_binders_list(signature)
+    groups: dict[str, list[tuple[int, str]]] = {}
+    for b in binders:
+        if not _is_value_type(b["type"]):
+            continue
+        for name in b["names"]:
+            if name.startswith("_"):
+                continue
+            sp = _split_trailing_digits(name)
+            if sp is not None:
+                prefix, num = sp
+                groups.setdefault(prefix, []).append((num, name))
+
+    for prefix in sorted(groups):
+        items = sorted(groups[prefix], key=lambda x: x[0])
+        dedup: list[tuple[int, str]] = []
+        for num, nm in items:
+            if not dedup or dedup[-1][0] != num:
+                dedup.append((num, nm))
+        threshold = 3 if "_" in prefix else 4
+        if len(dedup) >= threshold:
+            contiguous = all(
+                dedup[idx + 1][0] == dedup[idx][0] + 1
+                for idx in range(len(dedup) - 1)
+            )
+            if contiguous:
+                sample = ", ".join(nm for _, nm in dedup[:5])
+                return (
+                    f"Theorem parameterizes {len(dedup)} sequential scalar binders (`{sample}`) "
+                    f"with prefix `{prefix}*` instead of an arbitrary `Fin n -> T` or `List T` collection"
+                )
+    return None
+
+
 def find_one_way_bool_checkers(text: str, theorem_blocks: list[dict]) -> list[dict]:
     """Detect ONE_WAY_BOOL_CHECKER: executable `Bool`-returning function `def f ... : Bool`
     that only has a one-way `f ... = true -> ...` theorem in the module without a companion
@@ -1153,7 +1204,97 @@ def find_tautology_candidates(thm: dict) -> list[dict]:
             }
         )
 
+    over_concrete = detect_over_concrete_fixed_arity(signature)
+    if over_concrete:
+        findings.append(
+            {
+                "type": "OVER_CONCRETE_FIXED_ARITY",
+                "severity": "P2",
+                "theorem": thm["name"],
+                "line": thm["line"],
+                "detail": over_concrete,
+            }
+        )
+
     return findings
+
+
+FIDELITY_CODE_MAP = {
+    "HYPOTHESIS_ECHO": "FIDELITY-01",
+    "REFLEXIVE_TAUTOLOGY": "FIDELITY-02",
+    "NAT_NONNEG_TRIVIALITY": "FIDELITY-03",
+    "NAT_SUB_UNGUARDED": "FIDELITY-04",
+    "UNUSED_VALUE_OR_UNDERSCORE_BINDER": "FIDELITY-05",
+    "MISALIGNED_DOCSTRING": "FIDELITY-06",
+    "ONE_WAY_BOOL_CHECKER": "FIDELITY-07",
+    "OVER_CONCRETE_FIXED_ARITY": "FIDELITY-08",
+}
+
+
+def audit_fidelity_defects(source_text: str) -> dict:
+    """Run all 8 statement-vs-proof fidelity detectors on `source_text` and return
+    a canonical dictionary aligned with `lean-analyzer` and `lean-lsp-mcp`."""
+    lines = source_text.splitlines()
+    stripped_text = "\n".join(_strip_lean_comments(lines))
+    theorem_blocks = extract_theorem_blocks(stripped_text)
+    for thm in theorem_blocks:
+        thm["docstring"] = _extract_preceding_docstring(lines, thm["line"])
+
+    defects: list[dict] = []
+    for thm in theorem_blocks:
+        for f in find_tautology_candidates(thm):
+            if f["type"] in FIDELITY_CODE_MAP:
+                defects.append(
+                    {
+                        "code": FIDELITY_CODE_MAP[f["type"]],
+                        "category": f["type"],
+                        "severity": f["severity"],
+                        "theorem": f["theorem"],
+                        "line": f["line"],
+                        "detail": f["detail"],
+                    }
+                )
+        unused = find_unused_hypotheses(thm["signature"], thm["body"])
+        binder_types = {
+            name: b["type"]
+            for b in _extract_binders_list(thm["signature"])
+            for name in b["names"]
+        }
+        for hyp in unused:
+            if hyp.startswith("_") or _is_value_type(binder_types.get(hyp, "")):
+                defects.append(
+                    {
+                        "code": "FIDELITY-05",
+                        "category": "UNUSED_VALUE_OR_UNDERSCORE_BINDER",
+                        "severity": "P2",
+                        "theorem": thm["name"],
+                        "line": thm["line"],
+                        "detail": f"Binder `{hyp}` is unused in conclusion, other hypotheses, and proof body",
+                    }
+                )
+
+    for f in find_one_way_bool_checkers(source_text, theorem_blocks):
+        defects.append(
+            {
+                "code": "FIDELITY-07",
+                "category": "ONE_WAY_BOOL_CHECKER",
+                "severity": f["severity"],
+                "theorem": f["theorem"],
+                "line": f["line"],
+                "detail": f["detail"],
+            }
+        )
+
+    counts: dict[str, int] = {}
+    for d in defects:
+        counts[d["category"]] = counts.get(d["category"], 0) + 1
+
+    return {
+        "theorem_count": len(theorem_blocks),
+        "defect_count": len(defects),
+        "counts_by_category": counts,
+        "defects": defects,
+    }
 
 
 def _is_concrete_decide_target(signature: str) -> bool:

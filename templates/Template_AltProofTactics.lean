@@ -71,7 +71,7 @@ structure Route where
   provenance : String
 deriving Inhabited, Repr, DecidableEq
 
-/-- The canonical 8-route table corresponding to `SPEC-ALT-PROOF-DES` Section 5b / `route-table.json`. -/
+/-- The canonical 11-route table corresponding to `SPEC-ALT-PROOF-DES` Section 5b / `route-table.json`. -/
 def routeTable : List Route := [
   { id := "extract-shared-block",
     family := "extraction",
@@ -120,7 +120,25 @@ def routeTable : List Route := [
     matchShape := "structural recursion or helper calls with heavy defeq unfolding overhead",
     rewriteHint := "refactor to kernel-friendly primitives (structural Nat.rec, unrolled trial division, import-minimal path)",
     costHint := "high kernel yield: reduces defeq heartbeats and avoids WellFounded.fix traps",
-    provenance := "SAIR Lean Kernel Challenge lanes (primecount L1 structural trial division S5)" }
+    provenance := "SAIR Lean Kernel Challenge lanes (primecount L1 structural trial division S5)" },
+  { id := "constructive-decidable-reduction",
+    family := "kernel-friendly-term-design",
+    matchShape := "Classical.choice leakage in first-order Nat/Int/Bool/BitVec theorems caused by split on &&/And or classical by_cases",
+    rewriteHint := "replace split/by_cases with Bool.and_eq_true, decide_eq_true_eq, omega, or bv_decide to keep axiom closure Classical.choice-free",
+    costHint := "high kernel & trust yield: eliminates Classical.choice from decidable first-order theorems",
+    provenance := "lean_rules constructive-gate audit & AltProof bidirectional cross-pollination" },
+  { id := "closed-def-whnf-caching",
+    family := "kernel-friendly-term-design",
+    matchShape := "giant decimal nat_lit constants (>64 bits) or repeated closed shift-add/mask expressions inside Nat.rec/List.rec step lambdas",
+    rewriteHint := "evaluate closed constant expressions to raw nat_lit at elaboration time via an elab 'eval_nat%' macro (import Lean has 0 exported Lean.* refs), or hoist into a closed top-level def C : Nat := <formula> with a := rfl spec bridge (cached in m_st->m_whnf after 1 evaluation per kernel invocation)",
+    costHint := "eval_nat% gives 0 runtime instruction overhead (vs +160K/invocation for closed def C) and eliminates multi-hundred-digit magic literals",
+    provenance := "SAIR Lean Kernel Challenge C++ type_checker.cpp whnf/m_whnf audit (partition DerivedConstants eval_nat% vs partCplusSpec, sha256 shaPaddingSuffix)" },
+  { id := "gmp-swar-word-packing",
+    family := "algorithm-class-substitution",
+    matchShape := "inner loops over fixed-width integer/boolean arrays or linear recurrences with bounded slot bit-width, or manually unrolled block trees",
+    rewriteHint := "pack k lanes into a single b-bit GMP Nat word (Kronecker substitution / bitboard ANF) and use elaboration-time pre-unfolding (elab 'preunfold%' / 'unroll_top%') over binary-doubling combinators (t0..t6) to eliminate multi-thousand-line source inlining with 0 runtime unfold overhead",
+    costHint := "15-30x kernel instruction reduction on convolution/bitboard loops; preunfold% matches manual inlining (12.72M vs 18.49M for runtime combinators) at 4.2x smaller source",
+    provenance := "SAIR Lean Kernel Challenge (partition Kronecker SWAR convolution, ca-rule110 4-gate ANF + preunfold% t0..t6 block tree, fib unroll_top%, sha256 512-bit schedule window)" }
 ]
 
 /-- Cost ranker weights per B1 `extraction-outranks` heuristic (scaled integers x10)
@@ -162,6 +180,7 @@ structure GoalFeatures where
   hasNegOrContra : Bool := false
   hasNatArith : Bool := false
   hasWellFounded : Bool := false
+  hasBitVec : Bool := false
 deriving Inhabited, Repr, DecidableEq
 
 /-- Check if an `Expr` mentions any constant name satisfying `pred`. -/
@@ -179,7 +198,9 @@ def extractExprFeatures (target : Expr) : GoalFeatures :=
       n == ``ite || n == ``dite || n == ``Decidable.decide
     hasNegOrContra := exprContainsConst target fun n => n == ``Not || n == ``False
     hasNatArith := exprContainsConst target fun n => n == ``Nat || n == ``Int
-    hasWellFounded := exprContainsConst target fun n => n == ``WellFounded.fix }
+    hasWellFounded := exprContainsConst target fun n => n == ``WellFounded.fix
+    hasBitVec := exprContainsConst target fun n =>
+      n == ``BitVec || (n.getRoot == `BitVec) }
 
 /-- Combine two `GoalFeatures` records by logical OR. -/
 def GoalFeatures.merge (a b : GoalFeatures) : GoalFeatures :=
@@ -188,7 +209,8 @@ def GoalFeatures.merge (a b : GoalFeatures) : GoalFeatures :=
     hasIteOrDecide := a.hasIteOrDecide || b.hasIteOrDecide
     hasNegOrContra := a.hasNegOrContra || b.hasNegOrContra
     hasNatArith := a.hasNatArith || b.hasNatArith
-    hasWellFounded := a.hasWellFounded || b.hasWellFounded }
+    hasWellFounded := a.hasWellFounded || b.hasWellFounded
+    hasBitVec := a.hasBitVec || b.hasBitVec }
 
 /-- Extract `GoalFeatures` from both the active goal target and all non-implementation
     local declarations in the current `MVarId`'s `LocalContext`. -/
@@ -213,8 +235,11 @@ def filterRelevantRoutes (f : GoalFeatures) : List Route :=
     | "extract-cauchy-toolkit" => f.hasAbs
     | "uniform-simp-collapse" => f.hasIteOrDecide || f.hasNatArith
     | "redirect-by-contradiction" => f.hasNegOrContra
-    | "algorithm-class-substitution" => f.hasFinsetSum || f.hasWellFounded
-    | "kernel-friendly-term-design" => f.hasWellFounded || f.hasNatArith
+    | "algorithm-class-substitution" => f.hasFinsetSum || f.hasWellFounded || f.hasBitVec
+    | "kernel-friendly-term-design" => f.hasWellFounded || f.hasNatArith || f.hasBitVec
+    | "constructive-decidable-reduction" => f.hasIteOrDecide || f.hasNatArith || f.hasBitVec
+    | "closed-def-whnf-caching" => f.hasNatArith || f.hasBitVec
+    | "gmp-swar-word-packing" => f.hasBitVec || f.hasWellFounded
     | _ => false
   if picked.isEmpty then routeTable.take 3 else picked
 
@@ -359,6 +384,7 @@ macro_rules
       first
       | rfl
       | assumption
+      | bv_decide
       | decide
       | omega
       | (ring; done)
@@ -379,8 +405,9 @@ structure CandidateResult where
 deriving Inhabited, Repr
 
 /-- Speculatively run `tacStx` without modifying proof state; return `some CandidateResult`
-    if the tactic closes all goals. Measures exact kernel/elaborator heartbeats via `IO.getNumHeartbeats`. -/
-def tryCandidateCloser (tacName : String) (tacStx : Syntax) : TacticM (Option CandidateResult) := do
+    if the tactic closes all goals. Measures exact kernel/elaborator heartbeats via `IO.getNumHeartbeats`.
+    `steps` records the tactic sequence depth (1 for single-step, 2..3 for bounded BFS sequences). -/
+def tryCandidateCloser (tacName : String) (tacStx : Syntax) (steps : Nat := 1) : TacticM (Option CandidateResult) := do
   withoutModifyingState do
     try
       let hbStart ← IO.getNumHeartbeats
@@ -390,12 +417,51 @@ def tryCandidateCloser (tacName : String) (tacStx : Syntax) : TacticM (Option Ca
         let hbEnd ← IO.getNumHeartbeats
         let hbDelta := hbEnd - hbStart
         let kUnits := hbDelta / 1000
-        let cost := computeCostX10 1 0 false kUnits
+        let cost := computeCostX10 steps 0 false kUnits
         return some { tacticSyntax := tacName, heartbeats := hbDelta, costX10 := cost }
       else
         return none
     catch _ =>
       return none
+
+/-- Bounded depth-$D$ ($D \le 3$) in-kernel `withoutModifyingState` Best-First Search
+    (`Proposal 9C` / `nanoproof` / `MiniF2F` in-kernel search).
+    Explores depth-2 and depth-3 structural decomposition prefixes (`intros`, `constructor`,
+    `push_neg`, `ring_nf`) combined with `alt_proof` and specialized closers, scored by
+    `GoalFeatures` and `computeCostX10`. -/
+def tryBfsCandidateClosers (feats : GoalFeatures) : TacticM (Array (CandidateResult × TSyntax `tactic)) := do
+  let mut bfsCandidates : List (Nat × String × TacticM (TSyntax `tactic)) := [
+    (2, "intros; alt_proof", `(tactic| (intros; alt_proof))),
+    (2, "constructor <;> alt_proof", `(tactic| (constructor <;> alt_proof)))
+  ]
+  if feats.hasNegOrContra then
+    bfsCandidates := bfsCandidates ++ [
+      (2, "push_neg; alt_proof", `(tactic| (push_neg; alt_proof))),
+      (3, "intros; push_neg; alt_proof", `(tactic| (intros; push_neg; alt_proof)))
+    ]
+  if feats.hasFinsetSum then
+    bfsCandidates := bfsCandidates ++ [
+      (2, "intros; sum_congr_ring", `(tactic| (intros; sum_congr_ring))),
+      (2, "intros; finset_mono", `(tactic| (intros; finset_mono))),
+      (2, "intros; finset_nonneg", `(tactic| (intros; finset_nonneg)))
+    ]
+  bfsCandidates := bfsCandidates ++ [
+    (3, "intros; constructor <;> alt_proof", `(tactic| (intros; constructor <;> alt_proof)))
+  ]
+  let mut successes : Array (CandidateResult × TSyntax `tactic) := #[]
+  for (depth, name, mkStx) in bfsCandidates do
+    let tacStx ← mkStx
+    if let some res ← tryCandidateCloser name tacStx (steps := depth) then
+      successes := successes.push (res, tacStx)
+  return successes.qsort (fun (a, _) (b, _) =>
+    if a.costX10 != b.costX10 then a.costX10 < b.costX10 else a.heartbeats < b.heartbeats)
+
+/-- `bfs_elegance?`: Bounded depth-$D$ ($D \le 3$) in-kernel `withoutModifyingState` Best-First
+    Search explorer (`Proposal 9C`). Probes both depth-1 closers and depth-2..3 decomposition
+    sequences (`intros; alt_proof`, `constructor <;> alt_proof`, `push_neg; alt_proof`,
+    `intros; constructor <;> alt_proof`) without mutating proof state, ranking all closing
+    paths by `computeCostX10` and emitting a `TryThis.addSuggestion` code action. -/
+syntax (name := bfsEleganceTactic) "bfs_elegance?" : tactic
 
 /-- `elegance?`: AST-aware speculative route & tactic explorer (`SPEC-ALT-PROOF-DES`).
     1. Extracts `GoalFeatures` from the current main goal and local context.
@@ -404,10 +470,12 @@ def tryCandidateCloser (tacName : String) (tacStx : Syntax) : TacticM (Option Ca
        `ring`, `sum_congr_ring`, `finset_nonneg`, `finset_mono`, `positivity`, `linarith`,
        `nlinarith`, `norm_num`, `aesop`) in `withoutModifyingState`, recording exact heartbeat
        deltas (`IO.getNumHeartbeats`) and ranking winning closers by `computeCostX10`.
-    4. Emits a `TryThis.addSuggestion` code action for the lowest-cost closer if found. -/
+    4. If no single-step closer succeeds, falls back to bounded depth-$D$ ($D \le 3$) in-kernel
+       Best-First Search (`tryBfsCandidateClosers`).
+    5. Emits a `TryThis.addSuggestion` code action for the lowest-cost closer if found. -/
 syntax (name := eleganceTactic) "elegance?" : tactic
 
-@[tactic eleganceTactic]
+@[tactic eleganceTactic, tactic bfsEleganceTactic]
 def evalElegance : Tactic := fun stx => do
   let goal ← getMainGoal
   let target ← instantiateMVars (← goal.getType)
@@ -415,13 +483,15 @@ def evalElegance : Tactic := fun stx => do
   let feats ← extractGoalFeatures goal
   let relRoutes := filterRelevantRoutes feats
   logInfo m!"[AltProof.elegance?] Active Goal: {targetStr}"
-  logInfo m!"[AltProof.elegance?] AST Features: finsetSum={feats.hasFinsetSum}, abs={feats.hasAbs}, iteDecide={feats.hasIteOrDecide}, natInt={feats.hasNatArith}, neg={feats.hasNegOrContra}"
+  logInfo m!"[AltProof.elegance?] AST Features: finsetSum={feats.hasFinsetSum}, abs={feats.hasAbs}, iteDecide={feats.hasIteOrDecide}, natInt={feats.hasNatArith}, bitVec={feats.hasBitVec}, neg={feats.hasNegOrContra}"
   logInfo m!"[AltProof.elegance?] Relevant Routes ({relRoutes.length}/{routeTable.length}):"
   for r in relRoutes do
     logInfo m!"  * [{r.family}] {r.id}: {r.rewriteHint} ({r.costHint})"
 
   -- Speculative candidate closer sweep in saved state
-  let candidates : List (String × TacticM (TSyntax `tactic)) := [
+  let bitVecCandidates : List (String × TacticM (TSyntax `tactic)) :=
+    if feats.hasBitVec then [("bv_decide", `(tactic| bv_decide))] else []
+  let candidates : List (String × TacticM (TSyntax `tactic)) := bitVecCandidates ++ [
     ("rfl", `(tactic| rfl)),
     ("assumption", `(tactic| assumption)),
     ("decide", `(tactic| decide)),
@@ -439,7 +509,7 @@ def evalElegance : Tactic := fun stx => do
   let mut successes : Array (CandidateResult × TSyntax `tactic) := #[]
   for (name, mkStx) in candidates do
     let tacStx ← mkStx
-    if let some res ← tryCandidateCloser name tacStx then
+    if let some res ← tryCandidateCloser name tacStx (steps := 1) then
       successes := successes.push (res, tacStx)
 
   let sorted := successes.qsort (fun (a, _) (b, _) =>
@@ -452,6 +522,14 @@ def evalElegance : Tactic := fun stx => do
       logInfo m!"  + `{c.tacticSyntax}`: heartbeats={c.heartbeats}, costX10={c.costX10}"
     Tactic.TryThis.addSuggestion stx bestStx (origSpan? := some stx)
   else
-    logInfo m!"[AltProof.elegance?] Goal requires multi-step decomposition (0 single-step closers succeeded)."
+    let bfsSorted ← tryBfsCandidateClosers feats
+    if hBfs : 0 < bfsSorted.size then
+      let (bestBfs, bestBfsStx) := bfsSorted[0]
+      logInfo m!"[AltProof.elegance?] Depth<=3 In-Kernel BFS Closers ({bfsSorted.size} succeeded): best = `{bestBfs.tacticSyntax}` (costX10={bestBfs.costX10}, heartbeats={bestBfs.heartbeats})"
+      for (c, _) in bfsSorted do
+        logInfo m!"  + [BFS] `{c.tacticSyntax}`: heartbeats={c.heartbeats}, costX10={c.costX10}"
+      Tactic.TryThis.addSuggestion stx bestBfsStx (origSpan? := some stx)
+    else
+      logInfo m!"[AltProof.elegance?] Goal requires multi-step decomposition (0 single-step or depth<=3 BFS closers succeeded)."
 
 end <Project>.Tactics.AltProof

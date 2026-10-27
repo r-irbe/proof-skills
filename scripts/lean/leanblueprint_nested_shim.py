@@ -2,8 +2,8 @@
 """leanblueprint shim for nested Lean projects (portable form).
 
 leanblueprint 0.0.17 resolves the project root via GitPython
-(git-root == lakefile dir) at module-import time; the EASCI corpus is
-nested at docs/easci/lean inside the tacit-mui repo, so the shim pins
+(git-root == lakefile dir) at module-import time; when a Lean corpus is
+nested at docs/easci/lean inside a parent repository, the shim pins
 the root relative to THIS FILE's location (blueprint/shim.py ->
 docs/easci/lean). Works both locally and in CI.
 """

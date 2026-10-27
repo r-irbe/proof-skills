@@ -94,10 +94,6 @@ def load_skills(skills_root: pathlib.Path):
     skills = {}
     for p in sorted(skills_root.glob("*/SKILL.md")):
         _load_one(p, skills, is_override=False)
-    overrides_dir = skills_root / "_overrides"
-    if overrides_dir.is_dir():
-        for p in sorted(overrides_dir.glob("*/SKILL.md")):
-            _load_one(p, skills, is_override=True)
     return skills
 
 

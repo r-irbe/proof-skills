@@ -23,6 +23,7 @@ works unchanged. Python 3.8+ standard library only.
 ASCII-only per INV-001.
 """
 
+from collections import deque
 import fcntl
 import hashlib
 import json
@@ -45,7 +46,34 @@ STATE_ROOT = os.environ.get(
 )
 BUILD_WAIT_MS = int(os.environ.get("LEAN_SERVE_BUILD_WAIT_MS", "60000"))
 IDLE_S = float(os.environ.get("LEAN_SERVE_IDLE_S", "900"))
+MAX_RSS_MB = float(os.environ.get("LEAN_SERVE_MAX_RSS_MB", "8192"))
+ERROR_RING_MAXLEN = 20
 ROOT_MARKERS = ("lakefile.lean", "lakefile.toml", "lean-toolchain")
+
+
+def read_proc_rss_mb(pid: int | None) -> float:
+    """Read `VmRSS` in MiB from `/proc/<pid>/status` (`rocq_diag` telemetry pattern)."""
+    if not pid or pid <= 0:
+        return 0.0
+    try:
+        with open("/proc/%d/status" % pid) as f:
+            for line in f:
+                if line.startswith("VmRSS:"):
+                    parts = line.split()
+                    if len(parts) >= 2:
+                        return round(float(parts[1]) / 1024.0, 2)
+    except (OSError, ValueError):
+        pass
+    return 0.0
+
+
+def get_system_load() -> list[float]:
+    """Return 1/5/15-minute OS load averages via `os.getloadavg()`."""
+    try:
+        l1, l5, l15 = os.getloadavg()
+        return [round(l1, 2), round(l5, 2), round(l15, 2)]
+    except OSError:
+        return [0.0, 0.0, 0.0]
 
 
 def die(msg: str, code: int = 1) -> NoReturn:
@@ -140,7 +168,18 @@ class Broker:
         self.cached_init_result: dict[str, Any] | None = None
         self.building = False
         self.build_pids: list = []
+        self.error_ring: deque[dict[str, Any]] = deque(maxlen=ERROR_RING_MAXLEN)
+        self.rss_restarts = 0
         self.shutdown = threading.Event()
+
+    def record_error(self, kind: str, detail: str) -> None:
+        self.error_ring.append(
+            {
+                "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+                "kind": kind,
+                "detail": detail[:240],
+            }
+        )
 
     def log(self, msg: str) -> None:
         try:
@@ -152,16 +191,23 @@ class Broker:
     def publish_status(self) -> None:
         with self.clients_lock:
             n = len(self.clients)
+        srv_pid = self.server.pid if self.server else None
+        rss_mb = read_proc_rss_mb(srv_pid)
         atomic_write_status(
             os.path.join(self.state, "status.json"),
             {
                 "running": True,
                 "pid": os.getpid(),
                 "root": self.root,
-                "lake_serve_pid": self.server.pid if self.server else None,
+                "lake_serve_pid": srv_pid,
+                "lake_serve_rss_mb": rss_mb,
+                "max_rss_mb": MAX_RSS_MB,
+                "rss_restarts": self.rss_restarts,
+                "loadavg": get_system_load(),
                 "clients": n,
                 "building": self.building,
                 "build_pids": self.build_pids,
+                "recent_errors": list(self.error_ring),
                 "updated": time.strftime("%Y-%m-%dT%H:%M:%S"),
             },
         )
@@ -244,6 +290,11 @@ class Broker:
                 self.log("drop server request %s" % msg.get("method"))
                 continue
             if "id" in msg:
+                if "error" in msg and isinstance(msg["error"], dict):
+                    self.record_error(
+                        "lsp_error",
+                        str(msg["error"].get("message", msg["error"])),
+                    )
                 with self.pending_lock:
                     entry = self.pending.pop(msg["id"], None)
                 if entry is None:
@@ -253,6 +304,7 @@ class Broker:
                 self.send_to(conn, msg)
             else:
                 self.broadcast(msg)
+        self.record_error("server_reader_exit", "lake serve stdout closed")
         self.log("server reader exited")
 
     def send_to(self, conn: Any, msg: dict[str, Any]) -> None:
@@ -284,6 +336,7 @@ class Broker:
             with self.write_lock:
                 write_lsp_frame(stdin, data)
         except OSError:
+            self.record_error("stdin_write_failed", "server stdin write failed")
             self.log("server stdin write failed")
 
     # -- client plumbing ---------------------------------------------------
@@ -410,6 +463,22 @@ class Broker:
                 continue
         return building, pids
 
+    def restart_server(self, reason: str = "rss_threshold") -> None:
+        """Cleanly restart `lake serve` while idle (0 clients) when `VmRSS > MAX_RSS_MB`."""
+        self.log("restarting lake serve (%s)" % reason)
+        self.record_error("server_restart", reason)
+        try:
+            if self.server and self.server.poll() is None:
+                self.server.terminate()
+                self.server.wait(timeout=10)
+        except (OSError, subprocess.TimeoutExpired):
+            pass
+        self.rss_restarts += 1
+        self.start_server()
+        self.real_initialize()
+        threading.Thread(target=self.server_reader, daemon=True).start()
+        self.publish_status()
+
     def monitor(self) -> None:
         last_idle_mark = None
         while not self.shutdown.is_set():
@@ -423,7 +492,13 @@ class Broker:
                 self.publish_status()
             with self.clients_lock:
                 n = len(self.clients)
+            srv_pid = self.server.pid if self.server else None
+            rss_mb = read_proc_rss_mb(srv_pid)
             if n == 0:
+                if not building and rss_mb > MAX_RSS_MB:
+                    self.restart_server(
+                        "rss %.1f MiB > %.1f MiB while idle" % (rss_mb, MAX_RSS_MB)
+                    )
                 if last_idle_mark is None:
                     last_idle_mark = time.time()
                 elif time.time() - last_idle_mark > IDLE_S and not building:
@@ -453,9 +528,14 @@ class Broker:
                 "pid": None,
                 "root": self.root,
                 "lake_serve_pid": None,
+                "lake_serve_rss_mb": 0.0,
+                "max_rss_mb": MAX_RSS_MB,
+                "rss_restarts": self.rss_restarts,
+                "loadavg": get_system_load(),
                 "clients": 0,
                 "building": False,
                 "build_pids": [],
+                "recent_errors": list(self.error_ring),
                 "updated": time.strftime("%Y-%m-%dT%H:%M:%S"),
             },
         )
@@ -627,13 +707,39 @@ def cmd_status(root: str) -> None:
         with open(os.path.join(state, "status.json")) as f:
             print(f.read())
     except OSError:
-        print(json.dumps({"running": False, "root": root}))
+        print(
+            json.dumps(
+                {
+                    "running": False,
+                    "root": root,
+                    "loadavg": get_system_load(),
+                    "max_rss_mb": MAX_RSS_MB,
+                }
+            )
+        )
+
+
+def cmd_diag(root: str) -> None:
+    """`rocq_diag`-style telemetry snapshot: broker status, live RSS, system load, and recent error ring."""
+    state = state_dir(root)
+    status_path = os.path.join(state, "status.json")
+    try:
+        with open(status_path) as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        data = {"running": False, "root": root, "rss_mb": 0.0, "error_ring": []}
+    srv_pid = data.get("lake_serve_pid")
+    if srv_pid:
+        data["live_lake_serve_rss_mb"] = read_proc_rss_mb(int(srv_pid))
+    data["loadavg"] = get_system_load()
+    data["max_rss_mb"] = MAX_RSS_MB
+    print(json.dumps(data, indent=2))
 
 
 def main() -> None:
     argv = sys.argv[1:]
     if not argv:
-        die("usage: lean_serve_broker.py attach|serve|stop|status [--root DIR]", 2)
+        die("usage: lean_serve_broker.py attach|serve|stop|status|diag [--root DIR]", 2)
     mode = argv[0]
     root = None
     if "--root" in argv:
@@ -646,6 +752,8 @@ def main() -> None:
         cmd_stop(root or find_root(os.getcwd()))
     elif mode == "status":
         cmd_status(root or os.getcwd())
+    elif mode == "diag":
+        cmd_diag(root or os.getcwd())
     else:
         die("unknown mode %r" % mode, 2)
 

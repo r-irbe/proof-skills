@@ -1,7 +1,6 @@
 # Lean / Mathlib Nightly Testing Infrastructure (reference)
 
 > Pure reference. Originally hosted as
-> `skills/_overrides/nightly-testing/SKILL.md`; moved here in W4 Wave 1
 > (move A4 of `lab/design/07-cluster-workflow.md`) because the content
 > is a "go-read-this-URL" infrastructure note with no workflow,
 > triggers, or callers — i.e., it never matched the SKILL contract.

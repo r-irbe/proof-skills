@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "alt-proof SAIR calibration cases v1",
-    "source": "SAIR Lean Kernel Challenge artifacts in /home/radu/code/sair/kernel (WAVE3-RESULTS.md, measurements/RATIOS.md, lanes/*/NOTES.md)",
+    "source": "SAIR Lean Kernel Challenge artifacts in sair/kernel (WAVE3-RESULTS.md, measurements/RATIOS.md, lanes/*/NOTES.md)",
     "mirrors": "docs/investigation-garden/altproof/council/golden/golden-cases.json (same top-level schema; additive kernelCost key per fixture)",
     "purpose": [
       "add a kernel-cost axis to the golden-suite calibration (cost-weight family, ballot B1)",

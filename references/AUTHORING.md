@@ -174,7 +174,6 @@ Given a heavy `skills/<name>/SKILL.md` you want to layer:
 The audit detects 4 graph health properties:
 
 1. **Broken refs** — `handoffs.successors: skill:foo` where no
-   `skills/foo/` or `skills/_overrides/foo/` exists. **Hard fail.**
 2. **Mutual peer pairs** — X has Y in successors, Y has X in
    successors. Reported but allowed (collaboration pattern).
 3. **Cycles** — A→B→C→A chains of length ≥ 3. Reported but allowed
@@ -186,8 +185,6 @@ The audit detects 4 graph health properties:
 
 When you add handoffs:
 - **Use the namespace** `skill:<name>` — the audit parses this token.
-- **`_overrides/<X>/`** is part of the routing namespace. A
-  `skill:lean-build` ref resolves to `skills/_overrides/lean-build/`.
 - **Match the slug** — case-sensitive, hyphens (not underscores).
 
 ---

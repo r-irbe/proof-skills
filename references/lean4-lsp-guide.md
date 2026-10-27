@@ -194,8 +194,8 @@ Agents should invoke the `lean-lsp` MCP tools directly rather than constructing 
 | `.ilean` Declaration References (< 5 ms) | `lean_decl_references` | `{"symbol": "MyNamespace.my_thm", "direction": "both"}` |
 | `$/lean/moduleHierarchy` (`imports` / `importedBy`) | `lean_module_hierarchy` | `{"moduleName": "MyProject.QualityGates", "direction": "importedBy", "transitive": true}` |
 | Multi-Source Search (Local, Loogle, Ontology, Reservoir, arXiv) | `lean_search` | `{"query": "Finset.sum_le_sum", "source": "code"}` |
-| Textbook Index Lookup (65+ curated indexes) | `lean_book_index_lookup` | `{"term": "octagon domain", "book": "cousot"}` |
-| Cross-ITP Prover Concordance | `lean_cross_itp_concordance` | `{"concept": "generalizing induction", "source_prover": "coq", "target_prover": "lean4"}` |
+| Textbook Index Lookup (10 JSON + 42 Kuzu book indexes) | `lean_search` | `{"query": "octagon domain", "source": "book", "book": "cousot"}` |
+| Cross-ITP Prover Concordance (20 mechanisms, 6 provers) | `lean_search` | `{"query": "generalizing induction", "source": "concordance", "source_prover": "coq_mathcomp", "target_prover": "lean4"}` |
 | Kernel Trust-Base Check (`#print axioms`) | `lean_axiom_closure` | `{"symbol": "MyNamespace.my_thm", "module": "MyModule"}` |
 | Ephemeral `lake env lean --stdin` Probe | `lean_exec` | `{"code": "import Mathlib.Data.Nat.Basic\n#check Nat.sub_add_cancel"}` |
 | Force Document Re-Sync | `lean_resync` | `{"filePath": "Foo.lean"}` |

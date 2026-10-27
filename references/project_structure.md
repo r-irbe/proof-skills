@@ -12,8 +12,6 @@ This document provides a comprehensive, layered map of the repository structure.
 
 ## Skill Directories
 *   `skills/`: Contains the first-party `SKILL.md` files representing individual capabilities (e.g., Lean compilation, proof tactics, PR hygiene).
-*   `skills/_overrides/`: Holds local overrides and legacy redirect stubs for deprecated slugs.
-*   `vendor/leanprover-skills/`: Pinned upstream git submodule providing transparent read-only fallback skills.
 
 ## Supplemental Knowledge and Templates
 *   `templates/`: Lean module skeletons and workflow templates. Contains cross-template conventions (e.g., `00-CONVENTIONS.md`) and extracted artifacts like the `handoff_protocol.json`.

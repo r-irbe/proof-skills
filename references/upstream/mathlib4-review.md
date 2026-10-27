@@ -1,7 +1,6 @@
 # Mathlib PR Review Standards (reference)
 
 > Pure reference. Originally hosted as
-> `skills/_overrides/mathlib-review/SKILL.md`; moved here in W4 Wave 1
 > (move A2 of `lab/design/07-cluster-workflow.md`) because the content
 > is a Mathlib-style checklist with no workflow, triggers, or callers —
 > i.e., it never matched the SKILL contract. The slug `mathlib-review`

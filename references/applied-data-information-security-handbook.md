@@ -267,12 +267,12 @@ This mirrors the review council's adversarial review methodology.
 
 | If working on... | Also consult... |
 |---|---|
-| Access control lattices | `math-algebra-category` (order theory) |
-| Information flow | `math-graph-knowledge` (directed graphs) |
-| Cryptographic proofs | `math-measure-probability` (probability) |
-| Privacy formalization | `math-measure-probability` (distributions) |
-| Threat modeling | `applied-intelligence-analysis` (adversarial thinking) |
-| Security properties of agents | `ai-agentic-evolving` (trust dynamics) |
+| Access control lattices | `lean-math-foundations` (order theory) |
+| Information flow | `lean-math-discrete` (directed graphs) |
+| Cryptographic proofs | `lean-math-stochastic` (probability) |
+| Privacy formalization | `lean-math-stochastic` (distributions) |
+| Threat modeling | `lean-applied-reasoning` (adversarial thinking) |
+| Security properties of agents | `lean-ai-formalization` (trust dynamics) |
 | Legal compliance | `applied-legal-reasoning` (regulatory) |
 | Provenance verification | `lean-knowledge-formalization` |
-| Formal security verification | `ai-high-stakes-verifiable` |
+| Formal security verification | `lean-ai-formalization` |

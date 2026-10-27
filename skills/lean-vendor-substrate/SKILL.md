@@ -16,16 +16,11 @@ metadata:
 ---
 
 # lean-vendor-substrate
-
 Vendoring is the sanctioned alternative to re-derivation when a needed theorem
-exists as `sorry`-free, permissively-licensed Lean 4 source that does not (yet)
-live in a pinned dependency. Re-deriving from scratch when the source is
-Apache-2.0 or MIT is strictly worse: it discards CI-verified correctness and
-invites transcription errors. This skill executes the vendoring; the adoption
-decision belongs to `@lean-package-research`.
-
+## Routing
+- **USE FOR:** tasks routed to `@lean-vendor-substrate`.
+- **DO NOT USE FOR:** out-of-scope tasks (delegate via `@lean-gateway`).
 ## Workflow
-
 1. **Verify provenance before copying anything** [discover] — record the
    upstream repository, the exact commit hash, the date, and the license. Fetch
    the license text into the project (e.g. a `LICENSES/<name>-<license>.txt`
@@ -36,106 +31,7 @@ decision belongs to `@lean-package-research`.
    claims CI-verified `sorry`-freedom, verify it locally after the port rather
    than trusting the claim; if the claim cannot be re-verified, downgrade to
    RESEARCH-MORE in `@lean-package-research` terms.
-3. **Minimize the adaptation surface** [execute] — port the upstream files with
-   these mechanical changes and nothing else:
-   - rewrite import paths to the project pin;
-   - rename the namespace to the project convention, preserving authorship
-     headers verbatim (copyright, license, authors lines stay in-file);
-   - record the upstream commit in each file header;
-   - mark every substantive deviation from upstream with an in-file marker
-     comment that names the migration (source toolchain → target toolchain) and
-     the reason. Typical deviations: a module-local decidability instance the
-     upstream got from `open Classical` scoped instances; an upstream lemma
-     chain that does not elaborate at the target pin, replaced by carrying the
-     missing step as an explicit hypothesis; hypotheses that become dead after
-     an adaptation, dropped with a marker.
-   - handle module-level options per file: if upstream relied on a lakefile
-     default such as `autoImplicit true`, keep that per vendored module and
-     document it in-file; never silently switch vendored modules to project
-     conventions.
-   - when the target pin is NEWER than the one upstream compiled at, expect
-     elaboration-transparency drift before API drift — run the pin-drift
-     playbook (below) on the first build's error list.
-4. **Register the subtree** [execute] — add the vendored modules to the build
-   (library globs or umbrella imports), wire them so the default build target
-   and CI compile them transitively, and add any vendored license text to the
-   project's license directory.
-5. **Run the full gate suite with the vendored-duality rule** [persist] —
-   correctness gates (build with zero errors and zero `sorry` warnings,
-   import/DAG discipline, axiom audit over every declaration) run over the
-   vendored subtree exactly as over project code. Style and proof-quality
-   gates are EXEMPT for vendored directories, configured via an explicit
-   exclusion flag in the style tool, because vendored code is upstream-faithful
-   and its quality findings belong upstream. The exemption must be a gate
-   configuration change, never an unreviewed wholesale skip.
-6. **Record the provenance row and the upgrade path** [persist] — one row per
-   vendored file or subtree: local path, upstream repo, license, vendoring
-   date, pinned commit, what was changed and why, and the upgrade path
-   (re-vendor from the upstream pin and re-run the gate suite). Downstream
-   readers must be able to diff the vendored subtree against upstream.
-
-## Pin-drift playbook (toolchain migration)
-
-The recurring failure class when re-vendoring across a toolchain bump is not
-Mathlib API drift but *elaboration-transparency drift*: the rewrite matcher
-and instance resolution change what they unfold. Symptom → root cause → fix,
-in the order a real port typically hits them:
-
-- **`rw`/`simp` report "function expected" or a type mismatch on goals that
-  *apply* an upstream type abbreviation (`T := ...`).** Root cause: the
-  matcher runs at `.implicit` transparency, where a semireducible def does
-  not unfold (hierarchy `none < reducible < instances < implicit < default <
-  all`; lean4 #13368/#13637). Fix: mark the abbreviation `@[reducible]` with
-  an in-file marker; reducible unfolding is the safe direction.
-- **After that, `ext` (or `funext`) introduces two binders where the proof
-  expected one.** Root cause: the equality's type now unfolds to a Pi, so the
-  extension tactic keeps extending. Fix: use `funext` for exactly the levels
-  the proof supplies, or adapt the proof term to the doubly-extended goal.
-- **`failed to synthesize DecidablePred p` for a comprehension over a
-  semireducible predicate, despite `open Classical` or a local
-  `propDecidable`.** Root cause: *using* `propDecidable` requires
-  sort-checking the predicate application at `.instances` transparency, where
-  the semireducible def does not unfold. Fix: declare the instance directly,
-  `letI : DecidablePred p := fun a => Classical.propDecidable (p a)` — it
-  must be `letI` (zeta-reducible) with the exact lambda body; an opaque
-  `haveI` fvar fails the synthesized-vs-inferred defeq check against the
-  goal's inline instance term.
-- **"no goals to be solved" on a standalone `rfl` after an `rw` that upstream
-  needed.** Root cause: newer pins auto-close `rw` goals by `rfl`. Fix: delete
-  the trailing `rfl`; pure pin drift, no content change.
-- **Deprecated-lemma warnings on the first build** (e.g. `Set.mem_setOf_eq`
-  → `Set.mem_ofPred_eq`). Root cause: pin-bump deprecation renames. Fix:
-  sweep the whole vendored tree for the renamed names before the first build
-  cycle.
-- **`unexpected token` / parse failure on `∑` or `∏` in code that compiled
-  at an older pin, or boilerplate `open scoped BigOperators` that now gates
-  nothing.** Root cause: Mathlib split the big-operator notation out of the
-  scoped `BigOperators` scope into root scope (and deleted the
-  `Mathlib.Algebra.BigOperators.Basic` umbrella import); the scope now gates
-  only the `𝔼` expectation notation. Fix: delete the vestigial open when only
-  sum/prod are used (keep it only for `Finset.expect`); import
-  `Mathlib.Algebra.BigOperators.Group.Finset.Basic` for the lemma set.
-  Notation-scope drift is elaboration-visibility drift: the syntax is live as
-  soon as any transitively imported module provides it.
-
-Two meta-rules that each cost a debugging cycle in a real port:
-
-- **Fix errors in declaration order and rebuild per module.** A failed tactic
-  poisons the goal state for the rest of its declaration; downstream failures —
-  even ones with an apparent independent cause — can vanish when the earlier
-  error is fixed. Do not batch-fix from the bottom of the error list.
-- **Probe goals with `trace_state`, never with `sorry` placeholders**, when a
-  rewrite fails and the goal shape is unknown; the info output is definitive
-  and leaves nothing to revert.
-
-For axiom evidence after the port: a generated corpus-wide probe script can
-have coverage gaps (declarations inside `namespace` blocks are routinely
-missed). Regenerate the probe script after registering new modules, and treat
-targeted `#print axioms <name>` runs in a scratch file as the authoritative
-per-theorem evidence when a full-audit report shows unexplained gaps.
-
 ## Recovery & STOP
-
 - STOP if the license is missing, unclear, copyleft-incompatible, or the
   upstream repo cannot be authenticated; return to `@lean-package-research`
   with the evidence.
@@ -143,16 +39,7 @@ per-theorem evidence when a full-audit report shows unexplained gaps.
   make it compile (elaboration drift deeper than mechanical rewrites); surface
   the drift as a decision — either document a minimal, marker-commented
   adaptation or park the vendoring and record the blocker.
-- STOP if the local sorry/axiom audit finds findings inside the vendored
-  subtree after the port; a vendored subtree must be at least as clean as the
-  project's correctness bar.
-- RECOVERY if the build breaks only on Mathlib API drift or
-  elaboration-transparency drift (pin-drift playbook): fix by adapting call
-  sites inside the vendored file with a marker comment per change, never by
-  restructuring upstream definitions.
-
 ## Handoffs
-
 - **Predecessors:** `@lean-package-research` for the adoption decision and
   package card, `@lean-research` for the source-discovery ladder (confirm
   absence at the pin, find permissive-license candidates), `agent:gateway` for
@@ -160,4 +47,11 @@ per-theorem evidence when a full-audit report shows unexplained gaps.
 - **Successors:** `@lean-enforcement` to run and own the gate results,
   `@lean-quality-engine` for milestone/package-health scoring,
   `@lean-proof-review` to review any corpus-authored wrapper modules built on
-  top of the vendored substrate.
+## Detailed reference
+Full encyclopedic reference, decision trees, and lookup tables live in
+[`references/lean-vendor-substrate-handbook.md`](../../references/lean-vendor-substrate-handbook.md) .
+## See also
+- [`../../references/lean-vendor-substrate-handbook.md`](../../references/lean-vendor-substrate-handbook.md)
+  -- Complete
+  `lean-vendor-substrate` Handbook
+- [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

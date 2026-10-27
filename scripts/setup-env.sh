@@ -29,16 +29,22 @@ while [[ $# -gt 0 ]]; do
       MODE="doctor"
       shift
       ;;
+    --dedup-mounts)
+      MODE="dedup"
+      shift
+      ;;
     --venv)
       USE_VENV=1
       shift
       ;;
     -h|--help)
-      echo "Usage: bash scripts/setup-env.sh [--doctor | --check | --venv | --help]"
+      echo "Usage: bash scripts/setup-env.sh [--doctor | --check | --dedup-mounts | --venv | --help]"
       echo ""
       echo "Modes:"
       echo "  (default)        Initialize git submodules, verify/install Python & Node MCP deps,"
       echo "                   and print ready-to-paste MCP configuration snippets."
+      echo "  --dedup-mounts   Remove duplicate global ~/.gemini/config/plugins/proof-skills/skills"
+      echo "                   mount when proof-skills is mounted locally in the workspace."
       echo "  --venv           Create/activate .venv at repo root before installing Python deps."
       echo "  --doctor|--check Non-mutating health check of Python, Node, Lean, MCP, and Ontology."
       exit 0
@@ -210,6 +216,16 @@ run_doctor() {
     fail_msg "kuzu/prover_knowledge.kz missing"
   fi
 
+  # 5. Global vs. Workspace Plugin Mount Deduplication
+  echo ""
+  echo "5. Skill Mount Deduplication (Global vs. Workspace)"
+  GLOBAL_PLUGIN_SKILLS="${HOME}/.gemini/config/plugins/proof-skills/skills"
+  if [[ -d "${GLOBAL_PLUGIN_SKILLS}" ]]; then
+    warn_msg "${GLOBAL_PLUGIN_SKILLS} exists alongside workspace skills/; run 'bash scripts/setup-env.sh --dedup-mounts' to prevent duplicate skill registration"
+  else
+    pass_msg "No duplicate global ~/.gemini/config/plugins/proof-skills/skills mount detected (0 skills evicted by duplicate mounts)"
+  fi
+
   echo ""
   echo "----------------------------------------------------------------------"
   echo "Summary: ${PASS_COUNT} passed, ${WARN_COUNT} warnings, ${FAIL_COUNT} failed"
@@ -219,6 +235,14 @@ run_doctor() {
     return 1
   fi
   return 0
+}
+
+dedup_global_mount() {
+  local global_plugin_dir="${HOME}/.gemini/config/plugins/proof-skills"
+  if [[ -d "${global_plugin_dir}/skills" ]]; then
+    echo "-> Deduplicating global plugin mount at ${global_plugin_dir}/skills (workspace mounts proof-skills locally)..."
+    rm -rf "${global_plugin_dir}/skills"
+  fi
 }
 
 print_mcp_snippets() {
@@ -267,14 +291,19 @@ JSON
 if [[ "${MODE}" == "doctor" ]]; then
   run_doctor
   exit $?
+elif [[ "${MODE}" == "dedup" ]]; then
+  dedup_global_mount
+  exit 0
 fi
 
 echo "======================================================================"
 echo "Bootstrapping proof-skills Environment (${REPO_ROOT})"
 echo "======================================================================"
 
+dedup_global_mount
+
 # Step 1: Initialize git submodules if needed
-if [[ ! -f "${REPO_ROOT}/tools/lean-lsp-mcp/package.json" ]] || [[ ! -d "${REPO_ROOT}/vendor/leanprover-skills" ]]; then
+if [[ ! -f "${REPO_ROOT}/tools/lean-lsp-mcp/package.json" ]]; then
   if command -v git >/dev/null 2>&1 && [[ -e "${REPO_ROOT}/.git" ]]; then
     echo "-> Initializing git submodules..."
     git -C "${REPO_ROOT}" submodule update --init --recursive

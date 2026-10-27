@@ -1,6 +1,6 @@
 # USER_GUIDE.md - proof-skills Practical Operator Guide
 
-`proof-skills` is a project-agnostic toolkit of 75 first-party Agent Skills (+ 4 legacy redirect stubs), 196 Lean 4 proof and workflow templates, 5 specialized sub-agent personas, and an embedded 21-tool MCP server (`tools/lean-lsp-mcp`) for Lean 4 + Mathlib4 formal verification.
+`proof-skills` is a project-agnostic toolkit of 65 active v2 Agent Skills (100% <4,000B with paired handbooks), 200 Lean 4 proof and workflow templates (59 core + 131 arithmetic-geometry + 10 fluid-pde), 5 Pure Role-Actor Containers + 23 soul overlays, and an embedded 14-tool MCP server (`tools/lean-lsp-mcp`) for Lean 4 + Mathlib4 formal verification.
 
 ---
 
@@ -11,7 +11,7 @@
 ### Tier 1 -- Prompt / Skill Collection Only (`apm install r-irbe/proof-skills`)
 
 ```bash
-apm install r-irbe/proof-skills                       # install all 75 skills
+apm install r-irbe/proof-skills                       # install all 65 skills
 apm install r-irbe/proof-skills --skill lean-proof    # install a single skill
 apm install r-irbe/proof-skills#v0.1.0                # version-pinned
 ```
@@ -41,7 +41,7 @@ cd proof-skills
   pip install ".[all]"                 # PyYAML>=6.0 + kuzu>=0.7.0 + pytest>=8.0
   ```
 
-### Tier 3 -- Full 21-Tool `lean-lsp` MCP Server + Rust/WASM `lean-analyzer`
+### Tier 3 -- Full 14-Tool `lean-lsp` MCP Server + Rust/WASM `lean-analyzer`
 
 Run the one-command customer bootstrap and non-mutating environment doctor:
 
@@ -51,7 +51,7 @@ bash scripts/setup-env.sh --doctor     # or: apm run doctor (verifies Python, No
 ```
 
 - **What `scripts/setup-env.sh` does**:
-  1. Initializes `tools/lean-lsp-mcp` and `vendor/leanprover-skills` git submodules if uninitialized.
+  1. Deduplicates any global `~/.gemini/config/plugins/proof-skills` mount and initializes `tools/lean-lsp-mcp` git submodule if uninitialized.
   2. Installs/verifies `PyYAML` (into `.venv` when `--venv` is passed, active `$VIRTUAL_ENV`, or `--user`).
   3. Runs `npm ci || npm install` and `npm run build` in `tools/lean-lsp-mcp` (`@modelcontextprotocol/sdk`, `js-yaml`).
   4. Runs the `--doctor` health check and outputs ready-to-paste MCP configuration snippets for Claude Code, Cursor, Gemini CLI, Antigravity, and Copilot.
@@ -60,7 +60,7 @@ bash scripts/setup-env.sh --doctor     # or: apm run doctor (verifies Python, No
 
 ---
 
-## 2. Skill Routing Architecture (75 Skills)
+## 2. Skill Routing Architecture (65 Skills)
 
 All skills follow the v2 dispatch triad (`USE FOR`, `DO NOT USE FOR`, `TRIGGERS`):
 

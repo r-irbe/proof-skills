@@ -10,8 +10,7 @@ Tactics · domain math · doc / review / research workflows · zettelkasten · g
 [![Lean 4](https://img.shields.io/badge/Lean-4-2D3748.svg?logo=lean&logoColor=white)](https://github.com/leanprover/lean4)
 [![Mathlib4](https://img.shields.io/badge/Mathlib-4-4E7CD0.svg)](https://github.com/leanprover-community/mathlib4)
 [![APM](https://img.shields.io/badge/APM-skill_collection-6e5494.svg)](https://github.com/microsoft/apm)
-[![First-party skills](https://img.shields.io/badge/first--party%20skills-75-2c974b.svg)](skills/)
-[![Legacy Stubs](https://img.shields.io/badge/legacy%20stubs-4-6e5494.svg)](skills/_overrides/)
+[![First-party skills](https://img.shields.io/badge/first--party%20skills-65-2c974b.svg)](skills/)
 [![Taxonomy](https://img.shields.io/badge/taxonomy-hybrid_architecture-blue.svg)](TAXONOMY.md)
 
 </div>
@@ -28,7 +27,7 @@ Fork of [leanprover/skills](https://github.com/leanprover/skills)
 Install the skill contracts into any coding-agent harness via [APM](https://github.com/microsoft/apm):
 
 ```bash
-apm install r-irbe/proof-skills                       # entire bundle (75 skills)
+apm install r-irbe/proof-skills                       # entire bundle (65 skills)
 apm install r-irbe/proof-skills --skill lean-proof    # single skill
 apm install r-irbe/proof-skills#v0.1.0                # version-pinned
 ```
@@ -54,7 +53,7 @@ cd proof-skills
   pip install ".[dev]"                 # optional pytest>=8.0 + PyYAML>=6.0
   ```
 
-### Tier 3 -- Full 21-Tool `lean-lsp` MCP Server + Rust/WASM `lean-analyzer`
+### Tier 3 -- Full 14-Tool `lean-lsp` MCP Server + Rust/WASM `lean-analyzer`
 
 Bootstrap submodules, Python packages, and the Node.js `lean-lsp` MCP server (`tools/lean-lsp-mcp`, requiring Node.js `>=22.6.0` or `>=20.0.0` with compiled `dist/index.js`) in one command:
 
@@ -71,9 +70,9 @@ bash scripts/setup-env.sh --doctor     # or: apm run doctor (non-mutating health
 
 | Directory | What it holds | Loaded by |
 |---|---|---|
-| [`skills/`](skills/) | 75 first-party `SKILL.md` files: toolchain setup, Lake building, proof tactics, MWE extraction, bisection, PR hygiene, Mathlib review, domain math, applied verticals, and end-to-end process workflows. | Harness, on demand. |
-| [`skills/_overrides/`](skills/_overrides/) | 4 legacy REDIRECT stubs (`mathlib-build`, `mathlib-pr`, `mathlib-review`, `nightly-testing`) preserving deprecated slugs per Chesterton protocol. | Harness, on demand. |
-| [`tools/lean-lsp-mcp/`](tools/lean-lsp-mcp/) | 21-tool `lean-lsp` Model Context Protocol server + embedded Rust/WASM `lean-analyzer` (`data/lean_analyzer.wasm`). | MCP client (`bin/lean-lsp-mcp.js`). |
+| [`skills/`](skills/) | 65 first-party v2 `SKILL.md` files (each <4,000B with paired `references/*-handbook.md`): toolchain setup, Lake building, proof tactics, MWE extraction, bisection, PR hygiene, Mathlib review, domain math, applied verticals, and end-to-end process workflows. | Harness, on demand. |
+| [`agents/`](agents/) | 5 Pure Role-Actor Containers (`specifier`, `prover`, `auditor`, `editor`, `gardener`), 23 `souls/` specialist overlays, and `facets/registry.json`. | Multi-agent runtime. |
+| [`tools/lean-lsp-mcp/`](tools/lean-lsp-mcp/) | 14-tool `lean-lsp` Model Context Protocol server + embedded Rust/WASM `lean-analyzer` (`data/lean_analyzer.wasm`). | MCP client (`bin/lean-lsp-mcp.js`). |
 | [`TAXONOMY.md`](TAXONOMY.md) | Authoritative classification mapping skills into Kernel, Roles, and Facets. | Planning / routing. |
 | [`ROLES.md`](ROLES.md) | Stanford ACE Prover Swarm operational contracts (Specifier, Prover, Auditor, Gardener). | Multi-agent execution. |
 | [`FACETS.md`](FACETS.md) | Domain Facets catalog (Math, AI, Governance packs). | Domain consumers. |
@@ -81,7 +80,7 @@ bash scripts/setup-env.sh --doctor     # or: apm run doctor (non-mutating health
 | [`references/`](references/) | background notes and layered skill handbooks; authoritative catalog in [`references/INDEX.md`](references/INDEX.md). | Skill, by link. |
 | [`scripts/`](scripts/) | Project-agnostic helpers: `setup-env.sh` bootstrap/doctor, axiom audits, DAG layer checks, bridge validators, zettelkasten linters, eval, calibration, and Glicko-2 harnesses. None hardcodes a host project; each takes the project root as an argument. | Skill / CI / author. |
 | [`zettelkasten/`](zettelkasten/) | Repo-internal knowledge graph (fleeting · literature · permanent · index · tags) that captures cross-skill insights. | Synthesizer skills. |
-| [`vendor/`](vendor/) | Pinned git submodules of upstream sources (e.g. `leanprover-skills`) and SQLite ontology (`itp-ontology/itp_ontology_graph.db`). | Override dispatch & MCP. |
+| [`vendor/itp-ontology/`](vendor/itp-ontology/) | 100-concept ITP Master Authority Ontology (`itp_ontology_graph.db`), 10 JSON book indexes, and 20-mechanism / 6-prover concordance (`cross-itp-concordance.v1.json`). | MCP & offline graph queries. |
 
 ---
 

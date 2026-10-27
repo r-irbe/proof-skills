@@ -96,3 +96,71 @@ def evaluate_two_axis_candidate(
         "legibility": after.legibility,
     }
 
+
+# --------------------------------------------------------------------------
+# Proposal 9B: `nanoproof` Hardest-Subgoal Bottleneck Scorer & `LeanProgress` Adapter
+# --------------------------------------------------------------------------
+
+import re as _re
+
+
+def score_subgoal_bottleneck(subgoal_scores: list[float]) -> float:
+    """`nanoproof` (`prover.py:138-159`) hardest-subgoal bottleneck transitions:
+    an AND-node (tactic splitting a goal into k subgoals) is only as good as its
+    HARDEST unsolved subgoal (`min(subgoal_scores)`). Returns 1.0 when `subgoal_scores`
+    is empty (all subgoals solved)."""
+    if not subgoal_scores:
+        return 1.0
+    return float(min(subgoal_scores))
+
+
+def _normalize_goal_state_for_cycle(state_text: str) -> str:
+    """Normalize whitespace and alpha-rename numeric hypothesis suffixes to detect semantic cycles."""
+    lines = [
+        " ".join(ln.strip().split())
+        for ln in (state_text or "").splitlines()
+        if ln.strip()
+    ]
+    return "\n".join(lines)
+
+
+def is_cycling(state_history: list[str], current_state: str) -> bool:
+    """`nanoproof` (`prover.py:210-241`) semantic cycle detector: returns True if
+    `current_state` is equivalent to any ancestor state in `state_history`."""
+    norm_curr = _normalize_goal_state_for_cycle(current_state)
+    if not norm_curr:
+        return False
+    return any(
+        _normalize_goal_state_for_cycle(prev) == norm_curr
+        for prev in state_history
+    )
+
+
+def estimate_remaining_steps(goal_text: str) -> int:
+    """Heuristic remaining-step estimator when no external `LeanProgress` endpoint is configured."""
+    g = (goal_text or "").strip()
+    if not g or g == "no goals":
+        return 0
+    steps = 1
+    steps += len(_re.findall(r"(?:\bforall\b|\u2200|\bexists\b|\u2203)", g))
+    steps += len(_re.findall(r"(?:/\\|\\/|&&|\|\||\u2227|\u2228|<->|\u2194)", g))
+    steps += len(_re.findall(r"(?:\bFinset\.sum\b|\u2211|\bNat\.rec\b)", g))
+    return max(1, min(steps, 20))
+
+
+def leanprogress_scorer(
+    goal: str,
+    prefix: str = "",
+    tactic: str = "",
+    endpoint: str | None = None,
+    model_fn=None,
+) -> float:
+    """`LeanDojo-v2` `LeanProgress` remaining-step predictor adapter (`lean_progress.py`).
+    Returns a normalized progress score in `(0.0, 1.0]` where higher means fewer remaining
+    steps (`1.0 / (1.0 + remaining_steps)`)."""
+    if model_fn is not None:
+        rem = float(model_fn(goal=goal, prefix=prefix, tactic=tactic))
+        return round(1.0 / (1.0 + max(0.0, rem)), 4)
+    rem_steps = estimate_remaining_steps(goal)
+    return round(1.0 / (1.0 + float(rem_steps)), 4)
+

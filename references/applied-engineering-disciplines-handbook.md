@@ -229,12 +229,12 @@ When modifying a module:
 
 | If working on... | Also consult... |
 |---|---|
-| Control theory formalization | `math-nonlinear-dynamics`, `lean-math-dynamical` |
-| Reliability proofs | `math-measure-probability` (probability) |
-| Verification hierarchy | `ai-high-stakes-verifiable` (safety levels) |
+| Control theory formalization | `lean-math-dynamical`, `lean-math-dynamical` |
+| Reliability proofs | `lean-math-stochastic` (probability) |
+| Verification hierarchy | `lean-ai-formalization` (safety levels) |
 | System architecture | `lean-integration-protocol` (module coordination) |
 | Testing strategy | `lean-quality-engine` (quality dimensions) |
 | Requirements tracing | `lean-doc-feedback` (document ↔ Lean bridge) |
 | Process management | `applied-product-management` |
 | Security properties | `applied-data-information-security` |
-| Signal processing math | `math-time-series` (time series foundations) |
+| Signal processing math | `lean-math-stochastic` (time series foundations) |

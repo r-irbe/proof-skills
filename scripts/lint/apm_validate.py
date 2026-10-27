@@ -147,9 +147,6 @@ def validate() -> tuple[list[str], dict]:
 
     seen_names: dict[str, Path] = {}
     for skill_md in sorted(SKILLS_DIR.glob("*/SKILL.md")):
-        # Skip _overrides — those are dispatch-time, not first-party.
-        if "_overrides" in skill_md.parts:
-            continue
         summary["skill_count"] += 1
         rel = skill_md.relative_to(REPO_ROOT)
         fm = load_yaml_frontmatter(skill_md)

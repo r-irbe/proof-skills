@@ -17,18 +17,13 @@ metadata:
 ---
 
 # Upstream Porting (corpus lemma -> mathlib PR)
-
 Port a proven result to upstream with its history, conventions, and
 review surface intact.
-
 ## Routing
-
 - **USE FOR:** preparing, filing, and maintaining upstream PRs from a
   proven corpus.
 - **DO NOT USE FOR:** the mathematics itself; in-corpus refactors.
-
 ## Workflow
-
 1. **Route the artifact first.** Math lemmas go to the math library
    (mathlib); methodologies, rubrics, and scanner tooling go to the
    skills repo. Never send methodology to mathlib or library code to
@@ -42,44 +37,24 @@ review surface intact.
    branches; stack with `depends on:` lines only when semantics
    require it.
 4. **PR body conventions** (mathlib; the generic PR contract is
-   @lean-pr's to teach): title `feat(scope): summary` becomes the
-   squash-commit first line; co-authors via `Co-authored-by:` lines;
-   `Moves:`/`Deletions:` lists when relocating declarations;
-   **AI-assistance disclosure is required by the contribution guide** -
-   one honest sentence naming the tooling and stating the author's
-   responsibility is the accepted minimal form.
-5. **Module-system pitfalls** before building: notation reaches a file
-   only through `public import` chains; `Real`'s norm/abs instances are
-   sealed (rewrite explicitly, never rely on defeq); positional
-   application stops at unassigned implicits; module docstring precedes
-   `@[expose] public section`. Details:
-   `references/mathlib-module-system-notes.md`.
-6. **PR lifecycle via REST**: `gh pr edit` (GraphQL path) can fail
-   silently - verify every edit with a read-back, and use
-   `gh api -X PATCH repos/<owner>/<repo>/pulls/<n> -F body=@<body-file>`
-   when it does. `gh pr create` on a branch that already has a PR
-   surfaces the existing PR - update it rather than duplicating.
-
-## Pitfalls
-
-- Corollaries that specialize in one line: upstream prefers them as
-  test-file worked examples over new public API surface.
-- CI status lags the branch; say what is verified locally (master
-  build, kernel checks) and what awaits CI, and never claim CI green
-  without the run.
-- Reviewers weight the generalization framing: state the general form
-  once, show the corpus use as the motivating instance, and keep the
-  body laconic - every sentence must survive a maintainer's skim.
-
-## Recovery
-
-- If `gh pr edit` silently drops body updates on the GraphQL path, read back the PR body and apply the update via `gh api -X PATCH
+## Recovery & STOP
+- If `gh pr edit` silently drops body updates on the GraphQL path, read back the PR body and apply the update
+  via `gh api -X PATCH
   repos/<owner>/<repo>/pulls/<n> -F body=@<body-file>`.
-- If upstream module-system visibility (`public import` or sealed instances) breaks a corpus proof, isolate and repair the proof against upstream master
+- If upstream module-system visibility (`public import` or sealed instances) breaks a corpus proof, isolate
+  and repair the proof
+  against
+  upstream master
   via `@lean-proof` before updating the PR.
-
 ## Handoffs
-
 - **Predecessors:** `lean-proof` (the proof is kernel-clean),
   `lean-proof-refactor` (the port is the slimmed form).
 - **Successors:** `lean-research` (prior-art/citation sweeps), `lean-proof` (review fixes).
+## Detailed reference
+Full encyclopedic reference, decision trees, and lookup tables live in
+[`references/lean-upstream-porting-handbook.md`](../../references/lean-upstream-porting-handbook.md) .
+## See also
+- [`../../references/lean-upstream-porting-handbook.md`](../../references/lean-upstream-porting-handbook.md)
+  -- Complete
+  `lean-upstream-porting` Handbook
+- [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

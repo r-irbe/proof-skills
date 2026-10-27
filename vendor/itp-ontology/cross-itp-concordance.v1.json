@@ -1,13 +1,15 @@
 {
   "schema_version": "v1.0",
   "title": "Cross-ITP Concept Concordance Knowledge Base",
-  "description": "Bidirectional canonical concordance mapping formal proof mechanics, syntax patterns, semantics, and translation invariants across Lean 4, Rocq/Coq (MathComp), Isabelle/HOL (AFP), and HOL Light.",
-  "canonical_mechanisms_count": 12,
+  "description": "Cross-ITP Proof-Mechanism Concordance mapping Lean 4, Coq/Rocq (MathComp/SSReflect), Isabelle/HOL (Isar), HOL Light, Agda, and Metamath tactics, structural idioms, and pitfall bridges across 20 canonical proof mechanisms.",
+  "canonical_mechanisms_count": 20,
   "prover_families": [
     "lean4",
     "coq_mathcomp",
     "isabelle_hol",
-    "hol_light"
+    "hol_light",
+    "agda",
+    "metamath"
   ],
   "mechanisms": [
     {
@@ -75,6 +77,37 @@
           "pitfalls": [
             "Loss of antecedent context if not popped and generalized before induction"
           ]
+        },
+        "agda": {
+          "tactics": [
+            "pattern-matching",
+            "with",
+            "wfRec",
+            "absurd ()"
+          ],
+          "syntax_pattern": "thm zero = h0 ; thm (suc n) = hsucc n (thm n)",
+          "semantics": "Dependent clausal pattern matching and structural recursion verified by Agda's termination checker.",
+          "idiomatic_pattern": "Write explicit clausal equations over constructors (`zero`, `suc n`), using `with` for intermediate scrutiny and `()` for empty patterns.",
+          "pitfalls": [
+            "Dot patterns or `with`-abstractions failing when indices depend on non-variable terms",
+            "Non-structural recursion rejected without an explicit `WellFounded` accessibility witness"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "nnind",
+            "uzind",
+            "sfind",
+            "pm2.61i",
+            "jaoi"
+          ],
+          "syntax_pattern": "$( Mathematical induction & case elimination: nnind, uzind, jaoi $)",
+          "semantics": "Explicit induction theorems (`nnind` on `N`, `uzind` on `Z>=M`, `sfind` on finite sets) paired with explicit substitution lemmas (`fveq`).",
+          "idiomatic_pattern": "Construct explicit substitution lemmas for `P(0)`, `P(k)`, `P(k+1)`, and `P(n)` before applying `nnind` or `uzind`.",
+          "pitfalls": [
+            "All 4 substitution hypotheses must be proven explicitly before invoking `nnind` or `uzind`",
+            "Forgetting disjoint-variable `$d` constraints on the induction variable"
+          ]
         }
       },
       "translation_rules": [
@@ -101,6 +134,22 @@
           "target_construct": "induction n",
           "confidence": 0.95,
           "notes": "Peano induction step mapping."
+        },
+        {
+          "source_prover": "agda",
+          "target_prover": "lean4",
+          "source_construct": "thm zero = h0 ; thm (suc n) = hsucc n (thm n)",
+          "target_construct": "induction n with | zero => h0 | succ n ih => hsucc n ih",
+          "confidence": 0.96,
+          "notes": "Agda clausal recursion maps directly to Lean 4 induction or fun_induction."
+        },
+        {
+          "source_prover": "metamath",
+          "target_prover": "lean4",
+          "source_construct": "nnind / uzind with 4 explicit substitution lemmas",
+          "target_construct": "induction n (or Nat.le_induction)",
+          "confidence": 0.93,
+          "notes": "Lean 4 higher-order unification discharges the 4 Metamath substitution hypotheses automatically."
         }
       ]
     },
@@ -170,6 +219,38 @@
           "pitfalls": [
             "Slow execution on large numeric certificates compared to compiled VM evaluation"
           ]
+        },
+        "agda": {
+          "tactics": [
+            "Dec",
+            "yes",
+            "no",
+            "from-yes",
+            "does",
+            "reflects"
+          ],
+          "syntax_pattern": "P? x : Dec (P x) | from-yes (P? x)",
+          "semantics": "`Relation.Nullary.Decidable` (`Dec P` wrapping `does : Bool` and `proof : Reflects P does`) enabling proof by computation (`from-yes`).",
+          "idiomatic_pattern": "Use `from-yes (m <=? n)` for closed decidable goals and `with P? x` to split on `(yes p)` vs `(no ~p)`.",
+          "pitfalls": [
+            "Computing with unary `Nat` decision procedures blows up on large numerals unless `Builtin.Nat` is used"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "df-tru",
+            "tru",
+            "fal",
+            "decadd",
+            "decmul",
+            "prmo"
+          ],
+          "syntax_pattern": "$( Truth value & decimal computation theorems: tru, decadd, decmul $)",
+          "semantics": "Propositional truth constant `T.` (`df-tru`) and explicit decimal arithmetic / Pratt certificate theorems (`decadd`, `decmul`, `prmo`).",
+          "idiomatic_pattern": "Collapse multi-step decimal evaluation (`decadd`, `decmul`) or finite truth-table checks into `decide` or `norm_num` in Lean 4.",
+          "pitfalls": [
+            "Metamath has no kernel reduction; every computational step is an explicit theorem application"
+          ]
         }
       },
       "translation_rules": [
@@ -188,6 +269,22 @@
           "target_construct": "by eval",
           "confidence": 0.92,
           "notes": "Computational reflection dispatch."
+        },
+        {
+          "source_prover": "agda",
+          "target_prover": "lean4",
+          "source_construct": "from-yes (P? x)",
+          "target_construct": "by decide",
+          "confidence": 0.97,
+          "notes": "Agda Dec reflection maps to Lean 4 Decidable typeclass and decide tactic."
+        },
+        {
+          "source_prover": "metamath",
+          "target_prover": "lean4",
+          "source_construct": "decadd / decmul / prmo certificate chains",
+          "target_construct": "by decide (or by norm_num)",
+          "confidence": 0.96,
+          "notes": "Collapse explicit Metamath arithmetic calculation chains into decide or norm_num."
         }
       ]
     },
@@ -258,6 +355,37 @@
           "pitfalls": [
             "Unbounded loop in REWRITE_TAC on reflexivity permutations like commutativity without AC handling"
           ]
+        },
+        "agda": {
+          "tactics": [
+            "rewrite",
+            "subst",
+            "cong",
+            "sym",
+            "trans"
+          ],
+          "syntax_pattern": "prf lhs | rewrite eq1 | rewrite eq2 = refl",
+          "semantics": "`rewrite eq` desugars into a `with`-abstraction over the LHS of `eq` followed by matching on `refl`.",
+          "idiomatic_pattern": "Prefer explicit `cong` / `subst` or `≡-Reasoning` chains over deeply nested `rewrite` clauses.",
+          "pitfalls": [
+            "`rewrite` fails with ill-typed `with`-abstraction when the goal's type depends on the rewritten subterm in a non-generalizable way"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "eqtr",
+            "eqtri",
+            "3eqtr4i",
+            "fveq2i",
+            "breq2i",
+            "bibi12i"
+          ],
+          "syntax_pattern": "$( Congruence & transitivity rewriting: eqtri, 3eqtr4i, fveq2i $)",
+          "semantics": "Explicit equality transitivity (`eqtri`, `3eqtr4i`) and explicit functorial congruence lemmas (`fveq1i`, `fveq2i`, `oveq12i`).",
+          "idiomatic_pattern": "Replace Metamath congruence chains (`fveq2i`, `oveq12i`, `3eqtr4i`) with `rw [...]` or `simp only [...]` in Lean 4.",
+          "pitfalls": [
+            "Every subterm position requires its own congruence theorem (`oveq1i` vs `oveq2i`) in Metamath"
+          ]
         }
       },
       "translation_rules": [
@@ -276,6 +404,22 @@
           "target_construct": "dsimp [def] or unfold def",
           "confidence": 0.94,
           "notes": "MathComp head unfolding maps to Lean 4 dsimp/unfold."
+        },
+        {
+          "source_prover": "agda",
+          "target_prover": "lean4",
+          "source_construct": "rewrite eq1 | rewrite eq2",
+          "target_construct": "rw [eq1, eq2]",
+          "confidence": 0.95,
+          "notes": "Direct mapping from Agda rewrite clauses to Lean 4 rw list."
+        },
+        {
+          "source_prover": "metamath",
+          "target_prover": "lean4",
+          "source_construct": "3eqtr4i + fveq2i / oveq12i congruence chains",
+          "target_construct": "simp only [...] or rw [...]",
+          "confidence": 0.94,
+          "notes": "Lean 4 rw/simp synthesizes congruence proofs automatically."
         }
       ]
     },
@@ -346,6 +490,37 @@
             "Heavy manual plumbing of structure dictionaries across every lemma",
             "No automated resolution of default operators"
           ]
+        },
+        "agda": {
+          "tactics": [
+            "record",
+            "instance",
+            "{{...}}",
+            "openRecord"
+          ],
+          "syntax_pattern": "record IsGroup (G : Set) : Set where ... | {{_ : IsGroup G}}",
+          "semantics": "Explicit bundle/unbundled record hierarchies (`Algebra.Bundles`, `Algebra.Structures`) in `agda-stdlib` with optional `{{...}}` instance search.",
+          "idiomatic_pattern": "Translate `agda-stdlib` bundled records (`Group c l`, `Ring c l`) to Lean 4 `[Group G]` / `[Ring R]` typeclass binders.",
+          "pitfalls": [
+            "Opening multiple algebraic records simultaneously in Agda causes field name shadowing unless renamed"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "elgrp",
+            "elrng",
+            "elfld",
+            "abl",
+            "lmod",
+            "base",
+            "plusg"
+          ],
+          "syntax_pattern": "G e. Grp , B = ( Base ` G ) , .+ = ( +g ` G )",
+          "semantics": "Extensible structure tuples encoded as functions on numeric slot indices (`Base`, `+g`, `.r`, `0g`) with class membership `G e. Grp`.",
+          "idiomatic_pattern": "Convert `G e. Grp` and slot projections `(Base ` G)`, `(+g ` G)` into `(G : Type*) [Group G]` in Lean 4.",
+          "pitfalls": [
+            "Metamath structure operations are untyped total class functions outside `(Base ` G)`"
+          ]
         }
       },
       "translation_rules": [
@@ -364,6 +539,22 @@
           "target_construct": "instance : Class T where ...",
           "confidence": 0.95,
           "notes": "Isabelle instantiation block maps directly to Lean 4 instance declaration."
+        },
+        {
+          "source_prover": "agda",
+          "target_prover": "lean4",
+          "source_construct": "open Group G ; isGroup",
+          "target_construct": "variable {G : Type*} [Group G]",
+          "confidence": 0.94,
+          "notes": "Agda algebraic bundles map to Lean 4 typeclass binders."
+        },
+        {
+          "source_prover": "metamath",
+          "target_prover": "lean4",
+          "source_construct": "G e. Grp , B = ( Base ` G ) , .+ = ( +g ` G )",
+          "target_construct": "variable {G : Type*} [Group G]",
+          "confidence": 0.96,
+          "notes": "Eliminates explicit slot projections in favor of typeclass synthesis."
         }
       ]
     },
@@ -437,6 +628,34 @@
           "pitfalls": [
             "Exponential search blowup if irrelevant lemmas are provided in search list"
           ]
+        },
+        "agda": {
+          "tactics": [
+            "Mimer (C-c C-a)",
+            "RingSolver",
+            "+-*-Solver"
+          ],
+          "syntax_pattern": "{! -m !} | solve 2 (\\ x y -> lhs := rhs) refl",
+          "semantics": "Edit-time proof-term synthesis via Mimer/Agsy and reflective algebraic solvers (`Data.Nat.Solver`, `Algebra.Solver.Ring`).",
+          "idiomatic_pattern": "Replace reflective `+-*-Solver.solve` calls with `ring` / `omega` and Mimer-generated term trees with `aesop` / `grind` in Lean 4.",
+          "pitfalls": [
+            "Agda has no runtime tactic engine; all search happens at edit time or via explicit reflection"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "mmj2 !derive",
+            "syl",
+            "mpd",
+            "imp",
+            "ex"
+          ],
+          "syntax_pattern": "$( Hilbert propositional & first-order chains: ax-1..3, mp, syl, mpd $)",
+          "semantics": "Explicit Hilbert-style deduction chains synthesized by `mmj2` unification search.",
+          "idiomatic_pattern": "Collapse 10-100 step Hilbert propositional/syllogism subproofs in `set.mm` into `tauto`, `aesop`, `omega`, or `ring` in Lean 4.",
+          "pitfalls": [
+            "Never port raw `syl`/`mpd`/`com12` plumbing lemmas 1-to-1 into Lean 4"
+          ]
         }
       },
       "translation_rules": [
@@ -455,6 +674,22 @@
           "target_construct": "omega",
           "confidence": 0.98,
           "notes": "Coq lia and Lean 4 omega are Presburger LIA solvers."
+        },
+        {
+          "source_prover": "agda",
+          "target_prover": "lean4",
+          "source_construct": "+-*-Solver.solve n (...) refl",
+          "target_construct": "by ring (or by omega)",
+          "confidence": 0.98,
+          "notes": "Reflective semiring/ring solver maps to Lean 4 ring/omega."
+        },
+        {
+          "source_prover": "metamath",
+          "target_prover": "lean4",
+          "source_construct": "syl / mpd / pm2.* propositional chains",
+          "target_construct": "by tauto (or by aesop / grind)",
+          "confidence": 0.96,
+          "notes": "Collapses explicit Hilbert deduction steps."
         }
       ]
     },
@@ -520,6 +755,35 @@
           "pitfalls": [
             "Manual introduction and maintenance of intermediate terms"
           ]
+        },
+        "agda": {
+          "tactics": [
+            "begin_∎",
+            "≡⟨_⟩_",
+            "≡⟨⟩_",
+            "≤⟨_⟩_"
+          ],
+          "syntax_pattern": "begin a ≡⟨ h1 ⟩ b ≤⟨ h2 ⟩ c ∎",
+          "semantics": "Mixfix preorder and equational reasoning combinators from `Relation.Binary.Reasoning.Preorder`.",
+          "idiomatic_pattern": "Translate `begin a ≡⟨ h1 ⟩ b ≤⟨ h2 ⟩ c ∎` directly to a Lean 4 `calc` block.",
+          "pitfalls": [
+            "Mixing `≡⟨_⟩_` and `≤⟨_⟩_` requires opening the preorder reasoning module rather than propositional equality reasoning"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "3eqtri",
+            "4eqtri",
+            "eqletr",
+            "lelttr",
+            "letr"
+          ],
+          "syntax_pattern": "$( Transitive calculation chain: 3eqtri, eqletr, lelttr $)",
+          "semantics": "N-ary transitive chain theorems (`3eqtri`, `3eqtr4i`, `eqletr`, `lelttr`, `ltletr`).",
+          "idiomatic_pattern": "Unpack nested `3eqtri` / `eqletr` / `lelttr` applications into a linear `calc` block in Lean 4.",
+          "pitfalls": [
+            "Keep track of strict (`<`, `ltletr`) vs weak (`<=`, `letr`) steps when flattening tree-structured transitivity proofs"
+          ]
         }
       },
       "translation_rules": [
@@ -530,6 +794,22 @@
           "target_construct": "calc a = b := h1 _ <= c := h2",
           "confidence": 0.98,
           "notes": "Isar also/finally calculation chain maps 1:1 to Lean 4 calc environment."
+        },
+        {
+          "source_prover": "agda",
+          "target_prover": "lean4",
+          "source_construct": "begin a ≡⟨ h1 ⟩ b ≤⟨ h2 ⟩ c ∎",
+          "target_construct": "calc a = b := h1 _ <= c := h2",
+          "confidence": 0.99,
+          "notes": "1-to-1 structural isomorphism between Agda ≡-Reasoning and Lean 4 calc."
+        },
+        {
+          "source_prover": "metamath",
+          "target_prover": "lean4",
+          "source_construct": "3eqtri / eqletr / lelttr tree",
+          "target_construct": "calc block with =, <=, and < steps",
+          "confidence": 0.95,
+          "notes": "Linearizes tree-structured Metamath transitivity chains."
         }
       ]
     },
@@ -597,6 +877,34 @@
           "pitfalls": [
             "Heavy manual management of equivalence class sets without kernel quotient support"
           ]
+        },
+        "agda": {
+          "tactics": [
+            "Setoid",
+            "_/_ (Cubical HIT)",
+            "elimProp",
+            "Func"
+          ],
+          "syntax_pattern": "record Setoid c l : Set (suc (c ⊔ l)) | data _/_ (A : Type) (R : A -> A -> Type)",
+          "semantics": "Explicit Bishop `Setoid` records in standard Agda (`--without-K`) or Higher Inductive Type quotients `A / R` in Cubical Agda (`--cubical`).",
+          "idiomatic_pattern": "Map Agda `Setoid` carriers + `≈` to Lean 4 `Setoid α` and `Quotient s`, or Cubical `elimProp`/`rec` to `Quotient.ind`/`Quotient.lift`.",
+          "pitfalls": [
+            "Standard Agda lacks kernel quotients; every function on a Setoid carries an explicit `cong` field"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "qs",
+            "qseleq",
+            "ecid",
+            "eqvreleq"
+          ],
+          "syntax_pattern": "( A /. R ) , [ x ] R",
+          "semantics": "ZFC equivalence-class quotient `A /. R = { [x]_R | x e. A }` where `R` is an equivalence relation (`R EqvRel A`).",
+          "idiomatic_pattern": "Translate `(A /. R)` to `Quotient s` and `[x]_R = [y]_R <-> x R y` (`qseleq`) to `Quotient.eq`.",
+          "pitfalls": [
+            "Metamath `[x]_R` is a set of elements `⊆ A`, whereas Lean `Quotient s` is an abstract type"
+          ]
         }
       },
       "translation_rules": [
@@ -615,6 +923,22 @@
           "target_construct": "theorem f_resp (h : a ~ b) : f a ~ f b",
           "confidence": 0.92,
           "notes": "Coq Proper morphism instance translates to Lean 4 resp theorem for Quotient.lift."
+        },
+        {
+          "source_prover": "agda",
+          "target_prover": "lean4",
+          "source_construct": "Setoid A + Func f cong (or Cubical A / R)",
+          "target_construct": "Quotient s + Quotient.lift f cong",
+          "confidence": 0.94,
+          "notes": "Replaces explicit Setoid morphism packaging with Lean kernel Quotient.lift."
+        },
+        {
+          "source_prover": "metamath",
+          "target_prover": "lean4",
+          "source_construct": "( A /. R ) and qseleq",
+          "target_construct": "Quotient s and Quotient.eq",
+          "confidence": 0.95,
+          "notes": "Maps ZFC partition quotients to Lean Quotient."
         }
       ]
     },
@@ -679,6 +1003,34 @@
           "pitfalls": [
             "Manual decomposition of multi-argument constructor equalities"
           ]
+        },
+        "agda": {
+          "tactics": [
+            "()",
+            "pattern-matching on index",
+            "cong-injective"
+          ],
+          "syntax_pattern": "inv (step h) = h ; inv ()",
+          "semantics": "First-class dependent pattern matching with built-in constructor disjointness (absurd pattern `()`) and injectivity.",
+          "idiomatic_pattern": "Match directly on the indexed family constructor; impossible branches are discharged with `()`.",
+          "pitfalls": [
+            "`--without-K` restricts pattern unification when self-equality of indices would require Streicher's K axiom"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "peano2",
+            "peano5",
+            "opth",
+            "opi1",
+            "pm2.21i"
+          ],
+          "syntax_pattern": "$( Constructor injectivity & disjointness: peano2, peano5, opth $)",
+          "semantics": "Explicit Peano/Kuratowski injectivity theorems (`peano5`: `suc m = suc n -> m = n`, `opth` for ordered pairs) and explosion (`pm2.21i`).",
+          "idiomatic_pattern": "Translate `peano5`/`opth` to `cases h` or `injection h` and `peano2` (`suc n != 0`) to `nomatch h` / `contradiction`.",
+          "pitfalls": [
+            "Set-theoretic encodings of constructors in `set.mm` can have accidental junk equalities outside the intended domain"
+          ]
         }
       },
       "translation_rules": [
@@ -697,6 +1049,22 @@
           "target_construct": "contradiction or nomatch",
           "confidence": 0.99,
           "notes": "Coq discriminate constructor disequality maps to Lean 4 contradiction."
+        },
+        {
+          "source_prover": "agda",
+          "target_prover": "lean4",
+          "source_construct": "absurd pattern () on indexed family",
+          "target_construct": "nomatch h (or rcases h with _)",
+          "confidence": 0.97,
+          "notes": "Both Agda and Lean 4 support native dependent pattern inversion."
+        },
+        {
+          "source_prover": "metamath",
+          "target_prover": "lean4",
+          "source_construct": "peano5 / opth / pm2.21i",
+          "target_construct": "injection h / cases h / nomatch h",
+          "confidence": 0.94,
+          "notes": "Replaces set-encoding injectivity lemmas with inductive constructor inversion."
         }
       ]
     },
@@ -763,6 +1131,34 @@
           "pitfalls": [
             "No typeclass engine to automatically infer lattice operations across numeric and set domains"
           ]
+        },
+        "agda": {
+          "tactics": [
+            "GaloisConnection",
+            "Poset",
+            "Lattice"
+          ],
+          "syntax_pattern": "record GaloisConnection (P Q : Poset c l1 l2) : Set ...",
+          "semantics": "Order-theoretic records in `Relation.Binary.Lattice` and `Relation.Binary.Structures`.",
+          "idiomatic_pattern": "Map Agda `GaloisConnection` records to Mathlib `GaloisConnection l u`.",
+          "pitfalls": [
+            "Agda parameterizes posets by both underlying equality `≈` and order `≤` (`Poset c l1 l2`), whereas Lean 4 uses `PartialOrder α` on `=`"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "poset",
+            "lat",
+            "clat",
+            "sup",
+            "inf"
+          ],
+          "syntax_pattern": "P e. Poset , L e. Lat , L e. CLat",
+          "semantics": "Extensible lattice structures (`Lat`, `CLat`) with join/meet slots and order closures.",
+          "idiomatic_pattern": "Translate `L e. CLat` to `[CompleteLattice α]` and adjoined monotone maps to `GaloisConnection l u`.",
+          "pitfalls": [
+            "Metamath `sup`/`inf` slots require explicit closure and non-emptiness proofs unless `L e. CLat` is established"
+          ]
         }
       },
       "translation_rules": [
@@ -773,6 +1169,22 @@
           "target_construct": "GaloisConnection l u",
           "confidence": 0.98,
           "notes": "Direct mathematical equivalence between Isabelle and Mathlib Galois connections."
+        },
+        {
+          "source_prover": "agda",
+          "target_prover": "lean4",
+          "source_construct": "record GaloisConnection P Q",
+          "target_construct": "GaloisConnection l u",
+          "confidence": 0.95,
+          "notes": "Maps Setoid-parameterized Agda Poset Galois connection to Mathlib GaloisConnection."
+        },
+        {
+          "source_prover": "metamath",
+          "target_prover": "lean4",
+          "source_construct": "L e. CLat + monotone adjoints",
+          "target_construct": "[CompleteLattice alpha] + GaloisConnection l u",
+          "confidence": 0.94,
+          "notes": "Maps extensible CLat structure to Mathlib CompleteLattice and GaloisConnection."
         }
       ]
     },
@@ -841,6 +1253,35 @@
           "pitfalls": [
             "Heavy manual management of isomorphism theorems for every compound operation"
           ]
+        },
+        "agda": {
+          "tactics": [
+            "Σ",
+            "∃",
+            "proj₁",
+            "proj₂",
+            "_,_"
+          ],
+          "syntax_pattern": "Σ[ x ∈ A ] P x | (x , px) | proj₁ s | proj₂ s",
+          "semantics": "Dependent pair record `Σ A B` with projections `proj₁` and `proj₂` and definitional eta-equality.",
+          "idiomatic_pattern": "Map `Σ[ x ∈ A ] P x` where `P x : Prop` to `{x : A // P x}` (`Subtype`) in Lean 4, and where `P x : Type` to `(x : A) × P x` (`Sigma`).",
+          "pitfalls": [
+            "In standard Agda without `Prop`, `proj₂` is proof-relevant (`Set`), so equality of `Σ A P` requires proving equality of the second component unless `P` is in `Prop` or `Irrelevant`"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "rab",
+            "elrab",
+            "ssrab2",
+            "opelopab"
+          ],
+          "syntax_pattern": "{ x e. A | ph } , elrab",
+          "semantics": "Restricted class abstraction `{ x e. A | ph }` (`df-rab`) carving out a subset of `A`.",
+          "idiomatic_pattern": "Translate `x e. { y e. A | ph(y) }` (`elrab`) into either a subtype `{x : A // P x}` or a `Set A` membership `x ∈ {y | P y}` in Lean 4.",
+          "pitfalls": [
+            "Choose `Set α` (predicates) rather than `Subtype` (`{x : α // P x}`) when frequent subset unions/intersections occur"
+          ]
         }
       },
       "translation_rules": [
@@ -859,6 +1300,22 @@
           "target_construct": "s.val",
           "confidence": 0.99,
           "notes": "Carrier projection mapping."
+        },
+        {
+          "source_prover": "agda",
+          "target_prover": "lean4",
+          "source_construct": "Σ[ x ∈ A ] P x (with propositional P)",
+          "target_construct": "{x : A // P x} + Subtype.ext",
+          "confidence": 0.96,
+          "notes": "Proof irrelevance in Lean Prop makes Subtype.ext discharge proj2 automatically."
+        },
+        {
+          "source_prover": "metamath",
+          "target_prover": "lean4",
+          "source_construct": "{ x e. A | ph } (df-rab / elrab)",
+          "target_construct": "{x : A // P x} (or {x : A | P x} : Set A)",
+          "confidence": 0.93,
+          "notes": "Restricted class comprehension maps to Subtype or Set comprehension."
         }
       ]
     },
@@ -924,6 +1381,34 @@
           "pitfalls": [
             "Lack of constructive extraction"
           ]
+        },
+        "agda": {
+          "tactics": [
+            "postulate",
+            "ExcludedMiddle",
+            "Choice"
+          ],
+          "syntax_pattern": "postulate em : ∀ {P : Set} → Dec P",
+          "semantics": "Constructive by default (`--safe` forbids `postulate`); classical reasoning is passed as an explicit module parameter or local hypothesis `em : ExcludedMiddle`.",
+          "idiomatic_pattern": "Drop explicit `em : ExcludedMiddle` module parameters when porting to Lean 4 `Prop` theorems and use `Classical.em` / `by_cases` / `Classical.choose`.",
+          "pitfalls": [
+            "Never translate an Agda `postulate` into a Lean `axiom`; use Lean's built-in `Classical.choice` (`noncomputable` + `Classical.choose`)"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "ax-ac",
+            "ac6s",
+            "iotacl",
+            "df-iota",
+            "pm2.61i"
+          ],
+          "syntax_pattern": "$( Axiom of Choice & definite description: ax-ac, iotacl, pm2.61i $)",
+          "semantics": "ZFC Axiom of Choice (`ax-ac`), Russell's definite description binder `( iota x ph )` (`df-iota`), and classical LEM (`pm2.61i`).",
+          "idiomatic_pattern": "Translate `( iota x ph )` (under uniqueness `E! x ph`) or `ax-ac` selection to `Classical.choose` + `Classical.choose_spec` in Lean 4.",
+          "pitfalls": [
+            "Metamath `( iota x ph )` returns the empty set `(/\\)` when uniqueness `E! x ph` fails, whereas `Classical.choose` picks an arbitrary element from any non-empty `∃ x, P x`"
+          ]
         }
       },
       "translation_rules": [
@@ -942,6 +1427,22 @@
           "target_construct": "Classical.choose (h : exists x, P x)",
           "confidence": 0.94,
           "notes": "HOL Light select operator maps to Lean 4 Classical.choose."
+        },
+        {
+          "source_prover": "agda",
+          "target_prover": "lean4",
+          "source_construct": "explicit ExcludedMiddle / Choice module parameter",
+          "target_construct": "Classical.em / Classical.choose (with noncomputable)",
+          "confidence": 0.96,
+          "notes": "Uses Lean's standard Classical.choice axiom without custom postulates."
+        },
+        {
+          "source_prover": "metamath",
+          "target_prover": "lean4",
+          "source_construct": "( iota x ph ) / ax-ac",
+          "target_construct": "Classical.choose h + Classical.choose_spec h",
+          "confidence": 0.95,
+          "notes": "Maps definite/indefinite ZFC selection to Classical.choose."
         }
       ]
     },
@@ -1005,6 +1506,33 @@
           "pitfalls": [
             "Manual reconstruction of state space equivalence lemmas"
           ]
+        },
+        "agda": {
+          "tactics": [
+            "Step*",
+            "Invariant",
+            "≤-Reasoning"
+          ],
+          "syntax_pattern": "inv-preserved : ∀ {s s'} → Inv s → Step s s' → Inv s'",
+          "semantics": "Indexed reflexive-transitive closure `Star Step s s'` (`Relation.Binary.Construct.Closure.ReflexiveTransitive`) with inductive invariant preservation.",
+          "idiomatic_pattern": "Map `Star Step` induction to `Relation.ReflTransGen.head_induction_on` and energy decrease `V s' <= V s` to `linarith`/`nlinarith` in Lean 4.",
+          "pitfalls": [
+            "Manual polynomial energy inequalities in Agda require long `≤-Reasoning` chains that collapse to `nlinarith` or `positivity` in Lean 4"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "rtrcl",
+            "uzind",
+            "subge0",
+            "sqge0"
+          ],
+          "syntax_pattern": "$( Discrete trajectory & energy bounds: rtrcl, uzind, sqge0 $)",
+          "semantics": "Reflexive-transitive closure (`rtrcl`) and integer-indexed recurrence inequalities via `uzind` and `sqge0`.",
+          "idiomatic_pattern": "Translate `uzind` recurrence energy bounds into inductive Lyapunov certificates discharged by `omega`, `linarith`, or `nlinarith`.",
+          "pitfalls": [
+            "When scaling real Lyapunov energies to `Nat` in Lean 4 (`x 100`), guard all subtraction steps `(V s' <= V s)` against `Nat.sub` truncation"
+          ]
         }
       },
       "translation_rules": [
@@ -1015,6 +1543,952 @@
           "target_construct": "theorem invariant_step (s : State) (h : Inv s) : Inv (step s)",
           "confidence": 0.98,
           "notes": "Direct correspondence in state machine invariant preservation proofs."
+        },
+        {
+          "source_prover": "agda",
+          "target_prover": "lean4",
+          "source_construct": "Star Step induction + ≤-Reasoning energy bound",
+          "target_construct": "ReflTransGen induction + linarith / nlinarith / omega",
+          "confidence": 0.95,
+          "notes": "Automates the algebraic energy inequality obligations via linarith/omega."
+        },
+        {
+          "source_prover": "metamath",
+          "target_prover": "lean4",
+          "source_construct": "uzind + sqge0 / subge0 energy recurrence",
+          "target_construct": "Nat.le_induction + positivity / linarith",
+          "confidence": 0.94,
+          "notes": "Maps discrete recurrence invariants to Lean 4 Lyapunov certificates."
+        }
+      ]
+    },
+    {
+      "id": "CONC-13-LINEAR-NONLINEAR-ARITHMETIC",
+      "canonical_name": "Linear, Nonlinear & Positivity Arithmetic Solvers",
+      "category": "automation",
+      "master_concept_ref": "CONCEPT-DECISION-PROCEDURES",
+      "statutory_urn": "urn:itp:avigad-mil-2024:ch2:sec5:arith[omega-linarith-ring]",
+      "description": "Decision procedures and certificate generators for Presburger arithmetic, linear/nonlinear real and rational inequalities, polynomial ring identities, and positivity.",
+      "provers": {
+        "lean4": {
+          "tactics": [
+            "omega",
+            "linarith",
+            "nlinarith",
+            "ring",
+            "positivity",
+            "norm_num"
+          ],
+          "syntax_pattern": "by omega | by linarith [h1, h2] | by ring | by positivity",
+          "semantics": "Kernel-checked proof-term generation for integer Presburger (`omega`), Fourier-Motzkin linear arithmetic (`linarith`), commutative rings (`ring`), and sign analysis (`positivity`).",
+          "idiomatic_pattern": "Use `omega` for `Nat`/`Int` linear goals, `ring` for polynomial identities, `positivity` for `0 <= x` / `0 < x`, and `linarith`/`nlinarith` for `Rat`/`Real` inequalities.",
+          "pitfalls": [
+            "Silent `Nat.sub` truncation `a - b = 0` when `a < b`; provide `h : b <= a` before `omega` or `zify`",
+            "`ring` does not use local inequality or non-equational hypotheses; pass them to `linarith` instead"
+          ]
+        },
+        "coq_mathcomp": {
+          "tactics": [
+            "lia",
+            "nia",
+            "lra",
+            "nra",
+            "ring",
+            "psatz"
+          ],
+          "syntax_pattern": "by lia | by lra | by ring",
+          "semantics": "Micromega certificate checkers (`lia`, `nia`, `lra`, `nra`) and reflective polynomial normalizer (`ring`).",
+          "idiomatic_pattern": "Translate `lia` -> `omega`, `lra` -> `linarith`, `nia`/`nra` -> `nlinarith`, and `ring` -> `ring`.",
+          "pitfalls": [
+            "MathComp `ssrnat` operations (`.+1`, `addn`, `subn`) require `zify` or `nat_norm` before `lia` works cleanly"
+          ]
+        },
+        "isabelle_hol": {
+          "tactics": [
+            "arith",
+            "linarith",
+            "presburger",
+            "algebra",
+            "sos"
+          ],
+          "syntax_pattern": "by linarith | by presburger | by algebra | by sos",
+          "semantics": "Cooper's algorithm (`presburger`), Simplex/Fourier-Motzkin (`linarith`), Groebner bases (`algebra`), and sum-of-squares (`sos`).",
+          "idiomatic_pattern": "Map `by presburger` -> `by omega`, `by linarith` -> `by linarith`, and `by algebra` -> `by ring`.",
+          "pitfalls": [
+            "`sos` relies on external CSDP certificates unless reconstructed; use `nlinarith` or `polyrith` in Lean 4"
+          ]
+        },
+        "hol_light": {
+          "tactics": [
+            "ARITH_TAC",
+            "INT_ARITH_TAC",
+            "REAL_ARITH_TAC",
+            "REAL_RING",
+            "SOS_RULE"
+          ],
+          "syntax_pattern": "CONV_TAC REAL_RING | REAL_ARITH_TAC | ARITH_TAC",
+          "semantics": "LCF-verified linear/ring decision procedures (`ARITH_TAC` on `num`, `INT_ARITH_TAC` on `int`, `REAL_ARITH_TAC` and `REAL_RING` on `real`).",
+          "idiomatic_pattern": "Translate `ARITH_TAC` / `INT_ARITH_TAC` -> `omega`, `REAL_ARITH_TAC` -> `linarith`, and `REAL_RING` -> `ring`.",
+          "pitfalls": [
+            "`REAL_RING` handles non-zero denominator clearing internally; in Lean 4 run `field_simp` before `ring`"
+          ]
+        },
+        "agda": {
+          "tactics": [
+            "+-*-Solver",
+            "RingSolver",
+            "+-mono-≤",
+            "*-mono-≤"
+          ],
+          "syntax_pattern": "solve 3 (\\ a b c -> lhs := rhs) refl x y z",
+          "semantics": "Reflective semiring/ring equality solvers in `Data.Nat.Solver` and explicit monotonicity combinators for inequalities.",
+          "idiomatic_pattern": "Collapse Agda `+-*-Solver` calls to `ring` and multi-line `+-mono-≤` trees to `omega` or `linarith`.",
+          "pitfalls": [
+            "Agda lacks built-in `linarith` or `positivity`; inequality trees in Agda shrink by 90% when ported to Lean 4"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "leadd1i",
+            "ltmul1i",
+            "sqge0",
+            "addass",
+            "distr",
+            "subge0"
+          ],
+          "syntax_pattern": "$( Ordered field & ring axioms: leadd1i, sqge0, addass, distr $)",
+          "semantics": "First-principles ring and ordered-field theorems in `set.mm`.",
+          "idiomatic_pattern": "Replace 20-line `set.mm` algebraic/inequality subproofs with a single `ring`, `linarith`, `omega`, or `positivity` call.",
+          "pitfalls": [
+            "`set.mm` `N` is a subset of `C` so `a - b` is never truncated; guard `Nat.sub` when porting to Lean 4 `Nat`"
+          ]
+        }
+      },
+      "translation_rules": [
+        {
+          "source_prover": "coq_mathcomp",
+          "target_prover": "lean4",
+          "source_construct": "by lia / by lra / by nra / by ring",
+          "target_construct": "by omega / by linarith / by nlinarith / by ring",
+          "confidence": 0.98,
+          "notes": "Direct 1-to-1 correspondence between Micromega solvers and Lean 4 arithmetic tactics."
+        },
+        {
+          "source_prover": "isabelle_hol",
+          "target_prover": "lean4",
+          "source_construct": "by presburger / by linarith / by algebra",
+          "target_construct": "by omega / by linarith / by ring",
+          "confidence": 0.98,
+          "notes": "Direct solver correspondence."
+        },
+        {
+          "source_prover": "hol_light",
+          "target_prover": "lean4",
+          "source_construct": "ARITH_TAC / REAL_ARITH_TAC / REAL_RING",
+          "target_construct": "omega / linarith / ring",
+          "confidence": 0.97,
+          "notes": "Pair REAL_RING with field_simp if denominators appear."
+        }
+      ]
+    },
+    {
+      "id": "CONC-14-COERCIONS-CAST-NORMALIZATION",
+      "canonical_name": "Numeric Coercions, Cast Normalization & Denominator Clearing",
+      "category": "proof_method",
+      "master_concept_ref": "CONCEPT-COERCION-ELABORATION",
+      "statutory_urn": "urn:itp:lewis-cast-2020:ch1:sec3:cast[norm-cast-zify]",
+      "description": "Management of algebraic embeddings across numeric towers (Nat -> Int -> Rat -> Real -> Complex) and clearing non-zero denominators in fields.",
+      "provers": {
+        "lean4": {
+          "tactics": [
+            "norm_cast",
+            "push_cast",
+            "exact_mod_cast",
+            "zify",
+            "qify",
+            "field_simp"
+          ],
+          "syntax_pattern": "push_cast; ring | zify [h_le] at *; omega | field_simp [hne]; ring",
+          "semantics": "Bidirectional `@[norm_cast]` attribute classification (`squash`, `move`, `elim`) normalizing ↑ coercions, paired with `zify` (`Nat -> Int` lift) and `field_simp`.",
+          "idiomatic_pattern": "Use `zify [h]` to lift `Nat.sub` to `Int` before `omega`, `push_cast; ring` for mixed-cast equalities, and `field_simp; ring` for rational expressions.",
+          "pitfalls": [
+            "`Nat.cast_sub` requires `b <= a`; without it `push_cast` cannot push `↑(a - b)` inward",
+            "`field_simp` leaves denominator non-zero goals if `positivity` or local hypotheses cannot discharge them automatically"
+          ]
+        },
+        "coq_mathcomp": {
+          "tactics": [
+            "zify",
+            " rewrite !intrD !intrM",
+            "divfK",
+            "mulfVK"
+          ],
+          "syntax_pattern": "rewrite !PoszD !mulrz | rewrite divfK //",
+          "semantics": "Explicit ring morphism rewrites (`intrD`, `natrD`, `PoszD` in `ssrint`/`ssrnum`) and explicit non-zero cancellation (`divfK`, `mulfVK`).",
+          "idiomatic_pattern": "Replace `rewrite !intrD !intrM` with `push_cast` / `norm_cast`, and `rewrite divfK //` with `field_simp`.",
+          "pitfalls": [
+            "MathComp's `Posz` (`n%:Z`) and `_%:R` are explicit functions rather than unified `@[norm_cast]` attributes"
+          ]
+        },
+        "isabelle_hol": {
+          "tactics": [
+            "of_nat_add",
+            "of_int_mult",
+            "divide_simps",
+            "field_simps"
+          ],
+          "syntax_pattern": "by (simp add: field_simps of_nat_add)",
+          "semantics": "Simp-set collections (`field_simps`, `divide_simps`) that cross-multiply denominators under `if d = 0` splits, plus `of_nat_*` homomorphisms.",
+          "idiomatic_pattern": "Translate `simp add: field_simps` to `field_simp; ring` and `of_nat_*` simp chains to `norm_cast` / `push_cast`.",
+          "pitfalls": [
+            "Isabelle's `field_simps` splits on `d = 0 \\/ d != 0` automatically, whereas Lean's `field_simp` looks for `d != 0` in context"
+          ]
+        },
+        "hol_light": {
+          "tactics": [
+            "REAL_OF_NUM_CLAUSES",
+            "INT_OF_NUM_CLAUSES",
+            "REAL_FIELD"
+          ],
+          "syntax_pattern": "REWRITE_TAC[REAL_OF_NUM_CLAUSES] | CONV_TAC REAL_FIELD",
+          "semantics": "Rewrite suites pushing `&n` (`real_of_num`) outward/inward and `REAL_FIELD` reducing field goals to Positivstellensatz/ring obligations.",
+          "idiomatic_pattern": "Map `REWRITE_TAC[REAL_OF_NUM_CLAUSES]` to `norm_cast` and `CONV_TAC REAL_FIELD` to `field_simp; ring`.",
+          "pitfalls": [
+            "`REAL_OF_NUM_SUB` requires `m <= n` as an explicit antecedent just like `Nat.cast_sub`"
+          ]
+        },
+        "agda": {
+          "tactics": [
+            "+-pos",
+            "*-pos",
+            "fromℕ",
+            "*-cancelʳ-≡"
+          ],
+          "syntax_pattern": "rewrite +-pos m n | *-cancelʳ-≡ _ _ hnz",
+          "semantics": "Explicit constructor homomorphisms (`+-pos : (+ m) + (+ n) ≡ + (m + n)`) without implicit coercion search.",
+          "idiomatic_pattern": "Replace explicit `+-pos` / `*-pos` rewrites with `push_cast` or `norm_cast` in Lean 4.",
+          "pitfalls": [
+            "Agda terms contain explicit embedding constructors that disappear into `↑` coercions in Lean 4"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "nnz",
+            "zcn",
+            "reccn",
+            "adddiv",
+            "divcan2"
+          ],
+          "syntax_pattern": "$( Subset tower N c_ Z c_ Q c_ R c_ C: nnz, zcn, adddiv, divcan2 $)",
+          "semantics": "Untyped ZFC subset inclusions (`N c_ Z c_ R c_ C`) where all numeric operations are complex operations `+`, `-`, `x.`, `/`.",
+          "idiomatic_pattern": "Introduce explicit types `(n : Nat)`, `(z : Int)`, `(x : Real)` when porting `set.mm`, using `push_cast`/`norm_cast` at type boundaries and `field_simp` for `adddiv`/`divcan2`.",
+          "pitfalls": [
+            "CRITICAL: `set.mm` `m - n` on `m, n e. N` produces a negative integer in `Z` when `m < n`, whereas Lean `(m - n : Nat)` truncates to `0`! Always cast `(m : Int) - (n : Int)` or add `n <= m`"
+          ]
+        }
+      },
+      "translation_rules": [
+        {
+          "source_prover": "isabelle_hol",
+          "target_prover": "lean4",
+          "source_construct": "simp add: field_simps",
+          "target_construct": "field_simp; ring",
+          "confidence": 0.96,
+          "notes": "Clears denominators and normalizes polynomial numerators."
+        },
+        {
+          "source_prover": "hol_light",
+          "target_prover": "lean4",
+          "source_construct": "REWRITE_TAC[REAL_OF_NUM_CLAUSES] / CONV_TAC REAL_FIELD",
+          "target_construct": "norm_cast / field_simp; ring",
+          "confidence": 0.96,
+          "notes": "Direct mapping for cast normalization and field clearing."
+        }
+      ]
+    },
+    {
+      "id": "CONC-15-WELL-FOUNDED-RECURSION",
+      "canonical_name": "Well-Founded Recursion, Termination Measures & Functional Induction",
+      "category": "proof_method",
+      "master_concept_ref": "CONCEPT-WELL-FOUNDED-INDUCTION",
+      "statutory_urn": "urn:itp:krauss-function-2009:ch3:sec1:wf[termination-fun-induction]",
+      "description": "Definitions by well-founded recursion over custom measures/relations and proofs using automatically generated functional induction principles.",
+      "provers": {
+        "lean4": {
+          "tactics": [
+            "termination_by",
+            "decreasing_by",
+            "fun_induction",
+            "fun_cases",
+            "WellFounded.induction"
+          ],
+          "syntax_pattern": "def f (x : alpha) : beta := ... termination_by measure x decreasing_by omega | fun_induction f x with ...",
+          "semantics": "`WellFounded.fix` compilation with automatic equation lemmas (`f.eq_def`) and functional induction principle (`f.induct`, invoked via `fun_induction`).",
+          "idiomatic_pattern": "Pair `termination_by` + `decreasing_by omega` with `fun_induction f` so proof branches mirror the function's control flow 1-to-1.",
+          "pitfalls": [
+            "Unfolding a well-founded function via `dsimp` fails because it is compiled via `WellFounded.fix`; use `rw [f]` or `fun_induction f`"
+          ]
+        },
+        "coq_mathcomp": {
+          "tactics": [
+            "Equations",
+            "by wf",
+            "funelim",
+            "elim/ltn_ind"
+          ],
+          "syntax_pattern": "Equations f (n : nat) : nat by wf n lt := ... | funelim (f n)",
+          "semantics": "Sozeau's `Equations` package compiling well-founded definitions and generating the `funelim` elimination principle.",
+          "idiomatic_pattern": "Translate `Equations ... by wf` + `funelim (f x)` directly to Lean 4 `termination_by` + `fun_induction f x`.",
+          "pitfalls": [
+            "Avoid legacy `Program Fixpoint` / `Function` when porting; their manual proof obligations map cleanly to `decreasing_by` + `fun_induction`"
+          ]
+        },
+        "isabelle_hol": {
+          "tactics": [
+            "fun",
+            "function (sequential)",
+            "termination by (relation ...)",
+            "f.induct"
+          ],
+          "syntax_pattern": "function f where ... by pat_completeness auto termination by (relation \"measure g\") auto | proof (induct rule: f.induct)",
+          "semantics": "Krauss's `function` package generating `.simps` and custom computation induction `f.induct`.",
+          "idiomatic_pattern": "Map `termination by (relation \"measure g\")` to `termination_by g x` and `induct rule: f.induct` to `fun_induction f`.",
+          "pitfalls": [
+            "Isabelle `<*mlex*>` lexicographic measures map to tuple measures `(m1 x, m2 x)` in Lean 4 `termination_by`"
+          ]
+        },
+        "hol_light": {
+          "tactics": [
+            "define",
+            "WF_IND",
+            "WF_REC",
+            "MEASURE"
+          ],
+          "syntax_pattern": "MATCH_MP_TAC WF_IND THEN EXISTS_TAC `MEASURE g`",
+          "semantics": "Harrison's general recursive `define` command backed by `WF_REC` and `MEASURE`.",
+          "idiomatic_pattern": "Translate `MATCH_MP_TAC WF_IND` to `fun_induction` or `WellFounded.induction`.",
+          "pitfalls": [
+            "HOL Light does not automatically generate a custom `f.induct` theorem for `define`; Lean 4's `fun_induction` simplifies these proofs substantially"
+          ]
+        },
+        "agda": {
+          "tactics": [
+            "Acc",
+            "WfRec",
+            "<-wellFounded"
+          ],
+          "syntax_pattern": "go : (x : A) -> Acc _<_ x -> B",
+          "semantics": "Structural recursion over an explicit accessibility proof `Acc _<_ x`.",
+          "idiomatic_pattern": "Drop the explicit `Acc _<_ x` parameter when porting to Lean 4 and write a clean `termination_by` clause.",
+          "pitfalls": [
+            "Agda functions parameterized by `Acc` carry the accessibility proof in their type signature unless wrapped"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "frfi",
+            "wfrlem",
+            "sfind",
+            "uzind"
+          ],
+          "syntax_pattern": "$( Set-theoretic well-founded recursion: frfi, wfrlem $)",
+          "semantics": "Set-theoretic transfinite/well-founded recursion theorem (`frfi`) constructing a function class as a union of approximations.",
+          "idiomatic_pattern": "Replace `frfi` approximation unions with native `termination_by` recursive definitions in Lean 4.",
+          "pitfalls": [
+            "`frfi` restricts the recursive call via function restriction `( F |` Pred(R, A, x) )`"
+          ]
+        }
+      },
+      "translation_rules": [
+        {
+          "source_prover": "isabelle_hol",
+          "target_prover": "lean4",
+          "source_construct": "termination by (relation \"measure g\") + proof (induct rule: f.induct)",
+          "target_construct": "termination_by g x + fun_induction f",
+          "confidence": 0.98,
+          "notes": "Lean 4.8+ fun_induction matches Isabelle's f.induct 1-to-1."
+        },
+        {
+          "source_prover": "coq_mathcomp",
+          "target_prover": "lean4",
+          "source_construct": "Equations f ... by wf + funelim (f x)",
+          "target_construct": "def f ... termination_by + fun_induction f x",
+          "confidence": 0.98,
+          "notes": "Direct correspondence between Equations funelim and Lean 4 fun_induction."
+        }
+      ]
+    },
+    {
+      "id": "CONC-16-MEASURE-INTEGRATION-BOCHNER",
+      "canonical_name": "Measure Spaces, Lebesgue/Bochner Integration & Almost-Everywhere Filters",
+      "category": "domain_theory",
+      "master_concept_ref": "CONCEPT-MEASURE-BOCHNER",
+      "statutory_urn": "urn:itp:hoelzl-measure-2013:ch4:sec2:bochner[lintegral-integral-ae]",
+      "description": "Formalization of sigma-algebras, Caratheodory outer measures, lower Lebesgue integration on ENNReal, Bochner integration on Banach spaces, and almost-everywhere (ae) filter reasoning.",
+      "provers": {
+        "lean4": {
+          "tactics": [
+            "measurability",
+            "fun_prop",
+            "filter_upwards",
+            "integral_add",
+            "lintegral_mono_ae"
+          ],
+          "syntax_pattern": "∫ x in s, f x ∂μ | ∫⁻ x, g x ∂μ | ∀ᵐ x ∂μ, P x | filter_upwards [h1, h2] with x hx1 hx2",
+          "semantics": "Mathlib `MeasureTheory.Measure` with `∫⁻` (`ENNReal` lower Lebesgue integral), `∫` (Bochner integral returning `0` if non-integrable), and `ae μ` filter.",
+          "idiomatic_pattern": "Discharge measurability via `measurability` or `fun_prop`, combine `∀ᵐ x ∂μ` hypotheses via `filter_upwards`, and use `Integrable f μ` for Bochner linearity.",
+          "pitfalls": [
+            "`∫⁻` takes values in `ℝ≥0∞` where `∞ - ∞ = 0`; use `∫` (Bochner) for signed cancellation",
+            "Bochner `integral_add` requires `Integrable f μ` and `Integrable g μ` side conditions"
+          ]
+        },
+        "coq_mathcomp": {
+          "tactics": [
+            "measurable",
+            "near=> x",
+            "integralD",
+            "ge0_le_integral"
+          ],
+          "syntax_pattern": "\\int[mu]_(x in D) f x | {ae mu, forall x, P x}",
+          "semantics": "MathComp-Analysis `measureType` and Lebesgue integration over extended reals `\\bar R` with `measurable` tactic.",
+          "idiomatic_pattern": "Translate `\\int[mu]_(x in D) f x` to `∫ x in D, f x ∂μ` (or `∫⁻` for non-negative extended reals) and `{ae mu, ...}` to `∀ᵐ x ∂μ, ...`.",
+          "pitfalls": [
+            "MathComp-Analysis integrates into `\\bar R` (`[-∞, +∞]`), whereas Mathlib splits `∫⁻` (`[0, +∞]`) and `∫` (Banach space `E`)"
+          ]
+        },
+        "isabelle_hol": {
+          "tactics": [
+            "measurable",
+            "AE_mp",
+            "bochner_integral",
+            "nn_integral_mono_AE"
+          ],
+          "syntax_pattern": "LINT x:M. f x | integral⇧N M f | AE x in M. P x",
+          "semantics": "Hölzl-Himmelmann `HOL-Analysis` / `HOL-Probability` non-negative integral (`integral⇧N` on `ennreal`) and Bochner integral (`LINT`).",
+          "idiomatic_pattern": "Mathlib's `MeasureTheory` is a direct descendant of Isabelle's `HOL-Analysis`: `integral⇧N M f` -> `∫⁻ x, f x ∂μ`, `LINT x:M. f x` -> `∫ x, f x ∂μ`, `AE x in M` -> `∀ᵐ x ∂μ`.",
+          "pitfalls": [
+            "Isabelle measures carry an explicit carrier set `space M` (`x ∈ space M`), whereas Mathlib uses the full type `α` with `[MeasurableSpace α]`"
+          ]
+        },
+        "hol_light": {
+          "tactics": [
+            "HAS_INTEGRAL",
+            "INTEGRABLE_ADD",
+            "NEGLIGIBLE",
+            "MEASURABLE"
+          ],
+          "syntax_pattern": "(f has_integral y) s | integral s f | negligible s",
+          "semantics": "Henstock-Kurzweil gauge integral on `real^N` (`has_integral`) and Lebesgue measurable sets (`measurable`).",
+          "idiomatic_pattern": "Translate `(f has_integral y) s` on absolutely integrable functions to `HasIntegral f s y` / `IntegrableOn f s volume ∧ ∫ x in s, f x = y`.",
+          "pitfalls": [
+            "Henstock-Kurzweil integrates conditionally convergent oscillations (e.g. `sin x / x` on `[0, ∞)`) that are not Lebesgue/Bochner `Integrable` without improper limit wrappers"
+          ]
+        },
+        "agda": {
+          "tactics": [
+            "SigmaAlgebra",
+            "IsMeasure"
+          ],
+          "syntax_pattern": "record Measure (X : Set) : Set₁",
+          "semantics": "Constructive or postulated sigma-algebra records in specialized Agda libraries.",
+          "idiomatic_pattern": "Lift Agda sigma-algebra definitions into Mathlib `[MeasurableSpace α]` and `(μ : Measure α)`.",
+          "pitfalls": [
+            "Agda has no standard Bochner integration library; port abstract measure axioms to Mathlib `MeasureTheory`"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "itgadd",
+            "itgle",
+            "mbfadd",
+            "volun",
+            "oms"
+          ],
+          "syntax_pattern": "( S _|_ F ) , F e. Mbf , F e. Itg",
+          "semantics": "Lebesgue measure (`vol`) and integral (`itg1`, `itg2`, `Mbf`, `Itg`) on `R` plus general outer measure spaces (`oms`).",
+          "idiomatic_pattern": "Translate `F e. Mbf` -> `Measurable f` (`by measurability`), `F e. Itg` -> `Integrable f volume`, and `(S _|_ F)` -> `∫ x in S, f x`.",
+          "pitfalls": [
+            "Default `set.mm` `itg` is 1D Lebesgue integration over `R`; multidimensional integrals use product measures"
+          ]
+        }
+      },
+      "translation_rules": [
+        {
+          "source_prover": "isabelle_hol",
+          "target_prover": "lean4",
+          "source_construct": "integral⇧N M f / LINT x:M. f x / AE x in M. P x",
+          "target_construct": "∫⁻ x, f x ∂μ / ∫ x, f x ∂μ / ∀ᵐ x ∂μ, P x",
+          "confidence": 0.98,
+          "notes": "Direct architectural isomorphism between Isabelle HOL-Analysis and Mathlib MeasureTheory."
+        },
+        {
+          "source_prover": "coq_mathcomp",
+          "target_prover": "lean4",
+          "source_construct": "\\int[mu]_(x in D) f x / {ae mu, forall x, P x}",
+          "target_construct": "∫ x in D, f x ∂μ / ∀ᵐ x ∂μ, P x",
+          "confidence": 0.95,
+          "notes": "Choose ∫⁻ if codomain is non-negative extended reals, ∫ if signed."
+        }
+      ]
+    },
+    {
+      "id": "CONC-17-BIG-OPERATORS-FINSET",
+      "canonical_name": "Big Operators, Finite Sums/Products & Indexed Monoid Folding",
+      "category": "domain_theory",
+      "master_concept_ref": "CONCEPT-BIG-OPERATORS",
+      "statutory_urn": "urn:itp:bertot-bigop-2008:ch2:sec1:bigop[finset-sum-prod]",
+      "description": "Indexed finite sums, products, and commutative monoid folds over finite sets, ranges, and filtered predicates, including reindexing bijections and sum swapping.",
+      "provers": {
+        "lean4": {
+          "tactics": [
+            "Finset.sum_congr",
+            "Finset.sum_bij",
+            "Finset.sum_comm",
+            "Finset.sum_union",
+            "Finset.sum_filter"
+          ],
+          "syntax_pattern": "∑ x ∈ s, f x | ∏ x ∈ s, f x | ∑ x ∈ s with P x, f x",
+          "semantics": "`Finset.sum` and `Finset.prod` commutative-monoid fold over deduplicated `Finset α` (`open BigOperators`).",
+          "idiomatic_pattern": "Use `Finset.sum_congr rfl (fun x hx => ...)` for pointwise rewrites, `Finset.sum_bij` for reindexing, and `Finset.sum_comm` for swapping double sums.",
+          "pitfalls": [
+            "`Finset.range n` is `[0, n)` (size `n`), whereas `Finset.Icc 1 n` is `[1, n]`; watch index bounds carefully",
+            "`Finset.sum_union` requires `Disjoint s t`"
+          ]
+        },
+        "coq_mathcomp": {
+          "tactics": [
+            "eq_bigr",
+            "eq_bigl",
+            "bigD1",
+            "exchange_big",
+            "partition_big",
+            "reindex_inj"
+          ],
+          "syntax_pattern": "\\sum_(i < n | P i) F i | \\prod_(x in A) F x",
+          "semantics": "Canonical `\\big[op/idx]_(i <- r | P i) F i` library supporting monoid laws, index filtering, and partition reindexing.",
+          "idiomatic_pattern": "Translate `eq_bigr` -> `Finset.sum_congr rfl`, `bigD1` -> `Finset.add_sum_erase`, `exchange_big` -> `Finset.sum_comm`, and `| P i` -> `∑ i ∈ s with P i, F i`.",
+          "pitfalls": [
+            "MathComp's `\\big` operates over a list `r` and only uses commutativity/idempotence when `r` is duplicate-free (`uniq r`)"
+          ]
+        },
+        "isabelle_hol": {
+          "tactics": [
+            "sum.cong",
+            "sum.reindex_bij_betw",
+            "sum.union_disjoint",
+            "sum.swap"
+          ],
+          "syntax_pattern": "(∑x∈A. f x) | (∏x∈A. f x)",
+          "semantics": "`Groups_Big.sum` over `'a set` (returning `0` automatically when `infinite A`).",
+          "idiomatic_pattern": "Translate `(∑x∈A. f x)` under `finite A` to `∑ x ∈ A, f x` over `A : Finset α`.",
+          "pitfalls": [
+            "Isabelle `∑x∈A. f x` defaults to `0` on infinite sets; if finiteness is not obvious in Lean 4, use `finsum` (`∑ᶠ x, f x`) or carry `A : Finset α`"
+          ]
+        },
+        "hol_light": {
+          "tactics": [
+            "SUM_CLAUSES",
+            "SUM_EQ",
+            "SUM_BIJECTION",
+            "SUM_SWAP",
+            "NSUM_OFFSET"
+          ],
+          "syntax_pattern": "sum s f | nsum (1..n) f | product s f",
+          "semantics": "`iterate (+) s f` over predicates `s : A -> bool` (`sum` for `real`, `nsum` for `num`).",
+          "idiomatic_pattern": "Map `nsum (0..n-1) f` -> `∑ i ∈ Finset.range n, f i` and `nsum (m..n) f` -> `∑ i ∈ Finset.Icc m n, f i`.",
+          "pitfalls": [
+            "HOL Light `(m..n)` is the closed interval `[m, n]`, not half-open"
+          ]
+        },
+        "agda": {
+          "tactics": [
+            "Data.List.sum",
+            "Data.Vec.sum",
+            "foldr"
+          ],
+          "syntax_pattern": "sum (map f (upTo n))",
+          "semantics": "List or `Vec` folds over explicit enumeration lists (`upTo n`, `allFin n`).",
+          "idiomatic_pattern": "Convert list-based `sum (map f (allFin n))` into `∑ i : Fin n, f i` (`Fintype.sum`) in Lean 4.",
+          "pitfalls": [
+            "List folds lack built-in `sum_bij` or `sum_comm` lemmas unless lifted to `Finset`"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "fsum",
+            "fsumadd",
+            "fsumshft",
+            "fsumsplit",
+            "fsumcom"
+          ],
+          "syntax_pattern": "sum_ k e. ( M ... N ) A(k) , sum_ x e. S F(x)",
+          "semantics": "Indexed sum `sum_ k e. A B` (`df-fsum`) over integer intervals `(M ... N)` (`df-fz`) or finite sets.",
+          "idiomatic_pattern": "Translate `sum_ k e. (M ... N) A(k)` to `∑ k ∈ Finset.Icc M N, A k` and `fsumshft` to `Finset.sum_Ico_add`.",
+          "pitfalls": [
+            "In `set.mm`, `(M ... N)` is Over `Z` (integers), so `M` and `N` can be negative"
+          ]
+        }
+      },
+      "translation_rules": [
+        {
+          "source_prover": "coq_mathcomp",
+          "target_prover": "lean4",
+          "source_construct": "\\sum_(i in A | P i) F i / exchange_big / bigD1",
+          "target_construct": "∑ i ∈ A with P i, F i / Finset.sum_comm / Finset.add_sum_erase",
+          "confidence": 0.97,
+          "notes": "Mathlib Finset.sum was designed around MathComp bigop idioms."
+        },
+        {
+          "source_prover": "isabelle_hol",
+          "target_prover": "lean4",
+          "source_construct": "(∑x∈A. f x) / sum.reindex_bij_betw / sum.swap",
+          "target_construct": "∑ x ∈ A, f x / Finset.sum_bij / Finset.sum_comm",
+          "confidence": 0.96,
+          "notes": "Convert 'a set with finite A to Finset alpha."
+        }
+      ]
+    },
+    {
+      "id": "CONC-18-BITVEC-SWAR-DECISION",
+      "canonical_name": "Bitvectors, Machine Words, SWAR & Bit-Blasting Decision Procedures",
+      "category": "automation",
+      "master_concept_ref": "CONCEPT-BITVEC-DECISION",
+      "statutory_urn": "urn:itp:boeing-bvdecide-2024:ch1:sec1:bv[bv-decide-swar]",
+      "description": "Fixed-width machine word and bitvector reasoning (`BitVec w`, `UInt64`), SWAR parallel bit manipulation, and SAT/LRAT bit-blasting.",
+      "provers": {
+        "lean4": {
+          "tactics": [
+            "bv_decide",
+            "bv_omega",
+            "BitVec.ext",
+            "decide"
+          ],
+          "syntax_pattern": "by bv_decide | by bv_omega | ext i hi; simp [BitVec.getLsbD]",
+          "semantics": "Kernel-verified LRAT certificate bit-blaster (`bv_decide` via CaDiCaL) and `BitVec`-to-`omega` preprocessor (`bv_omega`).",
+          "idiomatic_pattern": "Use `bv_decide` for all fixed-width (`BitVec 8/16/32/64`) bitwise/arithmetic identities and `BitVec.ext` for parametric widths `BitVec w`.",
+          "pitfalls": [
+            "`bv_decide` only applies to concrete bit-widths `w`; parametric widths `w : Nat` require `ext i` or induction",
+            "Nonlinear multiplication on wide `BitVec 64` can time out in SAT; factor or apply ring lemmas first"
+          ]
+        },
+        "coq_mathcomp": {
+          "tactics": [
+            "bitblast",
+            "word",
+            "Z.bitwise",
+            "ssrnat"
+          ],
+          "syntax_pattern": "w : word 64 | by bitblast",
+          "semantics": "`coqword` / `Bedrock2` `word.ok` / MathComp `w.-tuple bool` fixed-width word libraries.",
+          "idiomatic_pattern": "Translate fixed-width `word 64` bitwise lemmas to `BitVec 64` + `by bv_decide`.",
+          "pitfalls": [
+            "Coq `Z.land` / `Z.lxor` operates on unbounded integers `Z` rather than modular `BitVec w`"
+          ]
+        },
+        "isabelle_hol": {
+          "tactics": [
+            "word_bitwise",
+            "unat_arith",
+            "uint_arith",
+            "bit_eqI"
+          ],
+          "syntax_pattern": "x :: 64 word | by word_bitwise | by unat_arith",
+          "semantics": "`HOL-Library.Word` (`'a::len word` inside seL4 / l4v) with `word_bitwise` and `unat_arith`.",
+          "idiomatic_pattern": "Map `by word_bitwise` -> `by bv_decide`, `by unat_arith` -> `by bv_omega`, and `bit_eqI` -> `BitVec.ext`.",
+          "pitfalls": [
+            "Isabelle `'a::len word` enforces `0 < LENGTH('a)` via the `len` sort, whereas Lean `BitVec 0` is valid"
+          ]
+        },
+        "hol_light": {
+          "tactics": [
+            "WORD_BLAST",
+            "WORD_ARITH_TAC",
+            "BIT_BLAST_TAC",
+            "WORD_RULE"
+          ],
+          "syntax_pattern": "x:int64 | CONV_TAC WORD_BLAST | WORD_ARITH_TAC",
+          "semantics": "Harrison's `Library/words.ml` (`s2n-bignum`) bit-blaster `WORD_BLAST` and modular arithmetic `WORD_ARITH_TAC`.",
+          "idiomatic_pattern": "Replace `CONV_TAC WORD_BLAST` with `by bv_decide` and `WORD_ARITH_TAC` with `by bv_omega`.",
+          "pitfalls": [
+            "Check `val` (unsigned) vs `ival` (signed 2's complement) projections -> `BitVec.toNat` vs `BitVec.toInt` in Lean 4"
+          ]
+        },
+        "agda": {
+          "tactics": [
+            "Word64",
+            "Vec Bool n",
+            "refl"
+          ],
+          "syntax_pattern": "Word64 | Vec Bool 64",
+          "semantics": "Builtin `Word64` primitives or length-indexed `Vec Bool n` operations.",
+          "idiomatic_pattern": "Port `Word64` / `Vec Bool 64` lemmas to `BitVec 64` and discharge with `by bv_decide`.",
+          "pitfalls": [
+            "Agda lacks an integrated SAT bit-blaster with LRAT proof reconstruction"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "bits",
+            "sadadd",
+            "smumul",
+            "df-bits"
+          ],
+          "syntax_pattern": "$( Set of binary bit positions: ( bits ` N ) $)",
+          "semantics": "Set-theoretic representation `(bits ` N) = { k e. N0 | floor(N / 2^k) mod 2 = 1 }`.",
+          "idiomatic_pattern": "Translate `k e. (bits ` N)` to `Nat.testBit n k = true` or `BitVec.getLsbD x k`.",
+          "pitfalls": [
+            "Metamath `bits` models arbitrary-precision natural numbers rather than fixed-width two's complement words"
+          ]
+        }
+      },
+      "translation_rules": [
+        {
+          "source_prover": "isabelle_hol",
+          "target_prover": "lean4",
+          "source_construct": "by word_bitwise / by unat_arith / bit_eqI",
+          "target_construct": "by bv_decide / by bv_omega / BitVec.ext",
+          "confidence": 0.99,
+          "notes": "Direct mapping from seL4 HOL-Word tactics to Lean 4.10+ BitVec tactics."
+        },
+        {
+          "source_prover": "hol_light",
+          "target_prover": "lean4",
+          "source_construct": "CONV_TAC WORD_BLAST / WORD_ARITH_TAC",
+          "target_construct": "by bv_decide / by bv_omega",
+          "confidence": 0.98,
+          "notes": "Direct mapping from s2n-bignum word tactics to Lean 4 bv_decide."
+        }
+      ]
+    },
+    {
+      "id": "CONC-19-EXTENSIONALITY-CONGRUENCE",
+      "canonical_name": "Function, Proposition, Set & Structure Extensionality",
+      "category": "logic_foundation",
+      "master_concept_ref": "CONCEPT-EXTENSIONALITY",
+      "statutory_urn": "urn:itp:tpil4-2024:ch11:sec3:ext[funext-propext-ext]",
+      "description": "Reduction of equality between compound objects (functions, sets, propositions, records, matrices, finsets) to pointwise or fieldwise equality via @[ext] lemmas.",
+      "provers": {
+        "lean4": {
+          "tactics": [
+            "ext",
+            "funext",
+            "propext",
+            "congr",
+            "congrArg",
+            "iff_of_eq"
+          ],
+          "syntax_pattern": "ext x y | funext x | congr 1",
+          "semantics": "Chainable `@[ext]` tactic applying type-directed extensionality lemmas (`funext`, `Set.ext`, `Finset.ext`, `Subtype.ext`, custom `@[ext] structure`) and bounded congruence `congr n`.",
+          "idiomatic_pattern": "Use `ext x` to peel function/set/finset/structure layers in one call, and `congr 1` to match identical outer function heads.",
+          "pitfalls": [
+            "Unbounded `congr` can over-descend into dependent arguments (`HEq` goals); bound depth with `congr 1` or `congrArg`"
+          ]
+        },
+        "coq_mathcomp": {
+          "tactics": [
+            "f_equal",
+            "congr1",
+            "apply/funext",
+            "apply/setP",
+            "apply/ffunP"
+          ],
+          "syntax_pattern": "apply/setP => x | apply/ffunP => i | congr (_ + _)",
+          "semantics": "Finitary extensionality views (`setP` on `{set T}`, `ffunP` on `{ffun I -> T}`, `eq_fun` for `=1` pointwise equality) Avoiding the global `functional_extensionality` axiom when possible.",
+          "idiomatic_pattern": "Translate `apply/setP => x`, `apply/ffunP => x`, and `f =1 g` into standard `ext x` in Lean 4 (where `funext` is derived from `Quot.sound` in the standard kernel trust base).",
+          "pitfalls": [
+            "MathComp uses `f =1 g` (`eqfun`) instead of `f = g` to stay axiom-free in Coq; in Lean 4 `funext` is standard so `f = g` is preferred"
+          ]
+        },
+        "isabelle_hol": {
+          "tactics": [
+            "ext",
+            "set_eqI",
+            "iffI",
+            "cong",
+            "arg_cong"
+          ],
+          "syntax_pattern": "by (rule ext) | by (auto intro!: set_eqI) | arg_cong",
+          "semantics": "HOL primitive axiom `ext : (\\<And>x. f x = g x) \\<Longrightarrow> f = g` and set extensionality `set_eqI`.",
+          "idiomatic_pattern": "Map `rule ext`, `set_eqI`, and record `.equality` rules to a single `ext` call in Lean 4.",
+          "pitfalls": [
+            "Isabelle `cong` inside `simp` requires explicit `[cong]` registration"
+          ]
+        },
+        "hol_light": {
+          "tactics": [
+            "FUN_EQ_THM",
+            "EXTENSION",
+            "AP_TERM_TAC",
+            "AP_THM_TAC",
+            "MK_COMB_TAC"
+          ],
+          "syntax_pattern": "REWRITE_TAC[FUN_EQ_THM; EXTENSION; IN_ELIM_THM] | AP_TERM_TAC",
+          "semantics": "Derived function extensionality (`FUN_EQ_THM` from `ETA_AX`), set extensionality (`EXTENSION`), and LCF congruence (`AP_TERM_TAC`).",
+          "idiomatic_pattern": "Translate `REWRITE_TAC[FUN_EQ_THM]` and `REWRITE_TAC[EXTENSION]` to `ext x` and `AP_TERM_TAC` to `congrArg`.",
+          "pitfalls": [
+            "HOL Light sets ARE predicates `A -> bool`, so `EXTENSION` and `FUN_EQ_THM` are identical up to `IN` (`∈`) notation"
+          ]
+        },
+        "agda": {
+          "tactics": [
+            "funext",
+            "cong",
+            "cong₂",
+            "⇔-≡"
+          ],
+          "syntax_pattern": "funext (\\ x -> ...) | cong f eq",
+          "semantics": "Theorem `funext h i x = h x i` in Cubical Agda (`--cubical`) or explicit postulate/Setoid pointwise equality `_≗_` in `--without-K` Agda.",
+          "idiomatic_pattern": "Replace Agda pointwise function equality `f ≗ g` (`∀ x → f x ≡ g x`) with standard `f = g` proved via `funext x` in Lean 4.",
+          "pitfalls": [
+            "Standard `--safe --without-K` Agda cannot prove `funext`, forcing libraries to thread `_≗_` congruence proofs that are unnecessary in Lean 4"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "eqrdv",
+            "fneqi",
+            "abbi",
+            "fveq2i",
+            "oveq12i"
+          ],
+          "syntax_pattern": "$( Class & function extensionality: eqrdv, fneqi, abbi $)",
+          "semantics": "ZFC Axiom of Extensionality (`ax-ext`, `eqrdv`) and function graph extensionality (`fneqi`).",
+          "idiomatic_pattern": "Translate `eqrdv` and `fneqi` to `ext x` and `fveq2i`/`oveq12i` to `congrArg` / `congr`.",
+          "pitfalls": [
+            "Metamath functions are sets of ordered pairs, so `F = G` is literally set extensionality on pairs `<x, y>`"
+          ]
+        }
+      },
+      "translation_rules": [
+        {
+          "source_prover": "coq_mathcomp",
+          "target_prover": "lean4",
+          "source_construct": "apply/setP => x / apply/ffunP => x / f =1 g",
+          "target_construct": "ext x (proving f = g directly)",
+          "confidence": 0.97,
+          "notes": "Lean 4 funext is derived from Quot.sound so =1 workarounds collapse to =."
+        },
+        {
+          "source_prover": "hol_light",
+          "target_prover": "lean4",
+          "source_construct": "REWRITE_TAC[FUN_EQ_THM; EXTENSION] / AP_TERM_TAC",
+          "target_construct": "ext x / congrArg",
+          "confidence": 0.98,
+          "notes": "Unified under Lean 4 @[ext] tactic."
+        }
+      ]
+    },
+    {
+      "id": "CONC-20-FILTERS-TOPOLOGICAL-LIMITS",
+      "canonical_name": "Filters, Nets, Eventualities & Topological Limit Convergence",
+      "category": "domain_theory",
+      "master_concept_ref": "CONCEPT-FILTER-TENDSTO",
+      "statutory_urn": "urn:itp:hoelzl-filters-2013:ch2:sec1:tendsto[nhds-attop-eventually]",
+      "description": "Unified treatment of topological limits, sequence limits, improper integrals, and eventual properties via Bourbaki filters (`Filter.Tendsto`, `nhds`, `atTop`, `Eventually`).",
+      "provers": {
+        "lean4": {
+          "tactics": [
+            "fun_prop",
+            "continuity",
+            "filter_upwards",
+            "Tendsto.comp",
+            "Tendsto.add"
+          ],
+          "syntax_pattern": "Tendsto f (𝓝 x) (𝓝 y) | Tendsto u atTop (𝓝 l) | ∀ᶠ n in atTop, P n",
+          "semantics": "Order-lattice `Filter α` where `Tendsto f l₁ l₂` is `Filter.map f l₁ ≤ l₂`, unifying sequence limits (`atTop`), topological neighborhoods (`𝓝 x`), punctured limits (`𝓝[≠] x`), and measure (`ae μ`).",
+          "idiomatic_pattern": "Prove continuity with `fun_prop` (or `continuity`), combine eventualities `∀ᶠ` with `filter_upwards`, and compose limits via `Tendsto.comp` instead of unfolding `(ε, δ)`.",
+          "pitfalls": [
+            "Avoid unfolding `Metric.tendsto_nhds` to `(ε, δ)` unless proving a base metric primitive",
+            "Distinguish `𝓝 x` (includes `x`) from `𝓝[≠] x` (punctured neighborhood used in derivatives)"
+          ]
+        },
+        "coq_mathcomp": {
+          "tactics": [
+            "cvg_to",
+            "near=> n",
+            "continuous",
+            "nbhs"
+          ],
+          "syntax_pattern": "f @ x --> y | \\near x, P x | near=> n",
+          "semantics": "MathComp-Analysis filter convergence `f @ F --> G` and `near=>` tactic for discharging `\\near F, P x` eventualities.",
+          "idiomatic_pattern": "Translate `f @ x --> y` to `Tendsto f (𝓝 x) (𝓝 y)` and `near=> n` to `filter_upwards with n hn`.",
+          "pitfalls": [
+            "MathComp-Analysis overloads `x` and `nbhs x` via canonical structures; in Mathlib write `(𝓝 x)` explicitly in `Tendsto`"
+          ]
+        },
+        "isabelle_hol": {
+          "tactics": [
+            "tendsto_intros",
+            "eventually_mono",
+            "nhds",
+            "at_top",
+            "LIMSEQ"
+          ],
+          "syntax_pattern": "(f ⤏ l) (at x within s) | (u ⇢ l) | ∀⇩F n in sequentially. P n",
+          "semantics": "Hölzl-Immler-Huffman filter hierarchy (`(f ⤏ l) F`, `nhds x`, `at x within s`, `sequentially` / `at_top`).",
+          "idiomatic_pattern": "Translate `(u ⇢ l)` -> `Tendsto u atTop (𝓝 l)`, `(f ⤏ l) (nhds x)` -> `Tendsto f (𝓝 x) (𝓝 l)`, and `eventually_mono` -> `filter_upwards`.",
+          "pitfalls": [
+            "CRITICAL SEMANTIC DELTA: Isabelle's `at x within s` is the *punctured* filter `𝓝[s \\ {x}] x` (and `at x` is `𝓝[≠] x`), whereas Mathlib's `𝓝[s] x` (`nhdsWithin x s`) *includes* `x`!"
+          ]
+        },
+        "hol_light": {
+          "tactics": [
+            "LIM_ADD",
+            "LIM_MUL",
+            "CONTINUOUS_AT",
+            "REALLIM_ATTOP",
+            "EVENTUALLY"
+          ],
+          "syntax_pattern": "(f --> l) (at a within s) | (s ---> l) sequentially",
+          "semantics": "Directed nets (`net`) with `at a`, `at a within s`, `sequentially`, and `at_posinfinity`.",
+          "idiomatic_pattern": "Map `(s ---> l) sequentially` -> `Tendsto s atTop (𝓝 l)` and `(f --> l) (at a)` -> `Tendsto f (𝓝[≠] a) (𝓝 l)`.",
+          "pitfalls": [
+            "Like Isabelle, HOL Light's `at a` is punctured (`0 < dist(x,a) < d`), corresponding to `𝓝[≠] a` (`nhdsWithin a {a}ᶜ`) in Mathlib"
+          ]
+        },
+        "agda": {
+          "tactics": [
+            "IsContinuous",
+            "Tendsto-ε-δ"
+          ],
+          "syntax_pattern": "∀ ε → 0 < ε → Σ[ δ ∈ ℝ ] (0 < δ × ∀ x → dist x a < δ → dist (f x) l < ε)",
+          "semantics": "Direct `(ε, δ)` metric convergence predicates in Agda analysis libraries.",
+          "idiomatic_pattern": "Refactor explicit `(ε, δ)` proofs into `Filter.Tendsto` and `fun_prop` when porting to Lean 4.",
+          "pitfalls": [
+            "Translating `(ε, δ)` proofs literally into Mathlib misses 95% of `Filter.Tendsto` and `fun_prop` automation"
+          ]
+        },
+        "metamath": {
+          "tactics": [
+            "cn",
+            "clim",
+            "flim",
+            "fcls"
+          ],
+          "syntax_pattern": "F : A -cn-> B , ( F ~> L ) , F e. ( J -cn-> K )",
+          "semantics": "Topological continuity (`cn`), sequence convergence (`clim`: `F ~> L`), and general filter convergence (`flim`).",
+          "idiomatic_pattern": "Translate `(F ~> L)` to `Tendsto F atTop (𝓝 L)` and `F : A -cn-> B` to `ContinuousOn f A` (`by fun_prop`).",
+          "pitfalls": [
+            "`set.mm` `(F ~> L)` is a relational symbol (since limits need not be unique in non-Hausdorff spaces) and becomes a function value only under `T2`"
+          ]
+        }
+      },
+      "translation_rules": [
+        {
+          "source_prover": "isabelle_hol",
+          "target_prover": "lean4",
+          "source_construct": "(f ⤏ l) (nhds x) / (f ⤏ l) (at x) / (u ⇢ l)",
+          "target_construct": "Tendsto f (𝓝 x) (𝓝 l) / Tendsto f (𝓝[≠] x) (𝓝 l) / Tendsto u atTop (𝓝 l)",
+          "confidence": 0.97,
+          "notes": "Watch punctured (at x -> 𝓝[≠] x) vs unpunctured (nhds x -> 𝓝 x) neighborhood filters."
+        },
+        {
+          "source_prover": "coq_mathcomp",
+          "target_prover": "lean4",
+          "source_construct": "f @ x --> y / near=> n",
+          "target_construct": "Tendsto f (𝓝 x) (𝓝 y) / filter_upwards with n hn",
+          "confidence": 0.96,
+          "notes": "Direct filter convergence and eventuality mapping."
         }
       ]
     }
