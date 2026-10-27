@@ -1,5 +1,6 @@
 {
-  "schema_version": "v1.0",
+  "schema_version": "v1.1.0",
+  "version": "1.1.0",
   "title": "Cross-ITP Concept Concordance Knowledge Base",
   "description": "Cross-ITP Proof-Mechanism Concordance mapping Lean 4, Coq/Rocq (MathComp/SSReflect), Isabelle/HOL (Isar), HOL Light, Agda, and Metamath tactics, structural idioms, and pitfall bridges across 20 canonical proof mechanisms.",
   "canonical_mechanisms_count": 20,

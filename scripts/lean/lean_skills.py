@@ -39,6 +39,13 @@ ALIASES = {
     "check-validation": "check_canary_validation",
     "check-canary": "check_canary_validation",
     "detect-v4": "altproof/detect_v4",
+    "init": "init_project",
+    "bootstrap": "init_project",
+    "compile-handbooks": "compile_handbook_tables",
+    "graph-query": "../../graph/graph_query",
+    "kuzu-query": "../../graph/kuzu_query",
+    "export-kuzu": "../../graph/export_kuzu",
+    "prov-query": "../../graph/prov_knowledge_graph",
 }
 
 FORWARD_SUBCOMMAND_TOOLS = frozenset(
@@ -75,7 +82,7 @@ def main(argv):
     name = ALIASES.get(subcmd, subcmd.replace("-", "_"))
     forwarded_args = argv[1:] if subcmd in FORWARD_SUBCOMMAND_TOOLS else argv[2:]
     for ext, cmd in ((".py", [sys.executable]), (".sh", ["bash"])):
-        p = HERE / (name + ext)
+        p = (HERE / (name + ext)).resolve()
         if p.exists():
             return subprocess.call(cmd + [str(p)] + forwarded_args)
     p_alt = HERE / "altproof" / (name + ".py")

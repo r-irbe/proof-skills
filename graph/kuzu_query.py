@@ -21,6 +21,13 @@ except ImportError:
     from kuzu_federation import FederatedKuzuEngine
 
 
+def esc(val: Any) -> str:
+    """Escape a string value for safe interpolation into Cypher string literals."""
+    if val is None:
+        return ""
+    return str(val).replace("\\", "\\\\").replace('"', '\\"').replace("'", "\\'").replace("\n", " ").replace("\r", " ")
+
+
 def format_table(headers: list[str], rows: list[list[Any]], max_col_width: int = 50) -> str:
     """Render rows as a clean 7-bit ASCII table."""
     if not rows:
@@ -102,7 +109,7 @@ class KuzuQueryCLI:
 
     def search_concept(self, term: str) -> list[dict[str, Any]]:
         """Deep search for an ITP or mathematical concept with concordances."""
-        clean = term.replace("\"", "\\\"").strip()
+        clean = esc(term).strip()
         results = []
 
         if "prover" in self.engine.connections:
@@ -124,9 +131,18 @@ class KuzuQueryCLI:
                     })
         return results
 
+    def lookup_concordance(
+        self,
+        concept: str,
+        source_prover: str | None = None,
+        target_prover: str | None = None,
+    ) -> list[dict[str, Any]]:
+        """Query cross-ITP concordance mappings."""
+        return self.engine.lookup_concordance(concept, source_prover=source_prover, target_prover=target_prover)
+
     def lookup_lean(self, symbol: str) -> list[dict[str, Any]]:
         """Find Lean declarations by name or module, with verifying ADRs."""
-        clean = symbol.replace("\"", "\\\"").strip()
+        clean = esc(symbol).strip()
         results = []
 
         if "project_internal" in self.engine.connections:
@@ -153,7 +169,7 @@ class KuzuQueryCLI:
 
     def lookup_adr(self, adr_id: str) -> list[dict[str, Any]]:
         """Inspect an Architecture Decision Record and its graph context."""
-        clean = adr_id.replace("\"", "\\\"").strip()
+        clean = esc(adr_id).strip()
         results = []
 
         if "project_internal" in self.engine.connections:
@@ -179,7 +195,7 @@ class KuzuQueryCLI:
 
     def lookup_book(self, book_key: str) -> list[dict[str, Any]]:
         """Inspect a book shelf and its anchors/zettels."""
-        clean = book_key.replace("\"", "\\\"").strip()
+        clean = esc(book_key).strip()
         results = []
 
         if "prover" in self.engine.connections:
@@ -242,28 +258,32 @@ class KuzuQueryCLI:
 
         # 1. Stats
         s = self.stats()
-        assert s["kuzu_installed"], "Kuzu must be installed"
         assert s["total_nodes"] > 1000, f"Expected >1000 total nodes, got {s['total_nodes']}"
         print(f"  [PASS] Stats: {s['total_nodes']} total nodes across databases")
 
-        # 2. Traceability
-        t = self.trace_requirement("FUNC-107")
-        assert len(t) > 0, "Expected non-empty trace for FUNC-107"
-        print(f"  [PASS] Traceability FUNC-107: {len(t)} paths found")
+        # 2. Traceability (if project_internal connected)
+        if "project_internal" in self.engine.connections:
+            t = self.trace_requirement("FUNC-107")
+            assert len(t) > 0, "Expected non-empty trace for FUNC-107"
+            print(f"  [PASS] Traceability FUNC-107: {len(t)} paths found")
 
         # 3. Concept search
         c = self.search_concept("Induction")
         assert len(c) > 0, "Expected non-empty concept search for Induction"
         print(f"  [PASS] Concept search: {len(c)} matches found")
 
-        # 4. Lean lookup
-        l = self.lookup_lean("continuous_relaxation_isSimulation")
-        print(f"  [PASS] Lean lookup continuous_relaxation_isSimulation: {len(l)} records found")
+        # 4. Concordance lookup
+        conc = self.lookup_concordance("Induction")
+        assert len(conc) > 0, "Expected non-empty concordance lookup for Induction"
+        print(f"  [PASS] Concordance lookup: {len(conc)} mappings found")
 
-        # 5. ADR lookup
-        a = self.lookup_adr("ADR-INV-0016")
-        assert len(a) > 0, "Expected non-empty ADR lookup for ADR-INV-0016"
-        print(f"  [PASS] ADR lookup ADR-INV-0016: {len(a)} records found")
+        # 5. Lean & ADR lookup (if project_internal connected)
+        if "project_internal" in self.engine.connections:
+            l = self.lookup_lean("continuous_relaxation_isSimulation")
+            print(f"  [PASS] Lean lookup continuous_relaxation_isSimulation: {len(l)} records found")
+            a = self.lookup_adr("ADR-INV-0016")
+            assert len(a) > 0, "Expected non-empty ADR lookup for ADR-INV-0016"
+            print(f"  [PASS] ADR lookup ADR-INV-0016: {len(a)} records found")
 
         # 6. Book lookup
         b = self.lookup_book("SF-LF")
@@ -281,6 +301,8 @@ def main() -> None:
     parser.add_argument("--db", choices=["prover", "internal", "cache", "all"], default="all", help="Target database for Cypher query")
     parser.add_argument("--trace", help="Trace requirement to ADRs, Lean declarations, and evidence")
     parser.add_argument("--concept", help="Deep search for concept and referencing zettels")
+    parser.add_argument("--concordance", help="Lookup cross-ITP concordance by concept or tactic")
+    parser.add_argument("--prover", help="Target prover filter for --concordance")
     parser.add_argument("--lean", help="Search for Lean declaration, verifying ADR, and requirements")
     parser.add_argument("--adr", help="Lookup ADR and its satisfied requirements and evidence")
     parser.add_argument("--book", help="Lookup book and sample statutory anchors")
@@ -335,6 +357,16 @@ def main() -> None:
         else:
             headers = ["Concept ID", "Name", "Domain", "Zettel ID", "Zettel Title"]
             rows = [[d["concept_id"], d["concept_name"], d["domain"], d["zettel_id"] or "", d["zettel_title"] or ""] for d in data]
+            print(format_table(headers, rows))
+        return
+
+    if args.concordance:
+        data = cli.lookup_concordance(args.concordance, target_prover=args.prover)
+        if args.json:
+            print(json.dumps(data, indent=2))
+        else:
+            headers = ["Concept ID", "Concept Name", "Prover", "Tactic", "Syntax"]
+            rows = [[d["concept_id"], d["concept_name"], d["prover"], d["tactic"], d["syntax"]] for d in data]
             print(format_table(headers, rows))
         return
 

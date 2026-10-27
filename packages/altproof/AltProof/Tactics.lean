@@ -138,7 +138,37 @@ def routeTable : List Route := [
     matchShape := "inner loops over fixed-width integer/boolean arrays or linear recurrences with bounded slot bit-width, or manually unrolled block trees",
     rewriteHint := "pack k lanes into a single b-bit GMP Nat word (Kronecker substitution / bitboard ANF) and use elaboration-time pre-unfolding (elab 'preunfold%' / 'unroll_top%') over binary-doubling combinators (t0..t6) to eliminate multi-thousand-line source inlining with 0 runtime unfold overhead",
     costHint := "15-30x kernel instruction reduction on convolution/bitboard loops; preunfold% matches manual inlining (12.72M vs 18.49M for runtime combinators) at 4.2x smaller source",
-    provenance := "SAIR Lean Kernel Challenge (partition Kronecker SWAR convolution, ca-rule110 4-gate ANF + preunfold% t0..t6 block tree, fib unroll_top%, sha256 512-bit schedule window)" }
+    provenance := "SAIR Lean Kernel Challenge (partition Kronecker SWAR convolution, ca-rule110 4-gate ANF + preunfold% t0..t6 block tree, fib unroll_top%, sha256 512-bit schedule window)" },
+  { id := "bv_decide",
+    family := "bitvector-decision",
+    matchShape := "BitVec or fixed-width UInt8/UInt16/UInt32/UInt64 bitwise identity/inequality (&&&, |||, ^^^, <<<, >>>)",
+    rewriteHint := "discharge directly via by bv_decide (QF_BV bit-blasting decision procedure)",
+    costHint := "single-step kernel-certified bitvector closure",
+    provenance := "Lean 4 Std.Tactic.BVDecide + lean-analyzer QF_BV pre-screen" },
+  { id := "sum_congr_ring",
+    family := "big-operators",
+    matchShape := "Finset.sum linear combination or pointwise algebraic ring identity under summation",
+    rewriteHint := "normalize Finset.sum linearity and close pointwise via Finset.sum_congr rfl (fun _ _ => by ring)",
+    costHint := "collapses 4-12 line Finset.sum rewrite chains to 1 line",
+    provenance := "AltProof.sum_congr_ring" },
+  { id := "finset_nonneg",
+    family := "big-operators",
+    matchShape := "0 <= Finset.sum s (fun i => f i) non-negativity obligation",
+    rewriteHint := "apply Finset.sum_nonneg, instantiate pointwise hypotheses, and close via positivity/linarith/omega",
+    costHint := "collapses Finset.sum_nonneg + intro + specialize boilerplate to 1 line",
+    provenance := "AltProof.finset_nonneg" },
+  { id := "finset_mono",
+    family := "big-operators",
+    matchShape := "Finset.sum s f <= Finset.sum s g pointwise monotonicity inequality",
+    rewriteHint := "apply Finset.sum_le_sum, instantiate pointwise hypotheses, and close via linarith/gcongr/omega",
+    costHint := "collapses Finset.sum_le_sum + pointwise instantiation to 1 line",
+    provenance := "AltProof.finset_mono" },
+  { id := "induction-rescaling",
+    family := "structural-induction",
+    matchShape := "fixed-arity numbered scalar parameters (a0 a1 a2 a3) or recursive loop with decreasing Nat measure n - i",
+    rewriteHint := "generalize fixed-arity parameters to Fin n / List or attach certified termination_by n - i decreasing_by omega",
+    costHint := "eliminates fixed-arity duplication and WellFounded fuel boilerplate",
+    provenance := "lean-analyzer SOUND-04 NatZoneDomain::check_nat_sub_decreasing + FIDELITY-08" }
 ]
 
 /-- Cost ranker weights per B1 `extraction-outranks` heuristic (scaled integers x10)
@@ -240,6 +270,11 @@ def filterRelevantRoutes (f : GoalFeatures) : List Route :=
     | "constructive-decidable-reduction" => f.hasIteOrDecide || f.hasNatArith || f.hasBitVec
     | "closed-def-whnf-caching" => f.hasNatArith || f.hasBitVec
     | "gmp-swar-word-packing" => f.hasBitVec || f.hasWellFounded
+    | "bv_decide" => f.hasBitVec
+    | "sum_congr_ring" => f.hasFinsetSum
+    | "finset_nonneg" => f.hasFinsetSum
+    | "finset_mono" => f.hasFinsetSum
+    | "induction-rescaling" => f.hasNatArith || f.hasWellFounded
     | _ => false
   if picked.isEmpty then routeTable.take 3 else picked
 

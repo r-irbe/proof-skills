@@ -1,7 +1,9 @@
 {
   "package": "itp-master-authority-ontology",
-  "version": "1.0.0",
-  "description": "Standalone distribution of the 100-concept ITP Master Authority Ontology",
+  "version": "1.1.0",
+  "concordance_schema_version": "v1.1.0",
+  "handbook_tables_schema_version": "1.0.0",
+  "description": "Standalone distribution of the 100-concept ITP Master Authority Ontology, Cross-ITP Concordance (v1.1.0), and Handbook Tables",
   "license": "Apache-2.0",
   "files": {
     "master-authority-index.json": {
@@ -9,12 +11,12 @@
       "size_bytes": 215073
     },
     "cross-itp-concordance.v1.json": {
-      "sha256": "e75380c5be29bf194f025fafcacd56e04861ef6e986534655084620562690021",
-      "size_bytes": 117713
+      "sha256": "0e77dc1418446dd6098a8b8c27957ffe3de5ea2d1e2799fbb0c9a7ff5ec02846",
+      "size_bytes": 117737
     },
-    "itp_ontology_graph.db": {
-      "sha256": "ceb29ba02145f101223145aa65060f67c83e6fc012b3007ebb3ede9e7e427b74",
-      "size_bytes": 159744
+    "handbook-tables.v1.json": {
+      "sha256": "f2df440fe63d39c078d65cde9ced3cace65fb003ce87de34e52c6675ea97c6b9",
+      "size_bytes": 390364
     },
     "book-indexes": {
       "avigad-lamr-2024.index.json": {

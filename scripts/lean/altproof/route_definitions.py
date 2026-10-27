@@ -100,6 +100,49 @@ ROUTES = [
         "cost_hint": "15-30x kernel instruction reduction on convolution/bitboard loops; preunfold% matches manual inlining (12.72M vs 18.49M for runtime combinators) at 4.2x smaller source",
         "provenance": "SAIR Lean Kernel Challenge (partition Kronecker SWAR convolution, ca-rule110 4-gate ANF + preunfold% t0..t6 block tree, fib unroll_top%, sha256 512-bit schedule window)",
     },
+    # --- bitvector-decision family ---
+    {
+        "id": "bv_decide",
+        "family": "bitvector-decision",
+        "match": "BitVec or fixed-width UInt8/UInt16/UInt32/UInt64 bitwise identity/inequality (&&&, |||, ^^^, <<<, >>>)",
+        "rewrite": "discharge directly via by bv_decide (QF_BV bit-blasting decision procedure)",
+        "cost_hint": "single-step kernel-certified bitvector closure",
+        "provenance": "Lean 4 Std.Tactic.BVDecide + lean-analyzer QF_BV pre-screen",
+    },
+    # --- big-operators family ---
+    {
+        "id": "sum_congr_ring",
+        "family": "big-operators",
+        "match": "Finset.sum linear combination or pointwise algebraic ring identity under summation",
+        "rewrite": "normalize Finset.sum linearity and close pointwise via Finset.sum_congr rfl (fun _ _ => by ring)",
+        "cost_hint": "collapses 4-12 line Finset.sum rewrite chains to 1 line",
+        "provenance": "AltProof.sum_congr_ring",
+    },
+    {
+        "id": "finset_nonneg",
+        "family": "big-operators",
+        "match": "0 <= Finset.sum s (fun i => f i) non-negativity obligation",
+        "rewrite": "apply Finset.sum_nonneg, instantiate pointwise hypotheses, and close via positivity/linarith/omega",
+        "cost_hint": "collapses Finset.sum_nonneg + intro + specialize boilerplate to 1 line",
+        "provenance": "AltProof.finset_nonneg",
+    },
+    {
+        "id": "finset_mono",
+        "family": "big-operators",
+        "match": "Finset.sum s f <= Finset.sum s g pointwise monotonicity inequality",
+        "rewrite": "apply Finset.sum_le_sum, instantiate pointwise hypotheses, and close via linarith/gcongr/omega",
+        "cost_hint": "collapses Finset.sum_le_sum + pointwise instantiation to 1 line",
+        "provenance": "AltProof.finset_mono",
+    },
+    # --- structural-induction family ---
+    {
+        "id": "induction-rescaling",
+        "family": "structural-induction",
+        "match": "fixed-arity numbered scalar parameters (a0 a1 a2 a3) or recursive loop with decreasing Nat measure n - i",
+        "rewrite": "generalize fixed-arity parameters to Fin n / List or attach certified termination_by n - i decreasing_by omega",
+        "cost_hint": "eliminates fixed-arity duplication and WellFounded fuel boilerplate",
+        "provenance": "lean-analyzer SOUND-04 NatZoneDomain::check_nat_sub_decreasing + FIDELITY-08",
+    },
 ]
 
 

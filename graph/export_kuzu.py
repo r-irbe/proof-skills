@@ -101,10 +101,24 @@ def build_prover_graph(garden_root: Path, out_dir: Path) -> dict[str, Any]:
                 rows = adata.get("rows", [])
                 b_id = bdir.name
                 first_h = rows[0].get("heading_text", b_id) if rows else b_id
+                pfile = bdir / "provenance.json"
+                prov: dict[str, Any] = {}
+                if pfile.exists():
+                    try:
+                        prov = json.loads(pfile.read_text(encoding="utf-8"))
+                    except Exception:
+                        prov = {}
+                full_title = prov.get("title") or first_h
+                raw_lic = prov.get("license", "Unknown")
+                lic = raw_lic.get("spdx", "Unknown") if isinstance(raw_lic, dict) else str(raw_lic or "Unknown")
+                raw_real = prov.get("realization", "Markdown")
+                fmt = raw_real.get("files", "Markdown") if isinstance(raw_real, dict) else "Markdown"
                 books.append({
                     "id": b_id,
-                    "title": to_ascii(first_h),
+                    "title": to_ascii(full_title),
                     "total_rows": len(rows),
+                    "license": to_ascii(lic),
+                    "format": to_ascii(fmt),
                 })
                 for r in rows:
                     anchors.append({
@@ -117,46 +131,76 @@ def build_prover_graph(garden_root: Path, out_dir: Path) -> dict[str, Any]:
             except Exception as exc:
                 print("Warning: failed reading " + str(afile) + ": " + str(exc))
 
-    sqlite_path = garden_root / "source-materials" / "itp_ontology_graph.db"
     concepts: list[dict[str, Any]] = []
     concordances: list[dict[str, Any]] = []
 
-    if sqlite_path.exists():
-        conn = sqlite3.connect(str(sqlite_path))
-        c_cur = conn.cursor()
-        for row in c_cur.execute("SELECT concept_id, canonical_name, msc2020, domain_theory FROM master_concept"):
-            concepts.append({
-                "id": to_ascii(row[0]),
-                "name": to_ascii(row[1]),
-                "msc2020": to_ascii(row[2]),
-                "domain_theory": to_ascii(row[3]),
-            })
+    idx_candidates = [
+        garden_root / "source-materials" / "indexes" / "master-authority-index.json",
+        Path(__file__).resolve().parent.parent / "vendor" / "itp-ontology" / "master-authority-index.json",
+    ]
+    master_idx_path = next((p for p in idx_candidates if p.exists()), None)
+    if master_idx_path is not None:
+        try:
+            mdata = json.loads(master_idx_path.read_text(encoding="utf-8"))
+            for c in mdata.get("master_concepts", []):
+                cid = to_ascii(c.get("concept_id", ""))
+                cname = to_ascii(c.get("canonical_name", ""))
+                msc_list = c.get("msc2020", [])
+                msc_str = to_ascii(json.dumps(msc_list) if isinstance(msc_list, list) else str(msc_list))
+                dom = to_ascii(c.get("ranganathan_facet", {}).get("domain_theory", ""))
+                concepts.append({
+                    "id": cid,
+                    "name": cname,
+                    "msc2020": msc_str,
+                    "domain_theory": dom,
+                })
+                for p_name, p_val in c.get("prover_mappings", {}).items():
+                    if isinstance(p_val, dict):
+                        tacs = ";".join(p_val.get("primary_tactics", []))
+                        syn = p_val.get("syntax_pattern", "")
+                        concordances.append({
+                            "concept_id": cid,
+                            "prover": to_ascii(p_name),
+                            "tactic": to_ascii(tacs),
+                            "syntax": to_ascii(syn),
+                        })
+        except Exception as exc:
+            print("Warning: failed reading master-authority-index.json: " + str(exc))
 
-        for row in c_cur.execute("SELECT concept_id, prover, primary_tactic, syntax_pattern FROM prover_mapping"):
-            concordances.append({
-                "concept_id": to_ascii(row[0]),
-                "prover": to_ascii(row[1]),
-                "tactic": to_ascii(row[2]),
-                "syntax": to_ascii(row[3]),
-            })
-        conn.close()
-
-    conc_json_path = garden_root.parent / "easci" / "lean" / "skills" / "tools" / "lean-lsp-mcp" / "data" / "cross-itp-concordance.v1.json"
-    if conc_json_path.exists():
+    conc_candidates = [
+        garden_root / "source-materials" / "indexes" / "cross-itp-concordance.v1.json",
+        Path(__file__).resolve().parent.parent / "vendor" / "itp-ontology" / "cross-itp-concordance.v1.json",
+    ]
+    conc_json_path = next((p for p in conc_candidates if p.exists()), None)
+    if conc_json_path is not None:
         try:
             cdata = json.loads(conc_json_path.read_text(encoding="utf-8"))
-            for m in cdata.get("canonical_mechanisms", []):
-                mid = to_ascii(m.get("mechanism_id", ""))
+            for m in cdata.get("mechanisms", cdata.get("canonical_mechanisms", [])):
+                mid = to_ascii(m.get("id") or m.get("mechanism_id") or "")
                 mname = to_ascii(m.get("canonical_name", ""))
+                if not mid:
+                    continue
                 if not any(c["id"] == mid for c in concepts):
                     concepts.append({
                         "id": mid,
                         "name": mname,
                         "msc2020": "",
-                        "domain_theory": "cross-itp",
+                        "domain_theory": to_ascii(m.get("category", "cross-itp")),
                     })
+                for p_name, p_val in m.get("provers", {}).items():
+                    if isinstance(p_val, dict):
+                        raw_tacs = p_val.get("tactics", p_val.get("primary_tactics", []))
+                        tacs = ";".join(raw_tacs) if isinstance(raw_tacs, list) else str(raw_tacs)
+                        syn = p_val.get("idiom") or p_val.get("syntax_pattern") or ""
+                        concordances.append({
+                            "concept_id": mid,
+                            "prover": to_ascii(p_name),
+                            "tactic": to_ascii(tacs),
+                            "syntax": to_ascii(syn),
+                        })
         except Exception:
             pass
+
 
     stitched_dir = garden_root / "source-materials" / "stitched"
     stitched: list[dict[str, Any]] = []
@@ -299,9 +343,15 @@ def build_prover_graph(garden_root: Path, out_dir: Path) -> dict[str, Any]:
     with zipfile.ZipFile(str(zip_path), "w", compression=zipfile.ZIP_DEFLATED) as zf:
         b_buf = io.StringIO()
         b_writer = csv.writer(b_buf)
-        b_writer.writerow(["id", "title", "total_rows"])
+        b_writer.writerow(["id", "title", "total_rows", "license", "format"])
         for b in books:
-            b_writer.writerow([b["id"], b["title"], b["total_rows"]])
+            b_writer.writerow([
+                b["id"],
+                b["title"],
+                b["total_rows"],
+                b.get("license", "Unknown"),
+                b.get("format", "Markdown"),
+            ])
         zf.writestr("Book.csv", b_buf.getvalue().encode("ascii"))
 
         s_buf = io.StringIO()
@@ -310,6 +360,13 @@ def build_prover_graph(garden_root: Path, out_dir: Path) -> dict[str, Any]:
         for a in anchors:
             s_writer.writerow([a["id"], a["book_id"], a["heading"], a["leittext"], a["page"]])
         zf.writestr("Section.csv", s_buf.getvalue().encode("ascii"))
+
+        contains_buf = io.StringIO()
+        contains_writer = csv.writer(contains_buf)
+        contains_writer.writerow(["from", "to"])
+        for a in anchors:
+            contains_writer.writerow([a["book_id"], a["id"]])
+        zf.writestr("CONTAINS_Book_Section.csv", contains_buf.getvalue().encode("ascii"))
 
         c_buf = io.StringIO()
         c_writer = csv.writer(c_buf)
@@ -332,8 +389,25 @@ def build_prover_graph(garden_root: Path, out_dir: Path) -> dict[str, Any]:
             z_writer.writerow([z["id"], z["title"], z["layer"], z["status"], z["maturity"], z["verification"], z["source_book"], z["source_anchor"], z["master_concept"], z["file_path"]])
         zf.writestr("Zettel.csv", z_buf.getvalue().encode("ascii"))
 
+        schema_cypher = (
+            "CREATE NODE TABLE Book(id STRING, title STRING, total_rows INT64, license STRING, format STRING, PRIMARY KEY (id));\n"
+            "CREATE NODE TABLE Section(id STRING, book_id STRING, heading STRING, leittext STRING, page INT64, PRIMARY KEY (id));\n"
+            "CREATE NODE TABLE Concept(id STRING, name STRING, msc2020 STRING, domain_theory STRING, PRIMARY KEY (id));\n"
+            "CREATE NODE TABLE Concordance(concept_id STRING, prover STRING, tactic STRING, syntax STRING);\n"
+            "CREATE NODE TABLE Zettel(id STRING, title STRING, layer INT64, status STRING, maturity STRING, verification STRING, source_book STRING, source_anchor STRING, master_concept STRING, file_path STRING, PRIMARY KEY (id));\n"
+            "CREATE REL TABLE CONTAINS(FROM Book TO Section);\n"
+        )
+        zf.writestr("schema.cypher", schema_cypher.encode("ascii"))
+        copy_cypher = (
+            'COPY Book FROM "Book.csv" (HEADER=true);\n'
+            'COPY Section FROM "Section.csv" (HEADER=true);\n'
+            'COPY CONTAINS FROM "CONTAINS_Book_Section.csv" (HEADER=true);\n'
+        )
+        zf.writestr("copy.cypher", copy_cypher.encode("ascii"))
+        zf.writestr("index.cypher", b"")
+
         manifest = {
-            "version": "1.0",
+            "version": "1.1.0",
             "scope": "public_prover",
             "total_books": len(books),
             "total_anchors": len(anchors),
@@ -700,11 +774,43 @@ def collect_librarian_corpus(
         except Exception:
             prov = {}
 
-        title = prov.get("title", book_id)
+        title = to_ascii(prov.get("title", book_id))
         raw_lic = prov.get("license", "Unknown")
-        lic = raw_lic.get("spdx", "Unknown") if isinstance(raw_lic, dict) else str(raw_lic)
+        lic = to_ascii(raw_lic.get("spdx", "Unknown") if isinstance(raw_lic, dict) else str(raw_lic))
         raw_real = prov.get("realization", "Markdown")
-        fmt = raw_real.get("files", "Markdown") if isinstance(raw_real, dict) else "Markdown"
+        fmt = to_ascii(raw_real.get("files", "Markdown") if isinstance(raw_real, dict) else "Markdown")
+
+        anchors_path = prov_path.parent / "anchors.v1.json"
+        row_count = 0
+        if anchors_path.exists():
+            try:
+                table = json.loads(anchors_path.read_text(encoding="utf-8"))
+            except Exception:
+                table = {}
+            rows = table.get("rows", [])
+            row_count = len(rows)
+            for row in rows:
+                anchor = to_ascii(row.get("anchor", "")).strip()
+                if not anchor or anchor in seen_anchors:
+                    continue
+                seen_anchors.add(anchor)
+
+                page = int(row.get("print_page", 0))
+                heading = to_ascii(row.get("heading_text", ""))
+                leittext = to_ascii(row.get("leittext", ""))[:400].replace("\r", " ").replace("\n", " ")
+
+                sections.append(
+                    {
+                        "anchor": anchor,
+                        "id": anchor,
+                        "book": book_id,
+                        "book_id": book_id,
+                        "heading": heading or leittext[:120],
+                        "page": page,
+                        "leittext": leittext,
+                    }
+                )
+                contains.append((book_id, anchor))
 
         books.append(
             {
@@ -712,35 +818,9 @@ def collect_librarian_corpus(
                 "title": title,
                 "license": lic,
                 "format": fmt,
+                "total_rows": row_count,
             }
         )
-
-        anchors_path = prov_path.parent / "anchors.v1.json"
-        if anchors_path.exists():
-            try:
-                table = json.loads(anchors_path.read_text(encoding="utf-8"))
-            except Exception:
-                table = {}
-            for row in table.get("rows", []):
-                anchor = str(row.get("anchor", "")).strip()
-                if not anchor:
-                    continue
-                if anchor in seen_anchors:
-                    continue
-                seen_anchors.add(anchor)
-
-                page = int(row.get("print_page", 0))
-                leittext = str(row.get("leittext", ""))[:400].replace("\r", " ").replace("\n", " ")
-
-                sections.append(
-                    {
-                        "anchor": anchor,
-                        "book": book_id,
-                        "page": page,
-                        "leittext": leittext,
-                    }
-                )
-                contains.append((book_id, anchor))
 
     return books, sections, contains
 
@@ -756,53 +836,85 @@ def export_kuzu_database(
     output_path = Path(output_path).resolve()
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    with tempfile.TemporaryDirectory() as td:
-        tmp_dir = Path(td)
-        db_path = tmp_dir / "kuzu_db"
-        exp_dir = tmp_dir / "export"
+    if HAS_KUZU:
+        with tempfile.TemporaryDirectory() as td:
+            tmp_dir = Path(td)
+            db_path = tmp_dir / "kuzu_db"
+            exp_dir = tmp_dir / "export"
 
-        db = kuzu.Database(str(db_path))
-        conn = kuzu.Connection(db)
+            db = kuzu.Database(str(db_path))
+            conn = kuzu.Connection(db)
 
-        conn.execute(
-            "CREATE NODE TABLE Book(id STRING, title STRING, license STRING, format STRING, PRIMARY KEY (id))"
-        )
-        conn.execute(
-            "CREATE NODE TABLE Section(anchor STRING, book STRING, page INT64, leittext STRING, PRIMARY KEY (anchor))"
-        )
-        conn.execute("CREATE REL TABLE CONTAINS(FROM Book TO Section)")
+            conn.execute(
+                "CREATE NODE TABLE Book(id STRING, title STRING, license STRING, format STRING, PRIMARY KEY (id))"
+            )
+            conn.execute(
+                "CREATE NODE TABLE Section(anchor STRING, book STRING, page INT64, leittext STRING, PRIMARY KEY (anchor))"
+            )
+            conn.execute("CREATE REL TABLE CONTAINS(FROM Book TO Section)")
 
-        books_csv = tmp_dir / "books.csv"
-        with open(books_csv, "w", newline="", encoding="utf-8") as f:
-            writer = csv.writer(f)
-            writer.writerow(["id", "title", "license", "format"])
-            for b in books:
-                writer.writerow([b["id"], b["title"], b["license"], b["format"]])
+            books_csv = tmp_dir / "books.csv"
+            with open(books_csv, "w", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                writer.writerow(["id", "title", "license", "format"])
+                for b in books:
+                    writer.writerow([b["id"], b["title"], b["license"], b["format"]])
 
-        sections_csv = tmp_dir / "sections.csv"
-        with open(sections_csv, "w", newline="", encoding="utf-8") as f:
-            writer = csv.writer(f)
-            writer.writerow(["anchor", "book", "page", "leittext"])
-            for s in sections:
-                writer.writerow([s["anchor"], s["book"], s["page"], s["leittext"]])
+            sections_csv = tmp_dir / "sections.csv"
+            with open(sections_csv, "w", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                writer.writerow(["anchor", "book", "page", "leittext"])
+                for s in sections:
+                    writer.writerow([s["anchor"], s["book"], s["page"], s["leittext"]])
 
-        contains_csv = tmp_dir / "contains.csv"
-        with open(contains_csv, "w", newline="", encoding="utf-8") as f:
-            writer = csv.writer(f)
-            writer.writerow(["from", "to"])
-            for c in contains:
-                writer.writerow([c[0], c[1]])
+            contains_csv = tmp_dir / "contains.csv"
+            with open(contains_csv, "w", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                writer.writerow(["from", "to"])
+                for c in contains:
+                    writer.writerow([c[0], c[1]])
 
-        conn.execute(f'COPY Book FROM "{books_csv}" (HEADER=true)')
-        conn.execute(f'COPY Section FROM "{sections_csv}" (HEADER=true)')
-        conn.execute(f'COPY CONTAINS FROM "{contains_csv}" (HEADER=true)')
+            conn.execute(f'COPY Book FROM "{books_csv}" (HEADER=true)')
+            conn.execute(f'COPY Section FROM "{sections_csv}" (HEADER=true)')
+            conn.execute(f'COPY CONTAINS FROM "{contains_csv}" (HEADER=true)')
 
-        conn.execute(f'EXPORT DATABASE "{exp_dir}" (format="{export_format}")')
+            conn.execute(f'EXPORT DATABASE "{exp_dir}" (format="{export_format}")')
 
+            with zipfile.ZipFile(output_path, "w", zipfile.ZIP_DEFLATED) as zf:
+                for p in sorted(exp_dir.rglob("*")):
+                    if p.is_file():
+                        zf.write(p, p.relative_to(exp_dir))
+    else:
         with zipfile.ZipFile(output_path, "w", zipfile.ZIP_DEFLATED) as zf:
-            for p in sorted(exp_dir.rglob("*")):
-                if p.is_file():
-                    zf.write(p, p.relative_to(exp_dir))
+            b_buf = io.StringIO()
+            b_writer = csv.writer(b_buf)
+            b_writer.writerow(["id", "title", "total_rows", "license", "format"])
+            for b in books:
+                b_writer.writerow([b["id"], b["title"], b.get("total_rows", 0), b["license"], b["format"]])
+            zf.writestr("Book.csv", b_buf.getvalue().encode("ascii"))
+
+            s_buf = io.StringIO()
+            s_writer = csv.writer(s_buf)
+            s_writer.writerow(["id", "book_id", "heading", "leittext", "page"])
+            for s in sections:
+                s_writer.writerow([s["anchor"], s["book"], s.get("heading", ""), s["leittext"], s["page"]])
+            zf.writestr("Section.csv", s_buf.getvalue().encode("ascii"))
+
+            c_buf = io.StringIO()
+            c_writer = csv.writer(c_buf)
+            c_writer.writerow(["from", "to"])
+            for c in contains:
+                c_writer.writerow([c[0], c[1]])
+            zf.writestr("CONTAINS_Book_Section.csv", c_buf.getvalue().encode("ascii"))
+
+            schema_cypher = (
+                "CREATE NODE TABLE Book(id STRING, title STRING, total_rows INT64, license STRING, format STRING, PRIMARY KEY (id));\n"
+                "CREATE NODE TABLE Section(id STRING, book_id STRING, heading STRING, leittext STRING, page INT64, PRIMARY KEY (id));\n"
+                "CREATE REL TABLE CONTAINS(FROM Book TO Section);\n"
+            )
+            zf.writestr("schema.cypher", schema_cypher.encode("ascii"))
+            zf.writestr("copy.cypher", b'COPY Book FROM "Book.csv" (HEADER=true);\nCOPY Section FROM "Section.csv" (HEADER=true);\nCOPY CONTAINS FROM "CONTAINS_Book_Section.csv" (HEADER=true);\n')
+            zf.writestr("index.cypher", b"")
 
     return {
         "status": "PASS",
@@ -812,6 +924,7 @@ def export_kuzu_database(
         "output_file": str(output_path),
         "size_bytes": output_path.stat().st_size,
     }
+
 
 
 def self_test() -> None:

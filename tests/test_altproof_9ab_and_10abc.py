@@ -225,3 +225,38 @@ def test_altproof_cli_and_standalone_lake_package():
     assert cli.main(["detect-v4", str(pkg_dir / "AltProof" / "Tests.lean")]) == 0
     assert cli.main(["extract", str(pkg_dir / "AltProof" / "Tests.lean")]) == 0
     assert cli.main(["cluster", str(pkg_dir)]) == 0
+
+
+def test_init_project_bootstrapper_and_compile_handbooks(tmp_path: Path):
+    import compile_handbook_tables
+    import init_project
+
+    res = init_project.init_project(
+        tmp_path / "demo-lean-proj",
+        mode="weftd",
+        profiles=["core", "math", "pack-altproof"],
+        agents=["claude", "gemini", "cursor", "pi", "opencode", "dsh", "zed", "weftd"],
+    )
+    assert res["ok"] is True
+    proj_dir = tmp_path / "demo-lean-proj"
+    assert (proj_dir / "lean-project.toml").is_file()
+    assert (proj_dir / "skills-overrides" / "subst_table.json").is_file()
+    assert (proj_dir / ".mcp.json").is_file()
+    assert (proj_dir / ".claude" / "settings.json").is_file()
+    assert (proj_dir / ".gemini" / "settings.json").is_file()
+    assert (proj_dir / ".cursor" / "mcp.json").is_file()
+    assert (proj_dir / ".pi" / "settings.json").is_file()
+    assert (proj_dir / "opencode.json").is_file()
+    assert (proj_dir / ".dsh" / "config.json").is_file()
+    assert (proj_dir / ".zed" / "settings.json").is_file()
+    assert (proj_dir / ".weft" / "config.json").is_file()
+
+    hb_path = ROOT / "vendor" / "itp-ontology" / "handbook-tables.v1.json"
+    assert hb_path.is_file()
+    hb_data = json.loads(hb_path.read_text(encoding="ascii"))
+    assert hb_data["handbooks_count"] >= 15
+    assert hb_data["counts"]["goal_shape_templates"] >= 50
+    assert hb_data["counts"]["intent_phrasebook"] >= 50
+    assert hb_data["counts"]["error_to_fix"] >= 50
+    assert compile_handbook_tables.main(["--check"]) == 0
+

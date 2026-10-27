@@ -18,6 +18,42 @@
         "rewrite": "pack k lanes into a single b-bit GMP Nat word (Kronecker substitution / bitboard ANF) and use elaboration-time pre-unfolding (elab 'preunfold%' / 'unroll_top%') over binary-doubling combinators (t0..t6) to eliminate multi-thousand-line source inlining with 0 runtime unfold overhead"
       }
     ],
+    "big-operators": [
+      {
+        "cost_hint": "collapses 4-12 line Finset.sum rewrite chains to 1 line",
+        "family": "big-operators",
+        "id": "sum_congr_ring",
+        "match": "Finset.sum linear combination or pointwise algebraic ring identity under summation",
+        "provenance": "AltProof.sum_congr_ring",
+        "rewrite": "normalize Finset.sum linearity and close pointwise via Finset.sum_congr rfl (fun _ _ => by ring)"
+      },
+      {
+        "cost_hint": "collapses Finset.sum_nonneg + intro + specialize boilerplate to 1 line",
+        "family": "big-operators",
+        "id": "finset_nonneg",
+        "match": "0 <= Finset.sum s (fun i => f i) non-negativity obligation",
+        "provenance": "AltProof.finset_nonneg",
+        "rewrite": "apply Finset.sum_nonneg, instantiate pointwise hypotheses, and close via positivity/linarith/omega"
+      },
+      {
+        "cost_hint": "collapses Finset.sum_le_sum + pointwise instantiation to 1 line",
+        "family": "big-operators",
+        "id": "finset_mono",
+        "match": "Finset.sum s f <= Finset.sum s g pointwise monotonicity inequality",
+        "provenance": "AltProof.finset_mono",
+        "rewrite": "apply Finset.sum_le_sum, instantiate pointwise hypotheses, and close via linarith/gcongr/omega"
+      }
+    ],
+    "bitvector-decision": [
+      {
+        "cost_hint": "single-step kernel-certified bitvector closure",
+        "family": "bitvector-decision",
+        "id": "bv_decide",
+        "match": "BitVec or fixed-width UInt8/UInt16/UInt32/UInt64 bitwise identity/inequality (&&&, |||, ^^^, <<<, >>>)",
+        "provenance": "Lean 4 Std.Tactic.BVDecide + lean-analyzer QF_BV pre-screen",
+        "rewrite": "discharge directly via by bv_decide (QF_BV bit-blasting decision procedure)"
+      }
+    ],
     "extraction": [
       {
         "cost_hint": "high-yield: counts once, serves N sites",
@@ -97,8 +133,18 @@
         "provenance": "fixture 16 (gate_row_diff_bound)",
         "rewrite": "replace the branches with one uniform simp call (the boolean-reflection pattern)"
       }
+    ],
+    "structural-induction": [
+      {
+        "cost_hint": "eliminates fixed-arity duplication and WellFounded fuel boilerplate",
+        "family": "structural-induction",
+        "id": "induction-rescaling",
+        "match": "fixed-arity numbered scalar parameters (a0 a1 a2 a3) or recursive loop with decreasing Nat measure n - i",
+        "provenance": "lean-analyzer SOUND-04 NatZoneDomain::check_nat_sub_decreasing + FIDELITY-08",
+        "rewrite": "generalize fixed-arity parameters to Fin n / List or attach certified termination_by n - i decreasing_by omega"
+      }
     ]
   },
-  "total": 11,
+  "total": 16,
   "version": 1
 }

@@ -40,9 +40,9 @@ theorem cost_extraction_outranks_pin :
 theorem cost_upstream_bonus_pin :
     computeCostX10 10 1 true 0 = -240 := rfl
 
-/-- Relevance filter selects 4 routes when both `hasFinsetSum` and `hasAbs` hold. -/
+/-- Relevance filter selects 8 routes when both `hasFinsetSum` and `hasAbs` hold. -/
 theorem filter_finset_abs_routes_pin :
-    (filterRelevantRoutes { hasFinsetSum := true, hasAbs := true }).length = 5 := rfl
+    (filterRelevantRoutes { hasFinsetSum := true, hasAbs := true }).length = 8 := rfl
 
 /-- Relevance filter selects `redirect-by-contradiction` when `hasNegOrContra` holds. -/
 theorem filter_neg_contra_routes_pin :

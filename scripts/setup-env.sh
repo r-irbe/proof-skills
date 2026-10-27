@@ -185,24 +185,26 @@ run_doctor() {
     warn_msg "lake not found on PATH"
   fi
 
-  # 4. Ontology & Knowledge Graph Databases
+  # 4. Ontology & Knowledge Graph Artifacts
   echo ""
   echo "4. Ontology & Knowledge Graph Artifacts"
-  ONT_DB="${REPO_ROOT}/vendor/itp-ontology/itp_ontology_graph.db"
-  if [[ -f "${ONT_DB}" ]]; then
+  ONT_INDEX="${REPO_ROOT}/vendor/itp-ontology/master-authority-index.json"
+  ONT_CONC="${REPO_ROOT}/vendor/itp-ontology/cross-itp-concordance.v1.json"
+  if [[ -f "${ONT_INDEX}" && -f "${ONT_CONC}" ]]; then
     if command -v python3 >/dev/null 2>&1; then
-      ONT_COUNT="$(python3 -c "import sqlite3; conn = sqlite3.connect('${ONT_DB}'); c = conn.cursor(); c.execute('SELECT count(*) FROM sqlite_master WHERE type=\"table\"'); print(c.fetchone()[0])" 2>/dev/null || echo "0")"
+      ONT_COUNT="$(python3 -c "import json; d = json.load(open('${ONT_INDEX}')); print(len(d.get('concepts', {})))" 2>/dev/null || echo "0")"
       if [[ "${ONT_COUNT}" -gt 0 ]]; then
-        pass_msg "vendor/itp-ontology/itp_ontology_graph.db readable (${ONT_COUNT} SQLite tables)"
+        pass_msg "vendor/itp-ontology/master-authority-index.json readable (${ONT_COUNT} concepts)"
       else
-        fail_msg "vendor/itp-ontology/itp_ontology_graph.db has 0 tables or is corrupt"
+        fail_msg "vendor/itp-ontology/master-authority-index.json has 0 concepts or is corrupt"
       fi
     else
-      pass_msg "vendor/itp-ontology/itp_ontology_graph.db present"
+      pass_msg "vendor/itp-ontology/master-authority-index.json present"
     fi
   else
-    fail_msg "vendor/itp-ontology/itp_ontology_graph.db missing"
+    fail_msg "vendor/itp-ontology/master-authority-index.json or cross-itp-concordance.v1.json missing"
   fi
+
 
   KZ_FILE="${REPO_ROOT}/kuzu/prover_knowledge.kz"
   if [[ -f "${KZ_FILE}" ]]; then
