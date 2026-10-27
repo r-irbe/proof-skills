@@ -1,0 +1,104 @@
+{
+  "families": {
+    "algorithm-class-substitution": [
+      {
+        "cost_hint": "highest kernel yield: 20-30x reduction in kernel steps / rfl time",
+        "family": "algorithm-class-substitution",
+        "id": "algorithm-class-substitution",
+        "match": "exponential or unhoisted recursion with an equivalent closed-form or DP reduction",
+        "provenance": "SAIR Lean Kernel Challenge lanes (partition in-place DP S1/S1b, primecount sieve S6)",
+        "rewrite": "substitute algorithm class (e.g. in-place DP or structural sieve) and prove equivalence to spec"
+      },
+      {
+        "cost_hint": "15-30x kernel instruction reduction on convolution/bitboard loops; preunfold% matches manual inlining (12.72M vs 18.49M for runtime combinators) at 4.2x smaller source",
+        "family": "algorithm-class-substitution",
+        "id": "gmp-swar-word-packing",
+        "match": "inner loops over fixed-width integer/boolean arrays or linear recurrences with bounded slot bit-width, or manually unrolled block trees",
+        "provenance": "SAIR Lean Kernel Challenge (partition Kronecker SWAR convolution, ca-rule110 4-gate ANF + preunfold% t0..t6 block tree, fib unroll_top%, sha256 512-bit schedule window)",
+        "rewrite": "pack k lanes into a single b-bit GMP Nat word (Kronecker substitution / bitboard ANF) and use elaboration-time pre-unfolding (elab 'preunfold%' / 'unroll_top%') over binary-doubling combinators (t0..t6) to eliminate multi-thousand-line source inlining with 0 runtime unfold overhead"
+      }
+    ],
+    "extraction": [
+      {
+        "cost_hint": "high-yield: counts once, serves N sites",
+        "family": "extraction",
+        "id": "extract-shared-block",
+        "match": "a >=3-line proof block reused verbatim or modulo renaming",
+        "provenance": "long-proof campaign fixtures 1-15, 17 (36 shared lemmas)",
+        "rewrite": "name the block as a lemma; call it at each site"
+      },
+      {
+        "cost_hint": "highest yield: reusable beyond the corpus",
+        "family": "extraction",
+        "id": "extract-mathlib-absent",
+        "match": "a generic block with no Mathlib equivalent (verified absent before naming)",
+        "provenance": "fixtures 10-11 (cesaro_tendsto_of_geometric_bound -> PR #44591; sum_mul_le_sum_mul_sum)",
+        "rewrite": "name it in the owning module; flag as an upstreaming candidate"
+      },
+      {
+        "cost_hint": "high-yield: the Doeblin package pattern",
+        "family": "extraction",
+        "id": "extract-horizon-package",
+        "match": "three or more inline steps serving one standing theorem family",
+        "provenance": "fixture 12 (doeblin_card_mul_le_one, realStep_iterate_mul, stationary_ge_of_doeblin)",
+        "rewrite": "package the steps as a named lemma trio in the theorem's module"
+      },
+      {
+        "cost_hint": "high-yield: the GAP-7 pattern (154 -> ~40)",
+        "family": "extraction",
+        "id": "extract-cauchy-toolkit",
+        "match": "a Cauchy/convergence argument assembled from pointwise and sum-level lemmas",
+        "provenance": "fixture 17 (iterate_sum_cauchy, pointwise_cauchy_of_sum_cauchy, sum_dist_tendsto_of_pointwise, step_fixedpoint_of_sum_dist_tendsto)",
+        "rewrite": "extract the four standard sub-steps as reusable convergence lemmas"
+      }
+    ],
+    "kernel-friendly-term-design": [
+      {
+        "cost_hint": "high kernel yield: reduces defeq heartbeats and avoids WellFounded.fix traps",
+        "family": "kernel-friendly-term-design",
+        "id": "kernel-friendly-term-design",
+        "match": "structural recursion or helper calls with heavy defeq unfolding overhead",
+        "provenance": "SAIR Lean Kernel Challenge lanes (primecount L1 structural trial division S5)",
+        "rewrite": "refactor to kernel-friendly primitives (structural Nat.rec, unrolled trial division, import-minimal path)"
+      },
+      {
+        "cost_hint": "high kernel & trust yield: eliminates Classical.choice from decidable first-order theorems",
+        "family": "kernel-friendly-term-design",
+        "id": "constructive-decidable-reduction",
+        "match": "Classical.choice leakage in first-order Nat/Int/Bool/BitVec theorems caused by split on &&/And or classical by_cases",
+        "provenance": "lean_rules constructive-gate audit & AltProof bidirectional cross-pollination",
+        "rewrite": "replace split/by_cases with Bool.and_eq_true, decide_eq_true_eq, omega, or bv_decide to keep axiom closure Classical.choice-free"
+      },
+      {
+        "cost_hint": "eval_nat% gives 0 runtime instruction overhead (vs +160K/invocation for closed def C) and eliminates multi-hundred-digit magic literals",
+        "family": "kernel-friendly-term-design",
+        "id": "closed-def-whnf-caching",
+        "match": "giant decimal nat_lit constants (>64 bits) or repeated closed shift-add/mask expressions inside Nat.rec/List.rec step lambdas",
+        "provenance": "SAIR Lean Kernel Challenge C++ type_checker.cpp whnf/m_whnf audit (partition DerivedConstants eval_nat% vs partCplusSpec, sha256 shaPaddingSuffix)",
+        "rewrite": "evaluate closed constant expressions to raw nat_lit at elaboration time via an elab 'eval_nat%' macro (import Lean has 0 exported Lean.* refs), or hoist into a closed top-level def C : Nat := <formula> with a := rfl spec bridge (cached in m_st->m_whnf after 1 evaluation per kernel invocation)"
+      }
+    ],
+    "redirect": [
+      {
+        "cost_hint": "reserved: no corpus fixture yet - the tool's first hit becomes it",
+        "family": "redirect",
+        "id": "redirect-by-contradiction",
+        "match": "by_contra-heavy proofs with a constructible direct witness",
+        "provenance": "JAR16 redirect procedure; ballot B3",
+        "rewrite": "restate as a direct construction (the JAR 2016 redirect class)"
+      }
+    ],
+    "reflection": [
+      {
+        "cost_hint": "high-yield: 76 lines/6 branches -> cleared (fixture 16)",
+        "family": "reflection",
+        "id": "uniform-simp-collapse",
+        "match": "branched case analysis where one uniform simp set closes every branch",
+        "provenance": "fixture 16 (gate_row_diff_bound)",
+        "rewrite": "replace the branches with one uniform simp call (the boolean-reflection pattern)"
+      }
+    ]
+  },
+  "total": 11,
+  "version": 1
+}

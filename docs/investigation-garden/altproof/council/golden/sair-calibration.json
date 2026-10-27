@@ -1,0 +1,263 @@
+{
+  "meta": {
+    "name": "alt-proof SAIR calibration cases v1",
+    "source": "SAIR Lean Kernel Challenge artifacts in /home/radu/code/sair/kernel (WAVE3-RESULTS.md, measurements/RATIOS.md, lanes/*/NOTES.md)",
+    "mirrors": "docs/investigation-garden/altproof/council/golden/golden-cases.json (same top-level schema; additive kernelCost key per fixture)",
+    "purpose": [
+      "add a kernel-cost axis to the golden-suite calibration (cost-weight family, ballot B1)",
+      "supply the missing algorithm-class-substitution route family",
+      "regression baseline for the sweep tool on a second, kernel-scored corpus"
+    ],
+    "note": "every fixture is a REAL kernel-verified SAIR lane result; before/after are kernel-reduction seconds of a full 'with_unfolding_all rfl' reduction with maxHeartbeats 0 (local proxy for the contest PMU instruction count; ratios, not seconds, are transferable)"
+  },
+  "fixtures": [
+    {
+      "id": 1,
+      "theorem": "partitionSpec: impl 36 (in-place restricted-partition DP)",
+      "module": "SAIR kernel/partition lanes/L2",
+      "before": 42.0,
+      "after": 1.39,
+      "route": "algorithm-class-substitution",
+      "kernelCost": {
+        "axis": "kernel reduce seconds (maxHeartbeats 0, with_unfolding_all rfl)",
+        "ratio": 30.2,
+        "baseSubtracted": false,
+        "n": 36
+      },
+      "legibility": "low",
+      "note": "beauty/cost inversion: cheapest proven route is the least verbose-renderable; exponential spec tree replaced by an in-place row DP"
+    },
+    {
+      "id": 2,
+      "theorem": "partitionSpec: six scored cases (14/18/22/26/32/36)",
+      "module": "SAIR kernel/partition lanes/L2",
+      "before": 49.2,
+      "after": 2.28,
+      "route": "algorithm-class-substitution",
+      "kernelCost": {
+        "axis": "kernel reduce seconds (maxHeartbeats 0, with_unfolding_all rfl)",
+        "ratio": 21.6,
+        "baseSubtracted": false,
+        "endpointRatios": {
+          "14": 1.50,
+          "18": 2.79,
+          "22": 4.89,
+          "32": 16.65,
+          "36": 31.3
+        }
+      },
+      "legibility": "low",
+      "note": "ratio grows with n (DP vs exponential); the strongest and cleanest SAIR cost table"
+    },
+    {
+      "id": 3,
+      "theorem": "permanentSpecN: compact recursion + rowPairs (d=16)",
+      "module": "SAIR kernel/permanent lanes/L2",
+      "before": 36.6,
+      "after": 11.6,
+      "route": "extract-shared-block",
+      "kernelCost": {
+        "axis": "kernel reduce seconds (maxHeartbeats 0, with_unfolding_all rfl)",
+        "ratio": 3.16,
+        "baseSubtracted": false,
+        "endpointRatios": {
+          "d6": 1.24,
+          "d12": 2.01,
+          "d16": 3.02
+        }
+      },
+      "legibility": "medium",
+      "note": "per-row hoist of a precomputed nonzero pair list; DFS node counts identical (pure per-node constant factor)"
+    },
+    {
+      "id": 4,
+      "theorem": "permanentSpecN: Ryser/Gray subset-DP (attempted substitution)",
+      "module": "SAIR kernel/permanent lanes/L2",
+      "before": 11.6,
+      "after": 600.0,
+      "route": "reflection-routes",
+      "disposition": "rejected",
+      "kernelCost": {
+        "axis": "kernel reduce seconds (maxHeartbeats 0, with_unfolding_all rfl)",
+        "ratio": 0.019,
+        "baseSubtracted": false,
+        "d": 16
+      },
+      "legibility": "n/a",
+      "note": "measured negative: 3-sparse rows + forced diagonal give a 14,773-node mean tree vs 2^16 = 65,536 masks; the textbook-elegant route is >50x worse; measure search space before ranking by elegance"
+    },
+    {
+      "id": 5,
+      "theorem": "primeCountSpec: odd-divisor structural trial division (n=100)",
+      "module": "SAIR kernel/primecount lanes/L1",
+      "before": 2.56,
+      "after": 2.76,
+      "route": "kernel-friendly-term-design",
+      "kernelCost": {
+        "axis": "kernel reduce seconds (maxHeartbeats 0, with_unfolding_all rfl)",
+        "ratio": 0.93,
+        "baseSubtracted": false,
+        "baseSubtractedRatioAtN600": 1.8,
+        "n": 100
+      },
+      "legibility": "medium",
+      "note": "small-n parity nuance: ~2.4 s Mathlib import floor inverts the RAW ratio below 1.0 at n <= 300; base-subtracted deltas show the candidate already cheaper at n=600 (0.88 s vs 1.60 s)"
+    },
+    {
+      "id": 6,
+      "theorem": "primeCountSpec: sieve of Eratosthenes (total T)",
+      "module": "SAIR kernel/primecount lanes/L2",
+      "before": 2.165,
+      "after": 1.811,
+      "route": "algorithm-class-substitution",
+      "kernelCost": {
+        "axis": "official-local computation total T (seconds)",
+        "ratio": 1.2,
+        "baseSubtracted": false,
+        "perCaseN1000": [1.240, 0.963]
+      },
+      "legibility": "medium",
+      "note": "O(n log log n) win discounted to the scored sizes (n <= 1000); fixed setup cost compresses the relative gain -- do not rank by big-O"
+    },
+    {
+      "id": 7,
+      "theorem": "caRule110Spec: bit-parallel SWAR Nat word step (six endpoint cases)",
+      "module": "SAIR kernel/ca-rule110 lanes/L2",
+      "before": 129.5,
+      "after": 3.55,
+      "route": "algorithm-class-substitution",
+      "kernelCost": {
+        "axis": "kernel reduce seconds (maxHeartbeats 0, with_unfolding_all rfl)",
+        "ratio": 36.48,
+        "baseSubtracted": false,
+        "eightStepRatio": 70.0
+      },
+      "legibility": "low",
+      "note": "collapses per-cell list automaton into 14 bitwise operations on a single 256-bit GMP Nat word; ~36x across 6 cases and ~70x at 8 steps"
+    },
+    {
+      "id": 8,
+      "theorem": "sha256Spec: typeclass-unwrapped schedule + flattened masks (512 steps)",
+      "module": "SAIR kernel/sha256 lanes/L2",
+      "before": 65.16,
+      "after": 39.43,
+      "route": "kernel-friendly-term-design",
+      "kernelCost": {
+        "axis": "PMU perf stat -e instructions:u (billions of instructions)",
+        "ratio": 1.65,
+        "wallRatio32Steps": 2.49,
+        "baseSubtracted": true
+      },
+      "legibility": "medium",
+      "note": "removes Fin/UInt32 typeclass wrappers and K.zip traversal; verified by user-space PMU instructions:u (39.43G vs 65.16G at 512 steps; 32-step wall 1.92s -> 0.77s)"
+    },
+    {
+      "id": 9,
+      "theorem": "sha256Spec: unrolled 16-arg let-bound schedule window (attempted)",
+      "module": "SAIR kernel/sha256 lanes/L2",
+      "before": 0.77,
+      "after": 1.39,
+      "route": "kernel-friendly-term-design",
+      "disposition": "rejected",
+      "kernelCost": {
+        "axis": "kernel reduce seconds (32 steps)",
+        "ratio": 0.55,
+        "baseSubtracted": false
+      },
+      "legibility": "n/a",
+      "note": "measured negative (NR-024): kernel let bindings do NOT share across multiple syntactic occurrences during whnf/rfl reduction; unrolling schedule paid full cost per occurrence (1.8x slower)"
+    },
+    {
+      "id": 10,
+      "theorem": "mertensSpec: odd-divisor WF-free structural factor scan (n=500)",
+      "module": "SAIR kernel/mertens lanes/L1",
+      "before": 4.85,
+      "after": 3.44,
+      "route": "kernel-friendly-term-design",
+      "kernelCost": {
+        "axis": "kernel reduce seconds (plain rfl, n=500)",
+        "ratio": 1.41,
+        "baseSubtractedRatio": 2.7,
+        "baseSubtracted": true
+      },
+      "legibility": "medium",
+      "note": "removes WellFounded.fix unfolding, dual factorization, and Finset overhead; reduces under plain rfl where Mathlib moebius requires with_unfolding_all"
+    },
+    {
+      "id": 11,
+      "theorem": "mertensSpec: list-based mu-sieve with Nat.Prime filter (attempted)",
+      "module": "SAIR kernel/mertens lanes/L2",
+      "before": 4.85,
+      "after": 71.8,
+      "route": "algorithm-class-substitution",
+      "disposition": "rejected",
+      "kernelCost": {
+        "axis": "kernel reduce seconds (n=500)",
+        "ratio": 0.068,
+        "baseSubtracted": false
+      },
+      "legibility": "n/a",
+      "note": "measured negative (NR-025): kernel reduction of List.filter Nat.Prime cost 45.41s alone at n=500 and per-element list marking regressed 14.8x"
+    },
+    {
+      "id": 12,
+      "theorem": "polydiscSpec: Bareiss fraction-free exact-division elimination (attempted)",
+      "module": "SAIR kernel/polydisc lanes/L2",
+      "before": 0.082,
+      "after": 0.688,
+      "route": "algorithm-class-substitution",
+      "disposition": "rejected",
+      "kernelCost": {
+        "axis": "kernel reduce seconds (n=2^63)",
+        "ratio": 0.119,
+        "baseSubtracted": false
+      },
+      "legibility": "n/a",
+      "note": "measured negative (NR-026): exact Int.ediv/Int.emod in Bareiss elimination is ~8.4x slower in the kernel than subresultant PRS; division-free determinants (Berkowitz/Mahajan-Vinay) are required instead"
+    },
+    {
+      "id": 13,
+      "theorem": "fibSpec: Lucas-pair 2-mult doubling vs Nat.fastFib (attempted)",
+      "module": "SAIR kernel/fib lanes/L2",
+      "before": 1.0,
+      "after": 1.023,
+      "route": "algorithm-class-substitution",
+      "disposition": "rejected",
+      "kernelCost": {
+        "axis": "PMU perf stat -e instructions:u (normalized to Nat.fastFib)",
+        "ratio": 0.978,
+        "baseSubtracted": true
+      },
+      "legibility": "n/a",
+      "note": "measured negative (NR-027): apparent 0.67 wall-time ratio was an import-floor + defEq artifact; true PMU instruction count proved Lucas-pair 1.6-2.9% slower at every scored size because kernel cost is term-reduction-bound (~log2 n), while GMP bignum multiply is ~0.2% of delta"
+    },
+    {
+      "id": 14,
+      "theorem": "fibSpec: point-free CPS Bool.rec + Top8 prefix tree + Nat.pow mpn_sqr (Top8SymProof)",
+      "module": "SAIR kernel/fib lanes/L5",
+      "before": 93.579,
+      "after": 7.231,
+      "route": "kernel-friendly-term-design",
+      "kernelCost": {
+        "axis": "PMU target-declaration-replay-v1 instructions (millions, 6 endpoints)",
+        "ratio": 12.941,
+        "vsFlagShipRatio": 2.022,
+        "baseSubtracted": true
+      },
+      "legibility": "low",
+      "note": "C++ kernel/GMP co-design: point-free CPS Bool.rec eliminates expr_kind::Let eager instantiate into untaken branches; closed 8-bit prefix lookup tree (F(128)..F(256)) eliminates 7 doubling levels and hK pair split; Nat.pow x (nat_lit 2) bypasses mpz.h:230 pass-by-value operator* copy so GMP invokes mpn_sqr directly across symmetric 3-squares doubling"
+    }
+  ],
+  "aggregate": {
+    "sair_fixtures": 14,
+    "kernel_scored": 14,
+    "measured_negatives": 5,
+    "beauty_cost_inversions": 4,
+    "route_families_introduced": [
+      "algorithm-class-substitution",
+      "kernel-friendly-term-design"
+    ],
+    "regressions": 0,
+    "upstream_source": "SAIR Lean Kernel Challenge Stage 1 Waves 3-6 (deadline 2026-11-20); boards top-3 within 0.5-2%"
+  }
+}

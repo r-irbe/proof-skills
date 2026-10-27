@@ -1,0 +1,4 @@
+# Declarative Lean project config; see scripts/lean/project_config.py
+[project]
+name = "proof-skills"
+lean_dir = "."

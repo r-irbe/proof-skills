@@ -1,15 +1,24 @@
 """Tactic dispatcher v1 for AltProof automated tactic selection (A5).
 
 Evaluates proof context, goal structure, and hypothesis types to recommend
-optimal automated tactic substitutions (omega, aesop, solve_by_elim, linarith, decide)
-ranked by estimated kernel heartbeats and legibility impact.
+optimal automated tactic substitutions:
+  - Built-in core / Mathlib / SAIR tactics (`bv_decide`, `omega`, `linarith`,
+    `aesop`, `solve_by_elim`, `decide`, `ring`, plus SAIR SWAR/WHNF routes
+    `eval_nat%` and `preunfold%`)
+  - Declarative project tactic plugins loaded from `lean-project.toml`
+    (`[[altproof.tactics]]`) via `project_config.py` (with fallback defaults
+    when `include_project_tactics=True` and no `lean-project.toml` is found).
+
 Strict 7-bit ASCII only (INV-001).
 """
 
 from __future__ import annotations
 
 import re
+import sys
 from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any
 
 
 @dataclass
@@ -24,29 +33,141 @@ class TacticRecommendation:
     parameters: dict = field(default_factory=dict)
 
 
-# Goal and hypothesis classification patterns
+# Built-in core / Mathlib / SAIR goal and hypothesis classification patterns
 NAT_TYPE_RE = re.compile(r"(?:\bNat\b|\bInt\b|\bdiv\b|\bmod\b|\u2115|\u2124)")
 ARITH_OP_RE = re.compile(r"(?:\+|-|\*|<=|<|>=|>|\u2264|\u2265)")
 PURE_NUM_ARITH_RE = re.compile(r"\b\d+\s*(?:\+|-|\*|<=|<|>=|>)\s*\d+\b")
 REAL_LIN_RE = re.compile(r"(?:\bReal\b|\u211d|\blinarith\b)")
 INDUCTIVE_RE = re.compile(r"\b(?:cases\b|rcases\b|induction\b|constructor\b)\b")
 FINITE_RE = re.compile(r"(?:\bFin\s+\d+|\bFinset\b|\bdecide\b|\btrue\b|\bfalse\b)")
-FINSET_SUM_RE = re.compile(r"(?:\bFinset\.sum\b|\u2211|\bsum_sub_distrib\b|\bsum_add_distrib\b|\bmul_sum\b|\bsum_mul\b)")
-FINSET_NONNEG_RE = re.compile(
-    r"(?:0\s*(?:<=|\u2264)\s*(?:Finset\.sum\b|\u2211)|\bFinset\.sum_nonneg\b)"
-)
-FINSET_MONO_RE = re.compile(
-    r"(?:(?:Finset\.sum\b|\u2211).*?(?:<=|\u2264).*?(?:Finset\.sum\b|\u2211)|\bFinset\.sum_le_sum\b)",
-    re.DOTALL,
-)
-WELLFORMED_RE = re.compile(r"(?:\bWellFormed\b|\bfin_cases\b.*?\bnorm_num\b)", re.DOTALL)
-CHANNEL_RE = re.compile(r"(?:\bChannel\b|\bPrior\b|\bchannel_fields\b)")
-
-
-SCALE100_RE = re.compile(r"(?:\bScale100\b|\beasci_omega\b|\bEASCI\b)")
 BITVEC_RE = re.compile(
     r"(?:\bBitVec\b|&&&|\|\|\||\^\^\^|<<<|>>>|\bsshiftRight\b|\bushiftRight\b|\bzeroExtend\b|\bsignExtend\b|\bextractLsb'\b)"
 )
+SWAR_PACK_RE = re.compile(
+    r"(?:\bpreunfold%\b|\bunroll_top%\b|\bshiftLeft\b.*?\bshiftRight\b|\bKronecker\b|\bSWAR\b)"
+)
+WHNF_CONST_RE = re.compile(
+    r"(?:\beval_nat%\b|\bnat_lit\s+\d{20,}\b|\brawNatLit\b)"
+)
+
+# Default declarative project tactic plugin specs (used when `lean-project.toml`
+# defines `[[altproof.tactics]]` or when `include_project_tactics=True` in
+# standalone fixture tests).
+DEFAULT_PROJECT_TACTIC_SPECS: list[dict[str, Any]] = [
+    {
+        "tactic": "easci_omega",
+        "target_pattern": "scaled-simplex-nat-arithmetic",
+        "match_regex": r"(?:\bScale100\b|\beasci_omega\b|\bEASCI\b)",
+        "match_scope": "goal_or_proof",
+        "requires_arith": True,
+        "rationale": "Project-specific Scale100 wrapper unfolding scaled-integer definitions before omega.",
+        "estimated_heartbeats": 170,
+        "confidence": 0.94,
+    },
+    {
+        "tactic": "sum_congr_ring",
+        "target_pattern": "finset-sum-linearity-pointwise-ring",
+        "match_regex": r"(?:\bFinset\.sum\b|\u2211|\bsum_sub_distrib\b|\bsum_add_distrib\b|\bmul_sum\b|\bsum_mul\b)",
+        "match_scope": "target_or_proof",
+        "rationale": "Normalizes Finset.sum linearity (sum_add_distrib, sum_sub_distrib, mul_sum, sum_mul) and closes pointwise ring equalities via Finset.sum_congr.",
+        "estimated_heartbeats": 260,
+        "confidence": 0.91,
+    },
+    {
+        "tactic": "finset_nonneg",
+        "target_pattern": "finset-sum-nonneg-positivity",
+        "match_regex": r"(?:0\s*(?:<=|\u2264)\s*(?:Finset\.sum\b|\u2211)|\b(?:Finset\.sum_nonneg|finset_nonneg)\b)",
+        "match_scope": "target_or_proof",
+        "rationale": "Discharges 0 <= sum_i f i via Finset.sum_nonneg followed by positivity/linarith/nlinarith/omega.",
+        "estimated_heartbeats": 240,
+        "confidence": 0.90,
+    },
+    {
+        "tactic": "finset_mono",
+        "target_pattern": "finset-sum-pointwise-monotonicity",
+        "match_regex": r"(?:(?:Finset\.sum\b|\u2211).*?(?:<=|\u2264).*?(?:Finset\.sum\b|\u2211)|\b(?:Finset\.sum_le_sum|finset_mono)\b)",
+        "match_scope": "target_or_proof",
+        "dotall": True,
+        "rationale": "Discharges sum_i f i <= sum_i g i via Finset.sum_le_sum, pointwise hypothesis specialization, and ordered-ring monotonicity closers.",
+        "estimated_heartbeats": 250,
+        "confidence": 0.91,
+    },
+    {
+        "tactic": "wellformed_tac",
+        "target_pattern": "finite-simplex-wellformed-conjunction",
+        "match_regex": r"(?:\bWellFormed\b|\bfin_cases\b.*?\bnorm_num\b)",
+        "match_scope": "target_or_proof",
+        "dotall": True,
+        "rationale": "Discharges five-field WellFormed conjunctions over Fin 1..8 via fin_cases and Fin.sum_univ_one..eight + norm_num.",
+        "estimated_heartbeats": 190,
+        "confidence": 0.93,
+    },
+    {
+        "tactic": "channel_fields",
+        "target_pattern": "channel-prior-constructor-obligations",
+        "match_regex": r"(?:\bChannel\b|\bPrior\b|\bchannel_fields\b)",
+        "match_scope": "target_or_proof",
+        "rationale": "Constructs Channel or Prior and discharges nonneg and rowMass/mass obligations over Fin 1..8.",
+        "estimated_heartbeats": 180,
+        "confidence": 0.92,
+    },
+]
+
+
+def load_declarative_tactic_specs(start_dir: Path | str | None = None) -> list[dict[str, Any]]:
+    """Load declarative `[[altproof.tactics]]` from `lean-project.toml`, falling back to defaults."""
+    _lean_scripts = Path(__file__).resolve().parent.parent
+    if str(_lean_scripts) not in sys.path:
+        sys.path.insert(0, str(_lean_scripts))
+    try:
+        from project_config import load_project_config
+        cfg = load_project_config(start_dir)
+        if cfg.altproof_tactics:
+            return cfg.altproof_tactics
+    except Exception:
+        pass
+    return DEFAULT_PROJECT_TACTIC_SPECS
+
+
+def _evaluate_declarative_tactic_specs(
+    specs: list[dict[str, Any]],
+    goal: str,
+    target: str,
+    proof: str,
+    *,
+    has_arith: bool,
+) -> tuple[list[TacticRecommendation], set[str]]:
+    recs: list[TacticRecommendation] = []
+    matched_names: set[str] = set()
+    for spec in specs:
+        pattern = str(spec.get("match_regex", ""))
+        if not pattern:
+            continue
+        if spec.get("requires_arith") and not has_arith:
+            continue
+        flags = re.DOTALL if spec.get("dotall") else 0
+        rx = re.compile(pattern, flags)
+        scope = str(spec.get("match_scope", "target_or_proof"))
+        hit = False
+        if scope == "goal_or_proof":
+            hit = bool(rx.search(goal) or rx.search(proof))
+        elif scope == "goal":
+            hit = bool(rx.search(goal))
+        else:
+            hit = bool(rx.search(target) or rx.search(proof))
+        if hit:
+            tname = str(spec["tactic"])
+            matched_names.add(tname)
+            recs.append(
+                TacticRecommendation(
+                    tactic=tname,
+                    target_pattern=str(spec.get("target_pattern", tname)),
+                    rationale=str(spec.get("rationale", "")),
+                    estimated_heartbeats=int(spec.get("estimated_heartbeats", 200)),
+                    confidence=float(spec.get("confidence", 0.9)),
+                )
+            )
+    return recs, matched_names
 
 
 def build_qf_bv_smt2_prescreen(goal_text: str, default_width: int = 64) -> str:
@@ -104,6 +225,7 @@ def recommend_tactics(
     *,
     include_project_tactics: bool = True,
     custom_plugins: list[TacticRecommendation] | None = None,
+    project_root: Path | str | None = None,
 ) -> list[TacticRecommendation]:
     """Analyze goal and current proof script to recommend modernized tactic replacements."""
     recommendations: list[TacticRecommendation] = []
@@ -124,15 +246,61 @@ def recommend_tactics(
             )
         )
 
-    # 1. Presburger / Discrete Integer Arithmetic -> omega (and easci_omega when Scale100/custom tactics enabled)
+    # 0b. SAIR WHNF closed-constant & SWAR pre-unfolding routes
+    if WHNF_CONST_RE.search(goal) or WHNF_CONST_RE.search(proof):
+        recommendations.append(
+            TacticRecommendation(
+                tactic="eval_nat%",
+                target_pattern="closed-def-whnf-caching",
+                rationale="Elaboration-time reduction to raw nat_lit (0 runtime instruction overhead and 0 exported Lean.* refs).",
+                estimated_heartbeats=40,
+                confidence=0.96,
+            )
+        )
+    if SWAR_PACK_RE.search(goal) or SWAR_PACK_RE.search(proof):
+        recommendations.append(
+            TacticRecommendation(
+                tactic="preunfold%",
+                target_pattern="gmp-swar-word-packing",
+                rationale="SWAR word-packing with elaboration-time pre-unfolding over binary-doubling combinators.",
+                estimated_heartbeats=50,
+                confidence=0.95,
+            )
+        )
+
+    # Evaluate declarative project tactic plugins from lean-project.toml
     target_no_arrows = target.replace("->", " ").replace("=>", " ")
     has_nat_context = bool(NAT_TYPE_RE.search(goal) or PURE_NUM_ARITH_RE.search(target_no_arrows))
     has_arith_op = bool(ARITH_OP_RE.search(target_no_arrows))
+
+    plugin_recs: list[TacticRecommendation] = []
+    matched_plugins: set[str] = set()
+    if include_project_tactics:
+        specs = load_declarative_tactic_specs(project_root)
+        plugin_recs, matched_plugins = _evaluate_declarative_tactic_specs(
+            specs,
+            goal,
+            target,
+            proof,
+            has_arith=bool(has_nat_context and has_arith_op and not REAL_LIN_RE.search(goal)),
+        )
+
+    has_finset_sum = bool(
+        re.search(r"(?:\bFinset\.sum\b|\u2211)", target)
+        or "sum_congr_ring" in matched_plugins
+        or "finset_nonneg" in matched_plugins
+        or "finset_mono" in matched_plugins
+    )
+    has_wellformed_or_channel = bool(
+        "wellformed_tac" in matched_plugins or "channel_fields" in matched_plugins
+    )
+
+    # 1. Presburger / Discrete Integer Arithmetic -> omega
     if (
-        (has_nat_context or (has_arith_op and not FINSET_SUM_RE.search(target) and not WELLFORMED_RE.search(target)))
+        (has_nat_context or (has_arith_op and not has_finset_sum and not has_wellformed_or_channel))
         and has_arith_op
         and not REAL_LIN_RE.search(goal)
-        and not FINSET_SUM_RE.search(target)
+        and not has_finset_sum
     ):
         recommendations.append(
             TacticRecommendation(
@@ -143,18 +311,8 @@ def recommend_tactics(
                 confidence=0.92,
             )
         )
-        if include_project_tactics and (SCALE100_RE.search(goal) or SCALE100_RE.search(proof)):
-            recommendations.append(
-                TacticRecommendation(
-                    tactic="easci_omega",
-                    target_pattern="scaled-simplex-nat-arithmetic",
-                    rationale="Project-specific Scale100 wrapper unfolding scaled-integer definitions before omega.",
-                    estimated_heartbeats=170,
-                    confidence=0.94,
-                )
-            )
 
-    # 2. Linear Real Arithmetic -> linarith / nlinarith
+    # 2. Linear Real Arithmetic -> linarith
     if REAL_LIN_RE.search(goal) or "\u211d" in goal:
         recommendations.append(
             TacticRecommendation(
@@ -166,67 +324,10 @@ def recommend_tactics(
             )
         )
 
-    # 3. Finset.sum linearity + pointwise ring congruence -> sum_congr_ring
-    if include_project_tactics and (FINSET_SUM_RE.search(target) or FINSET_SUM_RE.search(proof)):
-        recommendations.append(
-            TacticRecommendation(
-                tactic="sum_congr_ring",
-                target_pattern="finset-sum-linearity-pointwise-ring",
-                rationale="Normalizes Finset.sum linearity (sum_add_distrib, sum_sub_distrib, mul_sum, sum_mul) and closes pointwise ring equalities via Finset.sum_congr.",
-                estimated_heartbeats=260,
-                confidence=0.91,
-            )
-        )
+    # Add declarative project tactic recommendations
+    recommendations.extend(plugin_recs)
 
-    # 4. Finset.sum non-negativity -> finset_nonneg
-    if include_project_tactics and (FINSET_NONNEG_RE.search(target) or re.search(r"\b(?:Finset\.sum_nonneg|finset_nonneg)\b", proof)):
-        recommendations.append(
-            TacticRecommendation(
-                tactic="finset_nonneg",
-                target_pattern="finset-sum-nonneg-positivity",
-                rationale="Discharges 0 <= sum_i f i via Finset.sum_nonneg followed by positivity/linarith/nlinarith/omega.",
-                estimated_heartbeats=240,
-                confidence=0.90,
-            )
-        )
-
-    # 4b. Finset.sum pointwise monotonicity -> finset_mono
-    if include_project_tactics and (FINSET_MONO_RE.search(target) or re.search(r"\b(?:Finset\.sum_le_sum|finset_mono)\b", proof)):
-        recommendations.append(
-            TacticRecommendation(
-                tactic="finset_mono",
-                target_pattern="finset-sum-pointwise-monotonicity",
-                rationale="Discharges sum_i f i <= sum_i g i via Finset.sum_le_sum, pointwise hypothesis specialization, and ordered-ring monotonicity closers.",
-                estimated_heartbeats=250,
-                confidence=0.91,
-            )
-        )
-
-    # 5. Five-field Opinion/RatOpinion WellFormed fixture -> wellformed_tac
-    if include_project_tactics and (WELLFORMED_RE.search(target) or WELLFORMED_RE.search(proof)):
-        recommendations.append(
-            TacticRecommendation(
-                tactic="wellformed_tac",
-                target_pattern="finite-simplex-wellformed-conjunction",
-                rationale="Discharges five-field WellFormed conjunctions over Fin 1..8 via fin_cases and Fin.sum_univ_one..eight + norm_num.",
-                estimated_heartbeats=190,
-                confidence=0.93,
-            )
-        )
-
-    # 6. Channel / Prior constructor obligations -> channel_fields
-    if include_project_tactics and (CHANNEL_RE.search(target) or CHANNEL_RE.search(proof)):
-        recommendations.append(
-            TacticRecommendation(
-                tactic="channel_fields",
-                target_pattern="channel-prior-constructor-obligations",
-                rationale="Constructs Channel or Prior and discharges nonneg and rowMass/mass obligations over Fin 1..8.",
-                estimated_heartbeats=180,
-                confidence=0.92,
-            )
-        )
-
-    # 7. Inductive reasoning and constructor search -> aesop
+    # 3. Inductive reasoning and constructor search -> aesop
     if INDUCTIVE_RE.search(proof) or "constructor" in proof:
         recommendations.append(
             TacticRecommendation(
@@ -238,7 +339,7 @@ def recommend_tactics(
             )
         )
 
-    # 8. Pure hypothesis elimination -> solve_by_elim
+    # 4. Pure hypothesis elimination -> solve_by_elim
     if "apply" in proof and not INDUCTIVE_RE.search(proof):
         recommendations.append(
             TacticRecommendation(
@@ -250,12 +351,11 @@ def recommend_tactics(
             )
         )
 
-    # 9. Finite/computable decision -> decide
+    # 5. Finite/computable decision -> decide
     if (
         FINITE_RE.search(target)
-        and not CHANNEL_RE.search(target)
-        and not WELLFORMED_RE.search(target)
-        and (not FINSET_SUM_RE.search(target) or re.search(r"\b(?:decide|true|false)\b", target))
+        and not has_wellformed_or_channel
+        and (not has_finset_sum or re.search(r"\b(?:decide|true|false)\b", target))
     ):
         recommendations.append(
             TacticRecommendation(
@@ -270,17 +370,14 @@ def recommend_tactics(
     if custom_plugins:
         recommendations.extend(custom_plugins)
 
-    # Sort by estimated heartbeats ascending (lightest first)
     return sorted(recommendations, key=lambda r: r.estimated_heartbeats)
 
 
 def dispatch_and_score(goal_text: str, current_proof_text: str = "") -> dict:
     """Combine tactic recommendations, legibility scoring, and two-axis cost estimation."""
-    import sys as _sys
-    from pathlib import Path as _Path
-    _dir = str(_Path(__file__).resolve().parent)
-    if _dir not in _sys.path:
-        _sys.path.insert(0, _dir)
+    _dir = str(Path(__file__).resolve().parent)
+    if _dir not in sys.path:
+        sys.path.insert(0, _dir)
     from cost_ranker import cost
     from legibility import RENDERABLE_PATTERNS, score_block
 
@@ -309,14 +406,14 @@ def dispatch_and_score(goal_text: str, current_proof_text: str = "") -> dict:
     }
 
 
-def _cli_main() -> int:
+def _cli_main(argv: list[str] | None = None) -> int:
     import argparse
     import json
     parser = argparse.ArgumentParser(description="AltProof Tactic Advisor & Two-Axis Scorer")
     parser.add_argument("--goal", default="", help="Lean 4 goal state string")
     parser.add_argument("--proof", default="", help="Current proof block string")
     parser.add_argument("--self-test", action="store_true", help="Run built-in self-test suite")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if args.self_test:
         r1 = dispatch_and_score("|- Finset.sum s (fun i => f i) <= Finset.sum s (fun i => g i)", "apply Finset.sum_le_sum")
         assert any(x["tactic"] == "finset_mono" for x in r1["recommendations"]), r1

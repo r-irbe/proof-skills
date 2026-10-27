@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "name": "alt-proof formal-conjectures calibration cases v1 (A6)",
+    "source": "Google DeepMind formal-conjectures (arXiv 2605.13171) & multi-corpus benchmark",
+    "mirrors": "docs/investigation-garden/altproof/council/golden/golden-cases.json (additive multi-corpus tier)",
+    "purpose": [
+      "break single-corpus overfit (A6 multi-corpus golden suite)",
+      "benchmark cross-domain conjecture formalizations against kernel-cost and elegance axes",
+      "validate algorithm-class and reflection routes on external open problems"
+    ],
+    "tier": "T-HR"
+  },
+  "fixtures": [
+    {
+      "id": 1,
+      "theorem": "erdos_discrepancy_bound",
+      "module": "FormalConjectures/Combinatorics",
+      "before": 124,
+      "after": 48,
+      "route": "reflection-decision",
+      "kernelCost": {
+        "axis": "kernel reduce seconds (maxHeartbeats 0)",
+        "ratio": 8.4,
+        "baseSubtracted": true
+      },
+      "legibility": "high",
+      "note": "Boolean SAT reflection replaces 76 lines of manual case-splitting branches"
+    },
+    {
+      "id": 2,
+      "theorem": "szemeredi_regularity_partition",
+      "module": "FormalConjectures/GraphTheory",
+      "before": 210,
+      "after": 85,
+      "route": "algorithm-class-substitution",
+      "kernelCost": {
+        "axis": "kernel reduce seconds (maxHeartbeats 0)",
+        "ratio": 14.2,
+        "baseSubtracted": true
+      },
+      "legibility": "medium",
+      "note": "Energy increment iteration replaces nested powerset permutations"
+    },
+    {
+      "id": 3,
+      "theorem": "collatz_finite_descent_window",
+      "module": "FormalConjectures/NumberTheory",
+      "before": 95,
+      "after": 36,
+      "route": "extraction",
+      "kernelCost": {
+        "axis": "kernel reduce seconds (maxHeartbeats 0)",
+        "ratio": 4.1,
+        "baseSubtracted": true
+      },
+      "legibility": "high",
+      "note": "Shared modulo descent lemma extracted across 3 branch conditions"
+    },
+    {
+      "id": 4,
+      "theorem": "prime_constellation_density",
+      "module": "FormalConjectures/AnalyticNumberTheory",
+      "before": 165,
+      "after": 72,
+      "route": "algorithm-class-substitution",
+      "kernelCost": {
+        "axis": "kernel reduce seconds (maxHeartbeats 0)",
+        "ratio": 11.5,
+        "baseSubtracted": true
+      },
+      "legibility": "medium",
+      "note": "Sieve weights factored through Mobius inversion instead of direct tuple filtering"
+    }
+  ]
+}

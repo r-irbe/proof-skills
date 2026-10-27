@@ -1,0 +1,189 @@
+{
+  "meta": {
+    "name": "alt-proof golden cases v1",
+    "source": "docs/easci/lean/docs/tracking/long-proof-campaign-report.md (the 17-decomposition series + 36 shared lemmas)",
+    "purpose": [
+      "cost-weight calibration (ballot B1 experimentation harness)",
+      "per-transformation robustness studies (ballot B3 JAR16 discipline)",
+      "regression baseline for the sweep tool"
+    ],
+    "note": "every fixture is a REAL decomposition the campaign performed and kernel-verified; routes are classified by the transformation module they exemplify"
+  },
+  "fixtures": [
+    {
+      "id": 1,
+      "theorem": "asyncIterate_lyapunovSupNorm_descent_at_window",
+      "module": "ReinforcementLearning/Async",
+      "before": 93,
+      "after": 62,
+      "route": "extraction"
+    },
+    {
+      "id": 2,
+      "theorem": "weighted_sum_compose_transition",
+      "module": "StochasticCCV",
+      "before": 81,
+      "after": 69,
+      "route": "extraction"
+    },
+    {
+      "id": 3,
+      "theorem": "sum_compose_transition",
+      "module": "StochasticCCV",
+      "before": 96,
+      "after": 76,
+      "route": "extraction"
+    },
+    {
+      "id": 4,
+      "theorem": "three_root_certificate_negative_discriminant",
+      "module": "CuspCatastrophe/Core",
+      "before": 63,
+      "after": 41,
+      "route": "extraction"
+    },
+    {
+      "id": 5,
+      "theorem": "subsetPmfFromSlots_apply_of_subset",
+      "module": "Probability",
+      "before": 72,
+      "after": 69,
+      "route": "extraction"
+    },
+    {
+      "id": 6,
+      "theorem": "softmaxFisherMetric_eq_score_expectation",
+      "module": "Information",
+      "before": 72,
+      "after": 59,
+      "route": "extraction"
+    },
+    {
+      "id": 7,
+      "theorem": "promote_monotone_evidence",
+      "module": "AgenticSafety",
+      "before": 89,
+      "after": 33,
+      "route": "extraction"
+    },
+    {
+      "id": 8,
+      "theorem": "stochasticQL_error_tendsto_zero",
+      "module": "ReinforcementLearning",
+      "before": 62,
+      "after": 50,
+      "route": "extraction"
+    },
+    {
+      "id": 9,
+      "theorem": "(latin-squares family; moved off-list)",
+      "module": "Foundations",
+      "before": null,
+      "after": null,
+      "route": "extraction",
+      "note": "recorded in the ledger; metrics in the phase entry"
+    },
+    {
+      "id": 10,
+      "theorem": "reward_cesaro_tendsto (Cesaro extraction)",
+      "module": "StochasticCCV/Doeblin",
+      "before": 98,
+      "after": 60,
+      "route": "extraction",
+      "extracted": [
+        "cesaro_tendsto_of_geometric_bound (Mathlib-absent; PR #44591)"
+      ]
+    },
+    {
+      "id": 11,
+      "theorem": "reward_cesaro_tendsto (product-sum bound)",
+      "module": "StochasticCCV/Doeblin",
+      "before": 60,
+      "after": 52,
+      "route": "extraction",
+      "extracted": [
+        "sum_mul_le_sum_mul_sum (Mathlib-absent)"
+      ]
+    },
+    {
+      "id": 12,
+      "theorem": "iterate_exists_pos_doeblin (3 Doeblin lemmas)",
+      "module": "StochasticCCV/StationaryGeneralN",
+      "before": 72,
+      "after": 52,
+      "route": "extraction",
+      "extracted": [
+        "doeblin_card_mul_le_one",
+        "realStep_iterate_mul",
+        "stationary_ge_of_doeblin"
+      ]
+    },
+    {
+      "id": 13,
+      "theorem": "asyncIterate_lyapunovSupNorm_descent_at_window (async-RL lemmas)",
+      "module": "ReinforcementLearning/Async",
+      "before": 62,
+      "after": 48,
+      "route": "extraction",
+      "extracted": [
+        "asyncIterate_entry_contraction_at_refresh",
+        "lyapunovSupNorm_le_of_forall_entry_le"
+      ]
+    },
+    {
+      "id": 14,
+      "theorem": "irreducible_of_pipeline_and_F1 (5-cycle toolkit)",
+      "module": "StochasticCCV/StageMatrix5",
+      "before": "31 lines/26 branches",
+      "after": "~15 lines/5 branches",
+      "route": "extraction",
+      "extracted": [
+        "pow_succ_pos",
+        "cycle_split",
+        "succ_step_one/two/three/wrap",
+        "forward_steps_positive"
+      ]
+    },
+    {
+      "id": 15,
+      "theorem": "five_step_return_positive (same toolkit)",
+      "module": "StochasticCCV/StageMatrix5",
+      "before": "~45",
+      "after": "~15",
+      "route": "extraction"
+    },
+    {
+      "id": 16,
+      "theorem": "gate_row_diff_bound (uniform-simp collapse)",
+      "module": "CCVGating",
+      "before": "76 lines/6 branches",
+      "after": "cleared",
+      "route": "reflection",
+      "note": "the uniform-simp collapse is the boolean-reflection pattern's real corpus instance"
+    },
+    {
+      "id": 17,
+      "theorem": "stationary_exists_of_strictlyPositive + GAP-7 set",
+      "module": "StochasticCCV/StageMatrix5",
+      "before": 154,
+      "after": "~40",
+      "route": "extraction",
+      "extracted": [
+        "iterate_sum_cauchy",
+        "pointwise_cauchy_of_sum_cauchy",
+        "sum_dist_tendsto_of_pointwise",
+        "step_fixedpoint_of_sum_dist_tendsto"
+      ]
+    }
+  ],
+  "aggregate": {
+    "decompositions": 17,
+    "shared_lemmas_extracted": 36,
+    "considered_negatives": 4,
+    "regressions": 0,
+    "upstream_candidates": [
+      "cesaro_tendsto_of_geometric_bound (PR #44591)",
+      "sum_mul_le_sum_mul_sum"
+    ]
+  }
+}
