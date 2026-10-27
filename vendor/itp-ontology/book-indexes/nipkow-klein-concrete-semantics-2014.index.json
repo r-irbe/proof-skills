@@ -19,6 +19,7 @@
   "entries": [
     {
       "term": "rule induction",
+      "concept_id": "CONCEPT-INDUCTION-INVERSION",
       "category": "concept",
       "primary_references": [
         {

@@ -1,6 +1,6 @@
 # USER_GUIDE.md - proof-skills Practical Operator Guide
 
-`proof-skills` is a project-agnostic toolkit of 65 active v2 Agent Skills (100% <4,000B with paired handbooks), 200 Lean 4 proof and workflow templates (59 core + 131 arithmetic-geometry + 10 fluid-pde), 5 Pure Role-Actor Containers + 23 soul overlays, and an embedded 14-tool MCP server (`tools/lean-lsp-mcp`) for Lean 4 + Mathlib4 formal verification.
+`proof-skills` is a project-agnostic toolkit of 65 active v2 Agent Skills (100% <4,000B with paired handbooks), 200 Lean 4 proof and workflow templates (59 core + 131 arithmetic-geometry + 10 fluid-pde), 5 Pure Role-Actor Containers + 23 soul overlays, and an embedded 20-tool MCP server (`tools/lean-lsp-mcp`) for Lean 4 + Mathlib4 formal verification.
 
 ---
 
@@ -30,7 +30,7 @@ cd proof-skills
 - **Zero-`pip` Core (`Python >= 3.10` standard library only)**:
   - All **44 scripts** in `scripts/lean/*.py` (axiom audit, census, formalization breakdown, proof quality, blueprint sync, zettelkasten lint)
   - All **20 modules** in `scripts/lean/altproof/*.py` (AltProof tactic/route advisor & evaluator)
-  - `graph/graph_query.py` (queries `vendor/itp-ontology/itp_ontology_graph.db` and `kuzu/*.kz` archives via stdlib `sqlite3`, `json`, `csv`, and `zipfile`)
+  - `graph/graph_query.py` (queries `vendor/itp-ontology/master-authority-index.json` and `kuzu/prover_knowledge.kz` archives via stdlib `json`, `csv`, and `zipfile`)
   - `tools/lean-serve-broker/*` and `tools/visualizer/*`
   - `scripts/check-structure` and `scripts/lint/apm_validate.py` (include pure-stdlib YAML fallbacks)
 - **Optional Python packages** (declared in [`pyproject.toml`](pyproject.toml) and [`requirements.txt`](requirements.txt)):
@@ -41,7 +41,7 @@ cd proof-skills
   pip install ".[all]"                 # PyYAML>=6.0 + kuzu>=0.7.0 + pytest>=8.0
   ```
 
-### Tier 3 -- Full 14-Tool `lean-lsp` MCP Server + Rust/WASM `lean-analyzer`
+### Tier 3 -- Full 20-Tool `lean-lsp` MCP Server + Rust/WASM `lean-analyzer`
 
 Run the one-command customer bootstrap and non-mutating environment doctor:
 

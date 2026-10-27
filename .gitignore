@@ -24,3 +24,5 @@ loom_proving_state.db*
 *.db-shm
 *.db-wal
 
+.cache/
+kuzu/*.kuzu

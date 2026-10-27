@@ -73,7 +73,11 @@ def verify_markdown_citations(
             md_files = sorted(docs_root.rglob("*.md"))
 
     checked_citations = 0
+    external_mathlib_skipped = 0
     broken_citations: list[dict] = []
+    has_mathlib_checkout = any(
+        (sr / "Mathlib").is_dir() or sr.name == "mathlib" for sr in search_roots
+    )
 
     for md_path in md_files:
         try:
@@ -111,6 +115,41 @@ def verify_markdown_citations(
                 if resolved is not None:
                     break
             if resolved is None:
+                is_upstream_mathlib = rel_file.startswith("Mathlib/") or (
+                    rel_file.endswith(".lean")
+                    and rel_file.split("/", 1)[0]
+                    in (
+                        "Algebra",
+                        "Analysis",
+                        "CategoryTheory",
+                        "Combinatorics",
+                        "Computability",
+                        "Condensed",
+                        "Control",
+                        "Data",
+                        "Dynamics",
+                        "FieldTheory",
+                        "Geometry",
+                        "GroupTheory",
+                        "InformationTheory",
+                        "LinearAlgebra",
+                        "Logic",
+                        "MeasureTheory",
+                        "ModelTheory",
+                        "NumberTheory",
+                        "Order",
+                        "Probability",
+                        "RepresentationTheory",
+                        "RingTheory",
+                        "SetTheory",
+                        "Tactic",
+                        "Topology",
+                        "Util",
+                    )
+                )
+                if is_upstream_mathlib and not has_mathlib_checkout:
+                    external_mathlib_skipped += 1
+                    continue
                 broken_citations.append(
                     {
                         "source_doc": str(md_path),
@@ -148,6 +187,7 @@ def verify_markdown_citations(
         "ok": len(broken_citations) == 0,
         "docs_scanned": len(md_files),
         "citations_checked": checked_citations,
+        "external_mathlib_skipped": external_mathlib_skipped,
         "broken_count": len(broken_citations),
         "broken_citations": broken_citations,
         "ilean_symbols_indexed": ilean_symbols_count,

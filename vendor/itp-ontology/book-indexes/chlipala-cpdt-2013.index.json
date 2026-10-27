@@ -18,6 +18,7 @@
   "entries": [
     {
       "term": "higher-order abstract syntax (HOAS)",
+      "concept_id": "CONCEPT-HOAS-AND-PHOAS",
       "category": "language_formalization",
       "primary_references": [
         {
@@ -51,6 +52,7 @@
     },
     {
       "term": "proof search with Ltac",
+      "concept_id": "CONCEPT-SEMIDYNAMIC-TACTIC-ELABORATION",
       "category": "proof_automation",
       "primary_references": [
         {
@@ -77,6 +79,7 @@
     },
     {
       "term": "reasoning about equality proofs and axiom K",
+      "concept_id": "CONCEPT-DEPENDENT-PATTERN-MATCHING-EQUATIONS",
       "category": "type_theory",
       "primary_references": [
         {

@@ -53,7 +53,7 @@ cd proof-skills
   pip install ".[dev]"                 # optional pytest>=8.0 + PyYAML>=6.0
   ```
 
-### Tier 3 -- Full 14-Tool `lean-lsp` MCP Server + Rust/WASM `lean-analyzer`
+### Tier 3 -- Full 20-Tool `lean-lsp` MCP Server + Rust/WASM `lean-analyzer`
 
 Bootstrap submodules, Python packages, and the Node.js `lean-lsp` MCP server (`tools/lean-lsp-mcp`, requiring Node.js `>=22.6.0` or `>=20.0.0` with compiled `dist/index.js`) in one command:
 
@@ -72,7 +72,7 @@ bash scripts/setup-env.sh --doctor     # or: apm run doctor (non-mutating health
 |---|---|---|
 | [`skills/`](skills/) | 65 first-party v2 `SKILL.md` files (each <4,000B with paired `references/*-handbook.md`): toolchain setup, Lake building, proof tactics, MWE extraction, bisection, PR hygiene, Mathlib review, domain math, applied verticals, and end-to-end process workflows. | Harness, on demand. |
 | [`agents/`](agents/) | 5 Pure Role-Actor Containers (`specifier`, `prover`, `auditor`, `editor`, `gardener`), 23 `souls/` specialist overlays, and `facets/registry.json`. | Multi-agent runtime. |
-| [`tools/lean-lsp-mcp/`](tools/lean-lsp-mcp/) | 14-tool `lean-lsp` Model Context Protocol server + embedded Rust/WASM `lean-analyzer` (`data/lean_analyzer.wasm`). | MCP client (`bin/lean-lsp-mcp.js`). |
+| [`tools/lean-lsp-mcp/`](tools/lean-lsp-mcp/) | 20-tool `lean-lsp` Model Context Protocol server + embedded Rust/WASM `lean-analyzer` (`data/lean_analyzer.wasm`). | MCP client (`bin/lean-lsp-mcp.js`). |
 | [`TAXONOMY.md`](TAXONOMY.md) | Authoritative classification mapping skills into Kernel, Roles, and Facets. | Planning / routing. |
 | [`ROLES.md`](ROLES.md) | Stanford ACE Prover Swarm operational contracts (Specifier, Prover, Auditor, Gardener). | Multi-agent execution. |
 | [`FACETS.md`](FACETS.md) | Domain Facets catalog (Math, AI, Governance packs). | Domain consumers. |
@@ -80,7 +80,7 @@ bash scripts/setup-env.sh --doctor     # or: apm run doctor (non-mutating health
 | [`references/`](references/) | background notes and layered skill handbooks; authoritative catalog in [`references/INDEX.md`](references/INDEX.md). | Skill, by link. |
 | [`scripts/`](scripts/) | Project-agnostic helpers: `setup-env.sh` bootstrap/doctor, axiom audits, DAG layer checks, bridge validators, zettelkasten linters, eval, calibration, and Glicko-2 harnesses. None hardcodes a host project; each takes the project root as an argument. | Skill / CI / author. |
 | [`zettelkasten/`](zettelkasten/) | Repo-internal knowledge graph (fleeting · literature · permanent · index · tags) that captures cross-skill insights. | Synthesizer skills. |
-| [`vendor/itp-ontology/`](vendor/itp-ontology/) | 100-concept ITP Master Authority Ontology (`itp_ontology_graph.db`), 10 JSON book indexes, and 20-mechanism / 6-prover concordance (`cross-itp-concordance.v1.json`). | MCP & offline graph queries. |
+| [`vendor/itp-ontology/`](vendor/itp-ontology/) | 100-concept ITP Master Authority Ontology (`master-authority-index.json` + `kuzu/prover_knowledge.kz`), 10 JSON book indexes, and 20-mechanism / 6-prover concordance (`cross-itp-concordance.v1.json`). | MCP & offline graph queries. |
 
 ---
 

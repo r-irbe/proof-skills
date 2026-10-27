@@ -323,6 +323,25 @@ class ArchiveFallbackConnection:
                                             r[9].strip() if len(r) > 9 else "",
                                         ),
                                     )
+
+                    if "StitchedText.csv" in names:
+                        raw = zf.read("StitchedText.csv").decode("utf-8", errors="replace")
+                        rows = list(csv.reader(io.StringIO(raw)))
+                        if rows:
+                            has_hdr = rows[0][0].strip().lower() == "id"
+                            for r in (rows[1:] if has_hdr else rows):
+                                if len(r) >= 2:
+                                    bsize = int(r[4]) if len(r) > 4 and r[4].strip().isdigit() else 0
+                                    cur.execute(
+                                        "INSERT OR REPLACE INTO StitchedText VALUES (?, ?, ?, ?, ?)",
+                                        (
+                                            r[0].strip(),
+                                            r[1].strip(),
+                                            r[2].strip() if len(r) > 2 else "",
+                                            r[3].strip() if len(r) > 3 else "",
+                                            bsize,
+                                        ),
+                                    )
             except Exception:
                 pass
 

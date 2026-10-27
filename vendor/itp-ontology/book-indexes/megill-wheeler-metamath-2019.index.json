@@ -19,6 +19,7 @@
   "entries": [
     {
       "term": "modus ponens",
+      "concept_id": "CONCEPT-BHK-REALIZABILITY-INTERPRETATION",
       "category": "rule",
       "primary_references": [
         {

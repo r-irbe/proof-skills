@@ -56,6 +56,7 @@ def test_term_mode_parsed() -> bool:
     foo = next((b for b in blocks if b['name'] == 'foo'), None)
     ok &= _check(foo is not None and foo['body'].strip() == 'rfl',
                  "term-mode body is the proof term")
+    assert ok
     return ok
 
 
@@ -71,6 +72,7 @@ def test_modifiers_and_example() -> bool:
     ok = _check({'p', 'q', 'r'}.issubset(names),
                 "protected/public/private decls parsed")
     ok &= _check('(example)' in names, "example decls parsed")
+    assert ok
     return ok
 
 
@@ -86,6 +88,7 @@ def test_swallow_nonregression() -> bool:
     ok = _check(len(blocks) == 2, "two declarations remain distinct")
     ok &= _check(first is not None and 'second' not in first['body'],
                  "first body does not swallow second decl")
+    assert ok
     return ok
 
 
@@ -103,6 +106,7 @@ def test_truth_stub_term() -> bool:
     angle = find_tautology_candidates({**thm, 'body': '⟨⟩'})
     ok &= _check(any(f['type'] == 'truth-stub-term' for f in angle),
                  "empty anonymous constructor flagged")
+    assert ok
     return ok
 
 
@@ -128,6 +132,7 @@ def test_decide_severity_recalibration() -> bool:
                  "concrete `decide` downgraded to P3 advisory")
     ok &= _check(bool(vf) and vf[0]['severity'] == 'P2',
                  "variable-bearing `decide` stays P2")
+    assert ok
     return ok
 
 
@@ -145,6 +150,7 @@ def test_structural_branch_points() -> bool:
                 "flat calc proof scores 0 branch points")
     ok &= _check(_structural_branch_points(branchy) >= 5,
                  "branchy proof scores multiple branch points")
+    assert ok
     return ok
 
 
@@ -273,6 +279,7 @@ def test_seven_defect_detectors() -> bool:
         ),
         "NAT_SUB_UNGUARDED recognizes strict inequality i < h_read as guard for h_read - 1",
     )
+    assert ok
     return ok
 
 

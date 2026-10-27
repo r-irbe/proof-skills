@@ -389,12 +389,26 @@ def build_prover_graph(garden_root: Path, out_dir: Path) -> dict[str, Any]:
             z_writer.writerow([z["id"], z["title"], z["layer"], z["status"], z["maturity"], z["verification"], z["source_book"], z["source_anchor"], z["master_concept"], z["file_path"]])
         zf.writestr("Zettel.csv", z_buf.getvalue().encode("ascii"))
 
+        st_buf = io.StringIO()
+        st_writer = csv.writer(st_buf)
+        st_writer.writerow(["id", "book_id", "title", "file_path", "byte_size"])
+        for st in stitched:
+            st_writer.writerow([
+                st["id"],
+                st.get("book_id", ""),
+                st.get("title", ""),
+                st.get("file_path", ""),
+                st.get("byte_size", 0),
+            ])
+        zf.writestr("StitchedText.csv", st_buf.getvalue().encode("ascii"))
+
         schema_cypher = (
             "CREATE NODE TABLE Book(id STRING, title STRING, total_rows INT64, license STRING, format STRING, PRIMARY KEY (id));\n"
             "CREATE NODE TABLE Section(id STRING, book_id STRING, heading STRING, leittext STRING, page INT64, PRIMARY KEY (id));\n"
             "CREATE NODE TABLE Concept(id STRING, name STRING, msc2020 STRING, domain_theory STRING, PRIMARY KEY (id));\n"
             "CREATE NODE TABLE Concordance(concept_id STRING, prover STRING, tactic STRING, syntax STRING);\n"
             "CREATE NODE TABLE Zettel(id STRING, title STRING, layer INT64, status STRING, maturity STRING, verification STRING, source_book STRING, source_anchor STRING, master_concept STRING, file_path STRING, PRIMARY KEY (id));\n"
+            "CREATE NODE TABLE StitchedText(id STRING, book_id STRING, title STRING, file_path STRING, byte_size INT64, PRIMARY KEY (id));\n"
             "CREATE REL TABLE CONTAINS(FROM Book TO Section);\n"
         )
         zf.writestr("schema.cypher", schema_cypher.encode("ascii"))
@@ -402,6 +416,10 @@ def build_prover_graph(garden_root: Path, out_dir: Path) -> dict[str, Any]:
             'COPY Book FROM "Book.csv" (HEADER=true);\n'
             'COPY Section FROM "Section.csv" (HEADER=true);\n'
             'COPY CONTAINS FROM "CONTAINS_Book_Section.csv" (HEADER=true);\n'
+            'COPY Concept FROM "Concept.csv" (HEADER=true);\n'
+            'COPY Concordance FROM "Concordance.csv" (HEADER=true);\n'
+            'COPY Zettel FROM "Zettel.csv" (HEADER=true);\n'
+            'COPY StitchedText FROM "StitchedText.csv" (HEADER=true);\n'
         )
         zf.writestr("copy.cypher", copy_cypher.encode("ascii"))
         zf.writestr("index.cypher", b"")

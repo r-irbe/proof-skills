@@ -18,6 +18,7 @@
   "entries": [
     {
       "term": "propositional satisfiability (SAT / CDCL)",
+      "concept_id": "CONCEPT-CLAUSAL-NORMAL-FORM-SAT",
       "category": "decision_procedure",
       "primary_references": [
         {
@@ -44,6 +45,7 @@
     },
     {
       "term": "congruence closure and union-find",
+      "concept_id": "CONCEPT-CONGRUENCE-CLOSURE",
       "category": "decision_procedure",
       "primary_references": [
         {
@@ -70,6 +72,7 @@
     },
     {
       "term": "quantifier elimination for real closed fields",
+      "concept_id": "CONCEPT-QUANTIFIER-ELIMINATION-RCF",
       "category": "decision_procedure",
       "primary_references": [
         {

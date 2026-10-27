@@ -18,6 +18,7 @@
   "entries": [
     {
       "term": "Presburger arithmetic",
+      "concept_id": "CONCEPT-PRESBURGER-ARITHMETIC",
       "category": "algorithm",
       "primary_references": [
         {

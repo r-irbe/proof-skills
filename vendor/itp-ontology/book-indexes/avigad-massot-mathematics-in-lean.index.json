@@ -19,6 +19,7 @@
   "entries": [
     {
       "term": "calculation block (calc)",
+      "concept_id": "CONCEPT-TERM-REWRITING-TERMINATION",
       "category": "tactic",
       "primary_references": [
         {

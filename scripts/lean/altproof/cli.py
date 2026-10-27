@@ -110,7 +110,7 @@ def _cmd_routes(argv: list[str]) -> int:
 
     parser = argparse.ArgumentParser(
         prog="altproof routes",
-        description="Inspect or regenerate the canonical AltProof 11-route table",
+        description="Inspect or regenerate the canonical AltProof 16-route table",
     )
     parser.add_argument("--regen", action="store_true", help="Regenerate route-table.json")
     parser.add_argument("--json", action="store_true", help="Emit JSON route table payload")
@@ -136,7 +136,7 @@ def main(argv: list[str] | None = None) -> int:
         print("  cluster         Run cross-theorem have-clustering (S5) over a Lean directory")
         print("  extract         Run v3 extraction detector on a Lean file")
         print("  report          Render whole-corpus elegance Markdown report suite")
-        print("  routes          Inspect or regenerate the 11-route AltProof table")
+        print("  routes          Inspect or regenerate the 16-route AltProof table")
         print("  legibility      Score proof block legibility and structural golf opportunities")
         print("  axiom-profiles  Audit declaration axiom profiles")
         return 0

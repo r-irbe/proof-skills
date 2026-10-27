@@ -59,6 +59,7 @@
     },
     {
       "term": "proof by reflection",
+      "concept_id": "CONCEPT-PROOF-BY-REFLECTION",
       "category": "concept",
       "primary_references": [
         {

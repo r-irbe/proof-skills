@@ -20,44 +20,44 @@
     },
     "book-indexes": {
       "avigad-lamr-2024.index.json": {
-        "sha256": "52be5ed84a3c2c29efaa60e564c5155d2e75cde605c5bcbb274f0941a09ed4b5",
-        "size_bytes": 3034
+        "sha256": "1f0c60e3cadeeb3247c650e2535830b462add0a94884456a9c6c3a330a2d7d8b",
+        "size_bytes": 3197
       },
       "avigad-massot-mathematics-in-lean.index.json": {
-        "sha256": "8c470fac731cd612b16980e1a4fb54996e0df430150ce3219f2aa69b21f51ce0",
-        "size_bytes": 1357
+        "sha256": "18a7bc09900392fa308931577b83914417275a8742599141616bcba663fef096",
+        "size_bytes": 1415
       },
       "bertot-casteran-coqart-2004.index.json": {
-        "sha256": "3e35f5254c13c2a2b1be1758dfd8f825493c3d37322120636dfb13d190c85970",
-        "size_bytes": 2751
+        "sha256": "24387d3403a5ed850f8e8322046ff63b99c18510e1eeaab66405b675d524b189",
+        "size_bytes": 2802
       },
       "blanchette-logical-verification-2025.index.json": {
-        "sha256": "cca6f7db021ff596478aad48210406d29521804455b60f7061f4e8ddfa6b4cb9",
-        "size_bytes": 3141
+        "sha256": "5bb20a5c285fccce4331324ec373aa1b0c55a75468c3abf7870a99431370bc1d",
+        "size_bytes": 3321
       },
       "chlipala-cpdt-2013.index.json": {
-        "sha256": "1573605ba45e244abb3d47645969717b349a0c4f1c81e676dbc3d3df352541db",
-        "size_bytes": 3580
+        "sha256": "00aa9713b142984814fa77b0137887c209f8eb22638a0d919bdaa2ebb266b457",
+        "size_bytes": 3756
       },
       "cousot-abstract-interpretation-2021.index.json": {
         "sha256": "e8e2d5b0d88db33aa26c9c18d7ddfca68543a10e3af2749f0bd9b701ed97f86a",
         "size_bytes": 11225
       },
       "harrison-logic-2009.index.json": {
-        "sha256": "f152767e2f9a392561327f37b4dfbf97ba9115365299a18b687f46273fb5a6de",
-        "size_bytes": 2612
+        "sha256": "bf27e7e056befda59c64fa70d18acfae3c86eeb10abd13e350455c851848180f",
+        "size_bytes": 2665
       },
       "megill-wheeler-metamath-2019.index.json": {
-        "sha256": "2e711bf50901504b854dbee3c531fed9d5092707fd407817273d3735829cad26",
-        "size_bytes": 1292
+        "sha256": "3c68ca04e0f7033d73f3e1871363f911046a6d7458e93c0a5073689a1bfb001b",
+        "size_bytes": 1356
       },
       "nipkow-klein-concrete-semantics-2014.index.json": {
-        "sha256": "81be275ba0eadeb7fd669b4d8abecb41f373dd3e50ef6a1a99aa1fdedc056c51",
-        "size_bytes": 1321
+        "sha256": "c89f5835ad7bb055ba0ca36636623f69e487c669eb345afc21e620179805fce8",
+        "size_bytes": 1372
       },
       "pierce-software-foundations-lf-2024.index.json": {
-        "sha256": "a40f8c78d3dd5de225808e08a2d94e4b419cbb25830301d60bc0295c97adef8f",
-        "size_bytes": 2736
+        "sha256": "8fc7cac34053a88e6eccbf81b42be9d0c54e7fcd3638865508c1c21118dbc476",
+        "size_bytes": 2851
       }
     }
   }

@@ -25,6 +25,7 @@
   "entries": [
     {
       "term": "Curry-Howard correspondence",
+      "concept_id": "CONCEPT-BHK-REALIZABILITY-INTERPRETATION",
       "category": "type_theory",
       "primary_references": [
         {
@@ -51,6 +52,7 @@
     },
     {
       "term": "inductive propositions and relations",
+      "concept_id": "CONCEPT-INDUCTION-INVERSION",
       "category": "inductive_definitions",
       "primary_references": [
         {

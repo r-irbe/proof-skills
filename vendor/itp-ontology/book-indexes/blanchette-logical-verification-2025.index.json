@@ -23,6 +23,7 @@
   "entries": [
     {
       "term": "inductive predicates and inversion",
+      "concept_id": "CONCEPT-INDUCTION-INVERSION",
       "category": "proof_method",
       "primary_references": [
         {
@@ -49,6 +50,7 @@
     },
     {
       "term": "quotient types and setoids",
+      "concept_id": "CONCEPT-QUOTIENT-TYPES-SETOID-EQUIVALENCE",
       "category": "type_construct",
       "primary_references": [
         {
@@ -75,6 +77,7 @@
     },
     {
       "term": "program verification with Hoare logic",
+      "concept_id": "CONCEPT-HOARE-LOGIC-WEAKEST-PRECONDITION",
       "category": "verification_logic",
       "primary_references": [
         {

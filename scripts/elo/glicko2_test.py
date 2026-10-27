@@ -62,6 +62,7 @@ def test_glickman_worked_example() -> bool:
     ok &= _approx(updated.rating, 1464.06, 0.05, "Glickman §5 rating")
     ok &= _approx(updated.rd,      151.52, 0.05, "Glickman §5 RD")
     ok &= _approx(updated.vol,     0.05999, 0.0001, "Glickman §5 vol")
+    assert ok
     return ok
 
 
@@ -78,6 +79,7 @@ def test_inactive_player_only_grows_rd() -> bool:
         ok = False
     else:
         print(f"PASS inactive RD grew: {r0.rd:.2f} → {r1.rd:.2f}")
+    assert ok
     return ok
 
 
@@ -90,6 +92,7 @@ def test_symmetric_draw_no_movement() -> bool:
     ok = True
     ok &= _approx(a2.rating, 1500.0, 0.001, "symmetric draw: A rating unchanged")
     ok &= _approx(b2.rating, 1500.0, 0.001, "symmetric draw: B rating unchanged")
+    assert ok
     return ok
 
 
@@ -115,6 +118,7 @@ def test_winner_gains_loser_loses() -> bool:
     delta_a = a2.rating - 1500
     delta_b = 1500 - b2.rating
     ok &= _approx(delta_a, delta_b, 0.01, "symmetric Δ magnitudes")
+    assert ok
     return ok
 
 
@@ -135,7 +139,7 @@ def test_cli_smoke_against_csv() -> bool:
     ok = True
     if "alpha" not in states or "beta" not in states:
         print(f"FAIL missing players: {sorted(states)}")
-        return False
+        assert False
     if not (states["alpha"].rating.rating > states["beta"].rating.rating):
         print(f"FAIL ordering: alpha={states['alpha'].rating.rating:.2f} "
               f"beta={states['beta'].rating.rating:.2f}")
@@ -149,6 +153,7 @@ def test_cli_smoke_against_csv() -> bool:
         ok = False
     else:
         print("PASS game counts both = 4")
+    assert ok
     return ok
 
 

@@ -192,7 +192,7 @@ run_doctor() {
   ONT_CONC="${REPO_ROOT}/vendor/itp-ontology/cross-itp-concordance.v1.json"
   if [[ -f "${ONT_INDEX}" && -f "${ONT_CONC}" ]]; then
     if command -v python3 >/dev/null 2>&1; then
-      ONT_COUNT="$(python3 -c "import json; d = json.load(open('${ONT_INDEX}')); print(len(d.get('concepts', {})))" 2>/dev/null || echo "0")"
+      ONT_COUNT="$(python3 -c "import json; d = json.load(open('${ONT_INDEX}')); print(len(d.get('master_concepts', d.get('concepts', []))))" 2>/dev/null || echo "0")"
       if [[ "${ONT_COUNT}" -gt 0 ]]; then
         pass_msg "vendor/itp-ontology/master-authority-index.json readable (${ONT_COUNT} concepts)"
       else

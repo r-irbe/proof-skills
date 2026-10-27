@@ -60,6 +60,9 @@ auto_implicit = false
 [numeric_discipline]
 mode = "standard"
 scale_factor = 100
+simplex_scale = 100
+scaled_int_type = "Int"
+in_simplex_pred = "InSimplex"
 prefer_omega_over_linarith = true
 
 [architecture.layers]
@@ -71,37 +74,71 @@ layer_4 = ["Tests", "Benchmarks"]
 
 [[altproof.tactics]]
 name = "alt_proof"
+tactic = "alt_proof"
+route = "general-automated-closer"
 target_pattern = "general-automated-closer"
+match_pattern = "alt_proof"
+replacement = "alt_proof"
+summary = "General multi-route automated closer"
 estimated_heartbeats = 250
 
 [[altproof.tactics]]
 name = "sum_congr_ring"
+tactic = "sum_congr_ring"
+route = "finset-sum-linearity-pointwise-ring"
 target_pattern = "finset-sum-linearity-pointwise-ring"
+match_pattern = "Finset.sum"
+replacement = "sum_congr_ring"
+summary = "Normalize Finset.sum ring equality via Finset.sum_congr + ring"
 estimated_heartbeats = 260
 
 [[altproof.tactics]]
 name = "finset_nonneg"
+tactic = "finset_nonneg"
+route = "finset-sum-nonneg-positivity"
 target_pattern = "finset-sum-nonneg-positivity"
+match_pattern = "0 <= Finset.sum"
+replacement = "finset_nonneg"
+summary = "Discharge 0 <= Finset.sum via Finset.sum_nonneg + positivity"
 estimated_heartbeats = 240
 
 [[altproof.tactics]]
 name = "finset_mono"
+tactic = "finset_mono"
+route = "finset-sum-pointwise-monotonicity"
 target_pattern = "finset-sum-pointwise-monotonicity"
+match_pattern = "Finset.sum"
+replacement = "finset_mono"
+summary = "Discharge pointwise Finset.sum inequality via Finset.sum_le_sum"
 estimated_heartbeats = 250
 
 [[altproof.tactics]]
 name = "bv_decide"
+tactic = "bv_decide"
+route = "bitvector-fixed-width-word"
 target_pattern = "bitvector-fixed-width-word"
+match_pattern = "BitVec"
+replacement = "bv_decide"
+summary = "Discharge bitvector / fixed-width word goals via bv_decide"
 estimated_heartbeats = 180
 """
 
 
 def _default_subst_table(project_name: str) -> dict[str, Any]:
+    ns = project_name.replace("-", "_").title().replace("_", "")
     return {
         "schema_version": "1.0.0",
         "project": project_name,
         "substitutions": {
-            "{{PROJECT_NAMESPACE}}": project_name.replace("-", "_").title().replace("_", ""),
+            "<Project>": ns,
+            "<proj>": project_name.lower().replace("-", "_"),
+            "<ScaledInt>": "Int",
+            "<StandardScale>": "100",
+            "<InSimplex>": "InSimplex",
+            "<TacticsImport>": "AltProof.Tactics",
+            "<DefaultArithTactic>": "omega",
+            "<DefaultSumTactic>": "sum_congr_ring",
+            "{{PROJECT_NAMESPACE}}": ns,
             "{{TACTICS_IMPORT}}": "AltProof.Tactics",
             "{{DEFAULT_ARITH_TACTIC}}": "omega",
             "{{DEFAULT_SUM_TACTIC}}": "sum_congr_ring",
@@ -111,10 +148,10 @@ def _default_subst_table(project_name: str) -> dict[str, Any]:
 
 def _mcp_server_entry(mode: str, skills_rel_path: str) -> dict[str, Any]:
     if mode == "submodule":
-        mcp_bin = f"{skills_rel_path}/tools/lean-lsp-mcp/dist/index.js"
+        mcp_bin = f"{skills_rel_path}/tools/lean-lsp-mcp/bin/lean-lsp-mcp.js"
         kz_path = f"{skills_rel_path}/kuzu/prover_knowledge.kz"
     else:
-        mcp_bin = str(SKILLS_ROOT / "tools" / "lean-lsp-mcp" / "dist" / "index.js")
+        mcp_bin = str(SKILLS_ROOT / "tools" / "lean-lsp-mcp" / "bin" / "lean-lsp-mcp.js")
         kz_path = str(SKILLS_ROOT / "kuzu" / "prover_knowledge.kz")
 
     return {
