@@ -205,3 +205,23 @@ def test_check_citations_and_canary_validation(tmp_path: Path):
     assert validate_canary_spec(canary_spec)["ok"] is True
     assert evaluate_canary_response(canary_spec, "Use sum_congr_ring on Finset.sum")["passed"] is True
     assert evaluate_canary_response(canary_spec, "Use native_decide")["passed"] is False
+
+
+def test_altproof_cli_and_standalone_lake_package():
+    import cli
+    pkg_dir = ROOT / "packages" / "altproof"
+    assert (pkg_dir / "lean-toolchain").is_file()
+    assert (pkg_dir / "lakefile.lean").is_file()
+    assert (pkg_dir / "AltProof.lean").is_file()
+    assert (pkg_dir / "AltProof" / "Tactics.lean").is_file()
+    assert (pkg_dir / "AltProof" / "Tests.lean").is_file()
+    assert (pkg_dir / "README.md").is_file()
+    assert (ROOT / "scripts" / "lean" / "altproof" / "pyproject.toml").is_file()
+
+    assert cli.main(["--help"]) == 0
+    assert cli.main(["routes", "--json"]) == 0
+    assert cli.main(["dispatch", "--self-test"]) == 0
+    assert cli.main(["rank", "--lines", "10", "--shared-lemmas", "1"]) == 0
+    assert cli.main(["detect-v4", str(pkg_dir / "AltProof" / "Tests.lean")]) == 0
+    assert cli.main(["extract", str(pkg_dir / "AltProof" / "Tests.lean")]) == 0
+    assert cli.main(["cluster", str(pkg_dir)]) == 0

@@ -15,6 +15,7 @@ type: hybrid
 #   - multi-prover: Cross-ITP concordance router and dialect adapters (Lean 4, Rocq, Isabelle, HOL Light, Agda, Metamath)
 #   - pack-arithmetic-geometry: 131 ModularJacobian & FLT templates in templates/packs/arithmetic-geometry/
 #   - pack-fluid-pde: 10 Fluid PDE templates in templates/packs/fluid-pde/
+#   - pack-altproof: Standalone AltProof Lean 4 Lake package (packages/altproof/) & Python CLI (scripts/lean/altproof/pyproject.toml)
 profiles:
   core:
     description: "Core Lean 4 proving, specification, proof repair, build, and SAIR kernel optimization."
@@ -37,6 +38,9 @@ profiles:
     templates:
       - templates/Template_*.lean
       - templates/Template_*.md
+    packages:
+      - packages/altproof
+      - scripts/lean/altproof/pyproject.toml
   math:
     description: "Unified Lean 4 mathematical formalization skills and 3-table lookup handbooks."
     agents:
@@ -131,6 +135,15 @@ profiles:
     description: "10 Fluid PDE, Vorticity, Gevrey Class, and Reynolds Cascade templates."
     templates:
       - templates/packs/fluid-pde/*.md
+  pack-altproof:
+    description: "Standalone AltProof Lean 4 meta-tactic Lake package (`packages/altproof/`) and Python analysis CLI (`scripts/lean/altproof/pyproject.toml`)."
+    skills:
+      - skills/lean-proof
+      - skills/lean-proof-refactor
+      - skills/lean-sair-kernel-optimization
+    packages:
+      - packages/altproof
+      - scripts/lean/altproof/pyproject.toml
 
 dependencies:
   apm: []

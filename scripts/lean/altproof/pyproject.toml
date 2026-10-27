@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lean-altproof"
+version = "0.4.0"
+description = "AltProof AST feature routing, extraction detection, two-axis cost ranking, and tactic dispatch for Lean 4."
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [
+  { name = "r-irbe" }
+]
+dependencies = []
+
+[project.scripts]
+altproof = "altproof.cli:main"
+
+[tool.setuptools]
+packages = ["altproof"]
+
+[tool.setuptools.package-dir]
+altproof = "."
