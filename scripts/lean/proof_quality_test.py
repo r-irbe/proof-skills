@@ -222,6 +222,57 @@ def test_seven_defect_detectors() -> bool:
         "_h" in find_unused_hypotheses("theorem t6_imp {a : Nat} {_h : a > 0} (b : Nat) : b = b", "rfl"),
         "UNUSED_VALUE_OR_UNDERSCORE_BINDER flags implicit {_h : P}",
     )
+    ok &= _check(
+        "h0"
+        not in find_unused_hypotheses(
+            "theorem bv_nibble (n0 : BitVec 32) (h0 : n0 < 16#32) : (n0 &&& 0xF#32) = n0",
+            "bv_decide",
+        ),
+        "find_unused_hypotheses treats bv_decide as context-consuming for propositional hypotheses",
+    )
+    ok &= _check(
+        not bool(
+            detect_nat_sub_unguarded(
+                "theorem fn_app_sub (numStages n : Nat) (h_stages : numStages >= 2) (h_n : n > 0) : "
+                "unfusedGlobalMemOps numStages n - fusedGlobalMemOps n = 2 * (numStages - 1) * n"
+            )
+        ),
+        "NAT_SUB_UNGUARDED ignores function-application arguments across - (n - fusedGlobalMemOps n)",
+    )
+    ok &= _check(
+        not bool(
+            detect_nat_sub_unguarded(
+                "theorem int_cast_sub (pp pn : Nat) : "
+                "ternaryDot pp pn = (Int.ofNat pp - Int.ofNat pn)"
+            )
+        ),
+        "NAT_SUB_UNGUARDED ignores Int.ofNat pp - Int.ofNat pn",
+    )
+    ok &= _check(
+        not bool(
+            detect_nat_sub_unguarded(
+                "theorem eq_guard_sub (s1 s2 : Nat) (h_eq : s1 = s2) : s1 - s2 = 0"
+            )
+        ),
+        "NAT_SUB_UNGUARDED recognizes equality guard s1 = s2",
+    )
+    ok &= _check(
+        not bool(
+            detect_nat_sub_unguarded(
+                "theorem add_sum_guard_sub (visited culled total : Nat) (h_part : visited + culled = total) : "
+                "total - culled = visited"
+            )
+        ),
+        "NAT_SUB_UNGUARDED recognizes additive-sum guard visited + culled = total",
+    )
+    ok &= _check(
+        not bool(
+            detect_nat_sub_unguarded(
+                "theorem strict_lt_guard_sub (i h_read : Nat) (hi : i < h_read) : i <= h_read - 1"
+            )
+        ),
+        "NAT_SUB_UNGUARDED recognizes strict inequality i < h_read as guard for h_read - 1",
+    )
     return ok
 
 

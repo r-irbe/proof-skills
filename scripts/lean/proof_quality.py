@@ -753,9 +753,78 @@ def detect_nat_nonneg_triviality(signature: str, body: str = "") -> str | None:
     return None
 
 
+_LEAN_PRECEDING_KW = {"then", "else", "in", "fun", "let", "have", "return", "by"}
+_LEAN_FOLLOWING_KW = {"then", "else", "with", "by"}
+
+
+def _is_standalone_nat_sub_match(
+    clause: str, m: re.Match, nat_vars: set[str]
+) -> bool:
+    lhs, rhs = m.group(1), m.group(2)
+    if lhs not in nat_vars or rhs == "0" or lhs == rhs:
+        return False
+    before = clause[: m.start(1)].rstrip()
+    if before:
+        if before[-1] in (")", "]"):
+            return False
+        pm = re.search(r"([A-Za-z0-9_'.]+)$", before)
+        if pm and pm.group(1) not in _LEAN_PRECEDING_KW:
+            return False
+    if not rhs.isdigit():
+        if rhs not in nat_vars:
+            return False
+        after = clause[m.end(2) :]
+        if after.startswith("."):
+            return False
+        fm = re.match(r"^\s+([A-Za-z0-9_'(]+)", after)
+        if fm:
+            tok = fm.group(1).split("(")[0]
+            if tok not in _LEAN_FOLLOWING_KW:
+                return False
+    return True
+
+
+def _is_nat_sub_guarded(lhs: str, rhs: str, other_hyps: str) -> bool:
+    L = re.escape(lhs)
+    R = re.escape(rhs)
+    guard_patterns = [
+        rf"\b{R}\b[^;]*(?:<=|≤|<)\s*[^;]*\b{L}\b",
+        rf"\b{L}\b[^;]*(?:>=|≥|>)\s*[^;]*\b{R}\b",
+        rf"\b{L}\b\s*=\s*\b{R}\b",
+        rf"\b{R}\b\s*=\s*\b{L}\b",
+        rf"\b{L}\b\s*=\s*[^;]*\b{R}\b\s*\+",
+        rf"\b{L}\b\s*=\s*[^;]*\+\s*[^;]*\b{R}\b",
+        rf"\b{R}\b\s*\+[^;=]*=\s*\b{L}\b",
+        rf"\+\s*[^;=]*\b{R}\b[^;=]*=\s*\b{L}\b",
+        rf"\b{R}\b\s*=\s*\b{L}\b\s*-",
+        rf"\b{L}\b\s*=\s*\(?([A-Za-z0-9_']+\s*\+\s*[A-Za-z0-9_']+)\)?.*?\b{R}\b\s*=\s*\(?\1\)?\s*-",
+    ]
+    if rhs.isdigit():
+        guard_patterns.extend(
+            [
+                rf"\b{L}\b[^;]*(?:>=|≥|>)\s*\d+",
+                rf"\d+\s*(?:<=|≤|<)\s*[^;]*\b{L}\b",
+                rf"\b{L}\s*!=\s*0",
+                rf"\b{L}\s*≠\s*0",
+                rf"0\s*<\s*[^;]*\b{L}\b",
+                rf"\b{L}\b\s*>\s*0",
+            ]
+        )
+        if rhs == "1":
+            guard_patterns.extend(
+                [
+                    rf"\b[A-Za-z0-9_']+\s*<\s*\b{L}\b",
+                    rf"\b{L}\b\s*>\s*\b[A-Za-z0-9_']+",
+                    rf"\b{L}\b\s*(?:>=|≥)\s*[A-Za-z0-9_']+\s*\+\s*[A-Za-z0-9_']+",
+                    rf"[A-Za-z0-9_']+\s*\+\s*[A-Za-z0-9_']+\s*(?:<=|≤)\s*\b{L}\b",
+                ]
+            )
+    return any(re.search(gp, other_hyps) for gp in guard_patterns)
+
+
 def detect_nat_sub_unguarded(signature: str) -> str | None:
     """Detect NAT_SUB_UNGUARDED: theorem signature contains `a - b` over Nat binders without
-    any ordering guard (`b <= a`, `b ≤ a`, `b < a`, `a >= b`, `a ≥ b`, `a > b`) in hypotheses."""
+    any ordering or additive/equality guard in hypotheses."""
     binders = _extract_binders_list(signature)
     nat_vars: set[str] = set()
     prop_clauses: list[str] = []
@@ -779,29 +848,12 @@ def detect_nat_sub_unguarded(signature: str) -> str | None:
             r"\b([A-Za-z_][A-Za-z0-9_']*)\s*-\s*([A-Za-z_][A-Za-z0-9_']*|\d+)\b",
             clause,
         ):
+            if not _is_standalone_nat_sub_match(clause, m, nat_vars):
+                continue
             lhs, rhs = m.group(1), m.group(2)
-            if lhs not in nat_vars:
-                continue
-            if rhs == "0" or lhs == rhs:
-                continue
-            guard_patterns = [
-                rf"\b{re.escape(rhs)}\b[^;]*(?:<=|≤|<)\s*[^;]*\b{re.escape(lhs)}\b",
-                rf"\b{re.escape(lhs)}\b[^;]*(?:>=|≥|>)\s*[^;]*\b{re.escape(rhs)}\b",
-            ]
-            if rhs.isdigit():
-                guard_patterns.extend(
-                    [
-                        rf"\b{re.escape(lhs)}\b[^;]*(?:>=|≥|>)\s*\d+",
-                        rf"\d+\s*(?:<=|≤|<)\s*[^;]*\b{re.escape(lhs)}\b",
-                        rf"\b{re.escape(lhs)}\s*!=\s*0",
-                        rf"\b{re.escape(lhs)}\s*≠\s*0",
-                        rf"0\s*<\s*\b{re.escape(lhs)}\b",
-                    ]
-                )
-            if not any(re.search(gp, other_hyps) for gp in guard_patterns):
+            if not _is_nat_sub_guarded(lhs, rhs, other_hyps):
                 return f"Nat subtraction `{lhs} - {rhs}` in `{clause}` has no ordering guard (`{rhs} <= {lhs}`) in hypotheses"
     return None
-
 
 def detect_misaligned_docstring(
     docstring: str, signature: str, body: str
@@ -1139,6 +1191,7 @@ def find_unused_hypotheses(signature: str, body: str) -> list[str]:
         "linarith",
         "ring",
         "decide",
+        "bv_decide",
         "positivity",
         "norm_num",
         "auto",
