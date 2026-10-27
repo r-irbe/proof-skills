@@ -1,0 +1,101 @@
+{
+ "version": 1,
+ "detector": "detect_v3",
+ "samples": [
+  {
+   "name": "pilot1-calc-site",
+   "expect": "candidate",
+   "file_symbols": [],
+   "block": "  calc (1 - rho) * (K.k11 * u ^ 2 + K.k22 * v ^ 2) <= Q := by\\n    apply mul_le_mul_of_nonneg_left _ hR0\\n    _ = rho * (K.k11 * u ^ 2 + K.k22 * v ^ 2) := by ring"
+  },
+  {
+   "name": "unnamed-arithmetic-spine",
+   "expect": "candidate",
+   "file_symbols": [],
+   "block": "  have h1 := (1 - Fintype.card Stage) * delta\\n  have h2 := (1 - Fintype.card Stage) * delta"
+  },
+  {
+   "name": "cross-line-expression",
+   "expect": "candidate",
+   "file_symbols": [],
+   "block": "  apply mul_le_mul_of_nonneg_left\\n    (Finset.single_le_sum (f := fun j => |r j|)\\n      (fun j _ => abs_nonneg _) (Finset.mem_univ i))\\n  apply mul_le_mul_of_nonneg_left\\n    (Finset.single_le_sum (f := fun j => |r j|)\\n      (fun j _ => abs_nonneg _) (Finset.mem_univ i))",
+   "review_verdict": "reject at review; have-block class is recall-oriented (contract)"
+  },
+  {
+   "name": "pilot2-argument-spine",
+   "expect": "clean",
+   "file_symbols": [
+    "mElement"
+   ],
+   "block": "  let m_i := mElement tau D i h_nonempty\\n  have h_max : isMaximal tau D i m_i := mElement_isMax tau D i"
+  },
+  {
+   "name": "module-decl-head",
+   "expect": "clean",
+   "file_symbols": [
+    "quadraticRestoringEnergy"
+   ],
+   "block": "  calc quadraticRestoringEnergy K u v + quadraticRestoringEnergy K u v\\n      = 2 * quadraticRestoringEnergy K u v := by ring"
+  },
+  {
+   "name": "local-let-name",
+   "expect": "clean",
+   "file_symbols": [],
+   "block": "  let m := Finset.sum univ f\\n  have h : m <= m := le_refl m"
+  },
+  {
+   "name": "local-have-name",
+   "expect": "candidate",
+   "file_symbols": [],
+   "block": "  have h_max : 0 <= x := abs_nonneg x\\n  have h2 : h_max = h_max := rfl",
+   "review_verdict": "reject at review; have-block class is recall-oriented (contract)"
+  },
+  {
+   "name": "comment-only",
+   "expect": "clean",
+   "file_symbols": [],
+   "block": "  -- quadraticRestoringEnergy K u v\\n  -- Q K u v + Q K u v"
+  },
+  {
+   "name": "prose-keywords",
+   "expect": "candidate",
+   "file_symbols": [],
+   "block": "  have h := eq_true abc -/ left coset -/ spurious structure",
+   "review_verdict": "reject at review (prose/keyword content); the v2 prose gate applies to duplicated-subterms, not the recall-oriented have-block class"
+  },
+  {
+   "name": "bare-identifier-x4",
+   "expect": "candidate",
+   "file_symbols": [],
+   "block": "  have h1 : x = x := rfl\\n  have h2 : x = x := rfl",
+   "review_verdict": "reject at review (bare identifier, no semantic content); the have-block class is recall-oriented by design - the cluster review is its consumer"
+  },
+  {
+   "name": "single-letter-run",
+   "expect": "candidate",
+   "file_symbols": [],
+   "block": "  have h := bind u4 v3",
+   "review_verdict": "reject (pilot-3 class: repeated proof-strategy one-liner / idiomatic); the detector is recall-oriented, the review gate is precision"
+  },
+  {
+   "name": "header-boilerplate",
+   "expect": "clean",
+   "file_symbols": [],
+   "block": "Copyright (c) 2026 EASCI Contributors\\nSPDX-License-Identifier: Apache-2.0"
+  },
+  {
+   "name": "keyword-tokens-only",
+   "expect": "clean",
+   "file_symbols": [],
+   "block": "  module section theorem lemma :="
+  },
+  {
+   "name": "one-liner-idiom",
+   "expect": "candidate",
+   "file_symbols": [],
+   "block": "  have h := c.hSimplex",
+   "review_verdict": "reject (pilot-3 class: repeated proof-strategy one-liner / idiomatic); the detector is recall-oriented, the review gate is precision"
+  }
+ ],
+ "contract": "The detector is RECALL-ORIENTED: every named have and every duplicated unnamed expression is a candidate. Precision is the review gate's job (cluster review, pilots). Samples pin detector verdicts; review_verdict annotations record the review layer's expectation separately. v3.1 (2026-10-14): head-anchored := filter + leading-keyword strip in the v2 gate unlock duplicated multi-line tactic-argument invocations (the S1 shape)."
+}
