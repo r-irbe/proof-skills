@@ -26,6 +26,10 @@ Out-of-the-box LLMs struggle with Lean 4 because their training data mixes old L
 2. **Agents "cheat" by leaving `sorry`, adding custom `axiom` declarations, or proving vacuous `True` theorems**: Our built-in verification scripts (100% Python standard library, zero `pip` installs needed) catch hidden axioms, `sorry` placeholders, and tautological smoke tests automatically.
 3. **One agent doing everything leads to self-grading bias**: When the same agent writes the theorem statement, proves it, and reviews it, it often weakens the theorem to make the proof pass. `proof-skills` provides 5 separate agent roles (*Specifier*, *Prover*, *Auditor*, *Editor*, *Gardener*) so specification and auditing stay independent.
 
+> **How this extends upstream [`leanprover/skills`](https://github.com/leanprover/skills)**: Building on the upstream Lean skill format, `r-irbe/proof-skills` expands the catalog to **65 v2 `SKILL.md` contracts**, adds **5 independent agent roles** (`specifier`, `prover`, `auditor`, `editor`, `gardener`) to eliminate self-grading bias, bundles **pure Python stdlib CI enforcement scripts** (zero `pip` dependencies), and embeds the **21-tool `lean-lsp` MCP server** and **100-concept ITP Ontology**.
+
+![How proof-skills Prevents LLM Proof Hallucinations & Self-Grading Bias](docs/assets/mechanics.png)
+
 ---
 
 ## Start in 2 Minutes (Pick Your Setup Tier)
