@@ -1,6 +1,6 @@
 # USER_GUIDE.md - proof-skills Practical Operator Guide
 
-`proof-skills` is a project-agnostic toolkit of 65 active v2 Agent Skills (100% <4,000B with paired handbooks), 200 Lean 4 proof and workflow templates (59 core + 131 arithmetic-geometry + 10 fluid-pde), 5 Pure Role-Actor Containers + 23 soul overlays, and an embedded 20-tool MCP server (`tools/lean-lsp-mcp`) for Lean 4 + Mathlib4 formal verification.
+`proof-skills` is a project-agnostic toolkit of 65 active v2 Agent Skills (100% <4,000B with paired handbooks), 200 Lean 4 proof and workflow templates (59 core + 131 arithmetic-geometry + 10 fluid-pde), 5 Pure Role-Actor Containers + 23 soul overlays, and an embedded 21-tool MCP server (`tools/lean-lsp-mcp`) for Lean 4 + Mathlib4 formal verification.
 
 ---
 

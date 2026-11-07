@@ -43,8 +43,8 @@ definition changes without weakening theorem statements.
   "tactic"` and `target:
    "altproof"` to compare the live goal against the expected intermediate state.
 3. **Apply Targeted Repair Pattern**:
-   - *Renamed / moved lemma*: query `lean_search(source: "code" | "loogle")` for the type shape and substitute
-  the new identifier.
+   - *Renamed / moved lemma*: inspect live hover/signatures with `lean_navigate(operation: "hover" | "definition")`
+     or query `lean_search(source: "code" | "loogle")` for the type shape and substitute the new identifier.
 ## Recovery & STOP
 - **STOP** if repairing the proof appears to require weakening the theorem statement or adding a new
   hypothesis; escalate to

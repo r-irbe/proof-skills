@@ -209,6 +209,20 @@ def run_checks(root: Path) -> tuple[list[str], list[str], int]:
             errors.extend(f"{test_file}: {message}" for message in test_errors)
             warnings.extend(f"{test_file}: {message}" for message in test_warnings)
 
+    pin_file = root / "tools" / "lean-lsp-mcp.pin"
+    pin_checker = root / "scripts" / "check-engine-pin"
+    if pin_file.is_file() and pin_checker.is_file():
+        import subprocess
+        proc = subprocess.run(
+            [sys.executable, str(pin_checker)],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if proc.returncode != 0:
+            for line in (proc.stderr or proc.stdout).splitlines():
+                errors.append(line.removeprefix("ERROR: ").strip())
+
     return errors, warnings, len(skill_files)
 
 

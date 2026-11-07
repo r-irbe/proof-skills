@@ -47,7 +47,7 @@ Every `skills/<slug>/SKILL.md` dispatch contract is strictly `<4,000` bytes (`<1
 +-------------------------------------------------------------------------------+
 | L0: Deterministic Infrastructure Substrate                                    |
 |     lean-setup, lean-build, lean-mwe, lean-bisect,                            |
-|     lean-serve-broker, lean4-lsp-mcp (14 consolidated MCP tools + WASM)       |
+|     lean-serve-broker, lean4-lsp-mcp (21 consolidated MCP tools + WASM)       |
 +-------------------------------------------------------------------------------+
 ```
 

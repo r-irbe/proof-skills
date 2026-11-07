@@ -1,3 +1,3 @@
 [submodule "tools/lean-lsp-mcp"]
 	path = tools/lean-lsp-mcp
-	url = git@github.com:r-irbe/lean-lsp-mcp.git
+	url = https://github.com/r-irbe/lean4-lsp-mcp.git

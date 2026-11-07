@@ -190,6 +190,7 @@ Agents should invoke the `lean-lsp` MCP tools directly rather than constructing 
 | AltProof Tactic & Route Advisor | `lean_goal` or `lean_metrics` | `{"filePath": "Foo.lean", "line": 42, "target": "altproof"}` |
 | `textDocument/publishDiagnostics` + Abstract Interpretation | `lean_diagnostics` | `{"filePath": "Foo.lean", "maxWaitMs": 4000}` |
 | Plausible Counterexample Harness (Galois-pruned) | `lean_counterexample_search` | `{"filePath": "Foo.lean", "theoremName": "my_thm", "strategy": "dense"}` |
+| Live Admitted-Context LSP Navigation (`hover`, `definition`, `references`, `documentSymbol`, `codeAction`) | `lean_navigate` | `{"operation": "hover", "filePath": "Foo.lean", "line": 42, "col": 5}` |
 | `.ilean` Go-to-Definition (< 5 ms) | `lean_lookup_symbol` | `{"symbol": "MyNamespace.my_thm"}` |
 | `.ilean` Declaration References (< 5 ms) | `lean_decl_references` | `{"symbol": "MyNamespace.my_thm", "direction": "both"}` |
 | `$/lean/moduleHierarchy` (`imports` / `importedBy`) | `lean_module_hierarchy` | `{"moduleName": "MyProject.QualityGates", "direction": "importedBy", "transitive": true}` |

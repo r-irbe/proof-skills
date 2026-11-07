@@ -153,8 +153,8 @@ dependencies:
       transport: stdio
       command: node
       args:
-        - "${PROOF_SKILLS_ROOT}/tools/lean-lsp-mcp/dist/index.js"
-      description: "Bundled Lean 4 LSP + .ilean + Kuzu knowledge-graph MCP server (14 consolidated tools across 6 prover families)"
+        - "${PROOF_SKILLS_ROOT}/tools/lean-lsp-mcp/bin/lean-lsp-mcp.js"
+      description: "Bundled Lean 4 LSP + .ilean + Kuzu knowledge-graph MCP server (21 consolidated tools across 6 prover families)"
 
 scripts:
   setup: "bash scripts/setup-env.sh"

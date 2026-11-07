@@ -30,7 +30,8 @@ This skill is a focused review mode for statements that elaborate but may not
 - **TRIGGERS:** tautology, vacuous, trivial proof, smoke theorem, placeholder
 ## Workflow
 1. **Locate the claim** [discover] — capture theorem name, statement, proof body,
-   surrounding docstring, imports, and downstream uses (via `lean_decl_references` with `{"symbol": "...",
+   surrounding docstring, imports, and downstream uses (via `lean_navigate` `{"operation": "references", ...}` or
+   `lean_decl_references` with `{"symbol": "...",
    "direction":
    "usedBy"}`). A claim
 with downstream

@@ -43,10 +43,8 @@ metadata:
 Bourdoncle WTO loop
    widening, trace partitioning], `lean_counterexample_search` with Galois-guided hypothesis domain pruning
 [`analyzeHeaderHypothesisDomains` /
-   `pruneHeaderNatDomain`], `lean-rules` via `node tools/lean-lsp-mcp/bin/lean-rules.js`, `pi-lens`
-   [`pilens_ast_grep_search`,
-`pilens_diagnostics`] as
-   sub-second structural pre-checks before `lake build`, or `pi-harness-bridge` policy/unicode gates); read
+   `pruneHeaderNatDomain`], the 22-rule `lean-rules` catalog via `node tools/lean-lsp-mcp/bin/lean-rules.js`
+   as sub-second structural pre-checks before `lake build`, or `pi-harness-bridge` policy/unicode gates); read
    the repository's
    `lakefile.lean`
 + recent

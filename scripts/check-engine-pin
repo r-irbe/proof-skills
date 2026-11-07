@@ -1,0 +1,85 @@
+#!/usr/bin/env python3
+"""Verify that tools/lean-lsp-mcp matches tools/lean-lsp-mcp.pin (and dist freshness)."""
+
+from __future__ import annotations
+
+import argparse
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+
+
+def check_engine_pin(root: Path, check_remote: bool = False) -> list[str]:
+    errors: list[str] = []
+    pin_file = root / "tools" / "lean-lsp-mcp.pin"
+    sub_dir = root / "tools" / "lean-lsp-mcp"
+
+    if not pin_file.is_file():
+        return [f"missing engine pin file: {pin_file}"]
+    expected = pin_file.read_text(encoding="utf-8").strip()
+    if not SHA_RE.match(expected):
+        return [f"invalid 40-hex commit SHA in {pin_file}: {expected!r}"]
+    if not (sub_dir / ".git").exists():
+        return [f"uninitialized submodule checkout: {sub_dir} (run: git submodule update --init)"]
+
+    res = subprocess.run(
+        ["git", "-C", str(sub_dir), "rev-parse", "HEAD"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    actual = res.stdout.strip()
+    if res.returncode != 0 or actual != expected:
+        errors.append(
+            f"engine submodule drift: tools/lean-lsp-mcp HEAD={actual!r} != pinned={expected!r} "
+            f"(fix: git -C {sub_dir} checkout {expected})"
+        )
+
+    src_index = sub_dir / "src" / "index.ts"
+    dist_index = sub_dir / "dist" / "index.js"
+    if dist_index.is_file() and src_index.is_file():
+        if dist_index.stat().st_mtime < src_index.stat().st_mtime:
+            errors.append(
+                f"stale prebuilt bundle: {dist_index} is older than {src_index} "
+                f"(fix: npm --prefix {sub_dir} run build)"
+            )
+
+    if check_remote:
+        rem = subprocess.run(
+            ["git", "-C", str(sub_dir), "ls-remote", "origin", "refs/heads/main"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if rem.returncode != 0 or not rem.stdout.strip():
+            errors.append(f"failed to query remote HEAD for {sub_dir}: {rem.stderr.strip()}")
+        else:
+            remote_sha = rem.stdout.split()[0]
+            if remote_sha != expected:
+                errors.append(
+                    f"remote canonical drift: origin/main={remote_sha} != pinned={expected}"
+                )
+
+    return errors
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Verify tools/lean-lsp-mcp submodule pin")
+    parser.add_argument("--remote", action="store_true", help="also compare against origin/main")
+    args = parser.parse_args()
+    root = Path(__file__).resolve().parents[1]
+    errs = check_engine_pin(root, check_remote=args.remote)
+    if errs:
+        for err in errs:
+            print(f"ERROR: {err}", file=sys.stderr)
+        return 1
+    pin = (root / "tools" / "lean-lsp-mcp.pin").read_text(encoding="utf-8").strip()
+    print(f"PASS: tools/lean-lsp-mcp pinned at {pin}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

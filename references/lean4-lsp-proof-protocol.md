@@ -17,7 +17,7 @@ The Interactive LSP Proof Protocol replaces file-polluting exploratory probes wi
 real-time Language Server Protocol and `.ilean` index queries via `lean-lsp`:
 
 1. **Zero-Disk-Churn Inspection**: Never write `trace_state` to disk. Query the
-   live goal state directly via `lean_goal` (or `pilens_lsp_navigation(operation: "goal")`).
+   live goal state directly via `lean_goal` and live hover/definitions via `lean_navigate`.
 2. **Counterexample-First Falsification**: Before spending tactic iterations on a
    new or modified lemma, run `lean_counterexample_search` to check whether a
    concrete assignment refutes the statement.
@@ -47,6 +47,7 @@ In Claude Code / Cursor / Copilot, invoke `mcp__lean-lsp__<ToolName>` directly.
 | `lean_exec` | `code` | `timeoutMs` (default `15000`) | Ephemeral `lake env lean --stdin` execution (`#check`, `#eval`, `#synth`) without file edits (~1-3 s) |
 | `lean_resync` | `filePath` | *(none)* | Forces disk re-read and `textDocument/didChange` version bump when live goals look stale (~50 ms) |
 | `lean_server_status` | *(none)* | *(none)* | Reports `lake serve` broker attachment, project root, open files, and worker RSS (< 10 ms) |
+| `lean_navigate` | `operation` | `filePath`, `line`, `col`, `query`, `symbol`, `includeDeclaration`, `callHierarchyItem` | Admitted-context-gated live LSP navigation (`hover`, `definition`, `typeDefinition`, `declaration`, `implementation`, `references`, `documentSymbol`, `workspaceSymbol`, `findSymbol`, call hierarchy, advertise-only `codeAction`) + offline `moduleImports`/`moduleImportedBy` |
 
 ### 2.2 Sub-5ms Offline `.ilean` Navigation & Dependency DAG Tools (No `lake serve` Needed)
 
@@ -188,7 +189,7 @@ When stuck on a proof obligation or looking for a cleaner proof route:
 Instead of editing a large `.lean` file just to test `#check` or a small lemma shape:
 1. Call `lean_exec` with `{"code": "import Mathlib.Data.Nat.Basic\n#check Nat.sub_add_cancel"}`.
 2. When using search tactics (`exact?`, `apply?`, `simp?`, `grind?`, `aesop?`) inside a file:
-   - Harvest the `Try this:` suggestion from `lean_diagnostics` (or `pilens_lsp_navigation(operation: "codeAction")` when using `pi-lens`).
+   - Harvest the `Try this:` suggestion from `lean_diagnostics` or `lean_navigate(operation: "codeAction")` (advertise-only).
    - **Enforcement**: Bare search tactics (`exact?`, `apply?`, `simp?`) MUST NOT remain in committed code.
 
 ---

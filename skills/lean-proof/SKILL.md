@@ -39,7 +39,8 @@ from `motive is
   orchestration (use
   `@lean-quality-engine`);
 ## Workflow
-1. **Discover** [discover] — read the target theorem, locate its spec via `lean_lookup_symbol` (`{"symbol":
+1. **Discover** [discover] — read the target theorem, locate its spec via `lean_navigate` (`{"operation":
+  "definition" | "hover", ...}`) or `lean_lookup_symbol` (`{"symbol":
   "..."}`), list open
   `sorry`s and
    existing

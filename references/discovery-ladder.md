@@ -21,7 +21,7 @@ record which result controls the downstream decision.
 
 | Rung | Action & `lean-lsp` MCP Tool | Stop when | Record on miss |
 |---|---|---|---|
-| R0 Local inventory | Query `lean_lookup_symbol` (`{"symbol": "..."}`), `lean_search` (`{"query": "...", "source": "code"}`), and `lean_decl_references` (`{"symbol": "..."}`). | A local declaration already solves or constrains the task. | Paths searched, terms used, and whether names were normalized. |
+| R0 Local inventory | Query `lean_navigate` (`hover`/`definition`/`references`/`documentSymbol`), `lean_lookup_symbol` (`{"symbol": "..."}`), `lean_search` (`{"query": "...", "source": "code"}`), and `lean_decl_references` (`{"symbol": "..."}`). | A local declaration already solves or constrains the task. | Paths searched, terms used, and whether names were normalized. |
 | R1 Current-pin package source | Search installed package sources under `.lake/packages/` or probe via `lean_exec` (`{"code": "import ...\n#check ..."}`). | A candidate symbol is found and can be cited at file:line. | Package pin, directories searched, exact query variants. |
 | R2 Theorem search services | Query `lean_search` with `{"query": "...", "source": "loogle"}`, `{"query": "...", "source": "ontology"}`, and `lean_search` (`{"query": "...", "source": "concordance"}`). | A candidate can be re-verified in package source or docs. | At least three reformulations and the service URL/date. |
 | R3 Reservoir package scan | Query `lean_search` with `{"query": "...", "source": "reservoir"}` by topic, package slug, or owner/repo. | A package has a maintained, relevant, version-compatible candidate. | Slug normalization, archive/staleness signals, dependency concerns. |
