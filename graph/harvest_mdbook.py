@@ -14,7 +14,7 @@ Parsing rules:
   - mdBook part headings (`# Main`, `# Extra`) are not units
   - paths resolve relative to the SUMMARY.md directory
 
-Strict 7-bit ASCII only (INV-001) for the tool itself; the prose keeps
+Scoped Unicode policy (INV-001; typographic-free by default) for the tool itself; the prose keeps
 its native Unicode.
 """
 

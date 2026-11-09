@@ -1,7 +1,7 @@
 {
   "name": "proof-skills",
   "version": "0.1.0",
-  "description": "Lean 4 theorem proving, mathematical formalization, tactic discipline, and Kuzu knowledge graph skills library",
+  "description": "Lean 4 theorem proving, mathematical formalization, tactic discipline, and Kuzu knowledge graph skills library (MCP server requires stable Node >=22.6.0)",
   "author": "r-irbe",
   "license": "Apache-2.0",
   "skills": "./skills",

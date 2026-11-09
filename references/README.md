@@ -3,7 +3,7 @@
 This directory contains 58 reference documents, tactic guides, and domain handbooks
 supporting the proof-skills repository.
 
-Strict 7-bit ASCII only.
+Scoped Unicode policy (INV-001; typographic-free by default).
 
 ---
 

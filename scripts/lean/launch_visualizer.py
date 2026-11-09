@@ -5,7 +5,7 @@ Unified Launcher for Lean 4 Formalization DAG Visualizer.
 Supports arbitrary Lean projects, subpackages (packages/*), and presets.
 Automatically generates dependency graph JSON and launches the standalone web application.
 
-Strict 7-bit ASCII only (INV-001). Standard library only.
+Scoped Unicode policy (INV-001; typographic-free by default). Standard library only.
 
 Usage:
     python3 launch_visualizer.py packages/stochastic-ccv

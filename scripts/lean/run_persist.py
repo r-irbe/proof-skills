@@ -20,7 +20,7 @@ Features:
   4. `disprove-artifact-txn` & Path-Scoped Deep-Rollback Snapshots (`7C`):
      - `begin`, `record-witness`, `commit`, `abort`, `snapshot-save`, `snapshot-restore`.
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

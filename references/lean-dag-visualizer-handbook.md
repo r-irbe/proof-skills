@@ -28,7 +28,7 @@ extracted_from: "skills/lean-dag-visualizer/SKILL.md"
 ## Behavioural Rules (G-*)
 
 - **G-1** (MUST): The visualizer application MUST remain 100% self-contained and zero-dependency (no Node.js runtime, no npm packages, no external CDN
-  requests). It must function completely offline and adhere strictly to 7-bit ASCII (`INV-001`).
+  requests). It must function completely offline and follow the scoped Unicode policy (`INV-001`).
 - **G-2** (MUST): Graph extraction MUST verify Directed Acyclic Graph (DAG) topology. Cycles must be reported as critical structural failures before rendering.
 - **G-3** (MUST): When blueprint LaTeX exists (`blueprint/src/content.tex`), declaration-level graph extraction MUST be prioritized over module-level
   import graphs.

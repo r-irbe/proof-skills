@@ -34,7 +34,7 @@ related:
 
 # <Title>: Mathematical Engine, Coordinate Geometry, and Core Reductions
 
-<!-- Strict 7-bit ASCII only. Invariant per AGENTS.md (INV-001).
+<!-- Scoped Unicode policy (INV-001; typographic-free by default). Invariant per AGENTS.md (INV-001).
      Status: Authoritative Technical Reference Note
      Authority: Systems Architecture Council / Lean Verification Lead
      Layer: Layer 2 (Technical Reference)

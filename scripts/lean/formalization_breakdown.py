@@ -16,7 +16,7 @@ Features:
    - Lean Blueprint LaTeX skeleton (leanblueprint / Plastex format).
    - JSON graph metadata for zettelkasten / Kuzu knowledge graph ingestion.
 
-Strict 7-bit ASCII only. Invariant per AGENTS.md (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default). Invariant per AGENTS.md (INV-001).
 """
 
 from __future__ import annotations

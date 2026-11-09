@@ -3,7 +3,7 @@
 > Practical guide for AI proving agents and formalizers interacting with Lean 4
 > via the `lean-lsp` (`r-irbe/lean4-lsp-mcp`) MCP server, `pi-lens`, `vscode-lean4`,
 > or `lean.nvim`. Pair with `lean4-lsp-guide.md`, `lean4-proof-strategy.md`, and
-> `lean4-tactic-hierarchy.md`. Strict 7-bit ASCII.
+> `lean4-tactic-hierarchy.md`. Scoped Unicode policy (INV-001; typographic-free by default).
 
 ---
 

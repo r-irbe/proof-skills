@@ -7,7 +7,7 @@ extracted_from: "skills/lean-sair-kernel-optimization/SKILL.md"
 # Lean 4 Kernel WHNF, ZDD, and SWAR Optimization Handbook (SAIR-LAW-01..25B)
 
 > **Scope**: Public reference manual for Lean 4 kernel reduction cost (`type_checker.cpp` WHNF, `m_st->m_whnf` caching, GMP `mpz` big-integer arithmetic, SWAR word packing, and decision-diagram state compression) and AltProof Routes 7..11.
-> **Encoding**: 7-bit ASCII / typographic-free per `INV-001`.
+> **Encoding**: Scoped Unicode policy (`typographic-free` by default) per `INV-001`.
 
 ---
 
@@ -83,9 +83,9 @@ extracted_from: "skills/lean-sair-kernel-optimization/SKILL.md"
    - **Kernel Mechanism**: Every `Expr::Let` node allocated in a lambda body incurs allocation + `instantiate_rev` substitution overhead when zeta-reduced during WHNF.
    - **Rule**: If a local `let x := e` is referenced **at most once** in the body, inline `e` directly instead of allocating a `let` binding.
 
-2. **`SAIR-LAW-01B` (`SairLaw01bDagSharing`) -- Multi-Use `let` DAG Pointer Sharing**
-   - **Kernel Mechanism**: Lean 4 `Expr` nodes are hash-consed / DAG-shared in memory when bound via `let x := e` and passed into `instantiate_rev`.
-   - **Rule**: Whenever a non-trivial subexpression `e` is used **>= 2 times** along an execution path, bind `let x := e` so WHNF evaluates or substitutes the pointer once.
+2. **`SAIR-LAW-01B` (`SairLaw01bDagSharing`) -- Multi-Use `let` DAG Pointer Sharing (Qualified by PMU)**
+   - **Kernel Mechanism**: Lean 4 `Expr` nodes are hash-consed / DAG-shared in memory when bound via `let x := e` and passed into `instantiate_rev`. However, inside `Nat.rec` step lambdas, allocating `Expr::Let` and running `instantiate_rev` carries its own per-step overhead.
+   - **Rule**: Treat `let`-sharing as a **measured hypothesis**, not an unconditional win. Bind `let x := e` when `e` is a genuinely expensive multi-limb or compound subexpression used `>= 2` times, and always confirm with the `real - twinlit` PMU differential (`catalan` `+12.27%` and `partition` `+4.399%` regressed when over-sharing cheap arithmetic).
 
 3. **`SAIR-LAW-01C` (`SairLaw01cSiblingWhnfCse`) -- Sibling WHNF Common Subexpression Elimination**
    - **Kernel Mechanism**: Sibling arguments `g (f x) (h (f x))` do not share WHNF reduction caches unless `f x` is syntactically the same shared subterm or `let`-bound.
@@ -107,9 +107,9 @@ extracted_from: "skills/lean-sair-kernel-optimization/SKILL.md"
    - **Kernel Mechanism**: Modulo by `2^k` (`n % 2^k`) invokes general GMP division unless rewritten to bitwise AND (`Nat.land n ((1 <<< k) - 1)`).
    - **Rule**: Replace `% (2^k)` with `&&& mask` where `mask` is a pre-hoisted closed `nat_lit`.
 
-8. **`SAIR-LAW-04` (`SairLaw04PointFreeEtaWrapper`) -- Point-Free Eta Wrapper Elimination**
-   - **Kernel Mechanism**: Eta-expanded wrappers `fun x => f x` allocate an extra lambda frame and require an extra beta-reduction on every step.
-   - **Rule**: Eta-reduce `fun x => f x` to `f` in higher-order combinators (`Nat.rec`, `List.foldl`).
+8. **`SAIR-LAW-04` (`SairLaw04PointFreeEtaWrapper`) -- Point-Free Eta Wrapper Elimination & Final-Arg Context Eta-Contraction**
+   - **Kernel Mechanism**: Eta-expanded wrappers `fun x => f x` allocate an extra lambda frame and require an extra beta-reduction on every step. In `Nat.rec` step functions, passing a helper closure that merely forwards the final accumulator argument adds one beta-reduction per step (`-354k` instructions saved on `primecount(10000)` via helper-free final-argument context eta-contraction).
+   - **Rule**: Eta-reduce `fun x => f x` to `f` in higher-order combinators (`Nat.rec`, `List.foldl`) and contract final-argument context lambdas directly into the `Nat.rec` step spine.
 
 9. **`SAIR-LAW-05` (`SairLaw05SharedAbbrevMotive`) -- Shared `abbrev` Motive Compression**
    - **Kernel Mechanism**: Large repeated motive types in `Nat.rec` / `List.rec` bloat term size and type-checking time at every recursor node.
@@ -135,9 +135,9 @@ extracted_from: "skills/lean-sair-kernel-optimization/SKILL.md"
     - **Kernel Mechanism**: Returning nested pairs `(a, (b, c))` allocates `Prod.mk` constructor nodes on every step and forces `Prod.fst` / `Prod.snd` projection reductions.
     - **Rule**: Replace nested `Prod` spines with a single flat `structure` or CPS state passing.
 
-14. **`SAIR-LAW-10` (`SairLaw10CpsPairElim`) -- CPS Continuation Pair Elimination**
-    - **Kernel Mechanism**: Continuation-Passing Style (`fun a b c => ...`) keeps state registers in lambda binders, avoiding constructor allocation and projection WHNF altogether.
-    - **Rule**: Transform multi-output inner helpers from `f x : Nat x Nat` to `f x (k : Nat -> Nat -> alpha) : alpha`.
+14. **`SAIR-LAW-10` (`SairLaw10CpsPairElim`) -- CPS Continuation Pair Elimination & Danvy Refunctionalized Closed CPS**
+    - **Kernel Mechanism**: Continuation-Passing Style (`fun a b c => ...`) keeps state registers in lambda binders, avoiding constructor allocation and projection WHNF altogether. Furthermore, Danvy-style refunctionalized closed CPS continuations (`-20.72%` kernel instructions on `bell(60)`) eliminate closure allocation on the recursive spine when the continuation family is closed.
+    - **Rule**: Transform multi-output inner helpers from `f x : Nat x Nat` to `f x (k : Nat -> Nat -> alpha) : alpha`, and test refunctionalized closed CPS on multi-register recurrences.
 
 15. **`SAIR-LAW-11` (`SairLaw11InductivePreHoist`) -- Inductive Step Pre-Hoisting**
     - **Kernel Mechanism**: Subterms inside a `Nat.rec` step function that do not depend on the induction index `i` or accumulator `acc` are re-instantiated at every step `0..N-1`.
@@ -252,3 +252,21 @@ extracted_from: "skills/lean-sair-kernel-optimization/SKILL.md"
     - **Rule**: Extract every non-trivial bitmask, modulus, or lookup constant into a named `abbrev` or `def` generated by an explicit formula (`eval_nat% ((1 <<< 64) - 1)`), paired with a `theorem ... := rfl` sanity pin.
 
 *(Note: Laws `01..25B` comprise 37 distinct diagnostic codes in `lean-analyzer` across Layers I-V: 9 in Layer I, 8 in Layer II, 8 in Layer III, 6 in Layer IV, and 6 in Layer V.)*
+
+---
+
+## 4. Contest Axiom Gate & `twinlit` PMU Differential Measurement Protocol
+
+### 4.1 Strict 3-Axiom Gate (`propext`, `Classical.choice`, `Quot.sound`)
+- Scored `impl` and `impl_correct` declarations must depend **only** on the standard Lean 4 axioms: `propext`, `Classical.choice`, and `Quot.sound`.
+- Never use `native_decide`, `decide +native`, `bv_decide`, `sorry`, `admit`, `partial`, `unsafe`, `@[implemented_by]`, or `@[extern]` on a scored/proof path. Both `native_decide` and `bv_decide` emit `Lean.ofReduceBool` (`Lean.trustCompiler`) and fail the contest axiom gate.
+- Use `lean_axiom_closure` (`#print axioms`) on the compiled declaration to verify transitive axiom cleanliness; source-text scans (`axiom_audit`) do not check imported or tactic-generated axioms.
+
+### 4.2 The `twinlit` PMU Differential (`real - twinlit`)
+- The judge boundary `real - twin` (`impl n = impl n`) still includes the unscored decimal parse of a large answer literal `v` (constructed before the PMU instruction counter opens), which compresses naive boundary ratios toward `1.0` when `v` has hundreds or thousands of digits.
+- Always measure kernel reduction cost using the **`twinlit` control**:
+  ```lean
+  theorem twinlit_probe : (impl n = impl n) /\ (v = v) := ⟨rfl, rfl⟩
+  ```
+- **Differential Law**: `real - twinlit` cancels process startup, closure elaboration/parsing, **and** answer-literal decimal parsing, isolating the exact scored kernel replay instructions. Record min-of-3 interleaved runs alongside an identical-payload negative control.
+

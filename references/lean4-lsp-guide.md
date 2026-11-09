@@ -3,7 +3,7 @@
 > Authoritative reference on maximizing the Lean 4 Language Server Protocol
 > for AI agents, developer tooling, and interactive formalizers.
 > Pair with `lean4-lsp-proof-protocol.md`, `lean4-proof-strategy.md`, and
-> `lean4-module-dependency-guide.md`. Strict 7-bit ASCII.
+> `lean4-module-dependency-guide.md`. Scoped Unicode policy (INV-001; typographic-free by default).
 
 ---
 

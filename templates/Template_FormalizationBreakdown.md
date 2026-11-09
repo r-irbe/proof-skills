@@ -120,7 +120,7 @@ Our automated static census (`scripts/lean/formalization_breakdown.py`) establis
 
 ## 7. Compliance and Verification Sign-Off
 
-- **INV-001 Conformance**: Strictly 7-bit ASCII throughout document.
+- **INV-001 Conformance**: Scoped Unicode policy throughout; preserve mathematical notation and reject dangerous carriers/configured substitutions.
 - **INV-014 Conformance**: All cited repository paths physically exist in the worktree.
 - **Tufte and AGENTS.md Voice Invariant**: Restrained, objective authorial voice.
 ````

@@ -1,6 +1,6 @@
 # Lean to Mathematical Exposition Patterns: Pedagogical Translation Guide
 
-<!-- Strict 7-bit ASCII only. Invariant per AGENTS.md (INV-001).
+<!-- Scoped Unicode policy (INV-001; typographic-free by default). Invariant per AGENTS.md (INV-001).
      Status: Authoritative Engineering Reference
      Authority: Systems Architecture Council / Mathematical Exposition Lead
      Target Skills: lean-pedagogical-exposition, lean-blueprint, lean-doc-improvement -->

@@ -9,7 +9,7 @@ Implements the subcommands referenced in skills/lean-report/SKILL.md:
   - expand     : Delegate blueprint section expansion to expand_blueprint.py
   - guard      : Delegate LaTeX hygiene verification to blueprint_tex_guard.py
 
-Strict 7-bit ASCII only (INV-001). Standard library only.
+Scoped Unicode policy (INV-001; typographic-free by default). Standard library only.
 """
 
 from __future__ import annotations

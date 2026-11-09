@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Unified `lean-skills` CLI: dispatches to scripts/lean and altproof tools. ASCII only."""
+"""Unified `lean-skills` CLI: dispatches to scripts/lean and altproof tools. Scoped Unicode policy."""
 import subprocess
 import sys
 from pathlib import Path

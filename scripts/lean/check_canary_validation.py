@@ -5,7 +5,7 @@ Validates `leanprover/skills`-style `tests/*.yaml` canary benchmark definitions 
 verifying schema completeness (`prompt`, `expected_patterns`, `forbidden_patterns`, `skill`)
 and optionally evaluating candidate responses against the canary assertions.
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

@@ -10,7 +10,7 @@ Supports:
   - altproof report <sandbox_dir> <out_dir>
   - altproof routes [--json | --regen]
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

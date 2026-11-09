@@ -20,7 +20,7 @@ Implements two complementary statement-integrity gates:
        definitional type equality via `example : @SpecType = @Candidate.ThmType := rfl`
        plus `#print axioms Candidate.<thm>`.
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

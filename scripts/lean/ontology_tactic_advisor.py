@@ -5,7 +5,7 @@ ontology_tactic_advisor.py - Tactic strategy advisor powered by the ITP Master A
 Provides autonomous proof agents with canonical tactic recommendations, cross-prover
 correspondences, statutory intervals, and proof-quality guardrail advisories.
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

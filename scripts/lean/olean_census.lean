@@ -1,50 +1,47 @@
+/-
+  scripts/lean/olean_census.lean
+  Standalone Lean 4 environment & .olean declaration census utility.
+  Counts constants, theorems, definitions, inductive types, and checks
+  transitive axiom hygiene in the loaded environment.
+  Scoped Unicode policy (INV-001; typographic-free by default).
+-/
 import Lean
 
 open Lean
 
-partial def getOleanFiles (dir : System.FilePath) : IO (Array System.FilePath) := do
-  let mut results := #[]
-  for entry in (<- dir.readDir) do
-    let p := entry.path
-    if (<- p.isDir) then
-      results := results ++ (<- getOleanFiles p)
-    else if p.extension == some "olean" then
-      results := results.push p
-  return results
+namespace OleanCensus
 
-def main (args : List String) : IO Unit := do
-  let baseDir : System.FilePath := if args.isEmpty then ".lake/build/lib/lean" else args.head!
-  let files <- getOleanFiles baseDir
-  let sortedFiles := files.qsort (fun a b => a.toString < b.toString)
-  IO.println "=== Binary OLean Kernel Census ==="
-  IO.println s!"Total .olean files found: {sortedFiles.size}"
-  
-  let mut totalTheorems : Nat := 0
-  let mut totalDefs : Nat := 0
-  let mut totalAxioms : Nat := 0
-  let mut totalConstants : Nat := 0
-  let mut axiomList : List (Prod String Name) := []
+structure CensusSummary where
+  totalDecls : Nat := 0
+  theorems   : Nat := 0
+  defs       : Nat := 0
+  axioms     : Nat := 0
+  inductives : Nat := 0
+  quotients  : Nat := 0
+  deriving Repr, Inhabited
 
-  for f in sortedFiles do
-    let (modData, _) <- readModuleData f.toString
-    totalConstants := totalConstants + modData.constants.size
-    for c in modData.constants do
-      match c with
-      | ConstantInfo.thmInfo _ => totalTheorems := totalTheorems + 1
-      | ConstantInfo.defnInfo _ => totalDefs := totalDefs + 1
-      | ConstantInfo.axiomInfo ax =>
-        totalAxioms := totalAxioms + 1
-        axiomList := (f.toString, ax.name) :: axiomList
-      | _ => pure ()
+/-- Classify every declaration in the current `Environment`. -/
+def collectEnvCensus (env : Environment) : CensusSummary :=
+  env.constants.fold (init := {}) fun acc _ cinfo =>
+    let base := { acc with totalDecls := acc.totalDecls + 1 }
+    match cinfo with
+    | .thmInfo _   => { base with theorems   := base.theorems + 1 }
+    | .defnInfo _  => { base with defs       := base.defs + 1 }
+    | .axiomInfo _ => { base with axioms     := base.axioms + 1 }
+    | .inductInfo _ => { base with inductives := base.inductives + 1 }
+    | .quotInfo _  => { base with quotients  := base.quotients + 1 }
+    | _            => base
 
-  IO.println s!"Total kernel constants: {totalConstants}"
-  IO.println s!"Kernel theorems:        {totalTheorems}"
-  IO.println s!"Kernel definitions:     {totalDefs}"
-  IO.println s!"Kernel axioms:          {totalAxioms}"
+/-- Permitted standard axioms in Lean 4 contest & high-assurance gates. -/
+def isPermittedStandardAxiom (n : Name) : Bool :=
+  n == ``propext || n == ``Classical.choice || n == ``Quot.sound
 
-  if totalAxioms > 0 then
-    IO.println "WARNING: Axioms detected:"
-    for (mod, ax) in axiomList do
-      IO.println s!"  {mod}: {ax}"
-  else
-    IO.println "Kernel axiom check PASSED: 0 axioms across all compiled modules."
+/-- Return all axioms in `env` outside `[propext, Classical.choice, Quot.sound]`. -/
+def nonStandardAxiomsInEnv (env : Environment) : Array Name :=
+  env.constants.fold (init := #[]) fun acc name cinfo =>
+    match cinfo with
+    | .axiomInfo _ =>
+      if isPermittedStandardAxiom name then acc else acc.push name
+    | _ => acc
+
+end OleanCensus

@@ -4,7 +4,7 @@
 Supports single-module generation, `--batch [target-decls]`, and
 `--auto-discover` (auto-discovers un-blueprinted modules from `lean-project.toml`
 or `lakefile.lean`).
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations
@@ -35,7 +35,7 @@ CONTENT_TEX = BLUEPRINT_SRC / "content.tex"
 
 
 def sanitize_tex(text: str) -> str:
-    """Ensure strict ASCII, no html entities, no double backslashes before letters."""
+    """Apply legacy ASCII folding and LaTeX hygiene, not repository Unicode policy."""
     text = text.encode("ascii", "ignore").decode("ascii")
     text = text.replace("&nbsp;", " ").replace("&amp;", "\\&")
     text = text.replace("&lt;", "<").replace("&gt;", ">")

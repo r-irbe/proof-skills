@@ -9,8 +9,7 @@ Two layers:
     global-id rewrite round trip, notification broadcast, shutdown/exit
     interception, and pending-map cleanup on client drop
 
-Stdlib only (mirrors the broker's own constraint). ASCII-only per
-INV-001. Run: python3 test_lean_serve_broker.py -v
+Stdlib only (mirrors the broker's own constraint). Scoped Unicode policy (INV-001; typographic-free by default). Run: python3 test_lean_serve_broker.py -v
 """
 
 import contextlib

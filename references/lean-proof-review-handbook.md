@@ -257,7 +257,7 @@ suggests a stronger mathematical claim.
    - `native_decide` in standard-axiom-locked modules (adds `Lean.ofReduceBool` / `Lean.trustCompiler`; replace with `decide`)
    - Monolithic proofs > 20 tactic steps without named sub-lemmas
    - `duper` without lemma hints
-   - any `proj_*` tactic use (all DEPRECATED — 0 uses; replace with specific Mathlib tactic)
+   - any deprecated custom tactic macro (replace with an explicit Mathlib or Core tactic)
    - Bare `aesop` / `canonical` without extracting the suggested proof script
    - `: True` theorem/lemma conclusions unless explicitly marked as smoke tests
    - Single-line `by decide` or `by rfl` proofs on names that claim semantic

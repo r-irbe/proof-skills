@@ -65,4 +65,4 @@ python3 lean_serve_broker.py stop     # graceful shutdown of broker + server
 | `LEAN_SERVE_DIRECT` | unset | lean-lsp-mcp: bypass broker, spawn privately |
 
 Tests: `pytest tests/test_lean_serve_broker.py` (fake LSP server, no Lean
-toolchain needed). ASCII-only per INV-001.
+toolchain needed). Scoped Unicode policy (INV-001; typographic-free by default).

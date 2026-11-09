@@ -1,6 +1,6 @@
 # Formalization Breakdown Guide: Multi-Wave Archaeology, DAG Analysis, and Pedagogical Synthesis
 
-<!-- Strict 7-bit ASCII only. Invariant per AGENTS.md (INV-001).
+<!-- Scoped Unicode policy (INV-001; typographic-free by default). Invariant per AGENTS.md (INV-001).
      Status: Authoritative Engineering Reference
      Authority: Systems Architecture Council / Formal Verification Lead
      Target Skills: lean-formalization-breakdown, lean-pedagogical-exposition, lean-blueprint -->

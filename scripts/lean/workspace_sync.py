@@ -5,7 +5,7 @@ Reads `[workspace]` and `[workspace.mirrors]` from `lean-project.toml` (via
 `project_config.py`) instead of hardcoding repository roots or package maps.
 Respects module boundaries, rewrites imports to use `<Project>.*` namespace,
 and updates umbrella re-export files.
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

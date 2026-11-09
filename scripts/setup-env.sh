@@ -120,15 +120,22 @@ run_doctor() {
   echo ""
   echo "2. Node.js & lean-lsp MCP Server"
   if command -v node >/dev/null 2>&1; then
-    NODE_VER="$(node -v)"
-    NODE_MAJOR="$(node -p 'process.versions.node.split(".")[0]')"
-    NODE_MINOR="$(node -p 'process.versions.node.split(".")[1]')"
-    if [[ "${NODE_MAJOR}" -gt 22 ]] || { [[ "${NODE_MAJOR}" -eq 22 ]] && [[ "${NODE_MINOR}" -ge 6 ]]; }; then
-      pass_msg "node ${NODE_VER} (>= 22.6.0; native TypeScript strip-types supported)"
-    elif [[ "${NODE_MAJOR}" -ge 20 ]]; then
-      pass_msg "node ${NODE_VER} (>= 20.0.0; supported via precompiled dist/index.js)"
+    if ! NODE_VER="$(node -v)"; then
+      fail_msg "node -v failed (requires stable Node >= 22.6.0)"
+    elif [[ "${NODE_VER}" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+      NODE_MAJOR="${BASH_REMATCH[1]}"
+      NODE_MINOR="${BASH_REMATCH[2]}"
+      # Length guards avoid integer overflow for unusually large version components.
+      if [[ "${#NODE_MAJOR}" -gt 2 || "${NODE_MAJOR}" -gt 22 ]] ||
+         { [[ "${NODE_MAJOR}" == "22" ]] && [[ "${#NODE_MINOR}" -gt 1 || "${NODE_MINOR}" -ge 6 ]]; }; then
+        pass_msg "node ${NODE_VER} (>= 22.6.0; native TypeScript strip-types supported)"
+      else
+        fail_msg "node ${NODE_VER} is older than 22.6.0 (lean-lsp-mcp requires stable Node >= 22.6.0)"
+      fi
+    elif [[ "${NODE_VER}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-[^[:space:]]+$ ]]; then
+      fail_msg "node ${NODE_VER}: prerelease/nightly versions are not validated by this check (requires stable Node >= 22.6.0)"
     else
-      fail_msg "node ${NODE_VER} is older than 20.0.0 (lean-lsp-mcp requires Node >= 20 or >= 22.6)"
+      fail_msg "node -v returned malformed version output: '${NODE_VER}' (expected vMAJOR.MINOR.PATCH; requires stable Node >= 22.6.0)"
     fi
   else
     fail_msg "node not found on PATH"

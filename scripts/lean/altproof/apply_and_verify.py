@@ -3,7 +3,7 @@
 Orchestrates candidate patching (A4), tactic dispatching (A5), and regression-safety
 evaluation to generate atomic transformation receipts.
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

@@ -42,7 +42,7 @@ extracted_from: "skills/lean-pedagogical-exposition/SKILL.md"
 - **G-1** (MUST): Every formal theorem cited must be accompanied by its standard informal mathematical statement and an intuitive explanation of why the
   theorem is true.
 - **G-2** (MUST): Proof walkthroughs must identify the key invariant, Lyapunov function, or geometric transformation driving the proof.
-- **G-3** (MUST): Keep mathematical exposition strictly 7-bit ASCII in Markdown files (INV-001); use standard LaTeX math syntax (`$ ... $` or `$$ ... $$`).
+- **G-3** (MUST): Follow scoped Unicode policy (INV-001) in Markdown exposition. Preserve mathematical notation and scripts; reject dangerous carriers and configured substitutions.
 - **G-4** (SHOULD): Include a schematic ASCII or mermaid diagram showing data flow or scale interactions for proofs longer than 50 lines.
 - **G-5** (MUST): Preserve fidelity with Lean formal semantics: never over-simplify a statement to the point where it asserts something different from the
   Lean signature.

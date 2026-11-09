@@ -20,7 +20,7 @@ Implements a lexer-safe (comment/string-neutralized) 4-stage pipeline:
      dependent binders, and when `--reconstruct-callsite` is passed replaces each
      `sorry` in the parent proof with `exact <name>_<idx> <arg1> ... <argk>`.
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

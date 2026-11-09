@@ -1,6 +1,6 @@
 """Unit tests for AltProof tactic dispatcher (A5).
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 import sys

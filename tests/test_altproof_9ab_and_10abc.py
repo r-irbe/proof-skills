@@ -8,7 +8,7 @@ Covers:
   - `lean_serve_broker.py` telemetry (`read_proc_rss_mb`, `get_system_load`, `error_ring`)
   - `check_citations.py` and `check_canary_validation.py`
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

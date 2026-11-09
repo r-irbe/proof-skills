@@ -6,7 +6,7 @@ and Error-to-Fix Table) from ``references/*-handbook.md`` plus cross-prover
 mechanisms from ``references/dialects/*.json`` into a single offline index at
 ``vendor/itp-ontology/handbook-tables.v1.json``.
 
-Strict 7-bit ASCII output only (INV-001).
+The current index has a legacy ASCII-folded format, not a blanket source Unicode policy.
 """
 
 from __future__ import annotations
@@ -31,7 +31,7 @@ _HEADING_RE = re.compile(r"^(#{2,4})\s+(.+?)\s*$")
 
 
 def _ascii_clean(text: str) -> str:
-    """Convert any non-ASCII code points to deterministic 7-bit ASCII."""
+    """Legacy ASCII index presentation; not source-policy enforcement."""
     replacements = {
         "\u2014": "--",
         "\u2013": "-",

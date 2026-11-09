@@ -9,7 +9,7 @@ Combines `extraction_detector.py`'s textual `module_symbols(source)` with `Trace
 Also exposes `detect_v4_corpus_file(lean_file, index, source_rel)` which uses S2
 `attribute_theorem_spans` to attribute each candidate to its enclosing theorem.
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

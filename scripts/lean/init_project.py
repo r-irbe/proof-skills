@@ -9,7 +9,7 @@ Usage:
     --profile core,math,pack-altproof \
     --agents claude,gemini,cursor,pi,opencode,dsh,zed,weftd
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations
@@ -47,7 +47,7 @@ def _default_lean_project_toml(
     profile_list = ", ".join(f'"{p}"' for p in profiles)
     return f"""# lean-project.toml
 # Project-level formalization configuration for proof-skills, lean-analyzer, and lean4-lsp-mcp.
-# Strict 7-bit ASCII only (INV-001).
+# Scoped Unicode policy (INV-001; typographic-free by default).
 
 [project]
 name = "{project_name}"

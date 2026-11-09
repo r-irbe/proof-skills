@@ -1,6 +1,6 @@
 // src/js/modules/lean_dag_visualizer.js
 // Interactive Topological DAG Visualizer & Tufte Proof-Walk Engine
-// Strict 7-bit ASCII only (INV-001).
+// Scoped Unicode policy (INV-001; typographic-free by default).
 
 /**
  * LeanDagVisualizer converts Lean formalization dependency subgraphs

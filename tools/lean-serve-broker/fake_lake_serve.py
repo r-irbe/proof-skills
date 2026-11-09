@@ -7,7 +7,7 @@ Behavior:
   - textDocument/didOpen -> emits a publishDiagnostics notification
   - every received method name is appended to $FAKE_LOG for assertions
 
-ASCII-only per INV-001.
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 import json

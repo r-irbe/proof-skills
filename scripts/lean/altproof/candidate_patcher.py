@@ -2,7 +2,7 @@
 
 Applies structural substitutions based on EvaluatedCandidate definitions,
 producing candidate transformed Lean 4 sources with receipt manifests.
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

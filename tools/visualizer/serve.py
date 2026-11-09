@@ -2,7 +2,7 @@
 """
 Standalone HTTP Server & Launcher for Lean 4 Formalization DAG Visualizer.
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 Zero external dependencies: uses only Python standard library.
 
 Usage:

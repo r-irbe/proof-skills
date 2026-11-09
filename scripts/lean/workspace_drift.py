@@ -13,7 +13,7 @@ Classification per matched pair (import lines stripped, whitespace preserved):
                   counts (`PKG` / `CORPUS` / `BOTH-DIVERGED`).
 
 Exit status: 0 when there is no substantive divergence, 1 otherwise.
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

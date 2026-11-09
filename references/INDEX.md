@@ -3,7 +3,7 @@
 Authoritative catalog of background knowledge, theorem-proving guides, domain
 handbooks, and operational protocols across the proof-skills corpus.
 
-Strict 7-bit ASCII only.
+Scoped Unicode policy (INV-001; typographic-free by default).
 
 ---
 

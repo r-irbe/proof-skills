@@ -15,7 +15,7 @@ Implements Track I (Task I-1, Task I-2) per PLAN-AI-VISIOON-INTEGRATION:
     * Common neighbor discovery
     * Bounded-hop pathfinding (< 2ms latency)
 
-Strict 7-bit ASCII only (INV-001). Zero network egress (INV-011).
+Scoped Unicode policy (INV-001; typographic-free by default). Zero network egress (INV-011).
 """
 
 from __future__ import annotations

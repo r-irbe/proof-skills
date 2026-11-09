@@ -1,7 +1,7 @@
 # Standalone Lean 4 Formalization DAG Visualizer
 
 > Pure client-side, zero-dependency interactive visualizer and Tufte proof-walk engine for Lean 4 formal mathematical developments.
-> Strict 7-bit ASCII only (INV-001).
+> Scoped Unicode policy (INV-001; typographic-free by default).
 
 ---
 

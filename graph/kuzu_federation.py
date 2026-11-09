@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # graph/kuzu_federation.py
 # Multi-database parallel federated query engine for Kuzu (TASK-LIB-07).
-# Strict 7-bit ASCII only (INV-001).
+# Scoped Unicode policy (INV-001; typographic-free by default).
 
 from __future__ import annotations
 

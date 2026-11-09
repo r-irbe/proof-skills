@@ -1,6 +1,6 @@
 """Unit tests for Proposals 4B, 7A, 7B, and 7C (`apollo_repair.py`, `verify_statement.py`, `run_persist.py`).
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

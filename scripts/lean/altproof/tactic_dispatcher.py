@@ -9,7 +9,7 @@ optimal automated tactic substitutions:
     (`[[altproof.tactics]]`) via `project_config.py` (with fallback defaults
     when `include_project_tactics=True` and no `lean-project.toml` is found).
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

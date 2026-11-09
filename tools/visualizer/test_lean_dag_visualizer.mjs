@@ -1,6 +1,6 @@
 // tests/test_lean_dag_visualizer.mjs
 // Unit tests for LeanDagVisualizer and Tufte Proof-Walk Engine
-// Strict 7-bit ASCII only (INV-001).
+// Scoped Unicode policy (INV-001; typographic-free by default).
 
 import assert from "node:assert/strict";
 import { LeanDagVisualizer } from "./lean_dag_visualizer.js";

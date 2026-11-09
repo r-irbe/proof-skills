@@ -6,7 +6,7 @@ agree on the 8 canonical statement-vs-proof fidelity defects (`FIDELITY-01..08`)
 and that the SAIR kernel optimization handbook documents all 37 `SAIR-LAW-01..25B`
 laws and AltProof Routes 7..11.
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations
@@ -173,3 +173,13 @@ def test_sair_handbook_covers_all_37_laws_and_routes_7_to_11():
         la_codes = set(re.findall(r'"(SAIR-LAW-\d{2}[A-Z]?)"', la_text))
         assert expected_39_sair_laws == la_codes
         assert "OverConcreteFixedArity" in la_text and "FIDELITY-08" in la_text
+
+    # Verify Wave 77/78 laws, twinlit PMU differential, and SAIR templates
+    assert "twinlit" in text and "Danvy" in text
+    assert "Lean.ofReduceBool" in text and "Classical.choice" in text
+    assert (ROOT / "scripts" / "lean" / "olean_census.lean").is_file()
+    assert (ROOT / "templates" / "Template_SairDecide.lean").is_file()
+    sair_decide_text = (ROOT / "templates" / "Template_SairDecide.lean").read_text(encoding="utf-8")
+    assert "macro \"sair_decide\"" in sair_decide_text
+    assert "decide +kernel" in sair_decide_text
+

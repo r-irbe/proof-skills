@@ -5,7 +5,7 @@ Kernel-Clean Axiom Guard for Lean 4 Formal Proofs.
 Adapted from algos/lean/verify.py.
 Enforces strict allowlist: {propext, Classical.choice, Quot.sound}.
 Strictly rejects sorryAx, Lean.ofReduceBool (native_decide), and untracked axioms.
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 import argparse

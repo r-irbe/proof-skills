@@ -38,8 +38,7 @@ extracted_from: "skills/lean-formalization-breakdown/SKILL.md"
   packet scaling -> BKM logarithmic Gronwall reduction).
 - **G-5** (MUST): Map extracted substrates into downstream modules using standardized proof templates and domain substitution tables (`subst_table.json`).
 - **G-6** (MUST): Generate dual-kernel verification contracts and automated pytest / shell test gates for every transferred substrate.
-- **G-7** (MUST): Preserve strict 7-bit ASCII throughout all generated documentation and markdown plans (INV-001). Mathematical symbols in markdown must
-  use standard LaTeX math syntax (`$ ... $` or `$$ ... $$`).
+- **G-7** (MUST): Follow the configured scoped Unicode policy (INV-001) in generated documentation and plans. Mathematical notation and scripts are allowed; reject dangerous carriers and configured substitutions.
 - **G-8** (MUST): Resolve and verify all cited file paths against the physical filesystem before citing them (AOR-2 / INV-014).
 
 ## Workflow (8-Wave Deconstruction)

@@ -21,7 +21,7 @@ Implements:
        all 3 verifiers (`passing_scores >= 1 and not issues`).
      - `genselect_tournament(problem, candidates)` selects the highest-ranked candidate proof sketch.
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

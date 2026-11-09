@@ -20,7 +20,7 @@ Usage:
 
 Writes one markdown file per chapter plus a TOC manifest (toc.json:
 chapter order, section order, titles) that build_anchor_table.py
-consumes. Strict 7-bit ASCII only (INV-001) for the tool itself; the
+consumes. Scoped Unicode policy (INV-001; typographic-free by default) for the tool itself; the
 harvested prose keeps its native Unicode.
 """
 

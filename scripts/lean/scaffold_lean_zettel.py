@@ -4,7 +4,7 @@
 Bridges Lean 4 formal declarations with the investigation-garden's Layer 4
 concept zettels (zet-lean-*.md) and Lean Blueprint specifications.
 
-Strict 7-bit ASCII only (INV-001). Standard library only.
+Scoped Unicode policy (INV-001; typographic-free by default). Standard library only.
 """
 
 from __future__ import annotations
@@ -20,7 +20,7 @@ from typing import Any
 
 
 def to_ascii(text: str) -> str:
-    """Normalize text to strict 7-bit ASCII replacing common math symbols."""
+    """Legacy ASCII presentation conversion; not a source Unicode requirement."""
     replacements = {
         "\u2192": " -> ",
         "\u21d2": " => ",

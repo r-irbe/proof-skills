@@ -21,10 +21,15 @@ metadata:
 ## Routing
 - **USE FOR:** formalizing a Project-Euler / competition-math problem as a Lean 4
   theorem asserting a concrete numeric answer; getting a first green proof
-  (typically Bronze `native_decide`); verifying the answer computes (`#eval` +
+  (typically Bronze `native_decide` for offline exploration, or Silver `decide` /
+  `decide +kernel` / `rfl` when a strict 3-axiom contest gate forbids
+  `Lean.ofReduceBool`); verifying the answer computes (`#eval` +
   the theorem closes); auditing the compiler-trust axiom via `#print axioms`;
   and driving the improvement pass up the ladder Bronze (`native_decide`) ->
   Silver (`decide` / `norm_num`) -> Gold (characterising property / closed form).
+  Note: both `native_decide` and `bv_decide` introduce `Lean.ofReduceBool` and
+  MUST NOT be used on scored paths that enforce `[propext, Classical.choice, Quot.sound]`;
+  use [`../../templates/Template_SairDecide.lean`](../../templates/Template_SairDecide.lean) (`sair_decide`) instead.
 - **DO NOT USE FOR:** authoring the theorem statement alone (use `@lean-specification`);
   writing tactics one step at a time or triaging tactic errors (use `@lean-proof`);
 ## Workflow

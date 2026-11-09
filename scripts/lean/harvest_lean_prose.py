@@ -18,7 +18,7 @@ Usage:
   harvest_lean_prose.py <lean-src-dir> <out-dir>
 
 Emits one markdown file per chapter plus toc.json (order fields for
-build_anchor_table.py). Strict 7-bit ASCII only (INV-001) for the tool
+build_anchor_table.py). Scoped Unicode policy (INV-001; typographic-free by default) for the tool
 itself; the prose keeps its native Unicode.
 """
 

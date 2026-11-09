@@ -5,7 +5,7 @@
 Maps statute-style semantic anchors (SALA) to text at read time, per
 docs/investigation-garden/source-materials-librarian-pipeline-plan.md:
 
-  - Section 3.2: anchor grammar. Canonical form is pure ASCII (INV-001):
+  - Section 3.2: anchor grammar. Canonical anchor grammar uses ASCII (a protocol constraint, not the source Unicode policy):
     BOOK-ID " s" unit ("." unit)* [ " p" para [ "s" sentence ] ].
   - Section 3.3: one anchors.v1.json per book under
     source-materials/books/<BOOK-ID>/, binding each anchor to its current
@@ -22,7 +22,7 @@ docs/investigation-garden/source-materials-librarian-pipeline-plan.md:
 
 Exit codes: 0 resolved, 2 drift (fail-closed for pipelines), 1 usage/IO.
 
-Strict 7-bit ASCII only (INV-001). Standard library only.
+Scoped Unicode policy (INV-001; typographic-free by default). Standard library only.
 """
 
 from __future__ import annotations

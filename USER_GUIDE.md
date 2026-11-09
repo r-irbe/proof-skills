@@ -43,6 +43,16 @@ cd proof-skills
 
 ### Tier 3 -- Full 20-Tool `lean-lsp` MCP Server + Rust/WASM `lean-analyzer`
 
+The MCP server requires **stable Node.js >=22.6.0** (matching the bundled engine's
+`engines.node` requirement), including when using precompiled `dist/index.js`.
+The doctor checks canonical `node -v` output (`vMAJOR.MINOR.PATCH`) against this
+minimum. Prerelease/nightly versions are not validated or supported by this
+check; this does not imply they cannot work. Older Node versions are outside
+the supported contract even if a launcher fallback can use precompiled output.
+Plugin and Gemini manifests retain `--experimental-strip-types`; APM invokes
+the same bin launcher without the outer flag. This version requirement is not
+certification of every external agent host or MCP runtime combination.
+
 Run the one-command customer bootstrap and non-mutating environment doctor:
 
 ```bash

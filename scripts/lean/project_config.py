@@ -5,7 +5,7 @@ Walks upward from `start_dir` (default: cwd) to discover `lean-project.toml`
 (or `.lean-analyzer.toml`), or falls back to zero-config `lakefile.lean` /
 `lakefile.toml` auto-discovery.
 
-Strict 7-bit ASCII only (INV-001). Zero external dependencies (uses stdlib
+Scoped Unicode policy (INV-001; typographic-free by default). Zero external dependencies (uses stdlib
 `tomllib` on Python >=3.11 with a pure-stdlib TOML parser fallback).
 """
 

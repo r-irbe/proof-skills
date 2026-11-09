@@ -20,7 +20,7 @@ The attach client (mode "attach") is a dumb stdio<->socket byte pump that
 presents itself exactly like `lake serve`, so any existing LSP client
 works unchanged. Python 3.8+ standard library only.
 
-ASCII-only per INV-001.
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from collections import deque

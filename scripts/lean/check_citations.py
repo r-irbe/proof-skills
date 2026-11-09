@@ -8,7 +8,7 @@ Scans `skills/**/SKILL.md` and `references/*.md` for:
   3. Optional `.ilean` symbol verification when `--trace-root` is provided.
   4. Optional `LAST_VERIFIED.md` provenance stamp generation (`--write-last-verified`).
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

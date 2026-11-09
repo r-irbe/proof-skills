@@ -16,7 +16,7 @@ Usage:
   harvest_game.py <game-src-dir> <out-dir>
 
 Emits one markdown file per level (World-L{level}.md) plus toc.json.
-Strict 7-bit ASCII only (INV-001) for the tool itself.
+Scoped Unicode policy (INV-001; typographic-free by default) for the tool itself.
 """
 
 from __future__ import annotations
