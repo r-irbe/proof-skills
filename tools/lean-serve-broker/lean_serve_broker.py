@@ -414,15 +414,30 @@ class Broker:
         """Pids of the broker, the lake serve child, and all descendants."""
         ours = {os.getpid(), self.server.pid if self.server else -1}
         procs: dict[int, int] = {}
-        for pid in os.listdir("/proc"):
-            if not pid.isdigit():
-                continue
+        if sys.platform == "darwin":
             try:
-                with open("/proc/%s/stat" % pid, "rb") as f:
-                    fields = f.read().split(b")", 1)[1].split()
-                procs[int(pid)] = int(fields[1])
-            except (OSError, IndexError, ValueError):
-                continue
+                res = subprocess.run(
+                    ["ps", "-axo", "pid=,ppid="],
+                    capture_output=True,
+                    text=True,
+                    check=False,
+                )
+                for line in res.stdout.splitlines():
+                    parts = line.split()
+                    if len(parts) >= 2 and parts[0].isdigit() and parts[1].isdigit():
+                        procs[int(parts[0])] = int(parts[1])
+            except OSError:
+                pass
+        else:
+            for pid in os.listdir("/proc"):
+                if not pid.isdigit():
+                    continue
+                try:
+                    with open("/proc/%s/stat" % pid, "rb") as f:
+                        fields = f.read().split(b")", 1)[1].split()
+                    procs[int(pid)] = int(fields[1])
+                except (OSError, IndexError, ValueError):
+                    continue
         children: dict[int, list] = {}
         for pid, ppid in procs.items():
             children.setdefault(ppid, []).append(pid)
@@ -438,6 +453,65 @@ class Broker:
 
     def detect_builds(self) -> tuple[bool, list]:
         building, pids = False, []
+        if sys.platform == "darwin":
+            try:
+                res = subprocess.run(
+                    ["ps", "-axo", "pid=,ppid=,command="],
+                    capture_output=True,
+                    text=True,
+                    check=False,
+                )
+            except OSError:
+                return False, []
+            ours = {os.getpid(), self.server.pid if self.server else -1}
+            rows = []
+            procs: dict[int, int] = {}
+            for line in res.stdout.splitlines():
+                parts = line.strip().split(None, 2)
+                if len(parts) < 3 or not parts[0].isdigit() or not parts[1].isdigit():
+                    continue
+                pid_i, ppid_i, cmd = int(parts[0]), int(parts[1]), parts[2]
+                procs[pid_i] = ppid_i
+                rows.append((pid_i, cmd))
+            children: dict[int, list] = {}
+            for pid_i, ppid_i in procs.items():
+                children.setdefault(ppid_i, []).append(pid_i)
+            stack = [p for p in ours if p in children]
+            while stack:
+                cur = stack.pop()
+                for child in children.get(cur, []):
+                    if child not in ours:
+                        ours.add(child)
+                        stack.append(child)
+            real_root = os.path.realpath(self.root)
+            for pid_i, cmd in rows:
+                if pid_i in ours:
+                    continue
+                argv = cmd.split()
+                names = [os.path.basename(a) for a in argv]
+                if "lake" not in names:
+                    continue
+                rest = argv[names.index("lake") + 1 :]
+                if not any(w in ("build", "compile", "env") for w in rest):
+                    continue
+                try:
+                    lsof_res = subprocess.run(
+                        ["lsof", "-a", "-p", str(pid_i), "-d", "cwd", "-Fn"],
+                        capture_output=True,
+                        text=True,
+                        check=False,
+                    )
+                except OSError:
+                    continue
+                cwd = None
+                for lline in lsof_res.stdout.splitlines():
+                    if lline.startswith("n"):
+                        cwd = lline[1:]
+                        break
+                if cwd and os.path.realpath(cwd) == real_root:
+                    building = True
+                    pids.append(pid_i)
+            return building, pids
         ours = self.our_subtree()
         for pid in os.listdir("/proc"):
             if not pid.isdigit() or int(pid) in ours:
