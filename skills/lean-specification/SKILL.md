@@ -4,16 +4,27 @@ description: |
   USE FOR: Design theorem specifications for Lean 4 proofs.
   DO NOT USE FOR: actual proof writing (@lean-proof).
   TRIGGERS: specification, theorem spec, three-part spec, lemma plan.
-tier: "warm"
-runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+tier: warm
+runtime_targets:
+- copilot-cli
+- claude-code
+- antigravity
+- pi
+- cursor
+- gemini-cli
 dispatch_targets: []
 handoffs:
-  predecessors: ["agent:gateway", "skill:lean-research"]
-  successors: ["skill:lean-proof", "skill:lean-proof-review", "skill:lean-zettelkasten"]
+  predecessors:
+  - agent:gateway
+  - skill:lean-research
+  successors:
+  - skill:lean-proof
+  - skill:lean-proof-review
+  - skill:lean-retro-methodology
 metadata:
-  version: "0.2.0"
-  source_spec: "skills/lean-specification/SKILL.md (this file)"
-  last_reviewed: "2026-05-27"
+  version: 0.2.0
+  source_spec: skills/lean-specification/SKILL.md (this file)
+  last_reviewed: '2026-05-27'
 ---
 
 # Lean 4 Theorem Specification
@@ -32,7 +43,7 @@ stage tracked by document templates.
   integration with the review
   council.
 - **DO NOT USE FOR:** actual proof writing (use @lean-proof); requirement extraction (use
-  @lean-doc-requirements); review (use
+  @lean-doc-sync); review (use
   @lean-proof-review).
 - **TRIGGERS:** specification, theorem spec, three-part spec, lemma plan, tactic plan.
 ## Workflow
@@ -48,19 +59,20 @@ stage tracked by document templates.
      alone
      (`ONE_WAY_BOOL_CHECKER`).
 ## Recovery & STOP
-- STOP if the artifact is informal — extract requirements via `@lean-doc-requirements` first.
-- STOP if the spec depends on Mathlib primitives missing at the pin — escalate to `@lean-research`.
-- STOP if reviewer would reject on grounds the body covers (vacuous truth, missing hypothesis) — fix before
+- STOP if the artifact is informal -- extract requirements via `@lean-doc-sync` first.
+- STOP if the spec depends on Mathlib primitives missing at the pin -- escalate to `@lean-research`.
+- STOP if reviewer would reject on grounds the body covers (vacuous truth, missing hypothesis) -- fix before
   publishing.
 ## Handoffs
 - **Predecessors:** `agent:gateway`, `skill:lean-research`.
 - **Successors:** `skill:lean-proof`, `skill:lean-proof-review`, `skill:lean-zettelkasten`.
 ---
 ## Detailed reference
+- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-specification-tables.md`](../../references/cards/lean-specification-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/lean-specification-handbook.md`](../../references/lean-specification-handbook.md) .
+[`references/handbooks/lean-specification-handbook.md`](../../references/handbooks/lean-specification-handbook.md) .
 ## See also
-- [`../../references/lean-specification-handbook.md`](../../references/lean-specification-handbook.md) --
+- [`../../references/handbooks/lean-specification-handbook.md`](../../references/handbooks/lean-specification-handbook.md) --
   Complete
   `lean-specification` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

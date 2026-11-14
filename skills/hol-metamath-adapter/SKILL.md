@@ -4,16 +4,28 @@ description: |
   USE FOR: translating HOL Light (.ml tactical scripts) and Metamath (set.mm ZFC proofs) into Lean 4.
   DO NOT USE FOR: Rocq ports (@rocq-proof-adapter) or Isabelle ports (@isabelle-isar-adapter).
   TRIGGERS: HOL Light, Metamath, set.mm, MESON_TAC, REAL_ARITH_TAC, WORD_BLAST, uzind, 3eqtri.
-tier: "warm"
-runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+tier: warm
+runtime_targets:
+- copilot-cli
+- claude-code
+- antigravity
+- pi
+- cursor
+- gemini-cli
 dispatch_targets: []
 handoffs:
-  predecessors: ["skill:lean-gateway", "skill:itp-cross-porting", "skill:lean-specification"]
-  successors: ["skill:lean-proof", "skill:lean-proof-review", "skill:lean-axiom-closure"]
+  predecessors:
+  - skill:lean-gateway
+  - skill:itp-cross-porting
+  - skill:lean-specification
+  successors:
+  - skill:lean-proof
+  - skill:lean-proof-review
+  - skill:lean-verification-gate
 metadata:
-  version: "0.2.0"
-  source_spec: "skills/hol-metamath-adapter/SKILL.md (this file)"
-  last_reviewed: "2026-10-27"
+  version: 0.2.0
+  source_spec: skills/hol-metamath-adapter/SKILL.md (this file)
+  last_reviewed: '2026-10-27'
 ---
 
 # HOL Light & Metamath (`set.mm`) Proof Adapter (`hol_light` / `metamath` -> `lean4`)
@@ -61,10 +73,11 @@ Mathlib4.
 - **Predecessors:** `skill:lean-gateway`, `skill:itp-cross-porting`, `skill:lean-specification`.
 - **Successors:** `skill:lean-proof`, `skill:lean-proof-review`, `skill:lean-axiom-closure`.
 ## Detailed reference
+- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/hol-metamath-adapter-tables.md`](../../references/cards/hol-metamath-adapter-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/hol-metamath-adapter-handbook.md`](../../references/hol-metamath-adapter-handbook.md) .
+[`references/handbooks/hol-metamath-adapter-handbook.md`](../../references/handbooks/hol-metamath-adapter-handbook.md) .
 ## See also
-- [`../../references/hol-metamath-adapter-handbook.md`](../../references/hol-metamath-adapter-handbook.md) --
+- [`../../references/handbooks/hol-metamath-adapter-handbook.md`](../../references/handbooks/hol-metamath-adapter-handbook.md) --
   Complete
   `hol-metamath-adapter` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

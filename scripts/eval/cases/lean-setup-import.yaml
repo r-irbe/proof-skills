@@ -1,19 +1,25 @@
 id: lean-setup-import
-title: "Minimal Mathlib import preamble"
+title: Minimal Mathlib import preamble
 skill: lean-setup
-ensemble_rubric: lean-setup-import-quality  # R27 audit: explicit (was implicit fallback)
+ensemble_rubric: lean-setup-import-quality
 difficulty: trivial
 input:
-  prompt: |
-    Show the minimal preamble to import all of Mathlib in a Lean 4 file.
-  expected_output_substring: |
-    import Mathlib
+  prompt: 'Show the minimal preamble to import all of Mathlib in a Lean 4 file.
+
+    '
+  expected_output_substring: 'import Mathlib
+
     open Nat
+
+    '
 expected:
   contains:
-    - "^import\\s+Mathlib"
-    - "^open\\s+\\w+"
+  - ^import\s+Mathlib
+  - ^open\s+\w+
   not_contains:
-    - "import\\s+Init\\.System\\.IO"
+  - import\s+Init\.System\.IO
 grader: deterministic
-tags: [lean, setup, mathlib]
+tags:
+- lean
+- setup
+- mathlib

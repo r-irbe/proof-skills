@@ -1,0 +1,23 @@
+id: lean-verification-gate-smoke
+title: lean-verification-gate dispatch smoke check
+skill: lean-verification-gate
+ensemble_rubric: lean-proof-quality
+difficulty: easy
+input:
+  prompt: 'Apply the lean-verification-gate skill workflow using references/cards/lean-verification-gate-tables.md.
+
+    '
+  expected_output_substring: 'Follow the lean-verification-gate protocol with zero
+    unproven goals and clean kernel verification.
+
+    '
+expected:
+  contains:
+  - lean-verification-gate|protocol|verify
+  not_contains:
+  - sorry
+  - admit
+grader: deterministic
+tags:
+- smoke
+- lean-verification-gate

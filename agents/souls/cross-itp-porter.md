@@ -22,5 +22,5 @@ Port theorems and tactic idioms across the 6 prover families using `@itp-cross-p
 ## Container Composition & Handoff Contract
 
 1. Inherit tool permissions and hard safety boundaries from `agents/prover.md`.
-2. Load domain-specific lookup tables from `references/itp-cross-porting-handbook.md` when available.
+2. Load domain-specific lookup tables from `references/handbooks/itp-cross-porting-handbook.md` when available.
 3. Record `"soul_overlay": "cross-itp-porter"` and `"from_role": "prover"` in all `templates/handoff_protocol.json` packets.

@@ -139,7 +139,7 @@ For a full map of the architecture, see [`references/architecture.md`](reference
 
 ### 3.1 Skill & Role-Container Dispatch
 
-1. **65 First-Party v2 Skills (`skills/<X>/SKILL.md`)**: Every skill contract in `skills/<X>/SKILL.md` is strictly `<4,000` bytes and pairs with a deep reference handbook in `references/<X>-handbook.md` (including the 3-table lookup sections `templates`, `phrasebook`, and `errors` for domain skills).
+1. **38 First-Party v2/v3 Core Lean Skills (`skills/<X>/SKILL.md`) + 7 Opt-In Applied-Strategy Pack Skills (`packs/applied-strategy/skills/`)**: Every skill contract in `skills/<X>/SKILL.md` is strictly `<4,000` bytes and pairs with a deep reference handbook in `references/cards/<X>-tables.md` (Layer-1 fast lookup) and `references/handbooks/<X>-handbook.md` (Layer-2 deep manual) (including the 3-table lookup sections `templates`, `phrasebook`, and `errors` for domain skills).
 2. **5 Pure Role-Actor Containers (`agents/*.md`) + 24 Soul Overlays (`agents/souls/*.md`)**: Runtime sub-agents instantiate one of the 5 role containers (`specifier`, `prover`, `auditor`, `editor`, `gardener`) and compose a specialist persona from `agents/souls/*.md` via `agents/facets/registry.json`.
 3. **Downstream Host Overrides**: Host repositories that need project-specific domain deltas (e.g., fixed-point scaling rules) place them in their own host-level `skills-overrides/` directory linking back to `skills/<X>/SKILL.md`.
 

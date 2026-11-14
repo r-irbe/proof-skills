@@ -3,7 +3,7 @@
 > Pure reference. Originally hosted as
 > (move A4 of `lab/design/07-cluster-workflow.md`) because the content
 > is a "go-read-this-URL" infrastructure note with no workflow,
-> triggers, or callers — i.e., it never matched the SKILL contract.
+> triggers, or callers -- i.e., it never matched the SKILL contract.
 > The slug `nightly-testing` survives as a REDIRECT stub for
 > Ctrl-F discoverability per the zero-deletions Chesterton protocol.
 
@@ -25,15 +25,15 @@ branches out of the main repository. When Lean PRs affect Mathlib,
 
 ## Key branches
 
-- **`nightly-testing`** — tracks the latest Lean nightly. CI runs here
+- **`nightly-testing`** -- tracks the latest Lean nightly. CI runs here
   determine whether a nightly is usable.
-- **`nightly-with-mathlib`** — points to the latest nightly that passes
+- **`nightly-with-mathlib`** -- points to the latest nightly that passes
   Mathlib CI. Lean PRs that may affect downstream should base off this
   branch.
-- **`bump/v4.X.Y`** — accumulates reviewed adaptations for an upcoming
+- **`bump/v4.X.Y`** -- accumulates reviewed adaptations for an upcoming
   Lean release. Adaptation PRs merge `nightly-testing` changes into this
   branch, and `master` is regularly merged in during release cycles.
-- **`lean-pr-testing-NNNN`** — created automatically to test specific
+- **`lean-pr-testing-NNNN`** -- created automatically to test specific
   Lean PRs against Mathlib.
 
 ## Zulip
@@ -53,5 +53,5 @@ branches, read that page first.
 
 ## See also
 
-- [`./mathlib4-review.md`](./mathlib4-review.md) — Mathlib PR review standards (added in W4 Wave 1 / A2)
-- [`./lean-bug-report-pipeline.md`](./lean-bug-report-pipeline.md) — Shared bug-report pipeline
+- [`./mathlib4-review.md`](./mathlib4-review.md) -- Mathlib PR review standards (added in W4 Wave 1 / A2)
+- [`./lean-bug-report-pipeline.md`](./lean-bug-report-pipeline.md) -- Shared bug-report pipeline

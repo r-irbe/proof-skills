@@ -19,7 +19,7 @@ PR titles use:
 
 `<subject>`: imperative present tense, lowercase, no period.
 
-For `feat`/`fix` PRs, begin the description with **`This PR `** — the
+For `feat`/`fix` PRs, begin the description with **`This PR `** -- the
 first paragraph is automatically used in release notes.
 
 ## Changelog labels
@@ -44,7 +44,7 @@ Every `feat` or `fix` PR must carry a `changelog-*` label:
 
 Files in `src/Lean/`, `src/Std/`, and `src/lake/Lake/` must have both
 `module` and `prelude` declarations. With `prelude`, nothing is
-auto-imported — you must explicitly import `Init.*` modules.
+auto-imported -- you must explicitly import `Init.*` modules.
 
 ```lean
 module
@@ -78,13 +78,13 @@ headers.
 
 ## Description shape (project-wide convention)
 
-- Start with a paragraph beginning **`This PR ...`** — no section headers
-- No `## Summary` header — just start with the text
-- No `## Test plan` section — CI is relied on
-- No `## Implementation details` section — the code speaks for itself
+- Start with a paragraph beginning **`This PR ...`** -- no section headers
+- No `## Summary` header -- just start with the text
+- No `## Test plan` section -- CI is relied on
+- No `## Implementation details` section -- the code speaks for itself
 
 ## See also
 
-- [`./mathlib4-pr.md`](./mathlib4-pr.md) — Mathlib4 PR conventions (sister upstream)
-- [`./mathlib4-review.md`](./mathlib4-review.md) — Mathlib PR review standards
-- [`../../skills/lean-pr/SKILL.md`](../../skills/lean-pr/SKILL.md) — Agnostic Lean-ecosystem PR SKILL
+- [`./mathlib4-pr.md`](./mathlib4-pr.md) -- Mathlib4 PR conventions (sister upstream)
+- [`./mathlib4-review.md`](./mathlib4-review.md) -- Mathlib PR review standards
+- [`../../skills/lean-pr/SKILL.md`](../../skills/lean-pr/SKILL.md) -- Agnostic Lean-ecosystem PR SKILL

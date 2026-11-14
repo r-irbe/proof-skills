@@ -1,24 +1,26 @@
 id: lean-knowledge-formalization-smoke
-ensemble_rubric: lean-proof-quality  # Round 21 A1: rewrote prompt to demand Lean 4 syntax
-title: "Knowledge graph node type (Lean 4 structure)"
+ensemble_rubric: lean-proof-quality
+title: Knowledge graph node type (Lean 4 structure)
 skill: lean-knowledge-formalization
 difficulty: easy
 input:
-  prompt: |
-    Write a Lean 4 `structure KGNode` for a typed knowledge-graph node. Fields:
-    `id : Nat`, `kind : NodeType`, `props : List (String × Value)`. Reply with code only.
-  expected_output_substring: |
-    structure KGNode where
-      id : Nat
-      kind : NodeType
-      props : List (String × Value)
+  prompt: 'Write a Lean 4 `structure KGNode` for a typed knowledge-graph node. Fields:
+
+    `id : Nat`, `kind : NodeType`, `props : List (String × Value)`. Reply with code
+    only.
+
+    '
+  expected_output_substring: "structure KGNode where\n  id : Nat\n  kind : NodeType\n\
+    \  props : List (String × Value)\n"
 expected:
   contains:
-    - "structure\\s+KGNode"
-    - "id\\s*:\\s*Nat"
-    - "props"
+  - structure\s+KGNode
+  - id\s*:\s*Nat
+  - props
   not_contains:
-    - "sorry"
-    - "admit"
+  - sorry
+  - admit
 grader: deterministic
-tags: [lean, knowledge]
+tags:
+- lean
+- knowledge

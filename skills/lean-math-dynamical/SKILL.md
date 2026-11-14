@@ -1,19 +1,31 @@
 ---
 name: "lean-math-dynamical"
 description: |
-  USE FOR: nonlinear dynamical systems, Lyapunov stability, bifurcation theory, catastrophe theory, control theory.
-  DO NOT USE FOR: stochastic dynamics (@lean-math-stochastic).
-  TRIGGERS: Lyapunov, stability, bifurcation, cusp catastrophe, attractor.
-tier: "warm"
-runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+  USE FOR: nonlinear dynamics, continuous & discrete Lyapunov convergence, bifurcation, catastrophe, and control in Lean 4.
+  DO NOT USE FOR: stochastic processes (@lean-math-stochastic).
+  TRIGGERS: Lyapunov, stability, convergence bound, bifurcation, cusp catastrophe, attractor.
+tier: warm
+runtime_targets:
+- copilot-cli
+- claude-code
+- antigravity
+- pi
+- cursor
+- gemini-cli
 dispatch_targets: []
 handoffs:
-  predecessors: ["agent:gateway", "skill:lean-proof", "skill:lean-research"]
-  successors: ["skill:lean-proof", "skill:lean-proof-review", "skill:lean-math-analysis"]
+  predecessors:
+  - agent:gateway
+  - skill:lean-proof
+  - skill:lean-research
+  successors:
+  - skill:lean-proof
+  - skill:lean-proof-review
+  - skill:lean-math-analysis
 metadata:
-  version: "0.2.0"
-  source_spec: "skills/lean-math-dynamical/SKILL.md (this file)"
-  last_reviewed: "2026-05-27"
+  version: 0.2.0
+  source_spec: skills/lean-math-dynamical/SKILL.md (this file)
+  last_reviewed: '2026-05-27'
 ---
 
 # Lean 4 Nonlinear Dynamics & Stability
@@ -31,17 +43,17 @@ Guide to formalizing dynamical systems, stability theory, and bifurcation in Lea
   (delegate to
   `@lean-proof`).
 ## Workflow
-1. Classify the system (Part 1) — discrete-time, continuous-time, gradient, conservative, controlled.
+1. Classify the system (Part 1) -- discrete-time, continuous-time, gradient, conservative, controlled.
 2. Pick the appropriate technique below (Lyapunov, contraction, bifurcation-normal-form,
   catastrophe-classification).
 3. Handoff to `@lean-proof` for the concrete proof; if it bottoms out in a derivative / measure step, handoff
   to
   `@lean-math-analysis`.
 ## Recovery & STOP
-- STOP if the proof depends on a manifold or smooth-structure API not in Mathlib at the current pin — escalate
+- STOP if the proof depends on a manifold or smooth-structure API not in Mathlib at the current pin -- escalate
   to
   `@lean-research`.
-- STOP if a stochastic perturbation enters the model — re-route to `@lean-math-stochastic`; this skill covers
+- STOP if a stochastic perturbation enters the model -- re-route to `@lean-math-stochastic`; this skill covers
   only deterministic
   dynamics.
 ## Handoffs
@@ -54,10 +66,11 @@ Guide to formalizing dynamical systems, stability theory, and bifurcation in Lea
   `skill:lean-math-analysis`
   (continuous-derivative or contraction reduction).
 ## Detailed reference
+- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-math-dynamical-tables.md`](../../references/cards/lean-math-dynamical-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/lean-math-dynamical-handbook.md`](../../references/lean-math-dynamical-handbook.md) .
+[`references/handbooks/lean-math-dynamical-handbook.md`](../../references/handbooks/lean-math-dynamical-handbook.md) .
 ## See also
-- [`../../references/lean-math-dynamical-handbook.md`](../../references/lean-math-dynamical-handbook.md) --
+- [`../../references/handbooks/lean-math-dynamical-handbook.md`](../../references/handbooks/lean-math-dynamical-handbook.md) --
   Complete
   `lean-math-dynamical` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

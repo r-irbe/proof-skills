@@ -4,16 +4,28 @@ description: |
   USE FOR: optimization theory, convex optimization, game theory, reinforcement-learning theory (Bellman equations.
   DO NOT USE FOR: stochastic policies / Markov chains (@lean-math-stochastic).
   TRIGGERS: optimization, convex, game theory, Bellman, value iteration.
-tier: "warm"
-runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+tier: warm
+runtime_targets:
+- copilot-cli
+- claude-code
+- antigravity
+- pi
+- cursor
+- gemini-cli
 dispatch_targets: []
 handoffs:
-  predecessors: ["agent:gateway", "skill:lean-proof", "skill:lean-research"]
-  successors: ["skill:lean-proof", "skill:lean-proof-review", "skill:lean-math-analysis"]
+  predecessors:
+  - agent:gateway
+  - skill:lean-proof
+  - skill:lean-research
+  successors:
+  - skill:lean-proof
+  - skill:lean-proof-review
+  - skill:lean-math-analysis
 metadata:
-  version: "0.2.0"
-  source_spec: "skills/lean-math-optimization/SKILL.md (this file)"
-  last_reviewed: "2026-05-27"
+  version: 0.2.0
+  source_spec: skills/lean-math-optimization/SKILL.md (this file)
+  last_reviewed: '2026-05-27'
 ---
 
 # Lean 4 Optimization & Decision Theory
@@ -33,15 +45,15 @@ Guide to formalizing optimization, game theory, RL theory, and decision-making i
 - **TRIGGERS:** optimization, convex, game theory, Bellman, value iteration, policy iteration, Nash, minimax,
   fixed point, KKT.
 ## Workflow
-1. Identify the optimality structure (Part 1) — unconstrained, convex, equilibrium, dynamic-programming.
+1. Identify the optimality structure (Part 1) -- unconstrained, convex, equilibrium, dynamic-programming.
 2. Pick the matching tool below (gradient / KKT, contraction / Banach fixed-point, Bellman backup,
   Nash-equilibrium argument).
 3. Handoff to `@lean-proof`; if the contraction step requires a normed-space lemma, handoff to
   `@lean-math-analysis`.
 ## Recovery & STOP
-- STOP if the proof requires a Banach-contraction instance not yet imported — handoff to
+- STOP if the proof requires a Banach-contraction instance not yet imported -- handoff to
   `@lean-math-analysis`.
-- STOP if a stochastic policy or expected-value argument appears — re-route to `@lean-math-stochastic`.
+- STOP if a stochastic policy or expected-value argument appears -- re-route to `@lean-math-stochastic`.
 ## Handoffs
 - **Predecessors:** `agent:gateway`, `skill:lean-proof` (mid-proof optimization goal), `skill:lean-research`
   (Bellman /
@@ -52,10 +64,11 @@ Guide to formalizing optimization, game theory, RL theory, and decision-making i
   `skill:lean-math-analysis`
   (contraction / normed-space reduction).
 ## Detailed reference
+- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-math-optimization-tables.md`](../../references/cards/lean-math-optimization-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/lean-math-optimization-handbook.md`](../../references/lean-math-optimization-handbook.md) .
+[`references/handbooks/lean-math-optimization-handbook.md`](../../references/handbooks/lean-math-optimization-handbook.md) .
 ## See also
-- [`../../references/lean-math-optimization-handbook.md`](../../references/lean-math-optimization-handbook.md)
+- [`../../references/handbooks/lean-math-optimization-handbook.md`](../../references/handbooks/lean-math-optimization-handbook.md)
   -- Complete
   `lean-math-optimization` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

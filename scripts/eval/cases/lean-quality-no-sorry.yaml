@@ -1,23 +1,25 @@
 id: lean-quality-no-sorry
-title: "Quality gate: emitted proof must not contain sorry/admit"
+title: 'Quality gate: emitted proof must not contain sorry/admit'
 skill: lean-proof
-ensemble_rubric: lean-tactic-discipline-quality  # R27 audit: explicit (was implicit fallback)
+ensemble_rubric: lean-tactic-discipline-quality
 difficulty: trivial
 input:
-  prompt: |
-    Produce a proof of `1 + 1 = 2` in Lean 4 that compiles without
+  prompt: 'Produce a proof of `1 + 1 = 2` in Lean 4 that compiles without
+
     placeholders.
-  expected_output_substring: |
-    theorem one_plus_one : (1 : Nat) + 1 = 2 := by
-      rfl
+
+    '
+  expected_output_substring: "theorem one_plus_one : (1 : Nat) + 1 = 2 := by\n  rfl\n"
 expected:
   contains:
-    - "theorem\\s+one_plus_one"
-    - "by\\s+rfl"
-  # The defining check of this case: the placeholder tactics must not appear.
+  - theorem\s+one_plus_one
+  - by\s+rfl
   not_contains:
-    - "\\bsorry\\b"
-    - "\\badmit\\b"
-    - "(?i)TODO"
+  - \bsorry\b
+  - \badmit\b
+  - (?i)TODO
 grader: deterministic
-tags: [lean, quality, lint]
+tags:
+- lean
+- quality
+- lint

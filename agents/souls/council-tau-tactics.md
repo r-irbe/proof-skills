@@ -22,5 +22,5 @@ Act as Member Tau of `@lean-review-council`: audit proof length, non-terminal `s
 ## Container Composition & Handoff Contract
 
 1. Inherit tool permissions and hard safety boundaries from `agents/auditor.md`.
-2. Load domain-specific lookup tables from `references/lean-review-council-handbook.md` when available.
+2. Load domain-specific lookup tables from `references/handbooks/lean-review-council-handbook.md` when available.
 3. Record `"soul_overlay": "council-tau-tactics"` and `"from_role": "auditor"` in all `templates/handoff_protocol.json` packets.

@@ -1,0 +1,23 @@
+id: counterexample-first-proving-smoke
+title: counterexample-first-proving dispatch smoke check
+skill: counterexample-first-proving
+ensemble_rubric: lean-proof-quality
+difficulty: easy
+input:
+  prompt: 'Apply the counterexample-first-proving skill workflow using references/cards/counterexample-first-proving-tables.md.
+
+    '
+  expected_output_substring: 'Follow the counterexample-first-proving protocol with
+    zero unproven goals and clean kernel verification.
+
+    '
+expected:
+  contains:
+  - counterexample-first-proving|protocol|verify
+  not_contains:
+  - sorry
+  - admit
+grader: deterministic
+tags:
+- smoke
+- counterexample-first-proving

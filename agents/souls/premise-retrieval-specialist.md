@@ -22,5 +22,5 @@ Execute the 6-rung discovery ladder (`@lean-research`, `references/discovery-lad
 ## Container Composition & Handoff Contract
 
 1. Inherit tool permissions and hard safety boundaries from `agents/specifier.md`.
-2. Load domain-specific lookup tables from `references/lean-research-handbook.md` when available.
+2. Load domain-specific lookup tables from `references/handbooks/lean-research-handbook.md` when available.
 3. Record `"soul_overlay": "premise-retrieval-specialist"` and `"from_role": "specifier"` in all `templates/handoff_protocol.json` packets.

@@ -1,27 +1,29 @@
 id: lean-mwe-minimize
-title: "Reduce a failing tactic block to a single-file MWE"
+title: Reduce a failing tactic block to a single-file MWE
 skill: lean-mwe
-ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
+ensemble_rubric: applied-domain-quality
 difficulty: medium
 input:
-  prompt: |
-    Given a large Lean file that fails with `unknown identifier 'foo'`,
-    produce a single-file minimal working example (MWE) that reproduces
-    just that error.
-  expected_output_substring: |
-    -- MWE: reproduces `unknown identifier 'foo'`
-    import Mathlib
+  prompt: 'Given a large Lean file that fails with `unknown identifier ''foo''`,
 
-    example : True := by
-      exact foo
+    produce a single-file minimal working example (MWE) that reproduces
+
+    just that error.
+
+    '
+  expected_output_substring: "-- MWE: reproduces `unknown identifier 'foo'`\nimport\
+    \ Mathlib\n\nexample : True := by\n  exact foo\n"
 expected:
   contains:
-    - "(?i)MWE"
-    - "^import\\s+Mathlib"
-    - "example\\s*:"
-    - "exact\\s+foo"
+  - (?i)MWE
+  - ^import\s+Mathlib
+  - 'example\s*:'
+  - exact\s+foo
   not_contains:
-    - "sorry"
-    - "TODO"
+  - sorry
+  - TODO
 grader: deterministic
-tags: [lean, debugging, mwe]
+tags:
+- lean
+- debugging
+- mwe

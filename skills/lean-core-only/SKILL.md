@@ -4,22 +4,28 @@ description: |
   USE FOR: Lean 4 work in a CORE-ONLY lane -- a project whose artifact may import nothing but the Lean toolchain (no Mathlib.
   DO NOT USE FOR: Mathlib-dependent proving (@lean-proof).
   TRIGGERS: core Lean, no Mathlib, unknown module prefix, unknown tactic.
-tier: "hot"
-runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+tier: hot
+runtime_targets:
+- copilot-cli
+- claude-code
+- antigravity
+- pi
+- cursor
+- gemini-cli
 dispatch_targets: []
 handoffs:
   predecessors:
-    - "skill:lean-setup"
-    - "skill:lean-specification"
+  - skill:lean-setup
+  - skill:lean-specification
   successors:
-    - "skill:lean-proof"
-    - "skill:lean-build"
-    - "skill:lean-axiom-closure"
-    - "skill:lean-mwe"
+  - skill:lean-proof
+  - skill:lean-build
+  - skill:lean-verification-gate
+  - skill:lean-mwe
 metadata:
-  version: "0.1.0"
-  source_spec: "skills/lean-core-only/SKILL.md (this file)"
-  last_reviewed: "2026-10-16"
+  version: 0.1.0
+  source_spec: skills/lean-core-only/SKILL.md (this file)
+  last_reviewed: '2026-10-16'
 ---
 
 # lean-core-only
@@ -31,7 +37,7 @@ metadata:
   correct-looking proof; project-root and `lakefile.toml` invocation questions;
   goal-state introspection without editing the artifact.
 - **DO NOT USE FOR:** anything where Mathlib is allowed (use `@lean-proof` with
-  the `@lean-math-analysis` family); the axiom-closure audit itself (use `@lean-axiom-closure`);
+  the `@lean-math-analysis` family); the axiom-closure audit itself (use `@lean-verification-gate`);
   toolchain brokenness (use `@lean-setup`).
 ## Workflow
 1. **Discover** [discover] -- establish the root and the invocation: which
@@ -55,15 +61,16 @@ metadata:
 ## Handoffs
 - **Predecessors:** `@lean-setup` (toolchain), `@lean-specification` (statement).
 - **Successors:** `@lean-proof` (structural fixes), `@lean-build` (build/CI
-  mechanics), `@lean-axiom-closure` (trust base), `@lean-mwe` (isolation).
-- **Handbook:** [`../../references/lean4-core-only-profile.md`](../../references/lean4-core-only-profile.md)
+  mechanics), `@lean-verification-gate` (trust base), `@lean-mwe` (isolation).
+- **Handbook:** [`../../references/protocols/lean4-core-only-profile.md`](../../references/protocols/lean4-core-only-profile.md)
   -- the core/Mathlib tactic boundary, the recursion-limit triage table, and the
   goal-introspection loop.
 ## Detailed reference
+- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-core-only-tables.md`](../../references/cards/lean-core-only-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/lean-core-only-handbook.md`](../../references/lean-core-only-handbook.md) .
+[`references/handbooks/lean-core-only-handbook.md`](../../references/handbooks/lean-core-only-handbook.md) .
 ## See also
-- [`../../references/lean-core-only-handbook.md`](../../references/lean-core-only-handbook.md) -- Complete
+- [`../../references/handbooks/lean-core-only-handbook.md`](../../references/handbooks/lean-core-only-handbook.md) -- Complete
   `lean-core-only`
   Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

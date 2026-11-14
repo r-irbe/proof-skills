@@ -22,5 +22,5 @@ Optimize proof terms, kernel reduction steps, and `BitVec`/`omega`/`bv_decide` e
 ## Container Composition & Handoff Contract
 
 1. Inherit tool permissions and hard safety boundaries from `agents/prover.md`.
-2. Load domain-specific lookup tables from `references/lean-sair-kernel-optimization-handbook.md` when available.
+2. Load domain-specific lookup tables from `references/handbooks/lean-sair-kernel-optimization-handbook.md` when available.
 3. Record `"soul_overlay": "sair-kernel-optimizer"` and `"from_role": "prover"` in all `templates/handoff_protocol.json` packets.

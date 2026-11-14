@@ -4,16 +4,28 @@ description: |
   USE FOR: translating Rocq / Coq proofs (SSReflect, MathComp, Ltac2, lia/lra) into Lean 4.
   DO NOT USE FOR: Isabelle ports (@isabelle-isar-adapter) or HOL/Metamath (@hol-metamath-adapter).
   TRIGGERS: Rocq, Coq, SSReflect, MathComp, move:, elim:, bigop, Coq to Lean.
-tier: "warm"
-runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+tier: warm
+runtime_targets:
+- copilot-cli
+- claude-code
+- antigravity
+- pi
+- cursor
+- gemini-cli
 dispatch_targets: []
 handoffs:
-  predecessors: ["skill:lean-gateway", "skill:itp-cross-porting", "skill:lean-specification"]
-  successors: ["skill:lean-proof", "skill:lean-proof-review", "skill:lean-axiom-closure"]
+  predecessors:
+  - skill:lean-gateway
+  - skill:itp-cross-porting
+  - skill:lean-specification
+  successors:
+  - skill:lean-proof
+  - skill:lean-proof-review
+  - skill:lean-verification-gate
 metadata:
-  version: "0.2.0"
-  source_spec: "skills/rocq-proof-adapter/SKILL.md (this file)"
-  last_reviewed: "2026-10-27"
+  version: 0.2.0
+  source_spec: skills/rocq-proof-adapter/SKILL.md (this file)
+  last_reviewed: '2026-10-27'
 ---
 
 # Rocq / Coq & MathComp Proof Adapter (`coq_mathcomp` -> `lean4`)
@@ -60,10 +72,11 @@ idiomatic Lean 4.
 - **Predecessors:** `skill:lean-gateway`, `skill:itp-cross-porting`, `skill:lean-specification`.
 - **Successors:** `skill:lean-proof`, `skill:lean-proof-review`, `skill:lean-axiom-closure`.
 ## Detailed reference
+- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/rocq-proof-adapter-tables.md`](../../references/cards/rocq-proof-adapter-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/rocq-proof-adapter-handbook.md`](../../references/rocq-proof-adapter-handbook.md) .
+[`references/handbooks/rocq-proof-adapter-handbook.md`](../../references/handbooks/rocq-proof-adapter-handbook.md) .
 ## See also
-- [`../../references/rocq-proof-adapter-handbook.md`](../../references/rocq-proof-adapter-handbook.md) --
+- [`../../references/handbooks/rocq-proof-adapter-handbook.md`](../../references/handbooks/rocq-proof-adapter-handbook.md) --
   Complete
   `rocq-proof-adapter` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

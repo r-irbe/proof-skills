@@ -1,26 +1,31 @@
 id: lean-retroactive-audit-smoke
-ensemble_rubric: lean-proof-quality  # Round 21 A1: rewrote prompt to demand Lean 4 syntax
-title: "Audit-wave dependency level (Lean 4 def)"
-skill: lean-retroactive-audit
+ensemble_rubric: lean-proof-quality
+title: Audit-wave dependency level (Lean 4 def)
+skill: lean-corpus-audit
 difficulty: easy
 input:
-  prompt: |
-    Write a Lean 4 `def auditWave` that computes the topological audit-wave level of a module:
+  prompt: 'Write a Lean 4 `def auditWave` that computes the topological audit-wave
+    level of a module:
+
     `def auditWave (importDAG : Std.HashMap String (List String)) (m : String) : Nat`.
-    Leaves (no imports) return 0, otherwise 1 + max over imports. Reply with code only.
-  expected_output_substring: |
-    partial def auditWave (importDAG : Std.HashMap String (List String)) (m : String) : Nat :=
-      match importDAG[m]? with
-      | none => 0
-      | some [] => 0
-      | some imps => 1 + (imps.map (auditWave importDAG)).foldl max 0
+
+    Leaves (no imports) return 0, otherwise 1 + max over imports. Reply with code
+    only.
+
+    '
+  expected_output_substring: "partial def auditWave (importDAG : Std.HashMap String\
+    \ (List String)) (m : String) : Nat :=\n  match importDAG[m]? with\n  | none =>\
+    \ 0\n  | some [] => 0\n  | some imps => 1 + (imps.map (auditWave importDAG)).foldl\
+    \ max 0\n"
 expected:
   contains:
-    - "def\\s+auditWave"
-    - "Nat"
-    - "max"
+  - def\s+auditWave
+  - Nat
+  - max
   not_contains:
-    - "sorry"
-    - "admit"
+  - sorry
+  - admit
 grader: deterministic
-tags: [lean, retroactive-audit]
+tags:
+- lean
+- retroactive-audit

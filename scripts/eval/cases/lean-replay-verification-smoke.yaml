@@ -1,18 +1,24 @@
 id: lean-replay-verification-smoke
-title: "lean-replay-verification dispatch smoke check"
-skill: lean-replay-verification
+title: lean-replay-verification dispatch smoke check
+skill: lean-verification-gate
 ensemble_rubric: applied-domain-quality
 difficulty: easy
 input:
-  prompt: |
-    Apply the lean-replay-verification skill workflow and summarize the primary verification steps.
-  expected_output_substring: |
-    Follow the lean-replay-verification protocol and verify all outputs without sorry or admit.
+  prompt: 'Apply the lean-replay-verification skill workflow and summarize the primary
+    verification steps.
+
+    '
+  expected_output_substring: 'Follow the lean-replay-verification protocol and verify
+    all outputs with zero unproven goals and clean kernel verification.
+
+    '
 expected:
   contains:
-    - "lean-replay-verification|protocol|verify"
+  - lean-replay-verification|protocol|verify
   not_contains:
-    - "sorry"
-    - "admit"
+  - sorry
+  - admit
 grader: deterministic
-tags: [smoke, lean-replay-verification]
+tags:
+- smoke
+- lean-replay-verification

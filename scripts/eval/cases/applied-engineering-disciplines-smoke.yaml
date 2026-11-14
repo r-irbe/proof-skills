@@ -1,19 +1,27 @@
 id: applied-engineering-disciplines-smoke
-title: "Cross-discipline failure mode"
-skill: applied-engineering-disciplines
-ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
+title: Cross-discipline failure mode
+skill: packs/applied-strategy/skills/applied-engineering-disciplines
+ensemble_rubric: applied-domain-quality
 difficulty: easy
 input:
-  prompt: |
-    Identify a failure mode where a mechanical vibration interacts with a software control loop.
-  expected_output_substring: |
-    Coupled failure: mechanical resonance at the control-loop sample frequency aliases into the controller, causing a Nyquist-rate instability. Mitigation: anti-alias filter + sample-rate guard band.
+  prompt: 'Identify a failure mode where a mechanical vibration interacts with a software
+    control loop.
+
+    '
+  expected_output_substring: 'Coupled failure: mechanical resonance at the control-loop
+    sample frequency aliases into the controller, causing a Nyquist-rate instability.
+    Mitigation: anti-alias filter + sample-rate guard band.
+
+    '
 expected:
   contains:
-    - "resonance|aliasing|Nyquist"
-    - "anti[- ]?alias|filter|guard band"
+  - resonance|aliasing|Nyquist
+  - anti[- ]?alias|filter|guard band
   not_contains:
-    - "sorry"
-    - "admit"
+  - sorry
+  - admit
 grader: deterministic
-tags: [applied, engineering, coupled]
+tags:
+- applied
+- engineering
+- coupled

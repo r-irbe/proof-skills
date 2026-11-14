@@ -1,26 +1,6 @@
 {
   "cases": {
-    "ai-agentic-evolving-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "ai-causal-deontic-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "ai-commonsense-reasoning-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "ai-high-stakes-verifiable-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "ai-symbolic-neuro-smoke": {
+    "ai-guard-judge-eval-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
@@ -35,17 +15,37 @@
       "passed": true,
       "score": 1.0
     },
-    "applied-intelligence-analysis-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
     "applied-legal-reasoning-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
     },
-    "applied-strategy-analysis-smoke": {
+    "counterexample-first-proving-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "epistemic-discovery-engine-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "epistemic-mapping-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "hol-metamath-adapter-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "isabelle-isar-adapter-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "itp-cross-porting-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
@@ -65,7 +65,22 @@
       "passed": true,
       "score": 1.0
     },
+    "lean-axiom-closure-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-bigraph-modeling-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
     "lean-bisect-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-blueprint-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
@@ -80,6 +95,46 @@
       "passed": true,
       "score": 1.0
     },
+    "lean-competitive-math-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-convergence-verification-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-core-only-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-corpus-audit-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-dag-visualizer-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-deep-audit-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-dependency-management-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-doc-feedback-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
     "lean-doc-improvement-smoke": {
       "grader": "deterministic",
       "passed": true,
@@ -90,12 +145,57 @@
       "passed": true,
       "score": 1.0
     },
+    "lean-doc-sync-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-formalization-breakdown-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-gateway-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
     "lean-integration-protocol-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
     },
     "lean-knowledge-formalization-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-math-analysis-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-math-discrete-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-math-dynamical-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-math-foundations-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-math-optimization-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-math-stochastic-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
@@ -115,6 +215,16 @@
       "passed": true,
       "score": 1.0
     },
+    "lean-package-research-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-pedagogical-exposition-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
     "lean-pr-smoke": {
       "grader": "deterministic",
       "passed": true,
@@ -125,12 +235,52 @@
       "passed": true,
       "score": 1.0
     },
+    "lean-proof-refactor-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-proof-repair-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-quality-engine-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
     "lean-quality-no-sorry": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
     },
+    "lean-replay-verification-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-report-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-retro-methodology-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
     "lean-retroactive-audit-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-review-council-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-sair-kernel-optimization-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
@@ -180,27 +330,27 @@
       "passed": true,
       "score": 1.0
     },
-    "math-algebra-category-smoke": {
+    "lean-tautology-triage-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
     },
-    "math-graph-knowledge-smoke": {
+    "lean-upstream-porting-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
     },
-    "math-measure-probability-smoke": {
+    "lean-upstream-pr-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
     },
-    "math-nonlinear-dynamics-smoke": {
+    "lean-verification-gate-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
     },
-    "math-optimization-game-smoke": {
+    "lean-zettelkasten-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
@@ -216,16 +366,6 @@
       "score": 1.0
     },
     "math-strategy-studio-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "math-time-series-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "math-topology-analysis-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
@@ -246,6 +386,21 @@
       "score": 1.0
     },
     "mathlib-lookup-topology-continuous-comp": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "research-council-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "research-synthesis-engine-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "rocq-proof-adapter-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0

@@ -8,7 +8,7 @@
 ## Why this reference exists
 
 `lean-mwe` and `lean-bisect` are deliberately kept as separate skills
-(different artifacts — minimised test file vs. commit-range git
+(different artifacts -- minimised test file vs. commit-range git
 operation), but they almost always appear together in real bug-report
 work. This reference is the joint story: which skill to reach for
 first, when to chain them, and what hand-off they expect.
@@ -27,13 +27,13 @@ first, when to chain them, and what hand-off they expect.
                                                             bump
 ```
 
-Stages 2–4 are tool-driven; stages 1 and 5 are human-driven.
+Stages 2--4 are tool-driven; stages 1 and 5 are human-driven.
 
 ## "Do I need MWE first?" decision table
 
 | Symptom | Need MWE? | Need bisect? | Order |
 |---|---|---|---|
-| `lake build` fails on one file, fresh checkout | **Yes** | Maybe — only if it used to pass | MWE first; bisect optional |
+| `lake build` fails on one file, fresh checkout | **Yes** | Maybe -- only if it used to pass | MWE first; bisect optional |
 | Single `theorem` errors with cryptic message | **Yes** | No | MWE only |
 | `theorem` passes locally, fails in CI | **Yes** | No | MWE first to reproduce CI shape |
 | Slowdown vs. previous toolchain | Optional | **Yes** | Bisect first to find culprit, MWE to confirm |
@@ -48,7 +48,7 @@ The MWE artifact emitted by `lean-mwe` (single `.lean` file, no
 extra-package imports beyond Mathlib/Cslib, exits non-zero on the
 failure) is exactly the test file `lean-bisect` requires (it scripts
 `lake build <file>` and checks the exit code). The two skills are
-deliberately designed to chain at this boundary — keep the MWE
+deliberately designed to chain at this boundary -- keep the MWE
 self-contained so bisect doesn't need patching to swap toolchains.
 
 ## File-it-upstream checklist
@@ -64,7 +64,7 @@ self-contained so bisect doesn't need patching to swap toolchains.
 
 ## See also
 
-- [`../../skills/lean-mwe/SKILL.md`](../../skills/lean-mwe/SKILL.md) — Minimal working example construction
-- [`../../skills/lean-bisect/SKILL.md`](../../skills/lean-bisect/SKILL.md) — Git bisect for regressions
-- [`../../skills/lean-pr/SKILL.md`](../../skills/lean-pr/SKILL.md) — PR submission workflow
-- [`./lean-nightly-infrastructure.md`](./lean-nightly-infrastructure.md) — Nightly testing infrastructure (added in W4 Wave 1 / A4)
+- [`../../skills/lean-mwe/SKILL.md`](../../skills/lean-mwe/SKILL.md) -- Minimal working example construction
+- [`../../skills/lean-bisect/SKILL.md`](../../skills/lean-bisect/SKILL.md) -- Git bisect for regressions
+- [`../../skills/lean-pr/SKILL.md`](../../skills/lean-pr/SKILL.md) -- PR submission workflow
+- [`./lean-nightly-infrastructure.md`](./lean-nightly-infrastructure.md) -- Nightly testing infrastructure (added in W4 Wave 1 / A4)

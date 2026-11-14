@@ -107,7 +107,7 @@ def test_over_concrete_fixed_arity_thresholds():
 
 
 def test_sair_handbook_covers_all_37_laws_and_routes_7_to_11():
-    hb_path = ROOT / "references" / "lean-sair-kernel-optimization-handbook.md"
+    hb_path = ROOT / "references" / "handbooks" / "lean-sair-kernel-optimization-handbook.md"
     assert hb_path.exists()
     text = hb_path.read_text(encoding="utf-8")
 
@@ -178,8 +178,11 @@ def test_sair_handbook_covers_all_37_laws_and_routes_7_to_11():
     assert "twinlit" in text and "Danvy" in text
     assert "Lean.ofReduceBool" in text and "Classical.choice" in text
     assert (ROOT / "scripts" / "lean" / "olean_census.lean").is_file()
-    assert (ROOT / "templates" / "Template_SairDecide.lean").is_file()
-    sair_decide_text = (ROOT / "templates" / "Template_SairDecide.lean").read_text(encoding="utf-8")
+    assert (ROOT / "templates" / "core" / "examples" / "Template_SairDecide.lean").is_file()
+    assert (ROOT / "templates" / "core" / "examples" / "Template_ComputableTwin_Csimp.lean").is_file()
+    assert (ROOT / "templates" / "core" / "examples" / "Template_KernelWHNF_SAIR.lean").is_file()
+    assert (ROOT / "templates" / "core" / "examples" / "Template_Theorem_Exemplar.lean").is_file()
+    sair_decide_text = (ROOT / "templates" / "core" / "examples" / "Template_SairDecide.lean").read_text(encoding="utf-8")
     assert "macro \"sair_decide\"" in sair_decide_text
     assert "decide +kernel" in sair_decide_text
 

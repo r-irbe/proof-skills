@@ -1,23 +1,28 @@
 id: lean-tactic-discipline-no-decide-search
-title: "Tactic discipline: don't use decide as a brute-force search"
+title: 'Tactic discipline: don''t use decide as a brute-force search'
 skill: lean-proof
 ensemble_rubric: lean-tactic-discipline-quality
 difficulty: easy
 input:
-  prompt: |
-    Prove in Lean 4 that the sum 1 + 2 + ... + 100 equals 5050.
+  prompt: 'Prove in Lean 4 that the sum 1 + 2 + ... + 100 equals 5050.
+
     Use a structured proof, not `decide` or `native_decide` — those
+
     are reduction hammers, not arguments.
-  expected_output_substring: |
-    theorem sum_to_100 : (List.range 101).sum = 5050 := by
-      rfl
+
+    '
+  expected_output_substring: "theorem sum_to_100 : (List.range 101).sum = 5050 :=\
+    \ by\n  rfl\n"
 expected:
   contains:
-    - "theorem\\s+sum_to_100"
-    - "rfl|simp|Gauss|Finset\\.sum_range_id"
+  - theorem\s+sum_to_100
+  - rfl|simp|Gauss|Finset\.sum_range_id
   not_contains:
-    - "\\bdecide\\b"
-    - "\\bnative_decide\\b"
-    - "\\bsorry\\b"
+  - \bdecide\b
+  - \bnative_decide\b
+  - \bsorry\b
 grader: deterministic
-tags: [lean, tactic-discipline, quality]
+tags:
+- lean
+- tactic-discipline
+- quality

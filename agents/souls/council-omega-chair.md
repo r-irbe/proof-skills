@@ -22,5 +22,5 @@ Act as Chair Omega of `@lean-review-council`: aggregate votes from Sigma, Phi, N
 ## Container Composition & Handoff Contract
 
 1. Inherit tool permissions and hard safety boundaries from `agents/auditor.md`.
-2. Load domain-specific lookup tables from `references/lean-review-council-handbook.md` when available.
+2. Load domain-specific lookup tables from `references/handbooks/lean-review-council-handbook.md` when available.
 3. Record `"soul_overlay": "council-omega-chair"` and `"from_role": "auditor"` in all `templates/handoff_protocol.json` packets.

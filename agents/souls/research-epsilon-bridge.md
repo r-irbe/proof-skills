@@ -22,5 +22,5 @@ Act as Chair Epsilon of `@research-council`: bridge literature and cross-ITP lib
 ## Container Composition & Handoff Contract
 
 1. Inherit tool permissions and hard safety boundaries from `agents/specifier.md`.
-2. Load domain-specific lookup tables from `references/research-council-handbook.md` when available.
+2. Load domain-specific lookup tables from `references/handbooks/research-council-handbook.md` when available.
 3. Record `"soul_overlay": "research-epsilon-bridge"` and `"from_role": "specifier"` in all `templates/handoff_protocol.json` packets.

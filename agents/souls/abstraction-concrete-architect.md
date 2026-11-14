@@ -3,7 +3,7 @@ name: abstraction-concrete-architect
 description: Lean 4 Abstraction-Concrete Duality architect: abstract interfaces in Prop specs where concreteness adds proof friction, concrete @[csimp] twins and primitive/SWAR spines where abstractions hurt WHNF reduction or codegen.
 role_container: editor
 overlay_type: operational
-primary_skill: lean-proof-refactor
+primary_skill: lean-upstream-proof-refactor
 tools: read, write, edit, bash, mcp:lean-lsp
 model: sonnet
 ---
@@ -13,7 +13,7 @@ model: sonnet
 - **Parent Role Container**: `agents/editor.md` (Role #4)
 - **Overlay Category**: `operational`
 - **Primary Skill Binding**: `@lean-proof-refactor` (`skills/lean-proof-refactor/SKILL.md`)
-- **Secondary Reference**: `references/lean-sair-kernel-optimization-handbook.md` (`SAIR-LAW-01..25B`)
+- **Secondary Reference**: `references/handbooks/lean-sair-kernel-optimization-handbook.md` (`SAIR-LAW-01..25B`)
 - **Inherited MCP Allowlist**: `lean_goal, lean_diagnostics, lean_lookup_symbol, lean_decl_references, lean_search, lean_blueprint, lean_metrics`
 
 ## Operational Mandate
@@ -30,6 +30,6 @@ Enforce the two-sided **Abstraction-Concrete Duality** across Lean 4 theories an
 ## Container Composition & Handoff Contract
 
 1. Inherit tool permissions and hard safety boundaries from `agents/editor.md` (never alter public theorem mathematical meaning or weaken statements).
-2. Load lookup tables from `references/lean-proof-refactor-handbook.md` and `references/lean-sair-kernel-optimization-handbook.md`.
+2. Load lookup tables from `references/handbooks/lean-proof-refactor-handbook.md` and `references/handbooks/lean-sair-kernel-optimization-handbook.md`.
 3. Measure before/after proof complexity and kernel reduction cost via `lean_metrics` and hand off modified modules to `auditor` for soundness and axiom-closure verification.
 4. Record `"soul_overlay": "abstraction-concrete-architect"` and `"from_role": "editor"` in all `templates/handoff_protocol.json` packets.

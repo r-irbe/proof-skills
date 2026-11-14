@@ -4,22 +4,29 @@ description: |
   USE FOR: bootstrapping a Lean 4 project or toolchain, configuring elan, pinning `lean-toolchain`.
   DO NOT USE FOR: building Lake projects (@lean-build); bisecting regressions (@lean-bisect).
   TRIGGERS: elan, lean-toolchain, lake serve, moreServerArgs.
-tier: "hot"
-runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+tier: hot
+runtime_targets:
+- copilot-cli
+- claude-code
+- antigravity
+- pi
+- cursor
+- gemini-cli
 dispatch_targets: []
 handoffs:
   predecessors:
-    - "agent:lean-gateway"
+  - agent:lean-gateway
   successors:
-    - "skill:lean-build"
-    - "skill:lean-proof"
-    - "skill:lean-mwe"
-    - "skill:lean-bisect"
+  - skill:lean-build
+  - skill:lean-proof
+  - skill:lean-mwe
+  - skill:lean-bisect
 metadata:
-  version: "0.3.0"
-  source_spec: "specs/lean/setup/requirements.md"
-  last_reviewed: "2026-09-16"
-r_caveats: [F1]
+  version: 0.3.0
+  source_spec: specs/lean/setup/requirements.md
+  last_reviewed: '2026-09-16'
+r_caveats:
+- F1
 ---
 
 # lean-setup
@@ -78,9 +85,10 @@ lakefiles for
 - **Sister skills:** `@lean-build` for Lake builds; `@lean-proof` for live proving.
 - **Source spec**: `specs/lean/setup/requirements.md`.
 ## Detailed reference
+- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-setup-tables.md`](../../references/cards/lean-setup-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/lean-setup-handbook.md`](../../references/lean-setup-handbook.md) .
+[`references/handbooks/lean-setup-handbook.md`](../../references/handbooks/lean-setup-handbook.md) .
 ## See also
-- [`../../references/lean-setup-handbook.md`](../../references/lean-setup-handbook.md) -- Complete
+- [`../../references/handbooks/lean-setup-handbook.md`](../../references/handbooks/lean-setup-handbook.md) -- Complete
   `lean-setup` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

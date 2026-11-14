@@ -1,0 +1,23 @@
+id: lean-doc-sync-smoke
+title: lean-doc-sync dispatch smoke check
+skill: lean-doc-sync
+ensemble_rubric: lean-proof-quality
+difficulty: easy
+input:
+  prompt: 'Apply the lean-doc-sync skill workflow using references/cards/lean-doc-sync-tables.md.
+
+    '
+  expected_output_substring: 'Follow the lean-doc-sync protocol with zero unproven
+    goals and clean kernel verification.
+
+    '
+expected:
+  contains:
+  - lean-doc-sync|protocol|verify
+  not_contains:
+  - sorry
+  - admit
+grader: deterministic
+tags:
+- smoke
+- lean-doc-sync

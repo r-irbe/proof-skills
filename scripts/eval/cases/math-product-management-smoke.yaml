@@ -1,19 +1,25 @@
 id: math-product-management-smoke
-title: "Roadmap prioritisation rubric"
-skill: math-product-management
-ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
+title: Roadmap prioritisation rubric
+skill: packs/applied-strategy/skills/math-product-management
+ensemble_rubric: applied-domain-quality
 difficulty: easy
 input:
-  prompt: |
-    Prioritise three formalisation tasks against impact, confidence, and effort.
-  expected_output_substring: |
-    Use the RICE / ICE rubric: `score = (Impact × Confidence) / Effort`. Rank tasks by score, pick top-1 for the next sprint, push the rest to the backlog.
+  prompt: 'Prioritise three formalisation tasks against impact, confidence, and effort.
+
+    '
+  expected_output_substring: 'Use the RICE / ICE rubric: `score = (Impact × Confidence)
+    / Effort`. Rank tasks by score, pick top-1 for the next sprint, push the rest
+    to the backlog.
+
+    '
 expected:
   contains:
-    - "RICE|ICE|prioritis|prioritiz"
-    - "backlog|sprint"
+  - RICE|ICE|prioritis|prioritiz
+  - backlog|sprint
   not_contains:
-    - "sorry"
-    - "admit"
+  - sorry
+  - admit
 grader: deterministic
-tags: [math, product-management]
+tags:
+- math
+- product-management

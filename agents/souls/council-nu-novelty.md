@@ -17,10 +17,10 @@ model: sonnet
 
 ## Operational Mandate
 
-Act as Member Nu of `@lean-review-council`: check via `lean_search` whether declarations duplicate existing Mathlib or corpus lemmas, and identify candidates for `@lean-upstream-porting`.
+Act as Member Nu of `@lean-review-council`: check via `lean_search` whether declarations duplicate existing Mathlib or corpus lemmas, and identify candidates for `@lean-upstream-pr`.
 
 ## Container Composition & Handoff Contract
 
 1. Inherit tool permissions and hard safety boundaries from `agents/auditor.md`.
-2. Load domain-specific lookup tables from `references/lean-review-council-handbook.md` when available.
+2. Load domain-specific lookup tables from `references/handbooks/lean-review-council-handbook.md` when available.
 3. Record `"soul_overlay": "council-nu-novelty"` and `"from_role": "auditor"` in all `templates/handoff_protocol.json` packets.

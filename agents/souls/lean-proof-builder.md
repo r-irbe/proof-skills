@@ -3,7 +3,7 @@ name: lean-proof-builder
 description: Step-by-step interactive Lean 4 tactic synthesis specialist.
 role_container: prover
 overlay_type: operational
-primary_skill: lean-proof
+primary_skill: lean-upstream-proof
 tools: read, write, edit, bash, mcp:lean-lsp
 model: sonnet
 ---
@@ -22,5 +22,5 @@ Close `sorry` goals one tactic at a time using `lean_goal(target: "tactic" | "al
 ## Container Composition & Handoff Contract
 
 1. Inherit tool permissions and hard safety boundaries from `agents/prover.md`.
-2. Load domain-specific lookup tables from `references/lean-proof-handbook.md` when available.
+2. Load domain-specific lookup tables from `references/handbooks/lean-proof-handbook.md` when available.
 3. Record `"soul_overlay": "lean-proof-builder"` and `"from_role": "prover"` in all `templates/handoff_protocol.json` packets.

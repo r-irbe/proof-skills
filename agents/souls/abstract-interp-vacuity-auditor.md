@@ -22,5 +22,5 @@ Audit theorems for `NatSubTruncation`, `NatDivModByZero`, inconsistent hypothese
 ## Container Composition & Handoff Contract
 
 1. Inherit tool permissions and hard safety boundaries from `agents/auditor.md`.
-2. Load domain-specific lookup tables from `references/lean-tautology-triage-handbook.md` when available.
+2. Load domain-specific lookup tables from `references/handbooks/lean-tautology-triage-handbook.md` when available.
 3. Record `"soul_overlay": "abstract-interp-vacuity-auditor"` and `"from_role": "auditor"` in all `templates/handoff_protocol.json` packets.

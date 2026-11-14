@@ -102,10 +102,10 @@ bash scripts/setup-env.sh            # Full setup (or: apm run setup)
 
 | Path | What It Contains |
 | :--- | :--- |
-| [`skills/`](skills/) | 65 modular `SKILL.md` contracts paired with deep-dive `references/*-handbook.md` guides. |
+| [`skills/`](skills/) | 38 core Lean `SKILL.md` contracts (+ 7 opt-in pack skills) paired with Layer-1 `references/cards/*-tables.md` and Layer-2 `references/handbooks/*-handbook.md`. |
 | [`agents/`](agents/) | 5 role containers (`specifier`, `prover`, `auditor`, `editor`, `gardener`) + 24 domain specialist overlays. |
 | [`tools/lean-lsp-mcp/`](tools/lean-lsp-mcp/) | Embedded `lean-lsp` MCP server + Rust/WASM `lean-analyzer` (`bin/lean-lsp-mcp.js` auto-bootstraps on first run). |
-| [`templates/`](templates/) | Copy-pasteable Lean 4 module skeletons (`templates/00-CONVENTIONS.md`). |
+| [`templates/`](templates/) | v3 Lean 4 module, `@[csimp]` computable twin, SAIR WHNF, and workflow templates (`templates/{core,workflow,packs}/`) + compile-tested `.lean` exemplars. |
 | [`vendor/itp-ontology/`](vendor/itp-ontology/) | 100-concept ITP Ontology, 10 textbook JSON indexes, and 6-prover tactic concordance. |
 | [`scripts/`](scripts/) | `setup-env.sh`, `check-structure`, `lint/apm_validate.py`, `skill-audit/check_conformance.py`, and Glicko-2 evaluation harnesses. |
 

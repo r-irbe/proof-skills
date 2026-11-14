@@ -1,10 +1,22 @@
-name: itp-cross-porting-smoke
 skill: itp-cross-porting
 description: Smoke test verifying routing, workflow, and handbook link for @itp-cross-porting.
-prompt: "Apply @itp-cross-porting workflow and consult references/itp-cross-porting-handbook.md."
-expected_sections:
-  - "## Routing"
-  - "## Workflow"
-  - "## Recovery & STOP"
-  - "## Handoffs"
-  - "## Detailed reference"
+id: itp-cross-porting-smoke
+title: Smoke test verifying routing, workflow, and handbook link for @itp-cross-porting.
+ensemble_rubric: lean-proof-quality
+difficulty: easy
+input:
+  prompt: 'Apply the @itp-cross-porting workflow and consult references/cards/itp-cross-porting-tables.md
+    and references/handbooks/itp-cross-porting-handbook.md.
+
+    '
+  expected_output_substring: 'Follow the @itp-cross-porting protocol via references/cards/itp-cross-porting-tables.md
+    and verify all outputs cleanly.
+
+    '
+expected:
+  contains:
+  - itp\-cross\-porting|protocol|verify
+  not_contains:
+  - \bsorry\b
+  - \badmit\b
+grader: deterministic

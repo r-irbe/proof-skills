@@ -1,19 +1,29 @@
 ---
 name: "lean-proof-refactor"
 description: |
-  USE FOR: slimming long proofs after they are proven (decomposition into reusable lemmas).
-  DO NOT USE FOR: reviewing proofs for correctness (@lean-proof-review).
-  TRIGGERS: long-proof, decompose proof, slim proof, helper-lemma extraction.
-tier: "warm"
-runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+  USE FOR: slimming long proofs, helper-lemma extraction, and Abstraction-Concrete Duality (@[csimp] bridges).
+  DO NOT USE FOR: soundness review (@lean-proof-review) or SWAR tuning (@lean-sair-kernel-optimization).
+  TRIGGERS: long-proof, decompose proof, slim proof, abstraction-concrete, helper-lemma extraction.
+tier: warm
+runtime_targets:
+- copilot-cli
+- claude-code
+- antigravity
+- pi
+- cursor
+- gemini-cli
 dispatch_targets: []
 handoffs:
-  predecessors: ["skill:lean-proof", "skill:lean-quality-engine"]
-  successors: ["skill:lean-proof-review", "skill:lean-proof"]
+  predecessors:
+  - skill:lean-proof
+  - skill:lean-corpus-audit
+  successors:
+  - skill:lean-proof-review
+  - skill:lean-proof
 metadata:
-  version: "0.1.0"
-  source_spec: "campaign methodology distilled from a 13-decomposition series (2026-09/10)"
-  last_reviewed: "2026-10"
+  version: 0.1.0
+  source_spec: campaign methodology distilled from a 13-decomposition series (2026-09/10)
+  last_reviewed: 2026-10
 ---
 
 # Lean Proof Refactoring (post-hoc proof slimming)
@@ -46,13 +56,14 @@ into short callers plus named, reusable lemmas - without regressions.
   diagnosing a proof
   regression.
 ## Handoffs
-- **Predecessors:** `lean-proof` (the proof exists), `lean-quality-engine` (findings).
+- **Predecessors:** `lean-proof` (the proof exists), `lean-corpus-audit` (findings).
 - **Successors:** `lean-proof-review` (audit the extraction), `lean-proof` (fix the caller).
 ## Detailed reference
+- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-proof-refactor-tables.md`](../../references/cards/lean-proof-refactor-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/lean-proof-refactor-handbook.md`](../../references/lean-proof-refactor-handbook.md) .
+[`references/handbooks/lean-proof-refactor-handbook.md`](../../references/handbooks/lean-proof-refactor-handbook.md) .
 ## See also
-- [`../../references/lean-proof-refactor-handbook.md`](../../references/lean-proof-refactor-handbook.md) --
+- [`../../references/handbooks/lean-proof-refactor-handbook.md`](../../references/handbooks/lean-proof-refactor-handbook.md) --
   Complete
   `lean-proof-refactor` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

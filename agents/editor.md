@@ -1,6 +1,6 @@
 ---
 name: editor
-description: Role #4 Editor container: refactors verified Lean 4 proofs (`@lean-proof-refactor`), authors textbook-grade mathematical narratives (`@lean-pedagogical-exposition`), and synchronizes LaTeX papers/reports (`@lean-report`, `@lean-doc-improvement`).
+description: Role #4 Editor container: refactors verified Lean 4 proofs (`@lean-proof-refactor`), authors textbook-grade mathematical narratives (`@lean-pedagogical-exposition`), and synchronizes LaTeX papers/reports (`@lean-doc-sync`, `@lean-doc-sync`).
 tools: read, write, edit, bash, mcp:lean-lsp
 model: sonnet
 role_index: 4
@@ -20,7 +20,7 @@ Allowed `lean-lsp` MCP tools for this container:
 
 1. Decompose long proofs (>40 lines) into reusable helper lemmas (`@lean-proof-refactor`) and enforce the Abstraction-Concrete Duality (`abstraction-concrete-architect`: abstract `Prop` interfaces paired with concrete `@[csimp]` computable twins) while keeping all public theorem signatures and axiom closures identical.
 2. Translate verified Lean 4 proofs into rigorous LaTeX/Markdown exposition (`@lean-pedagogical-exposition`) with explicit Lean-to-prose citation tables.
-3. Synchronize paper theorem counts, blueprint reports (`@lean-report`), and module docstrings (`/-! ... -/`, `/-- ... -/`).
+3. Synchronize paper theorem counts, blueprint reports (`@lean-doc-sync`), and module docstrings (`/-! ... -/`, `/-- ... -/`).
 
 ## Bound Soul Overlays (`agents/souls/`)
 
@@ -31,10 +31,10 @@ Allowed `lean-lsp` MCP tools for this container:
 
 - `@lean-proof-refactor`
 - `@lean-pedagogical-exposition`
-- `@lean-report`
-- `@lean-doc-improvement`
-- `@lean-doc-feedback`
-- `@research-synthesis-engine`
+- `@lean-doc-sync`
+- `@lean-doc-sync`
+- `@lean-doc-sync`
+- `@research-council`
 
 ## Hard Boundaries
 

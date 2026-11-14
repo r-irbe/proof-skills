@@ -2,23 +2,32 @@
 name: "itp-cross-porting"
 description: |
   USE FOR: porting proofs across Lean 4, Rocq, Isabelle, HOL Light, Agda, and Metamath (CONC-01..20).
-  DO NOT USE FOR: single-prover Lean 4 proving (@lean-proof) or Mathlib PRs (@lean-upstream-porting).
+  DO NOT USE FOR: single-prover Lean 4 proving (@lean-proof) or Mathlib PRs (@lean-upstream-pr).
   TRIGGERS: cross-ITP port, translate proof, Agda to Lean, concordance, CONC-01.
-tier: "warm"
-runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+tier: warm
+runtime_targets:
+- copilot-cli
+- claude-code
+- antigravity
+- pi
+- cursor
+- gemini-cli
 dispatch_targets: []
 handoffs:
-  predecessors: ["skill:lean-gateway", "skill:lean-research", "skill:lean-specification"]
+  predecessors:
+  - skill:lean-gateway
+  - skill:lean-research
+  - skill:lean-specification
   successors:
-    - "skill:rocq-proof-adapter"
-    - "skill:isabelle-isar-adapter"
-    - "skill:hol-metamath-adapter"
-    - "skill:lean-proof"
-    - "skill:lean-proof-review"
+  - skill:rocq-proof-adapter
+  - skill:isabelle-isar-adapter
+  - skill:hol-metamath-adapter
+  - skill:lean-proof
+  - skill:lean-proof-review
 metadata:
-  version: "0.2.0"
-  source_spec: "skills/itp-cross-porting/SKILL.md (this file)"
-  last_reviewed: "2026-10-27"
+  version: 0.2.0
+  source_spec: skills/itp-cross-porting/SKILL.md (this file)
+  last_reviewed: '2026-10-27'
 ---
 
 # Cross-ITP Proof Porting & Concordance Router (`CONC-01..20`)
@@ -37,7 +46,7 @@ families (`lean4`,
 - **DO NOT USE FOR:** standard Lean 4 proof authoring without a foreign source proof (delegate to
   `@lean-proof`); porting existing
   Lean 4
-  corpus lemmas into Mathlib4 PRs (delegate to `@lean-upstream-porting`).
+  corpus lemmas into Mathlib4 PRs (delegate to `@lean-upstream-pr`).
 - **TRIGGERS:** cross-ITP port, translate proof, Agda to Lean, Coq to Lean, Isabelle to Lean, HOL Light to
   Lean, Metamath to Lean,
   `CONC-01`..`CONC-20`.
@@ -68,10 +77,11 @@ families (`lean4`,
   `skill:lean-proof`,
   `skill:lean-proof-review`.
 ## Detailed reference
+- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/itp-cross-porting-tables.md`](../../references/cards/itp-cross-porting-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/itp-cross-porting-handbook.md`](../../references/itp-cross-porting-handbook.md) .
+[`references/handbooks/itp-cross-porting-handbook.md`](../../references/handbooks/itp-cross-porting-handbook.md) .
 ## See also
-- [`../../references/itp-cross-porting-handbook.md`](../../references/itp-cross-porting-handbook.md) --
+- [`../../references/handbooks/itp-cross-porting-handbook.md`](../../references/handbooks/itp-cross-porting-handbook.md) --
   Complete
   `itp-cross-porting` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

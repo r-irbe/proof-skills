@@ -1,18 +1,24 @@
 id: lean-report-smoke
-title: "lean-report dispatch smoke check"
-skill: lean-report
+title: lean-report dispatch smoke check
+skill: lean-doc-sync
 ensemble_rubric: applied-domain-quality
 difficulty: easy
 input:
-  prompt: |
-    Apply the lean-report skill workflow and summarize the primary verification steps.
-  expected_output_substring: |
-    Follow the lean-report protocol and verify all outputs without sorry or admit.
+  prompt: 'Apply the lean-report skill workflow and summarize the primary verification
+    steps.
+
+    '
+  expected_output_substring: 'Follow the lean-report protocol and verify all outputs
+    with zero unproven goals and clean kernel verification.
+
+    '
 expected:
   contains:
-    - "lean-report|protocol|verify"
+  - lean-report|protocol|verify
   not_contains:
-    - "sorry"
-    - "admit"
+  - sorry
+  - admit
 grader: deterministic
-tags: [smoke, lean-report]
+tags:
+- smoke
+- lean-report

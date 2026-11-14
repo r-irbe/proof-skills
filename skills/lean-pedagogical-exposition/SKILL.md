@@ -4,16 +4,25 @@ description: |
   USE FOR: translating Lean 4 formal proofs into human-readable textbook-grade mathematical descriptions.
   DO NOT USE FOR: closing open goals in Lean (@lean-proof).
   TRIGGERS: pedagogical-math, math-exposition, proof-narrative.
-tier: "hot"
-runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+tier: hot
+runtime_targets:
+- copilot-cli
+- claude-code
+- antigravity
+- pi
+- cursor
+- gemini-cli
 dispatch_targets: []
 handoffs:
-  predecessors: ["skill:lean-formalization-breakdown", "skill:lean-blueprint"]
-  successors: ["skill:lean-zettelkasten", "skill:lean-doc-improvement"]
+  predecessors:
+  - skill:lean-blueprint
+  successors:
+  - skill:lean-retro-methodology
+  - skill:lean-doc-sync
 metadata:
-  version: "0.1.0"
-  source_spec: "references/lean_to_math_exposition_patterns.md"
-  last_reviewed: "2026-09-28"
+  version: 0.1.0
+  source_spec: references/lean_to_math_exposition_patterns.md
+  last_reviewed: '2026-09-28'
 ---
 
 # lean-pedagogical-exposition
@@ -32,7 +41,7 @@ metadata:
   - Producing learning zettels and concept cards for the knowledge garden.
 - **DO NOT USE FOR:**
 ## Workflow
-1. **Select Landmark**: Identify target theorem or definition from `@lean-formalization-breakdown`.
+1. **Select Landmark**: Identify target theorem or definition from `@lean-blueprint`.
 2. **Extract Dependencies**: Query `lean-lsp-mcp` or `dep_graph.sh` to obtain the transitive premise set.
 3. **Draft Math Formulation**: Translate Lean types and hypotheses into standard mathematical notation ($L^2$,
   $H^s$, $\nabla
@@ -55,13 +64,15 @@ metadata:
 - **Successors**: `skill:lean-zettelkasten` (saving to knowledge graph), `skill:lean-doc-improvement`
   (documentation polishing).
 - **Reference Catalog**:
-  [`references/lean_to_math_exposition_patterns.md`](../../references/lean_to_math_exposition_patterns.md)
+  [`references/protocols/lean_to_math_exposition_patterns.md`](../../references/protocols/lean_to_math_exposition_patterns.md)
 ## Detailed reference
+- **Layer-1 Fast Lookup Card (read first)**:
+  [`references/cards/lean-pedagogical-exposition-tables.md`](../../references/cards/lean-pedagogical-exposition-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/lean-pedagogical-exposition-handbook.md`](../../references/lean-pedagogical-exposition-handbook.md)
+[`references/handbooks/lean-pedagogical-exposition-handbook.md`](../../references/handbooks/lean-pedagogical-exposition-handbook.md)
 .
 ## See also
-- [`../../references/lean-pedagogical-exposition-handbook.md`](../../references/lean-pedagogical-exposition-handbook.md)
+- [`../../references/handbooks/lean-pedagogical-exposition-handbook.md`](../../references/handbooks/lean-pedagogical-exposition-handbook.md)
   --
   Complete `lean-pedagogical-exposition` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

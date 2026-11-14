@@ -1,24 +1,15 @@
 # apm.yml -- Agent Package Manager manifest for proof-skills
 # Spec: https://github.com/microsoft/apm
 name: proof-skills
-version: 0.3.0
-description: "First-party toolkit of 65 active v2 skills, 5 Role-Actor Containers, 24 soul overlays, 6-prover concordance (CONC-01..20), and modular template packs for Lean 4 formalization, AI/KRR reasoning, and cross-ITP verification."
+version: 0.4.0
+description: "First-party toolkit of 38 active v2/v3 Lean 4 skills (+ 7 opt-in applied-strategy pack skills), 5 Role-Actor Containers, 24 soul overlays, 4-layer progressive reference cards/handbooks, 6-prover concordance (CONC-01..20), and modular v3 template packs."
 author: "Radu Irbe"
 license: Apache-2.0
 type: hybrid
 
-# First-party skill packs & modular APM profiles:
-#   - core: Core Lean 4 proving, repair, build, setup, bisect, MWE, and kernel optimization
-#   - math: Unified Lean 4 mathematical domain skills (foundations, discrete, stochastic, dynamical, optimization, analysis, competitive, convergence)
-#   - ai: Verifiable AI, causal/deontic reasoning, KRR, bigraphs, nested learning, security, and applied reasoning
-#   - governance: Review/Research councils, enforcement, axiom closure, tautology triage, RETRO, Zettelkasten, and upstream porting
-#   - multi-prover: Cross-ITP concordance router and dialect adapters (Lean 4, Rocq, Isabelle, HOL Light, Agda, Metamath)
-#   - pack-arithmetic-geometry: 131 ModularJacobian & FLT templates in templates/packs/arithmetic-geometry/
-#   - pack-fluid-pde: 10 Fluid PDE templates in templates/packs/fluid-pde/
-#   - pack-altproof: Standalone AltProof Lean 4 Lake package (packages/altproof/) & Python CLI (scripts/lean/altproof/pyproject.toml)
 profiles:
   core:
-    description: "Core Lean 4 proving, specification, proof repair, build, and SAIR kernel optimization."
+    description: "Core Lean 4 proving, specification, Plausible falsification, proof repair, build, and SAIR kernel WHNF optimization."
     agents:
       - agents/specifier.md
       - agents/prover.md
@@ -26,23 +17,24 @@ profiles:
       - skills/lean-gateway
       - skills/lean-specification
       - skills/lean-blueprint
+      - skills/counterexample-first-proving
       - skills/lean-proof
       - skills/lean-proof-repair
       - skills/lean-core-only
+      - skills/lean-sair-kernel-optimization
       - skills/lean-build
       - skills/lean-setup
       - skills/lean-bisect
       - skills/lean-mwe
-      - skills/counterexample-first-proving
-      - skills/lean-sair-kernel-optimization
     templates:
-      - templates/Template_*.lean
-      - templates/Template_*.md
+      - templates/00-CONVENTIONS.md
+      - templates/core/*.md
+      - templates/core/examples/*.lean
     packages:
       - packages/altproof
       - scripts/lean/altproof/pyproject.toml
   math:
-    description: "Unified Lean 4 mathematical formalization skills and 3-table lookup handbooks."
+    description: "Unified Lean 4 mathematical formalization skills, Layer-1 lookup cards, and Layer-2 handbooks."
     agents:
       - agents/specifier.md
       - agents/prover.md
@@ -53,114 +45,70 @@ profiles:
       - skills/lean-math-dynamical
       - skills/lean-math-optimization
       - skills/lean-math-analysis
-      - skills/lean-competitive-math
-      - skills/lean-convergence-verification
+    templates:
+      - templates/packs/domain-starters/*.md
   ai:
-    description: "Formal AI safety, causal/deontic reasoning, knowledge formalization, bigraphs, nested learning, and security."
+    description: "Formal AI safety, nested learning, causal/deontic/applied reasoning, ontologies, and security formalization."
     agents:
       - agents/specifier.md
       - agents/prover.md
+      - agents/auditor.md
     skills:
       - skills/lean-ai-formalization
-      - skills/lean-causal-reasoning
       - skills/lean-knowledge-formalization
-      - skills/lean-applied-reasoning
-      - skills/lean-bigraph-modeling
-      - skills/lean-nested-learning
       - skills/lean-security-formalization
-      - skills/ai-guard-judge-eval
   governance:
-    description: "Read-only auditing, axiom lockdown, Review/Research Councils, pedagogical exposition, RETRO, and Zettelkasten."
+    description: "Deterministic verification gates, 4-layer proof review, corpus audits, Review/Research Councils, refactoring, pedagogy, doc sync, RETRO/Zettelkasten, dependencies, and upstream PRs."
     agents:
       - agents/auditor.md
       - agents/editor.md
       - agents/gardener.md
     skills:
+      - skills/lean-verification-gate
       - skills/lean-proof-review
-      - skills/lean-enforcement
-      - skills/lean-axiom-closure
-      - skills/lean-replay-verification
       - skills/lean-tautology-triage
-      - skills/lean-quality-engine
+      - skills/lean-corpus-audit
       - skills/lean-review-council
-      - skills/lean-deep-audit
-      - skills/lean-retroactive-audit
       - skills/lean-proof-refactor
       - skills/lean-pedagogical-exposition
-      - skills/lean-report
-      - skills/lean-doc-improvement
-      - skills/lean-doc-requirements
-      - skills/lean-doc-feedback
+      - skills/lean-doc-sync
       - skills/lean-research
-      - skills/lean-package-research
-      - skills/epistemic-discovery-engine
-      - skills/epistemic-mapping
       - skills/research-council
-      - skills/research-synthesis-engine
       - skills/lean-retro-methodology
-      - skills/lean-zettelkasten
-      - skills/lean-upstream-porting
-      - skills/lean-pr
-      - skills/lean-vendor-substrate
-      - skills/lean-formalization-breakdown
-      - skills/lean-dag-visualizer
-      - skills/lean-integration-protocol
-      - skills/math-project-management
-      - skills/math-product-management
-      - skills/math-strategy-studio
-      - skills/applied-engineering-disciplines
-      - skills/applied-legal-reasoning
-      - skills/applied-data-information-security
+      - skills/lean-dependency-management
+      - skills/lean-upstream-pr
+    templates:
+      - templates/workflow/*.md
   multi-prover:
-    description: "6-prover concordance (CONC-01..20) and dialect adapters for Rocq, Isabelle/Isar, HOL Light, Agda, and Metamath."
+    description: "Cross-ITP concordance router and dialect adapters (Lean 4, Rocq, Isabelle, HOL Light, Agda, Metamath)."
     agents:
+      - agents/specifier.md
       - agents/prover.md
     skills:
       - skills/itp-cross-porting
       - skills/rocq-proof-adapter
       - skills/isabelle-isar-adapter
       - skills/hol-metamath-adapter
-    dialects:
-      - references/dialects/lean4.json
-      - references/dialects/rocq.json
-      - references/dialects/isabelle.json
-      - references/dialects/hol_light.json
-      - references/dialects/agda.json
-      - references/dialects/metamath.json
+  pack-applied-strategy:
+    description: "Opt-in non-Lean engineering, legal, judge-evaluation, and mathematical product/project strategy skills."
+    skills:
+      - packs/applied-strategy/skills/ai-guard-judge-eval
+      - packs/applied-strategy/skills/applied-data-information-security
+      - packs/applied-strategy/skills/applied-engineering-disciplines
+      - packs/applied-strategy/skills/applied-legal-reasoning
+      - packs/applied-strategy/skills/math-product-management
+      - packs/applied-strategy/skills/math-project-management
+      - packs/applied-strategy/skills/math-strategy-studio
   pack-arithmetic-geometry:
-    description: "131 ModularJacobian, Euler System, Heegner Point, and FLT templates."
+    description: "143 ModularJacobian, FLT, Euler system, Heegner point, Serre weight, and regulator templates."
     templates:
       - templates/packs/arithmetic-geometry/*.md
   pack-fluid-pde:
-    description: "10 Fluid PDE, Vorticity, Gevrey Class, and Reynolds Cascade templates."
+    description: "10 Fluid PDE, vorticity confinement, Gevrey regularity, and Reynolds cascade templates."
     templates:
       - templates/packs/fluid-pde/*.md
   pack-altproof:
-    description: "Standalone AltProof Lean 4 meta-tactic Lake package (`packages/altproof/`) and Python analysis CLI (`scripts/lean/altproof/pyproject.toml`)."
-    skills:
-      - skills/lean-proof
-      - skills/lean-proof-refactor
-      - skills/lean-sair-kernel-optimization
+    description: "Standalone AltProof Lean 4 Lake package and Python CLI."
     packages:
       - packages/altproof
       - scripts/lean/altproof/pyproject.toml
-
-dependencies:
-  apm: []
-  mcp:
-    - name: lean-lsp
-      registry: false
-      transport: stdio
-      command: node
-      args:
-        - "--experimental-strip-types"
-        - "${PROOF_SKILLS_ROOT}/tools/lean-lsp-mcp/bin/lean-lsp-mcp.js"
-      description: "Bundled Lean 4 LSP + .ilean + Kuzu knowledge-graph MCP server (21 consolidated tools across 6 prover families; requires stable Node >=22.6.0)"
-
-scripts:
-  setup: "bash scripts/setup-env.sh"
-  doctor: "bash scripts/setup-env.sh --doctor"
-  validate: "python3 scripts/lint/apm_validate.py --strict"
-  conformance: "python3 scripts/skill-audit/check_conformance.py --fail-on any"
-  structure: "python3 scripts/check-structure --strict"
-  zk-lint: "python3 scripts/lean/zettelkasten_lint.py --zk-dir zettelkasten --strict"

@@ -22,5 +22,5 @@ Design rigorous 3-part theorem specifications (Preconditions, Postconditions, Wi
 ## Container Composition & Handoff Contract
 
 1. Inherit tool permissions and hard safety boundaries from `agents/specifier.md`.
-2. Load domain-specific lookup tables from `references/lean-specification-handbook.md` when available.
+2. Load domain-specific lookup tables from `references/handbooks/lean-specification-handbook.md` when available.
 3. Record `"soul_overlay": "lean-spec-architect"` and `"from_role": "specifier"` in all `templates/handoff_protocol.json` packets.

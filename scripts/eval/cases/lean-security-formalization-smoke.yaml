@@ -1,26 +1,32 @@
 id: lean-security-formalization-smoke
-ensemble_rubric: lean-proof-quality  # Round 21 A1: rewrote prompt to demand Lean 4 syntax
-title: "BLP no-read-up property (Lean 4 def)"
+ensemble_rubric: lean-proof-quality
+title: BLP no-read-up property (Lean 4 def)
 skill: lean-security-formalization
 difficulty: easy
 input:
-  prompt: |
-    Write a Lean 4 `def NoReadUp` for the Bell-LaPadula no-read-up property. Signature:
-    `(s : Subject) (o : Object) (classification : Object → Nat) (clearance : Subject → Nat) (canRead : Subject → Object → Prop) : Prop`.
+  prompt: 'Write a Lean 4 `def NoReadUp` for the Bell-LaPadula no-read-up property.
+    Signature:
+
+    `(s : Subject) (o : Object) (classification : Object → Nat) (clearance : Subject
+    → Nat) (canRead : Subject → Object → Prop) : Prop`.
+
     Reply with code only.
-  expected_output_substring: |
-    def NoReadUp (s : Subject) (o : Object)
-        (classification : Object → Nat) (clearance : Subject → Nat)
-        (canRead : Subject → Object → Prop) : Prop :=
-      canRead s o → classification o ≤ clearance s
+
+    '
+  expected_output_substring: "def NoReadUp (s : Subject) (o : Object)\n    (classification\
+    \ : Object → Nat) (clearance : Subject → Nat)\n    (canRead : Subject → Object\
+    \ → Prop) : Prop :=\n  canRead s o → classification o ≤ clearance s\n"
 expected:
   contains:
-    - "def\\s+NoReadUp"
-    - "clearance"
-    - "classification"
-    - "canRead"
+  - def\s+NoReadUp
+  - clearance
+  - classification
+  - canRead
   not_contains:
-    - "sorry"
-    - "admit"
+  - sorry
+  - admit
 grader: deterministic
-tags: [lean, security, BLP]
+tags:
+- lean
+- security
+- BLP

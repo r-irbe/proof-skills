@@ -1,16 +1,50 @@
-# Templates (`templates/` & `templates/packs/`)
+# Templates (`templates/core/`, `templates/workflow/`, and `templates/packs/`)
 
-Reusable Lean 4 code, specification, governance, and domain formalization templates partitioned into **59 Core & Domain Templates** (`templates/`) and **2 Domain Packs** (`templates/packs/`).
+Reusable v3 Lean 4 module skeletons, `@[csimp]` Abstraction-Concrete Duality bridges, SAIR kernel WHNF patterns, workflow schemas, and opt-in domain packs.
 
-## 1. Partition Layout (`200 = 59 + 131 + 10`)
+## 1. Partition Layout
 
-| Partition | Path | Count | APM Pack Profile | Scope |
-| :--- | :--- | ---: | :--- | :--- |
-| **Core & Domain Templates** | `templates/` | 59 | `core`, `math`, `ai`, `governance` | Project lakefiles, proof strategy, AltProof tactics, Lyapunov/Markov/PDE/bigraph/causal/deontic/game/ergodic starters, review council JSON/Markdown schemas, and `handoff_protocol.json`. |
-| **Arithmetic Geometry & FLT Pack** | `templates/packs/arithmetic-geometry/` | 131 | `pack-arithmetic-geometry` | 111 `Template_ModularJacobian*.md` templates + 20 Euler system, Heegner point, Fontaine-Laffaille, Eichler-Shimura, Mazur control, and Ribet level-lowering templates. |
-| **Fluid PDE & Continuum Dynamics Pack** | `templates/packs/fluid-pde/` | 10 | `pack-fluid-pde` | Axisymmetric swirl, bilinear duality, Gevrey regularity, logarithmic gradient, Piola transform, potential lifting, Reynolds cascade, scaling limits, Thom-Mather flows, and vorticity confinement. |
+| Partition | Path | Count | Scope |
+| :--- | :--- | ---: | :--- |
+| **Root Standards & Handoff** | [`00-CONVENTIONS.md`](00-CONVENTIONS.md), [`handoff_protocol.json`](handoff_protocol.json) | 2 | v3 cross-template conventions (`INV-001`, `lean-lsp`, `@[csimp]`) & role handoff schema. |
+| **Core Lean 4 Templates** | [`core/`](core/) + [`core/examples/`](core/examples/) | 13 + 5 | Canonical module, `@[csimp]` computable twin, SAIR WHNF, tactic, bridge, MWE, bisect, and verification templates + kernel-checked `.lean` exemplars. |
+| **Workflow & Governance** | [`workflow/`](workflow/) | 9 | Theorem specs (`Template_Spec`), PRs, Review Council, Blueprints, RETRO logs, Zettelkasten, and Pedagogical Walkthroughs. |
+| **Domain Starters Pack** | [`packs/domain-starters/`](packs/domain-starters/) | 22 | Analysis, arithmetic, probability, measure, dynamics, Lyapunov, bigraph, BFT consensus, IFS fractals, info-geometry, and graph starters. |
+| **Arithmetic Geometry & FLT Pack** | [`packs/arithmetic-geometry/`](packs/arithmetic-geometry/) | 143 | ModularJacobian, Euler system, Heegner point, Fontaine-Laffaille, Serre weight, Brauer-Nesbitt, and regulator templates. |
+| **Fluid PDE Pack** | [`packs/fluid-pde/`](packs/fluid-pde/) | 10 | Vorticity confinement, Gevrey regularity, Reynolds cascade, Piola transform, and continuum flow templates. |
 
-## 2. Core & Domain Templates (`templates/`)
+## 2. Core Templates (`templates/core/`)
 
-- **Lean 4 Starters (`.lean` & `.md`)**: `Template_Foundation`, `Template_Arithmetic`, `Template_Analysis`, `Template_Algebra`, `Template_Probability`, `Template_Measure`, `Template_Dynamics`, `Template_Lyapunov`, `Template_Cusp`, `Template_GameTheory`, `Template_Ergodic`, `Template_PDE`, `Template_TimeSeries`, `Template_Bigraph`, `Template_Causal`, `Template_Deontic`, `Template_StatMech`, `Template_Graph`, `Template_Safety`, `Template_Security`, `Template_Lakefile`, `Template_ProofStrategy`, `Template_AltProofTactics`, `Template_Verification`, `Template_Performance`.
-- **Governance & Handoff Schemas**: `handoff_protocol.json` (v2.0 Role-Actor Container + Soul Overlay + Facet Registry envelope), `Template_CouncilCharter.md`, `Template_QualityGate.md`, `Template_RetroReport.md`, `Template_ZettelNote.md`, `Template_FormalizationBreakdown.md`, `Template_BlueprintTex.md`, `Template_PaperUpdate.md`, `Template_RequirementSpec.md`, `Template_ReviewChecklists.json`.
+- [`core/Template_AltProofTactics.md`](core/Template_AltProofTactics.md)
+- [`core/Template_Bisect.md`](core/Template_Bisect.md)
+- [`core/Template_Bridge.md`](core/Template_Bridge.md)
+- [`core/Template_ComputableTwin_Csimp.md`](core/Template_ComputableTwin_Csimp.md)
+- [`core/Template_DataModule.md`](core/Template_DataModule.md)
+- [`core/Template_FinalCheck.md`](core/Template_FinalCheck.md)
+- [`core/Template_KernelWHNF_SAIR.md`](core/Template_KernelWHNF_SAIR.md)
+- [`core/Template_Lakefile.md`](core/Template_Lakefile.md)
+- [`core/Template_MWE.md`](core/Template_MWE.md)
+- [`core/Template_Refactoring.md`](core/Template_Refactoring.md)
+- [`core/Template_TacticHelper.md`](core/Template_TacticHelper.md)
+- [`core/Template_Theorem.md`](core/Template_Theorem.md)
+- [`core/Template_Verification.md`](core/Template_Verification.md)
+
+### Compile-Tested `.lean` Exemplars (`templates/core/examples/`)
+
+- [`core/examples/Template_AltProofTactics.lean`](core/examples/Template_AltProofTactics.lean)
+- [`core/examples/Template_ComputableTwin_Csimp.lean`](core/examples/Template_ComputableTwin_Csimp.lean)
+- [`core/examples/Template_KernelWHNF_SAIR.lean`](core/examples/Template_KernelWHNF_SAIR.lean)
+- [`core/examples/Template_SairDecide.lean`](core/examples/Template_SairDecide.lean)
+- [`core/examples/Template_Theorem_Exemplar.lean`](core/examples/Template_Theorem_Exemplar.lean)
+
+## 3. Workflow Templates (`templates/workflow/`)
+
+- [`workflow/Template_Blueprint.md`](workflow/Template_Blueprint.md)
+- [`workflow/Template_Council.md`](workflow/Template_Council.md)
+- [`workflow/Template_FormalizationBreakdown.md`](workflow/Template_FormalizationBreakdown.md)
+- [`workflow/Template_LeanBlueprintChapter.md`](workflow/Template_LeanBlueprintChapter.md)
+- [`workflow/Template_PR.md`](workflow/Template_PR.md)
+- [`workflow/Template_PedagogicalProofWalkthrough.md`](workflow/Template_PedagogicalProofWalkthrough.md)
+- [`workflow/Template_RetroLog.md`](workflow/Template_RetroLog.md)
+- [`workflow/Template_Spec.md`](workflow/Template_Spec.md)
+- [`workflow/Template_Zettelkasten.md`](workflow/Template_Zettelkasten.md)

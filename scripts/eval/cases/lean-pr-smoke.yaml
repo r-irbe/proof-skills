@@ -1,20 +1,27 @@
 id: lean-pr-smoke
-ensemble_rubric: applied-domain-quality  # Round 21 A1: process/workflow, not Lean code
-title: "Title a Mathlib PR"
-skill: lean-pr
+ensemble_rubric: applied-domain-quality
+title: Title a Mathlib PR
+skill: lean-upstream-pr
 difficulty: easy
 input:
-  prompt: |
-    Title a PR for leanprover-community/mathlib4 that adds a lemma to Mathlib.Algebra.Group.Basic.
-  expected_output_substring: |
-    Use `feat(Algebra/Group/Basic): add lemma foo_eq_bar` — Mathlib uses `<type>(<scope>): <subject>`, imperative present tense, no period. Run `lake exe mk_all` if files were added/removed.
+  prompt: 'Title a PR for leanprover-community/mathlib4 that adds a lemma to Mathlib.Algebra.Group.Basic.
+
+    '
+  expected_output_substring: 'Use `feat(Algebra/Group/Basic): add lemma foo_eq_bar`
+    — Mathlib uses `<type>(<scope>): <subject>`, imperative present tense, no period.
+    Run `lake exe mk_all` if files were added/removed.
+
+    '
 expected:
   contains:
-    - "feat\\("
-    - "lake exe mk_all"
-    - "imperative"
+  - feat\(
+  - lake exe mk_all
+  - imperative
   not_contains:
-    - "Period"
-    - "trailing period."
+  - Period
+  - trailing period.
 grader: deterministic
-tags: [lean, pr, mathlib]
+tags:
+- lean
+- pr
+- mathlib

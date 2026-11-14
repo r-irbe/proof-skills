@@ -20,10 +20,10 @@ Rather than proliferating top-level agent containers, specialized personas live 
 
 ### A. 5 Migrated Analysts
 1. `proof-reviewer` -> `auditor` (`@lean-proof-review`)
-2. `enforcement-auditor` -> `auditor` (`@lean-enforcement`)
-3. `formalization-breakdown-curator` -> `specifier` (`@lean-formalization-breakdown`)
+2. `enforcement-auditor` -> `auditor` (`@lean-verification-gate`)
+3. `formalization-breakdown-curator` -> `specifier` (`@lean-blueprint`)
 4. `math-pedagogy-author` -> `editor` (`@lean-pedagogical-exposition`)
-5. `formalization-dag-navigator` -> `specifier` (`@lean-dag-visualizer`)
+5. `formalization-dag-navigator` -> `specifier` (`@lean-blueprint`)
 
 ### B. 9 Operational Specialists
 6. `lean-proof-builder` -> `prover` (`@lean-proof`)

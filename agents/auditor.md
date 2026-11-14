@@ -37,14 +37,14 @@ Allowed `lean-lsp` MCP tools for this container:
 ## Bound Skills (`skills/`)
 
 - `@lean-proof-review`
-- `@lean-enforcement`
-- `@lean-axiom-closure`
-- `@lean-replay-verification`
+- `@lean-verification-gate`
+- `@lean-verification-gate`
+- `@lean-verification-gate`
 - `@lean-tautology-triage`
-- `@lean-quality-engine`
+- `@lean-corpus-audit`
 - `@lean-review-council`
-- `@lean-deep-audit`
-- `@lean-retroactive-audit`
+- `@lean-corpus-audit`
+- `@lean-corpus-audit`
 
 ## Hard Boundaries
 

@@ -1,19 +1,25 @@
 id: lean-doc-improvement-smoke
-title: "Metric sync between paper + code"
-skill: lean-doc-improvement
-ensemble_rubric: lean-doc-quality  # R27 audit: explicit (was implicit fallback)
+title: Metric sync between paper + code
+skill: lean-doc-sync
+ensemble_rubric: lean-doc-quality
 difficulty: easy
 input:
-  prompt: |
-    Sync the theorem count claimed in the paper appendix with the codebase.
-  expected_output_substring: |
-    Run `python3 scripts/metric_sync.py` to count `^theorem|^lemma` per module and update the paper's `\description` list and the contribution-inventory totals.
+  prompt: 'Sync the theorem count claimed in the paper appendix with the codebase.
+
+    '
+  expected_output_substring: 'Run `python3 scripts/metric_sync.py` to count `^theorem|^lemma`
+    per module and update the paper''s `\description` list and the contribution-inventory
+    totals.
+
+    '
 expected:
   contains:
-    - "metric_sync|theorem count"
-    - "\\\\description|paper"
+  - metric_sync|theorem count
+  - \\description|paper
   not_contains:
-    - "sorry"
-    - "admit"
+  - sorry
+  - admit
 grader: deterministic
-tags: [lean, doc-improvement]
+tags:
+- lean
+- doc-improvement

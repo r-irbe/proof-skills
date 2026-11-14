@@ -1,19 +1,29 @@
 ---
 name: "lean-knowledge-formalization"
 description: |
-  USE FOR: Knowledge representation, ontology engineering, symbolic AI, commonsense reasoning, causal reasoning.
-  DO NOT USE FOR: KRR methodology not in Lean (@lean-knowledge-formalization).
-  TRIGGERS: knowledge formalisation, ontology in Lean, symbolic AI Lean.
-tier: "warm"
-runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+  USE FOR: ontologies, causal DAGs, counterfactuals, provenance bridges, and applied/deontic reasoning in Lean 4.
+  DO NOT USE FOR: neural safety/nested learning (@lean-ai-formalization).
+  TRIGGERS: knowledge formalization, ontology, causal DAG, counterfactual, deontic, applied reasoning.
+tier: warm
+runtime_targets:
+- copilot-cli
+- claude-code
+- antigravity
+- pi
+- cursor
+- gemini-cli
 dispatch_targets: []
 handoffs:
-  predecessors: ["agent:gateway", "skill:lean-research"]
-  successors: ["skill:lean-proof-review", "skill:lean-causal-reasoning", "skill:lean-zettelkasten"]
+  predecessors:
+  - agent:gateway
+  - skill:lean-research
+  successors:
+  - skill:lean-proof-review
+  - skill:lean-retro-methodology
 metadata:
-  version: "0.2.0"
-  source_spec: "skills/lean-knowledge-formalization/SKILL.md (this file)"
-  last_reviewed: "2026-05-27"
+  version: 0.2.0
+  source_spec: skills/lean-knowledge-formalization/SKILL.md (this file)
+  last_reviewed: '2026-05-27'
 ---
 
 # Lean 4 Knowledge Systems & Reasoning Formalization
@@ -34,21 +44,21 @@ architectures.
 - **DO NOT USE FOR:** KRR methodology not in Lean (use @lean-knowledge-formalization); commonsense reasoning
   methodology (use
   @lean-knowledge-formalization);
-  causal/deontic methodology (use @lean-causal-reasoning).
+  causal/deontic methodology (use @lean-knowledge-formalization).
 - **TRIGGERS:** knowledge formalisation, ontology in Lean, symbolic AI Lean, abductive inference Lean, legal
   reasoning Lean.
 ## Workflow
 1. Classify the knowledge object: ontology, taxonomy, causal model, deontic norm, or abductive rule.
 2. Pick the matching encoding pattern from the body (description-logic encoding, SCM encoding, etc.).
 3. Produce the Lean encoding; check Mathlib primitives at the current pin.
-4. Hand off: to `@lean-causal-reasoning` if causal-DAG-specific, to `@lean-proof-review` for review, to
-  `@lean-zettelkasten`.
+4. Hand off: to `@lean-knowledge-formalization` if causal-DAG-specific, to `@lean-proof-review` for review, to
+  `@lean-retro-methodology`.
 ## Recovery & STOP
-- STOP if the question is methodological (not Lean) — delegate to `@lean-knowledge-formalization` /
+- STOP if the question is methodological (not Lean) -- delegate to `@lean-knowledge-formalization` /
   `@lean-knowledge-formalization` /
-  `@lean-causal-reasoning`.
-- STOP if Mathlib lacks the needed structure — escalate to `@lean-research`.
-- STOP if the encoding requires graph-theoretic foundations not in the body — delegate to
+  `@lean-knowledge-formalization`.
+- STOP if Mathlib lacks the needed structure -- escalate to `@lean-research`.
+- STOP if the encoding requires graph-theoretic foundations not in the body -- delegate to
   `@lean-math-discrete` or
   `@lean-math-discrete`.
 ## Handoffs
@@ -56,8 +66,10 @@ architectures.
 - **Successors:** `skill:lean-proof-review`, `skill:lean-causal-reasoning`, `skill:lean-zettelkasten`.
 ---
 ## Detailed reference
+- **Layer-1 Fast Lookup Card (read first)**:
+  [`references/cards/lean-knowledge-formalization-tables.md`](../../references/cards/lean-knowledge-formalization-tables.md)
 Full content for `lean-knowledge-formalization` lives in
-[`references/lean-knowledge-formalization-handbook.md`](../../references/lean-knowledge-formalization-handbook.md)
+[`references/handbooks/lean-knowledge-formalization-handbook.md`](../../references/handbooks/lean-knowledge-formalization-handbook.md)
 .
 Load that file when the skill is convened; the SKILL.md only carries
 the dispatch contract and the parts index.
@@ -71,10 +83,10 @@ the dispatch contract and the parts index.
 | Part 6 | Research Council Integration |
 ---
 ## See also
-- [`../../references/lean-knowledge-formalization-handbook.md`](../../references/lean-knowledge-formalization-handbook.md)
-  — Full
+- [`../../references/handbooks/lean-knowledge-formalization-handbook.md`](../../references/handbooks/lean-knowledge-formalization-handbook.md)
+  -- Full
   handbook (extracted from
   this skill)
-- [`../lean-proof-review/SKILL.md`](../lean-proof-review/SKILL.md) — Successor
-- [`../lean-causal-reasoning/SKILL.md`](../lean-causal-reasoning/SKILL.md) — Successor
-- [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) — Successor
+- [`../lean-proof-review/SKILL.md`](../lean-proof-review/SKILL.md) -- Successor
+- [`../lean-knowledge-formalization/SKILL.md`](../lean-knowledge-formalization/SKILL.md) -- Successor
+- [`../lean-retro-methodology/SKILL.md`](../lean-retro-methodology/SKILL.md) -- Successor

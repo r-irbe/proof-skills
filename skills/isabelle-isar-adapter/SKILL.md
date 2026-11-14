@@ -4,16 +4,28 @@ description: |
   USE FOR: translating Isabelle/HOL and Isar proofs (locales, transfer, HOL-Analysis) into Lean 4.
   DO NOT USE FOR: Rocq ports (@rocq-proof-adapter) or HOL/Metamath (@hol-metamath-adapter).
   TRIGGERS: Isabelle, Isar, locale, lift_definition, transfer, Sledgehammer, Isabelle to Lean.
-tier: "warm"
-runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+tier: warm
+runtime_targets:
+- copilot-cli
+- claude-code
+- antigravity
+- pi
+- cursor
+- gemini-cli
 dispatch_targets: []
 handoffs:
-  predecessors: ["skill:lean-gateway", "skill:itp-cross-porting", "skill:lean-specification"]
-  successors: ["skill:lean-proof", "skill:lean-proof-review", "skill:lean-axiom-closure"]
+  predecessors:
+  - skill:lean-gateway
+  - skill:itp-cross-porting
+  - skill:lean-specification
+  successors:
+  - skill:lean-proof
+  - skill:lean-proof-review
+  - skill:lean-verification-gate
 metadata:
-  version: "0.2.0"
-  source_spec: "skills/isabelle-isar-adapter/SKILL.md (this file)"
-  last_reviewed: "2026-10-27"
+  version: 0.2.0
+  source_spec: skills/isabelle-isar-adapter/SKILL.md (this file)
+  last_reviewed: '2026-10-27'
 ---
 
 # Isabelle/HOL & Isar Structured Proof Adapter (`isabelle_hol` -> `lean4`)
@@ -61,10 +73,11 @@ into idiomatic Lean 4.
 - **Predecessors:** `skill:lean-gateway`, `skill:itp-cross-porting`, `skill:lean-specification`.
 - **Successors:** `skill:lean-proof`, `skill:lean-proof-review`, `skill:lean-axiom-closure`.
 ## Detailed reference
+- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/isabelle-isar-adapter-tables.md`](../../references/cards/isabelle-isar-adapter-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/isabelle-isar-adapter-handbook.md`](../../references/isabelle-isar-adapter-handbook.md) .
+[`references/handbooks/isabelle-isar-adapter-handbook.md`](../../references/handbooks/isabelle-isar-adapter-handbook.md) .
 ## See also
-- [`../../references/isabelle-isar-adapter-handbook.md`](../../references/isabelle-isar-adapter-handbook.md)
+- [`../../references/handbooks/isabelle-isar-adapter-handbook.md`](../../references/handbooks/isabelle-isar-adapter-handbook.md)
   -- Complete
   `isabelle-isar-adapter` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

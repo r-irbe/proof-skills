@@ -4,16 +4,28 @@ description: |
   USE FOR: repairing broken Lean 4 proofs after toolchain upgrades, Mathlib bumps, or simp drift.
   DO NOT USE FOR: writing new proofs (@lean-proof) or bisecting commits (@lean-bisect).
   TRIGGERS: proof repair, broken proof, toolchain upgrade, Mathlib bump, simp drift.
-tier: "hot"
-runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+tier: hot
+runtime_targets:
+- copilot-cli
+- claude-code
+- antigravity
+- pi
+- cursor
+- gemini-cli
 dispatch_targets: []
 handoffs:
-  predecessors: ["skill:lean-gateway", "skill:lean-build", "skill:lean-bisect", "skill:lean-proof"]
-  successors: ["skill:lean-proof-review", "skill:lean-replay-verification", "skill:lean-enforcement"]
+  predecessors:
+  - skill:lean-gateway
+  - skill:lean-build
+  - skill:lean-bisect
+  - skill:lean-proof
+  successors:
+  - skill:lean-proof-review
+  - skill:lean-verification-gate
 metadata:
-  version: "0.2.0"
-  source_spec: "skills/lean-proof-repair/SKILL.md (this file)"
-  last_reviewed: "2026-10-27"
+  version: 0.2.0
+  source_spec: skills/lean-proof-repair/SKILL.md (this file)
+  last_reviewed: '2026-10-27'
 ---
 
 # Lean 4 Automated & Interactive Proof Repair
@@ -62,10 +74,11 @@ definition changes without weakening theorem statements.
   kernel replay),
   `skill:lean-enforcement`.
 ## Detailed reference
+- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-proof-repair-tables.md`](../../references/cards/lean-proof-repair-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/lean-proof-repair-handbook.md`](../../references/lean-proof-repair-handbook.md) .
+[`references/handbooks/lean-proof-repair-handbook.md`](../../references/handbooks/lean-proof-repair-handbook.md) .
 ## See also
-- [`../../references/lean-proof-repair-handbook.md`](../../references/lean-proof-repair-handbook.md) --
+- [`../../references/handbooks/lean-proof-repair-handbook.md`](../../references/handbooks/lean-proof-repair-handbook.md) --
   Complete
   `lean-proof-repair` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

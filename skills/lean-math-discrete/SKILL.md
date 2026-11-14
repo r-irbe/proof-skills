@@ -1,19 +1,31 @@
 ---
 name: "lean-math-discrete"
 description: |
-  USE FOR: graph theory, applied lattice theory, combinatorics, DAGs, posets, provenance chains, dependency orders.
-  DO NOT USE FOR: the abstract algebraic typeclass tower (@lean-math-foundations).
-  TRIGGERS: graph, DAG, lattice, poset, combinatorics, provenance.
-tier: "warm"
-runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+  USE FOR: graphs, DAGs, lattices, posets, combinatorics, Milner bigraphs, and competition-math proofs in Lean 4.
+  DO NOT USE FOR: abstract algebraic typeclasses (@lean-math-foundations).
+  TRIGGERS: graph, DAG, lattice, poset, combinatorics, bigraph, Project Euler, competition math.
+tier: warm
+runtime_targets:
+- copilot-cli
+- claude-code
+- antigravity
+- pi
+- cursor
+- gemini-cli
 dispatch_targets: []
 handoffs:
-  predecessors: ["agent:gateway", "skill:lean-proof", "skill:lean-research"]
-  successors: ["skill:lean-proof", "skill:lean-proof-review", "skill:lean-math-foundations"]
+  predecessors:
+  - agent:gateway
+  - skill:lean-proof
+  - skill:lean-research
+  successors:
+  - skill:lean-proof
+  - skill:lean-proof-review
+  - skill:lean-math-foundations
 metadata:
-  version: "0.2.0"
-  source_spec: "skills/lean-math-discrete/SKILL.md (this file)"
-  last_reviewed: "2026-05-27"
+  version: 0.2.0
+  source_spec: skills/lean-math-discrete/SKILL.md (this file)
+  last_reviewed: '2026-05-27'
 ---
 
 # Lean 4 Discrete Mathematics & Graph Theory
@@ -39,11 +51,11 @@ instances.
   `Fintype`
    instance is missing.
 ## Recovery & STOP
-- STOP if cardinality blows up or a `Fintype` instance cannot be synthesised — handoff to
+- STOP if cardinality blows up or a `Fintype` instance cannot be synthesised -- handoff to
   `@lean-math-foundations` for the
   instance
   plumbing.
-- STOP if the lattice instance you need does not exist at the current Mathlib pin — escalate to
+- STOP if the lattice instance you need does not exist at the current Mathlib pin -- escalate to
   `@lean-research`, then author the
   instance
   under `@lean-proof`.
@@ -57,10 +69,11 @@ instances.
   `skill:lean-math-foundations` (typeclass
   / decidability plumbing).
 ## Detailed reference
+- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-math-discrete-tables.md`](../../references/cards/lean-math-discrete-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/lean-math-discrete-handbook.md`](../../references/lean-math-discrete-handbook.md) .
+[`references/handbooks/lean-math-discrete-handbook.md`](../../references/handbooks/lean-math-discrete-handbook.md) .
 ## See also
-- [`../../references/lean-math-discrete-handbook.md`](../../references/lean-math-discrete-handbook.md) --
+- [`../../references/handbooks/lean-math-discrete-handbook.md`](../../references/handbooks/lean-math-discrete-handbook.md) --
   Complete
   `lean-math-discrete` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

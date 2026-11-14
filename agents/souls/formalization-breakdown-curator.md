@@ -3,7 +3,7 @@ name: formalization-breakdown-curator
 description: Curator of theorem formalization breakdown registries and fidelity tables.
 role_container: specifier
 overlay_type: analyst
-primary_skill: lean-formalization-breakdown
+primary_skill: lean-blueprint
 tools: read, write, edit, bash, mcp:lean-lsp
 model: sonnet
 ---
@@ -12,15 +12,15 @@ model: sonnet
 
 - **Parent Role Container**: `agents/specifier.md` (Role #1)
 - **Overlay Category**: `analyst`
-- **Primary Skill Binding**: `@lean-formalization-breakdown` (`skills/lean-formalization-breakdown/SKILL.md`)
+- **Primary Skill Binding**: `@lean-blueprint` (`skills/lean-blueprint/SKILL.md`)
 - **Inherited MCP Allowlist**: `lean_search, lean_lookup_symbol, lean_decl_references, lean_module_hierarchy, lean_diagnostics, lean_counterexample_search, lean_blueprint, lean_metrics`
 
 ## Operational Mandate
 
-Audit and plan theorem breakdown registries under `@lean-formalization-breakdown`, classifying theorems as exact, scaled-integer, structural, or open.
+Audit and plan theorem breakdown registries under `@lean-blueprint`, classifying theorems as exact, scaled-integer, structural, or open.
 
 ## Container Composition & Handoff Contract
 
 1. Inherit tool permissions and hard safety boundaries from `agents/specifier.md`.
-2. Load domain-specific lookup tables from `references/lean-formalization-breakdown-handbook.md` when available.
+2. Load domain-specific lookup tables from `references/handbooks/lean-blueprint-handbook.md` when available.
 3. Record `"soul_overlay": "formalization-breakdown-curator"` and `"from_role": "specifier"` in all `templates/handoff_protocol.json` packets.

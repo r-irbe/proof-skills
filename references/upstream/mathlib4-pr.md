@@ -13,7 +13,7 @@ PR titles follow `<type>(<scope>): <subject>`.
 **Types:** `feat`, `fix`, `doc`, `style`, `refactor`, `test`, `chore`,
 `perf`, `ci`.
 
-**Scope** is the module path with the `Mathlib/` prefix stripped —
+**Scope** is the module path with the `Mathlib/` prefix stripped --
 e.g. `Data/Nat/Basic`, `Topology/Constructions`.
 
 **Subject** uses imperative present tense, no capitalized first letter,
@@ -36,10 +36,10 @@ Labels are added/removed via GitHub comments.
 
 **Author-managed:**
 
-- `awaiting-author` — reviewer feedback needs addressing
-- `WIP` — work in progress
-- `easy` — trivial PRs (single lemma, typo fix, <25 line diff)
-- `help-wanted`, `please-adopt` — requesting help
+- `awaiting-author` -- reviewer feedback needs addressing
+- `WIP` -- work in progress
+- `easy` -- trivial PRs (single lemma, typo fix, <25 line diff)
+- `help-wanted`, `please-adopt` -- requesting help
 
 **Topic:** `t-topology`, `t-algebra`, `t-combinatorics`, etc.
 
@@ -58,11 +58,11 @@ For **delegated** PRs (maintainer trusts author to finalize): the
 author comments `bors merge` to trigger the merge.
 
 The review queue is at <https://leanprover-community.github.io/queueboard/>
-— PRs with merge conflicts or pending CI don't appear there.
+-- PRs with merge conflicts or pending CI don't appear there.
 
 ## Style and naming
 
-Before submitting, read the relevant guides — these are the
+Before submitting, read the relevant guides -- these are the
 authoritative references:
 
 - **Naming conventions:** <https://leanprover-community.github.io/contribute/naming.html>
@@ -72,6 +72,6 @@ authoritative references:
 
 ## See also
 
-- [`./lean4-pr.md`](./lean4-pr.md) — Lean 4 core (leanprover/lean4) PR conventions (sister upstream)
-- [`./mathlib4-review.md`](./mathlib4-review.md) — Mathlib PR review standards
-- [`../../skills/lean-pr/SKILL.md`](../../skills/lean-pr/SKILL.md) — Agnostic Lean-ecosystem PR SKILL
+- [`./lean4-pr.md`](./lean4-pr.md) -- Lean 4 core (leanprover/lean4) PR conventions (sister upstream)
+- [`./mathlib4-review.md`](./mathlib4-review.md) -- Mathlib PR review standards
+- [`../../skills/lean-pr/SKILL.md`](../../skills/lean-pr/SKILL.md) -- Agnostic Lean-ecosystem PR SKILL

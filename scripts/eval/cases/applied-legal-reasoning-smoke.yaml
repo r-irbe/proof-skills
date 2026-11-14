@@ -1,18 +1,26 @@
 id: applied-legal-reasoning-smoke
-title: "Deontic legal-rule formalization"
-skill: applied-legal-reasoning
-ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
+title: Deontic legal-rule formalization
+skill: packs/applied-strategy/skills/applied-legal-reasoning
+ensemble_rubric: applied-domain-quality
 difficulty: easy
 input:
-  prompt: |
-    Formalize the rule 'A driver must stop at a red light' for downstream reasoning.
-  expected_output_substring: |
-    Use deontic logic: `O(stop_at_red(driver))` — Obligation operator. Distinguish from `P(stop_at_red(driver))` (Permission) and `F(¬stop_at_red(driver))` (Forbidden).
+  prompt: 'Formalize the rule ''A driver must stop at a red light'' for downstream
+    reasoning.
+
+    '
+  expected_output_substring: 'Use deontic logic: `O(stop_at_red(driver))` — Obligation
+    operator. Distinguish from `P(stop_at_red(driver))` (Permission) and `F(¬stop_at_red(driver))`
+    (Forbidden).
+
+    '
 expected:
   contains:
-    - "deontic|O\\(|obligation"
+  - deontic|O\(|obligation
   not_contains:
-    - "sorry"
-    - "admit"
+  - sorry
+  - admit
 grader: deterministic
-tags: [applied, legal, deontic]
+tags:
+- applied
+- legal
+- deontic

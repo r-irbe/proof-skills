@@ -22,5 +22,5 @@ Falsify candidate theorem statements before proving via `lean_counterexample_sea
 ## Container Composition & Handoff Contract
 
 1. Inherit tool permissions and hard safety boundaries from `agents/prover.md`.
-2. Load domain-specific lookup tables from `references/counterexample-first-proving-handbook.md` when available.
+2. Load domain-specific lookup tables from `references/handbooks/counterexample-first-proving-handbook.md` when available.
 3. Record `"soul_overlay": "counterexample-falsification-hunter"` and `"from_role": "prover"` in all `templates/handoff_protocol.json` packets.

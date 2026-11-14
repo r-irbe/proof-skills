@@ -4,16 +4,28 @@ description: |
   USE FOR: foundational mathematics in Lean 4: Lean's type system (Prop / Type / universes).
   DO NOT USE FOR: applied lattice instances such as severity / quality-gate lattices.
   TRIGGERS: type universe, Prop vs Type, classical reasoning.
-tier: "warm"
-runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+tier: warm
+runtime_targets:
+- copilot-cli
+- claude-code
+- antigravity
+- pi
+- cursor
+- gemini-cli
 dispatch_targets: []
 handoffs:
-  predecessors: ["agent:gateway", "skill:lean-proof", "skill:lean-research"]
-  successors: ["skill:lean-proof", "skill:lean-proof-review", "skill:lean-enforcement"]
+  predecessors:
+  - agent:gateway
+  - skill:lean-proof
+  - skill:lean-research
+  successors:
+  - skill:lean-proof
+  - skill:lean-proof-review
+  - skill:lean-verification-gate
 metadata:
-  version: "0.2.0"
-  source_spec: "skills/lean-math-foundations/SKILL.md (this file)"
-  last_reviewed: "2026-05-27"
+  version: 0.2.0
+  source_spec: skills/lean-math-foundations/SKILL.md (this file)
+  last_reviewed: '2026-05-27'
 ---
 
 # Lean 4 Mathematical Foundations
@@ -21,7 +33,7 @@ Guide to formalizing foundational mathematics in Lean 4, covering the structures
 all domain-specific
 formalization work.
 ## Routing
-- **USE FOR:** foundational mathematics in Lean 4 — Lean's type system (Prop / Type / universes), classical vs
+- **USE FOR:** foundational mathematics in Lean 4 -- Lean's type system (Prop / Type / universes), classical vs
   constructive
   choices,
   Mathlib's algebraic
@@ -39,7 +51,7 @@ reasoning about
 finished proof
 ## Workflow
 1. Identify whether the question is about Lean's logical foundation (Part 1), Mathlib's typeclass hierarchy
-  (Parts 2–5), or a
+  (Parts 2--5), or a
    category-theoretic
    construction (later parts).
 2. Locate the relevant Part below and read the project-relevance callouts before applying any pattern.
@@ -47,9 +59,9 @@ finished proof
   adding a new
   `Classical`
    import), handoff to
-   `@lean-proof-review` and `@lean-enforcement`.
+   `@lean-proof-review` and `@lean-verification-gate`.
 ## Recovery & STOP
-- STOP if a foundational choice silently introduces a new axiom — `#print axioms` must show only `propext`,
+- STOP if a foundational choice silently introduces a new axiom -- `#print axioms` must show only `propext`,
   `Classical.choice`,
   `Quot.sound`
   (and `funext`
@@ -68,10 +80,11 @@ finished proof
   impact),
   `skill:lean-enforcement` (run native-decide / `#print axioms` checks after the change).
 ## Detailed reference
+- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-math-foundations-tables.md`](../../references/cards/lean-math-foundations-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/lean-math-foundations-handbook.md`](../../references/lean-math-foundations-handbook.md) .
+[`references/handbooks/lean-math-foundations-handbook.md`](../../references/handbooks/lean-math-foundations-handbook.md) .
 ## See also
-- [`../../references/lean-math-foundations-handbook.md`](../../references/lean-math-foundations-handbook.md)
+- [`../../references/handbooks/lean-math-foundations-handbook.md`](../../references/handbooks/lean-math-foundations-handbook.md)
   -- Complete
   `lean-math-foundations` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

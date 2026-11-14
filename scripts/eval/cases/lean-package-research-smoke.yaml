@@ -1,18 +1,24 @@
 id: lean-package-research-smoke
-title: "lean-package-research dispatch smoke check"
-skill: lean-package-research
+title: lean-package-research dispatch smoke check
+skill: lean-dependency-management
 ensemble_rubric: applied-domain-quality
 difficulty: easy
 input:
-  prompt: |
-    Apply the lean-package-research skill workflow and summarize the primary verification steps.
-  expected_output_substring: |
-    Follow the lean-package-research protocol and verify all outputs without sorry or admit.
+  prompt: 'Apply the lean-package-research skill workflow and summarize the primary
+    verification steps.
+
+    '
+  expected_output_substring: 'Follow the lean-package-research protocol and verify
+    all outputs with zero unproven goals and clean kernel verification.
+
+    '
 expected:
   contains:
-    - "lean-package-research|protocol|verify"
+  - lean-package-research|protocol|verify
   not_contains:
-    - "sorry"
-    - "admit"
+  - sorry
+  - admit
 grader: deterministic
-tags: [smoke, lean-package-research]
+tags:
+- smoke
+- lean-package-research

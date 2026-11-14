@@ -4,23 +4,29 @@ description: |
   USE FOR: building Lean 4 projects with Lake, validating changes with `lake env lean`.
   DO NOT USE FOR: bisecting which Lean version caused a regression (@lean-bisect).
   TRIGGERS: build, lake, lake env lean, lake exe cache get, stale artifacts.
-tier: "warm"
-runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+tier: warm
+runtime_targets:
+- copilot-cli
+- claude-code
+- antigravity
+- pi
+- cursor
+- gemini-cli
 dispatch_targets: []
 handoffs:
   predecessors:
-    - "skill:lean-setup"
-    - "skill:lean-proof"
+  - skill:lean-setup
+  - skill:lean-proof
   successors:
-    - "skill:lean-mwe"
-    - "skill:lean-bisect"
-    - "skill:lean-pr"
-    - "skill:lean-proof"
+  - skill:lean-mwe
+  - skill:lean-bisect
+  - skill:lean-upstream-pr
+  - skill:lean-proof
 metadata:
-  version: "0.3.0"
-  source_spec: "skills/lean-build/SKILL.md"
-  last_reviewed: "2026-09-16"
-  migrated_from: "repo-native first-party promotion"
+  version: 0.3.0
+  source_spec: skills/lean-build/SKILL.md
+  last_reviewed: '2026-09-16'
+  migrated_from: repo-native first-party promotion
 ---
 
 # Building Lean Projects with Lake
@@ -79,16 +85,17 @@ metadata:
   `@lean-proof` (after
   a tactic
   write). Typical
-  outbound: `@lean-proof` (for active proof repair), `@lean-mwe` / `@lean-bisect` / `@lean-pr` for build
+  outbound: `@lean-proof` (for active proof repair), `@lean-mwe` / `@lean-bisect` / `@lean-upstream-pr` for build
   failures surviving clean
   rebuilds.
 - **Sister skill:** `@lean-setup` for toolchain repair; `@lean-proof` for interactive proving.
 - **REDIRECT pointer:** `lean-build` slug routes here (preserved per Chesterton-protocol).
 ---
 ## Detailed reference
+- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-build-tables.md`](../../references/cards/lean-build-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/lean-build-handbook.md`](../../references/lean-build-handbook.md) .
+[`references/handbooks/lean-build-handbook.md`](../../references/handbooks/lean-build-handbook.md) .
 ## See also
-- [`../../references/lean-build-handbook.md`](../../references/lean-build-handbook.md) -- Complete
+- [`../../references/handbooks/lean-build-handbook.md`](../../references/handbooks/lean-build-handbook.md) -- Complete
   `lean-build` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

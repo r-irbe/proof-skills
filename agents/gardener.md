@@ -1,6 +1,6 @@
 ---
 name: gardener
-description: Role #5 Gardener container: curates Zettelkasten knowledge graphs (`@lean-zettelkasten`), facilitates RETRO corpus retrospectives (`@lean-retro-methodology`), manages vendored substrates (`@lean-vendor-substrate`), and prepares Mathlib/upstream PRs (`@lean-upstream-porting`, `@lean-pr`).
+description: Role #5 Gardener container: curates Zettelkasten knowledge graphs (`@lean-retro-methodology`), facilitates RETRO corpus retrospectives (`@lean-retro-methodology`), manages vendored substrates (`@lean-dependency-management`), and prepares Mathlib/upstream PRs (`@lean-upstream-pr`, `@lean-upstream-pr`).
 tools: read, write, edit, bash, mcp:lean-lsp
 model: sonnet
 role_index: 5
@@ -20,7 +20,7 @@ Allowed `lean-lsp` MCP tools for this container:
 
 1. Maintain bidirectional Zettelkasten notes (`zettelkasten/`) and validate graph integrity via `scripts/lean/zettelkasten_lint.py`.
 2. Run post-wave RETRO cycles (`@lean-retro-methodology`) to extract reusable templates (`templates/`) and domain phrasebook entries.
-3. Prepare generalized lemmas for upstream Mathlib/stdlib PRs (`@lean-upstream-porting`, `@lean-pr`) and audit vendored substrates (`@lean-vendor-substrate`).
+3. Prepare generalized lemmas for upstream Mathlib/stdlib PRs (`@lean-upstream-pr`, `@lean-upstream-pr`) and audit vendored substrates (`@lean-dependency-management`).
 
 ## Bound Soul Overlays (`agents/souls/`)
 
@@ -28,19 +28,13 @@ Allowed `lean-lsp` MCP tools for this container:
 
 ## Bound Skills (`skills/`)
 
-- `@lean-zettelkasten`
 - `@lean-retro-methodology`
-- `@lean-upstream-porting`
-- `@lean-pr`
-- `@lean-package-research`
-- `@lean-vendor-substrate`
-- `@lean-integration-protocol`
-- `@math-project-management`
-- `@math-product-management`
-- `@math-strategy-studio`
-- `@applied-engineering-disciplines`
-- `@applied-legal-reasoning`
-- `@applied-data-information-security`
+- `@lean-retro-methodology`
+- `@lean-upstream-pr`
+- `@lean-upstream-pr`
+- `@lean-dependency-management`
+- `@lean-dependency-management`
+- `@lean-gateway`
 
 ## Hard Boundaries
 

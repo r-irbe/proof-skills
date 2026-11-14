@@ -1,0 +1,23 @@
+id: lean-corpus-audit-smoke
+title: lean-corpus-audit dispatch smoke check
+skill: lean-corpus-audit
+ensemble_rubric: lean-proof-quality
+difficulty: easy
+input:
+  prompt: 'Apply the lean-corpus-audit skill workflow using references/cards/lean-corpus-audit-tables.md.
+
+    '
+  expected_output_substring: 'Follow the lean-corpus-audit protocol with zero unproven
+    goals and clean kernel verification.
+
+    '
+expected:
+  contains:
+  - lean-corpus-audit|protocol|verify
+  not_contains:
+  - sorry
+  - admit
+grader: deterministic
+tags:
+- smoke
+- lean-corpus-audit

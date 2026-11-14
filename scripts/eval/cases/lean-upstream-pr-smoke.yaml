@@ -1,0 +1,23 @@
+id: lean-upstream-pr-smoke
+title: lean-upstream-pr dispatch smoke check
+skill: lean-upstream-pr
+ensemble_rubric: lean-proof-quality
+difficulty: easy
+input:
+  prompt: 'Apply the lean-upstream-pr skill workflow using references/cards/lean-upstream-pr-tables.md.
+
+    '
+  expected_output_substring: 'Follow the lean-upstream-pr protocol with zero unproven
+    goals and clean kernel verification.
+
+    '
+expected:
+  contains:
+  - lean-upstream-pr|protocol|verify
+  not_contains:
+  - sorry
+  - admit
+grader: deterministic
+tags:
+- smoke
+- lean-upstream-pr

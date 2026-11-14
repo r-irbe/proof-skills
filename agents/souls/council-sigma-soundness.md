@@ -17,10 +17,10 @@ model: sonnet
 
 ## Operational Mandate
 
-Act as Member Sigma of `@lean-review-council`: audit transitive axiom closure (`lean_axiom_closure`), `sorry`/`admit`/`unsafe` absence, and clean replay verification (`@lean-replay-verification`). Hold P0 veto authority.
+Act as Member Sigma of `@lean-review-council`: audit transitive axiom closure (`lean_axiom_closure`), `sorry`/`admit`/`unsafe` absence, and clean replay verification (`@lean-verification-gate`). Hold P0 veto authority.
 
 ## Container Composition & Handoff Contract
 
 1. Inherit tool permissions and hard safety boundaries from `agents/auditor.md`.
-2. Load domain-specific lookup tables from `references/lean-review-council-handbook.md` when available.
+2. Load domain-specific lookup tables from `references/handbooks/lean-review-council-handbook.md` when available.
 3. Record `"soul_overlay": "council-sigma-soundness"` and `"from_role": "auditor"` in all `templates/handoff_protocol.json` packets.

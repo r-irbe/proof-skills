@@ -1,26 +1,34 @@
 id: lean-add-comm-multi
-title: "Prove ∀ m n : ℕ, m + n = n + m (multi-model match case)"
+title: 'Prove ∀ m n : ℕ, m + n = n + m (multi-model match case)'
 skill: lean-proof
-ensemble_rubric: lean-proof-quality  # R27 audit: explicit (was implicit fallback)
+ensemble_rubric: lean-proof-quality
 difficulty: easy
 input:
-  prompt: |
-    Write a complete Lean 4 proof, suitable for Mathlib, of
+  prompt: 'Write a complete Lean 4 proof, suitable for Mathlib, of
+
     `theorem my_add_comm (m n : Nat) : m + n = n + m`. Use idiomatic
+
     Mathlib style: one-step tactics where possible, no `sorry`, no `admit`,
+
     no `exact?` or `apply?`, no `decide` as a search tactic. Briefly narrate
+
     the goal state between tactics with `-- goal:` Lean comments where useful.
-  expected_output_substring: |
-    theorem my_add_comm (m n : Nat) : m + n = n + m := by
-      exact Nat.add_comm m n
+
+    '
+  expected_output_substring: "theorem my_add_comm (m n : Nat) : m + n = n + m := by\n\
+    \  exact Nat.add_comm m n\n"
 expected:
   contains:
-    - "theorem\\s+my_add_comm"
-    - "\\bNat\\.add_comm\\b|\\bAdd\\.comm\\b|\\binduction\\s+m\\b"
+  - theorem\s+my_add_comm
+  - \bNat\.add_comm\b|\bAdd\.comm\b|\binduction\s+m\b
   not_contains:
-    - "sorry"
-    - "admit"
-    - "exact\\?"
-    - "apply\\?"
+  - sorry
+  - admit
+  - exact\?
+  - apply\?
 grader: deterministic
-tags: [lean, mathlib, multi-model, match-source]
+tags:
+- lean
+- mathlib
+- multi-model
+- match-source

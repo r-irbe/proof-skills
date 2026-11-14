@@ -4,22 +4,28 @@ description: |
   USE FOR: creating minimal working examples (MWEs) from Lean 4 errors for upstream bug reports.
   DO NOT USE FOR: bisecting which Lean version introduced the bug (@lean-bisect).
   TRIGGERS: MWE, minimal repro, "minimise the error", "#guard_msgs".
-tier: "warm"
-runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+tier: warm
+runtime_targets:
+- copilot-cli
+- claude-code
+- antigravity
+- pi
+- cursor
+- gemini-cli
 dispatch_targets: []
 handoffs:
   predecessors:
-    - "skill:lean-proof"
-    - "skill:lean-build"
+  - skill:lean-proof
+  - skill:lean-build
   successors:
-    - "skill:lean-bisect"
-    - "skill:lean-pr"
-    - "skill:lean-proof"
+  - skill:lean-bisect
+  - skill:lean-upstream-pr
+  - skill:lean-proof
 metadata:
-  version: "0.3.0"
-  source_spec: "skills/lean-mwe/SKILL.md"
-  last_reviewed: "2026-09-16"
-  migrated_from: "repo-native first-party promotion"
+  version: 0.3.0
+  source_spec: skills/lean-mwe/SKILL.md
+  last_reviewed: '2026-09-16'
+  migrated_from: repo-native first-party promotion
 ---
 
 # Minimizing Lean Errors
@@ -74,16 +80,17 @@ result with
   unexpectedly) or
   `@lean-build` (when
   CI surfaces an
-  unexpected compiler error). Typical outbound: `@lean-bisect` (find the introducing commit) or `@lean-pr`
+  unexpected compiler error). Typical outbound: `@lean-bisect` (find the introducing commit) or `@lean-upstream-pr`
   (file the issue/PR with
   the MWE
 attached).
 - **Sister skill:** `@lean-bisect` -- typically the next step after the MWE is Mathlib-free.
 ---
 ## Detailed reference
+- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-mwe-tables.md`](../../references/cards/lean-mwe-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/lean-mwe-handbook.md`](../../references/lean-mwe-handbook.md) .
+[`references/handbooks/lean-mwe-handbook.md`](../../references/handbooks/lean-mwe-handbook.md) .
 ## See also
-- [`../../references/lean-mwe-handbook.md`](../../references/lean-mwe-handbook.md) -- Handbook
+- [`../../references/handbooks/lean-mwe-handbook.md`](../../references/handbooks/lean-mwe-handbook.md) -- Handbook
   Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

@@ -1,145 +1,114 @@
-# Reference Index and Master Taxonomy
+# Reference Index -- 4-Layer Progressive Disclosure Architecture
 
-Authoritative catalog of background knowledge, theorem-proving guides, domain
-handbooks, and operational protocols across the proof-skills corpus.
-
-Scoped Unicode policy (INV-001; typographic-free by default).
+Authoritative catalog of the `proof-skills` reference hierarchy.
+Scoped Unicode policy (`INV-001`; UTF-8 mathematical symbols valid in Lean 4, typographic punctuation banned).
 
 ---
 
-## 1. Structure Overview
+## 1. Progressive Disclosure Layers
 
-References in this repository support the Hybrid Architecture (Approach 1: Kernel
-and Facets + Approach 2: Stanford ACE Prover Roles):
-
-| Section | Scope | Primary Agent Role | Associated Facet |
-| --- | --- | --- | --- |
-| 1. Core Verification | LSP, tactic hierarchies, proof protocols, import DAGs | Prover / Specifier | Core |
-| 2. Mathematical Domains | Analysis, algebra, topology, discrete, stochastics | Prover / Specifier | Math |
-| 3. AI and Reasoning | Neuro-symbolic, causal deontic, verifiable AI | Specifier / Auditor | AI |
-| 4. Governance & Strategy | Review council, research synthesis, legal reasoning | Auditor / Gardener | Governance |
+| Layer | Path | Typical Size | When Agents Read It |
+| :--- | :--- | :--- | :--- |
+| **L0: Dispatch Contract** | `../skills/<slug>/SKILL.md` | `2.5--3.8 KB` | Trigger routing, 4-step workflow, and stop conditions. |
+| **L1: Fast Lookup Card** | `cards/<slug>-tables.md` (`38` cards) | `2.0--6.5 KB` | **Default first read** during proving: Goal-Shape, Intent Phrasebook, and Error->Fix tables. |
+| **L2: Deep Handbook** | `handbooks/<slug>-handbook.md` (`38` manuals) | `5--60 KB` | Deep derivations, multi-step patterns, case studies, and domain annexes. |
+| **L3: Machine Index** | `../vendor/itp-ontology/handbook-tables.v1.json` + `dialects/*.json` | `390` compiled rows | Sub-5ms offline queries via `lean-lsp` MCP (`lean_search`, `lean_goal(target: "altproof")`). |
 
 ---
 
-## 2. Core Lean 4 Verification and Toolchain Guides
+## 2. Layer-1 Fast Lookup Cards & Layer-2 Domain Handbooks (`38` Canonical Pairs)
 
-Authoritative engineering references for Lean 4 compiler interaction, proof state
-inspection, tactic execution, and module hygiene.
-
-| Reference File | Focus & Key Rules | Target Skills |
-| --- | --- | --- |
-| [lean4-lsp-guide.md](lean4-lsp-guide.md) | 12-point Lean 4 LSP interaction manual: Try this code action harvesting, watchdog recovery, diagnostic wait policy, plainGoal formatting. | lean-proof, lean-build, lean-setup |
-| [lean4-lsp-proof-protocol.md](lean4-lsp-proof-protocol.md) | The 13 operational proof rules: prohibits trace_state file pollution, enforces live LSP goal queries, inaccessible dagger variable hygiene. | lean-proof, lean-proof-review |
-| [lean4-tactic-hierarchy.md](lean4-tactic-hierarchy.md) | Canonical tactic dispatch order: rfl -> omega / linarith -> simp only -> aesop -> exact?. Reversibility and termination bounds. | lean-proof, lean-mwe |
-| [lean4-proof-strategy.md](lean4-proof-strategy.md) | Proof decomposition: have / suffices subgoal cuts, forward vs backward reasoning, induction structuring. | lean-proof, lean-specification |
-| [lean4-module-dependency-guide.md](lean4-module-dependency-guide.md) | Layer 0 to 4 DAG architecture, transitive import blast radius, forward and reverse module navigation. | lean-build, lean-blueprint |
-| [formalization_breakdown_guide.md](formalization_breakdown_guide.md) | 8-wave architectural deconstruction of monumental formalizations, static census, DAG depth, landmark extraction. | lean-formalization-breakdown |
-| [lean_to_math_exposition_patterns.md](lean_to_math_exposition_patterns.md) | Translation dictionary from Lean types and proof tactics to beautiful, standard mathematical prose and learning materials. | lean-pedagogical-exposition |
-| [mathlib4-conventions.md](mathlib4-conventions.md) | Mathlib4 style guide: snake_case for lemmas, camelCase for types, docstrings, binder hygiene, and implicit arguments. | lean-proof, lean-pr |
-| [AUTHORING.md](AUTHORING.md) | Authoring standards for proof-skills SKILL.md contracts, frontmatter validation, and evaluation rubrics. | lean-quality-engine |
-| [architecture.md](architecture.md) | Hybrid architecture overview (Kernel + Domain Facets), cascade routing, and skill dispatch precedence. | lean-gateway |
-| [project_structure.md](project_structure.md) | Comprehensive directory map of root configurations, skill directories, templates, references, and tooling. | lean-setup, lean-gateway |
-| [contributing.md](contributing.md) | Contribution guidelines, confidentiality rules, and verification requirements for proof-skills authors. | lean-pr, lean-quality-engine |
-| [eval_history.md](eval_history.md) | Historical synthesis of sub-agent fleet patterns, model calibration rounds, and evaluation findings. | lean-gateway, lean-quality-engine |
-| [swarm_methodology.md](swarm_methodology.md) | Stanford ACE Prover Swarm methodology, role specialization (Specifier, Prover, Auditor, Gardener), and handoff protocols. | lean-gateway, lean-review-council |
-| [bibliography.md](bibliography.md) | Academic bibliography and foundational literature backing formalization, agent routing, and verification protocols. | lean-research |
-| [lean4-core-only-profile.md](lean4-core-only-profile.md) | Stdlib/Core-only Lean 4 profile without Mathlib: available tactics, structural induction idioms, and arithmetic rules. | lean-core-only, lean-proof |
-| [mathlib-module-system-notes.md](mathlib-module-system-notes.md) | Mathlib4 module-system migration notes: notation propagation, instance sealing, and positional-implicit pitfalls. | lean-upstream-porting, lean-proof |
-| [upstream/lean-bug-report-pipeline.md](upstream/lean-bug-report-pipeline.md) | Upstream Lean 4 bug report extraction, MWE reduction, and bisect-to-issue pipeline reference. | lean-mwe, lean-bisect, lean-pr |
-| [upstream/lean-nightly-infrastructure.md](upstream/lean-nightly-infrastructure.md) | Upstream Lean 4 nightly CI, radar, and toolchain bisect infrastructure reference. | lean-bisect, lean-setup |
-| [upstream/lean4-pr.md](upstream/lean4-pr.md) | Upstream `leanprover/lean4` pull request workflow, commit conventions, and CI validation reference. | lean-pr, lean-upstream-porting |
-| [upstream/mathlib4-pr.md](upstream/mathlib4-pr.md) | Upstream Mathlib4 pull request authoring, bors commands, and review lifecycle reference. | lean-pr, lean-upstream-porting |
-| [upstream/mathlib4-review.md](upstream/mathlib4-review.md) | Upstream Mathlib4 reviewer checklist, golf idioms, and style conventions reference. | lean-proof-review, lean-pr |
-
----
-
-## 3. Mathematical Domain Handbooks and Pattern Catalogs
-
-Domain-specific lemma patterns, formalization templates, and tactic idioms.
-
-### 3.1 Foundations, Discrete Mathematics and Algebra
-| Reference File | Domain Scope | Associated Skill |
-| --- | --- | --- |
-| [lean4-math-foundations.md](lean4-math-foundations.md) | Sets, functions, relations, type universes, equality and quotients. | lean-math-foundations |
-| [lean4-math-discrete.md](lean4-math-discrete.md) | Combinatorics, discrete structures, graph coloring, recurrence relations. | lean-math-discrete |
-| [math-algebra-category-handbook.md](math-algebra-category-handbook.md) | Monoids, groups, rings, modules, category theory, functors and limits. | math-algebra-category |
-| [math-graph-knowledge-handbook.md](math-graph-knowledge-handbook.md) | Graph theory, hypergraphs, topological graphs, graph-theoretic invariants. | math-graph-knowledge |
-
-### 3.2 Analysis and Optimization
-| Reference File | Domain Scope | Associated Skill |
-| --- | --- | --- |
-| [lean4-math-analysis.md](lean4-math-analysis.md) | Real analysis, metric spaces, limits, continuity, differentiability. | lean-math-analysis |
-| [lean4-math-optimization.md](lean4-math-optimization.md) | Convex optimization, Lagrange multipliers, duality, KKT conditions. | lean-math-optimization |
-| [lean4-ivt-patterns.md](lean4-ivt-patterns.md) | Intermediate Value Theorem formalization idioms and continuity proofs. | lean-math-analysis |
-| [lean4-contraction-catalog.md](lean4-contraction-catalog.md) | Banach fixed point theorem, contraction mappings, metric completions. | lean-math-analysis |
-
-### 3.3 Topology and Dynamical Systems
-| Reference File | Domain Scope | Associated Skill |
-| --- | --- | --- |
-| [../skills/math-topology-analysis/SKILL.md](../skills/math-topology-analysis/SKILL.md) | General topology, topological spaces, compactness, connected components (inline v2 skill). | math-topology-analysis |
-| [lean4-math-dynamical.md](lean4-math-dynamical.md) | Dynamical systems, flow invariants, fixed points, stability analysis. | lean-math-dynamical |
-| [math-nonlinear-dynamics-handbook.md](math-nonlinear-dynamics-handbook.md) | Nonlinear bifurcations, phase space portraits, Lyapunov stability. | math-nonlinear-dynamics |
-| [lean4-ergodic-theory.md](lean4-ergodic-theory.md) | Measure-preserving transformations, Birkhoff ergodic theorem idioms. | lean-math-dynamical |
-
-### 3.4 Measure Theory, Stochastics and Time Series
-| Reference File | Domain Scope | Associated Skill |
-| --- | --- | --- |
-| [math-measure-probability-handbook.md](math-measure-probability-handbook.md) | Measure spaces, Lebesgue integration, probability spaces, expectation. | math-measure-probability |
-| [lean4-math-stochastic.md](lean4-math-stochastic.md) | Martingales, stochastic processes, stopping times, Markov chains. | lean-math-stochastic |
-| [math-time-series-handbook.md](math-time-series-handbook.md) | Discrete-time stochastic processes, stationarity, autocorrelation. | math-time-series |
-| [lean4-time-series-patterns.md](lean4-time-series-patterns.md) | Time-series decomposition, lag operators, trend estimation idioms. | math-time-series |
+| Skill (`@slug`) | Layer-1 Fast Card (`cards/`) | Layer-2 Deep Handbook (`handbooks/`) |
+| :--- | :--- | :--- |
+| [`counterexample-first-proving`](../skills/counterexample-first-proving/SKILL.md) | [`cards/counterexample-first-proving-tables.md`](cards/counterexample-first-proving-tables.md) | [`handbooks/counterexample-first-proving-handbook.md`](handbooks/counterexample-first-proving-handbook.md) |
+| [`hol-metamath-adapter`](../skills/hol-metamath-adapter/SKILL.md) | [`cards/hol-metamath-adapter-tables.md`](cards/hol-metamath-adapter-tables.md) | [`handbooks/hol-metamath-adapter-handbook.md`](handbooks/hol-metamath-adapter-handbook.md) |
+| [`isabelle-isar-adapter`](../skills/isabelle-isar-adapter/SKILL.md) | [`cards/isabelle-isar-adapter-tables.md`](cards/isabelle-isar-adapter-tables.md) | [`handbooks/isabelle-isar-adapter-handbook.md`](handbooks/isabelle-isar-adapter-handbook.md) |
+| [`itp-cross-porting`](../skills/itp-cross-porting/SKILL.md) | [`cards/itp-cross-porting-tables.md`](cards/itp-cross-porting-tables.md) | [`handbooks/itp-cross-porting-handbook.md`](handbooks/itp-cross-porting-handbook.md) |
+| [`lean-ai-formalization`](../skills/lean-ai-formalization/SKILL.md) | [`cards/lean-ai-formalization-tables.md`](cards/lean-ai-formalization-tables.md) | [`handbooks/lean-ai-formalization-handbook.md`](handbooks/lean-ai-formalization-handbook.md) |
+| [`lean-bisect`](../skills/lean-bisect/SKILL.md) | [`cards/lean-bisect-tables.md`](cards/lean-bisect-tables.md) | [`handbooks/lean-bisect-handbook.md`](handbooks/lean-bisect-handbook.md) |
+| [`lean-blueprint`](../skills/lean-blueprint/SKILL.md) | [`cards/lean-blueprint-tables.md`](cards/lean-blueprint-tables.md) | [`handbooks/lean-blueprint-handbook.md`](handbooks/lean-blueprint-handbook.md) |
+| [`lean-build`](../skills/lean-build/SKILL.md) | [`cards/lean-build-tables.md`](cards/lean-build-tables.md) | [`handbooks/lean-build-handbook.md`](handbooks/lean-build-handbook.md) |
+| [`lean-core-only`](../skills/lean-core-only/SKILL.md) | [`cards/lean-core-only-tables.md`](cards/lean-core-only-tables.md) | [`handbooks/lean-core-only-handbook.md`](handbooks/lean-core-only-handbook.md) |
+| [`lean-corpus-audit`](../skills/lean-corpus-audit/SKILL.md) | [`cards/lean-corpus-audit-tables.md`](cards/lean-corpus-audit-tables.md) | [`handbooks/lean-corpus-audit-handbook.md`](handbooks/lean-corpus-audit-handbook.md) |
+| [`lean-dependency-management`](../skills/lean-dependency-management/SKILL.md) | [`cards/lean-dependency-management-tables.md`](cards/lean-dependency-management-tables.md) | [`handbooks/lean-dependency-management-handbook.md`](handbooks/lean-dependency-management-handbook.md) |
+| [`lean-doc-sync`](../skills/lean-doc-sync/SKILL.md) | [`cards/lean-doc-sync-tables.md`](cards/lean-doc-sync-tables.md) | [`handbooks/lean-doc-sync-handbook.md`](handbooks/lean-doc-sync-handbook.md) |
+| [`lean-gateway`](../skills/lean-gateway/SKILL.md) | [`cards/lean-gateway-tables.md`](cards/lean-gateway-tables.md) | [`handbooks/lean-gateway-handbook.md`](handbooks/lean-gateway-handbook.md) |
+| [`lean-knowledge-formalization`](../skills/lean-knowledge-formalization/SKILL.md) | [`cards/lean-knowledge-formalization-tables.md`](cards/lean-knowledge-formalization-tables.md) | [`handbooks/lean-knowledge-formalization-handbook.md`](handbooks/lean-knowledge-formalization-handbook.md) |
+| [`lean-math-analysis`](../skills/lean-math-analysis/SKILL.md) | [`cards/lean-math-analysis-tables.md`](cards/lean-math-analysis-tables.md) | [`handbooks/lean-math-analysis-handbook.md`](handbooks/lean-math-analysis-handbook.md) |
+| [`lean-math-discrete`](../skills/lean-math-discrete/SKILL.md) | [`cards/lean-math-discrete-tables.md`](cards/lean-math-discrete-tables.md) | [`handbooks/lean-math-discrete-handbook.md`](handbooks/lean-math-discrete-handbook.md) |
+| [`lean-math-dynamical`](../skills/lean-math-dynamical/SKILL.md) | [`cards/lean-math-dynamical-tables.md`](cards/lean-math-dynamical-tables.md) | [`handbooks/lean-math-dynamical-handbook.md`](handbooks/lean-math-dynamical-handbook.md) |
+| [`lean-math-foundations`](../skills/lean-math-foundations/SKILL.md) | [`cards/lean-math-foundations-tables.md`](cards/lean-math-foundations-tables.md) | [`handbooks/lean-math-foundations-handbook.md`](handbooks/lean-math-foundations-handbook.md) |
+| [`lean-math-optimization`](../skills/lean-math-optimization/SKILL.md) | [`cards/lean-math-optimization-tables.md`](cards/lean-math-optimization-tables.md) | [`handbooks/lean-math-optimization-handbook.md`](handbooks/lean-math-optimization-handbook.md) |
+| [`lean-math-stochastic`](../skills/lean-math-stochastic/SKILL.md) | [`cards/lean-math-stochastic-tables.md`](cards/lean-math-stochastic-tables.md) | [`handbooks/lean-math-stochastic-handbook.md`](handbooks/lean-math-stochastic-handbook.md) |
+| [`lean-mwe`](../skills/lean-mwe/SKILL.md) | [`cards/lean-mwe-tables.md`](cards/lean-mwe-tables.md) | [`handbooks/lean-mwe-handbook.md`](handbooks/lean-mwe-handbook.md) |
+| [`lean-pedagogical-exposition`](../skills/lean-pedagogical-exposition/SKILL.md) | [`cards/lean-pedagogical-exposition-tables.md`](cards/lean-pedagogical-exposition-tables.md) | [`handbooks/lean-pedagogical-exposition-handbook.md`](handbooks/lean-pedagogical-exposition-handbook.md) |
+| [`lean-proof`](../skills/lean-proof/SKILL.md) | [`cards/lean-proof-tables.md`](cards/lean-proof-tables.md) | [`handbooks/lean-proof-handbook.md`](handbooks/lean-proof-handbook.md) |
+| [`lean-proof-refactor`](../skills/lean-proof-refactor/SKILL.md) | [`cards/lean-proof-refactor-tables.md`](cards/lean-proof-refactor-tables.md) | [`handbooks/lean-proof-refactor-handbook.md`](handbooks/lean-proof-refactor-handbook.md) |
+| [`lean-proof-repair`](../skills/lean-proof-repair/SKILL.md) | [`cards/lean-proof-repair-tables.md`](cards/lean-proof-repair-tables.md) | [`handbooks/lean-proof-repair-handbook.md`](handbooks/lean-proof-repair-handbook.md) |
+| [`lean-proof-review`](../skills/lean-proof-review/SKILL.md) | [`cards/lean-proof-review-tables.md`](cards/lean-proof-review-tables.md) | [`handbooks/lean-proof-review-handbook.md`](handbooks/lean-proof-review-handbook.md) |
+| [`lean-research`](../skills/lean-research/SKILL.md) | [`cards/lean-research-tables.md`](cards/lean-research-tables.md) | [`handbooks/lean-research-handbook.md`](handbooks/lean-research-handbook.md) |
+| [`lean-retro-methodology`](../skills/lean-retro-methodology/SKILL.md) | [`cards/lean-retro-methodology-tables.md`](cards/lean-retro-methodology-tables.md) | [`handbooks/lean-retro-methodology-handbook.md`](handbooks/lean-retro-methodology-handbook.md) |
+| [`lean-review-council`](../skills/lean-review-council/SKILL.md) | [`cards/lean-review-council-tables.md`](cards/lean-review-council-tables.md) | [`handbooks/lean-review-council-handbook.md`](handbooks/lean-review-council-handbook.md) |
+| [`lean-sair-kernel-optimization`](../skills/lean-sair-kernel-optimization/SKILL.md) | [`cards/lean-sair-kernel-optimization-tables.md`](cards/lean-sair-kernel-optimization-tables.md) | [`handbooks/lean-sair-kernel-optimization-handbook.md`](handbooks/lean-sair-kernel-optimization-handbook.md) |
+| [`lean-security-formalization`](../skills/lean-security-formalization/SKILL.md) | [`cards/lean-security-formalization-tables.md`](cards/lean-security-formalization-tables.md) | [`handbooks/lean-security-formalization-handbook.md`](handbooks/lean-security-formalization-handbook.md) |
+| [`lean-setup`](../skills/lean-setup/SKILL.md) | [`cards/lean-setup-tables.md`](cards/lean-setup-tables.md) | [`handbooks/lean-setup-handbook.md`](handbooks/lean-setup-handbook.md) |
+| [`lean-specification`](../skills/lean-specification/SKILL.md) | [`cards/lean-specification-tables.md`](cards/lean-specification-tables.md) | [`handbooks/lean-specification-handbook.md`](handbooks/lean-specification-handbook.md) |
+| [`lean-tautology-triage`](../skills/lean-tautology-triage/SKILL.md) | [`cards/lean-tautology-triage-tables.md`](cards/lean-tautology-triage-tables.md) | [`handbooks/lean-tautology-triage-handbook.md`](handbooks/lean-tautology-triage-handbook.md) |
+| [`lean-upstream-pr`](../skills/lean-upstream-pr/SKILL.md) | [`cards/lean-upstream-pr-tables.md`](cards/lean-upstream-pr-tables.md) | [`handbooks/lean-upstream-pr-handbook.md`](handbooks/lean-upstream-pr-handbook.md) |
+| [`lean-verification-gate`](../skills/lean-verification-gate/SKILL.md) | [`cards/lean-verification-gate-tables.md`](cards/lean-verification-gate-tables.md) | [`handbooks/lean-verification-gate-handbook.md`](handbooks/lean-verification-gate-handbook.md) |
+| [`research-council`](../skills/research-council/SKILL.md) | [`cards/research-council-tables.md`](cards/research-council-tables.md) | [`handbooks/research-council-handbook.md`](handbooks/research-council-handbook.md) |
+| [`rocq-proof-adapter`](../skills/rocq-proof-adapter/SKILL.md) | [`cards/rocq-proof-adapter-tables.md`](cards/rocq-proof-adapter-tables.md) | [`handbooks/rocq-proof-adapter-handbook.md`](handbooks/rocq-proof-adapter-handbook.md) |
 
 ---
 
-## 4. AI and Neuro-Symbolic Handbooks
+## 3. Cross-Cutting Engineering Protocols (`protocols/` & `upstream/`)
 
-Formalization contracts bridging symbolic reasoning, agent architectures, and causal logic.
-
-| Reference File | Domain Scope | Associated Skill |
-| --- | --- | --- |
-| [ai-agentic-evolving-handbook.md](ai-agentic-evolving-handbook.md) | Self-modifying and evolving agent loops, safety invariants. | ai-agentic-evolving |
-| [../skills/ai-causal-deontic/SKILL.md](../skills/ai-causal-deontic/SKILL.md) | Causal inference, do-calculus, deontic logic, normative obligations (inline v2 skill). | ai-causal-deontic |
-| [ai-commonsense-reasoning-handbook.md](ai-commonsense-reasoning-handbook.md) | Default reasoning, non-monotonic logic, commonsense knowledge frames. | ai-commonsense-reasoning |
-| [ai-high-stakes-verifiable-handbook.md](ai-high-stakes-verifiable-handbook.md) | High-assurance verification, formal safety guarantees, fault trees. | ai-high-stakes-verifiable |
-| [../skills/ai-symbolic-neuro/SKILL.md](../skills/ai-symbolic-neuro/SKILL.md) | Neuro-symbolic integration, differentiable theorem proving, embedding logic (inline v2 skill). | ai-symbolic-neuro |
-| [lean-ai-formalization-handbook.md](lean-ai-formalization-handbook.md) | Autoformalization workflows, natural language to Lean translation. | lean-ai-formalization |
-| [lean-applied-reasoning-handbook.md](lean-applied-reasoning-handbook.md) | Applied multi-step deductive reasoning and theorem structuring. | lean-applied-reasoning |
-| [lean-knowledge-formalization-handbook.md](lean-knowledge-formalization-handbook.md) | Domain knowledge encoding, ontological hierarchy construction. | lean-knowledge-formalization |
+| Protocol / Guide | Path |
+| :--- | :--- |
+| `discovery-ladder-evals` | [`protocols/discovery-ladder-evals.md`](protocols/discovery-ladder-evals.md) |
+| `discovery-ladder` | [`protocols/discovery-ladder.md`](protocols/discovery-ladder.md) |
+| `ecosystem-refactor` | [`protocols/ecosystem-refactor.md`](protocols/ecosystem-refactor.md) |
+| `formalization_breakdown_guide` | [`protocols/formalization_breakdown_guide.md`](protocols/formalization_breakdown_guide.md) |
+| `lean4-core-only-profile` | [`protocols/lean4-core-only-profile.md`](protocols/lean4-core-only-profile.md) |
+| `lean4-lsp-guide` | [`protocols/lean4-lsp-guide.md`](protocols/lean4-lsp-guide.md) |
+| `lean4-lsp-proof-protocol` | [`protocols/lean4-lsp-proof-protocol.md`](protocols/lean4-lsp-proof-protocol.md) |
+| `lean4-module-dependency-guide` | [`protocols/lean4-module-dependency-guide.md`](protocols/lean4-module-dependency-guide.md) |
+| `lean4-proof-strategy` | [`protocols/lean4-proof-strategy.md`](protocols/lean4-proof-strategy.md) |
+| `lean4-tactic-hierarchy` | [`protocols/lean4-tactic-hierarchy.md`](protocols/lean4-tactic-hierarchy.md) |
+| `lean_to_math_exposition_patterns` | [`protocols/lean_to_math_exposition_patterns.md`](protocols/lean_to_math_exposition_patterns.md) |
+| `mathlib-module-system-notes` | [`protocols/mathlib-module-system-notes.md`](protocols/mathlib-module-system-notes.md) |
+| `mathlib4-conventions` | [`protocols/mathlib4-conventions.md`](protocols/mathlib4-conventions.md) |
+| `research-council-skill-map` | [`protocols/research-council-skill-map.md`](protocols/research-council-skill-map.md) |
+| `research-output-templates` | [`protocols/research-output-templates.md`](protocols/research-output-templates.md) |
+| `research-queue` | [`protocols/research-queue.md`](protocols/research-queue.md) |
+| `theorem-search` | [`protocols/theorem-search.md`](protocols/theorem-search.md) |
+| `upstream/lean-bug-report-pipeline` | [`upstream/lean-bug-report-pipeline.md`](upstream/lean-bug-report-pipeline.md) |
+| `upstream/lean-nightly-infrastructure` | [`upstream/lean-nightly-infrastructure.md`](upstream/lean-nightly-infrastructure.md) |
+| `upstream/lean4-pr` | [`upstream/lean4-pr.md`](upstream/lean4-pr.md) |
+| `upstream/mathlib4-pr` | [`upstream/mathlib4-pr.md`](upstream/mathlib4-pr.md) |
+| `upstream/mathlib4-review` | [`upstream/mathlib4-review.md`](upstream/mathlib4-review.md) |
 
 ---
 
-## 5. Systems, Strategy and Governance Handbooks
+## 4. Cross-ITP Dialect Specifications (`dialects/`)
 
-Operational frameworks for research management, legal reasoning, review councils,
-and retrospective audits.
+| Prover Dialect | Specification JSON |
+| :--- | :--- |
+| `agda` | [`dialects/agda.json`](dialects/agda.json) |
+| `hol_light` | [`dialects/hol_light.json`](dialects/hol_light.json) |
+| `isabelle` | [`dialects/isabelle.json`](dialects/isabelle.json) |
+| `lean4` | [`dialects/lean4.json`](dialects/lean4.json) |
+| `metamath` | [`dialects/metamath.json`](dialects/metamath.json) |
+| `rocq` | [`dialects/rocq.json`](dialects/rocq.json) |
 
-| Reference File | Domain Scope | Associated Skill |
-| --- | --- | --- |
-| [applied-data-information-security-handbook.md](applied-data-information-security-handbook.md) | Information flow security, non-interference proofs, cryptographic protocols. | applied-data-information-security |
-| [applied-engineering-disciplines-handbook.md](applied-engineering-disciplines-handbook.md) | Formal specifications in physical engineering and control systems. | applied-engineering-disciplines |
-| [applied-intelligence-analysis-handbook.md](applied-intelligence-analysis-handbook.md) | Structured analytic techniques, alternative hypotheses, source evaluation. | applied-intelligence-analysis |
-| [applied-legal-reasoning-handbook.md](applied-legal-reasoning-handbook.md) | Statutory interpretation, precedent trees, legal deontic constraints. | applied-legal-reasoning |
-| [applied-strategy-analysis-handbook.md](applied-strategy-analysis-handbook.md) | Strategic game theory, payoff matrices, competitive equilibria. | applied-strategy-analysis |
-| [epistemic-discovery-engine-handbook.md](epistemic-discovery-engine-handbook.md) | Hypothesis generation, abduction, epistemic state transitions. | epistemic-discovery-engine |
-| [lean-report-handbook.md](lean-report-handbook.md) | Automated formal verification reports, audit summaries, proof metrics. | lean-report |
-| [lean-research-handbook.md](lean-research-handbook.md) | Literature review methods, mathematical survey formalization. | lean-research |
-| [lean-retroactive-audit-handbook.md](lean-retroactive-audit-handbook.md) | Post-hoc audit trails, theorem deprecation tracking, dependency drift. | lean-retroactive-audit |
-| [lean-retro-methodology-handbook.md](lean-retro-methodology-handbook.md) | Retrospective analysis of proof campaigns, failure taxonomy generation. | lean-retro-methodology |
-| [lean-review-council-handbook.md](lean-review-council-handbook.md) | Multi-agent review councils, consensus protocols, gate signoffs. | lean-review-council |
-| [research-council-skill-map.md](research-council-skill-map.md) | Topology map of skills governed by the research and review councils. | research-council, lean-review-council |
-| [lean-security-formalization-handbook.md](lean-security-formalization-handbook.md) | Security policy verification, access control invariants. | lean-security-formalization |
-| [lean-specification-handbook.md](lean-specification-handbook.md) | Formal specification authoring, axiomatic boundaries, consistency checks. | lean-specification |
-| [lean-doc-improvement-handbook.md](lean-doc-improvement-handbook.md) | Documentation refinement, docstring coverage, cross-module links. | lean-doc-improvement |
-| [lean-doc-requirements-handbook.md](lean-doc-requirements-handbook.md) | Traceability matrices, requirement tags, documentation gates. | lean-doc-requirements |
-| [lean-integration-protocol-handbook.md](lean-integration-protocol-handbook.md) | CI/CD pipeline integration, automated lake build verification. | lean-integration-protocol |
-| [math-product-management-handbook.md](math-product-management-handbook.md) | Quantitative product modeling, user flow state machines. | math-product-management |
-| [math-project-management-handbook.md](math-project-management-handbook.md) | Critical path formalization, resource allocation DAGs. | math-project-management |
-| [math-strategy-studio-handbook.md](math-strategy-studio-handbook.md) | Scenario planning, decision trees, minimax optimization. | math-strategy-studio |
-| [research-council-handbook.md](research-council-handbook.md) | Research topic prioritization, peer review standards. | research-council |
-| [research-output-templates.md](research-output-templates.md) | Standardized schemas for research memoranda and evaluation cards. | research-council |
-| [research-queue.md](research-queue.md) | Task scheduling and backlog management for research workflows. | research-council |
-| [research-synthesis-engine-handbook.md](research-synthesis-engine-handbook.md) | Multi-source evidence synthesis, consensus extraction. | research-synthesis-engine |
-| [theorem-search.md](theorem-search.md) | Mathlib declaration search idioms: exact?, apply?, Loogle, LeanSearch. | lean-proof |
-| [discovery-ladder.md](discovery-ladder.md) | Progressive discovery ladder for formalization campaigns. | lean-research |
-| [discovery-ladder-evals.md](discovery-ladder-evals.md) | Evaluation rubrics for discovery ladder stages. | lean-research |
-| [ecosystem-refactor.md](ecosystem-refactor.md) | Migration protocols for large-scale Mathlib refactorings. | lean-pr |
+---
+
+## 5. Repository Architecture & Governance Docs (`references/` Root)
+
+- [`AUTHORING.md`](AUTHORING.md) -- v2/v3 skill & handbook authoring specification
+- [`architecture.md`](architecture.md) -- Hybrid Role-Container + Facet architecture
+- [`swarm_methodology.md`](swarm_methodology.md) -- 5-Role Container + 24 Soul Overlay swarm protocol
+- [`project_structure.md`](project_structure.md) -- Directory layout map
+- [`contributing.md`](contributing.md) -- Contribution & confidentiality rules
+- [`bibliography.md`](bibliography.md) -- Foundational ITP & verification literature
+- [`eval_history.md`](eval_history.md) -- Benchmark & calibration history

@@ -46,7 +46,7 @@ set_option autoImplicit false
 
 namespace <Project>.ProofSkills.AtkinLehner
 
-open scoped BigOperators
+-- Note: ∑ and ∏ are root-scoped in Lean v4.27+; do not add vestigial `open scoped BigOperators`.
 
 variable {N : ℕ}
 

@@ -1,6 +1,6 @@
 {
-  "schema_version": "2.0.0",
-  "description": "Canonical 5 Role-Actor Containers + 24 Soul Overlays + Domain Facet Registry for proof-skills.",
+  "schema_version": "3.0.0",
+  "description": "Canonical 5 Role-Actor Containers + 24 Soul Overlays + 38 Core Lean Skills + Opt-In Packs Registry for proof-skills v0.4.0.",
   "role_containers": {
     "specifier": {
       "role_index": 1,
@@ -26,12 +26,8 @@
         "lean-gateway",
         "lean-specification",
         "lean-blueprint",
-        "lean-formalization-breakdown",
-        "lean-dag-visualizer",
-        "lean-doc-requirements",
+        "lean-doc-sync",
         "lean-research",
-        "epistemic-discovery-engine",
-        "epistemic-mapping",
         "research-council"
       ],
       "soul_overlays": [
@@ -87,13 +83,7 @@
         "lean-math-optimization",
         "lean-math-analysis",
         "lean-ai-formalization",
-        "lean-causal-reasoning",
         "lean-knowledge-formalization",
-        "lean-applied-reasoning",
-        "lean-competitive-math",
-        "lean-bigraph-modeling",
-        "lean-convergence-verification",
-        "lean-nested-learning",
         "lean-security-formalization"
       ],
       "soul_overlays": [
@@ -126,14 +116,10 @@
       ],
       "primary_skills": [
         "lean-proof-review",
-        "lean-enforcement",
-        "lean-axiom-closure",
-        "lean-replay-verification",
+        "lean-verification-gate",
         "lean-tautology-triage",
-        "lean-quality-engine",
-        "lean-review-council",
-        "lean-deep-audit",
-        "lean-retroactive-audit"
+        "lean-corpus-audit",
+        "lean-review-council"
       ],
       "soul_overlays": [
         "proof-reviewer",
@@ -168,10 +154,8 @@
       "primary_skills": [
         "lean-proof-refactor",
         "lean-pedagogical-exposition",
-        "lean-report",
-        "lean-doc-improvement",
-        "lean-doc-feedback",
-        "research-synthesis-engine"
+        "lean-doc-sync",
+        "research-council"
       ],
       "soul_overlays": [
         "math-pedagogy-author",
@@ -197,19 +181,10 @@
         "lean_axiom_closure"
       ],
       "primary_skills": [
-        "lean-zettelkasten",
         "lean-retro-methodology",
-        "lean-upstream-porting",
-        "lean-pr",
-        "lean-package-research",
-        "lean-vendor-substrate",
-        "lean-integration-protocol",
-        "math-project-management",
-        "math-product-management",
-        "math-strategy-studio",
-        "applied-engineering-disciplines",
-        "applied-legal-reasoning",
-        "applied-data-information-security"
+        "lean-upstream-pr",
+        "lean-dependency-management",
+        "lean-gateway"
       ],
       "soul_overlays": [
         "lean-retro-facilitator"
@@ -228,14 +203,14 @@
       "file": "agents/souls/enforcement-auditor.md",
       "role_container": "auditor",
       "overlay_type": "analyst",
-      "primary_skill": "lean-enforcement",
+      "primary_skill": "lean-verification-gate",
       "description": "Read-only CI gatekeeper and axiom-closure auditor."
     },
     "formalization-breakdown-curator": {
       "file": "agents/souls/formalization-breakdown-curator.md",
       "role_container": "specifier",
       "overlay_type": "analyst",
-      "primary_skill": "lean-formalization-breakdown",
+      "primary_skill": "lean-blueprint",
       "description": "Curator of theorem formalization breakdown registries and fidelity tables."
     },
     "math-pedagogy-author": {
@@ -249,7 +224,7 @@
       "file": "agents/souls/formalization-dag-navigator.md",
       "role_container": "specifier",
       "overlay_type": "analyst",
-      "primary_skill": "lean-dag-visualizer",
+      "primary_skill": "lean-blueprint",
       "description": "Module dependency DAG navigator, cycle detector, and critical-path analyzer."
     },
     "lean-proof-builder": {
@@ -388,40 +363,38 @@
   },
   "domain_facets": {
     "core": {
-      "description": "Core Lean 4 proving, specification, build, and repair lifecycle.",
+      "description": "Core Lean 4 proving, specification, falsification, repair, build, and SAIR kernel WHNF optimization (12 skills).",
       "skills": [
         "lean-gateway",
         "lean-specification",
         "lean-blueprint",
+        "counterexample-first-proving",
         "lean-proof",
         "lean-proof-repair",
         "lean-core-only",
+        "lean-sair-kernel-optimization",
         "lean-build",
         "lean-setup",
         "lean-bisect",
-        "lean-mwe",
-        "counterexample-first-proving",
-        "lean-sair-kernel-optimization"
+        "lean-mwe"
       ],
       "default_souls": [
         "lean-spec-architect",
-        "lean-proof-builder",
         "counterexample-falsification-hunter",
-        "abstraction-concrete-architect",
-        "sair-kernel-optimizer"
+        "lean-proof-builder",
+        "sair-kernel-optimizer",
+        "abstraction-concrete-architect"
       ]
     },
     "math": {
-      "description": "Unified mathematical formalization domains (Foundations, Discrete, Stochastic, Dynamical, Optimization, Analysis, Competitive, Convergence).",
+      "description": "Unified mathematical formalization domains (Foundations, Discrete/Bigraphs/Competition, Stochastic/Ergodic, Dynamical/Convergence, Optimization, Analysis) (6 skills).",
       "skills": [
         "lean-math-foundations",
         "lean-math-discrete",
         "lean-math-stochastic",
         "lean-math-dynamical",
         "lean-math-optimization",
-        "lean-math-analysis",
-        "lean-competitive-math",
-        "lean-convergence-verification"
+        "lean-math-analysis"
       ],
       "default_souls": [
         "research-alpha-foundations",
@@ -430,14 +403,10 @@
       ]
     },
     "ai": {
-      "description": "Verifiable AI, causal/deontic reasoning, KRR, bigraphs, nested learning, security, and applied reasoning.",
+      "description": "Verifiable AI, nested learning, ontologies, causal/deontic/applied reasoning, and security/information-flow formalization (3 skills).",
       "skills": [
         "lean-ai-formalization",
-        "lean-causal-reasoning",
         "lean-knowledge-formalization",
-        "lean-applied-reasoning",
-        "lean-bigraph-modeling",
-        "lean-nested-learning",
         "lean-security-formalization"
       ],
       "default_souls": [
@@ -447,28 +416,27 @@
       ]
     },
     "governance": {
-      "description": "Soundness review, enforcement gates, axiom lockdown, Review/Research Councils, RETRO, and Zettelkasten.",
+      "description": "Deterministic verification gates, 4-layer proof review, corpus audits, Review/Research Councils, refactoring, pedagogy, doc sync, RETRO/Zettelkasten, dependencies, and upstream PRs (13 skills).",
       "skills": [
+        "lean-verification-gate",
         "lean-proof-review",
-        "lean-enforcement",
-        "lean-axiom-closure",
-        "lean-replay-verification",
         "lean-tautology-triage",
-        "lean-quality-engine",
+        "lean-corpus-audit",
         "lean-review-council",
-        "lean-deep-audit",
-        "lean-retroactive-audit",
+        "lean-proof-refactor",
+        "lean-pedagogical-exposition",
+        "lean-doc-sync",
+        "lean-research",
+        "research-council",
         "lean-retro-methodology",
-        "lean-zettelkasten",
-        "lean-upstream-porting",
-        "lean-pr",
-        "lean-formalization-breakdown",
-        "lean-dag-visualizer"
+        "lean-dependency-management",
+        "lean-upstream-pr"
       ],
       "default_souls": [
         "proof-reviewer",
         "enforcement-auditor",
         "abstract-interp-vacuity-auditor",
+        "abstraction-concrete-architect",
         "council-sigma-soundness",
         "council-phi-faithfulness",
         "council-nu-novelty",
@@ -478,7 +446,7 @@
       ]
     },
     "multi-prover": {
-      "description": "Cross-ITP porting across Lean 4, Rocq/MathComp, Isabelle/HOL, HOL Light, Agda, and Metamath (CONC-01..20).",
+      "description": "Cross-ITP porting across Lean 4, Rocq/MathComp, Isabelle/HOL, HOL Light, Agda, and Metamath (CONC-01..20) (4 skills).",
       "skills": [
         "itp-cross-porting",
         "rocq-proof-adapter",
@@ -490,5 +458,41 @@
         "research-epsilon-bridge"
       ]
     }
+  },
+  "skill_aliases": {
+    "lean-enforcement": "lean-verification-gate",
+    "lean-axiom-closure": "lean-verification-gate",
+    "lean-replay-verification": "lean-verification-gate",
+    "lean-quality-engine": "lean-corpus-audit",
+    "lean-deep-audit": "lean-corpus-audit",
+    "lean-retroactive-audit": "lean-corpus-audit",
+    "lean-report": "lean-doc-sync",
+    "lean-doc-improvement": "lean-doc-sync",
+    "lean-doc-requirements": "lean-doc-sync",
+    "lean-doc-feedback": "lean-doc-sync",
+    "lean-pr": "lean-upstream-pr",
+    "lean-upstream-porting": "lean-upstream-pr",
+    "lean-package-research": "lean-dependency-management",
+    "lean-vendor-substrate": "lean-dependency-management",
+    "epistemic-mapping": "lean-research",
+    "epistemic-discovery-engine": "research-council",
+    "research-synthesis-engine": "research-council",
+    "lean-integration-protocol": "lean-gateway",
+    "lean-bigraph-modeling": "lean-math-discrete",
+    "lean-competitive-math": "lean-math-discrete",
+    "lean-nested-learning": "lean-ai-formalization",
+    "lean-convergence-verification": "lean-math-dynamical",
+    "lean-causal-reasoning": "lean-knowledge-formalization",
+    "lean-applied-reasoning": "lean-knowledge-formalization",
+    "lean-dag-visualizer": "lean-blueprint",
+    "lean-formalization-breakdown": "lean-blueprint",
+    "lean-zettelkasten": "lean-retro-methodology",
+    "ai-guard-judge-eval": "packs/applied-strategy/skills/ai-guard-judge-eval",
+    "applied-data-information-security": "packs/applied-strategy/skills/applied-data-information-security",
+    "applied-engineering-disciplines": "packs/applied-strategy/skills/applied-engineering-disciplines",
+    "applied-legal-reasoning": "packs/applied-strategy/skills/applied-legal-reasoning",
+    "math-product-management": "packs/applied-strategy/skills/math-product-management",
+    "math-project-management": "packs/applied-strategy/skills/math-project-management",
+    "math-strategy-studio": "packs/applied-strategy/skills/math-strategy-studio"
   }
 }

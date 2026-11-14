@@ -1,18 +1,24 @@
 id: epistemic-mapping-smoke
-title: "epistemic-mapping dispatch smoke check"
-skill: epistemic-mapping
+title: epistemic-mapping dispatch smoke check
+skill: lean-research
 ensemble_rubric: applied-domain-quality
 difficulty: easy
 input:
-  prompt: |
-    Apply the epistemic-mapping skill workflow and summarize the primary verification steps.
-  expected_output_substring: |
-    Follow the epistemic-mapping protocol and verify all outputs without sorry or admit.
+  prompt: 'Apply the epistemic-mapping skill workflow and summarize the primary verification
+    steps.
+
+    '
+  expected_output_substring: 'Follow the epistemic-mapping protocol and verify all
+    outputs with zero unproven goals and clean kernel verification.
+
+    '
 expected:
   contains:
-    - "epistemic-mapping|protocol|verify"
+  - epistemic-mapping|protocol|verify
   not_contains:
-    - "sorry"
-    - "admit"
+  - sorry
+  - admit
 grader: deterministic
-tags: [smoke, epistemic-mapping]
+tags:
+- smoke
+- epistemic-mapping

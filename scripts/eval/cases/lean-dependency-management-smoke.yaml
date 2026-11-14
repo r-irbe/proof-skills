@@ -1,0 +1,23 @@
+id: lean-dependency-management-smoke
+title: lean-dependency-management dispatch smoke check
+skill: lean-dependency-management
+ensemble_rubric: lean-proof-quality
+difficulty: easy
+input:
+  prompt: 'Apply the lean-dependency-management skill workflow using references/cards/lean-dependency-management-tables.md.
+
+    '
+  expected_output_substring: 'Follow the lean-dependency-management protocol with
+    zero unproven goals and clean kernel verification.
+
+    '
+expected:
+  contains:
+  - lean-dependency-management|protocol|verify
+  not_contains:
+  - sorry
+  - admit
+grader: deterministic
+tags:
+- smoke
+- lean-dependency-management

@@ -40,12 +40,12 @@ Allowed `lean-lsp` MCP tools for this container:
 - `@lean-gateway`
 - `@lean-specification`
 - `@lean-blueprint`
-- `@lean-formalization-breakdown`
-- `@lean-dag-visualizer`
-- `@lean-doc-requirements`
+- `@lean-blueprint`
+- `@lean-blueprint`
+- `@lean-doc-sync`
 - `@lean-research`
-- `@epistemic-discovery-engine`
-- `@epistemic-mapping`
+- `@research-council`
+- `@lean-research`
 - `@research-council`
 
 ## Hard Boundaries

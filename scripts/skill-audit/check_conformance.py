@@ -251,7 +251,7 @@ def audit_dag(skills):
 
 # ------------------------------ 3. Handbook cross-links ------------------------------
 
-HANDBOOK_RE = re.compile(r"references/([\w-]+)-handbook\.md")
+HANDBOOK_RE = re.compile(r"references/(?:handbooks/)?([\w-]+)-handbook\.md")
 
 
 def audit_handbook_links(skills, repo_root):
@@ -262,7 +262,9 @@ def audit_handbook_links(skills, repo_root):
     for name, info in skills.items():
         for m in HANDBOOK_RE.finditer(info["body"]):
             target_stem = m.group(1)
-            target_path = refs_dir / f"{target_stem}-handbook.md"
+            target_path = refs_dir / "handbooks" / f"{target_stem}-handbook.md"
+            if not target_path.exists():
+                target_path = refs_dir / f"{target_stem}-handbook.md"
             if not target_path.exists():
                 results["broken_links"].append({
                     "from_skill": name,

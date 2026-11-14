@@ -22,5 +22,5 @@ Translate kernel-verified Lean 4 definitions and theorems into human-readable ma
 ## Container Composition & Handoff Contract
 
 1. Inherit tool permissions and hard safety boundaries from `agents/editor.md`.
-2. Load domain-specific lookup tables from `references/lean-pedagogical-exposition-handbook.md` when available.
+2. Load domain-specific lookup tables from `references/handbooks/lean-pedagogical-exposition-handbook.md` when available.
 3. Record `"soul_overlay": "math-pedagogy-author"` and `"from_role": "editor"` in all `templates/handoff_protocol.json` packets.

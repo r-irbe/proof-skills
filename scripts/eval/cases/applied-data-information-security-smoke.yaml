@@ -1,20 +1,27 @@
 id: applied-data-information-security-smoke
-title: "Confidentiality classification"
-skill: applied-data-information-security
-ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
+title: Confidentiality classification
+skill: packs/applied-strategy/skills/applied-data-information-security
+ensemble_rubric: applied-domain-quality
 difficulty: easy
 input:
-  prompt: |
-    Classify a database column 'salary' under CIA + GDPR.
-  expected_output_substring: |
-    CIA: high `Confidentiality`, low `Integrity` risk, low `Availability` risk. GDPR: personal data, not special-category. Apply column-level encryption + role-gated access.
+  prompt: 'Classify a database column ''salary'' under CIA + GDPR.
+
+    '
+  expected_output_substring: 'CIA: high `Confidentiality`, low `Integrity` risk, low
+    `Availability` risk. GDPR: personal data, not special-category. Apply column-level
+    encryption + role-gated access.
+
+    '
 expected:
   contains:
-    - "CIA|confidentiality"
-    - "GDPR|personal data"
-    - "encryption|access control"
+  - CIA|confidentiality
+  - GDPR|personal data
+  - encryption|access control
   not_contains:
-    - "sorry"
-    - "admit"
+  - sorry
+  - admit
 grader: deterministic
-tags: [applied, security, gdpr]
+tags:
+- applied
+- security
+- gdpr

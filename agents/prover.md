@@ -52,13 +52,13 @@ Allowed `lean-lsp` MCP tools for this container:
 - `@lean-math-optimization`
 - `@lean-math-analysis`
 - `@lean-ai-formalization`
-- `@lean-causal-reasoning`
 - `@lean-knowledge-formalization`
-- `@lean-applied-reasoning`
-- `@lean-competitive-math`
-- `@lean-bigraph-modeling`
-- `@lean-convergence-verification`
-- `@lean-nested-learning`
+- `@lean-knowledge-formalization`
+- `@lean-knowledge-formalization`
+- `@lean-math-discrete`
+- `@lean-math-discrete`
+- `@lean-math-dynamical`
+- `@lean-ai-formalization`
 - `@lean-security-formalization`
 
 ## Hard Boundaries

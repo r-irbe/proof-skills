@@ -1,26 +1,33 @@
 id: mathlib-lookup-list-nodup
-title: "Identify Mathlib lemma about List.Nodup append"
+title: Identify Mathlib lemma about List.Nodup append
 skill: lean-research
 ensemble_rubric: mathlib-lookup-quality
 difficulty: medium
 input:
-  prompt: |
-    Name the Mathlib lemma stating that `(l₁ ++ l₂).Nodup` iff both
+  prompt: 'Name the Mathlib lemma stating that `(l₁ ++ l₂).Nodup` iff both
+
     lists are Nodup AND they are disjoint. Show the current Mathlib
+
     type signature.
-  expected_output_substring: |
-    theorem List.nodup_append' {l₁ l₂ : List α} :
-        Nodup (l₁ ++ l₂) ↔ Nodup l₁ ∧ Nodup l₂ ∧ Disjoint l₁ l₂
+
+    '
+  expected_output_substring: "theorem List.nodup_append' {l₁ l₂ : List α} :\n    Nodup\
+    \ (l₁ ++ l₂) ↔ Nodup l₁ ∧ Nodup l₂ ∧ Disjoint l₁ l₂\n"
 expected:
   contains:
-    - "List\\.nodup_append'"
-    - "List\\s+α"
-    - "Nodup"
-    - "Disjoint"
-    - "↔"
+  - List\.nodup_append'
+  - List\s+α
+  - Nodup
+  - Disjoint
+  - ↔
   not_contains:
-    - "sorry"
-    - "List\\.nodup_append(?!')\\b"
-    - "List\\.nodupAppend\\b"
+  - sorry
+  - List\.nodup_append(?!')\b
+  - List\.nodupAppend\b
 grader: deterministic
-tags: [lean, mathlib, lookup, list, nodup]
+tags:
+- lean
+- mathlib
+- lookup
+- list
+- nodup

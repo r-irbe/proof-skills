@@ -4,22 +4,28 @@ description: |
   USE FOR: bisecting Lean 4 toolchain versions or commits to find which one introduced a regression.
   DO NOT USE FOR: building a project (@lean-build).
   TRIGGERS: bisect, regression, "which commit broke".
-tier: "warm"
-runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
+tier: warm
+runtime_targets:
+- copilot-cli
+- claude-code
+- antigravity
+- pi
+- cursor
+- gemini-cli
 dispatch_targets: []
 handoffs:
   predecessors:
-    - "skill:lean-mwe"
-    - "skill:lean-proof"
-    - "skill:lean-setup"
+  - skill:lean-mwe
+  - skill:lean-proof
+  - skill:lean-setup
   successors:
-    - "skill:lean-pr"
-    - "skill:lean-zettelkasten"
+  - skill:lean-upstream-pr
+  - skill:lean-retro-methodology
 metadata:
-  version: "0.3.0"
-  source_spec: "skills/lean-bisect/SKILL.md"
-  last_reviewed: "2026-09-16"
-  migrated_from: "repo-native first-party promotion"
+  version: 0.3.0
+  source_spec: skills/lean-bisect/SKILL.md
+  last_reviewed: '2026-09-16'
+  migrated_from: repo-native first-party promotion
 ---
 
 # Bisecting Lean Toolchains
@@ -74,7 +80,7 @@ report after the
   direct from
   `@lean-proof`
   (when the operator
-  already has a standalone file). Typical outbound: `@lean-pr` (upstream report) or `@lean-zettelkasten`
+  already has a standalone file). Typical outbound: `@lean-upstream-pr` (upstream report) or `@lean-retro-methodology`
   (record the pattern).
 - **Sister skill:** `@lean-mwe` -- usually chained before bisect.
 ---
@@ -82,9 +88,10 @@ Use the `lean-bisect` script (in the lean4 repo at `script/lean-bisect`) to find
 behavior change.
 ---
 ## Detailed reference
+- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-bisect-tables.md`](../../references/cards/lean-bisect-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/lean-bisect-handbook.md`](../../references/lean-bisect-handbook.md) .
+[`references/handbooks/lean-bisect-handbook.md`](../../references/handbooks/lean-bisect-handbook.md) .
 ## See also
-- [`../../references/lean-bisect-handbook.md`](../../references/lean-bisect-handbook.md) -- Complete
+- [`../../references/handbooks/lean-bisect-handbook.md`](../../references/handbooks/lean-bisect-handbook.md) -- Complete
   `lean-bisect` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

@@ -1,18 +1,24 @@
 id: lean-core-only-smoke
-title: "lean-core-only dispatch smoke check"
+title: lean-core-only dispatch smoke check
 skill: lean-core-only
 ensemble_rubric: applied-domain-quality
 difficulty: easy
 input:
-  prompt: |
-    Apply the lean-core-only skill workflow and summarize the primary verification steps.
-  expected_output_substring: |
-    Follow the lean-core-only protocol and verify all outputs without sorry or admit.
+  prompt: 'Apply the lean-core-only skill workflow and summarize the primary verification
+    steps.
+
+    '
+  expected_output_substring: 'Follow the lean-core-only protocol and verify all outputs
+    with zero unproven goals and clean kernel verification.
+
+    '
 expected:
   contains:
-    - "lean-core-only|protocol|verify"
+  - lean-core-only|protocol|verify
   not_contains:
-    - "sorry"
-    - "admit"
+  - sorry
+  - admit
 grader: deterministic
-tags: [smoke, lean-core-only]
+tags:
+- smoke
+- lean-core-only

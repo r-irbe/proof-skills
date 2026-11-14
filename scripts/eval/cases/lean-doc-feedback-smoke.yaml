@@ -1,18 +1,24 @@
 id: lean-doc-feedback-smoke
-title: "lean-doc-feedback dispatch smoke check"
-skill: lean-doc-feedback
+title: lean-doc-feedback dispatch smoke check
+skill: lean-doc-sync
 ensemble_rubric: applied-domain-quality
 difficulty: easy
 input:
-  prompt: |
-    Apply the lean-doc-feedback skill workflow and summarize the primary verification steps.
-  expected_output_substring: |
-    Follow the lean-doc-feedback protocol and verify all outputs without sorry or admit.
+  prompt: 'Apply the lean-doc-feedback skill workflow and summarize the primary verification
+    steps.
+
+    '
+  expected_output_substring: 'Follow the lean-doc-feedback protocol and verify all
+    outputs with zero unproven goals and clean kernel verification.
+
+    '
 expected:
   contains:
-    - "lean-doc-feedback|protocol|verify"
+  - lean-doc-feedback|protocol|verify
   not_contains:
-    - "sorry"
-    - "admit"
+  - sorry
+  - admit
 grader: deterministic
-tags: [smoke, lean-doc-feedback]
+tags:
+- smoke
+- lean-doc-feedback

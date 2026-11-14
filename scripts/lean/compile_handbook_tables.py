@@ -160,7 +160,7 @@ def parse_handbook_file(path: Path) -> dict[str, Any]:
 
     result: dict[str, Any] = {
         "handbook_id": handbook_id,
-        "file": f"references/{path.name}",
+        "file": f"references/handbooks/{path.name}" if path.parent.name == "handbooks" else f"references/{path.name}",
         "skill_ref": skill_ref,
         "goal_shape_templates": [],
         "intent_phrasebook": [],
@@ -230,7 +230,7 @@ def compile_handbook_tables(
     error_to_fix: list[dict[str, Any]] = []
     by_handbook: dict[str, dict[str, Any]] = {}
 
-    handbook_files = sorted(refs_dir.glob("*-handbook.md")) if refs_dir.exists() else []
+    handbook_files = sorted(list(refs_dir.glob("*-handbook.md")) + list((refs_dir / "handbooks").glob("*-handbook.md"))) if refs_dir.exists() else []
     for hb_path in handbook_files:
         parsed = parse_handbook_file(hb_path)
         total_rows = (
@@ -309,6 +309,64 @@ def compile_handbook_tables(
     }
 
 
+
+
+def emit_lookup_cards(payload: dict[str, Any], cards_dir: Path) -> int:
+    """Emit compact Layer-1 Markdown 3-table fast lookup cards (`references/cards/<slug>-tables.md`)."""
+    cards_dir.mkdir(parents=True, exist_ok=True)
+    written = 0
+    for hb_id, info in sorted(payload.get("by_handbook", {}).items()):
+        slug = hb_id.removesuffix("-handbook")
+        card_path = cards_dir / f"{slug}-tables.md"
+        lines = [
+            "---",
+            f'name: "{slug}-tables"',
+            f'description: "Layer-1 fast 3-table lookup card auto-extracted from {info["file"]}."',
+            f'generated_from: "{info["file"]}"',
+            f'skill_ref: "{info["skill_ref"]}"',
+            "---",
+            "",
+            f"# `{slug}` -- Fast 3-Table Lookup Card (Layer 1)",
+            "",
+            f"> Auto-generated from [`../handbooks/{slug}-handbook.md`](../handbooks/{slug}-handbook.md) by `scripts/lean/compile_handbook_tables.py`.",
+            "> Read this compact card first during interactive proving; open the Layer-2 handbook only when deep derivations or annexes are needed.",
+            "",
+        ]
+        if info["goal_shape_templates"]:
+            lines += [
+                "## 1. Goal-Shape -> Tactic / Template",
+                "",
+                "| Goal / Term Shape | Primary Tactic / Law | Template / Notes |",
+                "| :--- | :--- | :--- |",
+            ]
+            for r in info["goal_shape_templates"]:
+                lines.append(f'| {r["goal_shape"]} | {r["route_or_concordance"]} | {r["template"]} |')
+            lines.append("")
+        if info["intent_phrasebook"]:
+            lines += [
+                "## 2. Intent -> Recipe Phrasebook",
+                "",
+                "| Intent | Recommended Pattern / Tool | Recipe |",
+                "| :--- | :--- | :--- |",
+            ]
+            for r in info["intent_phrasebook"]:
+                lines.append(f'| {r["intent"]} | {r["tactic_or_idiom"]} | {r["notes"]} |')
+            lines.append("")
+        if info["error_to_fix"]:
+            lines += [
+                "## 3. Error / Bottleneck -> Fix",
+                "",
+                "| Error / Bottleneck | Root Cause | Remediating Fix |",
+                "| :--- | :--- | :--- |",
+            ]
+            for r in info["error_to_fix"]:
+                lines.append(f'| {r["error_pattern"]} | {r["cause"]} | {r["fix"]} |')
+            lines.append("")
+        card_path.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
+        written += 1
+    return written
+
+
 def self_test() -> int:
     payload = compile_handbook_tables()
     assert payload["schema_version"] == SCHEMA_VERSION, "schema_version mismatch"
@@ -324,6 +382,7 @@ def self_test() -> int:
             {
                 "status": "PASS",
                 "handbooks_count": payload["handbooks_count"],
+                "cards_written": cards_written,
                 "dialects_count": payload["dialects_count"],
                 "counts": payload["counts"],
             }
@@ -385,12 +444,14 @@ def main(argv: list[str] | None = None) -> int:
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(serialized, encoding="ascii")
+    cards_written = emit_lookup_cards(payload, args.refs_dir / "cards")
     print(
         json.dumps(
             {
                 "status": "OK",
                 "output": str(args.out),
                 "handbooks_count": payload["handbooks_count"],
+                "cards_written": cards_written,
                 "dialects_count": payload["dialects_count"],
                 "counts": payload["counts"],
             }

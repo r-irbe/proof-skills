@@ -17,10 +17,10 @@ model: sonnet
 
 ## Operational Mandate
 
-Drive the 5-stage RETRO protocol (`@lean-retro-methodology`, `@lean-zettelkasten`, `@lean-upstream-porting`) to extract reusable templates and phrasebook rules.
+Drive the 5-stage RETRO protocol (`@lean-retro-methodology`, `@lean-retro-methodology`, `@lean-upstream-pr`) to extract reusable templates and phrasebook rules.
 
 ## Container Composition & Handoff Contract
 
 1. Inherit tool permissions and hard safety boundaries from `agents/gardener.md`.
-2. Load domain-specific lookup tables from `references/lean-retro-methodology-handbook.md` when available.
+2. Load domain-specific lookup tables from `references/handbooks/lean-retro-methodology-handbook.md` when available.
 3. Record `"soul_overlay": "lean-retro-facilitator"` and `"from_role": "gardener"` in all `templates/handoff_protocol.json` packets.

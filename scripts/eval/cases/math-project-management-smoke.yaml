@@ -1,19 +1,25 @@
 id: math-project-management-smoke
-title: "Critical path identification"
-skill: math-project-management
-ensemble_rubric: applied-domain-quality  # R27 audit: explicit (was implicit fallback)
+title: Critical path identification
+skill: packs/applied-strategy/skills/math-project-management
+ensemble_rubric: applied-domain-quality
 difficulty: easy
 input:
-  prompt: |
-    Compute the critical path through a 5-task formalisation project.
-  expected_output_substring: |
-    Build the task DAG with `(duration, predecessors)` per task; forward pass for earliest start; backward pass for latest start; critical path = tasks with zero slack.
+  prompt: 'Compute the critical path through a 5-task formalisation project.
+
+    '
+  expected_output_substring: 'Build the task DAG with `(duration, predecessors)` per
+    task; forward pass for earliest start; backward pass for latest start; critical
+    path = tasks with zero slack.
+
+    '
 expected:
   contains:
-    - "critical path|slack|DAG"
-    - "forward|backward"
+  - critical path|slack|DAG
+  - forward|backward
   not_contains:
-    - "sorry"
-    - "admit"
+  - sorry
+  - admit
 grader: deterministic
-tags: [math, project-management]
+tags:
+- math
+- project-management
