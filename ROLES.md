@@ -1,8 +1,8 @@
 For a detailed explanation of the Swarm methodology and multi-agent theory, see [`references/swarm_methodology.md`](references/swarm_methodology.md).
 
-# Multi-Agent Lifecycle Roles (5 Pure Role-Actor Containers + 23 Soul Overlays)
+# Multi-Agent Lifecycle Roles (5 Pure Role-Actor Containers + 24 Soul Overlays)
 
-`proof-skills` enforces a strict separation between the **5 Pure Role-Actor Containers** (`agents/{specifier,prover,auditor,editor,gardener}.md`) and the **23 Specialist Soul Overlays** (`agents/souls/*.md`, bound via [`agents/facets/registry.json`](agents/facets/registry.json)).
+`proof-skills` enforces a strict separation between the **5 Pure Role-Actor Containers** (`agents/{specifier,prover,auditor,editor,gardener}.md`) and the **24 Specialist Soul Overlays** (`agents/souls/*.md`, bound via [`agents/facets/registry.json`](agents/facets/registry.json)).
 
 ## 1. Specifier (`agents/specifier.md` -- Role #1)
 - **Role-Scoped `lean-lsp` MCP Allowlist**: `lean_search`, `lean_lookup_symbol`, `lean_decl_references`, `lean_module_hierarchy`, `lean_diagnostics`, `lean_counterexample_search`, `lean_blueprint`, `lean_metrics`
@@ -31,7 +31,7 @@ For a detailed explanation of the Swarm methodology and multi-agent theory, see 
 
 ## 4. Editor (`agents/editor.md` -- Role #4)
 - **Role-Scoped `lean-lsp` MCP Allowlist**: `lean_goal`, `lean_diagnostics`, `lean_lookup_symbol`, `lean_decl_references`, `lean_search`, `lean_blueprint`, `lean_metrics`
-- **Soul Overlays (`agents/souls/`)**: `math-pedagogy-author`
+- **Soul Overlays (`agents/souls/`)**: `math-pedagogy-author`, `abstraction-concrete-architect`
 - **Skills**: `lean-proof-refactor`, `lean-pedagogical-exposition`, `lean-doc-improvement`, `lean-doc-feedback`, `lean-report`, `research-synthesis-engine`
 - **Output**: Decomposed helper lemmas, synchronized LaTeX reports, and textbook-grade mathematical exposition
 - **Stop Condition**: Proof length within threshold, zero regressions, and documentation synchronized -> Hands off to `gardener`

@@ -103,7 +103,7 @@ bash scripts/setup-env.sh            # Full setup (or: apm run setup)
 | Path | What It Contains |
 | :--- | :--- |
 | [`skills/`](skills/) | 65 modular `SKILL.md` contracts paired with deep-dive `references/*-handbook.md` guides. |
-| [`agents/`](agents/) | 5 role containers (`specifier`, `prover`, `auditor`, `editor`, `gardener`) + 23 domain specialist overlays. |
+| [`agents/`](agents/) | 5 role containers (`specifier`, `prover`, `auditor`, `editor`, `gardener`) + 24 domain specialist overlays. |
 | [`tools/lean-lsp-mcp/`](tools/lean-lsp-mcp/) | Embedded `lean-lsp` MCP server + Rust/WASM `lean-analyzer` (`bin/lean-lsp-mcp.js` auto-bootstraps on first run). |
 | [`templates/`](templates/) | Copy-pasteable Lean 4 module skeletons (`templates/00-CONVENTIONS.md`). |
 | [`vendor/itp-ontology/`](vendor/itp-ontology/) | 100-concept ITP Ontology, 10 textbook JSON indexes, and 6-prover tactic concordance. |

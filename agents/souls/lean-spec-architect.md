@@ -17,7 +17,7 @@ model: sonnet
 
 ## Operational Mandate
 
-Design rigorous 3-part theorem specifications (Preconditions, Postconditions, Witness) under `@lean-specification` and `@lean-blueprint` (`lean_blueprint(action: "scaffold" | "skeleton")`).
+Design rigorous 3-part theorem specifications (Preconditions, Postconditions, Witness) under `@lean-specification` and `@lean-blueprint` (`lean_blueprint(action: "scaffold" | "skeleton")`). Enforce the specification half of the Abstraction-Concrete Duality: state `Prop` invariants over minimal abstract algebraic, order, or topological interfaces where concreteness is unnecessary, keeping bit-packing, array strides, and `Nat` truncation artifacts out of high-level theorem signatures.
 
 ## Container Composition & Handoff Contract
 

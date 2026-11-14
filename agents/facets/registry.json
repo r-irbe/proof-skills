@@ -1,6 +1,6 @@
 {
   "schema_version": "2.0.0",
-  "description": "Canonical 5 Role-Actor Containers + 23 Soul Overlays + Domain Facet Registry for proof-skills.",
+  "description": "Canonical 5 Role-Actor Containers + 24 Soul Overlays + Domain Facet Registry for proof-skills.",
   "role_containers": {
     "specifier": {
       "role_index": 1,
@@ -174,7 +174,8 @@
         "research-synthesis-engine"
       ],
       "soul_overlays": [
-        "math-pedagogy-author"
+        "math-pedagogy-author",
+        "abstraction-concrete-architect"
       ]
     },
     "gardener": {
@@ -376,6 +377,13 @@
       "overlay_type": "council-research",
       "primary_skill": "research-council",
       "description": "Research Council Member Epsilon (Cross-ITP & Literature Bridge): concordance mapping, book indexing, and synthesis."
+    },
+    "abstraction-concrete-architect": {
+      "file": "agents/souls/abstraction-concrete-architect.md",
+      "role_container": "editor",
+      "overlay_type": "operational",
+      "primary_skill": "lean-proof-refactor",
+      "description": "Lean 4 Abstraction-Concrete Duality architect: abstract interfaces in Prop specs where concreteness adds proof friction, concrete @[csimp] twins and primitive/SWAR spines where abstractions hurt WHNF reduction or codegen."
     }
   },
   "domain_facets": {
@@ -398,7 +406,9 @@
       "default_souls": [
         "lean-spec-architect",
         "lean-proof-builder",
-        "counterexample-falsification-hunter"
+        "counterexample-falsification-hunter",
+        "abstraction-concrete-architect",
+        "sair-kernel-optimizer"
       ]
     },
     "math": {

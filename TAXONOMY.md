@@ -1,6 +1,6 @@
 # proof-skills Taxonomy -- 5-Tier Abstraction Hierarchy, 65 Unified Skills & 6-Prover Concordance
 
-Classification of all **65 active v2 first-party skills**, **5 Role-Actor Containers** (`agents/*.md`), **23 Soul Overlays** (`agents/souls/*.md`), **200 Templates** (`59` core + `131` arithmetic-geometry pack + `10` fluid-pde pack), and **20 Cross-ITP Concordance Mechanisms (`CONC-01..20`)** across **6 Prover Families** (`lean4`, `coq_mathcomp`, `isabelle_hol`, `hol_light`, `agda`, `metamath`).
+Classification of all **65 active v2 first-party skills**, **5 Role-Actor Containers** (`agents/*.md`), **24 Soul Overlays** (`agents/souls/*.md`), **200 Templates** (`59` core + `131` arithmetic-geometry pack + `10` fluid-pde pack), and **20 Cross-ITP Concordance Mechanisms (`CONC-01..20`)** across **6 Prover Families** (`lean4`, `coq_mathcomp`, `isabelle_hol`, `hol_light`, `agda`, `metamath`).
 
 ---
 

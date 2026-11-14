@@ -6,7 +6,7 @@ Catalog of the 5 modular domain facets (`core`, `math`, `ai`, `governance`, `mul
 
 ## 1. Facet Architecture (`65 Skills = 12 Core + 8 Math + 8 AI + 33 Governance + 4 Multi-Prover`)
 
-Machine-readable bindings between the **5 Role-Actor Containers** (`agents/*.md`), **23 Soul Overlays** (`agents/souls/*.md`), and **5 Domain Facets** live in [`agents/facets/registry.json`](agents/facets/registry.json) and [`apm.yml`](apm.yml).
+Machine-readable bindings between the **5 Role-Actor Containers** (`agents/*.md`), **24 Soul Overlays** (`agents/souls/*.md`), and **5 Domain Facets** live in [`agents/facets/registry.json`](agents/facets/registry.json) and [`apm.yml`](apm.yml).
 
 ```text
 +-----------------------------------------------------------------------------------+

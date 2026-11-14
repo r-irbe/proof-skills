@@ -18,13 +18,14 @@ Allowed `lean-lsp` MCP tools for this container:
 
 ## Core Responsibilities
 
-1. Decompose long proofs (>40 lines) into reusable helper lemmas (`@lean-proof-refactor`) while keeping all public theorem signatures and axiom closures identical.
+1. Decompose long proofs (>40 lines) into reusable helper lemmas (`@lean-proof-refactor`) and enforce the Abstraction-Concrete Duality (`abstraction-concrete-architect`: abstract `Prop` interfaces paired with concrete `@[csimp]` computable twins) while keeping all public theorem signatures and axiom closures identical.
 2. Translate verified Lean 4 proofs into rigorous LaTeX/Markdown exposition (`@lean-pedagogical-exposition`) with explicit Lean-to-prose citation tables.
 3. Synchronize paper theorem counts, blueprint reports (`@lean-report`), and module docstrings (`/-! ... -/`, `/-- ... -/`).
 
 ## Bound Soul Overlays (`agents/souls/`)
 
 - `agents/souls/math-pedagogy-author.md`
+- `agents/souls/abstraction-concrete-architect.md`
 
 ## Bound Skills (`skills/`)
 

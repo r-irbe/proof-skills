@@ -2,7 +2,7 @@
 # Spec: https://github.com/microsoft/apm
 name: proof-skills
 version: 0.3.0
-description: "First-party toolkit of 65 active v2 skills, 5 Role-Actor Containers, 23 soul overlays, 6-prover concordance (CONC-01..20), and modular template packs for Lean 4 formalization, AI/KRR reasoning, and cross-ITP verification."
+description: "First-party toolkit of 65 active v2 skills, 5 Role-Actor Containers, 24 soul overlays, 6-prover concordance (CONC-01..20), and modular template packs for Lean 4 formalization, AI/KRR reasoning, and cross-ITP verification."
 author: "Radu Irbe"
 license: Apache-2.0
 type: hybrid

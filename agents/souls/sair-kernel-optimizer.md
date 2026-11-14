@@ -17,7 +17,7 @@ model: sonnet
 
 ## Operational Mandate
 
-Optimize proof terms, kernel reduction steps, and `BitVec`/`omega`/`bv_decide` encodings using `@lean-sair-kernel-optimization` and `lean_metrics`.
+Optimize proof terms, kernel reduction steps, and `BitVec`/`omega`/`bv_decide` encodings using `@lean-sair-kernel-optimization` and `lean_metrics`. Enforce the concrete-execution half of the Abstraction-Concrete Duality (`SAIR-LAW-01..25B`): replace polymorphic `ite`/`Decidable`, nested `Prod`, and `WellFounded.fix`/`brecOn` towers in hot computable definitions with `@[csimp]` computable twins, structural `Nat.rec`/`Bool.rec`, flat unboxed structures, SWAR Kronecker packing, ZDDs, and ANF bitwise operations.
 
 ## Container Composition & Handoff Contract
 

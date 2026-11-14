@@ -1,4 +1,4 @@
-# `agents/` -- Pure 5 Role-Actor Containers + 23 `souls/` Overlays
+# `agents/` -- Pure 5 Role-Actor Containers + 24 `souls/` Overlays
 
 `proof-skills` separates **structural role permissions** (`agents/*.md`) from **specialist persona overlays** (`agents/souls/*.md`) and **domain facet bindings** (`agents/facets/registry.json`).
 
@@ -25,7 +25,7 @@ Rather than proliferating top-level agent containers, specialized personas live 
 4. `math-pedagogy-author` -> `editor` (`@lean-pedagogical-exposition`)
 5. `formalization-dag-navigator` -> `specifier` (`@lean-dag-visualizer`)
 
-### B. 8 Operational Specialists
+### B. 9 Operational Specialists
 6. `lean-proof-builder` -> `prover` (`@lean-proof`)
 7. `lean-spec-architect` -> `specifier` (`@lean-specification`)
 8. `counterexample-falsification-hunter` -> `prover` (`@counterexample-first-proving`)
@@ -34,18 +34,19 @@ Rather than proliferating top-level agent containers, specialized personas live 
 11. `premise-retrieval-specialist` -> `specifier` (`@lean-research`)
 12. `cross-itp-porter` -> `prover` (`@itp-cross-porting`)
 13. `lean-retro-facilitator` -> `gardener` (`@lean-retro-methodology`)
+14. `abstraction-concrete-architect` -> `editor` (`@lean-proof-refactor` + `SAIR-LAW-01..25B`)
 
 ### C. 10 Review & Research Council Personas
-14. `council-sigma-soundness` -> `auditor` (`@lean-review-council` Member Sigma)
-15. `council-phi-faithfulness` -> `auditor` (`@lean-review-council` Member Phi)
-16. `council-nu-novelty` -> `auditor` (`@lean-review-council` Member Nu)
-17. `council-tau-tactics` -> `auditor` (`@lean-review-council` Member Tau)
-18. `council-omega-chair` -> `auditor` (`@lean-review-council` Chair Omega)
-19. `research-alpha-foundations` -> `specifier` (`@research-council` Member Alpha)
-20. `research-beta-dynamics` -> `specifier` (`@research-council` Member Beta)
-21. `research-gamma-epistemics` -> `specifier` (`@research-council` Member Gamma)
-22. `research-delta-systems` -> `specifier` (`@research-council` Member Delta)
-23. `research-epsilon-bridge` -> `specifier` (`@research-council` Chair Epsilon)
+15. `council-sigma-soundness` -> `auditor` (`@lean-review-council` Member Sigma)
+16. `council-phi-faithfulness` -> `auditor` (`@lean-review-council` Member Phi)
+17. `council-nu-novelty` -> `auditor` (`@lean-review-council` Member Nu)
+18. `council-tau-tactics` -> `auditor` (`@lean-review-council` Member Tau)
+19. `council-omega-chair` -> `auditor` (`@lean-review-council` Chair Omega)
+20. `research-alpha-foundations` -> `specifier` (`@research-council` Member Alpha)
+21. `research-beta-dynamics` -> `specifier` (`@research-council` Member Beta)
+22. `research-gamma-epistemics` -> `specifier` (`@research-council` Member Gamma)
+23. `research-delta-systems` -> `specifier` (`@research-council` Member Delta)
+24. `research-epsilon-bridge` -> `specifier` (`@research-council` Chair Epsilon)
 
 ## 3. Runtime Composition & Handoff Protocol
 

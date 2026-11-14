@@ -2,7 +2,7 @@
 
 ## 1. Overview and Motivation
 
-To prevent context collapse, persona drift, and proof degradation in long-running Lean 4 sessions, the formalization lifecycle in this repository adopts a 5-role multi-agent swarm architecture (`agents/{specifier,prover,auditor,editor,gardener}.md`) composed with 23 specialist soul overlays (`agents/souls/*.md`).
+To prevent context collapse, persona drift, and proof degradation in long-running Lean 4 sessions, the formalization lifecycle in this repository adopts a 5-role multi-agent swarm architecture (`agents/{specifier,prover,auditor,editor,gardener}.md`) composed with 24 specialist soul overlays (`agents/souls/*.md`).
 
 Agents operating on mathematical formalization face severe context limits when mixing specification design, interactive tactic proving, read-only soundness auditing, pedagogical refactoring, and long-term knowledge curation. By separating concerns across 5 Role-Actor Containers, agents transition sequentially and never mix generative proving with read-only auditing or memory curation in the same context window.
 
