@@ -12,6 +12,8 @@ Scoped Unicode policy (INV-001; typographic-free by default).
 from __future__ import annotations
 
 import re
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -185,4 +187,29 @@ def test_sair_handbook_covers_all_37_laws_and_routes_7_to_11():
     sair_decide_text = (ROOT / "templates" / "core" / "examples" / "Template_SairDecide.lean").read_text(encoding="utf-8")
     assert "macro \"sair_decide\"" in sair_decide_text
     assert "decide +kernel" in sair_decide_text
+
+
+def test_core_lean_exemplars_compile_cleanly():
+    lean_bin = shutil.which("lean")
+    if not lean_bin:
+        return
+    exemplars = [
+        "Template_SairDecide.lean",
+        "Template_ComputableTwin_Csimp.lean",
+        "Template_KernelWHNF_SAIR.lean",
+        "Template_Theorem_Exemplar.lean",
+    ]
+    for name in exemplars:
+        path = ROOT / "templates" / "core" / "examples" / name
+        res = subprocess.run(
+            [lean_bin, str(path)],
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        assert res.returncode == 0, f"{name} failed to compile:\n{res.stdout}\n{res.stderr}"
+        assert res.stdout.strip() == "" and res.stderr.strip() == "", (
+            f"{name} emitted warnings/output:\n{res.stdout}\n{res.stderr}"
+        )
+
 
