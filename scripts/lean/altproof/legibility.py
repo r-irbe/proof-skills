@@ -5,7 +5,7 @@ Scores a tactic proof block on:
   2. `numina-lean-agent` semicolon line-compression detector (`has_semicolons`, `semicolon_lines`)
      and 6-pattern structural golf opportunities (`golf_opportunities`).
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations
@@ -38,9 +38,10 @@ RENDERABLE_PATTERNS = [
     re.compile(r"^(unfold|simp|simp_rw|rw|erw)\b"),
     re.compile(
         r"^(linarith|nlinarith|omega|ring|ring_nf|field_simp"
-        r"|positivity|norm_num|rfl|exact\?|aesop|grind|decide|bv_decide"
-        r"|sum_congr_ring|finset_nonneg|finset_mono|wellformed_tac|channel_fields"
-        r"|alt_proof|elegance\?|bfs_elegance\?)\b"
+        r"|positivity|norm_num|rfl|exact\?|aesop|grind|decide|bv_decide|sair_decide"
+        r"|sum_congr_ring|calc_ring_sum|gcongr_pos|finset_nonneg|finset_mono"
+        r"|wellformed_tac|channel_fields|eqsat_rw|egg_rw|backchain|contra_direct"
+        r"|grind_close|push|alt_proof|elegance\?|bfs_elegance\?)\b"
     ),
     re.compile(
         r"^(constructor|refine|use|exists|intro|intros|induction"

@@ -9,7 +9,7 @@ optimal automated tactic substitutions:
     (`[[altproof.tactics]]`) via `project_config.py` (with fallback defaults
     when `include_project_tactics=True` and no `lean-project.toml` is found).
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations
@@ -288,7 +288,7 @@ def recommend_tactics(
             )
         )
 
-    # 0b. SAIR WHNF closed-constant & SWAR pre-unfolding routes
+    # 0b. SAIR WHNF closed-constant, SWAR pre-unfolding, & 3-axiom sair_decide routes
     if WHNF_CONST_RE.search(goal) or WHNF_CONST_RE.search(proof):
         recommendations.append(
             TacticRecommendation(
@@ -306,6 +306,16 @@ def recommend_tactics(
                 target_pattern="gmp-swar-word-packing",
                 rationale="SWAR word-packing with elaboration-time pre-unfolding over binary-doubling combinators.",
                 estimated_heartbeats=50,
+                confidence=0.95,
+            )
+        )
+    if re.search(r"\b(?:sair_decide|Lean\.ofReduceBool)\b", goal) or "sair_decide" in proof:
+        recommendations.append(
+            TacticRecommendation(
+                tactic="sair_decide",
+                target_pattern="sair_decide",
+                rationale="Strict 3-axiom kernel-clean decision macro (rfl | decide +kernel | omega) with zero Lean.ofReduceBool.",
+                estimated_heartbeats=70,
                 confidence=0.95,
             )
         )
@@ -368,6 +378,111 @@ def recommend_tactics(
 
     # Add declarative project tactic recommendations
     recommendations.extend(plugin_recs)
+
+    # 2b. AltProof v0.5.0+ big-operator, monotonicity, congruence, redirect, & backchaining closers
+    has_double_sum_side = any(
+        len(re.findall(r"(?:\bFinset\.sum\b|\u2211)", side)) >= 2
+        for side in re.split(r"(?:<=|\u2264|=)", target)
+    )
+    if (
+        has_double_sum_side and not re.search(r"(?:<=|\u2264)", target_no_arrows)
+    ) or re.search(r"\b(?:Finset\.sum_comm|calc_ring_sum)\b", proof):
+        recommendations.append(
+            TacticRecommendation(
+                tactic="calc_ring_sum",
+                target_pattern="double-sum-commutation-and-separable-product",
+                rationale="Discharges swapped double sums (Finset.sum_comm) and separable double-sum factorizations in one step.",
+                estimated_heartbeats=255,
+                confidence=0.92,
+            )
+        )
+
+    if (
+        re.search(r"\bFinset\.sum_eq_single\b", proof)
+        and re.search(r"\b(?:if|ite)\b", proof)
+    ) or re.search(
+        r"(?:\bFinset\.sum\b|\u2211)[\s\S]*?\bif\b[\s\S]*?\bthen\b[\s\S]*?\belse\s+0\b",
+        target,
+    ):
+        recommendations.append(
+            TacticRecommendation(
+                tactic="simp only [Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, \u2193reduceIte]",
+                target_pattern="kronecker-delta-finset-sum-collapse",
+                rationale="Collapses Kronecker-delta Finset.sum over if-then-else via Finset.sum_ite_eq without manual sum_eq_single case splits.",
+                estimated_heartbeats=175,
+                confidence=0.94,
+            )
+        )
+
+    if (
+        re.search(r"(?:<=|\u2264|<)", target_no_arrows)
+        and re.search(r"(?:\*|/)", target_no_arrows)
+        and not has_finset_sum
+        and not has_nat_context
+        and not has_wellformed_or_channel
+    ) or re.search(r"\bgcongr_pos\b", proof):
+        recommendations.append(
+            TacticRecommendation(
+                tactic="gcongr_pos",
+                target_pattern="ordered-ring-monotonicity-congruence",
+                rationale="Applies gcongr and automatically discharges positivity/arithmetic side-conditions.",
+                estimated_heartbeats=230,
+                confidence=0.89,
+            )
+        )
+
+    has_pure_eq = bool(
+        "=" in target_no_arrows
+        and not re.search(r"(?:<=|>=|!=|\u2264|\u2265|\u2260)", target_no_arrows)
+    )
+    if (
+        has_pure_eq
+        and not has_finset_sum
+        and not has_nat_context
+        and not REAL_LIN_RE.search(goal)
+        and not BITVEC_RE.search(goal)
+        and not has_wellformed_or_channel
+    ) or re.search(r"\b(?:eqsat_rw|egg_rw)\b", proof):
+        recommendations.append(
+            TacticRecommendation(
+                tactic="eqsat_rw",
+                target_pattern="eqsat-congruence-closure",
+                rationale="Pure-Lean bidirectional congruence-closure rewrite saturation (Eq.trans / congrArg) with 0 external FFI.",
+                estimated_heartbeats=200,
+                confidence=0.87,
+            )
+        )
+
+    if (
+        (
+            re.search(r"(?:\bby_contra\b|\bFalse\b|\bNot\b|\u00ac)", goal + " " + proof)
+            or re.search(r"&&[\s\S]*?=\s*true\b", goal + " " + proof)
+        )
+        and not has_finset_sum
+        and not has_wellformed_or_channel
+    ) or re.search(r"\bcontra_direct\b", proof):
+        recommendations.append(
+            TacticRecommendation(
+                tactic="contra_direct",
+                target_pattern="redirect-by-contradiction",
+                rationale="Constructive contradiction redirect normalizing decidable/Bool goals without Classical.choice.",
+                estimated_heartbeats=165,
+                confidence=0.90,
+            )
+        )
+
+    if (
+        len(re.findall(r"\bapply\b", proof)) >= 2 and not INDUCTIVE_RE.search(proof)
+    ) or re.search(r"\bbackchain\b", proof):
+        recommendations.append(
+            TacticRecommendation(
+                tactic="backchain",
+                target_pattern="backchain-solve-by-elim",
+                rationale="Core-only bounded SolveByElim backchaining (maxDepth := 6) without aesop import overhead.",
+                estimated_heartbeats=210,
+                confidence=0.86,
+            )
+        )
 
     # 3. Inductive reasoning and constructor search -> aesop
     if INDUCTIVE_RE.search(proof) or "constructor" in proof:
@@ -482,7 +597,21 @@ def _cli_main(argv: list[str] | None = None) -> int:
         assert any(x["tactic"] == "sum_congr_ring" for x in r3["recommendations"]), r3
         r4 = dispatch_and_score("x y : BitVec 64 |- (x ^^^ y) ^^^ y = x", "bv_decide")
         assert r4["best_tactic"] == "bv_decide", r4
-        print("altproof_tactic_advisor: self-test PASSED (4/4 checks)")
+        r5 = dispatch_and_score(
+            "|- Finset.sum s (fun i => Finset.sum t (fun j => f i * g j)) = (Finset.sum s f) * (Finset.sum t g)",
+            "rw [Finset.sum_comm]",
+        )
+        assert r5["best_tactic"] == "calc_ring_sum", r5
+        r6 = dispatch_and_score(
+            "|- Finset.sum s (fun i => if i = j then f i else 0) = f j",
+            "rw [Finset.sum_eq_single j]\nif h : j = j then simp else simp",
+        )
+        assert "Finset.sum_ite_eq" in (r6["best_tactic"] or ""), r6
+        r7 = dispatch_and_score("a b c : Alpha |- f (g a) = f b", "eqsat_rw [h1, h2]")
+        assert any(x["tactic"] == "eqsat_rw" for x in r7["recommendations"]), r7
+        r8 = dispatch_and_score("P Q R : Prop |- R", "apply h2\napply h1\nexact hp")
+        assert any(x["tactic"] == "backchain" for x in r8["recommendations"]), r8
+        print("altproof_tactic_advisor: self-test PASSED (8/8 checks)")
         return 0
     print(json.dumps(dispatch_and_score(args.goal, args.proof), indent=2))
     return 0

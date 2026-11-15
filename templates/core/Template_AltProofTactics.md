@@ -26,6 +26,7 @@ import Mathlib.Tactic.GCongr
 import Mathlib.Tactic.Push
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Algebra.BigOperators.Field
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
 import Aesop
 
@@ -813,30 +814,33 @@ elab ("swar_unroll% " <|> "unroll_nat_rec% ") k:num base:term:arg step:term:arg 
 
 
 /-- `sum_congr_ring`: normalizes `Finset.sum` linear combinations (`sum_add_distrib`,
-    `sum_sub_distrib`, `sum_neg_distrib`, `mul_sum`, `sum_mul`, and multi-sum linear
-    combinations `a * ∑ f ± b * ∑ g ± c * ∑ h`) and discharges pointwise ring equalities
-    under `Finset.sum` via `Finset.sum_congr rfl fun _ _ => by ring`. Always closes the
-    goal or fails cleanly so `first` combinators can backtrack reliably. -/
+    `sum_sub_distrib`, `sum_neg_distrib`, `mul_sum`, `sum_mul`, `sum_div`, scalar-sum factors,
+    and multi-sum linear combinations `a * ∑ f ± b * ∑ g ± c * ∑ h`) and discharges pointwise
+    ring equalities under `Finset.sum` via `Finset.sum_congr rfl fun _ _ => by ring`. Always
+    closes the goal or fails cleanly so `first` combinators can backtrack reliably. -/
 syntax (name := sumCongrRingTactic) "sum_congr_ring" : tactic
 
 macro_rules
   | `(tactic| sum_congr_ring) => `(tactic|
       first
       | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring)
-      | (rw [← Finset.sum_sub_distrib]; refine Finset.sum_congr rfl (fun _ _ => ?_); ring)
-      | (rw [← Finset.sum_add_distrib]; refine Finset.sum_congr rfl (fun _ _ => ?_); ring)
-      | (rw [Finset.mul_sum]; refine Finset.sum_congr rfl (fun _ _ => ?_); ring)
-      | (rw [← Finset.mul_sum]; refine Finset.sum_congr rfl (fun _ _ => ?_); ring)
-      | (rw [Finset.sum_mul]; refine Finset.sum_congr rfl (fun _ _ => ?_); ring)
-      | (rw [← Finset.sum_mul]; refine Finset.sum_congr rfl (fun _ _ => ?_); ring)
+      | (rw [← Finset.sum_sub_distrib]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))
+      | (rw [← Finset.sum_add_distrib]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))
+      | (rw [Finset.mul_sum]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))
+      | (rw [← Finset.mul_sum]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))
+      | (rw [Finset.sum_mul]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))
+      | (rw [← Finset.sum_mul]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))
+      | (rw [Finset.sum_div]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))
+      | (rw [← Finset.sum_div]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))
       | (simp only [Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib, ← Finset.sum_neg_distrib];
          first
          | done
          | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring)
-         | (rw [← Finset.mul_sum]; refine Finset.sum_congr rfl (fun _ _ => ?_); ring)
-         | (rw [← Finset.sum_mul]; refine Finset.sum_congr rfl (fun _ _ => ?_); ring)))
+         | (rw [← Finset.mul_sum]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))
+         | (rw [← Finset.sum_mul]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))))
 
-/-- `calc_ring_sum`: multi-step `Finset.sum` commutation (`Finset.sum_comm`), scalar distribution,
+/-- `calc_ring_sum`: multi-step `Finset.sum` commutation (`Finset.sum_comm`), separable double-sum
+    factorization (`(∑ a, ∑ b, f a * g b) = (∑ a, f a) * (∑ b, g b)`), scalar distribution,
     and telescoping closer extending `sum_congr_ring` to swapped double sums. -/
 syntax (name := calcRingSumTactic) "calc_ring_sum" : tactic
 
@@ -845,6 +849,11 @@ macro_rules
       first
       | (sum_congr_ring; done)
       | (rw [Finset.sum_comm]; sum_congr_ring; done)
+      | (simp_rw [← Finset.mul_sum]; sum_congr_ring; done)
+      | (rw [Finset.sum_mul]; simp_rw [Finset.mul_sum];
+         first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); sum_congr_ring; done))
+      | (rw [← Finset.sum_mul]; simp_rw [← Finset.mul_sum];
+         first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); sum_congr_ring; done))
       | (simp only [Finset.mul_sum, Finset.sum_mul]; rw [Finset.sum_comm];
          first
          | done
@@ -863,61 +872,96 @@ macro_rules
       (gcongr <;> first | rfl | assumption | (positivity; done) | linarith | nlinarith | omega; done))
 
 /-- Instantiate universally quantified local hypotheses of the form `∀ x : α, ...`,
-    `∀ x ∈ s, ...`, or `∀ x : α, ∀ j : κ, ...` at the freshly introduced index `iFVar`
-    and membership `hiFVar` (and any secondary local context variables `j : κ`) so
-    pointwise arithmetic/positivity closers and nested sum tactics can see them directly.
-    Skips non-`Prop` function declarations (e.g., `f : ι → ℝ`) so local context is not
-    polluted with value terms. -/
+    `∀ x ∈ s, ...`, `∀ x : α, ∀ j : κ, ...`, and 2-way conjunction predicates (such as
+    `hp : (∀ i, 0 ≤ p i) ∧ ∑ i, p i = 1` or WHNF-reducible `Coherent p` / `realRowStochastic M`)
+    at the freshly introduced index `iFVar` and membership `hiFVar` (and any secondary local
+    context variables `j : κ`) so pointwise arithmetic/positivity closers and nested sum tactics
+    can see them directly. Skips non-`Prop` function declarations (e.g., `f : ι → ℝ`) so local
+    context is not polluted with value terms. -/
 def specializePointwiseHyps (iFVar hiFVar : Expr) : TacticM Unit :=
   withMainContext do
     let iType ← inferType iFVar
     let hiType ← inferType hiFVar
     let lctx ← getLCtx
     let mut ctxFVars : Array (Expr × Expr) := #[]
+    let mut propHyps : Array (Name × Expr × Expr) := #[]
     for decl in lctx do
       if !decl.isImplementationDetail && !decl.userName.hasMacroScopes then
         let dTy ← instantiateMVars decl.type
         if !(← isProp dTy) && !dTy.isForall then
           ctxFVars := ctxFVars.push (decl.toExpr, dTy)
-    for decl in lctx do
       if !decl.isImplementationDetail && decl.fvarId != iFVar.fvarId! && decl.fvarId != hiFVar.fvarId! then
         let ty ← instantiateMVars decl.type
-        if (← isProp ty) && ty.isForall then
-          let dom := ty.bindingDomain!
-          if ← withoutModifyingState (isDefEq dom iType) then
-            try
-              let app1 ← mkAppM' decl.toExpr #[iFVar]
-              let app1Ty ← instantiateMVars (← inferType app1)
-              let val ← if app1Ty.isForall then
-                if ← withoutModifyingState (isDefEq app1Ty.bindingDomain! hiType) then
-                  mkAppM' app1 #[hiFVar]
-                else
-                  pure app1
+        if ← isProp ty then
+          propHyps := propHyps.push (decl.userName, decl.toExpr, ty)
+          if !ty.isForall && !ty.isAppOfArity ``Eq 3 && !ty.isAppOfArity ``LE.le 4
+              && !ty.isAppOfArity ``LT.lt 4 && !ty.isAppOfArity ``Not 1 then
+            let tyWhnf ← whnf ty
+            if tyWhnf.isAppOfArity ``And 2 then
+              try
+                let p1 := tyWhnf.getArg! 0
+                let p2 := tyWhnf.getArg! 1
+                let e1 ← mkAppM ``And.left #[decl.toExpr]
+                let e2 ← mkAppM ``And.right #[decl.toExpr]
+                let g1 ← getMainGoal
+                let (_, g2) ← g1.note (decl.userName.appendAfter "_fst") e1 p1
+                let (_, g3) ← g2.note (decl.userName.appendAfter "_snd") e2 p2
+                replaceMainGoal [g3]
+                propHyps := propHyps.push (decl.userName.appendAfter "_fst", e1, p1)
+                propHyps := propHyps.push (decl.userName.appendAfter "_snd", e2, p2)
+              catch _ => pure ()
+    for (baseName, hypExpr, ty) in propHyps do
+      if ty.isForall then
+        let dom := ty.bindingDomain!
+        if ← withoutModifyingState (isDefEq dom iType) then
+          try
+            let app1 ← mkAppM' hypExpr #[iFVar]
+            let app1Ty ← instantiateMVars (← inferType app1)
+            let val ← if app1Ty.isForall then
+              if ← withoutModifyingState (isDefEq app1Ty.bindingDomain! hiType) then
+                mkAppM' app1 #[hiFVar]
               else
                 pure app1
-              let valTy ← instantiateMVars (← inferType val)
-              let goal ← getMainGoal
-              let (_, goal') ← goal.note (decl.userName.appendAfter "_pt") val valTy
-              replaceMainGoal [goal']
-              if valTy.isForall then
-                let dom2 := valTy.bindingDomain!
-                if !(← isProp dom2) then
-                  for (fvarExpr, fvarTy) in ctxFVars do
-                    if fvarExpr.fvarId! != iFVar.fvarId! then
-                      if ← withoutModifyingState (isDefEq dom2 fvarTy) then
-                        let val2 ← mkAppM' val #[fvarExpr]
-                        let val2Ty ← instantiateMVars (← inferType val2)
-                        let g ← getMainGoal
-                        let (_, g') ← g.note (decl.userName.appendAfter "_pt2") val2 val2Ty
-                        replaceMainGoal [g']
-            catch _ => pure ()
+            else
+              pure app1
+            let valTy ← instantiateMVars (← inferType val)
+            let goal ← getMainGoal
+            let (_, goal') ← goal.note (baseName.appendAfter "_pt") val valTy
+            replaceMainGoal [goal']
+            if !valTy.isForall && !valTy.isAppOfArity ``Eq 3 && !valTy.isAppOfArity ``LE.le 4
+                && !valTy.isAppOfArity ``LT.lt 4 && !valTy.isAppOfArity ``Not 1 then
+              let valWhnf ← whnf valTy
+              if valWhnf.isAppOfArity ``And 2 then
+                try
+                  let vp1 := valWhnf.getArg! 0
+                  let vp2 := valWhnf.getArg! 1
+                  let ve1 ← mkAppM ``And.left #[val]
+                  let ve2 ← mkAppM ``And.right #[val]
+                  let ga ← getMainGoal
+                  let (_, gb) ← ga.note (baseName.appendAfter "_pt_fst") ve1 vp1
+                  let (_, gc) ← gb.note (baseName.appendAfter "_pt_snd") ve2 vp2
+                  replaceMainGoal [gc]
+                catch _ => pure ()
+            if valTy.isForall then
+              let dom2 := valTy.bindingDomain!
+              if !(← isProp dom2) then
+                for (fvarExpr, fvarTy) in ctxFVars do
+                  if fvarExpr.fvarId! != iFVar.fvarId! then
+                    if ← withoutModifyingState (isDefEq dom2 fvarTy) then
+                      let val2 ← mkAppM' val #[fvarExpr]
+                      let val2Ty ← instantiateMVars (← inferType val2)
+                      let g ← getMainGoal
+                      let (_, g') ← g.note (baseName.appendAfter "_pt2") val2 val2Ty
+                      replaceMainGoal [g']
+          catch _ => pure ()
 
 /-- `finset_nonneg`: discharges `0 ≤ ∑ i ∈ s, f i` (and nested double sums
     `0 ≤ ∑ i, ∑ j, f i j`) by applying `Finset.sum_nonneg`, instantiating any
-    universally quantified local hypotheses `h : ∀ i, ...` or `h : ∀ i ∈ s, ...`
-    at the introduced summation index, and closing the pointwise non-negativity
-    obligation via `positivity`, `linarith`, `nlinarith`, `omega`, `solve_by_elim`,
-    recursive `finset_nonneg`, or `aesop`. -/
+    universally quantified or `And`-packaged local hypotheses `h : ∀ i, ...` or
+    `h : ∀ i ∈ s, ...` at the introduced summation index, and closing the pointwise
+    non-negativity obligation via `positivity`, `linarith`, `nlinarith`, `omega`,
+    `mul_assoc` + `solve_by_elim` (including `mul_self_nonneg`), recursive `finset_nonneg`,
+    or `aesop`. -/
 syntax (name := finsetNonnegTactic) "finset_nonneg" : tactic
 
 @[tactic finsetNonnegTactic]
@@ -934,7 +978,8 @@ def evalFinsetNonneg : Tactic := fun _ => do
     | linarith
     | nlinarith
     | omega
-    | (solve_by_elim (maxDepth := 6) [mul_nonneg, add_nonneg, sq_nonneg, pow_nonneg, abs_nonneg, div_nonneg]; done)
+    | (solve_by_elim (maxDepth := 6) [mul_nonneg, mul_self_nonneg, add_nonneg, sq_nonneg, pow_nonneg, abs_nonneg, div_nonneg]; done)
+    | (simp only [mul_assoc]; solve_by_elim (maxDepth := 6) [mul_nonneg, mul_self_nonneg, add_nonneg, sq_nonneg, pow_nonneg, abs_nonneg, div_nonneg]; done)
     | (finset_nonneg; done)
     | (aesop; done)))
 
@@ -1034,8 +1079,8 @@ def tryBfsCandidateClosers (feats : GoalFeatures) : TacticM (Array (CandidateRes
   if feats.hasNegOrContra then
     bfsCandidates := bfsCandidates ++ [
       (2, "contra_direct", `(tactic| contra_direct)),
-      (2, "push_neg; alt_proof", `(tactic| (push_neg; alt_proof))),
-      (3, "intros; push_neg; alt_proof", `(tactic| (intros; push_neg; alt_proof)))
+      (2, "push Not; alt_proof", `(tactic| (push Not; alt_proof))),
+      (3, "intros; push Not; alt_proof", `(tactic| (intros; push Not; alt_proof)))
     ]
   if feats.hasFinsetSum then
     bfsCandidates := bfsCandidates ++ [

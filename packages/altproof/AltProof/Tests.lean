@@ -397,4 +397,44 @@ theorem calc_ring_sum_double_swap_pin
     ∑ j, (∑ i, c i * M i j) * V j = ∑ i, c i * (∑ j, M i j * V j) := by
   calc_ring_sum
 
+/-- `sum_congr_ring` factors a scalar multiplier that is itself a `Finset.sum` without blowing up
+    into an expanded double sum. -/
+theorem sum_congr_ring_scalar_sum_pin
+    {ι κ : Type*} [Fintype ι] [Fintype κ] {R : Type*} [CommRing R]
+    (f : ι → R) (g : κ → R) :
+    (∑ a, f a * (∑ b, g b)) = (∑ a, f a) * (∑ b, g b) := by
+  sum_congr_ring
+
+/-- `sum_congr_ring` normalizes division over `Finset.sum` (`Finset.sum_div`) and closes pointwise ring identities. -/
+theorem sum_congr_ring_div_pin
+    {ι : Type*} [Fintype ι] (f g : ι → ℝ) (c : ℝ) :
+    (∑ i, (f i + g i)) / c = ∑ i, (g i + f i) / c := by
+  sum_congr_ring
+
+/-- `calc_ring_sum` factors separable double sums `(∑ a, ∑ b, f a * g b) = (∑ a, f a) * (∑ b, g b)` in one step. -/
+theorem calc_ring_sum_separable_double_pin
+    {ι κ : Type*} [Fintype ι] [Fintype κ] {R : Type*} [CommRing R]
+    (f : ι → R) (g : κ → R) :
+    (∑ a, ∑ b, f a * g b) = (∑ a, f a) * (∑ b, g b) ∧
+    (∑ a, f a) * (∑ b, g b) = ∑ a, ∑ b, g b * f a := by
+  constructor <;> calc_ring_sum
+
+private def IsCoherentPin {ι : Type*} [Fintype ι] (w : ι → ℝ) : Prop :=
+  (∀ i, 0 ≤ w i) ∧ ∑ i, w i = 1
+
+/-- `finset_nonneg` unfolds WHNF-reducible conjunction predicates (`IsCoherentPin`), projects `.left`,
+    instantiates `0 ≤ w i`, reassociates `w i * u i * u i`, and closes via `mul_self_nonneg` in one step. -/
+theorem finset_nonneg_and_proj_mul_self_pin
+    {ι : Type*} [Fintype ι] (w u : ι → ℝ) (hw : IsCoherentPin w) :
+    0 ≤ ∑ i, w i * u i * u i := by
+  have _ := hw
+  finset_nonneg
+
+/-- `bfs_elegance?` probes `push Not; alt_proof` on negated universal goals cleanly under Lean v4.34.1
+    with zero `push_neg` deprecation warnings. -/
+theorem bfs_elegance_push_not_pin : ¬ (∀ n : Nat, n < 0) := by
+  bfs_elegance?
+  push Not
+  exact ⟨0, by omega⟩
+
 end AltProof.Tests
