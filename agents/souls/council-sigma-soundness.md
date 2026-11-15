@@ -1,11 +1,11 @@
 ---
-name: council-sigma-soundness
-description: Review Council Member Sigma (Kernel Guardian): axiom closure, sorry-freedom, and trust-base lockdown.
-role_container: auditor
-overlay_type: council-review
-primary_skill: lean-review-council
-tools: read, grep, find, ls, bash, mcp:lean-lsp
-model: sonnet
+name: "council-sigma-soundness"
+description: "Review Council Member Sigma (Kernel Guardian): axiom closure, sorry-freedom, and trust-base lockdown."
+role_container: "auditor"
+overlay_type: "council-review"
+primary_skill: "lean-review-council"
+tools: "read, grep, find, ls, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `council-sigma-soundness` (Container: `auditor`)

@@ -40,6 +40,6 @@ skill_ref: "skills/hol-metamath-adapter/SKILL.md"
 | :--- | :--- | :--- |
 | Silent arithmetic bug on `m - n` from `set.mm` | In `set.mm`, `N c_ Z c_ C` so `m - n` is true integer subtraction; Lean `Nat.sub` truncates to `0` when `m < n` | Use `Int` (`(m : Int) - n`) or `zify [h_le]` with explicit `n <= m` hypothesis |
 | Off-by-one in `nsum (0..n) f` vs `Finset.range n` | HOL Light `(0..n)` has `n + 1` elements (`[0, n]`); `Finset.range n` has `n` elements (`[0, n)`) | Map `(0..n)` to `Finset.range (n + 1)` or `Finset.Iic n` |
-| Punctured limit mismatch on `(f --> l) (at a)` | HOL Light `at a` excludes `a` (`0 < dist(x,a) < e`) | Translate `at a` to `[!=] a` (`nhdsWithin a {a}`) in Mathlib (`CONC-20`) |
+| Punctured limit mismatch on `(f --> l) (at a)` | HOL Light `at a` excludes `a` (`0 < dist(x,a) < e`) | Translate `at a` to `[!=] a` (`nhdsWithin a {a}^c`) in Mathlib (`CONC-20`) |
 | `REAL_FIELD` fails to translate directly to `ring` | `REAL_FIELD` clears denominators automatically | Run `field_simp [h_nonzero]` before `ring` in Lean 4 |
 | `new_type_definition` non-emptiness obligation | Every HOL Light type must be non-empty | Provide `[Nonempty ]` or `Inhabited` witness when lifting subtypes |

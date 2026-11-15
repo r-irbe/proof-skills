@@ -26,8 +26,8 @@ try:
     DEFAULT_PROJECT = _CFG.lean_dir if _CFG.lean_dir not in ("", ".") else _CFG.name
 except Exception:
     ROOT = Path(__file__).resolve().parent.parent
-    LEAN_ROOT = ROOT / "docs" / "easci" / "lean"
-    DEFAULT_PROJECT = "EASCI"
+    LEAN_ROOT = ROOT / "docs" / "project" / "lean"
+    DEFAULT_PROJECT = "Project"
 
 BLUEPRINT_SRC = LEAN_ROOT / "blueprint" / "src"
 SECTIONS_DIR = BLUEPRINT_SRC / "sections"

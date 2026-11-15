@@ -10,7 +10,7 @@ extracted_from: skills/lean-proof/SKILL.md
 > step in §Workflow are enforced by the proving agent itself, by `@lean-proof-review`
 > downstream, and by the automated CI and enforcement gates (`check_conformance.py`,
 > `apm.yml`, and `@lean-enforcement`).
-> Skipping Persist = incomplete, regardless of artefact quality (FSIA-R-11-09).
+> Skipping Persist = incomplete, regardless of artefact quality.
 
 ## Routing
 
@@ -75,7 +75,7 @@ extracted_from: skills/lean-proof/SKILL.md
    (`pilens_ast_grep_search`, `pilens_diagnostics`) as sub-second structural pre-checks before `lake build` to check anti-pattern rules
    (`lean-no-bare-simp-final`, `lean-no-dagger-var-ref`, `lean-no-sorry`); cleanup pass (G-8); confirm no `sorry` or error remains (G-10) and verify trust
    closure with `lean_axiom_closure` (`{"symbol": "...", "module": "..."}`). Max 3 cleanup attempts before escalating.
-5. **Persist** [persist] *(MANDATORY, FSIA-R-11-09)* -- commit the proof, update the state tracker, tick `tasks.md`, and (if a recurring pattern surfaced)
+5. **Persist** [persist] *(MANDATORY)* -- commit the proof, update the state tracker, tick `tasks.md`, and (if a recurring pattern surfaced)
    emit a fleeting note via `@lean-zettelkasten`. **Skipping Persist = incomplete.**
 
 ## Recovery & STOP
@@ -88,11 +88,10 @@ extracted_from: skills/lean-proof/SKILL.md
 
 ## Handoffs
 
-- **Predecessors / successors**: see FM `handoffs` (grammar from ADR-0080). Typical inbound: `@lean-setup` confirms toolchain; `@lean-specification`
+- **Predecessors / successors**: see FM `handoffs`. Typical inbound: `@lean-setup` confirms toolchain; `@lean-specification`
   supplies the theorem; `@lean-research` supplies tactic strategy. Typical outbound: `@lean-proof-review` audits; `@lean-mwe` if stuck;
   `@lean-zettelkasten` records the pattern.
 - **Source spec**: `specs/lean/proof/requirements.md` -- every G-rule traces to an AC there.
-- **Related ADRs**: ADR-0076 (skill-as-contract), ADR-0080 (handoff DAG), ADR-0079 (tier loading).
 
 ## Common failure modes
 
@@ -117,15 +116,15 @@ extracted_from: skills/lean-proof/SKILL.md
 ## See also
 
 - This `SKILL.md` is the canonical v2 proof-writing contract for this package.
-- [`../../references/lean4-lsp-proof-protocol.md`](../../references/lean4-lsp-proof-protocol.md) -- interactive LSP proof loop, suggestion harvesting, and
+- [`../../references/lean4-lsp-proof-protocol.md`](../protocols/lean4-lsp-proof-protocol.md) -- interactive LSP proof loop, suggestion harvesting, and
   hygiene protocol.
-- [`../../references/lean4-lsp-guide.md`](../../references/lean4-lsp-guide.md) -- comprehensive Lean 4 Language Server Protocol guide.
-- [`../lean-build/SKILL.md`](../lean-build/SKILL.md) -- project compilation and build diagnostics.
-- [`../../templates/Template_ProofStrategy.md`](../../templates/Template_ProofStrategy.md) -- proof methodology cheat sheet.
-- [`../../templates/Template_AltProofTactics.md`](../../templates/Template_AltProofTactics.md) -- speculative `alt_proof` / `elegance?` meta-tactics and
+- [`../../references/lean4-lsp-guide.md`](../protocols/lean4-lsp-guide.md) -- comprehensive Lean 4 Language Server Protocol guide.
+- [`../lean-build/SKILL.md`](../../skills/lean-build/SKILL.md) -- project compilation and build diagnostics.
+- [`../../templates/Template_ProofStrategy.md`](../../templates/packs/domain-starters/Template_ProofStrategy.md) -- proof methodology cheat sheet.
+- [`../../templates/Template_AltProofTactics.md`](../../templates/core/Template_AltProofTactics.md) -- speculative `alt_proof` / `elegance?` meta-tactics and
   finite-simplex closers.
-- [`../../references/lean4-proof-strategy.md`](../../references/lean4-proof-strategy.md) -- one-step-at-a-time, error priority, hardest case first.
-- [`../../references/lean4-tactic-hierarchy.md`](../../references/lean4-tactic-hierarchy.md) -- tactic priority table.
+- [`../../references/lean4-proof-strategy.md`](../protocols/lean4-proof-strategy.md) -- one-step-at-a-time, error priority, hardest case first.
+- [`../../references/lean4-tactic-hierarchy.md`](../protocols/lean4-tactic-hierarchy.md) -- tactic priority table.
 
 
 ---

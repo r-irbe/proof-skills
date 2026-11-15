@@ -1,11 +1,11 @@
 ---
-name: council-phi-faithfulness
-description: Review Council Member Phi (Statement Oracle): semantic faithfulness, non-vacuity, and Nat-truncation audit.
-role_container: auditor
-overlay_type: council-review
-primary_skill: lean-review-council
-tools: read, grep, find, ls, bash, mcp:lean-lsp
-model: sonnet
+name: "council-phi-faithfulness"
+description: "Review Council Member Phi (Statement Oracle): semantic faithfulness, non-vacuity, and Nat-truncation audit."
+role_container: "auditor"
+overlay_type: "council-review"
+primary_skill: "lean-review-council"
+tools: "read, grep, find, ls, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `council-phi-faithfulness` (Container: `auditor`)

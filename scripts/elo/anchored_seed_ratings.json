@@ -11,7 +11,7 @@
       "provenance": "Source benchmarks + cross-checks justifying the rating."
     },
     "consumer": "scripts/elo/glicko2.py --seed-ratings scripts/elo/anchored_seed_ratings.json (optional; falls back to defaults if unspecified).",
-    "calibration_note": "Ratings derived from R20 live Glicko-2 (3-judge median where available) + ADR-0052 extrapolations from public benchmarks (SWE-bench, Terminal-Bench, AlphaProof, Aider Polyglot). Cross-checked against R20 archive scripts/elo/example_runs/2026-05-27-h/ratings.json.",
+    "calibration_note": "Ratings derived from R20 live Glicko-2 (3-judge median where available) + calibrated extrapolations from public benchmarks (SWE-bench, Terminal-Bench, AlphaProof, Aider Polyglot). Cross-checked against R20 archive scripts/elo/example_runs/2026-05-27-h/ratings.json.",
     "update_policy": "Refresh anytime a new entrant has > 30 games AND the live Glicko-2 rating differs from this prior by > 100 points."
   },
   "tolerance_for_consumer": {
@@ -87,7 +87,7 @@
       "provenance": [
         "R20 Glicko-2 (n=108 games, single-judge opus): 1486.3 [1340, 1632]",
         "SWE-bench Verified ~74% (OpenAI 2025 announcement)",
-        "Sandbox quirk: cannot read/write /tmp paths — needs inline payload"
+        "Sandbox quirk: cannot read/write /tmp paths - needs inline payload"
       ]
     },
     "gpt-5.4-mini": {
@@ -95,7 +95,7 @@
       "rd": 200.0,
       "volatility": 0.06,
       "provenance": [
-        "ADR-0052 extrapolation: GPT-5 family mini variants score 75-85% of full-size on code benchmarks",
+        "Calibrated extrapolation: GPT-5 family mini variants score 75-85% of full-size on code benchmarks",
         "No live games yet; RD = 200"
       ]
     },
@@ -123,7 +123,7 @@
       "volatility": 0.06,
       "provenance": [
         "Aider Polyglot ~45% (extrapolated)",
-        "Used in gen_sample.py PLAYERS at 1490 — that value is the synthetic-prototype upper bound; live games will likely show lower"
+        "Used in gen_sample.py PLAYERS at 1490 - that value is the synthetic-prototype upper bound; live games will likely show lower"
       ]
     }
   }

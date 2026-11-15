@@ -37,7 +37,7 @@ loader_hint: Load when @lean-specification routes here for details; not needed f
 # Lean Specification Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-specification/SKILL.md`](../skills/lean-specification/SKILL.md).
+> embedded in [`skills/lean-specification/SKILL.md`](../../skills/lean-specification/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.

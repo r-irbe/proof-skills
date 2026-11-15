@@ -66,5 +66,5 @@ self-contained so bisect doesn't need patching to swap toolchains.
 
 - [`../../skills/lean-mwe/SKILL.md`](../../skills/lean-mwe/SKILL.md) -- Minimal working example construction
 - [`../../skills/lean-bisect/SKILL.md`](../../skills/lean-bisect/SKILL.md) -- Git bisect for regressions
-- [`../../skills/lean-pr/SKILL.md`](../../skills/lean-pr/SKILL.md) -- PR submission workflow
+- [`../../skills/lean-pr/SKILL.md`](../../skills/lean-upstream-pr/SKILL.md) -- PR submission workflow
 - [`./lean-nightly-infrastructure.md`](./lean-nightly-infrastructure.md) -- Nightly testing infrastructure (added in W4 Wave 1 / A4)

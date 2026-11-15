@@ -1,11 +1,11 @@
 ---
-name: enforcement-auditor
-description: Read-only CI gatekeeper and axiom-closure auditor.
-role_container: auditor
-overlay_type: analyst
-primary_skill: lean-verification-gate
-tools: read, grep, find, ls, bash, mcp:lean-lsp
-model: sonnet
+name: "enforcement-auditor"
+description: "Read-only CI gatekeeper and axiom-closure auditor."
+role_container: "auditor"
+overlay_type: "analyst"
+primary_skill: "lean-verification-gate"
+tools: "read, grep, find, ls, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `enforcement-auditor` (Container: `auditor`)

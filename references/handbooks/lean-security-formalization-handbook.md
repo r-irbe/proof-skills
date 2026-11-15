@@ -39,7 +39,7 @@ loader_hint: Load when @lean-security-formalization routes here for details; not
 # Lean Security Formalization Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-security-formalization/SKILL.md`](../skills/lean-security-formalization/SKILL.md).
+> embedded in [`skills/lean-security-formalization/SKILL.md`](../../skills/lean-security-formalization/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.

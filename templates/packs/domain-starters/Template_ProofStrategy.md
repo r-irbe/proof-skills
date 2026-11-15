@@ -201,7 +201,7 @@ example (n : Nat) : n + 0 = n := by
 -- WHY: Replace bare `simp` with the `simp only [...]` that `simp?` prints.
 
 -- -- 4c. `first_par` -- parallel execution (v4.28) --------------------
--- NOTE: `first_par` syntax exists in v4.28.0 but the tactic is NOT YET
+-- NOTE: `first_par` syntax exists in v4.34.1 but the tactic is NOT YET
 -- IMPLEMENTED. It will error with "has not been implemented". Use sequential
 -- `first | tac1 | tac2 | tac3` instead until a future Lean version enables it.
 -- When available, first_par will run tactics in parallel on multicore.
@@ -394,7 +394,7 @@ example (n : Nat) : n + 0 = n := by
 --       v i ≤ scale := by sorry  -- omega after Finset.sum decomposition
 
 -- -- 9b. Contraction mappings -----------------------------------------
--- Nat-scaled: K = 90, scale = 100 ⟹  dist(f x, f y) ≤ 90 * dist(x,y) / 100
+-- Nat-scaled: K = 90, scale = 100 ⇒  dist(f x, f y) ≤ 90 * dist(x,y) / 100
 -- Strategy: establish K < scale; induction on n for geometric decay
 -- K^n * d₀ / scale^n.
 --

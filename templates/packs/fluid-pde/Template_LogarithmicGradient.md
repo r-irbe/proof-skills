@@ -32,7 +32,7 @@ In multi-agent consensus and belief dynamics:
 * `margin_strict_anti_mono_vorticity`: strict decrease of margin under increased vorticity
 
 ## References
-* NavierStokesAndEuler: `Euler/OrdinaryLogarithmicGradient.lean`, `Euler/OrdinaryEulerBKM.lean`
+* FluidPDE example modules: `Euler/OrdinaryLogarithmicGradient.lean`, `Euler/OrdinaryEulerBKM.lean`
 * Beale, J. T., Kato, T., Majda, A. (1984), *Remarks on the Breakdown of Smooth Solutions for the 3-D Euler Equations*, Commun. Math. Phys. 94, 61-66
 * Kato, T., Lai, C. Y. (1984), *Nonlinear evolution equations and the Euler and Navier-Stokes equations*, J. Funct. Anal. 56, 15-28
 

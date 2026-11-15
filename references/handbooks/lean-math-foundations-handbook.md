@@ -8,7 +8,7 @@ extracted_from: skills/lean-math-foundations/SKILL.md
 # Foundational Mathematics Encyclopaedia (Lean 4)
 
 > **Layering note.** This file holds the deep encyclopaedia content
-> previously embedded in [`skills/lean-math-foundations/SKILL.md`](../skills/lean-math-foundations/SKILL.md).
+> previously embedded in [`skills/lean-math-foundations/SKILL.md`](../../skills/lean-math-foundations/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow / Recovery /
 > Handoffs) and the high-frequency pitfalls / recipes; this file holds the
 > full reference content. Zero fidelity loss vs the pre-layering revision.
@@ -157,7 +157,7 @@ example [LinearOrder α] (a b : α) : a ≤ b ∨ b ≤ a := le_total a b
 Applied / project lattice instances (severity lattices, gate
 composition, quality-gate lattice, trust-vector componentwise order,
 information-flow security levels) are owned by
-[`lean-math-discrete §3 Lattice Theory`](../lean-math-discrete/SKILL.md).
+[`lean-math-discrete §3 Lattice Theory`](../../skills/lean-math-discrete/SKILL.md).
 This file keeps only the typeclass tower.
 
 ### 4.2 Monotonicity
@@ -184,7 +184,7 @@ fixed points) are consolidated into:
 - Lattice side: `Mathlib.Order.FixedPoints` --
   `CompleteLattice.fixedPoint_lfp`, `CompleteLattice.fixedPoint_gfp`.
 - Metric / contraction side: see
-  [`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md)
+  [`references/lean4-contraction-catalog.md`](lean-math-analysis-handbook.md)
   for the full `ContractingWith` API, geometric-decay lemma, and
   project contraction-theorem index.
 
@@ -314,7 +314,7 @@ Guide to formalizing foundational mathematics in Lean 4, covering the structures
 ## Detailed reference
 
 Full encyclopaedia content (Parts 1 through 6) lives in
-[`references/lean4-math-foundations.md`](../../references/lean4-math-foundations.md). Load that file
+[`references/lean4-math-foundations.md`](lean-math-foundations-handbook.md). Load that file
 when authoring; the SKILL.md only carries the dispatch contract and
 the high-frequency pitfalls / recipes (kept inline below).
 
@@ -330,7 +330,7 @@ the high-frequency pitfalls / recipes (kept inline below).
 ## Part 7 -- Research Council Integration
 
 Consolidated into the single canonical routing matrix:
-[`references/research-council-skill-map.md`](../../references/research-council-skill-map.md)
+[`references/research-council-skill-map.md`](../protocols/research-council-skill-map.md)
 (see the "Foundations" section).  When dispatching a question to a
 council member, cite that table rather than restating the rows here.
 
@@ -372,11 +372,11 @@ council member, cite that table rather than restating the rows here.
 
 ## See also
 
-- [`../../references/lean4-math-foundations.md`](../../references/lean4-math-foundations.md) -- Foundational Mathematics Encyclopaedia (full encyclopaedia,
+- [`../../references/lean4-math-foundations.md`](lean-math-foundations-handbook.md) -- Foundational Mathematics Encyclopaedia (full encyclopaedia,
   extracted from this skill)
-- [`../../templates/Template_Foundation.md`](../../templates/Template_Foundation.md) -- Template: Foundation modules (types, structures, decidable preds)
-- [`../../references/lean4-proof-strategy.md`](../../references/lean4-proof-strategy.md) -- Proof strategy & error priority
-- [`../../references/mathlib4-conventions.md`](../../references/mathlib4-conventions.md) -- Mathlib4 naming and file conventions
+- [`../../templates/Template_Foundation.md`](../../templates/packs/domain-starters/Template_Foundation.md) -- Template: Foundation modules (types, structures, decidable preds)
+- [`../../references/lean4-proof-strategy.md`](../protocols/lean4-proof-strategy.md) -- Proof strategy & error priority
+- [`../../references/mathlib4-conventions.md`](../protocols/mathlib4-conventions.md) -- Mathlib4 naming and file conventions
 
 ---
 
@@ -421,7 +421,7 @@ dependent type theory that makes Lean formalization possible.
 ## Detailed reference
 
 Full content for `lean-math-foundations` lives in
-[`references/lean-math-foundations-handbook.md`](../../references/lean-math-foundations-handbook.md).
+[`references/lean-math-foundations-handbook.md`](lean-math-foundations-handbook.md).
 Load that file when the skill is convened; the SKILL.md only carries
 the dispatch contract and the parts index.
 
@@ -441,15 +441,15 @@ the dispatch contract and the parts index.
 
 ## See also
 
-- [`../../references/lean-math-foundations-handbook.md`](../../references/lean-math-foundations-handbook.md) -- Full handbook (extracted from this skill)
-- [`../lean-math-foundations/SKILL.md`](../lean-math-foundations/SKILL.md) -- Successor
-- [`../lean-research/SKILL.md`](../lean-research/SKILL.md) -- Successor
-- [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) -- Successor
+- [`../../references/lean-math-foundations-handbook.md`](lean-math-foundations-handbook.md) -- Full handbook (extracted from this skill)
+- [`../lean-math-foundations/SKILL.md`](../../skills/lean-math-foundations/SKILL.md) -- Successor
+- [`../lean-research/SKILL.md`](../../skills/lean-research/SKILL.md) -- Successor
+- [`../lean-zettelkasten/SKILL.md`](../../skills/lean-retro-methodology/SKILL.md) -- Successor
 
 # Math Algebra Category Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-math-foundations/SKILL.md`](../skills/lean-math-foundations/SKILL.md).
+> embedded in [`skills/lean-math-foundations/SKILL.md`](../../skills/lean-math-foundations/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.
@@ -579,7 +579,7 @@ Project functors:
 ### 3.3 Natural Transformations
 
 ```
-η: F ⟹ G (natural transformation between functors F, G: C → D)
+η: F ⇒ G (natural transformation between functors F, G: C → D)
 For every A ∈ Ob(C): η_A: F(A) → G(A) in D
 Naturality square commutes:
   G(f) ∘ η_A = η_B ∘ F(f)  for all f: A → B
@@ -611,8 +611,8 @@ Limits & colimits generalize all of the above.
 ```
 Monad (T, η, μ) on category C:
   T: C → C  (endofunctor)
-  η: Id ⟹ T  (unit / return)
-  μ: T² ⟹ T  (multiplication / join)
+  η: Id ⇒ T  (unit / return)
+  μ: T² ⇒ T  (multiplication / join)
 
 Laws:
   μ ∘ Tμ = μ ∘ μT  (associativity)
@@ -836,7 +836,7 @@ Project modules use these directly:
 # Foundational Mathematics Encyclopaedia (Lean 4)
 
 > **Layering note.** This file holds the deep encyclopaedia content
-> previously embedded in [`skills/lean-math-foundations/SKILL.md`](../skills/lean-math-foundations/SKILL.md).
+> previously embedded in [`skills/lean-math-foundations/SKILL.md`](../../skills/lean-math-foundations/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow / Recovery /
 > Handoffs) and the high-frequency pitfalls / recipes; this file holds the
 > full reference content. Zero fidelity loss vs the pre-layering revision.
@@ -985,7 +985,7 @@ example [LinearOrder α] (a b : α) : a ≤ b ∨ b ≤ a := le_total a b
 Applied / project lattice instances (severity lattices, gate
 composition, quality-gate lattice, trust-vector componentwise order,
 information-flow security levels) are owned by
-[`lean-math-discrete §3 Lattice Theory`](../lean-math-discrete/SKILL.md).
+[`lean-math-discrete §3 Lattice Theory`](../../skills/lean-math-discrete/SKILL.md).
 This file keeps only the typeclass tower.
 
 ### 4.2 Monotonicity
@@ -1012,7 +1012,7 @@ fixed points) are consolidated into:
 - Lattice side: `Mathlib.Order.FixedPoints` --
   `CompleteLattice.fixedPoint_lfp`, `CompleteLattice.fixedPoint_gfp`.
 - Metric / contraction side: see
-  [`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md)
+  [`references/lean4-contraction-catalog.md`](lean-math-analysis-handbook.md)
   for the full `ContractingWith` API, geometric-decay lemma, and
   project contraction-theorem index.
 

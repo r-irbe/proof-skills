@@ -5,7 +5,7 @@ Produces census, dependency graph, convention compliance, and coverage matrix
 for an existing Lean 4 project. First step of the RETRO protocol (SK-35).
 
 Usage:
-    python3 scripts/retro_recon.py [--lean-dir EASCI] [--output docs/tracking/recon_report.md]
+    python3 scripts/retro_recon.py [--lean-dir Project] [--output docs/tracking/recon_report.md]
 """
 
 import argparse
@@ -247,8 +247,8 @@ def convention_check(lean_dir: Path) -> list[dict]:
                 imported = m.group(1).split(".")[-1]
                 # Very rough heuristic -- only flag obvious cases
                 if imported not in text[text.index(line) + len(line) :]:
-                    # Don't flag EASCI self-imports or Mathlib
-                    if not m.group(1).startswith("Mathlib") and not m.group(1).startswith("EASCI"):
+                    # Don't flag Project self-imports or Mathlib
+                    if not m.group(1).startswith("Mathlib") and not m.group(1).startswith("Project"):
                         pass  # Too noisy; skip for now
 
     return issues
@@ -351,9 +351,9 @@ def generate_report(census_data: dict, dep_data: dict, conv_issues: list, output
 
 
 def main():
-    parser = argparse.ArgumentParser(description="RETRO Reconnaissance for EASCI")
+    parser = argparse.ArgumentParser(description="RETRO Reconnaissance for Project")
     parser.add_argument(
-        "--lean-dir", type=Path, default=Path("EASCI"), help="Directory containing .lean files"
+        "--lean-dir", type=Path, default=Path("Project"), help="Directory containing .lean files"
     )
     parser.add_argument(
         "--project", type=str, default=None, help="Project root namespace (defaults to lean-dir basename)"

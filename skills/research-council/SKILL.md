@@ -22,7 +22,7 @@ handoffs:
   - skill:lean-review-council
   - skill:lean-research
 metadata:
-  version: 0.2.0
+  version: 0.5.0
   source_spec: skills/research-council/SKILL.md (this file)
   last_reviewed: '2026-05-27'
 ---
@@ -72,8 +72,8 @@ synthesis,
   `research-needed` Zettel and
   pause.
 ## Handoffs
-- **Predecessors:** `agent:gateway`, `skill:lean-research`, `skill:epistemic-discovery-engine`.
-- **Successors:** `skill:research-synthesis-engine`, `skill:lean-zettelkasten`, `skill:lean-review-council`,
+- **Predecessors:** `agent:gateway`, `skill:lean-research`, `skill:research-council`.
+- **Successors:** `skill:research-council`, `skill:lean-retro-methodology`, `skill:lean-review-council`,
   `skill:lean-research`.
 ---
 ## Detailed reference

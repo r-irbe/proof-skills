@@ -5,9 +5,9 @@ For each ``*.transcript.md`` under ``lab/evals/known-bad/<skill>/``, build
 the canonical judge prompt and aggregate the captured judge replies
 (stored under ``_replies/<task_id>/<judge-model>.json``). Compute the
 **flag-rate** = (transcripts aggregated ≤ rubric floor) / (transcripts
-with replies). Per ADR-0039 the calibration gate is ≥ 0.90.
+with replies). The calibration gate is >= 0.90.
 
-The script is **pure replay** — it never calls an LLM API. The
+The script is **pure replay** - it never calls an LLM API. The
 orchestrator (Copilot CLI sub-agent or Anthropic SDK dispatcher) is
 responsible for producing the reply JSON files. See
 ``scripts/eval/graders/DISPATCH.md``.
@@ -56,7 +56,7 @@ from collections.abc import Iterable
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
-# Local import — calibrate_judge.py lives next to graders/.
+# Local import - calibrate_judge.py lives next to graders/.
 THIS_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(THIS_DIR))
 
@@ -402,7 +402,7 @@ def _cmd_replay(args: argparse.Namespace) -> int:
           f"  false_flag_rate={report.false_flag_rate:.2%}"
           f"  max_allowed={report.max_false_flag_rate:.2%}")
     for tr in report.per_transcript:
-        agg = "—" if tr.aggregated_score is None else str(tr.aggregated_score)
+        agg = "-" if tr.aggregated_score is None else str(tr.aggregated_score)
         if tr.aggregated_score is None:
             mark = "∅"
         else:
@@ -430,26 +430,26 @@ def _cmd_check(args: argparse.Namespace) -> int:
         )
     report = json.loads(report_path.read_text())
     if report["judged_transcripts"] == 0:
-        print("calibrate_judge: FAIL — no transcripts had judge replies", file=sys.stderr)
+        print("calibrate_judge: FAIL - no transcripts had judge replies", file=sys.stderr)
         return 1
     fail = False
     if report.get("negatives_judged", 0) > 0 and report["flag_rate"] < float(args.min_flag_rate):
         print(
-            f"calibrate_judge: FAIL — flag_rate {report['flag_rate']:.2%} "
+            f"calibrate_judge: FAIL - flag_rate {report['flag_rate']:.2%} "
             f"< required {float(args.min_flag_rate):.2%}",
             file=sys.stderr,
         )
         fail = True
     if report.get("positives_judged", 0) > 0 and report["false_flag_rate"] > float(args.max_false_flag_rate):
         print(
-            f"calibrate_judge: FAIL — false_flag_rate {report['false_flag_rate']:.2%} "
+            f"calibrate_judge: FAIL - false_flag_rate {report['false_flag_rate']:.2%} "
             f"> max allowed {float(args.max_false_flag_rate):.2%}",
             file=sys.stderr,
         )
         fail = True
     if fail:
         return 1
-    print(f"calibrate_judge: PASS — flag_rate {report['flag_rate']:.2%} "
+    print(f"calibrate_judge: PASS - flag_rate {report['flag_rate']:.2%} "
           f"≥ {float(args.min_flag_rate):.2%}; "
           f"false_flag_rate {report['false_flag_rate']:.2%} "
           f"≤ {float(args.max_false_flag_rate):.2%}")
@@ -471,7 +471,7 @@ def _add_replay_args(p: argparse.ArgumentParser) -> None:
                    help="root for report output (default: reports/_calibration)")
     p.add_argument("--out", default=None, help="explicit output path (overrides --report-root)")
     p.add_argument("--min-flag-rate", type=float, default=0.90,
-                   help="minimum acceptable flag-rate on negatives (default 0.90 per ADR-0039)")
+                   help="minimum acceptable flag-rate on negatives (default 0.90)")
     p.add_argument("--max-false-flag-rate", type=float, default=1.0,
                    help="maximum acceptable false-flag rate on adversarial positives (default 1.0 = no gate)")
 

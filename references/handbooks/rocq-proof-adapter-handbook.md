@@ -42,3 +42,31 @@ Comprehensive guide for porting Rocq/Coq (SSReflect, Mathematical Components, Ma
 | `f =1 g` (extensional equality) clutter | Coq core lacks `funext`, so MathComp uses `=1` | Replace `f =1 g` with standard `f = g` and prove via `funext x` (`ext x`) |
 | `ord_max` / `'I_n` emptiness condition | MathComp `'I_n` is empty when `n = 0`; `ord_max` takes `'I_n.+1` | Map `'I_n` to `Fin n` and `'I_n.+1` to `Fin (n + 1)` (`Fin.last n`) |
 | `HB.instance` canonical projection mismatch | MathComp keys instances on projections; Lean keys on types | Define `instance : Ring T := ...` on the carrier type `T` (or a `Type` wrapper synonym) |
+
+---
+
+## 2. Structural Translation Architecture: SSReflect / MathComp -> Lean 4
+
+### 2.1 Small-Scale Reflection (`bool` Views) vs Lean 4 `Prop` + `[Decidable]`
+Mathematical Components encodes finite combinatorics, `ssrnat`, and `fintype` predicates as computable functions into `bool`, bridging to `Prop` via `reflect P b` views (`/eqP`, `/andP`, `/orP`, `/implyP`, `/forallP`). In Lean 4 + Mathlib4:
+1. **State Specifications in `Prop`**: Translate `(a == b) && (c <= d)` in theorem headers to `a = b ∧ c ≤ d`. Standard `Decidable` typeclasses automatically synthesize decision procedures whenever boolean evaluation (`decide`, `if h : P then ... else ...`) is needed, without cluttering rewrites with `/eqP` view switches!
+2. **Decode SSReflect Intro/Discharge Chains (`=>` and `:`)**:
+   - `move: x h => y hy` generalizes `x, h` then re-introduces `y, hy` (`revert x h; rintro y hy`).
+   - `rewrite foo //=` rewrites by `foo`, closes trivial side-goals (`//`), and simplifies (`/=`) -> `rw [foo]; simp only [...]` (or `rw [foo] <;> try assumption`).
+   - `have -> : a = b by ...` proves an anonymous equality and immediately rewrites the goal -> `have hab : a = b := by ...; rw [hab]` (or `replace` / `calc`).
+
+### 2.2 Translating MathComp `\big[op/idx]_(i <- r | P i) F i` (`CONC-17`)
+MathComp's unified `bigop` library maps onto `Finset.sum` (`∑`), `Finset.prod` (`∏`), `Finset.sup`, and `Finset.inf` (note: `∑` and `∏` are root-scoped in modern Mathlib4; no `open scoped BigOperators` is required):
+- `\sum_(i < n) f i` -> `∑ i : Fin n, f i` (or `∑ i ∈ Finset.range n, f i`)
+- `\sum_(x in A | P x) f x` -> `∑ x ∈ A with P x, f x` (`Finset.sum_filter`)
+- `bigD1 j` (peel one index `j ∈ A`) -> `rw [← Finset.add_sum_erase _ _ hj]`
+- `partition_big` / `exchange_big` -> `Finset.sum_fiberwise` / `Finset.sum_comm`
+- `reindex_inj` -> `Finset.sum_bij` (or `Equiv.sum_comp`)
+
+### 2.3 Hierarchy Builder (`HB`) & Canonical Structures -> Mathlib4 Typeclasses
+MathComp uses packed records (` ringType`, `lmodType R`, `normedModType K`) with coercions to `Type`; Mathlib4 uses unbundled typeclasses (`variable {R M : Type*} [Ring R] [AddCommGroup M] [Module R M]`):
+- Unpack `V : vectType K` into `variable {V : Type*} [AddCommGroup V] [Module K V] [FiniteDimensional K V]`.
+- Map MathComp-Analysis `near=> x` filter tactics (`\forall x \near F, P x`) to `filter_upwards with x hx` over `Filter`.
+
+## 3. Verification & Handoffs
+- Screen ported `ssrnat` subtraction lemmas (`m - n`) with `@counterexample-first-proving`, then run `@lean-proof-review` and `@lean-verification-gate`.

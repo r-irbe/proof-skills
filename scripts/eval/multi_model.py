@@ -22,7 +22,7 @@ Naming convention for ``player_id``:
   ``model_<a|b>``, effort in ``reasoning_effort_<a|b>``.
 
 W8 Phase 2 dispatches the LLM judge via the orchestration loop in
-``dispatch_judge.md`` (the procedural recipe — actual API/sub-agent
+``dispatch_judge.md`` (the procedural recipe - actual API/sub-agent
 dispatch happens upstream of this script).
 
 CLI:
@@ -88,7 +88,7 @@ def _collect_case(
     for pid, opath in outputs.items():
         jpath = judges.get(pid)
         if jpath is None:
-            print(f"WARN: {opath.name} has no matching judge-{pid}.json — skipping",
+            print(f"WARN: {opath.name} has no matching judge-{pid}.json - skipping",
                   file=sys.stderr)
             continue
         try:
@@ -98,7 +98,7 @@ def _collect_case(
             continue
         score = float(jobj.get("score", 0))
         if score <= 0:
-            print(f"WARN: {jpath} score {score!r} not positive — skipping",
+            print(f"WARN: {jpath} score {score!r} not positive - skipping",
                   file=sys.stderr)
             continue
         model, effort = _split_player(pid)
@@ -148,7 +148,7 @@ def main() -> int:
                    help="Restrict to these case subdirs (repeatable). "
                         "Default: every subdir of --runs-dir.")
     p.add_argument("--rubric", type=Path, required=True,
-                   help="Rubric YAML — used only to read the max scale value")
+                   help="Rubric YAML - used only to read the max scale value")
     p.add_argument("--out", type=Path, required=True,
                    help="Output CSV (created or appended via --append)")
     p.add_argument("--append", action="store_true",
@@ -175,11 +175,11 @@ def main() -> int:
     summary_lines: list[str] = []
     for cd in case_dirs:
         if not cd.is_dir():
-            print(f"WARN: {cd} is not a directory — skipping", file=sys.stderr)
+            print(f"WARN: {cd} is not a directory - skipping", file=sys.stderr)
             continue
         results = _collect_case(cd, max_scale=max_scale)
         if len(results) < 2:
-            print(f"WARN: case {cd.name} has {len(results)} entrant(s) (<2) — skipping",
+            print(f"WARN: case {cd.name} has {len(results)} entrant(s) (<2) - skipping",
                   file=sys.stderr)
             continue
         rows = _emit_pairs(cd.name, results, draw_threshold=args.draw_threshold)

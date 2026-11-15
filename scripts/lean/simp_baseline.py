@@ -19,8 +19,8 @@ from pathlib import Path
 
 import os as _os
 REPO = Path(_os.environ.get("LEAN_PROJECT_ROOT", Path.cwd())).resolve()
-CORE_REL = _os.environ.get("SIMP_BASELINE_CORE_REL", "EASCI/ReinforcementLearning/Core.lean")
-BELLMAN_REL = _os.environ.get("SIMP_BASELINE_BELLMAN_REL", "EASCI/ReinforcementLearning/Core/Bellman.lean")
+CORE_REL = _os.environ.get("SIMP_BASELINE_CORE_REL", "Project/Core.lean")
+BELLMAN_REL = _os.environ.get("SIMP_BASELINE_BELLMAN_REL", "Project/Core/Bellman.lean")
 TARGET_RELS = (
     tuple(
         t.strip()

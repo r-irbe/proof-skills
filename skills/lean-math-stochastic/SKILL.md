@@ -24,7 +24,7 @@ handoffs:
   - skill:lean-math-foundations
   - skill:lean-math-analysis
 metadata:
-  version: 0.2.0
+  version: 0.5.0
   source_spec: skills/lean-math-stochastic/SKILL.md (this file)
   last_reviewed: '2026-05-27'
 ---

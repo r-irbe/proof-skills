@@ -23,7 +23,7 @@ handoffs:
   - skill:lean-research
   - skill:lean-corpus-audit
 metadata:
-  version: 0.1.0
+  version: 0.5.0
   source_spec: meta-audit-9w/topical/skills-improvement/proof-quality-skill-spec.md
   last_reviewed: '2026-06-09'
 ---

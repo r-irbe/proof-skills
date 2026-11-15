@@ -4,7 +4,7 @@
 A minimal subset of the design in
 ``lab/design/01-eval-framework.md §5`` covering only the fields that
 the deterministic + lean-build graders produce locally (no cost,
-latency, or judge score — those require LLM dispatch which is not in
+latency, or judge score - those require LLM dispatch which is not in
 scope for W8 Phase 1 / smoke CI).
 
 Two modes:
@@ -23,7 +23,7 @@ Regression definition (subset of §5.2):
 2. baseline.passed == True AND run.score < baseline.score
    → score regression (block).
 3. baseline.passed == False AND run.passed == True
-   → positive regression (report, but don't block) — the baseline
+   → positive regression (report, but don't block) - the baseline
      can be refreshed via ``--mode write``.
 
 Cost / latency / judge gates are deferred until the LLM-judge grader

@@ -13,7 +13,7 @@
 #
 # Phase18 retrospective: 13 lean-* smoke cases were mistakenly mapped to
 # `lean-proof-quality` even though they ask for prose/tooling/shell answers
-# (lean-bisect-smoke, lean-build-smoke, lean-pr-smoke etc.) — all three
+# (lean-bisect-smoke, lean-build-smoke, lean-pr-smoke etc.) - all three
 # entrants scored 1/5 only because the rubric mandates "no Lean code = 1".
 # Round 19 corrects this mapping.
 

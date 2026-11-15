@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """U0 mechanical audit: docstring/naming census over the Lean corpus.
 
-Walks docs/easci/lean/EASCI (source + tests) and packages/ (standalone
+Walks Project (source + tests) and packages/ (standalone
 extractions), counting per module: declarations by kind, /-- docstrings,
 /-! module docstrings, naming-conformance flags (theorem/lemma/def names
 that begin uppercase, which mathlib reserves for structures/classes),
@@ -95,7 +95,7 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="U0 mechanical audit: docstring/naming census over the Lean corpus.")
     parser.add_argument("pos_root", nargs="?", default=None, help="Optional positional Lean project root")
     parser.add_argument("--root", default=os.environ.get("LEAN_ROOT", "."), help="Lean project root directory")
-    parser.add_argument("--lean-dir", "--corpus-dir", dest="lean_dir", default=os.environ.get("LEAN_DIR", "EASCI"), help="Corpus subdirectory under root")
+    parser.add_argument("--lean-dir", "--corpus-dir", dest="lean_dir", default=os.environ.get("LEAN_DIR", "Project"), help="Corpus subdirectory under root")
     args = parser.parse_args(argv)
 
     root = args.pos_root if args.pos_root is not None else args.root
@@ -103,7 +103,7 @@ def main(argv=None) -> int:
     if not os.path.isdir(corpus_dir):
         corpus_dir = root
 
-    rows_easci = collect(corpus_dir, args.lean_dir)
+    rows_corpus = collect(corpus_dir, args.lean_dir)
     rows_pkg = []
     pkg_root = os.path.join(root, "..", "..", "..", "packages")
     if os.path.isdir(pkg_root):
@@ -116,7 +116,7 @@ def main(argv=None) -> int:
                 or os.path.isdir(os.path.join(pdir, "ProvenanceChain"))
                 or os.path.isdir(os.path.join(pdir, "CuspCatastrophe"))
                 or os.path.isdir(os.path.join(pdir, "PhasePortrait"))
-                or os.path.isdir(os.path.join(pdir, "Tacit"))
+                or os.path.isdir(os.path.join(pdir, "Core"))
             ):
                 for r in collect(os.path.join(pdir), f"packages/{pkg}"):
                     rows_pkg.append(r)
@@ -125,7 +125,7 @@ def main(argv=None) -> int:
     out.append("# U0 docstring/naming census (generated)")
     out.append("")
     out.append(
-        "Generator: `docs/easci/lean/scripts/census_docstrings.py`. "
+        "Generator: `scripts/lean/census_docstrings.py`. "
         "Counts are line-based (a `/--` opener per docstring; decls by "
         "leading keyword). Naming flags: theorem/lemma/def/instance "
         "names beginning uppercase (mathlib reserves uppercase-first "
@@ -137,7 +137,7 @@ def main(argv=None) -> int:
     out.append("")
     out.append("| module | decls | /-- | /-! | examples | naming flags |")
     out.append("| --- | ---: | ---: | ---: | ---: | ---: |")
-    for r in sorted(rows_easci, key=lambda r: r["path"]):
+    for r in sorted(rows_corpus, key=lambda r: r["path"]):
         tot["decls"] += r["decls"]
         tot["docstrings"] += r["docstrings"]
         tot["moduledoc"] += 1 if r["moduledoc"] else 0
@@ -181,7 +181,7 @@ def main(argv=None) -> int:
     out.append("## Summary")
     out.append("")
     out.append(
-        f"- {args.lean_dir} tree: {len(rows_easci)} files, {tot['decls']} declarations, "
+        f"- {args.lean_dir} tree: {len(rows_corpus)} files, {tot['decls']} declarations, "
         f"{tot['docstrings']} `/--` docstrings, {tot['moduledoc']} modules with "
         f"`/-!` module docs, {tot['examples']} anonymous examples, "
         f"{tot['sorry']} sorry lines."
@@ -191,7 +191,7 @@ def main(argv=None) -> int:
         f"{ptot['docstrings']} `/--` docstrings, {ptot['moduledoc']} modules with "
         f"`/-!`, {ptot['examples']} examples, {ptot['sorry']} sorry lines."
     )
-    nc = sum(len(r["upper"]) for r in rows_easci + rows_pkg)
+    nc = sum(len(r["upper"]) for r in rows_corpus + rows_pkg)
     out.append(f"- Naming flags (uppercase-first non-structure names): {nc}.")
     out.append("- `sorry` must stay 0; any nonzero line above is a finding.")
     out.append("")

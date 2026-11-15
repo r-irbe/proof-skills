@@ -1,7 +1,7 @@
 # ELO match input CSVs
 
 This directory holds the **input** CSVs consumed by `elo.py` and
-`glicko2.py` — one row per pairwise match. Each file represents
+`glicko2.py` - one row per pairwise match. Each file represents
 one batch of matches (e.g. a single eval run, a nightly suite, a
 human-curated bench).
 
@@ -29,7 +29,7 @@ from `../gen_sample.py`). Real-world match CSVs live here.
 
 `<YYYY-MM-DD>-<label>.csv`, e.g.:
 
-- `2026-05-27-live.csv` — first live W8/W9 demo (3 entrants × 1 case
+- `2026-05-27-live.csv` - first live W8/W9 demo (3 entrants × 1 case
   = 3 pairs; opus-4.7-high & sonnet-4.6 tied 5/5, haiku-4.5 lost on
   missing `-- goal:` narration)
 

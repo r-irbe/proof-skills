@@ -1,7 +1,7 @@
 # apm.yml -- Agent Package Manager manifest for proof-skills
 # Spec: https://github.com/microsoft/apm
 name: proof-skills
-version: 0.4.0
+version: 0.5.0
 description: "First-party toolkit of 38 active v2/v3 Lean 4 skills (+ 7 opt-in applied-strategy pack skills), 5 Role-Actor Containers, 24 soul overlays, 4-layer progressive reference cards/handbooks, 6-prover concordance (CONC-01..20), and modular v3 template packs."
 author: "Radu Irbe"
 license: Apache-2.0

@@ -19,7 +19,7 @@ Three reasons:
 3. **Cost-aware.** Dispatch is the only step that costs money. Putting
    it in an orchestrator the human can see makes the budget visible.
 
-## Flavour A — Local Claude sub-agent (Copilot CLI)
+## Flavour A - Local Claude sub-agent (Copilot CLI)
 
 This is what the `r-irbe/proof-skills` toolkit uses to validate the
 harness without consuming Anthropic API budget. The Copilot CLI's
@@ -29,24 +29,24 @@ selection from the published roster.
 Procedure:
 
 1. Build the prompt: `python3 scripts/eval/graders/llm_judge.py build
-   --case … --rubric … --response … --out judge_runs/<case>/prompt.txt`.
+   --case ... --rubric ... --response ... --out judge_runs/<case>/prompt.txt`.
 2. From the orchestrator session, dispatch one `task` per judge in
    the ensemble. Use the prompt text as the task body. The first
    character of the task body MUST be the judge's identity statement
-   ("You are acting as an impartial LLM judge…"), to anchor the
+   ("You are acting as an impartial LLM judge..."), to anchor the
    sub-agent.
 3. Capture each task's reply (a single-line JSON object) into
    `judge_runs/<case>/judge-<model_id>.json`.
 4. Grade with `python3 scripts/eval/graders/llm_judge.py grade
-   --case … --rubric … --judge-reply judge-<m1>.json
-   --judge-reply judge-<m2>.json … --out grade.json`.
+   --case ... --rubric ... --judge-reply judge-<m1>.json
+   --judge-reply judge-<m2>.json ... --out grade.json`.
 
 The dispatch is currently manual (one `task` invocation per judge)
 because the Copilot CLI doesn't expose a programmatic batch API for
 sub-agents. A future `run_multi_judge.py` could automate this once
 that API lands.
 
-## Flavour B — SDK batch dispatcher (future)
+## Flavour B - SDK batch dispatcher (future)
 
 Per design `lab/design/01-eval-framework.md §6`, a production runner
 will batch judge calls via the Anthropic / OpenAI SDKs with proper
@@ -63,13 +63,13 @@ model identity from the response payload before substituting into the
 prompt). All other mitigations live in the rubric YAML and the
 dispatch procedure:
 
-- **Blinding** — done by the grader's `build_prompt(..., blind=True)`.
-- **Position-swap** — for pairwise judges, run twice with A/B then B/A
+- **Blinding** - done by the grader's `build_prompt(..., blind=True)`.
+- **Position-swap** - for pairwise judges, run twice with A/B then B/A
   and only count if both agree (else draw). Done by the orchestrator.
-- **Anti-length / anti-position** — instructions in `prompts/judge.txt`.
-- **Self-consistency** — `rubric.bias_mitigations.self_consistency_runs`.
+- **Anti-length / anti-position** - instructions in `prompts/judge.txt`.
+- **Self-consistency** - `rubric.bias_mitigations.self_consistency_runs`.
 
-## Calibration (ADR-0039) — IMPLEMENTED
+## Calibration (>= 0.90 Recall Gate) -- IMPLEMENTED
 
 Before any LLM-judge enters CI on the deterministic-pass-rate gate,
 run it across `lab/evals/known-bad/<skill>/*.transcript.md` and
@@ -78,9 +78,9 @@ written to `reports/_calibration/<rubric>/<label>.json`.
 
 Tool: `scripts/eval/calibrate_judge.py`. Three subcommands:
 
-- `build`   — emit the judge prompt for a single transcript.
-- `replay`  — aggregate captured replies, write report, exit 0.
-- `check`   — `replay` + non-zero exit if `flag_rate < --min-flag-rate`
+- `build`   - emit the judge prompt for a single transcript.
+- `replay`  - aggregate captured replies, write report, exit 0.
+- `check`   - `replay` + non-zero exit if `flag_rate < --min-flag-rate`
               (CI gate, default 0.90).
 
 CI wiring: `.github/workflows/eval-smoke.yml :: judge-calibration`
@@ -94,7 +94,7 @@ ensemble-2026-05-27.json`.
 Scaled (2026-05-27): added `claude-haiku-4.5` + `gpt-5.2` as
 judges 4 + 5 across the early proof/setup/mathlib corpora. Recall stayed at
 100%; false-flag rate remained 1/5 on `adv-decide`. This confirms that
-minority-veto `min(low)` cannot be improved by scale alone — any single low
+minority-veto `min(low)` cannot be improved by scale alone - any single low
 score still flags. Reports:
 `reports/_calibration/<rubric>/ensemble-5model-2026-05-27.json`.
 

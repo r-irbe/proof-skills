@@ -5998,7 +5998,7 @@
       "abstract_eval"
      ],
      "syntax_pattern": "class GaloisConnection (alpha beta : Type u) [PartialOrder alpha] [PartialOrder beta]",
-     "semantics": "Lean 4 Mathlib Galois connections and EASCI.Foundations.CS.AbstractInterpretation frameworks."
+     "semantics": "Lean 4 Mathlib Galois connections and AbstractInterpretation.AbstractInterpretation frameworks."
     },
     "coq": {
      "primary_tactics": [

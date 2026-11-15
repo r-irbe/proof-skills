@@ -1,11 +1,11 @@
 ---
-name: abstract-interp-vacuity-auditor
-description: Abstract-interpretation auditor for Nat subtraction truncation, division-by-zero, and vacuous hypotheses.
-role_container: auditor
-overlay_type: operational
-primary_skill: lean-tautology-triage
-tools: read, grep, find, ls, bash, mcp:lean-lsp
-model: sonnet
+name: "abstract-interp-vacuity-auditor"
+description: "Abstract-interpretation auditor for Nat subtraction truncation, division-by-zero, and vacuous hypotheses."
+role_container: "auditor"
+overlay_type: "operational"
+primary_skill: "lean-tautology-triage"
+tools: "read, grep, find, ls, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `abstract-interp-vacuity-auditor` (Container: `auditor`)

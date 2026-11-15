@@ -251,7 +251,7 @@ Note: Blue checkmarks (✓✓) appear even when a *dependency* uses `sorry`. Alw
 ### Layer 3: Non-Triviality
 
 1. **Theorem-search check** -- use
-   [`theorem-search`](../../references/theorem-search.md) to check
+   [`theorem-search`](../protocols/theorem-search.md) to check
    Mathlib, project helpers, and local tactic suggestions before accepting a
    custom proof.
    - `#check` known names and namespace candidates.
@@ -264,7 +264,7 @@ Note: Blue checkmarks (✓✓) appear even when a *dependency* uses `sorry`. Alw
 4. **Duplicate check:** Search the repository's shared lemma modules before adding new helpers.
 
 For high-risk non-triviality questions, route to
-[`lean-tautology-triage`](../lean-tautology-triage/SKILL.md). Use it when a
+[`lean-tautology-triage`](../../skills/lean-tautology-triage/SKILL.md). Use it when a
 statement looks like a placeholder (`: True`), smoke theorem, reflexive `rfl`
 self-projection, bare `decide` closure, or automation-only proof whose name
 suggests a stronger mathematical claim.
@@ -366,7 +366,7 @@ Each member votes (✅ 🟡 🟠 🔴) after their RALPH Review+Analyze. A singl
 
 ### Ring Audit Protocol (High-Assurance)
 
-When using Ring topology (see [`references/lean-review-council-handbook.md` Part 4, Topology 6](../../references/lean-review-council-handbook.md)), each member audits one adjacent member's findings after the primary review:
+When using Ring topology (see [`references/lean-review-council-handbook.md` Part 4, Topology 6](lean-review-council-handbook.md)), each member audits one adjacent member's findings after the primary review:
 
 | Reviewer | Audits findings of | Audit focus |
 |---|---|---|
@@ -429,9 +429,9 @@ Each review step above maps to the RALPH cycle:
 
 ## See also
 
-- [`../../templates/Template_ProofStrategy.md`](../../templates/Template_ProofStrategy.md) -- Template: Proof methodology cheat sheet
-- [`../../templates/Template_Verification.md`](../../templates/Template_Verification.md) -- Template: Verification completeness checklist
-- [`../../references/lean4-proof-strategy.md`](../../references/lean4-proof-strategy.md) -- Generic proof-cleanup and dependent-rewrite patterns
+- [`../../templates/Template_ProofStrategy.md`](../../templates/packs/domain-starters/Template_ProofStrategy.md) -- Template: Proof methodology cheat sheet
+- [`../../templates/Template_Verification.md`](../../templates/core/Template_Verification.md) -- Template: Verification completeness checklist
+- [`../../references/lean4-proof-strategy.md`](../protocols/lean4-proof-strategy.md) -- Generic proof-cleanup and dependent-rewrite patterns
 
 ---
 
@@ -458,7 +458,7 @@ Each review step above maps to the RALPH cycle:
 - **G-2** (MUST): The reviewer MUST verify the theorem statement matches the source spec / paper / requirement before judging the proof. [Trace: AC-02]
 - **G-3** (MUST NOT): The reviewer MUST NOT silently rewrite the proof; suggested rewrites MUST be flagged as suggestions for the author. [Trace: AC-03]
 - **G-4** (SHOULD): The reviewer SHOULD recommend the higher-quality tactic when a lower-priority one was used unnecessarily (see
-  [`REFERENCE.md`](./REFERENCE.md) "Proof Search Priority"). [Trace: AC-04]
+  [`REFERENCE.md`](lean-proof-review-handbook.md) "Proof Search Priority"). [Trace: AC-04]
 - **G-5** (MUST): A non-trivial theorem with a one-tactic `decide` / `aesop` / `grind` close MUST be flagged for L3 (non-triviality) review. [Trace: AC-05]
 - **G-6** (SHOULD NOT): The reviewer SHOULD NOT mark a proof "approved" without confirming `lake build` is green on the containing file. [Trace: AC-06]
 - **G-7** (MUST): Every flagged finding MUST cite the layer, the line(s), and the rule from `REFERENCE.md` or `GUARDRAILS.md`. [Trace: AC-07]
@@ -486,10 +486,9 @@ Each review step above maps to the RALPH cycle:
 
 ## Handoffs
 
-- **Predecessors / successors:** see FM `handoffs` (grammar from ADR-0080).
+- **Predecessors / successors:** see FM `handoffs`.
 - **Source spec:** `specs/lean/proof-review/requirements.md` -- every G-rule traces to an AC there.
-- **Related ADRs:** ADR-0076, ADR-0080.
-- **Reference:** see [`REFERENCE.md`](./REFERENCE.md) for the full project automation stack, proof-search priority table, reusable `Tactics` lemma library,
+- **Reference:** see [`REFERENCE.md`](lean-proof-review-handbook.md) for the full project automation stack, proof-search priority table, reusable `Tactics` lemma library,
   common Lean pitfalls, and the 4-layer verification checklist (original v1 content, preserved verbatim).
 - **Mathlib-specific review:** see [`../../references/upstream/mathlib4-review.md`](../../references/upstream/mathlib4-review.md) for the Mathlib PR review
   delta (attributes/API, simp squeezing, normal forms, transparency, file size, canonical naming/style URLs). The former `lean-proof-review` SKILL has been

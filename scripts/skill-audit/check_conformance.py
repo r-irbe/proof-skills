@@ -8,26 +8,26 @@ Usage:
 Runs five audits over the corpus rooted at the repo's `skills/`
 directory:
 
-  1. **v2 conformance** — for every SKILL.md (first-party + overrides),
+  1. **v2 conformance** - for every SKILL.md (first-party + overrides),
      check the 6 v2 markers (USE FOR:, DO NOT USE FOR, TRIGGERS:,
      ## Workflow, ## Recovery, ## Handoffs) and the `tier:` /
      `handoffs:` YAML fields. REDIRECT stubs (small SKILLs whose body
      loudly says REDIRECT) are counted separately as intentional.
 
-  2. **Handoff DAG** — parse every handoffs.{predecessors,successors}
+  2. **Handoff DAG** - parse every handoffs.{predecessors,successors}
      and validate referential integrity, detect mutual peer pairs,
      report true cycles ≥ length 3, list orphans (no upstream) and
      dead-ends (no downstream).
 
-  3. **Handbook cross-link** — for every SKILL.md that references
+  3. **Handbook cross-link** - for every SKILL.md that references
      `references/<X>-handbook.md`, verify the target file exists and
      its YAML preamble has `extracted_from: skill:<X>` (or a similar
      back-reference). Report any dangling or unmatched links.
 
-  4. **Inline skill references** — verify active SKILL.md files only point
+  4. **Inline skill references** - verify active SKILL.md files only point
      `@skill-name` handoffs at existing non-REDIRECT skills.
 
-  5. **Markdown link integrity** — verify ordinary relative Markdown
+  5. **Markdown link integrity** - verify ordinary relative Markdown
      links in SKILL.md files resolve on disk, including override skills
      whose relative depth differs from first-party skills.
 
@@ -394,13 +394,13 @@ def render_md(report):
     lines = []
     a = lines.append
     a("---")
-    a(f"title: \"Proof-skills corpus audit — {skills['scan_date']}\"")
+    a(f"title: \"Proof-skills corpus audit - {skills['scan_date']}\"")
     a(f"audit_date: \"{skills['scan_date']}\"")
     a("auditor: \"scripts/skill-audit/check_conformance.py\"")
     a(f"skills_scanned: {skills['total_skills']}")
     a("---")
     a("")
-    a(f"# Skill corpus audit — {skills['scan_date']}")
+    a(f"# Skill corpus audit - {skills['scan_date']}")
     a("")
     a("## 0. Headline")
     a("")
@@ -420,16 +420,16 @@ def render_md(report):
     a(f"| True cycles (length ≥ 3) | {dag['true_cycles_count']} |")
     a(f"| Orphans (no upstream) | {len(dag['orphans'])} |")
     a(f"| Dead-ends (no downstream) | {len(dag['deadends'])} |")
-    a(f"| Handbook cross-links — valid | {len(cl['valid_pairs'])} |")
-    a(f"| Handbook cross-links — broken | {len(cl['broken_links'])} |")
-    a(f"| Handbook cross-links — missing backref | {len(cl['missing_backref'])} |")
-    a(f"| Inline @skill refs — valid | {ir['valid_refs']} |")
-    a(f"| Inline @skill refs — unresolved | {len(ir['unresolved_refs'])} |")
-    a(f"| Inline @skill refs — redirect stubs | {len(ir['redirect_refs'])} |")
-    a(f"| Markdown links — valid | {ml['valid_links']} |")
-    a(f"| Markdown links — broken | {len(ml['broken_links'])} |")
+    a(f"| Handbook cross-links - valid | {len(cl['valid_pairs'])} |")
+    a(f"| Handbook cross-links - broken | {len(cl['broken_links'])} |")
+    a(f"| Handbook cross-links - missing backref | {len(cl['missing_backref'])} |")
+    a(f"| Inline @skill refs - valid | {ir['valid_refs']} |")
+    a(f"| Inline @skill refs - unresolved | {len(ir['unresolved_refs'])} |")
+    a(f"| Inline @skill refs - redirect stubs | {len(ir['redirect_refs'])} |")
+    a(f"| Markdown links - valid | {ml['valid_links']} |")
+    a(f"| Markdown links - broken | {len(ml['broken_links'])} |")
     a("")
-    a("## 1. v2 conformance — non-conformant SKILLs")
+    a("## 1. v2 conformance - non-conformant SKILLs")
     a("")
     if not v2["non_v2"]:
         a("None. ✓ all non-REDIRECT skills are v2-conformant.")
@@ -461,7 +461,7 @@ def render_md(report):
     for p in dag["mutual_peer_pairs"]:
         a(f"- {p[0]} ↔ {p[1]}")
     a("")
-    a(f"### {dag['true_cycles_count']} true cycles (length ≥ 3) — typically editorial-loop feedback")
+    a(f"### {dag['true_cycles_count']} true cycles (length ≥ 3) - typically editorial-loop feedback")
     a("")
     a("### Orphans (no upstream, not a REDIRECT)")
     for o in dag["orphans"]:

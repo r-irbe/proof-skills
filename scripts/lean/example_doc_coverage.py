@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Per-example documentation coverage for the EASCI corpus.
+"""Per-example documentation coverage for the Project corpus.
 
 Companion to census_docstrings.py for the U1b wave (example docstrings).
 The census counts `/-!` and `/--` openers line-wise but cannot say
@@ -90,7 +90,7 @@ def scan_text(text):
 
 SELF_TEST = """\
 /-! module doc -/
-import EASCI.Foo
+import Project.Foo
 
 /-!
 # Group
@@ -147,7 +147,7 @@ def self_test():
 def main():
     if "--self-test" in sys.argv:
         sys.exit(0 if self_test() else 1)
-    root = sys.argv[1] if len(sys.argv) > 1 else "EASCI"
+    root = sys.argv[1] if len(sys.argv) > 1 else "Project"
     total_u = total_d = total_dbl = 0
     for dirpath, dirnames, filenames in os.walk(root):
         dirnames[:] = [d for d in dirnames if d != ".scratch"]

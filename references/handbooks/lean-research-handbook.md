@@ -39,7 +39,7 @@ loader_hint: Load when @lean-research routes here for methodology details; not n
 # Lean Research Handbook
 
 > **Layering note.** This file holds the deep methodology content
-> previously embedded in [`skills/lean-research/SKILL.md`](../skills/lean-research/SKILL.md).
+> previously embedded in [`skills/lean-research/SKILL.md`](../../skills/lean-research/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + the parts index. This file holds the full
 > encyclopaedia of research triggers; research methods; research output standards; research depth levels, etc.
@@ -70,7 +70,7 @@ loader_hint: Load when @lean-research routes here for methodology details; not n
 
 **When:** Looking for Mathlib lemmas by type signature.
 
-See also: [`theorem-search`](../../references/theorem-search.md).
+See also: [`theorem-search`](../protocols/theorem-search.md).
 
 | Query form | Use | Example |
 |---|---|---|
@@ -486,15 +486,15 @@ has its own protocol headline, output template, and council routing.
 
 All seven types emit a structured deliverable using the per-type
 template from
-[`references/research-output-templates.md`](../../references/research-output-templates.md).
+[`references/research-output-templates.md`](../protocols/research-output-templates.md).
 The Type-T entry also references the
-[`theorem-search`](../../references/theorem-search.md) loop.
+[`theorem-search`](../protocols/theorem-search.md) loop.
 
 ### 9.4 Queue & Budget
 
 Multi-task scheduling (priority bands, parallelisation rules, budget
 overrun handling) lives in
-[`references/research-queue.md`](../../references/research-queue.md).
+[`references/research-queue.md`](../protocols/research-queue.md).
 Budget overruns are a Trigger 1 (Confidence) signal under the HITL
 contract.
 
@@ -535,9 +535,8 @@ contract.
 
 ## Handoffs
 
-- **Predecessors / successors**: see FM `handoffs` (grammar from ADR-0080).
+- **Predecessors / successors**: see FM `handoffs`.
 - **Source spec**: `specs/epistemic/mapping/requirements.md`.
-- **Related ADRs**: ADR-0076, ADR-0080.
 
 ## Common failure modes
 

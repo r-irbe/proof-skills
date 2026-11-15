@@ -131,8 +131,8 @@ Promotion (fleeting → literature → permanent) follows
 
 ## 4. See also
 
-* [`../zettelkasten/_index.md`](../zettelkasten/_index.md) -- ZK navigator
-* [`../zettelkasten/_tags.md`](../zettelkasten/_tags.md) -- tag vocabulary
+* [`../zettelkasten/_index.md`](../../zettelkasten/_index.md) -- ZK navigator
+* [`../zettelkasten/_tags.md`](../../zettelkasten/_tags.md) -- tag vocabulary
 * [`Template_MWE.md`](../core/Template_MWE.md) -- bug captures often graduate into ZK notes
 * [`../00-CONVENTIONS.md`](../00-CONVENTIONS.md) -- frontmatter spine
 * `_v2-proposals/workflow-templates-v2.md §4` -- full gap analysis & evidence

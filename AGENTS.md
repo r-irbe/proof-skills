@@ -1,4 +1,4 @@
-# AGENTS.md — proof-skills repo contract
+# AGENTS.md - proof-skills repo contract
 
 Authoritative entry-point for any AI agent doing work inside this repo.
 
@@ -23,7 +23,7 @@ ADRs). The **0.90** floor in this repo is intentionally stricter
 because:
 
 1. The artifacts here (templates, skills, references) are read by *many*
-   downstream agents — a single wrong design choice fans out.
+   downstream agents - a single wrong design choice fans out.
 2. Lean formalisation is unforgiving: an incorrect tactic recommendation
    in a `SKILL.md` propagates into failed proofs across the ecosystem.
 3. The cost of asking is one round-trip; the cost of being wrong is a
@@ -35,12 +35,12 @@ Adapted from the AgentRx-2025 minimal cover (`{Confidence, Irreversible,
 Conflict, Novelty, Governance}`); 5 categories empirically dominate
 8-category alternatives at <1 % structured-error rate.
 
-| # | Category | Fires when… | Gate type |
-| 1 | **Confidence** | Your belief < 0.90 on routing, design, taxonomy, naming, scope. | Soft — `ask_user`. |
-| 2 | **Irreversible** | You are about to do anything in the reversibility table below at class ≥ `irreversible_*`. | **Hard — always ask**, regardless of confidence. |
-| 3 | **Conflict** | Two readings of the same source give materially different answers (spec vs. ADR, template vs. SKILL.md, two skills mutually contradicting). | Soft — `ask_user`, cite both. |
-| 4 | **Novelty** | The user's request mentions a pattern, tool, ADR slot, or skill name that is not present in the repo and not in the runtime knowledge cutoff. | Soft — `ask_user` for intent. |
-| 5 | **Governance** | The change touches `AGENTS.md`, top-level layout, license, the public README, or this contract. | **Hard — always ask**. |
+| # | Category | Fires when... | Gate type |
+| 1 | **Confidence** | Your belief < 0.90 on routing, design, taxonomy, naming, scope. | Soft - `ask_user`. |
+| 2 | **Irreversible** | You are about to do anything in the reversibility table below at class ≥ `irreversible_*`. | **Hard - always ask**, regardless of confidence. |
+| 3 | **Conflict** | Two readings of the same source give materially different answers (spec vs. ADR, template vs. SKILL.md, two skills mutually contradicting). | Soft - `ask_user`, cite both. |
+| 4 | **Novelty** | The user's request mentions a pattern, tool, ADR slot, or skill name that is not present in the repo and not in the runtime knowledge cutoff. | Soft - `ask_user` for intent. |
+| 5 | **Governance** | The change touches `AGENTS.md`, top-level layout, license, the public README, or this contract. | **Hard - always ask**. |
 
 ### 1.2.1 Trigger registry for skill authors
 
@@ -82,11 +82,11 @@ silent-grant pattern): never auto-approve an irreversible op on a
 timeout.
 
 > **Note on wall-clock time.**  The session time budget is **unlimited**
-> by default — slow local builds, long lake-timer probes, repeated test
+> by default - slow local builds, long lake-timer probes, repeated test
 > reruns, and large eval loops are all fine.  Time-irreversibility is
 > *not* on the reversibility table in §1.3 and is **not** a HITL trigger
 > on its own.  Use *content* irreversibility (history rewrites, push to
-> default, paid API calls, AGENTS.md edits) to decide whether to stop —
+> default, paid API calls, AGENTS.md edits) to decide whether to stop -
 > never wall-clock cost.  If the human operator explicitly imposes a
 > wall-clock cap for a specific request, treat it as a §1.2#4 (Novelty)
 > constraint and confirm before exceeding it; otherwise, slowness alone
@@ -98,7 +98,7 @@ timeout.
 - **MCP-aware host**: `elicitation/create` with the same shape.
 - **Plain chat**: A numbered question list.
 
-The form **must** include: (a) the decision under contention, (b) 2–4
+The form **must** include: (a) the decision under contention, (b) 2-4
 named options, (c) which option is recommended and why, (d) what blocks
 on the answer.
 
@@ -127,7 +127,7 @@ introduce, restore, or paraphrase any reference to specific private
 host-project names, internal modules, internal ADR identifiers,
 internal directory structures, or internal personnel. Example
 identifiers in body text should be obviously synthetic (`MyProject`,
-`Foo`, `ExampleGroup`, etc.) — never a real downstream project name.
+`Foo`, `ExampleGroup`, etc.) - never a real downstream project name.
 
 If you discover a slip-through (a private name in body text, a
 real project's path in a sample command, etc.), treat the rewrite as
@@ -150,11 +150,11 @@ For a full map of the architecture, see [`references/architecture.md`](reference
   must be parameterised via CLI flags or environment variables.
 - `templates/` and `references/` may show **example** identifiers, but
   example identifiers must be obviously synthetic (e.g.
-  `ExampleProject`, `MyGroup`, `foo`, `bar`) — not a real project name.
+  `ExampleProject`, `MyGroup`, `foo`, `bar`) - not a real project name.
 - One folder per skill in `skills/<slug>/`; mandatory file is
   `SKILL.md`. Optional files live alongside but must be referenced
   from `SKILL.md`'s `## See also` footer.
-- `zettelkasten/` is reserved. Do not populate ad-hoc — the W7 rollout
+- `zettelkasten/` is reserved. Do not populate ad-hoc - the W7 rollout
   has a specific Luhmann-tier layout.
 
 ## 4. Workflow defaults

@@ -5,7 +5,7 @@ Scores a tactic proof block on:
   2. `numina-lean-agent` semicolon line-compression detector (`has_semicolons`, `semicolon_lines`)
      and 6-pattern structural golf opportunities (`golf_opportunities`).
 
-Scoped Unicode policy (INV-001; typographic-free by default).
+Strict 7-bit ASCII only (INV-001).
 """
 
 from __future__ import annotations
@@ -19,7 +19,10 @@ from pathlib import Path
 if str(Path(__file__).resolve().parent) not in sys.path:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from have_cluster import detect_structural_golf_opportunities
+if __package__:
+    from .have_cluster import detect_structural_golf_opportunities
+else:
+    from have_cluster import detect_structural_golf_opportunities
 
 
 @dataclass

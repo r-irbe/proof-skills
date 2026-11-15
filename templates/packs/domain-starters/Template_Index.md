@@ -124,13 +124,13 @@ namespace MyProject
 -- This helps future maintainers know what to update.
 
 /-- your project library version constraints.
-    - Lean 4: v4.28.0
-    - Mathlib: v4.28.0 (`leanprover-community/mathlib4` @ `v4.28.0`)
+    - Lean 4: v4.34.1
+    - Mathlib: v4.34.1 (`leanprover-community/mathlib4` @ `v4.34.1`)
     - cslib: `11b70e5` (pinned commit)
 
     Update this docstring whenever `lake-manifest.json` changes. -/
 def projectVersionNote : String :=
-  "MyProject validated on Lean v4.28.0 + Mathlib v4.28.0 + cslib@11b70e5"
+  "MyProject validated on Lean v4.34.1 + Mathlib v4.34.1 + cslib@11b70e5"
 ```
 
  ### §5  What NOT to Put in an Index Module

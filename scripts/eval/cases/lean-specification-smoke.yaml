@@ -4,12 +4,12 @@ title: Theorem-statement decomposition (Lean 4)
 skill: lean-specification
 difficulty: easy
 input:
-  prompt: "Write a Lean 4 theorem skeleton (statement, no proof — use `sorry` only\
+  prompt: "Write a Lean 4 theorem skeleton (statement, no proof - use `sorry` only\
     \ as a placeholder\nTHAT YOU MUST REMOVE: replace with `by exact?` or another\
     \ tactic stub like `by trivial`).\nUse this exact pattern:\n\n  theorem add_assoc_spec\
     \ (a b c : Nat) (ha : 0 ≤ a) : a + (b + c) = (a + b) + c := by\n    -- anchor:\
     \ [T1.2]; source_spec: specs/arith/add_assoc.md\n    exact Nat.add_assoc a b c\n\
-    \nReply with the Lean 4 code only — no prose.\n"
+    \nReply with the Lean 4 code only - no prose.\n"
   expected_output_substring: "theorem add_assoc_spec (a b c : Nat) (ha : 0 ≤ a) :\
     \ a + (b + c) = (a + b) + c := by\n  -- anchor: [T1.2]; source_spec: specs/arith/add_assoc.md\n\
     \  exact Nat.add_assoc a b c\n"

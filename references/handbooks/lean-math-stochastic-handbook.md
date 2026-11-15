@@ -8,7 +8,7 @@ extracted_from: skills/lean-math-stochastic/SKILL.md
 # Stochastic Mathematics Encyclopaedia (Lean 4)
 
 > **Layering note.** This file holds the deep encyclopaedia content
-> previously embedded in [`skills/lean-math-stochastic/SKILL.md`](../skills/lean-math-stochastic/SKILL.md).
+> previously embedded in [`skills/lean-math-stochastic/SKILL.md`](../../skills/lean-math-stochastic/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow / Recovery /
 > Handoffs) and the high-frequency pitfalls / recipes; this file holds the
 > full reference content. Zero fidelity loss vs the pre-layering revision.
@@ -155,7 +155,7 @@ example : 30 + 40 + 30 = 100 := by decide
 ## Part 4 -- Time Series Analysis
 
 Extracted to single canonical reference:
-[`references/lean4-time-series-patterns.md`](../../references/lean4-time-series-patterns.md).
+[`references/lean4-time-series-patterns.md`](lean-math-stochastic-handbook.md).
 That file owns the formalisation-approaches table, the project
 connections table, the EWMA recurrence + convergence sketch, and the
 pitfall list.
@@ -165,7 +165,7 @@ pitfall list.
 ## Part 5 -- Ergodic Theory
 
 Extracted to single canonical reference:
-[`references/lean4-ergodic-theory.md`](../../references/lean4-ergodic-theory.md).
+[`references/lean4-ergodic-theory.md`](lean-math-stochastic-handbook.md).
 That file owns Birkhoff's theorem statement, the Mathlib API
 entry-points, the mixing-rate ↔ spectral-gap bridge, and the pitfall
 list.
@@ -210,7 +210,7 @@ list.
 ## Part 7 -- Research Council Integration
 
 Consolidated into the single canonical routing matrix:
-[`references/research-council-skill-map.md`](../../references/research-council-skill-map.md)
+[`references/research-council-skill-map.md`](../protocols/research-council-skill-map.md)
 (see the "Stochastic" section).  When dispatching a question to a
 council member, cite that table rather than restating the rows here.
 
@@ -366,7 +366,7 @@ Guide to formalizing probability, stochastic processes, and time series in Lean 
 ## Detailed reference
 
 Full encyclopaedia content (Parts 1 through 8) lives in
-[`references/lean4-math-stochastic.md`](../../references/lean4-math-stochastic.md). Load that file
+[`references/lean4-math-stochastic.md`](lean-math-stochastic-handbook.md). Load that file
 when authoring; the SKILL.md only carries the dispatch contract and
 the high-frequency pitfalls / recipes (kept inline below).
 
@@ -418,10 +418,10 @@ When a Mathlib-symbol claim in a project doc reads as "this lemma does not exist
 
 ## See also
 
-- [`../../references/lean4-math-stochastic.md`](../../references/lean4-math-stochastic.md) -- Stochastic Mathematics Encyclopaedia (full encyclopaedia,
+- [`../../references/lean4-math-stochastic.md`](lean-math-stochastic-handbook.md) -- Stochastic Mathematics Encyclopaedia (full encyclopaedia,
   extracted from this skill)
-- [`../../templates/Template_Dynamics.md`](../../templates/Template_Dynamics.md) -- Template: Markov chains, mixing time, ergodic patterns
-- [`../../templates/Template_Analysis.md`](../../templates/Template_Analysis.md) -- Template: Measure-theoretic and analytic patterns
+- [`../../templates/Template_Dynamics.md`](../../templates/packs/domain-starters/Template_Dynamics.md) -- Template: Markov chains, mixing time, ergodic patterns
+- [`../../templates/Template_Analysis.md`](../../templates/packs/domain-starters/Template_Analysis.md) -- Template: Measure-theoretic and analytic patterns
 
 ---
 
@@ -466,7 +466,7 @@ quantification.
 ## Detailed reference
 
 Full content for `lean-math-stochastic` lives in
-[`references/lean-math-stochastic-handbook.md`](../../references/lean-math-stochastic-handbook.md).
+[`references/lean-math-stochastic-handbook.md`](lean-math-stochastic-handbook.md).
 Load that file when the skill is convened; the SKILL.md only carries
 the dispatch contract and the parts index.
 
@@ -486,15 +486,15 @@ the dispatch contract and the parts index.
 
 ## See also
 
-- [`../../references/lean-math-stochastic-handbook.md`](../../references/lean-math-stochastic-handbook.md) -- Full handbook (extracted from this skill)
-- [`../lean-math-stochastic/SKILL.md`](../lean-math-stochastic/SKILL.md) -- Successor
-- [`../lean-research/SKILL.md`](../lean-research/SKILL.md) -- Successor
-- [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) -- Successor
+- [`../../references/lean-math-stochastic-handbook.md`](lean-math-stochastic-handbook.md) -- Full handbook (extracted from this skill)
+- [`../lean-math-stochastic/SKILL.md`](../../skills/lean-math-stochastic/SKILL.md) -- Successor
+- [`../lean-research/SKILL.md`](../../skills/lean-research/SKILL.md) -- Successor
+- [`../lean-zettelkasten/SKILL.md`](../../skills/lean-retro-methodology/SKILL.md) -- Successor
 
 # Math Measure Probability Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-math-stochastic/SKILL.md`](../skills/lean-math-stochastic/SKILL.md).
+> embedded in [`skills/lean-math-stochastic/SKILL.md`](../../skills/lean-math-stochastic/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.
@@ -700,14 +700,14 @@ Mixing: The system "forgets" its initial condition.
 Strong mixing: |P(A ∩ T⁻ⁿB) - P(A)P(B)| → 0
 
 Spectral gap: λ₁ = 1 (trivial), λ₂ < 1
-  Gap = 1 - λ₂ > 0  ⟹  exponential mixing
+  Gap = 1 - λ₂ > 0  ⇒  exponential mixing
 
 Mixing time: t_mix(ε) = min{t : max_x ||P^t(x,·) - π||_TV ≤ ε}
   t_mix ≤ O(1/gap · log(1/ε))
 
 project implication:
-  Spectral gap > 0 ⟹ knowledge process converges to equilibrium
-  Larger gap ⟹ faster convergence to steady-state quality
+  Spectral gap > 0 ⇒ knowledge process converges to equilibrium
+  Larger gap ⇒ faster convergence to steady-state quality
 ```
 
 ### 5.3 Entropy and Information
@@ -908,7 +908,7 @@ multi-timescale architectures.
 ## Detailed reference
 
 Full content for `lean-math-stochastic` lives in
-[`references/lean-math-stochastic-handbook.md`](../../references/lean-math-stochastic-handbook.md).
+[`references/lean-math-stochastic-handbook.md`](lean-math-stochastic-handbook.md).
 Load that file when the skill is convened; the SKILL.md only carries
 the dispatch contract and the parts index.
 
@@ -926,15 +926,15 @@ the dispatch contract and the parts index.
 
 ## See also
 
-- [`../../references/lean-math-stochastic-handbook.md`](../../references/lean-math-stochastic-handbook.md) -- Full handbook (extracted from this skill)
-- [`../lean-math-stochastic/SKILL.md`](../lean-math-stochastic/SKILL.md) -- Successor
-- [`../lean-math-stochastic/SKILL.md`](../lean-math-stochastic/SKILL.md) -- Successor
-- [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) -- Successor
+- [`../../references/lean-math-stochastic-handbook.md`](lean-math-stochastic-handbook.md) -- Full handbook (extracted from this skill)
+- [`../lean-math-stochastic/SKILL.md`](../../skills/lean-math-stochastic/SKILL.md) -- Successor
+- [`../lean-math-stochastic/SKILL.md`](../../skills/lean-math-stochastic/SKILL.md) -- Successor
+- [`../lean-zettelkasten/SKILL.md`](../../skills/lean-retro-methodology/SKILL.md) -- Successor
 
 # Math Time Series Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-math-stochastic/SKILL.md`](../skills/lean-math-stochastic/SKILL.md).
+> embedded in [`skills/lean-math-stochastic/SKILL.md`](../../skills/lean-math-stochastic/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.
@@ -1212,7 +1212,7 @@ To validate the 4-timescale architecture from data:
 # Stochastic Mathematics Encyclopaedia (Lean 4)
 
 > **Layering note.** This file holds the deep encyclopaedia content
-> previously embedded in [`skills/lean-math-stochastic/SKILL.md`](../skills/lean-math-stochastic/SKILL.md).
+> previously embedded in [`skills/lean-math-stochastic/SKILL.md`](../../skills/lean-math-stochastic/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow / Recovery /
 > Handoffs) and the high-frequency pitfalls / recipes; this file holds the
 > full reference content. Zero fidelity loss vs the pre-layering revision.
@@ -1359,7 +1359,7 @@ example : 30 + 40 + 30 = 100 := by decide
 ## Part 4 -- Time Series Analysis
 
 Extracted to single canonical reference:
-[`references/lean4-time-series-patterns.md`](../../references/lean4-time-series-patterns.md).
+[`references/lean4-time-series-patterns.md`](lean-math-stochastic-handbook.md).
 That file owns the formalisation-approaches table, the project
 connections table, the EWMA recurrence + convergence sketch, and the
 pitfall list.
@@ -1369,7 +1369,7 @@ pitfall list.
 ## Part 5 -- Ergodic Theory
 
 Extracted to single canonical reference:
-[`references/lean4-ergodic-theory.md`](../../references/lean4-ergodic-theory.md).
+[`references/lean4-ergodic-theory.md`](lean-math-stochastic-handbook.md).
 That file owns Birkhoff's theorem statement, the Mathlib API
 entry-points, the mixing-rate ↔ spectral-gap bridge, and the pitfall
 list.
@@ -1414,7 +1414,7 @@ list.
 ## Part 7 -- Research Council Integration
 
 Consolidated into the single canonical routing matrix:
-[`references/research-council-skill-map.md`](../../references/research-council-skill-map.md)
+[`references/research-council-skill-map.md`](../protocols/research-council-skill-map.md)
 (see the "Stochastic" section).  When dispatching a question to a
 council member, cite that table rather than restating the rows here.
 

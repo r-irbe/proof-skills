@@ -9,7 +9,7 @@ Combines `extraction_detector.py`'s textual `module_symbols(source)` with `Trace
 Also exposes `detect_v4_corpus_file(lean_file, index, source_rel)` which uses S2
 `attribute_theorem_spans` to attribute each candidate to its enclosing theorem.
 
-Scoped Unicode policy (INV-001; typographic-free by default).
+Strict 7-bit ASCII only (INV-001).
 """
 
 from __future__ import annotations
@@ -22,8 +22,14 @@ from pathlib import Path
 if str(Path(__file__).resolve().parent) not in sys.path:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from extraction_detector import Candidate, detect_v3, module_symbols
-from trace_symbols import TraceIndex, attribute_theorem_spans
+if __package__:
+    from .extraction_detector import Candidate, detect_v3, module_symbols
+else:
+    from extraction_detector import Candidate, detect_v3, module_symbols
+if __package__:
+    from .trace_symbols import TraceIndex, attribute_theorem_spans
+else:
+    from trace_symbols import TraceIndex, attribute_theorem_spans
 
 
 def detect_v4(
@@ -82,7 +88,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--source-rel",
         default="",
-        help="Relative module path (e.g. EASCI/Core.lean)",
+        help="Relative module path (e.g. MyProject/Core.lean)",
     )
     args = parser.parse_args(argv)
 

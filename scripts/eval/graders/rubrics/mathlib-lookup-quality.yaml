@@ -7,7 +7,7 @@ description: |
   skill / case (`scripts/eval/cases/mathlib-lookup-finset.yaml`).
 
   Apply rubric LITERALLY. Don't invent intermediate scores. Don't reward
-  length — a correct lemma name + signature in two lines should score 5.
+  length - a correct lemma name + signature in two lines should score 5.
 
 definitions:
   1: |

@@ -10,22 +10,22 @@ definitions, checks that prerequisite scripts have been run and passed,
 validates the workflow state file, and either PERMITS or BLOCKS the step.
 
 Usage:
-    python3 scripts/workflow_gate.py --workflow WORKFLOW --step STEP [--lean-dir EASCI]
+    python3 scripts/workflow_gate.py --workflow WORKFLOW --step STEP [--lean-dir Project]
     python3 scripts/workflow_gate.py --list-workflows
     python3 scripts/workflow_gate.py --status [--workflow WORKFLOW]
 
 Workflows:
-    council_review   — 5-member review council session
-    retro_audit      — RETRO 5-phase retroactive audit
-    milestone        — Project milestone release gate
-    spec_lifecycle   — Specification lifecycle (requirements → design → docs)
-    forward_sync     — Document → Lean forward pipeline
-    backward_sync    — Lean → Document backward pipeline
+    council_review   - 5-member review council session
+    retro_audit      - RETRO 5-phase retroactive audit
+    milestone        - Project milestone release gate
+    spec_lifecycle   - Specification lifecycle (requirements → design → docs)
+    forward_sync     - Document → Lean forward pipeline
+    backward_sync    - Lean → Document backward pipeline
 
 Exit codes:
-    0  — gate passed, step may proceed
-    1  — gate failed, step is BLOCKED (with reason)
-    2  — invalid workflow/step specification
+    0  - gate passed, step may proceed
+    1  - gate failed, step is BLOCKED (with reason)
+    2  - invalid workflow/step specification
 """
 
 import argparse
@@ -146,7 +146,7 @@ def _check_auto_implicit_false(state: dict, lean_dir: Path, asserted: set[str]) 
             text = lean_file.read_text(encoding="utf-8")
             if "set_option autoImplicit false" not in text:
                 missing.append(lean_file.relative_to(lean_dir).as_posix())
-    except OSError as exc:  # pragma: no cover — defensive
+    except OSError as exc:  # pragma: no cover - defensive
         return False, f"could not read Lean sources: {exc}"
 
     if not missing:
@@ -270,19 +270,19 @@ def evaluate_conditions(
             continue
         try:
             ok, reason = checker(state, lean_dir, asserted)
-        except Exception as exc:  # pragma: no cover — defensive
+        except Exception as exc:  # pragma: no cover - defensive
             failures.append(f"condition '{condition}' raised: {exc}")
             continue
         msg = f"{condition}: {reason}"
         if ok:
             passes.append(msg)
         else:
-            failures.append(f"condition not satisfied — {msg}")
+            failures.append(f"condition not satisfied - {msg}")
     return passes, failures
 
 
 # ═══════════════════════════════════════════════════════════════
-# Gate Definitions — the single source of truth
+# Gate Definitions - the single source of truth
 # ═══════════════════════════════════════════════════════════════
 
 WORKFLOWS = {
@@ -329,7 +329,7 @@ WORKFLOWS = {
         "steps": ["recon", "establish", "triage", "review", "onboard"],
         "gates": {
             "recon": {
-                "description": "Phase R: Reconnaissance — automated census and dependency graph",
+                "description": "Phase R: Reconnaissance - automated census and dependency graph",
                 "required_scripts": ["retro_recon.py"],
                 "required_conditions": ["recon_report_generated"],
                 "blocks": True,
@@ -356,7 +356,7 @@ WORKFLOWS = {
                 "blocks": True,
             },
             "onboard": {
-                "description": "Phase O: Graduation gate — enforce_all.sh --strict",
+                "description": "Phase O: Graduation gate - enforce_all.sh --strict",
                 "requires_steps": ["review"],
                 "required_scripts": ["enforce_all.sh --strict"],
                 "required_conditions": ["enforce_all_strict_passes"],
@@ -749,7 +749,7 @@ def show_status(workflow: str | None):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Workflow Gate Enforcer — validates mandatory gates before workflow steps proceed"
+        description="Workflow Gate Enforcer - validates mandatory gates before workflow steps proceed"
     )
     parser.add_argument("--workflow", type=str, help="Workflow name")
     parser.add_argument("--step", type=str, help="Step to check gate for")
@@ -760,7 +760,7 @@ def main():
         help="Session identifier (default: today's date)",
     )
     parser.add_argument(
-        "--lean-dir", type=Path, default=Path("EASCI"), help="Path to Lean source directory"
+        "--lean-dir", type=Path, default=Path("Project"), help="Path to Lean source directory"
     )
     parser.add_argument(
         "--dry-run", action="store_true", help="Check gates without running scripts"

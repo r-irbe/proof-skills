@@ -3,28 +3,40 @@
 Orchestrates candidate patching (A4), tactic dispatching (A5), and regression-safety
 evaluation to generate atomic transformation receipts.
 
-Scoped Unicode policy (INV-001; typographic-free by default).
+Strict 7-bit ASCII only (INV-001).
 """
 
 from __future__ import annotations
 
 import argparse
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-import sys as _sys; from pathlib import Path as _Path
+import sys as _sys
+from pathlib import Path as _Path
+
 if str(_Path(__file__).resolve().parent) not in _sys.path:
     _sys.path.insert(0, str(_Path(__file__).resolve().parent))
-from candidate_patcher import patch_candidate
-from tactic_dispatcher import TacticRecommendation, recommend_tactics
+if __package__:
+    from .candidate_patcher import patch_candidate
+else:
+    from candidate_patcher import patch_candidate
+if __package__:
+    from .tactic_dispatcher import TacticRecommendation, recommend_tactics
+else:
+    from tactic_dispatcher import TacticRecommendation, recommend_tactics
 
 
 @dataclass
 class PatchVerificationResult:
-    """Receipt of an automated patch application and structural verification."""
+    """Structural patch receipt, not a Lean proof-verification result.
+
+    The legacy success field means a textual patch matched; it does not imply
+    changed text, Lean acceptance, trust auditing, or measured improvement.
+    """
 
     file_path: str
     target_pattern: str
@@ -32,7 +44,10 @@ class PatchVerificationResult:
     original_text: str
     transformed_text: str
     tactic_recommendation: TacticRecommendation | None = None
-    verification_notes: list[str] = None
+    verification_notes: list[str] = field(default_factory=list)
+    verification_level: str = "structural-only"
+    lean_verified: bool = False
+    trust_audited: bool = False
 
 
 def apply_and_verify_tactic(
@@ -41,7 +56,7 @@ def apply_and_verify_tactic(
     target_pattern: str = "linarith",
 ) -> PatchVerificationResult:
     """Apply structural tactic recommendation and verify transform integrity."""
-    notes = []
+    notes = ["Lean verification, trust auditing, and timing measurements were not performed."]
 
     # 1. Recommend tactic based on goal / context
     recs = recommend_tactics(source_text)
@@ -80,7 +95,9 @@ def apply_and_verify_tactic(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Apply and verify AltProof tactical patch")
+    parser = argparse.ArgumentParser(
+        description="Propose a structural AltProof patch without Lean verification"
+    )
     parser.add_argument("file", type=Path, help="Target Lean 4 file")
     parser.add_argument("--pattern", default="linarith", help="Target pattern to replace")
     args = parser.parse_args()
@@ -93,7 +110,7 @@ def main() -> int:
     res = apply_and_verify_tactic(content, file_path=str(args.file), target_pattern=args.pattern)
 
     print(f"File: {res.file_path}")
-    print(f"Status: {'SUCCESS' if res.success else 'SKIPPED'}")
+    print(f"Status: {'TRANSFORMED_UNVERIFIED' if res.success else 'SKIPPED_UNVERIFIED'}")
     for n in res.verification_notes or []:
         print(f"  - {n}")
 

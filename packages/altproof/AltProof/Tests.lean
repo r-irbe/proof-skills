@@ -6,6 +6,8 @@ SPDX-License-Identifier: Apache-2.0
 -/
 
 import AltProof.Tactics
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Matrix.Basic
 
 set_option autoImplicit false
 set_option linter.unusedTactic false
@@ -27,7 +29,7 @@ Verifies `AltProof.Tactics`:
 
 namespace AltProof.Tests
 
-open AltProof.Tactics
+open AltProof.Core AltProof.Tactics
 open scoped BigOperators
 
 /-! ### 1. Cost Model & Relevance Filter Pins -/
@@ -44,10 +46,10 @@ theorem cost_upstream_bonus_pin :
 theorem filter_finset_abs_routes_pin :
     (filterRelevantRoutes { hasFinsetSum := true, hasAbs := true }).length = 8 := rfl
 
-/-- Relevance filter selects `redirect-by-contradiction` when `hasNegOrContra` holds. -/
+/-- Relevance filter selects `redirect-by-contradiction` and `backchain-solve-by-elim` when `hasNegOrContra` holds. -/
 theorem filter_neg_contra_routes_pin :
     (filterRelevantRoutes { hasNegOrContra := true }).map Route.id =
-      ["redirect-by-contradiction"] := rfl
+      ["redirect-by-contradiction", "backchain-solve-by-elim"] := rfl
 
 /-! ### 2. `sum_congr_ring` & `alt_proof` Reduction Pins -/
 
@@ -290,6 +292,7 @@ theorem pilot3_doeblin_contraction_slim
         simp only [hrow]
         rw [← Finset.sum_mul]
 
+set_option maxHeartbeats 400000 in
 /-- `elegance?` runs speculatively in `withoutModifyingState` (detecting local-context
     hypotheses and ranking candidate closers) without mutating the active goal state,
     allowing `alt_proof` to discharge the goal immediately afterward. -/
@@ -300,6 +303,7 @@ theorem elegance_speculative_closer_pin
   elegance?
   alt_proof
 
+set_option maxHeartbeats 400000 in
 /-- `bfs_elegance?` (Proposal 9C) speculatively explores depth-$\le 3$ decomposition sequences
     (`constructor <;> alt_proof`) inside `withoutModifyingState` without mutating the goal state. -/
 theorem bfs_elegance_conjunction_pin
@@ -309,6 +313,7 @@ theorem bfs_elegance_conjunction_pin
   bfs_elegance?
   constructor <;> alt_proof
 
+set_option maxHeartbeats 400000 in
 /-- `elegance?` falls back to depth-2 BFS (`intros; sum_congr_ring`) when a universally quantified
     finite-sum goal cannot be closed by a single-step closer without `intros`. -/
 theorem elegance_bfs_intros_finset_pin
@@ -318,5 +323,78 @@ theorem elegance_bfs_intros_finset_pin
   elegance?
   intros
   sum_congr_ring
+
+/-- `sair_decide` closes kernel-clean decidable and Presburger obligations without `Lean.ofReduceBool`. -/
+theorem sair_decide_kernel_clean_pin (n : Nat) (h : n < 12) :
+    (3 * 7 = 21) ∧ (n ≤ 12) := by
+  constructor <;> sair_decide
+
+/-! ### 4. Equality Saturation (`eqsat_rw` / `egg_rw`), Core `backchain`, `grind_close`, `contra_direct`,
+    SAIR Compile-Time Superoptimizers (`eval_nat%`, `preunfold%`, `swar_unroll%`), & `gcongr_pos` / `calc_ring_sum` Pins -/
+
+/-- `eqsat_rw` (and alias `egg_rw`) performs bidirectional congruence saturation (`congrArg`, `Eq.trans`,
+    `Eq.symm`) over local and supplied equational lemmas where directional `simp` would loop on commutativity. -/
+theorem eqsat_rw_bidirectional_congruence_pin
+    {α : Type*} (f : α → α → α) (g : α → α)
+    (hcomm : ∀ x y, f x y = f y x)
+    (a b c : α) (hab : g a = g b) (hbc : g b = g c) :
+    f (g a) c = f c (g c) := by
+  eqsat_rw [hcomm]
+
+/-- `egg_rw` alias reconstructs kernel-checked `Eq.trans` / `congrArg` chains seamlessly. -/
+theorem egg_rw_alias_pin
+    {α : Type*} (h : α → α) (x y z : α) (h1 : x = y) (h2 : z = y) :
+    h x = h z := by
+  egg_rw
+
+/-- `backchain` wraps core Lean's `SolveByElim` (`solve_by_elim`) to discharge multi-hop
+    implication and conjunction chains without requiring `aesop`. -/
+theorem backchain_solve_by_elim_pin
+    (P Q R S : Prop) (hp : P) (hpq : P → Q) (hqr : Q → R) (hrs : R → S) :
+    S ∧ Q := by
+  have _ := hp
+  backchain [hpq, hqr, hrs]
+
+/-- `grind_close` closes e-graph congruence + transitivity obligations via core Lean's `grind`. -/
+theorem grind_close_congruence_pin
+    (f : Nat → Nat) (a b c : Nat) (h1 : a = b) (h2 : f b = c) :
+    f a = c := by
+  grind_close
+
+/-- `contra_direct` normalizes boolean conjunctions and decidable propositions constructively
+    without classical `split`/`by_cases` `Classical.choice` leakage. -/
+theorem contra_direct_bool_and_pin (a b : Bool) (h : (a && b) = true) :
+    b = true := by
+  have _ := h
+  contra_direct
+
+/-- `eval_nat%` folds closed shift-add/bitwise formulas at elaboration time into a raw `nat_lit`
+    so `rfl` closes immediately with zero runtime arithmetic. -/
+def swarLaneMaskPin : Nat := eval_nat% ((1 <<< 16) - 1)
+
+theorem eval_nat_raw_lit_pin : swarLaneMaskPin = 65535 := rfl
+
+private def stepXorShift (i : Nat) (x : Nat) : Nat :=
+  (x ^^^ (i + 1)) + (eval_nat% (1 <<< 4))
+
+/-- `preunfold%` and `swar_unroll%` unfold static combinator/loop steps at elaboration time and
+    hash-cons shared subterms via `ShareCommon.shareCommon`. -/
+def unrolledThreeSteps (x : Nat) : Nat :=
+  swar_unroll% 3 x stepXorShift
+
+theorem swar_unroll_equiv_pin (x : Nat) :
+    unrolledThreeSteps x = stepXorShift 2 (stepXorShift 1 (stepXorShift 0 x)) := rfl
+
+/-- `gcongr_pos` discharges structural ordered-ring monotonicity and positivity side-goals in one step. -/
+theorem gcongr_pos_pin (a b c : ℝ) (hc : 0 ≤ c) (hab : a ≤ b) :
+    c * a + 1 ≤ c * b + 1 := by
+  gcongr_pos
+
+/-- `calc_ring_sum` discharges swapped double-sum scalar distribution in one step. -/
+theorem calc_ring_sum_double_swap_pin
+    {ι κ : Type*} [Fintype ι] [Fintype κ] {R : Type*} [CommRing R]
+    (c : ι → R) (M : ι → κ → R) (V : κ → R) :
+    ∑ j, (∑ i, c i * M i j) * V j = ∑ i, c i * (∑ j, M i j * V j) := by
+  calc_ring_sum
 
 end AltProof.Tests

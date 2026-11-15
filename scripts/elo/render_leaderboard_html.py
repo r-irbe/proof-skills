@@ -34,7 +34,7 @@ def render(ratings_path: str, out_path: str, sprint_label: str) -> None:
 <html lang=en>
 <head>
 <meta charset=utf-8>
-<title>proof-skills leaderboard — {html.escape(sprint_label)}</title>
+<title>proof-skills leaderboard - {html.escape(sprint_label)}</title>
 <style>
  body {{ font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
         max-width: 920px; margin: 2rem auto; padding: 0 1rem; color: #222; }}

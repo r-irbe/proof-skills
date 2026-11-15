@@ -60,7 +60,7 @@ with evidence, sequencing, and validation.
    negative-result evidence. If the request only needs symbol lookup, hand off to
    `@lean-research`.
 2. **Run the discovery ladder** [discover] -- use
-   [`../../references/discovery-ladder.md`](../../references/discovery-ladder.md)
+   [`../../references/discovery-ladder.md`](../protocols/discovery-ladder.md)
    for Reservoir, GitHub, current-pin package source, theorem-search services,
    and literature checks. Record negative results rather than relying on memory.
 3. **Assess dependency health** [validate] -- inspect Lake metadata, toolchain
@@ -116,9 +116,9 @@ with evidence, sequencing, and validation.
   `@lean-enforcement` for validation commands, `@lean-quality-engine` for
   milestone/package-health scoring.
 - **References:** discovery ladder
-  ([`../../references/discovery-ladder.md`](../../references/discovery-ladder.md))
+  ([`../../references/discovery-ladder.md`](../protocols/discovery-ladder.md))
   and eval prompts
-  ([`../../references/discovery-ladder-evals.md`](../../references/discovery-ladder-evals.md)).
+  ([`../../references/discovery-ladder-evals.md`](../protocols/discovery-ladder-evals.md)).
 
 
 ---

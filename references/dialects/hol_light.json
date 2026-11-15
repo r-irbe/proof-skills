@@ -290,7 +290,7 @@
         "Manual reconstruction of state space equivalence lemmas"
       ],
       "lean4_target_tactics": [
-        "EASCI/StochasticCCV/ contraction bounds",
+        "Markov chain contraction bounds",
         "inductive invariant preservation",
         "Nat.div_add_mod"
       ],
@@ -490,7 +490,7 @@
       "dialect_semantics": "Directed nets (`net`) with `at a`, `at a within s`, `sequentially`, and `at_posinfinity`.",
       "dialect_idiom": "Map `(s ---> l) sequentially` -> `Tendsto s atTop (𝓝 l)` and `(f --> l) (at a)` -> `Tendsto f (𝓝[≠] a) (𝓝 l)`.",
       "dialect_pitfalls": [
-        "Like Isabelle, HOL Light's `at a` is punctured (`0 < dist(x,a) < d`), corresponding to `𝓝[≠] a` (`nhdsWithin a {a}ᶜ`) in Mathlib"
+        "Like Isabelle, HOL Light's `at a` is punctured (`0 < dist(x,a) < d`), corresponding to `𝓝[≠] a` (`nhdsWithin a {a}^c`) in Mathlib"
       ],
       "lean4_target_tactics": [
         "fun_prop",
@@ -499,7 +499,7 @@
         "Tendsto.comp",
         "Tendsto.add"
       ],
-      "lean4_target_syntax": "Tendsto f (𝓝 x) (𝓝 y) | Tendsto u atTop (𝓝 l) | ∀ᶠ n in atTop, P n"
+      "lean4_target_syntax": "Tendsto f (𝓝 x) (𝓝 y) | Tendsto u atTop (𝓝 l) | ∀^f n in atTop, P n"
     }
   ]
 }

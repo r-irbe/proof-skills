@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""apm-validate — local-only validator for the APM manifest + skill collection.
+"""apm-validate - local-only validator for the APM manifest + skill collection.
 
 Checks that this repository is a well-formed APM "skill collection"
 package per https://microsoft.github.io/apm/reference/package-types/ :
@@ -12,7 +12,7 @@ package per https://microsoft.github.io/apm/reference/package-types/ :
      SKILL.md frontmatter.
   5. No skill name is duplicated.
 
-This script does NOT require the `apm` CLI to be installed — it is a
+This script does NOT require the `apm` CLI to be installed - it is a
 hermetic pre-publish check that runs in CI and locally.
 
 Usage:

@@ -81,11 +81,11 @@ extracted_from: skills/lean-upstream-pr/SKILL.md
 
 ## See also
 
-- [`../../references/lean4-lsp-guide.md`](../../references/lean4-lsp-guide.md) -- Lean 4 Language Server Protocol comprehensive guide
+- [`../../references/lean4-lsp-guide.md`](../protocols/lean4-lsp-guide.md) -- Lean 4 Language Server Protocol comprehensive guide
 - [`../../references/upstream/lean4-pr.md`](../../references/upstream/lean4-pr.md) -- Lean 4 core repository PR conventions
 - [`../../references/upstream/mathlib4-pr.md`](../../references/upstream/mathlib4-pr.md) -- Mathlib 4 PR conventions
-- [`../lean-build/SKILL.md`](../lean-build/SKILL.md) -- Project compilation and Lake environment
-- [`../lean-proof-review/SKILL.md`](../lean-proof-review/SKILL.md) -- Proof review council contract
+- [`../lean-build/SKILL.md`](../../skills/lean-build/SKILL.md) -- Project compilation and Lake environment
+- [`../lean-proof-review/SKILL.md`](../../skills/lean-proof-review/SKILL.md) -- Proof review council contract
 
 
 ---

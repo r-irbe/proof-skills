@@ -23,7 +23,7 @@ handoffs:
   - skill:lean-proof-review
   - skill:lean-verification-gate
 metadata:
-  version: 0.2.0
+  version: 0.5.0
   source_spec: skills/lean-proof-repair/SKILL.md (this file)
   last_reviewed: '2026-10-27'
 ---
@@ -70,9 +70,9 @@ definition changes without weakening theorem statements.
   `skill:lean-bisect` (identifies
   breaking
   commit), `skill:lean-proof`.
-- **Successors:** `skill:lean-proof-review` (4-layer soundness audit), `skill:lean-replay-verification` (fresh
+- **Successors:** `skill:lean-proof-review` (4-layer soundness audit), `skill:lean-verification-gate` (fresh
   kernel replay),
-  `skill:lean-enforcement`.
+  `skill:lean-verification-gate`.
 ## Detailed reference
 - **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-proof-repair-tables.md`](../../references/cards/lean-proof-repair-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in

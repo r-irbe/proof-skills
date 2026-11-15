@@ -31,7 +31,10 @@ if str(_Path(__file__).resolve().parent) not in _sys.path:
 
 from dataclasses import dataclass, field
 
-from cost_ranker import TwoAxisScore, cost
+if __package__:
+    from .cost_ranker import TwoAxisScore, cost
+else:
+    from cost_ranker import TwoAxisScore, cost
 
 
 @dataclass

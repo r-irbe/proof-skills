@@ -316,7 +316,7 @@ Before committing:
 
 -- 1. `native_decide` for finite matrix properties:
 --    Compiles to native code; 100--1000× faster than `decide`.
---    example : ∀ i : Fin 10, ∑ j, M i j = 1 := by native_decide
+--    example : ∀ i : Fin 10, ∑ j, M i j = 1 := by decide +kernel
 
 -- 2. Structured decomposition over brute force:
 --    Instead of proving a 100×100 matrix property by enumeration,
@@ -331,7 +331,7 @@ Before committing:
 -- • Factor the proof into smaller lemmas
 -- • Use `have` blocks to create intermediate results
 -- • Replace enumeration with algebraic arguments
--- • Use `native_decide` for the finite/computational parts
+-- • Use `decide +kernel` or `sair_decide` for the finite/computational parts
 
 -- 4. Profile before committing:
 --    #count_heartbeats theorem my_expensive_proof : ... := by ...

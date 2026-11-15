@@ -23,7 +23,7 @@ handoffs:
   - skill:lean-proof-review
   - skill:lean-math-foundations
 metadata:
-  version: 0.2.0
+  version: 0.5.0
   source_spec: skills/lean-math-analysis/SKILL.md (this file)
   last_reviewed: '2026-05-27'
 ---

@@ -12,10 +12,10 @@ Classification (per named, axiom-probeable declaration):
                           Classical.choice} (Lean's standard classical trio)
   - non-standard        : anything else (the failure class; must be 0)
 
-Usage: python3 tools/altproof/axiom_profiles.py [listing path]
-Default listing: docs/easci/lean/docs/tracking/axiom_output.txt
+Usage: python3 -m altproof.axiom_profiles [listing path]
+Default listing: docs/tracking/axiom_output.txt (or discovered via lean-project.toml)
 Regenerate the listing first with:
-  cd docs/easci/lean && python3 scripts/axiom_audit.py --generate-script \
+  python3 scripts/lean/axiom_audit.py --generate-script \
     && lake env lean scripts/_axiom_check.lean > docs/tracking/axiom_output.txt
 """
 import re
@@ -38,11 +38,15 @@ def parse_listing(path):
 def main(argv=None):
     import argparse
     import os
-    default_listing = (
-        'docs/tracking/axiom_output.txt'
-        if os.path.exists('docs/tracking/axiom_output.txt')
-        else 'docs/easci/lean/docs/tracking/axiom_output.txt'
-    )
+    default_listing = 'docs/tracking/axiom_output.txt'
+    if not os.path.exists(default_listing):
+        try:
+            from .project_config import load_project_config
+            cfg = load_project_config()
+            cand = cfg.root / cfg.raw.get('axioms', {}).get('axiom_output', 'docs/tracking/axiom_output.txt')
+            default_listing = str(cand)
+        except Exception:
+            pass
     parser = argparse.ArgumentParser(description="Axiom-profile tiers over a Lean corpus's declaration listing.")
     parser.add_argument("pos_listing", nargs="?", default=None, help="Optional positional path to axiom_output.txt")
     parser.add_argument("--listing", default=default_listing, help="Path to axiom_output.txt")

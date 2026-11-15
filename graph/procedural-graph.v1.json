@@ -1,72 +1,548 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/r-irbe/proof-skills/schemas/procedural-graph.v1.json",
-  "title": "Lean4FormalizationProceduralGraph",
-  "description": "Schema for Lean 4 formalization procedural knowledge graphs per arXiv:2609.09153",
-  "type": "object",
-  "required": ["version", "nodes", "triplets"],
-  "properties": {
-    "version": {
-      "type": "string",
-      "enum": ["1.0.0"]
+  "$schema": "./procedural-graph.schema.v1.json",
+  "version": "1.0.0",
+  "nodes": [
+    {
+      "id": "skill:counterexample-first-proving",
+      "name": "counterexample-first-proving",
+      "category": "search",
+      "description": "Core proof-skills v0.5.0 workflow contract for @counterexample-first-proving.",
+      "reversibility": "full"
     },
-    "nodes": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["id", "name", "category", "description"],
-        "properties": {
-          "id": { "type": "string" },
-          "name": { "type": "string" },
-          "category": {
-            "type": "string",
-            "enum": ["kernel", "tactic", "decomposition", "macro", "normalization", "search"]
-          },
-          "description": { "type": "string" },
-          "reversibility": {
-            "type": "string",
-            "enum": ["full", "partial", "irreversible"]
-          }
-        }
-      }
+    {
+      "id": "skill:hol-metamath-adapter",
+      "name": "hol-metamath-adapter",
+      "category": "normalization",
+      "description": "Core proof-skills v0.5.0 workflow contract for @hol-metamath-adapter.",
+      "reversibility": "full"
     },
-    "triplets": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["source", "relation", "target", "condition", "guidance", "pitfalls"],
-        "properties": {
-          "source": { "type": "string" },
-          "relation": {
-            "type": "string",
-            "enum": [
-              "depends_on",
-              "alternative_to",
-              "specializes",
-              "recovers_from",
-              "precedes",
-              "complements"
-            ]
-          },
-          "target": { "type": "string" },
-          "condition": { "type": "string" },
-          "guidance": { "type": "string" },
-          "pitfalls": { "type": "string" }
-        }
-      }
+    {
+      "id": "skill:isabelle-isar-adapter",
+      "name": "isabelle-isar-adapter",
+      "category": "normalization",
+      "description": "Core proof-skills v0.5.0 workflow contract for @isabelle-isar-adapter.",
+      "reversibility": "full"
     },
-    "rejection_memory": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["goal_signature", "rejected_tactic", "error_reason"],
-        "properties": {
-          "goal_signature": { "type": "string" },
-          "rejected_tactic": { "type": "string" },
-          "error_reason": { "type": "string" },
-          "timestamp": { "type": "string" }
-        }
-      }
+    {
+      "id": "skill:itp-cross-porting",
+      "name": "itp-cross-porting",
+      "category": "normalization",
+      "description": "Core proof-skills v0.5.0 workflow contract for @itp-cross-porting.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-ai-formalization",
+      "name": "lean-ai-formalization",
+      "category": "decomposition",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-ai-formalization.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-bisect",
+      "name": "lean-bisect",
+      "category": "search",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-bisect.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-blueprint",
+      "name": "lean-blueprint",
+      "category": "decomposition",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-blueprint.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-build",
+      "name": "lean-build",
+      "category": "macro",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-build.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-core-only",
+      "name": "lean-core-only",
+      "category": "kernel",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-core-only.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-corpus-audit",
+      "name": "lean-corpus-audit",
+      "category": "decomposition",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-corpus-audit.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-dependency-management",
+      "name": "lean-dependency-management",
+      "category": "macro",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-dependency-management.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-doc-sync",
+      "name": "lean-doc-sync",
+      "category": "normalization",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-doc-sync.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-gateway",
+      "name": "lean-gateway",
+      "category": "decomposition",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-gateway.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-knowledge-formalization",
+      "name": "lean-knowledge-formalization",
+      "category": "decomposition",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-knowledge-formalization.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-math-analysis",
+      "name": "lean-math-analysis",
+      "category": "tactic",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-math-analysis.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-math-discrete",
+      "name": "lean-math-discrete",
+      "category": "tactic",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-math-discrete.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-math-dynamical",
+      "name": "lean-math-dynamical",
+      "category": "tactic",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-math-dynamical.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-math-foundations",
+      "name": "lean-math-foundations",
+      "category": "tactic",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-math-foundations.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-math-optimization",
+      "name": "lean-math-optimization",
+      "category": "tactic",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-math-optimization.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-math-stochastic",
+      "name": "lean-math-stochastic",
+      "category": "tactic",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-math-stochastic.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-mwe",
+      "name": "lean-mwe",
+      "category": "macro",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-mwe.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-pedagogical-exposition",
+      "name": "lean-pedagogical-exposition",
+      "category": "normalization",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-pedagogical-exposition.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-proof",
+      "name": "lean-proof",
+      "category": "tactic",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-proof.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-proof-refactor",
+      "name": "lean-proof-refactor",
+      "category": "decomposition",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-proof-refactor.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-proof-repair",
+      "name": "lean-proof-repair",
+      "category": "tactic",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-proof-repair.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-proof-review",
+      "name": "lean-proof-review",
+      "category": "tactic",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-proof-review.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-research",
+      "name": "lean-research",
+      "category": "search",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-research.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-retro-methodology",
+      "name": "lean-retro-methodology",
+      "category": "decomposition",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-retro-methodology.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-review-council",
+      "name": "lean-review-council",
+      "category": "decomposition",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-review-council.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-sair-kernel-optimization",
+      "name": "lean-sair-kernel-optimization",
+      "category": "kernel",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-sair-kernel-optimization.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-security-formalization",
+      "name": "lean-security-formalization",
+      "category": "decomposition",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-security-formalization.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-setup",
+      "name": "lean-setup",
+      "category": "macro",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-setup.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-specification",
+      "name": "lean-specification",
+      "category": "decomposition",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-specification.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-tautology-triage",
+      "name": "lean-tautology-triage",
+      "category": "tactic",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-tautology-triage.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-upstream-pr",
+      "name": "lean-upstream-pr",
+      "category": "normalization",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-upstream-pr.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:lean-verification-gate",
+      "name": "lean-verification-gate",
+      "category": "kernel",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-verification-gate.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:research-council",
+      "name": "research-council",
+      "category": "search",
+      "description": "Core proof-skills v0.5.0 workflow contract for @research-council.",
+      "reversibility": "full"
+    },
+    {
+      "id": "skill:rocq-proof-adapter",
+      "name": "rocq-proof-adapter",
+      "category": "normalization",
+      "description": "Core proof-skills v0.5.0 workflow contract for @rocq-proof-adapter.",
+      "reversibility": "full"
+    },
+    {
+      "id": "pack:ai-guard-judge-eval",
+      "name": "ai-guard-judge-eval",
+      "category": "decomposition",
+      "description": "Opt-in applied-strategy pack skill @ai-guard-judge-eval.",
+      "reversibility": "full"
+    },
+    {
+      "id": "pack:applied-data-information-security",
+      "name": "applied-data-information-security",
+      "category": "decomposition",
+      "description": "Opt-in applied-strategy pack skill @applied-data-information-security.",
+      "reversibility": "full"
+    },
+    {
+      "id": "pack:applied-engineering-disciplines",
+      "name": "applied-engineering-disciplines",
+      "category": "decomposition",
+      "description": "Opt-in applied-strategy pack skill @applied-engineering-disciplines.",
+      "reversibility": "full"
+    },
+    {
+      "id": "pack:applied-legal-reasoning",
+      "name": "applied-legal-reasoning",
+      "category": "decomposition",
+      "description": "Opt-in applied-strategy pack skill @applied-legal-reasoning.",
+      "reversibility": "full"
+    },
+    {
+      "id": "pack:math-product-management",
+      "name": "math-product-management",
+      "category": "decomposition",
+      "description": "Opt-in applied-strategy pack skill @math-product-management.",
+      "reversibility": "full"
+    },
+    {
+      "id": "pack:math-project-management",
+      "name": "math-project-management",
+      "category": "decomposition",
+      "description": "Opt-in applied-strategy pack skill @math-project-management.",
+      "reversibility": "full"
+    },
+    {
+      "id": "pack:math-strategy-studio",
+      "name": "math-strategy-studio",
+      "category": "decomposition",
+      "description": "Opt-in applied-strategy pack skill @math-strategy-studio.",
+      "reversibility": "full"
+    },
+    {
+      "id": "tac:rfl",
+      "name": "rfl",
+      "category": "kernel",
+      "description": "Definitional WHNF reflexivity closer (0 search overhead).",
+      "reversibility": "full"
+    },
+    {
+      "id": "tac:sair_decide",
+      "name": "sair_decide",
+      "category": "macro",
+      "description": "Strict 3-rung kernel-clean closer (rfl | decide +kernel | omega) avoiding Lean.ofReduceBool.",
+      "reversibility": "full"
+    },
+    {
+      "id": "tac:bv_decide",
+      "name": "bv_decide",
+      "category": "tactic",
+      "description": "LRAT-certified QF_BV fixed-width bitvector decision procedure.",
+      "reversibility": "full"
+    },
+    {
+      "id": "tac:omega",
+      "name": "omega",
+      "category": "tactic",
+      "description": "Complete Presburger linear Nat/Int arithmetic solver.",
+      "reversibility": "full"
+    },
+    {
+      "id": "tac:ring",
+      "name": "ring",
+      "category": "normalization",
+      "description": "Commutative ring polynomial normalizer.",
+      "reversibility": "full"
+    },
+    {
+      "id": "tac:eqsat_rw",
+      "name": "eqsat_rw",
+      "category": "normalization",
+      "description": "Pure-Lean bidirectional equality & congruence saturation in MetaM (alias egg_rw).",
+      "reversibility": "full"
+    },
+    {
+      "id": "tac:backchain",
+      "name": "backchain",
+      "category": "search",
+      "description": "Bounded core-only SolveByElim backchaining wrapper.",
+      "reversibility": "full"
+    },
+    {
+      "id": "tac:grind_close",
+      "name": "grind_close",
+      "category": "search",
+      "description": "Core Lean e-graph congruence closure and E-matching closer.",
+      "reversibility": "full"
+    },
+    {
+      "id": "tac:contra_direct",
+      "name": "contra_direct",
+      "category": "normalization",
+      "description": "Constructive Bool/Decidable/negation normalizer avoiding Classical.choice.",
+      "reversibility": "full"
+    },
+    {
+      "id": "tac:sum_congr_ring",
+      "name": "sum_congr_ring",
+      "category": "macro",
+      "description": "Finset.sum linear normalization + pointwise ring congruence closer.",
+      "reversibility": "full"
+    },
+    {
+      "id": "tac:calc_ring_sum",
+      "name": "calc_ring_sum",
+      "category": "macro",
+      "description": "Swapped double-sum Finset.sum_comm + scalar distribution ring closer.",
+      "reversibility": "full"
+    },
+    {
+      "id": "tac:finset_mono",
+      "name": "finset_mono",
+      "category": "macro",
+      "description": "Pointwise hypothesis-instantiating Finset.sum_le_sum monotonicity closer.",
+      "reversibility": "full"
+    },
+    {
+      "id": "tac:finset_nonneg",
+      "name": "finset_nonneg",
+      "category": "macro",
+      "description": "Pointwise hypothesis-instantiating Finset.sum_nonneg non-negativity closer.",
+      "reversibility": "full"
+    },
+    {
+      "id": "tac:gcongr_pos",
+      "name": "gcongr_pos",
+      "category": "tactic",
+      "description": "Structural monotonicity congruence with automatic positivity/linarith/omega side-goal discharge.",
+      "reversibility": "full"
+    },
+    {
+      "id": "tac:eval_nat",
+      "name": "eval_nat%",
+      "category": "macro",
+      "description": "Elaboration-time closed Nat evaluator emitting raw Expr.lit (.natVal v) literals.",
+      "reversibility": "full"
+    },
+    {
+      "id": "tac:swar_unroll",
+      "name": "swar_unroll%",
+      "category": "macro",
+      "description": "Elaboration-time loop unroller with constant folding and ShareCommon hash-consing.",
+      "reversibility": "full"
+    },
+    {
+      "id": "tac:elegance",
+      "name": "elegance?",
+      "category": "search",
+      "description": "Speculative withoutModifyingState closer ranker and 20-route AST advisor.",
+      "reversibility": "full"
     }
-  }
-}\n
+  ],
+  "triplets": [
+    {
+      "source": "skill:lean-gateway",
+      "relation": "precedes",
+      "target": "skill:lean-specification",
+      "condition": "Multi-phase formalization task starts without verified Lean specs.",
+      "guidance": "Route theorem design through @lean-specification and @counterexample-first-proving before invoking @lean-proof.",
+      "pitfalls": "Skipping specification risks proving vacuous or Nat-truncated statements."
+    },
+    {
+      "source": "skill:counterexample-first-proving",
+      "relation": "precedes",
+      "target": "skill:lean-proof",
+      "condition": "Conjecture involves Nat subtraction, division, or boundary quantifiers.",
+      "guidance": "Run Plausible / boundary witness checks and lean_analyzer SOUND-04 before spending tactic budget.",
+      "pitfalls": "Attempting to prove a falsifiable Nat-truncation statement wastes hundreds of tactic turns."
+    },
+    {
+      "source": "tac:rfl",
+      "relation": "precedes",
+      "target": "tac:bv_decide",
+      "condition": "Goal is a fixed-width BitVec or closed constant identity.",
+      "guidance": "Attempt rfl first; escalate to bv_decide on symbolic BitVec w goals.",
+      "pitfalls": "Note that bv_decide introduces Lean.ofReduceBool; use sair_decide on strict 3-axiom contest lanes."
+    },
+    {
+      "source": "tac:sair_decide",
+      "relation": "alternative_to",
+      "target": "tac:bv_decide",
+      "condition": "Strict 3-axiom contest lane forbids Lean.ofReduceBool and Lean.trustCompiler.",
+      "guidance": "Use sair_decide (rfl | decide +kernel | omega) to stay strictly inside [propext, Classical.choice, Quot.sound].",
+      "pitfalls": "Never substitute native_decide (banned across the entire corpus by GT-30/31)."
+    },
+    {
+      "source": "tac:eqsat_rw",
+      "relation": "recovers_from",
+      "target": "tac:ring",
+      "condition": "Uninterpreted function symbols f, g mix with commutative/associative equalities where simp loops.",
+      "guidance": "Invoke eqsat_rw [hcomm, ...] (or egg_rw) for pure-Lean congruence saturation, or grind_close for SMT E-matching.",
+      "pitfalls": "Directional simp [hcomm] diverges on symmetric equations f x y = f y x."
+    },
+    {
+      "source": "tac:calc_ring_sum",
+      "relation": "specializes",
+      "target": "tac:sum_congr_ring",
+      "condition": "Double Finset.sum requires Finset.sum_comm swap plus scalar distribution.",
+      "guidance": "Use calc_ring_sum to commute summation indices and normalize linear ring factors in one step.",
+      "pitfalls": "Manual Finset.sum_comm inside nested lambdas requires explicit Finset.sum_congr rfl wrappers."
+    },
+    {
+      "source": "tac:gcongr_pos",
+      "relation": "complements",
+      "target": "tac:finset_mono",
+      "condition": "Pointwise inequality under summation contains products with non-negative weights.",
+      "guidance": "Let finset_mono introduce the summation index and instantiate hypotheses, then discharge products via gcongr_pos.",
+      "pitfalls": "Plain linarith cannot discharge nonlinear products c i * f i <= c i * g i without positivity/gcongr."
+    },
+    {
+      "source": "tac:eval_nat",
+      "relation": "complements",
+      "target": "skill:lean-sair-kernel-optimization",
+      "condition": "Closed shift-add or SWAR lane masks appear inside kernel-reduced definitions.",
+      "guidance": "Fold closed constants at elaboration time via eval_nat% and unroll static loops via swar_unroll%.",
+      "pitfalls": "Leaving OfNat.ofNat or open shift-add expressions inside Nat.rec step lambdas incurs ~160K WHNF instructions per call."
+    },
+    {
+      "source": "skill:lean-proof-refactor",
+      "relation": "precedes",
+      "target": "skill:lean-sair-kernel-optimization",
+      "condition": "Theorem statement mixes abstract algebraic properties with bit-packed compute loops.",
+      "guidance": "Establish clean f_spec + concrete f_fast connected by theorem f_eq : f_fast = f_spec := rfl (WAVE-13 G1 duality).",
+      "pitfalls": "Threading typeclass dictionaries inside hot kernel loops causes a 1,600x-3,345x WHNF slowdown."
+    },
+    {
+      "source": "skill:lean-verification-gate",
+      "relation": "depends_on",
+      "target": "skill:lean-proof-review",
+      "condition": "Module compiles cleanly and enters final release / PR verification.",
+      "guidance": "Run Tier-1 lean-rules (WASM + YAML) and axiom_audit.py alongside 4-layer semantic proof review.",
+      "pitfalls": "Zero compiler errors alone does not catch tautologies, hypothesis weakening, or Classical.choice drift."
+    }
+  ],
+  "rejection_memory": [
+    {
+      "goal_signature": "Decidable P |- P",
+      "rejected_tactic": "native_decide",
+      "error_reason": "Banned by GT-30/31: injects Lean.trustCompiler into axiom closure; replace with decide +kernel, bv_decide, or omega.",
+      "timestamp": "2026-11-15T00:00:00Z"
+    },
+    {
+      "goal_signature": "n m : Nat |- n - m + m = n",
+      "rejected_tactic": "omega",
+      "error_reason": "Falsified by SOUND-04 Nat subtraction truncation when n < m (witness n=0, m=1); require h : m <= n.",
+      "timestamp": "2026-11-15T00:00:00Z"
+    },
+    {
+      "goal_signature": "f : a -> a -> a, hcomm : forall x y, f x y = f y x |- f (g a) c = f c (g c)",
+      "rejected_tactic": "simp [hcomm]",
+      "error_reason": "Non-terminating directional rewrite loop on symmetric commutativity; use eqsat_rw [hcomm] instead.",
+      "timestamp": "2026-11-15T00:00:00Z"
+    },
+    {
+      "goal_signature": "(a && b) = true |- b = true",
+      "rejected_tactic": "split",
+      "error_reason": "Classical split on && / if-then-else leaks Classical.choice into constructive Bool theorems; use contra_direct.",
+      "timestamp": "2026-11-15T00:00:00Z"
+    }
+  ]
+}

@@ -328,7 +328,7 @@ Priority variants: `@[simp 1100]`, `@[simp default + 1]`.
 ### 5.2 `@[ext]` -- Extensionality
 ```lean
 @[ext]
-lemma ext {X Y : Lat} {f g : X ⟶ Y} (w : ∀ x : X, f x = g x) : f = g :=
+lemma ext {X Y : Lat} {f g : X → Y} (w : ∀ x : X, f x = g x) : f = g :=
   ConcreteCategory.hom_ext _ _ w
 ```
 *Source: `Mathlib/Order/Category/Lat.lean`*

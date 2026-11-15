@@ -137,7 +137,7 @@ exist, which errors are environmental, and how a stuck proof must be inspected.
 - **Predecessors:** `@lean-setup` (toolchain), `@lean-specification` (statement).
 - **Successors:** `@lean-proof` (structural fixes), `@lean-build` (build/CI
   mechanics), `@lean-axiom-closure` (trust base), `@lean-mwe` (isolation).
-- **Handbook:** [`../../references/lean4-core-only-profile.md`](../../references/lean4-core-only-profile.md)
+- **Handbook:** [`../../references/lean4-core-only-profile.md`](../protocols/lean4-core-only-profile.md)
   -- the core/Mathlib tactic boundary, the recursion-limit triage table, and the
   goal-introspection loop.
 
@@ -153,12 +153,12 @@ exist, which errors are environmental, and how a stuck proof must be inspected.
 
 ## See also
 
-- [`../lean-build/SKILL.md`](../lean-build/SKILL.md) -- `lake env lean`, targeted
+- [`../lean-build/SKILL.md`](../../skills/lean-build/SKILL.md) -- `lake env lean`, targeted
   builds, stale-artifact recovery.
-- [`../lean-proof/SKILL.md`](../lean-proof/SKILL.md) -- one-tactic-at-a-time
+- [`../lean-proof/SKILL.md`](../../skills/lean-proof/SKILL.md) -- one-tactic-at-a-time
   proving and error priority.
-- [`../lean-competitive-math/SKILL.md`](../lean-competitive-math/SKILL.md) -- the
+- [`../lean-competitive-math/SKILL.md`](../../skills/lean-math-discrete/SKILL.md) -- the
   answer-check ladder; note its L3 carve-out for `native_decide` does NOT apply to
   a judge class that bans it.
-- [`../../references/lean4-lsp-proof-protocol.md`](../../references/lean4-lsp-proof-protocol.md)
+- [`../../references/lean4-lsp-proof-protocol.md`](../protocols/lean4-lsp-proof-protocol.md)
   -- zero-disk-churn goal inspection.

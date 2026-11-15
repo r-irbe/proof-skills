@@ -1,11 +1,11 @@
 ---
-name: research-delta-systems
-description: Research Council Member Delta (Discrete Systems, Security & Optimization): graphs, bigraphs, games, and security.
-role_container: specifier
-overlay_type: council-research
-primary_skill: research-council
-tools: read, write, edit, bash, mcp:lean-lsp
-model: sonnet
+name: "research-delta-systems"
+description: "Research Council Member Delta (Discrete Systems, Security & Optimization): graphs, bigraphs, games, and security."
+role_container: "specifier"
+overlay_type: "council-research"
+primary_skill: "research-council"
+tools: "read, write, edit, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `research-delta-systems` (Container: `specifier`)

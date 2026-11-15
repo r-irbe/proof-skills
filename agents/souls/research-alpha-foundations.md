@@ -1,11 +1,11 @@
 ---
-name: research-alpha-foundations
-description: Research Council Member Alpha (Foundations & Type Theory): universes, algebra, categories, and logic.
-role_container: specifier
-overlay_type: council-research
-primary_skill: research-council
-tools: read, write, edit, bash, mcp:lean-lsp
-model: sonnet
+name: "research-alpha-foundations"
+description: "Research Council Member Alpha (Foundations & Type Theory): universes, algebra, categories, and logic."
+role_container: "specifier"
+overlay_type: "council-research"
+primary_skill: "research-council"
+tools: "read, write, edit, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `research-alpha-foundations` (Container: `specifier`)

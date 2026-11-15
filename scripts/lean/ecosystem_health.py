@@ -283,8 +283,8 @@ def main():
     if base is None:
         if Path("skills/skills").is_dir():
             base = Path(".")
-        elif Path("docs/easci/lean/skills/skills").is_dir():
-            base = Path("docs/easci/lean")
+        elif Path("skills/skills").is_dir():
+            base = Path(".")
         elif Path("skills/lean-gateway/SKILL.md").is_file() and Path("scripts/lean").is_dir():
             base = Path(".")
             standalone_skills_repo = True

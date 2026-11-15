@@ -9,7 +9,7 @@ Classification of all **38 active Lean 4 skills** (`+ 7` opt-in `pack-applied-st
 1. **L0 (`skills/<slug>/SKILL.md`, `< 3.8 KB`)**: Trigger routing, 4-step workflow, and stop conditions.
 2. **L1 (`references/cards/<slug>-tables.md`, `2--6.5 KB`)**: Auto-compiled 3-table fast lookup cards (`templates`, `phrasebook`, `errors`).
 3. **L2 (`references/handbooks/<slug>-handbook.md`, `5--60 KB`)**: Deep domain handbooks, derivations, and consolidated annexes.
-4. **L3 (`vendor/itp-ontology/handbook-tables.v1.json` + `lean-lsp` MCP)**: Sub-5ms machine-queryable index (`390` compiled rows).
+4. **L3 (`vendor/itp-ontology/handbook-tables.v1.json` + `lean-lsp` MCP)**: Sub-5ms machine-queryable index (`394` compiled rows).
 
 ---
 

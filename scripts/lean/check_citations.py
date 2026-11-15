@@ -4,7 +4,7 @@
 Scans `skills/**/SKILL.md` and `references/*.md` for:
   1. File-and-line citations (`path/to/file.lean:123` or `path/to/file.py:45`), verifying
      that the file exists and `1 <= line <= total_lines`.
-  2. Backticked Lean module paths (`EASCI/Tactics/AltProof.lean`), verifying file existence.
+  2. Backticked Lean module paths (`AltProof/Tactics.lean`), verifying file existence.
   3. Optional `.ilean` symbol verification when `--trace-root` is provided.
   4. Optional `LAST_VERIFIED.md` provenance stamp generation (`--write-last-verified`).
 
@@ -37,9 +37,9 @@ def _discover_lake_package_roots(roots: list[Path]) -> list[Path]:
                 for pkg_dir in sorted(lake_pkgs.iterdir()):
                     if pkg_dir.is_dir() and pkg_dir not in candidates and pkg_dir not in extra:
                         extra.append(pkg_dir)
-            easci_pkgs = parent / "docs" / "easci" / "lean" / ".lake" / "packages"
-            if easci_pkgs.is_dir():
-                for pkg_dir in sorted(easci_pkgs.iterdir()):
+            project_pkgs = parent / "docs" / "project" / "lean" / ".lake" / "packages"
+            if project_pkgs.is_dir():
+                for pkg_dir in sorted(project_pkgs.iterdir()):
                     if pkg_dir.is_dir() and pkg_dir not in candidates and pkg_dir not in extra:
                         extra.append(pkg_dir)
     return extra

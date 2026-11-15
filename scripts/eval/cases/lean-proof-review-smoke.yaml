@@ -1,0 +1,20 @@
+id: lean-proof-review-smoke
+title: lean-proof-review 4-layer soundness and faithfulness smoke check
+skill: lean-proof-review
+ensemble_rubric: lean-proof-quality
+difficulty: easy
+input:
+  prompt: Apply the lean-proof-review 4-layer checklist using references/cards/lean-proof-review-tables.md.
+  expected_output_substring: Audit L1 soundness via lean_axiom_closure and L2 statement
+    faithfulness with zero unproven goals.
+expected:
+  contains:
+  - lean-proof-review
+  - lean_axiom_closure|L1 soundness
+  - card_installed=true
+  not_contains:
+  - ^axiom\s
+grader: deterministic
+tags:
+- smoke
+- lean-proof-review

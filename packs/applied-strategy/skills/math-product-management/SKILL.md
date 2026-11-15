@@ -9,9 +9,9 @@ runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["agent:gateway", "skill:lean-research"]
-  successors: ["skill:math-project-management", "skill:lean-retro-methodology", "skill:lean-zettelkasten"]
+  successors: ["skill:math-project-management", "skill:lean-retro-methodology", "skill:lean-retro-methodology"]
 metadata:
-  version: "0.2.0"
+  version: "0.5.0"
   source_spec: "skills/math-product-management/SKILL.md (this file)"
   last_reviewed: "2026-05-27"
 ---
@@ -34,7 +34,7 @@ skill handles strategy (what to build, for whom, why, and in what order).
 Complements
   math-project-management (scheduling/execution) with strategic product thinking.
 - **DO NOT USE FOR:** project-level scheduling (use @math-project-management); strategy methodology (use
-  @lean-applied-reasoning);
+  @lean-knowledge-formalization);
   engineering
   discipline view (use @applied-engineering-disciplines).
 - **TRIGGERS:** product management, roadmap, stakeholder management, feature prioritization, formal
@@ -46,18 +46,18 @@ Complements
 3. Produce the artifact (roadmap, RICE table, stakeholder brief).
 4. Hand off: to `@math-project-management` for scheduling, to `@lean-retro-methodology` for retro-driven
   re-prioritisation, to
-   `@lean-zettelkasten`.
+   `@lean-retro-methodology`.
 ## Recovery & STOP
 - STOP if the question is operational scheduling -- delegate to `@math-project-management`.
-- STOP if a strategic-analysis lens dominates -- delegate to `@lean-applied-reasoning`.
+- STOP if a strategic-analysis lens dominates -- delegate to `@lean-knowledge-formalization`.
 - STOP if data inputs are missing -- escalate to audit / blueprint skills first.
 ## Handoffs
 - **Predecessors:** `agent:gateway`, `skill:lean-research`.
-- **Successors:** `skill:math-project-management`, `skill:lean-retro-methodology`, `skill:lean-zettelkasten`.
+- **Successors:** `skill:math-project-management`, `skill:lean-retro-methodology`, `skill:lean-retro-methodology`.
 ---
 ## Detailed reference
 Full content for `math-product-management` lives in
-[`references/math-product-management-handbook.md`](../../references/math-product-management-handbook.md).
+[`handbooks/math-product-management-handbook.md`](../../handbooks/math-product-management-handbook.md).
 Load that file when the skill is convened; the SKILL.md only carries
 the dispatch contract and the parts index.
 | Section | Topic |
@@ -72,9 +72,9 @@ the dispatch contract and the parts index.
 | Part 8 | Cross-References |
 ---
 ## See also
-- [`../../references/math-product-management-handbook.md`](../../references/math-product-management-handbook.md)
+- [`../../handbooks/math-product-management-handbook.md`](../../handbooks/math-product-management-handbook.md)
   -- Full handbook
   (extracted from this skill)
 - [`../math-project-management/SKILL.md`](../math-project-management/SKILL.md) -- Successor
-- [`../lean-retro-methodology/SKILL.md`](../lean-retro-methodology/SKILL.md) -- Successor
-- [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) -- Successor
+- [`../lean-retro-methodology/SKILL.md`](../../../../skills/lean-retro-methodology/SKILL.md) -- Successor
+- [`../lean-zettelkasten/SKILL.md`](../../../../skills/lean-retro-methodology/SKILL.md) -- Successor

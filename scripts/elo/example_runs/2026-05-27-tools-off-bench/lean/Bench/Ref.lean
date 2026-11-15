@@ -1,4 +1,4 @@
--- Reference solutions for the Lean battery — verify scaffolding works.
+-- Reference solutions for the Lean battery - verify scaffolding works.
 namespace BenchRef
 
 theorem t1 : 1 + 1 = 2 := rfl

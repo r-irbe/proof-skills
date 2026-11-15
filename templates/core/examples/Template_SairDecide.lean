@@ -9,29 +9,30 @@ set_option autoImplicit false
 
 /--
   `sair_decide` attempts to close a concrete decidable or linear-arithmetic goal
-  using only kernel-verified tactics that preserve the strict 3-axiom gate
+  using only the 3 kernel-verified rungs that preserve the strict 3-axiom gate
   (`[propext, Classical.choice, Quot.sound]`):
     1. `rfl` (definitional equality in WHNF, 0 Decidable dictionary overhead)
-    2. `decide +kernel` (kernel-reduced Boolean reflection)
+    2. `decide +kernel` (kernel-reduced Boolean reflection, bypassing elaborator WHNF)
     3. `omega` (verified Presburger linear integer/natural arithmetic)
 -/
 macro "sair_decide" : tactic =>
   `(tactic| first
     | rfl
     | decide +kernel
-    | decide
     | omega)
 
 /--
-  `twinlit_pair lhs rhs v` packages a target equality `lhs = rhs` alongside its
-  twinlit control `(lhs = lhs) /\ (v = v)` for PMU differential measurement.
+  `TwinlitControl` packages a target equality `x = x` alongside its answer-literal
+  control `v = v` so `real - twinlit` PMU differentials cancel startup, elaboration,
+  AND decimal literal parsing (`sum-of-per-slot-medians-of-three`).
 -/
 def TwinlitControl (α β : Type) (x : α) (v : β) : Prop :=
-  (x = x) /\ (v = v)
+  (x = x) ∧ (v = v)
 
 theorem twinlit_control_rfl {α β : Type} (x : α) (v : β) : TwinlitControl α β x v :=
   ⟨rfl, rfl⟩
 
--- Sanity checks:
+-- Sanity checks across all 3 rungs:
 example : 2 + 3 = 5 := by sair_decide
-example (n : Nat) (h : n < 10) : n <= 10 := by sair_decide
+example : decide (3 < 7) = true := by sair_decide
+example (n : Nat) (h : n < 10) : n ≤ 10 := by sair_decide

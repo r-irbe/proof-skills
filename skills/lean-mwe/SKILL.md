@@ -22,7 +22,7 @@ handoffs:
   - skill:lean-upstream-pr
   - skill:lean-proof
 metadata:
-  version: 0.3.0
+  version: 0.5.0
   source_spec: skills/lean-mwe/SKILL.md
   last_reviewed: '2026-09-16'
   migrated_from: repo-native first-party promotion
@@ -94,3 +94,4 @@ Full encyclopedic reference, decision trees, and lookup tables live in
 - [`../../references/handbooks/lean-mwe-handbook.md`](../../references/handbooks/lean-mwe-handbook.md) -- Handbook
   Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router
+- [`tests/guard-msgs.yaml`](tests/guard-msgs.yaml) -- Smoke test

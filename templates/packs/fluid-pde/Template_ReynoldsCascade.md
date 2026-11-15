@@ -28,7 +28,7 @@ In multi-agent consensus and belief dynamics:
 * `flux_bounded_by_dissipation`: conservative spectral transfer bound
 
 ## References
-* NavierStokesAndEuler: `Euler/EnergyEstimate.lean`, `NavierStokes/EnergyEstimate.lean`
+* FluidPDE example modules: `Euler/EnergyEstimate.lean`, `FluidPDE/EnergyEstimate.lean`
 * Kolmogorov, A. N. (1941), *The local structure of turbulence in incompressible viscous fluid for very large Reynolds numbers*, Proc. USSR Acad. Sci. 30, 301-305
 * Pope, S. B. (2000), *Turbulent Flows*, Cambridge University Press
 

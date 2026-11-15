@@ -25,7 +25,7 @@ ACRONYMS = (
     "BFT",
     "RS",
     "IFS",
-    "EASCI",
+    "Project",
     "OT",
     "KL",
     "Fisher",
@@ -94,7 +94,7 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="U2a naming triage + tests/example inventory over the Lean corpus.")
     parser.add_argument("pos_root", nargs="?", default=None, help="Optional positional Lean project root")
     parser.add_argument("--root", default=os.environ.get("LEAN_ROOT", "."), help="Lean project root directory")
-    parser.add_argument("--lean-dir", "--corpus-dir", dest="lean_dir", default=os.environ.get("LEAN_DIR", "EASCI"), help="Corpus subdirectory under root")
+    parser.add_argument("--lean-dir", "--corpus-dir", dest="lean_dir", default=os.environ.get("LEAN_DIR", "Project"), help="Corpus subdirectory under root")
     args = parser.parse_args(argv)
 
     root = args.pos_root if args.pos_root is not None else args.root
@@ -131,14 +131,14 @@ def main(argv=None) -> int:
     summary = [
         "# U2a naming audit + tests/example inventory (2026-10-02)",
         "",
-        "Generator: `docs/easci/lean/scripts/census_naming.py`. Triage of the",
+        "Generator: `scripts/lean/census_naming.py`. Triage of the",
         "uppercase-first flags from the U0 census, plus the test-file inventory",
         'for the sign-off requirement "fold in the tests and their examples".',
         "",
         "## Naming triage (uppercase-first declarations, corpus-wide)",
         "",
         f"- total uppercase-first: {tot_upper}",
-        f"- domain-name codes (G1-G5/F-codes/P-codes; intentional EASCI naming): {cat_tot['domain-name']}",
+        f"- domain-name codes (G1-G5/F-codes/P-codes; intentional Project naming): {cat_tot['domain-name']}",
         f"- `Is`-prefixed predicates (mathlib-accepted): {cat_tot['is-prefix']}",
         f"- acronym-leading (CCV/LTS/BFT/RS/IFS/...): {cat_tot['acronym-lead']}",
         f"- camel-structure-like: {cat_tot['camel-struct']}",

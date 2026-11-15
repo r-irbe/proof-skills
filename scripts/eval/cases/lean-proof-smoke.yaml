@@ -1,0 +1,22 @@
+id: lean-proof-smoke
+title: lean-proof dispatch and step-by-step proving smoke check
+skill: lean-proof
+ensemble_rubric: lean-proof-quality
+difficulty: easy
+input:
+  prompt: Apply the lean-proof skill workflow using references/cards/lean-proof-tables.md
+    to close a Nat arithmetic goal.
+  expected_output_substring: "theorem nat_step_smoke (n : Nat) : n + 0 = n := by\n\
+    \  rfl\n"
+expected:
+  contains:
+  - lean-proof
+  - lean_diagnostics|lean_goal|handbook_installed=true
+  - theorem\s+nat_step_smoke|rfl
+  not_contains:
+  - \bsorry\b
+  - \badmit\b
+grader: deterministic
+tags:
+- smoke
+- lean-proof

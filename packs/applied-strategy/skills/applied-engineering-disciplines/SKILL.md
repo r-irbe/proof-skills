@@ -11,7 +11,7 @@ handoffs:
   predecessors: ["agent:gateway", "skill:lean-research"]
   successors: ["skill:lean-ai-formalization", "skill:lean-security-formalization", "skill:lean-math-dynamical"]
 metadata:
-  version: "0.2.0"
+  version: "0.5.0"
   source_spec: "skills/applied-engineering-disciplines/SKILL.md (this file)"
   last_reviewed: "2026-05-27"
 ---
@@ -33,7 +33,7 @@ formalizing
 - **DO NOT USE FOR:** formal verification in Lean (use @lean-ai-formalization); security-specific engineering
   (use
   @applied-data-information-security);
-  strategy analysis (use @lean-applied-reasoning).
+  strategy analysis (use @lean-knowledge-formalization).
 - **TRIGGERS:** control theory, systems engineering, reliability engineering, software verification,
   engineering discipline.
 ## Workflow
@@ -45,7 +45,7 @@ formalizing
   control-theoretic dynamics
   dominate,
    to
-   `@lean-zettelkasten`.
+   `@lean-retro-methodology`.
 ## Recovery & STOP
 - STOP if the question is about the formal-verification proof itself -- delegate to `@lean-ai-formalization`.
 - STOP if the discipline match is unclear -- surface a clarifying question rather than guessing.
@@ -57,7 +57,7 @@ formalizing
 ---
 ## Detailed reference
 Full content for `applied-engineering-disciplines` lives in
-[`references/applied-engineering-disciplines-handbook.md`](../../references/applied-engineering-disciplines-handbook.md)
+[`handbooks/applied-engineering-disciplines-handbook.md`](../../handbooks/applied-engineering-disciplines-handbook.md)
 .
 Load that file when the skill is convened; the SKILL.md only carries
 the dispatch contract and the parts index.
@@ -73,10 +73,10 @@ the dispatch contract and the parts index.
 | Part 8 | Cross-References |
 ---
 ## See also
-- [`../../references/applied-engineering-disciplines-handbook.md`](../../references/applied-engineering-disciplines-handbook.md)
+- [`../../handbooks/applied-engineering-disciplines-handbook.md`](../../handbooks/applied-engineering-disciplines-handbook.md)
   --
   Full handbook (extracted
   from this skill)
-- [`../lean-ai-formalization/SKILL.md`](../lean-ai-formalization/SKILL.md) -- Successor
-- [`../lean-security-formalization/SKILL.md`](../lean-security-formalization/SKILL.md) -- Successor
-- [`../lean-math-dynamical/SKILL.md`](../lean-math-dynamical/SKILL.md) -- Successor
+- [`../lean-ai-formalization/SKILL.md`](../../../../skills/lean-ai-formalization/SKILL.md) -- Successor
+- [`../lean-security-formalization/SKILL.md`](../../../../skills/lean-security-formalization/SKILL.md) -- Successor
+- [`../lean-math-dynamical/SKILL.md`](../../../../skills/lean-math-dynamical/SKILL.md) -- Successor

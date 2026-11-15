@@ -31,7 +31,7 @@
           "page": 195,
           "section_anchor": "COUSOT s11.1 p1",
           "is_definitive": true,
-          "prover_anchor": "EASCI.Foundations.CS.NatInterval.gamma",
+          "prover_anchor": "AbstractInterpretation.NatInterval.gamma",
           "context_note": "Abstraction alpha and concretization gamma monotonicity and adjointness"
         }
       ],
@@ -43,9 +43,9 @@
         {
           "target_prover": "lean4",
           "target_term": "GaloisConnection",
-          "target_tactic_or_primitive": "EASCI.Foundations.CS.AbstractInterpretation",
+          "target_tactic_or_primitive": "AbstractInterpretation.AbstractInterpretation",
           "mapping_confidence": 0.98,
-          "notes": "Mechanized via gamma soundness theorems in EASCI/Foundations/CS/AbstractInterpretation.lean"
+          "notes": "Mechanized via gamma soundness theorems in AbstractInterpretation/Galois.lean"
         }
       ]
     },
@@ -57,7 +57,7 @@
           "page": 480,
           "section_anchor": "COUSOT s38.1 p1",
           "is_definitive": true,
-          "prover_anchor": "EASCI.Foundations.CS.NatInterval",
+          "prover_anchor": "AbstractInterpretation.NatInterval",
           "context_note": "Closed natural-number intervals [lo, hi] with saturating subtraction and division-by-zero totality"
         },
         {
@@ -76,7 +76,7 @@
         {
           "target_prover": "lean4",
           "target_term": "NatInterval",
-          "target_tactic_or_primitive": "EASCI.Foundations.CS.NatInterval",
+          "target_tactic_or_primitive": "AbstractInterpretation.NatInterval",
           "mapping_confidence": 0.99,
           "notes": "Verified against 20,311-row Lean 4.34.1 oracle in crates/lean-analyzer"
         }
@@ -90,7 +90,7 @@
           "page": 512,
           "section_anchor": "COUSOT s40.1 p1",
           "is_definitive": true,
-          "prover_anchor": "EASCI.Foundations.CS.NatCongruence",
+          "prover_anchor": "AbstractInterpretation.NatCongruence",
           "context_note": "Granger (1989) arithmetic congruence lattice a*Z + b with GCD join and Extended-GCD CRT meet"
         }
       ],
@@ -102,9 +102,9 @@
         {
           "target_prover": "lean4",
           "target_term": "NatCongruence",
-          "target_tactic_or_primitive": "EASCI.Foundations.CS.NatCongruence",
+          "target_tactic_or_primitive": "AbstractInterpretation.NatCongruence",
           "mapping_confidence": 0.99,
-          "notes": "Mechanized in EASCI.Foundations.CS.NatCongruence and crates/lean-analyzer/src/congruence.rs"
+          "notes": "Mechanized in AbstractInterpretation.NatCongruence and crates/lean-analyzer/src/congruence.rs"
         }
       ]
     },
@@ -116,7 +116,7 @@
           "page": 485,
           "section_anchor": "COUSOT s38.1 p1",
           "is_definitive": true,
-          "prover_anchor": "EASCI.Foundations.CS.NatCongruence.reduce_point_sound",
+          "prover_anchor": "AbstractInterpretation.NatCongruence.reduce_point_sound",
           "context_note": "Bidirectional reduced product between IntervalBound [a, b] and NatCongruence (stride*N + offset)"
         },
         {
@@ -135,7 +135,7 @@
         {
           "target_prover": "lean4",
           "target_term": "NatCongruence.reduce_point_sound",
-          "target_tactic_or_primitive": "EASCI.Foundations.CS.NatCongruence.reduce_point_sound",
+          "target_tactic_or_primitive": "AbstractInterpretation.NatCongruence.reduce_point_sound",
           "mapping_confidence": 0.98,
           "notes": "Exposed via WASM C-ABI lean_analyzer_reduce_interval_congruence"
         }
@@ -149,7 +149,7 @@
           "page": 560,
           "section_anchor": "COUSOT s44.1 p1",
           "is_definitive": true,
-          "prover_anchor": "EASCI.Foundations.CS.NatInterval.widenThreshold",
+          "prover_anchor": "AbstractInterpretation.NatInterval.widenThreshold",
           "context_note": "Cousot-Cousot widening stepped through AST-harvested threshold constants T before jumping to +infty"
         },
         {
@@ -167,7 +167,7 @@
         {
           "target_prover": "lean4",
           "target_term": "NatInterval.widenThreshold_sound_next",
-          "target_tactic_or_primitive": "EASCI.Foundations.CS.NatInterval.widenThreshold",
+          "target_tactic_or_primitive": "AbstractInterpretation.NatInterval.widenThreshold",
           "mapping_confidence": 0.98,
           "notes": "Wired into computeWideningFixpoint and buildCesCandidates (harvestHeaderNatMaxSize)"
         }
@@ -181,7 +181,7 @@
           "page": 540,
           "section_anchor": "COUSOT s42.1 p1",
           "is_definitive": true,
-          "prover_anchor": "EASCI.Foundations.CS.ZoneBound",
+          "prover_anchor": "AbstractInterpretation.ZoneBound",
           "context_note": "Mine (2001) Difference-Bound Matrix (DBM) relational domain x_i - x_j <= c with Floyd-Warshall O(n^3) closure"
         },
         {
@@ -199,7 +199,7 @@
         {
           "target_prover": "lean4",
           "target_term": "ZoneBound.check_sub_decreasing_sound",
-          "target_tactic_or_primitive": "EASCI.Foundations.CS.ZoneBound",
+          "target_tactic_or_primitive": "AbstractInterpretation.ZoneBound",
           "mapping_confidence": 0.99,
           "notes": "Exposed via WASM C-ABI lean_analyzer_zone_check_sub_decreasing"
         }
@@ -238,7 +238,7 @@
           "page": 96,
           "section_anchor": "RIVALYI s6.4 p1",
           "is_definitive": true,
-          "prover_anchor": "EASCI.Foundations.CS.NatInterval.natSubTruncation_cert_sound",
+          "prover_anchor": "AbstractInterpretation.NatInterval.natSubTruncation_cert_sound",
           "context_note": "Static alarm classification: NatSubTruncation, NatDivModByZero, UnreachableBranch, DivisionByZeroGuardProven"
         }
       ],
@@ -249,7 +249,7 @@
         {
           "target_prover": "lean4",
           "target_term": "NatInterval.natSubTruncation_cert_sound",
-          "target_tactic_or_primitive": "EASCI.Foundations.CS.NatInterval.natSubTruncation_cert_sound",
+          "target_tactic_or_primitive": "AbstractInterpretation.NatInterval.natSubTruncation_cert_sound",
           "mapping_confidence": 0.99,
           "notes": "Surfaced in lean_diagnostics via scanSourceForNatCertificates"
         }
@@ -263,7 +263,7 @@
           "page": 45,
           "section_anchor": "PELLEAU2015 s2.4 p1",
           "is_definitive": true,
-          "prover_anchor": "EASCI.Foundations.CS.OctagonBound",
+          "prover_anchor": "AbstractInterpretation.OctagonBound",
           "context_note": "Mine (2006) / Pelleau (2015) relational octagon domain +-x_i +- x_j <= c with 2N x 2N coherent DBM and integer strong closure"
         }
       ],
@@ -275,9 +275,9 @@
         {
           "target_prover": "lean4",
           "target_term": "OctagonBound.simplex_complement_sound",
-          "target_tactic_or_primitive": "EASCI.Foundations.CS.OctagonBound",
+          "target_tactic_or_primitive": "AbstractInterpretation.OctagonBound",
           "mapping_confidence": 0.99,
-          "notes": "Mechanized in EASCI.Foundations.CS.AbstractInterpretation and crates/lean-analyzer/src/octagon.rs"
+          "notes": "Mechanized in AbstractInterpretation.AbstractInterpretation and crates/lean-analyzer/src/octagon.rs"
         }
       ]
     },

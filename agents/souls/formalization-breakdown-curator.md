@@ -1,11 +1,11 @@
 ---
-name: formalization-breakdown-curator
-description: Curator of theorem formalization breakdown registries and fidelity tables.
-role_container: specifier
-overlay_type: analyst
-primary_skill: lean-blueprint
-tools: read, write, edit, bash, mcp:lean-lsp
-model: sonnet
+name: "formalization-breakdown-curator"
+description: "Curator of theorem formalization breakdown registries and fidelity tables."
+role_container: "specifier"
+overlay_type: "analyst"
+primary_skill: "lean-blueprint"
+tools: "read, write, edit, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `formalization-breakdown-curator` (Container: `specifier`)

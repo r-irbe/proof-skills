@@ -5,7 +5,7 @@ description: |
   LLM-judge grader (`scripts/eval/graders/llm_judge.py`) per the design in
   `lab/design/01-eval-framework.md §4.2`.
 
-  Apply rubric *literally* — definitions are dense by design. Don't invent
+  Apply rubric *literally* - definitions are dense by design. Don't invent
   intermediate scores. Don't reward length.
 
 definitions:

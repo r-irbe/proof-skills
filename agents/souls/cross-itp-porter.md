@@ -1,11 +1,11 @@
 ---
-name: cross-itp-porter
-description: Cross-ITP proof translator across Lean 4, Rocq/MathComp, Isabelle/HOL, HOL Light, Agda, and Metamath.
-role_container: prover
-overlay_type: operational
-primary_skill: itp-cross-porting
-tools: read, write, edit, bash, mcp:lean-lsp
-model: sonnet
+name: "cross-itp-porter"
+description: "Cross-ITP proof translator across Lean 4, Rocq/MathComp, Isabelle/HOL, HOL Light, Agda, and Metamath."
+role_container: "prover"
+overlay_type: "operational"
+primary_skill: "itp-cross-porting"
+tools: "read, write, edit, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `cross-itp-porter` (Container: `prover`)

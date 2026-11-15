@@ -23,7 +23,7 @@ handoffs:
   - skill:lean-review-council
   - skill:lean-doc-sync
 metadata:
-  version: 0.4.0
+  version: 0.5.0
   source_spec: Unified from lean-enforcement, lean-axiom-closure, and lean-replay-verification
   last_reviewed: 2026-11
 ---

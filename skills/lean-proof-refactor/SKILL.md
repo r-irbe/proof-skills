@@ -18,52 +18,49 @@ handoffs:
   - skill:lean-proof
   - skill:lean-corpus-audit
   successors:
+  - skill:lean-sair-kernel-optimization
   - skill:lean-proof-review
   - skill:lean-proof
 metadata:
-  version: 0.1.0
-  source_spec: campaign methodology distilled from a 13-decomposition series (2026-09/10)
-  last_reviewed: 2026-10
+  version: 0.5.0
+  source_spec: campaign methodology + WAVE-13 G1 Abstraction-Concrete Duality & coupling_scanner
+  last_reviewed: '2026-11'
 ---
 
-# Lean Proof Refactoring (post-hoc proof slimming)
-A proven proof that is long is a maintenance liability and a reuse
-opportunity. This skill runs the campaign loop that turns long proofs
-into short callers plus named, reusable lemmas - without regressions.
+# Lean Proof Refactoring & Abstraction-Concrete Duality
+
+Turn long, concrete, or duplicated proofs into short callers backed by reusable abstract lemmas -- while keeping executable `def` kernels strictly
+concrete (`WAVE-13 G1`).
+
 ## Routing
-- **USE FOR:** finding and adjudicating long-proof findings; extracting
-  shared lemmas; running multi-batch refactor campaigns.
-- **DO NOT USE FOR:** first-time proving, correctness review, tautology triage.
+- **USE FOR:** adjudicating long-proof findings (`CUT / CONSIDERED-NEGATIVE / DEFER`), extracting shared lemmas, generalizing `abstraction-safe` `Real`
+  statements to ordered-ring mixins, and bridging abstract `Prop` specs to concrete `def`s via `rfl` / `@[csimp]`.
+- **DO NOT USE FOR:** first-time proving (`@lean-proof`), correctness review (`@lean-proof-review`), or tautology triage (`@lean-tautology-triage`).
+
 ## Workflow
-1. **Find** - scan the corpus for long proofs. A generic scanner exists:
-   `scripts/lean/proof_quality.py --lean-dir <dir> --output <report.md>`
-   (line count + branch points + style classes). Repos wrap it with
-   their own config defaults; never edit the scanner per-repo.
-2. **Adjudicate each finding** against one test: *can a generic block be
-   named once and called elsewhere?* Three verdicts:
-   - **CUT** - extract the shared lemma (see 3).
-   - **CONSIDERED-NEGATIVE** - the proof is single-use glue; record the
-     reason in the tracking doc. Forcing a cut creates single-use
-     lemmas (the bundle effect: extraction that only relocates length).
-   - **DEFER** - branchy or threshold-sitting proofs wait for a calmer
-     window (2 branch points +  50 lines is the sweet spot).
+1. **Scan & Classify** -- Run `scripts/lean/proof_quality.py --lean-dir <dir>` for long/branchy proofs and `python3 -m altproof.coupling_scanner` to
+   classify `Real` statements into `abstraction-safe`, `nat-mixed`, or `real-specific`.
+2. **Adjudicate (`CUT / CONSIDERED-NEGATIVE / DEFER`)** -- Extract (`CUT`) only when a block is reusable (`>= 2` sites or clean mathematical boundary);
+   log `CONSIDERED-NEGATIVE` on single-use glue to prevent negative bundle-effect bloat.
+3. **Apply `WAVE-13 G1` Abstraction-Concrete Duality** -- Abstract in `Prop` (`[CommRing R] [LinearOrder R] [IsOrderedRing R]`, parametric step
+   theorems) and stay concrete in hot `def`s (avoiding the `1,600x..3,345x` parametric WHNF penalty; `rfl`-bridged abstract proofs add `<= 1%` cost).
+4. **Gate** -- Preserve public signatures byte-for-byte; verify `0` errors/warnings under `lake build` and record before/after metrics.
+
 ## Recovery & STOP
-- If a candidate helper extraction fails to compile or increases total proof complexity without reuse, revert
-  the cut and record a
-  `CONSIDERED-NEGATIVE`
-  entry in the batch ledger.
-- On transient stale-`.olean` errors in shared build directories, retry the targeted build once before
-  diagnosing a proof
-  regression.
+- If an extraction fails to compile, forces >8 awkward context parameters, or increases net complexity without reuse, revert immediately and record
+  `CONSIDERED-NEGATIVE`.
+- On transient stale-`.olean` errors in shared trees, retry targeted `lake build` once before diagnosing a regression.
+
 ## Handoffs
-- **Predecessors:** `lean-proof` (the proof exists), `lean-corpus-audit` (findings).
-- **Successors:** `lean-proof-review` (audit the extraction), `lean-proof` (fix the caller).
+- **Predecessors:** `lean-proof`, `lean-corpus-audit`.
+- **Successors:** `lean-sair-kernel-optimization`, `lean-proof-review`, `lean-proof`.
+
 ## Detailed reference
-- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-proof-refactor-tables.md`](../../references/cards/lean-proof-refactor-tables.md)
-Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/handbooks/lean-proof-refactor-handbook.md`](../../references/handbooks/lean-proof-refactor-handbook.md) .
+- Fast 3-table lookup card: [`../../references/cards/lean-proof-refactor-tables.md`](../../references/cards/lean-proof-refactor-tables.md)
+- Full handbook: [`../../references/handbooks/lean-proof-refactor-handbook.md`](../../references/handbooks/lean-proof-refactor-handbook.md)
+- Core templates: [`../../templates/core/Template_Refactoring.md`](../../templates/core/Template_Refactoring.md),
+  [`../../templates/core/Template_ComputableTwin_Csimp.md`](../../templates/core/Template_ComputableTwin_Csimp.md)
+
 ## See also
-- [`../../references/handbooks/lean-proof-refactor-handbook.md`](../../references/handbooks/lean-proof-refactor-handbook.md) --
-  Complete
-  `lean-proof-refactor` Handbook
+- [`../lean-sair-kernel-optimization/SKILL.md`](../lean-sair-kernel-optimization/SKILL.md) -- Kernel WHNF, SWAR & hardware lowering
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

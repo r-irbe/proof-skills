@@ -1,29 +1,36 @@
-"""AltProof corpus-wide benchmark runner and empirical speedup ranker (Track 1).
+"""AltProof corpus-wide candidate scanner and estimated speedup ranker (Track 1).
 
-Scans the Lean 4 formalization corpus (docs/easci/lean/EASCI), detects algorithmic
+Scans a Lean 4 formalization corpus, detects algorithmic
 substitution and tactic optimization candidates, ranks them using the two-axis
 cost model, and emits structured benchmark metrics.
 
-Scoped Unicode policy (INV-001; typographic-free by default).
+Strict 7-bit ASCII only (INV-001).
 """
 
 from __future__ import annotations
 
 import argparse
-from collections import Counter
-from dataclasses import asdict
-from pathlib import Path
 import sys
+from collections import Counter
+from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-import sys as _sys; from pathlib import Path as _Path
+import sys as _sys
+from pathlib import Path as _Path
+
 if str(_Path(__file__).resolve().parent) not in _sys.path:
     _sys.path.insert(0, str(_Path(__file__).resolve().parent))
-from candidate_evaluator import (
-    EvaluatedCandidate,
-    rank_algorithm_substitutions,
-)
+if __package__:
+    from .candidate_evaluator import (
+        EvaluatedCandidate,
+        rank_algorithm_substitutions,
+    )
+else:
+    from candidate_evaluator import (
+        EvaluatedCandidate,
+        rank_algorithm_substitutions,
+    )
 
 
 def scan_corpus(
@@ -73,9 +80,9 @@ def render_markdown_report(benchmark_data: dict) -> str:
         'id: "REF-ALT-PROOF-CORPUS-BENCHMARK"',
         "layer: 4",
         'title: "AltProof Corpus-Wide Optimization Benchmark"',
-        'status: "verified"',
+        'status: "draft"',
         'maturity: "seedling"',
-        'verification: "anchor-resolved"',
+        'verification: "pending"',
         'master_concept: "CONCEPT-ALT-PROOF-TACTIC-ENGINEERING"',
         "sources:",
         '  - "docs/investigation-garden/altproof/ALT_PROOF_SAIR_CALIBRATION_CASES.md"',
@@ -98,12 +105,15 @@ def render_markdown_report(benchmark_data: dict) -> str:
         "",
         "## 2. Pattern Distribution",
         "",
-        "| Pattern Class | Candidate Count | Typical Speedup | Suggested Transformation |",
+        "| Pattern Class | Candidate Count | Estimated Speedup | Suggested Transformation |",
         "| :--- | :--- | :--- | :--- |",
     ]
 
     p_map = {
-        "type-specialization-bottleneck": ("1.8x", "Generalize scalar Real to normed group / monoid E"),
+        "type-specialization-bottleneck": (
+            "1.8x",
+            "Generalize scalar Real to normed group / monoid E",
+        ),
         "exponential-enumeration": ("20.0x", "Dynamic programming or row factorization"),
         "tactic-step-bloat": ("1.5x", "Direct term exact or functional composition"),
         "list-pipeline-overhead": ("3.0x", "Direct Finset or structural Nat fold"),
@@ -115,13 +125,15 @@ def render_markdown_report(benchmark_data: dict) -> str:
         spd, desc = p_map.get(pat, ("1.0x", "Direct simplification"))
         lines.append(f"| `{pat}` | {count} | {spd} | {desc} |")
 
-    lines.extend([
-        "",
-        "## 3. Top 10 Empirical Optimization Targets",
-        "",
-        "| Rank | Target Module / Declaration | Pattern | Est. Speedup | Net Delta | Recommended Action |",
-        "| :--- | :--- | :--- | :--- | :--- | :--- |",
-    ])
+    lines.extend(
+        [
+            "",
+            "## 3. Top 10 Predicted Optimization Targets",
+            "",
+            "| Rank | Target Module / Declaration | Pattern | Est. Speedup | Net Delta | Recommended Action |",
+            "| :--- | :--- | :--- | :--- | :--- | :--- |",
+        ]
+    )
 
     for rank, ec in enumerate(benchmark_data["top_10_targets"], 1):
         c = ec.candidate
@@ -130,21 +142,25 @@ def render_markdown_report(benchmark_data: dict) -> str:
             f"+{ec.net_improvement:.2f} | `{c.suggested_replacement}` |"
         )
 
-    lines.extend([
-        "",
-        "## 4. Methodological Grounding & Two-Axis Cost Model",
-        "",
-        "Each candidate is evaluated using the formal two-axis AltProof cost ranker:",
-        "",
-        "$$\\Delta C = C_{\\text{before}} - C_{\\text{after}}$$",
-        "",
-        "Where:",
-        "- $C_{\\text{before}} = w_{\\text{line}} \\cdot L_{\\text{baseline}} + T_{\\text{kernel}}$",
-        "- $C_{\\text{after}} = w_{\\text{line}} \\cdot L_{\\text{after}} - w_{\\text{shared}} \\cdot S + \\frac{T_{\\text{kernel}}}{\\text{speedup}}$",
-        "",
-        "A positive net delta signifies an unambiguous optimization where kernel checking",
-        "and maintenance costs decline simultaneously.",
-    ])
+    lines.extend(
+        [
+            "",
+            "## 4. Methodological Grounding & Two-Axis Cost Model",
+            "",
+            "Each candidate is ranked using the heuristic two-axis AltProof cost model:",
+            "",
+            "$$\\Delta C = C_{\\text{before}} - C_{\\text{after}}$$",
+            "",
+            "Where:",
+            "- $C_{\\text{before}} = w_{\\text{line}} \\cdot L_{\\text{baseline}} + T_{\\text{kernel}}$",
+            "- $C_{\\text{after}} = w_{\\text{line}} \\cdot L_{\\text{after}} - w_{\\text{shared}} \\cdot S + \\frac{T_{\\text{kernel}}}{\\text{speedup}}$",
+            "",
+            "A positive net delta predicts a lower weighted model cost; it does not establish",
+            "that either measured kernel cost or maintenance cost improves.",
+            "No Lean verification or timing measurements were performed by this scan.",
+            "Baseline timings, line-count changes, and speedups are model inputs or estimates.",
+        ]
+    )
 
     return "\n".join(lines) + "\n"
 
@@ -154,19 +170,27 @@ def main() -> int:
     parser.add_argument(
         "--corpus-dir",
         type=Path,
-        default=Path("docs/easci/lean/EASCI"),
-        help="Path to Lean corpus directory",
+        default=None,
+        help="Path to Lean corpus directory (default: discovered via lean-project.toml or .)",
     )
     parser.add_argument(
         "--out",
         type=Path,
-        default=Path("docs/investigation-garden/altproof/CORPUS_ALTPROOF_BENCHMARK.md"),
+        default=Path("docs/altproof/CORPUS_ALTPROOF_BENCHMARK.md"),
         help="Output markdown path",
     )
     args = parser.parse_args()
+    if args.corpus_dir is None:
+        if __package__:
+            from .project_config import load_project_config
+        else:
+            from project_config import load_project_config
+        corpus_dir = load_project_config().corpus_dir
+    else:
+        corpus_dir = args.corpus_dir
 
-    print(f"Scanning corpus: {args.corpus_dir}...")
-    res = scan_corpus(args.corpus_dir)
+    print(f"Scanning corpus: {corpus_dir}...")
+    res = scan_corpus(corpus_dir)
     print(f"Scanned {res['files_scanned']} files. Found {res['total_candidates']} candidates.")
 
     md = render_markdown_report(res)

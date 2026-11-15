@@ -189,8 +189,8 @@ def find_decl_in_lean_file(file_path: Path, symbol: str) -> LeanDeclInfo | None:
     # Guess module name from file path
     parts = file_path.with_suffix("").parts
     mod_name = symbol
-    if "EASCI" in parts:
-        idx = parts.index("EASCI")
+    if "Project" in parts:
+        idx = parts.index("Project")
         mod_name = ".".join(parts[idx:])
     elif "FLT" in parts:
         idx = parts.index("FLT")
@@ -198,8 +198,8 @@ def find_decl_in_lean_file(file_path: Path, symbol: str) -> LeanDeclInfo | None:
     elif "Euler" in parts:
         idx = parts.index("Euler")
         mod_name = ".".join(parts[idx:])
-    elif "NavierStokesAndEuler" in parts:
-        idx = parts.index("NavierStokesAndEuler")
+    elif "FluidPDE" in parts:
+        idx = parts.index("FluidPDE")
         mod_name = ".".join(parts[idx:])
 
     return LeanDeclInfo(
@@ -307,7 +307,7 @@ def generate_lean_zettel(
             src_path = os.path.relpath(src_path, repo_root)
         elif os.path.isabs(src_path):
             src_path = src_path.lstrip("/")
-    sources = [src_path] if src_path else ["docs/easci/lean/"]
+    sources = [src_path] if src_path else ["./"]
     sources.append("docs/investigation-garden/source-materials/indexes/master-authority-index.json")
 
     # Frontmatter
@@ -341,7 +341,7 @@ def generate_lean_zettel(
     lines.extend(
         [
             "indexed-by:",
-            "  - MOC-lean-and-easci",
+            "  - MOC-lean-formalization",
             "related:",
         ]
     )
@@ -349,7 +349,7 @@ def generate_lean_zettel(
         for r in related_ids:
             lines.append(f'  - "{r}"')
     else:
-        lines.append("  - MOC-lean-and-easci")
+        lines.append("  - MOC-lean-formalization")
     lines.extend(
         [
             "---",

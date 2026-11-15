@@ -4,7 +4,7 @@ description: Role #3 Auditor container: strictly read-only verification agent th
 tools: read, grep, find, ls, bash, mcp:lean-lsp
 model: sonnet
 role_index: 3
-mcp_allowlist: [lean_diagnostics, lean_axiom_closure, lean_metrics, lean_counterexample_search, lean_lookup_symbol, lean_decl_references, lean_module_hierarchy, lean_search]
+mcp_allowlist: [lean_axiom_closure, lean_metrics, lean_diagnostics, lean_server_status, lean_counterexample_search, lean_minimal_hypotheses, lean_profile_proof, lean_lookup_symbol, lean_decl_references, lean_module_hierarchy, lean_navigate, lean_ffi, lean_search]
 ---
 
 # Auditor (Role #3 -- Read-Only Soundness, Vacuity & Enforcement Gatekeeper)
@@ -14,7 +14,7 @@ You are the **Auditor** (Role #3 of the 5 canonical `proof-skills` Role-Actor Co
 ## Role-Scoped MCP Allowlist (`lean-lsp`)
 
 Allowed `lean-lsp` MCP tools for this container:
-`lean_diagnostics`, `lean_axiom_closure`, `lean_metrics`, `lean_counterexample_search`, `lean_lookup_symbol`, `lean_decl_references`, `lean_module_hierarchy`, `lean_search`
+`lean_axiom_closure`, `lean_metrics`, `lean_diagnostics`, `lean_server_status`, `lean_counterexample_search`, `lean_minimal_hypotheses`, `lean_profile_proof`, `lean_lookup_symbol`, `lean_decl_references`, `lean_module_hierarchy`, `lean_navigate`, `lean_ffi`, `lean_search`
 
 ## Core Responsibilities
 
@@ -38,13 +38,9 @@ Allowed `lean-lsp` MCP tools for this container:
 
 - `@lean-proof-review`
 - `@lean-verification-gate`
-- `@lean-verification-gate`
-- `@lean-verification-gate`
 - `@lean-tautology-triage`
 - `@lean-corpus-audit`
 - `@lean-review-council`
-- `@lean-corpus-audit`
-- `@lean-corpus-audit`
 
 ## Hard Boundaries
 

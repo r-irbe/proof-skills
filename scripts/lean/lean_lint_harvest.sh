@@ -14,7 +14,7 @@ FLAGS="${2:?usage: lean_lint_harvest.sh <out.tsv> \"<flags>\" [files...]}"
 shift 2
 JOBS="${HARVEST_JOBS:-8}"
 TMO="${HARVEST_TIMEOUT:-300}"
-LEAN_DIR="${LEAN_DIR:-EASCI}"
+LEAN_DIR="${LEAN_DIR:-src}"
 
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
 PKG_DIR="$(pwd)"
@@ -29,7 +29,7 @@ fi
 SCRIPT_HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 for HARVEST_CLI in \
   "$ROOT/packages/lean-analysis/bin/lean-harvest.js" \
-  "$ROOT/docs/easci/lean/skills/tools/lean-lsp-mcp/bin/lean-harvest.js" \
+  "$ROOT/tools/lean-lsp-mcp/bin/lean-harvest.js" \
   "$SCRIPT_HERE/../../tools/lean-lsp-mcp/bin/lean-harvest.js"; do
   if [ -f "$HARVEST_CLI" ] && command -v node >/dev/null 2>&1; then
     exec node "$HARVEST_CLI" "$OUT" "$FLAGS" "${FILES[@]}"

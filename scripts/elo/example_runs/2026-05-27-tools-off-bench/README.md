@@ -1,14 +1,14 @@
-# Tools-Off Bench — 5 Models × 5 Coding + 5 Lean Problems
+# Tools-Off Bench - 5 Models × 5 Coding + 5 Lean Problems
 
 **Date:** 2026-05-27
 **Driver:** GitHub Copilot CLI (Claude Opus 4.7 1M)
-**Goal:** Produce a *real* Elo ranking by pitting 5 models against each other on tasks where they cannot delegate the answer to a Python interpreter or to a search engine — only reasoning is allowed.
+**Goal:** Produce a *real* Elo ranking by pitting 5 models against each other on tasks where they cannot delegate the answer to a Python interpreter or to a search engine - only reasoning is allowed.
 
 This run was assembled to put the [`elo.py`](../../elo.py) script through a non-toy workload that exercises **its full I/O contract** (`--matches CSV --out DIR`) on data sourced from real model comparisons, **not** from synthetic priors.
 
 ---
 
-## TL;DR — final leaderboard
+## TL;DR - final leaderboard
 
 100 matches (50 coding + 50 lean), K=32, R₀=1500:
 
@@ -26,21 +26,21 @@ This run was assembled to put the [`elo.py`](../../elo.py) script through a non-
 
 ## Method
 
-### Battery 1 — Coding-by-execution (`coding/`)
+### Battery 1 - Coding-by-execution (`coding/`)
 
 5 Python problems, each with a hidden 10-test suite verified to pass on a reference solution before models were prompted:
 
 - **P1**  `count_inversions(arr: list[int]) -> int`
 - **P2**  `is_balanced(s: str) -> bool`
 - **P3**  `longest_palindrome_subseq(s: str) -> int`
-- **P4**  `fizzbuzz_count(n: int) -> int` — count `k ∈ 1..n` with `(k%3==0) XOR (k%5==0)`
-- **P5**  `min_jumps(arr: list[int]) -> int` — min jumps to reach the last index; `-1` if unreachable
+- **P4**  `fizzbuzz_count(n: int) -> int` - count `k ∈ 1..n` with `(k%3==0) XOR (k%5==0)`
+- **P5**  `min_jumps(arr: list[int]) -> int` - min jumps to reach the last index; `-1` if unreachable
 
 Per (model, problem): score = passes out of 10. Per pair-of-models on a problem: more passes wins; tied = draw.
 
-### Battery 2 — Lean-proof-by-build (`lean/`)
+### Battery 2 - Lean-proof-by-build (`lean/`)
 
-5 Lean 4 theorems graded by `lake build` (stdlib only — no Mathlib needed):
+5 Lean 4 theorems graded by `lake build` (stdlib only - no Mathlib needed):
 
 - **T1**  `theorem t1 (a b c : Nat) : a + b + c = c + b + a`
 - **T2**  `theorem t2 (n : Nat) : 2 * n = n + n`
@@ -60,8 +60,8 @@ Per (model, problem): score = 1 if Lean accepts the file, 0 otherwise.
 
 The 20 decisive matches all trace to **two bugs**:
 
-1. **`claude-opus-4.7` on P5** — its `min_jumps` returns `jumps` early when `i == n-1` without checking whether the last index is actually reachable. Fails 5/10 cases including `[1,1,1,1]` → 2 (expected 3) and `[3,2,1,0,4]` → 1 (expected -1). See [`coding/responses/claude-opus-4.7.txt`](coding/responses/claude-opus-4.7.txt).
-2. **`claude-haiku-4.5` on T1–T4** — wrote bare tactic names (`omega`, `simp`, `exact`) as term-mode proofs. Lean requires a `by …` block after `:=` for tactic invocation. Only T5 used proper term syntax (`match n with …`) and compiled. See [`lean/responses/claude-haiku-4.5.txt`](lean/responses/claude-haiku-4.5.txt) and [`lean/Bench/haiku45/`](lean/Bench/haiku45).
+1. **`claude-opus-4.7` on P5** - its `min_jumps` returns `jumps` early when `i == n-1` without checking whether the last index is actually reachable. Fails 5/10 cases including `[1,1,1,1]` → 2 (expected 3) and `[3,2,1,0,4]` → 1 (expected -1). See [`coding/responses/claude-opus-4.7.txt`](coding/responses/claude-opus-4.7.txt).
+2. **`claude-haiku-4.5` on T1-T4** - wrote bare tactic names (`omega`, `simp`, `exact`) as term-mode proofs. Lean requires a `by ...` block after `:=` for tactic invocation. Only T5 used proper term syntax (`match n with ...`) and compiled. See [`lean/responses/claude-haiku-4.5.txt`](lean/responses/claude-haiku-4.5.txt) and [`lean/Bench/haiku45/`](lean/Bench/haiku45).
 
 The other three models swept both batteries.
 
@@ -70,8 +70,8 @@ The other three models swept both batteries.
 ## What this run is *not*
 
 - **Not a definitive ranking.** Sample size is small (10 problems, 5 models). Tie-breaking among `opus-4.7-high` / `sonnet-4.6` / `gpt-5.4` (each swept) is essentially K-factor noise from match order.
-- **Not tool-use evaluation.** Tool use was explicitly forbidden in prompts. A separate run with tool use enabled showed *zero* differentiation across all 5 models on integer-answer math (every model used Python and got every answer right) — see the "ceiling-effect" commentary in the parent CLI session.
-- **Not a proof-skills regression.** It does not exercise the skill pages themselves — only the `elo.py` aggregator + a representative harness for what driving it with real-model output looks like.
+- **Not tool-use evaluation.** Tool use was explicitly forbidden in prompts. A separate run with tool use enabled showed *zero* differentiation across all 5 models on integer-answer math (every model used Python and got every answer right) - see the "ceiling-effect" commentary in the parent CLI session.
+- **Not a proof-skills regression.** It does not exercise the skill pages themselves - only the `elo.py` aggregator + a representative harness for what driving it with real-model output looks like.
 
 ---
 

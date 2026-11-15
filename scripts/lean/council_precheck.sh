@@ -7,7 +7,7 @@
 
 set -euo pipefail
 
-LEAN_DIR="${1:-EASCI}"
+LEAN_DIR="${1:-src}"
 STRICT="${2:-}"
 ERRORS=0
 WARNINGS=0

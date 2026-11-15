@@ -1,5 +1,15 @@
 {
   "families": {
+    "abstraction-concrete-duality": [
+      {
+        "cost_hint": "zero-UB native execution with bit-exact Lean #eval conformance",
+        "family": "abstraction-concrete-duality",
+        "id": "proof-carrying-codegen",
+        "match": "verified BitVec/SWAR bitwise or width-guarded arithmetic kernel lowered to MLIR, CUDA sm_89 PTX, AVX2, or C++20",
+        "provenance": "Template_ProofCarryingCodegen.lean + WAVE-13 G1 duality",
+        "rewrite": "prove equivalence to clean spec in Lean (PolyBitOp / CheckedWord.needsWide) and verify native N01..N12 conformance"
+      }
+    ],
     "algorithm-class-substitution": [
       {
         "cost_hint": "highest kernel yield: 20-30x reduction in kernel steps / rfl time",
@@ -16,6 +26,16 @@
         "match": "inner loops over fixed-width integer/boolean arrays or linear recurrences with bounded slot bit-width, or manually unrolled block trees",
         "provenance": "SAIR Lean Kernel Challenge (partition Kronecker SWAR convolution, ca-rule110 4-gate ANF + preunfold% t0..t6 block tree, fib unroll_top%, sha256 512-bit schedule window)",
         "rewrite": "pack k lanes into a single b-bit GMP Nat word (Kronecker substitution / bitboard ANF) and use elaboration-time pre-unfolding (elab 'preunfold%' / 'unroll_top%') over binary-doubling combinators (t0..t6) to eliminate multi-thousand-line source inlining with 0 runtime unfold overhead"
+      }
+    ],
+    "backchaining-search": [
+      {
+        "cost_hint": "core-only (0 Mathlib required); deterministic bounded backchaining without aesop import weight",
+        "family": "backchaining-search",
+        "id": "backchain-solve-by-elim",
+        "match": "shallow Horn-clause / implication / monotonicity / membership obligations solvable from local context + curated lemmas",
+        "provenance": "Lean.Elab.Tactic.SolveByElim + AltProof.Core.backchain",
+        "rewrite": "close via backchain or backchain [lem1, lem2] (core Lean SolveByElim bounded depth-first search)"
       }
     ],
     "big-operators": [
@@ -52,6 +72,16 @@
         "match": "BitVec or fixed-width UInt8/UInt16/UInt32/UInt64 bitwise identity/inequality (&&&, |||, ^^^, <<<, >>>)",
         "provenance": "Lean 4 Std.Tactic.BVDecide + lean-analyzer QF_BV pre-screen",
         "rewrite": "discharge directly via by bv_decide (QF_BV bit-blasting decision procedure)"
+      }
+    ],
+    "equality-saturation": [
+      {
+        "cost_hint": "0 external FFI binaries; reconstructs compact kernel Eq.trans / congrArg proof terms",
+        "family": "equality-saturation",
+        "id": "eqsat-congruence-closure",
+        "match": "bidirectional equational chains (commutativity/associativity/congruence) where directional simp loops or stalls",
+        "provenance": "AltProof.Core.eqsat_rw + core Lean grind congruence closure",
+        "rewrite": "close via eqsat_rw [h1, h2, ...] (pure-Lean kernel Eq.trans/congrArg saturation) or grind_close"
       }
     ],
     "extraction": [
@@ -112,6 +142,14 @@
         "match": "giant decimal nat_lit constants (>64 bits) or repeated closed shift-add/mask expressions inside Nat.rec/List.rec step lambdas",
         "provenance": "SAIR Lean Kernel Challenge C++ type_checker.cpp whnf/m_whnf audit (partition DerivedConstants eval_nat% vs partCplusSpec, sha256 shaPaddingSuffix)",
         "rewrite": "evaluate closed constant expressions to raw nat_lit at elaboration time via an elab 'eval_nat%' macro (import Lean has 0 exported Lean.* refs), or hoist into a closed top-level def C : Nat := <formula> with a := rfl spec bridge (cached in m_st->m_whnf after 1 evaluation per kernel invocation)"
+      },
+      {
+        "cost_hint": "0 Lean.ofReduceBool axioms; direct WHNF or verified Presburger closure",
+        "family": "kernel-friendly-term-design",
+        "id": "sair_decide",
+        "match": "decidable Nat/Bool/Int equality or inequality on a strict 3-axiom kernel lane where Lean.ofReduceBool is forbidden",
+        "provenance": "Template_SairDecide.lean + SAIR 3-axiom contest gate",
+        "rewrite": "close via sair_decide (first | rfl | decide +kernel | omega) without invoking native_decide or bv_decide"
       }
     ],
     "redirect": [
@@ -145,6 +183,6 @@
       }
     ]
   },
-  "total": 16,
+  "total": 20,
   "version": 1
 }

@@ -1,11 +1,11 @@
 ---
-name: council-tau-tactics
-description: Review Council Member Tau (Tactic Ergonomist): proof maintainability, simp hygiene, and refactoring.
-role_container: auditor
-overlay_type: council-review
-primary_skill: lean-review-council
-tools: read, grep, find, ls, bash, mcp:lean-lsp
-model: sonnet
+name: "council-tau-tactics"
+description: "Review Council Member Tau (Tactic Ergonomist): proof maintainability, simp hygiene, and refactoring."
+role_container: "auditor"
+overlay_type: "council-review"
+primary_skill: "lean-review-council"
+tools: "read, grep, find, ls, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `council-tau-tactics` (Container: `auditor`)

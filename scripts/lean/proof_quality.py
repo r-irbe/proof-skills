@@ -3,7 +3,7 @@
 """
 Proof Quality Analyzer for Lean 4 projects.
 
-Static analysis of Lean 4 proof quality (both tactic-mode `:= by …` and
+Static analysis of Lean 4 proof quality (both tactic-mode `:= by ...` and
 term-mode `:= <term>` proofs; recognises `example` and the
 `private`/`protected`/`public`/`scoped`/`noncomputable` modifiers):
   - Detect potential vacuous truths (empty hypotheses → trivial conclusions)
@@ -70,9 +70,9 @@ def analyze_module(filepath: Path) -> dict:
         stats["proof_lengths"].append((thm["name"], body_lines))
 
         # Long-proof bands (W12 r04, after rubber-duck critique):
-        # Mathlib4 routinely contains substantive proofs of 50–100
+        # Mathlib4 routinely contains substantive proofs of 50-100
         # lines without enforcing a hard limit.  Splitting the
-        # severity reflects this: 31–59 is advisory (P3), 60–99 is
+        # severity reflects this: 31-59 is advisory (P3), 60-99 is
         # improvement (P2), and ≥100 is a strong-signal P1 outlier.
         # Bands preserve visibility while reserving the loud signal
         # for genuine outliers.
@@ -81,7 +81,7 @@ def analyze_module(filepath: Path) -> dict:
         # flat 40-line `calc` (hard to split) from a 40-line proof with
         # many independent case branches (a natural decomposition
         # candidate).  `branch_points` counts focus dots / case splits /
-        # combinators; a 31–59 line proof that is *also* structurally
+        # combinators; a 31-59 line proof that is *also* structurally
         # branchy is escalated P3 → P2.
         branch_points = _structural_branch_points(thm["body"])
         if body_lines >= 100:
@@ -93,7 +93,7 @@ def analyze_module(filepath: Path) -> dict:
                     "line": thm["line"],
                     "detail": (
                         f"Proof is {body_lines} lines ({branch_points} branch "
-                        f"points) — strongly consider decomposition or "
+                        f"points) - strongly consider decomposition or "
                         f"extraction of reusable lemmas"
                     ),
                 }
@@ -107,7 +107,7 @@ def analyze_module(filepath: Path) -> dict:
                     "line": thm["line"],
                     "detail": (
                         f"Proof is {body_lines} lines ({branch_points} branch "
-                        f"points) — consider decomposition"
+                        f"points) - consider decomposition"
                     ),
                 }
             )
@@ -121,11 +121,11 @@ def analyze_module(filepath: Path) -> dict:
                     "line": thm["line"],
                     "detail": (
                         f"Proof is {body_lines} lines with {branch_points} "
-                        f"branch points — multiple independent branches suggest "
+                        f"branch points - multiple independent branches suggest "
                         f"natural helper-lemma extraction"
                         if branchy
                         else f"Proof is {body_lines} lines ({branch_points} branch "
-                        f"points) — review for natural helper-lemma extraction "
+                        f"points) - review for natural helper-lemma extraction "
                         f"(advisory)"
                     ),
                 }
@@ -139,7 +139,7 @@ def analyze_module(filepath: Path) -> dict:
                     "severity": "P1",
                     "theorem": thm["name"],
                     "line": thm["line"],
-                    "detail": "May be vacuously true — proof uses False.elim or absurd with impossible hypothesis",
+                    "detail": "May be vacuously true - proof uses False.elim or absurd with impossible hypothesis",
                 }
             )
 
@@ -178,9 +178,9 @@ def analyze_module(filepath: Path) -> dict:
 
     # Heartbeat-budget scan (W10 r27): file-level `set_option maxHeartbeats N`
     # values that exceed sane review thresholds are flagged. The rule is:
-    #   * N ≤ 200_000 — clean (default Lean budget is 200_000)
-    #   * 200_000 < N ≤ 1_000_000 — P2 warning (consider proof split / hint)
-    #   * N > 1_000_000 — P1 (almost always indicates an unfinished refactor
+    #   * N ≤ 200_000 - clean (default Lean budget is 200_000)
+    #   * 200_000 < N ≤ 1_000_000 - P2 warning (consider proof split / hint)
+    #   * N > 1_000_000 - P1 (almost always indicates an unfinished refactor
     #     or a perf regression that should be tracked).
     # `set_option maxHeartbeats 0` disables the budget entirely and is also
     # flagged as P1 (defeats the elaborator's safety net).
@@ -208,8 +208,8 @@ def extract_theorem_blocks(text: str) -> list[dict]:
     """Extract theorem name, signature, body, and line number.
 
     Handles both proof styles:
-      * tactic-mode  — `... := by <tactics>`
-      * term-mode    — `... := <term>` (e.g. `:= rfl`, `:= ⟨h₁, h₂⟩`)
+      * tactic-mode  - `... := by <tactics>`
+      * term-mode    - `... := <term>` (e.g. `:= rfl`, `:= ⟨h₁, h₂⟩`)
 
     The separator between signature and proof is the first *depth-0*
     `:=` (so binder defaults like `(n := 0)` inside parens are not
@@ -219,10 +219,10 @@ def extract_theorem_blocks(text: str) -> list[dict]:
     Modifier/keyword coverage (FQ-1/FQ-2, Wave-05 calibration): the
     declaration and terminator regexes recognise `example` and the
     `private`/`protected`/`public`/`scoped`/`noncomputable` modifiers.
-    Earlier revisions only matched `theorem|lemma|private …` and only
+    Earlier revisions only matched `theorem|lemma|private ...` and only
     `:= by`, which (a) dropped every term-mode proof and (b) let a
     term-mode signature keep scanning forward, swallowing the following
-    declarations — together missing ~22% of declarations on large corpora.
+    declarations - together missing ~22% of declarations on large corpora.
     """
     blocks = []
     lines = text.splitlines()
@@ -230,7 +230,7 @@ def extract_theorem_blocks(text: str) -> list[dict]:
     # Optional leading attributes, then optional declaration modifiers.
     _ATTR = r"(?:@\[[^\]]*\]\s*)*"
     _MODS = r"(?:(?:private|protected|public|scoped|noncomputable)\s+)*"
-    # Top-level declaration starters — used to know when to stop
+    # Top-level declaration starters - used to know when to stop
     # collecting proof-body lines.
     TOP_LEVEL = re.compile(
         _ATTR + _MODS + r"(?:theorem|lemma|example|"
@@ -303,7 +303,7 @@ def extract_theorem_blocks(text: str) -> list[dict]:
         signature = "\n".join(sig_lines)
 
         # Seed the body from the remainder of the `:=` line, deciding
-        # between tactic-mode (`by …`) and term-mode.
+        # between tactic-mode (`by ...`) and term-mode.
         body_lines = []
         remainder = lines[assign_line][assign_col + 2 :]
         rstrip = remainder.strip()
@@ -334,7 +334,7 @@ def extract_theorem_blocks(text: str) -> list[dict]:
                 continue
             if TOP_LEVEL.match(line):
                 break
-            # Non-indented continuation (e.g. `| pattern => …`).
+            # Non-indented continuation (e.g. `| pattern => ...`).
             body_lines.append(line)
             j += 1
 
@@ -1058,11 +1058,11 @@ def find_tautology_candidates(thm: dict) -> list[dict]:
     bare `decide`, or a single bare `rfl` over a reflexive equality/iff.
 
     Severity calibration (Wave-05):
-      * `truth-stub` (`: True` conclusion) — P1; almost always a placeholder.
+      * `truth-stub` (`: True` conclusion) - P1; almost always a placeholder.
       * `truth-stub-term` (term-mode `trivial`/`True.intro`/`⟨⟩` proving a
-        non-`True` goal) — P2; a nullary witness that usually marks a
+        non-`True` goal) - P2; a nullary witness that usually marks a
         smoke/stub statement (FQ-3).
-      * `decide-closed-candidate` — bare `decide`.  Concrete, closed targets
+      * `decide-closed-candidate` - bare `decide`.  Concrete, closed targets
         (no binders/quantifiers) are the *intended* use of `decide`, so they
         are advisory P3; targets carrying variables/quantifiers stay P2
         because they are the shapes that hide non-substantive smoke (FQ-4).
@@ -1104,7 +1104,7 @@ def find_tautology_candidates(thm: dict) -> list[dict]:
                 "line": thm["line"],
                 "detail": (
                     f"Proof is a nullary truth witness (`{body_norm}`); the goal "
-                    f"is provable by a trivial term — confirm it is a substantive "
+                    f"is provable by a trivial term - confirm it is a substantive "
                     f"statement, not a placeholder/smoke"
                 ),
             }
@@ -1429,7 +1429,7 @@ def _strip_lean_comments(lines: list[str]) -> list[str]:
 
 def find_simp_loops(text: str, theorem_blocks: list[dict]) -> list[dict]:
     """Detect `@[simp]` rewrite rules whose LHS head symbol re-appears in
-    the RHS — a classic source of simp-set non-termination (W9 HITL B-1).
+    the RHS - a classic source of simp-set non-termination (W9 HITL B-1).
 
     Heuristic:
     1. Scan source for any `@[...simp...]` attribute marker (handles
@@ -1440,7 +1440,7 @@ def find_simp_loops(text: str, theorem_blocks: list[dict]) -> list[dict]:
        `=` or `↔`, identify the LHS head symbol, then check whether the
        same head symbol appears as a whole word in the RHS.
 
-    The check is intentionally conservative — it only flags when the LHS
+    The check is intentionally conservative - it only flags when the LHS
     head IS a real Lean identifier (alphabetic/underscore initial) and is
     distinct from the theorem name itself. Manual review is required for
     any hit.
@@ -1598,7 +1598,7 @@ def check_simp_lhs_in_rhs(signature: str, theorem_name: str) -> str | None:
     head = _extract_head_symbol(lhs)
     if not head:
         return None
-    # Skip if head is the theorem name itself — circular by construction
+    # Skip if head is the theorem name itself - circular by construction
     if head == theorem_name:
         return None
     # Skip operator-shaped heads (e.g. `=`, `+`, `≤`)
@@ -1772,8 +1772,8 @@ def _structural_branch_points(body: str) -> int:
     focus dots (`·`/`. `), `case`/`next` headers, pattern bullets (`| `),
     the `<;>` combinator, and the branch-introducing tactics
     `rcases`/`obtain`/`cases`/`induction`/`by_cases`/`match`.  Higher
-    counts indicate many independent sub-goals — a natural extraction
-    signal — whereas a flat `calc`/`simp` block scores near zero.
+    counts indicate many independent sub-goals - a natural extraction
+    signal - whereas a flat `calc`/`simp` block scores near zero.
     """
     count = 0
     for line in body.splitlines():
@@ -1860,7 +1860,7 @@ def generate_report(
         )
         for f in sorted(all_findings, key=lambda x: (x["severity"], x["theorem"])):
             lines.append(
-                f"| {f['severity']} | — | {f['theorem']} | {f['type']} | {f['detail']} |"
+                f"| {f['severity']} | - | {f['theorem']} | {f['type']} | {f['detail']} |"
             )
 
     lines.extend(
@@ -1896,7 +1896,7 @@ def main():
         metavar="DIR",
         help="Skip files under a directory with this name (relative to "
         "--lean-dir); repeatable. Intended for vendored code whose "
-        "style quality is governed upstream — correctness gates "
+        "style quality is governed upstream - correctness gates "
         "(sorry/axiom audits) still cover it.",
     )
     args = parser.parse_args()

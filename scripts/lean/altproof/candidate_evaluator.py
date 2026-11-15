@@ -2,7 +2,7 @@
 
 Evaluates algorithm candidates against two-axis cost metrics (elegance vs kernel cost),
 calculates net improvement delta, and produces ranked suggestions for tactical replacement.
-Scoped Unicode policy (INV-001; typographic-free by default).
+Strict 7-bit ASCII only (INV-001).
 """
 
 from __future__ import annotations
@@ -11,11 +11,20 @@ from dataclasses import dataclass, field
 import sys as _sys; from pathlib import Path as _Path
 if str(_Path(__file__).resolve().parent) not in _sys.path:
     _sys.path.insert(0, str(_Path(__file__).resolve().parent))
-from algorithm_class_detector import (
-    AlgorithmCandidate,
-    detect_algorithm_opportunities,
-)
-from cost_ranker import TwoAxisScore, Weights, cost
+if __package__:
+    from .algorithm_class_detector import (
+        AlgorithmCandidate,
+        detect_algorithm_opportunities,
+    )
+else:
+    from algorithm_class_detector import (
+        AlgorithmCandidate,
+        detect_algorithm_opportunities,
+    )
+if __package__:
+    from .cost_ranker import TwoAxisScore, Weights, cost
+else:
+    from cost_ranker import TwoAxisScore, Weights, cost
 
 
 @dataclass
@@ -118,11 +127,18 @@ def score_tactic_branch(
     """Evaluate a multi-subgoal tactic transition using `nanoproof`'s hardest-subgoal
     bottleneck (`min(subgoal_scores)`) + `LeanProgress` remaining-step scoring +
     semantic cycle detection."""
-    from cost_ranker import (
-        is_cycling,
-        leanprogress_scorer,
-        score_subgoal_bottleneck,
-    )
+    if __package__:
+        from .cost_ranker import (
+            is_cycling,
+            leanprogress_scorer,
+            score_subgoal_bottleneck,
+        )
+    else:
+        from cost_ranker import (
+            is_cycling,
+            leanprogress_scorer,
+            score_subgoal_bottleneck,
+        )
 
     cycling = is_cycling(state_history or [], current_state) if current_state else False
     if cycling:

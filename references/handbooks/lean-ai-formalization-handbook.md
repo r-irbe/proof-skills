@@ -13,7 +13,7 @@ loader_hint: Load when @lean-ai-formalization routes here for details; not neede
 # Lean Ai Formalization Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-ai-formalization/SKILL.md`](../skills/lean-ai-formalization/SKILL.md).
+> embedded in [`skills/lean-ai-formalization/SKILL.md`](../../skills/lean-ai-formalization/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.
@@ -320,7 +320,7 @@ structure CausalModel (V : Type) (Val : V → Type) where
 ## Part 8 -- Research Council Integration
 
 Consolidated into the single canonical routing matrix:
-[`references/research-council-skill-map.md`](../../references/research-council-skill-map.md)
+[`references/research-council-skill-map.md`](../protocols/research-council-skill-map.md)
 (see the "AI formalisation" section).  When dispatching a question to
 a council member, cite that table rather than restating the rows here.
 
@@ -371,7 +371,7 @@ Mathematical and architectural foundations for autonomous agents, multi-agent sy
 ## Detailed reference
 
 Full content for `lean-ai-formalization` lives in
-[`references/lean-ai-formalization-handbook.md`](../../references/lean-ai-formalization-handbook.md).
+[`references/lean-ai-formalization-handbook.md`](lean-ai-formalization-handbook.md).
 Load that file when the skill is convened; the SKILL.md only carries
 the dispatch contract and the parts index.
 
@@ -389,15 +389,15 @@ the dispatch contract and the parts index.
 
 ## See also
 
-- [`../../references/lean-ai-formalization-handbook.md`](../../references/lean-ai-formalization-handbook.md) -- Full handbook (extracted from this skill)
-- [`../lean-ai-formalization/SKILL.md`](../lean-ai-formalization/SKILL.md) -- Successor
-- [`../lean-ai-formalization/SKILL.md`](../lean-ai-formalization/SKILL.md) -- Successor
-- [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) -- Successor
+- [`../../references/lean-ai-formalization-handbook.md`](lean-ai-formalization-handbook.md) -- Full handbook (extracted from this skill)
+- [`../lean-ai-formalization/SKILL.md`](../../skills/lean-ai-formalization/SKILL.md) -- Successor
+- [`../lean-ai-formalization/SKILL.md`](../../skills/lean-ai-formalization/SKILL.md) -- Successor
+- [`../lean-zettelkasten/SKILL.md`](../../skills/lean-retro-methodology/SKILL.md) -- Successor
 
 # Ai Agentic Evolving Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-ai-formalization/SKILL.md`](../skills/lean-ai-formalization/SKILL.md).
+> embedded in [`skills/lean-ai-formalization/SKILL.md`](../../skills/lean-ai-formalization/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.
@@ -543,7 +543,7 @@ The hardest problem: agents that evolve in unpredictable ways.
 ### 4.2 Multi-Agent Safety
 
 **Compositional safety:**
-- Individual safety ⟹ collective safety? (Not always!)
+- Individual safety ⇒ collective safety? (Not always!)
 - Need: compositional verification methods
 
 **Project formalization:**
@@ -667,7 +667,7 @@ Mathematical frameworks for AI systems where correctness, safety, and auditabili
 ## Detailed reference
 
 Full content for `lean-ai-formalization` lives in
-[`references/lean-ai-formalization-handbook.md`](../../references/lean-ai-formalization-handbook.md).
+[`references/lean-ai-formalization-handbook.md`](lean-ai-formalization-handbook.md).
 Load that file when the skill is convened; the SKILL.md only carries
 the dispatch contract and the parts index.
 
@@ -685,15 +685,15 @@ the dispatch contract and the parts index.
 
 ## See also
 
-- [`../../references/lean-ai-formalization-handbook.md`](../../references/lean-ai-formalization-handbook.md) -- Full handbook (extracted from this skill)
-- [`../lean-ai-formalization/SKILL.md`](../lean-ai-formalization/SKILL.md) -- Successor
-- [`../lean-security-formalization/SKILL.md`](../lean-security-formalization/SKILL.md) -- Successor
-- [`../applied-data-information-security/SKILL.md`](../applied-data-information-security/SKILL.md) -- Successor
+- [`../../references/lean-ai-formalization-handbook.md`](lean-ai-formalization-handbook.md) -- Full handbook (extracted from this skill)
+- [`../lean-ai-formalization/SKILL.md`](../../skills/lean-ai-formalization/SKILL.md) -- Successor
+- [`../lean-security-formalization/SKILL.md`](../../skills/lean-security-formalization/SKILL.md) -- Successor
+- [`../applied-data-information-security/SKILL.md`](../../packs/applied-strategy/skills/applied-data-information-security/SKILL.md) -- Successor
 
 # Ai High Stakes Verifiable Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-ai-formalization/SKILL.md`](../skills/lean-ai-formalization/SKILL.md).
+> embedded in [`skills/lean-ai-formalization/SKILL.md`](../../skills/lean-ai-formalization/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.

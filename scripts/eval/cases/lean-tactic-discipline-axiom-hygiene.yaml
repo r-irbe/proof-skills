@@ -10,7 +10,7 @@ input:
 
     `Classical.choice`, `Exists.choose`, or `axiom`-introducing
 
-    tactics — the witness is obvious (m = 1).
+    tactics - the witness is obvious (m = 1).
 
     '
   expected_output_substring: "theorem exists_one_more (n : Nat) : ∃ m, n + m = n +\

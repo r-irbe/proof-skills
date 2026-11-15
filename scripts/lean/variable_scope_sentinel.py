@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """W14-B2 Phase D F2 sentinel for Bellman.lean.
 
-Scans `EASCI/ReinforcementLearning/Core/Bellman.lean` for declarations that
+Scans `Project/Core/Bellman.lean` for declarations that
 appear to rely on scoped `variable` contamination from `Core.lean`:
 
 - `[Fintype MDPState]`
@@ -38,7 +38,7 @@ try:
     REPO = _CFG.root
 except Exception:
     REPO = Path(_os.environ.get("LEAN_PROJECT_ROOT", Path.cwd())).resolve()
-DEFAULT_TARGET = REPO / _os.environ.get("VARIABLE_SENTINEL_TARGET", "EASCI/ReinforcementLearning/Core/Bellman.lean")
+DEFAULT_TARGET = REPO / _os.environ.get("VARIABLE_SENTINEL_TARGET", "Project/Core/Bellman.lean")
 EXIT_OK = 0
 EXIT_VIOLATIONS = 2
 

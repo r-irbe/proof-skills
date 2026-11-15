@@ -1,41 +1,24 @@
 ---
 id: zk-008
-title: Lean 4 tactic priority hierarchy
+title: Lean 4 unified tactic priority hierarchy
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-11-15
 type: permanent
 tags: [lean-proofs, tactics, pattern]
 refs:
   - zk-002
   - zk-009
+  - zk-011
 status: validated
 confidence: high
 ---
 
-# Lean 4 tactic priority hierarchy
+# Lean 4 unified tactic priority hierarchy
 
-**Claim.** For an unfamiliar Lean 4 goal, try tactics in a fixed
-priority order — fastest first, specialised closers before general
-search. The canonical sequence is: `grind` → `omega` → `norm_num` →
-`simp only [lemmas]` → `nlinarith [sq_nonneg ...]` → `linarith` →
-`ring` → `positivity` → `field_simp` → `decide` → cast normalisation
-(`push_cast` / `norm_cast` / `zify`) → `aesop` (last resort).
+**Claim.** Unfamiliar Lean 4 goals should be attacked in strict kernel-cost and determinism order: (1) `rfl` / `exact` / `assumption`, (2) `bv_decide` / `decide +kernel` / `norm_num` / `ring`, (3) `omega` / `linarith` / `positivity` / `gcongr`, (4) `grind` / `eqsat_rw`, (5) `simp only [...]` (never bare non-terminal `simp`), and (6) `backchain` (`solve_by_elim`) before `aesop` as last resort. `native_decide` is unconditionally banned.
 
-**Evidence.** Codified in `references/lean4-tactic-hierarchy.md` and
-the project-tuned variant inside `skills/lean-proof-review/SKILL.md`
-§"Proof Search Priority" (lines 26-48). `grind` is the headline
-default — it subsumes roughly 54% of `omega` and 64% of `linarith`
-call-sites in the project's 22,312-line corpus. `native_decide` is
-**banned** in the project (adds `Lean.trustCompiler`; all 23 occurrences
-were replaced with `decide`).
+**Evidence.** Codified in `references/lean4-tactic-hierarchy.md`, `GUARDRAILS.md` (`GT-30/31`), and `packages/altproof/AltProof/{Core,Tactics}.lean`. Replacing `native_decide` with `decide +kernel`, `bv_decide`, or `omega` eliminates `Lean.trustCompiler` from `#print axioms` while respecting the WHNF laws in [[zk-011]].
 
-**Implication.** This hierarchy is part of the *contract* of
-`lean-proof-review`, not advisory background. Migrating that skill to
-the template-v2 schema described in [[zk-002]] means lifting these
-rows into `G-1 … G-N` MUST/SHOULD lines with `[Source:
-references/lean4-tactic-hierarchy.md]` trace tags. The deprecated
-`proj_*` macros (rows 8–14 in the project variant) are a textbook
-candidate for the consolidation rubric in [[zk-009]] — zero
-cross-module uses means *delete*, not *re-document*.
+**Implication.** Every proving skill (`@lean-proof`, `@lean-proof-review`, `@lean-proof-refactor`) encodes this hierarchy inside its template-v2 G-rules per [[zk-002]], while single-site project-specific tactic aliases are pruned under the consolidation rubric in [[zk-009]].
 
-See also: [[zk-002]], [[zk-009]].
+See also: [[zk-002]], [[zk-009]], [[zk-011]].

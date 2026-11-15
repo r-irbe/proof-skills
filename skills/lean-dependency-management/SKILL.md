@@ -22,7 +22,7 @@ handoffs:
   - skill:lean-proof-repair
   - skill:lean-verification-gate
 metadata:
-  version: 0.4.0
+  version: 0.5.0
   source_spec: Unified from lean-package-research and lean-vendor-substrate
   last_reviewed: 2026-11
 ---

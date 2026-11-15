@@ -8,7 +8,7 @@ extracted_from: skills/lean-math-discrete/SKILL.md
 # Discrete Mathematics Encyclopaedia (Lean 4)
 
 > **Layering note.** This file holds the deep encyclopaedia content
-> previously embedded in [`skills/lean-math-discrete/SKILL.md`](../skills/lean-math-discrete/SKILL.md).
+> previously embedded in [`skills/lean-math-discrete/SKILL.md`](../../skills/lean-math-discrete/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow / Recovery /
 > Handoffs) and the high-frequency pitfalls / recipes; this file holds the
 > full reference content. Zero fidelity loss vs the pre-layering revision.
@@ -307,7 +307,7 @@ Guide to formalizing graphs, lattices, combinatorics, and discrete structures in
 ## Detailed reference
 
 Full encyclopaedia content (Parts 1 through 7) lives in
-[`references/lean4-math-discrete.md`](../../references/lean4-math-discrete.md). Load that file
+[`references/lean4-math-discrete.md`](lean-math-discrete-handbook.md). Load that file
 when authoring; the SKILL.md only carries the dispatch contract and
 the high-frequency pitfalls / recipes (kept inline below).
 
@@ -324,7 +324,7 @@ the high-frequency pitfalls / recipes (kept inline below).
 ## Part 8 -- Research Council Integration
 
 Consolidated into the single canonical routing matrix:
-[`references/research-council-skill-map.md`](../../references/research-council-skill-map.md)
+[`references/research-council-skill-map.md`](../protocols/research-council-skill-map.md)
 (see the "Discrete" section).  When dispatching a question to a
 council member, cite that table rather than restating the rows here.
 
@@ -369,10 +369,10 @@ Concrete entry-points for the most common discrete-math goals:
 
 ## See also
 
-- [`../../references/lean4-math-discrete.md`](../../references/lean4-math-discrete.md) -- Discrete Mathematics Encyclopaedia (full encyclopaedia, extracted
+- [`../../references/lean4-math-discrete.md`](lean-math-discrete-handbook.md) -- Discrete Mathematics Encyclopaedia (full encyclopaedia, extracted
   from this skill)
-- [`../../templates/Template_Arithmetic.md`](../../templates/Template_Arithmetic.md) -- Template: Nat/Int arithmetic and simplex constraints
-- [`../../templates/Template_Foundation.md`](../../templates/Template_Foundation.md) -- Template: Decidable predicates and case analysis
+- [`../../templates/Template_Arithmetic.md`](../../templates/packs/domain-starters/Template_Arithmetic.md) -- Template: Nat/Int arithmetic and simplex constraints
+- [`../../templates/Template_Foundation.md`](../../templates/packs/domain-starters/Template_Foundation.md) -- Template: Decidable predicates and case analysis
 
 ---
 
@@ -415,7 +415,7 @@ Graph-theoretic and knowledge representation foundations for provenance chains, 
 ## Detailed reference
 
 Full content for `lean-math-discrete` lives in
-[`references/lean-math-discrete-handbook.md`](../../references/lean-math-discrete-handbook.md).
+[`references/lean-math-discrete-handbook.md`](lean-math-discrete-handbook.md).
 Load that file when the skill is convened; the SKILL.md only carries
 the dispatch contract and the parts index.
 
@@ -433,15 +433,15 @@ the dispatch contract and the parts index.
 
 ## See also
 
-- [`../../references/lean-math-discrete-handbook.md`](../../references/lean-math-discrete-handbook.md) -- Full handbook (extracted from this skill)
-- [`../lean-math-discrete/SKILL.md`](../lean-math-discrete/SKILL.md) -- Successor
-- [`../lean-knowledge-formalization/SKILL.md`](../lean-knowledge-formalization/SKILL.md) -- Successor
-- [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) -- Successor
+- [`../../references/lean-math-discrete-handbook.md`](lean-math-discrete-handbook.md) -- Full handbook (extracted from this skill)
+- [`../lean-math-discrete/SKILL.md`](../../skills/lean-math-discrete/SKILL.md) -- Successor
+- [`../lean-knowledge-formalization/SKILL.md`](../../skills/lean-knowledge-formalization/SKILL.md) -- Successor
+- [`../lean-zettelkasten/SKILL.md`](../../skills/lean-retro-methodology/SKILL.md) -- Successor
 
 # Math Graph Knowledge Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-math-discrete/SKILL.md`](../skills/lean-math-discrete/SKILL.md).
+> embedded in [`skills/lean-math-discrete/SKILL.md`](../../skills/lean-math-discrete/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.
@@ -759,7 +759,7 @@ Project governance operates at all three levels:
 # Discrete Mathematics Encyclopaedia (Lean 4)
 
 > **Layering note.** This file holds the deep encyclopaedia content
-> previously embedded in [`skills/lean-math-discrete/SKILL.md`](../skills/lean-math-discrete/SKILL.md).
+> previously embedded in [`skills/lean-math-discrete/SKILL.md`](../../skills/lean-math-discrete/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow / Recovery /
 > Handoffs) and the high-frequency pitfalls / recipes; this file holds the
 > full reference content. Zero fidelity loss vs the pre-layering revision.
@@ -1109,7 +1109,7 @@ native_decide` -- and gives it a governed home with an explicit carve-out.
   `native_decide` with a kernel-checked or structural proof along the ladder
   Bronze (`native_decide`) -> Silver (`decide` / `norm_num`) -> Gold
   (characterising property / closed form). In `@lean-core-only` packages
-  (no Mathlib; see [`../../references/lean4-core-only-profile.md`](../../references/lean4-core-only-profile.md)),
+  (no Mathlib; see [`../../references/lean4-core-only-profile.md`](../protocols/lean4-core-only-profile.md)),
   `norm_num` is unavailable and `native_decide` introduces `Lean.ofReduceBool`
   (`Lean.trustCompiler`), so Silver MUST use kernel-checked `decide`, `omega`,
   or `rfl`. [Trace: AC-EM-03]
@@ -1185,11 +1185,10 @@ Discover -> Plan -> Execute -> Validate -> Persist.
   (audits under the L3 carve-out), `@lean-quality-engine` (project QA).
 - **Source spec:** this file (self-specified); every G-rule's `AC-EM-NN` is the
   correspondingly-numbered guarantee in this card.
-- **Related ADRs:** ADR-0076 (skill-as-contract), ADR-0080 (handoff DAG).
-- **Reference:** [`references/lean4-number-theory.md`](references/lean4-number-theory.md)
+- **Reference:** [`references/lean4-number-theory.md`](lean-math-discrete-handbook.md)
   -- Mathlib number-theory facilities, the Bronze/Silver/Gold tactic ladder, and
   the `native_decide` trust note. Template:
-  [`Template_Euler.md`](../skills/lean-competitive-math/Template_Euler.md) -- per-problem Lean file template with
+  [`Template_Euler.md`](lean-math-discrete-handbook.md) -- per-problem Lean file template with
   a verified Euler-1 example.
 
 ## Common failure modes
@@ -1203,17 +1202,17 @@ Discover -> Plan -> Execute -> Validate -> Persist.
 
 ## See also
 
-- [`references/lean4-number-theory.md`](references/lean4-number-theory.md) -- Mathlib number-theory facilities + Bronze/Silver/Gold ladder + axiom-audit
+- [`references/lean4-number-theory.md`](lean-math-discrete-handbook.md) -- Mathlib number-theory facilities + Bronze/Silver/Gold ladder + axiom-audit
   trust note (this skill's handbook).
-- [`Template_Euler.md`](../skills/lean-competitive-math/Template_Euler.md) -- per-problem Lean file template with a verified Euler-1 example.
-- [`../lean-specification/SKILL.md`](../lean-specification/SKILL.md) -- Predecessor (theorem statement).
-- [`../lean-research/SKILL.md`](../lean-research/SKILL.md) -- Predecessor (Mathlib encoding).
-- [`../lean-proof/SKILL.md`](../lean-proof/SKILL.md) -- Successor (tactic-level proving).
-- [`../lean-proof-review/SKILL.md`](../lean-proof-review/SKILL.md) -- Successor (audit under the L3 carve-out).
-- [`../lean-quality-engine/SKILL.md`](../lean-quality-engine/SKILL.md) -- Successor (project QA).
-- [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Predecessor / router.
-- [`../../references/lean4-tactic-hierarchy.md`](../../references/lean4-tactic-hierarchy.md) -- tactic priority table (`decide` vs `native_decide`).
-- [`../../references/lean4-proof-strategy.md`](../../references/lean4-proof-strategy.md) -- one-step-at-a-time proof strategy.
+- [`Template_Euler.md`](lean-math-discrete-handbook.md) -- per-problem Lean file template with a verified Euler-1 example.
+- [`../lean-specification/SKILL.md`](../../skills/lean-specification/SKILL.md) -- Predecessor (theorem statement).
+- [`../lean-research/SKILL.md`](../../skills/lean-research/SKILL.md) -- Predecessor (Mathlib encoding).
+- [`../lean-proof/SKILL.md`](../../skills/lean-proof/SKILL.md) -- Successor (tactic-level proving).
+- [`../lean-proof-review/SKILL.md`](../../skills/lean-proof-review/SKILL.md) -- Successor (audit under the L3 carve-out).
+- [`../lean-quality-engine/SKILL.md`](../../skills/lean-corpus-audit/SKILL.md) -- Successor (project QA).
+- [`../lean-gateway/SKILL.md`](../../skills/lean-gateway/SKILL.md) -- Predecessor / router.
+- [`../../references/lean4-tactic-hierarchy.md`](../protocols/lean4-tactic-hierarchy.md) -- tactic priority table (`decide` vs `native_decide`).
+- [`../../references/lean4-proof-strategy.md`](../protocols/lean4-proof-strategy.md) -- one-step-at-a-time proof strategy.
 
 ---
 
@@ -1225,8 +1224,8 @@ Discover -> Plan -> Execute -> Validate -> Persist.
 > competition-math formalization, plus the Bronze/Silver/Gold tactic ladder and
 > the `native_decide` trust note. Project-agnostic. Handbook for the
 > `lean-competitive-math` (euler-prover) skill; pair with
-> [`../../../references/lean4-tactic-hierarchy.md`](../../../references/lean4-tactic-hierarchy.md)
-> and [`../../../references/lean4-proof-strategy.md`](../../../references/lean4-proof-strategy.md).
+> [`../../../references/lean4-tactic-hierarchy.md`](../protocols/lean4-tactic-hierarchy.md)
+> and [`../../../references/lean4-proof-strategy.md`](../protocols/lean4-proof-strategy.md).
 
 All Lean identifiers below are written in ASCII function-application form. Where
 Mathlib also ships a Unicode notation (big-operator sum, the divides bar, the
@@ -1319,7 +1318,7 @@ Ladder guidance:
   prove the equivalence structurally, and the numeral falls to `decide` /
   `norm_num` with an empty axiom set.
 
-See [`../../../references/lean4-tactic-hierarchy.md`](../../../references/lean4-tactic-hierarchy.md)
+See [`../../../references/lean4-tactic-hierarchy.md`](../protocols/lean4-tactic-hierarchy.md)
 for the full tactic priority table (`decide` / `native_decide` sit at the
 concrete-evaluation tier: "Prefer `decide` over `native_decide` for
 kernel-checkability").
@@ -1408,8 +1407,8 @@ AND file the follow-up (G-6).
 
 ## See also
 
-- [`../../../references/lean4-tactic-hierarchy.md`](../../../references/lean4-tactic-hierarchy.md) -- full tactic priority table.
-- [`../../../references/lean4-proof-strategy.md`](../../../references/lean4-proof-strategy.md) -- one-step-at-a-time proof strategy.
-- [`../SKILL.md`](../SKILL.md) -- the `lean-competitive-math` (euler-prover) contract.
-- [`../Template_Euler.md`](../skills/lean-competitive-math/Template_Euler.md) -- per-problem Lean file template.
+- [`../../../references/lean4-tactic-hierarchy.md`](../protocols/lean4-tactic-hierarchy.md) -- full tactic priority table.
+- [`../../../references/lean4-proof-strategy.md`](../protocols/lean4-proof-strategy.md) -- one-step-at-a-time proof strategy.
+- [`../SKILL.md`](../../skills/lean-math-discrete/SKILL.md) -- the `lean-competitive-math` (euler-prover) contract.
+- [`../Template_Euler.md`](lean-math-discrete-handbook.md) -- per-problem Lean file template.
 

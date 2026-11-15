@@ -1,8 +1,8 @@
 # Template_FormalizationBreakdown.md -- Master Formalization Breakdown Plan
 
 > **Status:** Production template for large Lean 4 formalization deconstructions.
-> Modeled on the FLT 28-wave (`PLAN-FLT-INVESTIGATION-AND-LEARNINGS`) and
-> Navier-Stokes & Euler 8-wave (`PLAN-NSE-INVESTIGATION-AND-LEARNINGS`) architectures.
+> Modeled on 60,000-module algebraic number theory and
+> 2,600-module continuum PDE multi-wave formalization breakdown architectures.
 
 ---
 

@@ -1,6 +1,6 @@
 id: math-strategy-studio-smoke
 title: Analogy-based proof strategy
-skill: packs/applied-strategy/skills/math-strategy-studio
+skill: math-strategy-studio
 ensemble_rubric: applied-domain-quality
 difficulty: easy
 input:
@@ -24,3 +24,4 @@ grader: deterministic
 tags:
 - math
 - strategy
+pack: applied-strategy

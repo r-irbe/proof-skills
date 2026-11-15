@@ -2,7 +2,7 @@
 
 Applies structural substitutions based on EvaluatedCandidate definitions,
 producing candidate transformed Lean 4 sources with receipt manifests.
-Scoped Unicode policy (INV-001; typographic-free by default).
+Strict 7-bit ASCII only (INV-001).
 """
 
 from __future__ import annotations
@@ -12,7 +12,10 @@ from dataclasses import dataclass, field
 import sys as _sys; from pathlib import Path as _Path
 if str(_Path(__file__).resolve().parent) not in _sys.path:
     _sys.path.insert(0, str(_Path(__file__).resolve().parent))
-from candidate_evaluator import EvaluatedCandidate
+if __package__:
+    from .candidate_evaluator import EvaluatedCandidate
+else:
+    from candidate_evaluator import EvaluatedCandidate
 
 
 @dataclass

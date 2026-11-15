@@ -19,7 +19,7 @@ _mod_spec.loader.exec_module(apply_pilot)
 
 def _toy_project(tmp_path: Path) -> Path:
     proj = tmp_path / "proj"
-    inner = proj / "EASCI"
+    inner = proj / "DemoProj"
     inner.mkdir(parents=True)
     (inner / "X.lean").write_text(
         "theorem foo : True := by\n  have h : 0 <= x + y := by omega\n  trivial\n",
@@ -31,16 +31,16 @@ def _toy_project(tmp_path: Path) -> Path:
 def _spec(proj: Path, old: str = "  have h : 0 <= x + y := by omega") -> dict:
     return {
         "project": str(proj),
-        "module": "EASCI.X",
+        "module": "DemoProj.X",
         "commit": False,
         "edits": [
             {
                 "op": "insert_before",
-                "file": "EASCI/X.lean",
+                "file": "DemoProj/X.lean",
                 "anchor": "theorem foo",
                 "content": "abbrev sum_nonneg_toy (x y : Nat) := 0 <= x + y\n",
             },
-            {"op": "replace", "file": "EASCI/X.lean",
+            {"op": "replace", "file": "DemoProj/X.lean",
              "old": old, "new": "  have h := sum_nonneg_toy x y"},
         ],
         "message": "pilot: toy",
@@ -53,7 +53,7 @@ def test_green_applies_edits(tmp_path, monkeypatch):
     proj = _toy_project(tmp_path)
     out = apply_pilot.run_pilot(_spec(proj))
     assert out["status"] == "OK"
-    text = (proj / "EASCI" / "X.lean").read_text(encoding="utf-8")
+    text = (proj / "DemoProj" / "X.lean").read_text(encoding="utf-8")
     assert "abbrev sum_nonneg_toy" in text and "have h := sum_nonneg_toy x y" in text
 
 
@@ -66,7 +66,7 @@ def test_red_reverts_all_files(tmp_path, monkeypatch):
     out = apply_pilot.run_pilot(_spec(proj))
     assert out["status"] == "FAILED"
     assert "error: bad" in out["log_tail"]
-    text = (proj / "EASCI" / "X.lean").read_text(encoding="utf-8")
+    text = (proj / "DemoProj" / "X.lean").read_text(encoding="utf-8")
     assert "sum_nonneg_toy" not in text  # fully reverted
 
 
@@ -78,7 +78,7 @@ def test_missing_anchor_fails_before_any_write(tmp_path, monkeypatch):
     spec = _spec(proj, old="this site does not exist")
     with pytest.raises(ValueError, match="replace site not found"):
         apply_pilot.run_pilot(spec)
-    text = (proj / "EASCI" / "X.lean").read_text(encoding="utf-8")
+    text = (proj / "DemoProj" / "X.lean").read_text(encoding="utf-8")
     assert "sum_nonneg_toy" not in text  # no partial write
 
 

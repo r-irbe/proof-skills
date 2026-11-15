@@ -1,7 +1,7 @@
 # Research Output Templates (M / T / L / S / D / X / E)
 
 Per-type output templates for the 7 typed research protocols dispatched
-from [`lean-research/SKILL.md`](../skills/lean-research/SKILL.md) Part 9.
+from [`lean-research/SKILL.md`](../../skills/lean-research/SKILL.md) Part 9.
 Use these as the post-research deliverable so downstream skills
 (`lean-proof`, `lean-proof-review`, `lean-enforcement`, `epistemic-mapping`,
 `research-council`) can consume the findings deterministically.
@@ -102,8 +102,8 @@ bundle-level [`theorem-search`](theorem-search.md) loop and report:
 
 ## Type E -- Epistemic Research
 
-Delegates to [`epistemic-mapping`](../skills/epistemic-mapping/SKILL.md)
-and [`research-council`](../skills/research-council/SKILL.md).  The
+Delegates to [`epistemic-mapping`](../../skills/lean-research/SKILL.md)
+and [`research-council`](../../skills/research-council/SKILL.md).  The
 output of Type E is the updated epistemic map plus a list of follow-up
 M/T/L/S/D/X research tasks for each newly-promoted Known-Unknown.
 

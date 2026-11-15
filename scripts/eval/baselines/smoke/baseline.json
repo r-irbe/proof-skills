@@ -25,16 +25,6 @@
       "passed": true,
       "score": 1.0
     },
-    "epistemic-discovery-engine-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "epistemic-mapping-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
     "hol-metamath-adapter-smoke": {
       "grader": "deterministic",
       "passed": true,
@@ -60,21 +50,6 @@
       "passed": true,
       "score": 1.0
     },
-    "lean-applied-reasoning-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "lean-axiom-closure-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "lean-bigraph-modeling-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
     "lean-bisect-smoke": {
       "grader": "deterministic",
       "passed": true,
@@ -90,21 +65,6 @@
       "passed": true,
       "score": 1.0
     },
-    "lean-causal-reasoning-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "lean-competitive-math-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "lean-convergence-verification-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
     "lean-core-only-smoke": {
       "grader": "deterministic",
       "passed": true,
@@ -115,32 +75,7 @@
       "passed": true,
       "score": 1.0
     },
-    "lean-dag-visualizer-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "lean-deep-audit-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
     "lean-dependency-management-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "lean-doc-feedback-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "lean-doc-improvement-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "lean-doc-requirements-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
@@ -150,17 +85,7 @@
       "passed": true,
       "score": 1.0
     },
-    "lean-formalization-breakdown-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
     "lean-gateway-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "lean-integration-protocol-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
@@ -210,22 +135,7 @@
       "passed": true,
       "score": 1.0
     },
-    "lean-nested-learning-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "lean-package-research-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
     "lean-pedagogical-exposition-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "lean-pr-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
@@ -245,7 +155,12 @@
       "passed": true,
       "score": 1.0
     },
-    "lean-quality-engine-smoke": {
+    "lean-proof-review-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-proof-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
@@ -255,22 +170,12 @@
       "passed": true,
       "score": 1.0
     },
-    "lean-replay-verification-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "lean-report-smoke": {
+    "lean-research-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
     },
     "lean-retro-methodology-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "lean-retroactive-audit-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
@@ -310,6 +215,11 @@
       "passed": true,
       "score": 1.0
     },
+    "lean-setup-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
     "lean-specification-smoke": {
       "grader": "deterministic",
       "passed": true,
@@ -335,22 +245,12 @@
       "passed": true,
       "score": 1.0
     },
-    "lean-upstream-porting-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
     "lean-upstream-pr-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
     },
     "lean-verification-gate-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "lean-zettelkasten-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
@@ -391,11 +291,6 @@
       "score": 1.0
     },
     "research-council-smoke": {
-      "grader": "deterministic",
-      "passed": true,
-      "score": 1.0
-    },
-    "research-synthesis-engine-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0

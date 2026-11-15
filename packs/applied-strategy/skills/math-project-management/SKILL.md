@@ -9,9 +9,9 @@ runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["agent:gateway", "skill:lean-research"]
-  successors: ["skill:math-product-management", "skill:lean-retro-methodology", "skill:lean-zettelkasten"]
+  successors: ["skill:math-product-management", "skill:lean-retro-methodology", "skill:lean-retro-methodology"]
 metadata:
-  version: "0.2.0"
+  version: "0.5.0"
   source_spec: "skills/math-project-management/SKILL.md (this file)"
   last_reviewed: "2026-05-27"
 ---
@@ -43,18 +43,18 @@ formal mathematics.
 2. Pick the matching template (dependency-aware schedule, risk-register, capacity planner).
 3. Produce the artifact; emit explicit risks for unprovable theorems with mitigation options.
 4. Hand off: to `@math-product-management` for upstream PM, to `@lean-retro-methodology` for retro, to
-  `@lean-zettelkasten`.
+  `@lean-retro-methodology`.
 ## Recovery & STOP
 - STOP if the question is product-level -- delegate to `@math-product-management`.
 - STOP if the engineering-discipline lens dominates -- delegate to `@applied-engineering-disciplines`.
 - STOP if the dependency graph is unavailable -- escalate to blueprint / audit skills first.
 ## Handoffs
 - **Predecessors:** `agent:gateway`, `skill:lean-research`.
-- **Successors:** `skill:math-product-management`, `skill:lean-retro-methodology`, `skill:lean-zettelkasten`.
+- **Successors:** `skill:math-product-management`, `skill:lean-retro-methodology`, `skill:lean-retro-methodology`.
 ---
 ## Detailed reference
 Full content for `math-project-management` lives in
-[`references/math-project-management-handbook.md`](../../references/math-project-management-handbook.md).
+[`handbooks/math-project-management-handbook.md`](../../handbooks/math-project-management-handbook.md).
 Load that file when the skill is convened; the SKILL.md only carries
 the dispatch contract and the parts index.
 | Section | Topic |
@@ -67,9 +67,9 @@ the dispatch contract and the parts index.
 | Part 6 | Research Council Integration |
 ---
 ## See also
-- [`../../references/math-project-management-handbook.md`](../../references/math-project-management-handbook.md)
+- [`../../handbooks/math-project-management-handbook.md`](../../handbooks/math-project-management-handbook.md)
   -- Full handbook
   (extracted from this skill)
 - [`../math-product-management/SKILL.md`](../math-product-management/SKILL.md) -- Successor
-- [`../lean-retro-methodology/SKILL.md`](../lean-retro-methodology/SKILL.md) -- Successor
-- [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) -- Successor
+- [`../lean-retro-methodology/SKILL.md`](../../../../skills/lean-retro-methodology/SKILL.md) -- Successor
+- [`../lean-zettelkasten/SKILL.md`](../../../../skills/lean-retro-methodology/SKILL.md) -- Successor

@@ -33,7 +33,7 @@ extracted_from: skills/lean-blueprint/SKILL.md
 
 > ⚠️ **MANDATORY** (hot-tier): the gates in §Behavioural rules and the Persist
 > step in §Workflow are CI-enforced. Skipping Persist = incomplete, regardless
-> of artefact quality (FSIA-R-11-09).
+> of artefact quality.
 
 ## Routing
 
@@ -66,7 +66,7 @@ extracted_from: skills/lean-blueprint/SKILL.md
 5. **Verify** [validate] -- confirm artefacts exist and re-run `lean_blueprint(action: "status")` to verify 0 premature `\leanok` and 0 ghost nodes; max 3
    retries then escalate.
 6. **Render** [execute] -- run `leanblueprint pdf` and `leanblueprint web`.
-7. **Persist** [persist] *(MANDATORY, FSIA-R-11-09)* -- commit changes, update state tracker, tick `tasks.md`. Skipping Persist = incomplete.
+7. **Persist** [persist] *(MANDATORY)* -- commit changes, update state tracker, tick `tasks.md`. Skipping Persist = incomplete.
 
 ## Recovery & STOP
 
@@ -77,9 +77,8 @@ extracted_from: skills/lean-blueprint/SKILL.md
 
 ## Handoffs
 
-- **Predecessors / successors**: see FM `handoffs` (grammar from ADR-0080).
+- **Predecessors / successors**: see FM `handoffs`.
 - **Source spec**: `specs/lean/blueprint/requirements.md` -- every G-rule traces to an AC there.
-- **Related ADRs**: ADR-0076, ADR-0080.
 
 ## Common failure modes
 
@@ -103,7 +102,7 @@ extracted_from: skills/lean-blueprint/SKILL.md
   - Launching the standalone zero-dependency HTML5/SVG formalization DAG visualizer for any Lean 4 project or directory.
   - Inspecting topological layer depth, longest dependency paths, and landmark proof milestones.
   - Visualizing mathematical engines for domain subpackages (`packages/stochastic-ccv`, `packages/agentic-safety`, `packages/cusp-catastrophe`, etc.).
-  - Visualizing primary formalization repositories (`MyProject`, `fermats-last-theorem`, `NavierStokesAndEuler`).
+  - Visualizing primary formalization repositories (`MyProject`, `fermats-last-theorem`, `fluid-pde`).
   - Generating and caching visualizer-compatible graph JSONs (`nodes` and `edges`) via `formalization_breakdown.py --json-graph`.
   - Autonomous AI session configuration: serving graphs headlessly via `--no-browser` and retrieving network metrics without GUI dependencies.
 - **DO NOT USE FOR:**
@@ -210,8 +209,8 @@ python3 tools/visualizer/serve.py --graph graph.json --port 8090 --no-browser
 # lean-formalization-breakdown
 
 > Authoritative protocol for architectural deconstruction and multi-wave analysis
-> of monumental Lean 4 formalizations (derived from the Fermat's Last Theorem
-> 28-wave and Navier-Stokes & Euler 8-wave campaigns).
+> of monumental Lean 4 formalizations (derived from 60,000-module algebraic number
+> theory and 2,600-module continuum PDE multi-wave campaigns).
 
 ## Routing
 
@@ -329,5 +328,5 @@ python3 scripts/lean/formalization_breakdown.py <path/to/formalization> --format
 - **Predecessors**: `agent:gateway`, `skill:lean-blueprint`
 - **Successors**: `skill:lean-pedagogical-exposition` (human-readable math and pedagogical synthesis), `skill:lean-zettelkasten` (knowledge graph storage),
   `skill:lean-enforcement` (CI gate enforcement).
-- **Source Guide**: [`references/formalization_breakdown_guide.md`](../../references/formalization_breakdown_guide.md)
+- **Source Guide**: [`references/formalization_breakdown_guide.md`](../protocols/formalization_breakdown_guide.md)
 

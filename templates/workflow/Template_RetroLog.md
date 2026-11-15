@@ -45,7 +45,7 @@ verdict: "COMPLETE | COMPLETE-WITH-DEFERRALS | INCOMPLETE | ABORTED"
 inputs_read:
   - "<predecessor handoff>"
   - "<all b*-closeout.md in this wave>"
-  - "<MASTER-PLAN.md §<row>>"
+  - "<ROADMAP.md section <row>>"
 skill: "skills/skills/lean-retro-methodology/SKILL.md@vX.Y.Z"
 ---
 

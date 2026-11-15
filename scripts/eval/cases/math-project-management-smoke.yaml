@@ -1,6 +1,6 @@
 id: math-project-management-smoke
 title: Critical path identification
-skill: packs/applied-strategy/skills/math-project-management
+skill: math-project-management
 ensemble_rubric: applied-domain-quality
 difficulty: easy
 input:
@@ -23,3 +23,4 @@ grader: deterministic
 tags:
 - math
 - project-management
+pack: applied-strategy

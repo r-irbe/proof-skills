@@ -1,11 +1,11 @@
 ---
-name: abstraction-concrete-architect
-description: Lean 4 Abstraction-Concrete Duality architect: abstract interfaces in Prop specs where concreteness adds proof friction, concrete @[csimp] twins and primitive/SWAR spines where abstractions hurt WHNF reduction or codegen.
-role_container: editor
-overlay_type: operational
-primary_skill: lean-upstream-proof-refactor
-tools: read, write, edit, bash, mcp:lean-lsp
-model: sonnet
+name: "abstraction-concrete-architect"
+description: "Lean 4 Abstraction-Concrete Duality architect: abstract interfaces in Prop specs where concreteness adds proof friction, concrete @[csimp] twins and primitive/SWAR spines where abstractions hurt WHNF reduction or codegen."
+role_container: "editor"
+overlay_type: "operational"
+primary_skill: "lean-proof-refactor"
+tools: "read, write, edit, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `abstraction-concrete-architect` (Container: `editor`)

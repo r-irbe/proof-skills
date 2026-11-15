@@ -143,6 +143,38 @@ ROUTES = [
         "cost_hint": "eliminates fixed-arity duplication and WellFounded fuel boilerplate",
         "provenance": "lean-analyzer SOUND-04 NatZoneDomain::check_nat_sub_decreasing + FIDELITY-08",
     },
+    {
+        "id": "sair_decide",
+        "family": "kernel-friendly-term-design",
+        "match": "decidable Nat/Bool/Int equality or inequality on a strict 3-axiom kernel lane where Lean.ofReduceBool is forbidden",
+        "rewrite": "close via sair_decide (first | rfl | decide +kernel | omega) without invoking native_decide or bv_decide",
+        "cost_hint": "0 Lean.ofReduceBool axioms; direct WHNF or verified Presburger closure",
+        "provenance": "Template_SairDecide.lean + SAIR 3-axiom contest gate",
+    },
+    {
+        "id": "proof-carrying-codegen",
+        "family": "abstraction-concrete-duality",
+        "match": "verified BitVec/SWAR bitwise or width-guarded arithmetic kernel lowered to MLIR, CUDA sm_89 PTX, AVX2, or C++20",
+        "rewrite": "prove equivalence to clean spec in Lean (PolyBitOp / CheckedWord.needsWide) and verify native N01..N12 conformance",
+        "cost_hint": "zero-UB native execution with bit-exact Lean #eval conformance",
+        "provenance": "Template_ProofCarryingCodegen.lean + WAVE-13 G1 duality",
+    },
+    {
+        "id": "eqsat-congruence-closure",
+        "family": "equality-saturation",
+        "match": "bidirectional equational chains (commutativity/associativity/congruence) where directional simp loops or stalls",
+        "rewrite": "close via eqsat_rw [h1, h2, ...] (pure-Lean kernel Eq.trans/congrArg saturation) or grind_close",
+        "cost_hint": "0 external FFI binaries; reconstructs compact kernel Eq.trans / congrArg proof terms",
+        "provenance": "AltProof.Core.eqsat_rw + core Lean grind congruence closure",
+    },
+    {
+        "id": "backchain-solve-by-elim",
+        "family": "backchaining-search",
+        "match": "shallow Horn-clause / implication / monotonicity / membership obligations solvable from local context + curated lemmas",
+        "rewrite": "close via backchain or backchain [lem1, lem2] (core Lean SolveByElim bounded depth-first search)",
+        "cost_hint": "core-only (0 Mathlib required); deterministic bounded backchaining without aesop import weight",
+        "provenance": "Lean.Elab.Tactic.SolveByElim + AltProof.Core.backchain",
+    },
 ]
 
 

@@ -1,6 +1,6 @@
 # USER_GUIDE.md - proof-skills Practical Operator Guide
 
-`proof-skills` is a project-agnostic toolkit of 65 active v2 Agent Skills (100% <4,000B with paired handbooks), 200 Lean 4 proof and workflow templates (59 core + 131 arithmetic-geometry + 10 fluid-pde), 5 Pure Role-Actor Containers + 23 soul overlays, and an embedded 21-tool MCP server (`tools/lean-lsp-mcp`) for Lean 4 + Mathlib4 formal verification.
+`proof-skills` is a project-agnostic toolkit of 38 active v0.5.0 core Agent Skills (+ 7 opt-in applied-strategy pack skills, 100% <4,000B with Layer-1 lookup cards and Layer-2 handbooks), v3 Lean 4 proof, SAIR WHNF, proof-carrying codegen, and AltProof equality-saturation templates, 5 Pure Role-Actor Containers + 24 soul overlays, and an embedded 21-tool MCP server (`tools/lean-lsp-mcp`) for Lean 4 + Mathlib4 formal verification.
 
 ---
 
@@ -11,9 +11,9 @@
 ### Tier 1 -- Prompt / Skill Collection Only (`apm install r-irbe/proof-skills`)
 
 ```bash
-apm install r-irbe/proof-skills                       # install all 65 skills
+apm install r-irbe/proof-skills                       # install all 38 core skills
 apm install r-irbe/proof-skills --skill lean-proof    # install a single skill
-apm install r-irbe/proof-skills#v0.1.0                # version-pinned
+apm install r-irbe/proof-skills#v0.5.0                # version-pinned
 ```
 
 - **What APM does**: Hoists `skills/*/SKILL.md` contracts into your agent harness (Copilot, Claude Code, Cursor, Gemini, OpenCode, Codex, Windsurf).
@@ -28,7 +28,7 @@ cd proof-skills
 ```
 
 - **Zero-`pip` Core (`Python >= 3.10` standard library only)**:
-  - All **44 scripts** in `scripts/lean/*.py` (axiom audit, census, formalization breakdown, proof quality, blueprint sync, zettelkasten lint)
+  - All stdlib scripts in `scripts/lean/*.py` (axiom audit, census, formalization breakdown, proof quality, blueprint sync, zettelkasten lint)
   - All **20 modules** in `scripts/lean/altproof/*.py` (AltProof tactic/route advisor & evaluator)
   - `graph/graph_query.py` (queries `vendor/itp-ontology/master-authority-index.json` and `kuzu/prover_knowledge.kz` archives via stdlib `json`, `csv`, and `zipfile`)
   - `tools/lean-serve-broker/*` and `tools/visualizer/*`
@@ -41,7 +41,7 @@ cd proof-skills
   pip install ".[all]"                 # PyYAML>=6.0 + kuzu>=0.7.0 + pytest>=8.0
   ```
 
-### Tier 3 -- Full 20-Tool `lean-lsp` MCP Server + Rust/WASM `lean-analyzer`
+### Tier 3 -- Full 21-Tool `lean-lsp` MCP Server + Rust/WASM `lean-analyzer`
 
 The MCP server requires **stable Node.js >=22.6.0** (matching the bundled engine's
 `engines.node` requirement), including when using precompiled `dist/index.js`.
@@ -70,13 +70,13 @@ bash scripts/setup-env.sh --doctor     # or: apm run doctor (verifies Python, No
 
 ---
 
-## 2. Skill Routing Architecture (65 Skills)
+## 2. Skill Routing Architecture (38 Core Skills + 7 Opt-In Pack Skills)
 
 All skills follow the v2 dispatch triad (`USE FOR`, `DO NOT USE FOR`, `TRIGGERS`):
 
 1. **Top-Level Orchestration**:
    - `@lean-gateway`: Routes multi-phase formalization tasks across specification, proving, refactoring, and enforcement.
-   - `@lean-integration-protocol`: Defines cross-skill handoffs and lifecycle gates.
+   - `@lean-gateway`: Defines cross-skill handoffs and lifecycle gates.
 2. **Core Lean 4 Proving & Build**:
    - `@lean-setup`: Toolchain pinning (`lean-toolchain`), `elan`, and C FFI sysroot setup.
    - `@lean-build`: Lake build diagnosis and `lake-serve-broker` singleton management.
@@ -85,10 +85,10 @@ All skills follow the v2 dispatch triad (`USE FOR`, `DO NOT USE FOR`, `TRIGGERS`
    - `@lean-mwe` & `@lean-bisect`: Minimizing reproducers and bisecting Lean nightlies.
 3. **Domain Mathematics & AI Formalization**:
    - `@lean-math-foundations`, `@lean-math-analysis`, `@lean-math-discrete`, `@lean-math-dynamical`, `@lean-math-optimization`, `@lean-math-stochastic`.
-   - `@lean-convergence-verification`, `@lean-bigraph-modeling`, `@lean-causal-reasoning`, `@lean-nested-learning`.
+   - `@lean-math-dynamical`, `@lean-math-discrete`, `@lean-knowledge-formalization`, `@lean-ai-formalization`.
 4. **Quality, Audits, and Exposition**:
-   - `@lean-enforcement`, `@lean-quality-engine`, `@lean-proof-review`, `@lean-review-council`, `@lean-tautology-triage`, `@lean-axiom-closure`.
-   - `@lean-formalization-breakdown`, `@lean-dag-visualizer`, `@lean-pedagogical-exposition`, `@lean-blueprint`, `@lean-zettelkasten`.
+   - `@lean-verification-gate`, `@lean-corpus-audit`, `@lean-proof-review`, `@lean-review-council`, `@lean-tautology-triage`, `@lean-verification-gate`.
+   - `@lean-blueprint`, `@lean-blueprint`, `@lean-pedagogical-exposition`, `@lean-blueprint`, `@lean-retro-methodology`.
 
 See [`TAXONOMY.md`](TAXONOMY.md), [`ROLES.md`](ROLES.md), and [`FACETS.md`](FACETS.md) for the complete catalog.
 

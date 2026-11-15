@@ -8,7 +8,7 @@ extracted_from: skills/lean-math-dynamical/SKILL.md
 # Nonlinear Dynamics Encyclopaedia (Lean 4)
 
 > **Layering note.** This file holds the deep encyclopaedia content
-> previously embedded in [`skills/lean-math-dynamical/SKILL.md`](../skills/lean-math-dynamical/SKILL.md).
+> previously embedded in [`skills/lean-math-dynamical/SKILL.md`](../../skills/lean-math-dynamical/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow / Recovery /
 > Handoffs) and the high-frequency pitfalls / recipes; this file holds the
 > full reference content. Zero fidelity loss vs the pre-layering revision.
@@ -44,7 +44,7 @@ Nat model (primary)          Real model (secondary)
 
 The Lyapunov direct method, the project Lyapunov-function inventory,
 and the deprecation note for `proj_lyapunov` are consolidated into:
-[`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md)
+[`references/lean4-contraction-catalog.md`](lean-math-analysis-handbook.md)
 (§5 Lyapunov direct method, §6 Project Lyapunov-function inventory).
 This section keeps only the dispatch-relevant *taxonomy* -- actual
 proof patterns live in the catalog.
@@ -268,7 +268,7 @@ Guide to formalizing dynamical systems, stability theory, and bifurcation in Lea
 ## Detailed reference
 
 Full encyclopaedia content (Parts 1 through 6) lives in
-[`references/lean4-math-dynamical.md`](../../references/lean4-math-dynamical.md). Load that file
+[`references/lean4-math-dynamical.md`](lean-math-dynamical-handbook.md). Load that file
 when authoring; the SKILL.md only carries the dispatch contract and
 the high-frequency pitfalls / recipes (kept inline below).
 
@@ -284,7 +284,7 @@ the high-frequency pitfalls / recipes (kept inline below).
 ## Part 7 -- Research Council Integration
 
 Consolidated into the single canonical routing matrix:
-[`references/research-council-skill-map.md`](../../references/research-council-skill-map.md)
+[`references/research-council-skill-map.md`](../protocols/research-council-skill-map.md)
 (see the "Dynamical" section).  When dispatching a question to a
 council member, cite that table rather than restating the rows here.
 
@@ -293,7 +293,7 @@ council member, cite that table rather than restating the rows here.
 ## Part 8 -- IVT Sign-Change Pattern
 
 Extracted to single canonical reference:
-[`references/lean4-ivt-patterns.md`](../../references/lean4-ivt-patterns.md).
+[`references/lean4-ivt-patterns.md`](lean-math-analysis-handbook.md).
 That file owns the canonical incantation, the
 `asymmetric_three_roots_ivt` walk-through, and the polynomial-continuity
 prerequisite.
@@ -315,9 +315,9 @@ prerequisite.
 
 - Host-repository Lyapunov modules -- quadratic-form Lyapunov constructions for local cusp + phase-portrait models.
 - Host-repository catastrophe modules -- cusp-form polynomial bifurcation (the 3-real-roots case).
-- [`references/lean4-ivt-patterns.md`](../../references/lean4-ivt-patterns.md) -- `asymmetric_three_roots_ivt` walk-through (canonical entry-point for
+- [`references/lean4-ivt-patterns.md`](lean-math-analysis-handbook.md) -- `asymmetric_three_roots_ivt` walk-through (canonical entry-point for
   sign-change existence).
-- [`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md) -- catalog of contraction-mapping templates (uses
+- [`references/lean4-contraction-catalog.md`](lean-math-analysis-handbook.md) -- catalog of contraction-mapping templates (uses
   `ContractingWith` / `LipschitzWith`).
 
 ---
@@ -346,10 +346,10 @@ Project-relevant adaptations:
 
 ## See also
 
-- [`../../references/lean4-math-dynamical.md`](../../references/lean4-math-dynamical.md) -- Nonlinear Dynamics Encyclopaedia (full encyclopaedia, extracted
+- [`../../references/lean4-math-dynamical.md`](lean-math-dynamical-handbook.md) -- Nonlinear Dynamics Encyclopaedia (full encyclopaedia, extracted
   from this skill)
-- [`../../templates/Template_Dynamics.md`](../../templates/Template_Dynamics.md) -- Template: Lyapunov / Markov / contraction mappings
-- [`../../references/lean4-proof-strategy.md`](../../references/lean4-proof-strategy.md) -- Proof strategy: real-valued contraction patterns
+- [`../../templates/Template_Dynamics.md`](../../templates/packs/domain-starters/Template_Dynamics.md) -- Template: Lyapunov / Markov / contraction mappings
+- [`../../references/lean4-proof-strategy.md`](../protocols/lean4-proof-strategy.md) -- Proof strategy: real-valued contraction patterns
 
 ---
 
@@ -394,7 +394,7 @@ governance convergence modules.
 ## Detailed reference
 
 Full content for `lean-math-dynamical` lives in
-[`references/lean-math-dynamical-handbook.md`](../../references/lean-math-dynamical-handbook.md).
+[`references/lean-math-dynamical-handbook.md`](lean-math-dynamical-handbook.md).
 Load that file when the skill is convened; the SKILL.md only carries
 the dispatch contract and the parts index.
 
@@ -412,15 +412,15 @@ the dispatch contract and the parts index.
 
 ## See also
 
-- [`../../references/lean-math-dynamical-handbook.md`](../../references/lean-math-dynamical-handbook.md) -- Full handbook (extracted from this skill)
-- [`../lean-math-dynamical/SKILL.md`](../lean-math-dynamical/SKILL.md) -- Successor
-- [`../lean-research/SKILL.md`](../lean-research/SKILL.md) -- Successor
-- [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) -- Successor
+- [`../../references/lean-math-dynamical-handbook.md`](lean-math-dynamical-handbook.md) -- Full handbook (extracted from this skill)
+- [`../lean-math-dynamical/SKILL.md`](../../skills/lean-math-dynamical/SKILL.md) -- Successor
+- [`../lean-research/SKILL.md`](../../skills/lean-research/SKILL.md) -- Successor
+- [`../lean-zettelkasten/SKILL.md`](../../skills/lean-retro-methodology/SKILL.md) -- Successor
 
 # Math Nonlinear Dynamics Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-math-dynamical/SKILL.md`](../skills/lean-math-dynamical/SKILL.md).
+> embedded in [`skills/lean-math-dynamical/SKILL.md`](../../skills/lean-math-dynamical/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.
@@ -455,9 +455,9 @@ Project formalization: contraction mapping with rate (1-α) per step
 
 | Theorem | Statement (informal) | Project usage |
 |---|---|---|
-| Lyapunov's Direct Method | V(x) ≥ 0, V̇(x) ≤ -αV(x) ⟹ exponential stability | Core of LyapunovStability module |
+| Lyapunov's Direct Method | V(x) ≥ 0, V̇(x) ≤ -αV(x) ⇒ exponential stability | Core of LyapunovStability module |
 | LaSalle's Invariance Principle | V̇ ≤ 0, largest invariant set in {V̇ = 0} is the equilibrium | Governance convergence, trust dynamics |
-| Contraction Mapping Theorem | T is contractive ⟹ unique fixed point, geometric convergence | Quality gates, Bellman iteration |
+| Contraction Mapping Theorem | T is contractive ⇒ unique fixed point, geometric convergence | Quality gates, Bellman iteration |
 | Center Manifold Theorem | Near bifurcation, dynamics reduce to center manifold | Cusp catastrophe interpretation |
 | Catastrophe Classification | Codimension-2 catastrophes are folds and cusps | CuspCatastrophe module |
 | Hartman-Grobman | Near hyperbolic equilibrium, flow ≈ linearized flow | Phase portrait classification |
@@ -520,7 +520,7 @@ Project has 4 timescales:
 V_total = w₁V₁(x₁) + w₂V₂(x₂) + w₃V₃(x₃) + w₄V₄(x₄)
 
 Where:
-  V_total decreasing  ⟸  each level contracts AND timescale separation holds
+  V_total decreasing  ⇐  each level contracts AND timescale separation holds
   Timescale separation: τ_{i+1}/τ_i → ∞ means fast level equilibrates before slow level moves
 ```
 
@@ -670,7 +670,7 @@ the project's governance must be robust to:
 # Nonlinear Dynamics Encyclopaedia (Lean 4)
 
 > **Layering note.** This file holds the deep encyclopaedia content
-> previously embedded in [`skills/lean-math-dynamical/SKILL.md`](../skills/lean-math-dynamical/SKILL.md).
+> previously embedded in [`skills/lean-math-dynamical/SKILL.md`](../../skills/lean-math-dynamical/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow / Recovery /
 > Handoffs) and the high-frequency pitfalls / recipes; this file holds the
 > full reference content. Zero fidelity loss vs the pre-layering revision.
@@ -706,7 +706,7 @@ Nat model (primary)          Real model (secondary)
 
 The Lyapunov direct method, the project Lyapunov-function inventory,
 and the deprecation note for `proj_lyapunov` are consolidated into:
-[`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md)
+[`references/lean4-contraction-catalog.md`](lean-math-analysis-handbook.md)
 (§5 Lyapunov direct method, §6 Project Lyapunov-function inventory).
 This section keeps only the dispatch-relevant *taxonomy* -- actual
 proof patterns live in the catalog.
@@ -925,7 +925,7 @@ Guide to proving finite convergence and loop termination bounds for iterative al
 5. Formulate ceiling division upper bound `n = (v0 + delta - 1) / delta`.
 6. Prove the arithmetic floor bound `((v0 + delta - 1) / delta) * delta >= v0` by instantiating `Nat.div_add_mod` and `Nat.mod_lt` together with `omega`.
 7. Conclude exact convergence `lyapunov (traj n) = 0`, guaranteeing finite GPU termination without warp divergence.
-8. Verify against [`../../templates/Template_Lyapunov.md`](../../templates/Template_Lyapunov.md).
+8. Verify against [`../../templates/Template_Lyapunov.md`](../../templates/packs/domain-starters/Template_Lyapunov.md).
 
 ## Recovery & STOP
 

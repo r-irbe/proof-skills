@@ -13,7 +13,7 @@ Examples of modules at this layer:
 
 Tactic hierarchy for arithmetic (fast → slow):
 ```
-rfl → decide → norm_num → native_decide → grind → omega → linarith
+rfl -> bv_decide / decide +kernel / sair_decide / norm_num -> omega / linarith -> grind / eqsat_rw
 ```
 Use `grind` as the default automation tactic; fall back to `omega`
 only when `grind` does not terminate.
@@ -273,17 +273,17 @@ example : (17 : Nat) * 59 = 1003 := by norm_num
 example : (1000 : Nat) / 4 = 250 := by norm_num
 example : (2 : Nat) ^ 10 = 1024 := by norm_num
 -- PERFORMANCE: norm_num is kernel-checkable and very fast for concrete
--- arithmetic up to thousands. For powers > 2^20, use native_decide.
+-- arithmetic up to thousands. For powers > 2^20, use `norm_num`, `bv_decide`, or `decide +kernel` (`native_decide` is banned by GT-30/31).
 ```
 
- ### §10  native_decide for Large Finite Checks
+ ### §10  Kernel-Checked Finite Evaluation (`decide +kernel` / `bv_decide` -- No `native_decide`)
 
 ```lean
 -- TEMPLATE: `native_decide` compiles to native code for speed.
 -- Use when `decide` times out.
 -- PITFALL: `native_decide` is NOT kernel-checkable; avoid in mathlib PRs.
 
--- example : (2 : Nat) ^ 100 % 1000 = 376 := by native_decide
+-- example : (2 : Nat) ^ 100 % 1000 = 376 := by decide +kernel
 -- PERFORMANCE: native_decide handles 2^100 in milliseconds.
 ```
 
@@ -336,11 +336,11 @@ Before committing:
 -- 4. `native_decide`: Use for large finite checks (100--1000× faster than
 --    `decide`). Compiles to native code.
 --    NOT kernel-checkable -- avoid in contributions to Mathlib.
---    example : (List.range 1000).all (· < 1000) = true := by native_decide
+--    example : (List.range 1000).all (· < 1000) = true := by decide +kernel
 
 -- Decision flowchart:
 -- Is it concrete numeric computation? → norm_num
--- Is it large finite enumeration?     → native_decide
+-- Is it large finite enumeration?     -> decide +kernel / bv_decide / sair_decide (never native_decide)
 -- Is it Nat/Int arithmetic?           → grind (default), omega (fallback)
 -- Does it involve @[grind] lemmas?    → grind (only option)
 ```
@@ -348,7 +348,7 @@ Before committing:
  ### §14  first_par for Arithmetic Proofs
 
 ```lean
--- NOTE: `first_par` syntax exists in v4.28.0 but the tactic is NOT YET
+-- NOTE: `first_par` syntax exists in v4.34.1 but the tactic is NOT YET
 -- IMPLEMENTED. It will error with "has not been implemented". Use sequential
 -- `first | tac1 | tac2 | tac3` instead until a future Lean version enables it.
 -- When available, first_par will run tactics in parallel on multicore.

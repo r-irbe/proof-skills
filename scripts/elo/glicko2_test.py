@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Sanity tests for `glicko2.py`.
 
-The single critical test is **Glickman 2012 §5** — the worked example
+The single critical test is **Glickman 2012 §5** - the worked example
 that appears verbatim in his PDF and on the Glicko-2 website. Any
 correct implementation must reproduce the published expected values to
 ~4 significant figures.

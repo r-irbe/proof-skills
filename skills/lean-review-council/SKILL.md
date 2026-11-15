@@ -26,7 +26,7 @@ handoffs:
   - skill:lean-retro-methodology
   - skill:research-council
 metadata:
-  version: 0.2.0
+  version: 0.5.0
   source_spec: skills/lean-review-council/SKILL.md (this file)
   last_reviewed: '2026-05-27'
 ---
@@ -79,7 +79,7 @@ inter-council
   `skill:lean-specification` (specification lifecycle entry), `skill:lean-research` (when evidence widening is
   required
   mid-session).
-- **Successors:** `skill:lean-proof-review` (layered re-review on a fix), `skill:lean-enforcement` (CI gates
+- **Successors:** `skill:lean-proof-review` (layered re-review on a fix), `skill:lean-verification-gate` (CI gates
   triggered by the
   council vote),
 ## Detailed reference

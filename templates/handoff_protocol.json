@@ -56,7 +56,8 @@
     "research-beta-dynamics",
     "research-gamma-epistemics",
     "research-delta-systems",
-    "research-epsilon-bridge"
+    "research-epsilon-bridge",
+    "abstraction-concrete-architect"
   ],
   "facet_packs": [
     "core",

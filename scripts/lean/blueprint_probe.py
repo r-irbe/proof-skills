@@ -41,7 +41,7 @@ def _appears_as_word(name: str, haystack: str) -> bool:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--root", type=Path, default=Path("."), help="Lean project root")
-    ap.add_argument("--lean-dir", type=str, default="EASCI", help="Lean corpus subdirectory under --root")
+    ap.add_argument("--lean-dir", type=str, default="Project", help="Lean corpus subdirectory under --root")
     ap.add_argument("--blueprint-src", type=Path, default=None, help="Blueprint src dir (default: <root>/blueprint/src)")
     ap.add_argument("--checkdecls", action="store_true", help="Advisory reverse check for unreferenced declarations")
     ap.add_argument("--checkdecls-errors", action="store_true", help="Exit 1 if reverse check finds unreferenced declarations")

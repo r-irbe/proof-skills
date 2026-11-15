@@ -13,7 +13,7 @@ loader_hint: Load when @lean-knowledge-formalization routes here for details; no
 # Lean Knowledge Formalization Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-knowledge-formalization/SKILL.md`](../skills/lean-knowledge-formalization/SKILL.md).
+> embedded in [`skills/lean-knowledge-formalization/SKILL.md`](../../skills/lean-knowledge-formalization/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.
@@ -350,7 +350,7 @@ Formalizing the vast body of everyday knowledge that underlies human reasoning a
 ## Detailed reference
 
 Full content for `lean-knowledge-formalization` lives in
-[`references/lean-knowledge-formalization-handbook.md`](../../references/lean-knowledge-formalization-handbook.md).
+[`references/lean-knowledge-formalization-handbook.md`](lean-knowledge-formalization-handbook.md).
 Load that file when the skill is convened; the SKILL.md only carries
 the dispatch contract and the parts index.
 
@@ -370,15 +370,15 @@ the dispatch contract and the parts index.
 
 ## See also
 
-- [`../../references/lean-knowledge-formalization-handbook.md`](../../references/lean-knowledge-formalization-handbook.md) -- Full handbook (extracted from this skill)
-- [`../lean-knowledge-formalization/SKILL.md`](../lean-knowledge-formalization/SKILL.md) -- Successor
-- [`../lean-knowledge-formalization/SKILL.md`](../lean-knowledge-formalization/SKILL.md) -- Successor
-- [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) -- Successor
+- [`../../references/lean-knowledge-formalization-handbook.md`](lean-knowledge-formalization-handbook.md) -- Full handbook (extracted from this skill)
+- [`../lean-knowledge-formalization/SKILL.md`](../../skills/lean-knowledge-formalization/SKILL.md) -- Successor
+- [`../lean-knowledge-formalization/SKILL.md`](../../skills/lean-knowledge-formalization/SKILL.md) -- Successor
+- [`../lean-zettelkasten/SKILL.md`](../../skills/lean-retro-methodology/SKILL.md) -- Successor
 
 # Ai Commonsense Reasoning Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-knowledge-formalization/SKILL.md`](../skills/lean-knowledge-formalization/SKILL.md).
+> embedded in [`skills/lean-knowledge-formalization/SKILL.md`](../../skills/lean-knowledge-formalization/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.
@@ -1261,7 +1261,7 @@ map them by role:
 # Lean Applied Reasoning Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-applied-reasoning/SKILL.md`](../skills/lean-applied-reasoning/SKILL.md).
+> embedded in [`skills/lean-applied-reasoning/SKILL.md`](../../skills/lean-knowledge-formalization/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.
@@ -1613,7 +1613,7 @@ Structured analytic techniques and evidence-based reasoning frameworks for intel
 ## Detailed reference
 
 Full content for `lean-applied-reasoning` lives in
-[`references/lean-applied-reasoning-handbook.md`](../../references/lean-applied-reasoning-handbook.md).
+[`references/lean-applied-reasoning-handbook.md`](lean-knowledge-formalization-handbook.md).
 Load that file when the skill is convened; the SKILL.md only carries
 the dispatch contract and the parts index.
 
@@ -1632,16 +1632,16 @@ the dispatch contract and the parts index.
 
 ## See also
 
-- [`../../references/lean-applied-reasoning-handbook.md`](../../references/lean-applied-reasoning-handbook.md) -- Full handbook (extracted
+- [`../../references/lean-applied-reasoning-handbook.md`](lean-knowledge-formalization-handbook.md) -- Full handbook (extracted
   from this skill)
-- [`../lean-applied-reasoning/SKILL.md`](../lean-applied-reasoning/SKILL.md) -- Successor
-- [`../lean-applied-reasoning/SKILL.md`](../lean-applied-reasoning/SKILL.md) -- Successor
-- [`../lean-knowledge-formalization/SKILL.md`](../lean-knowledge-formalization/SKILL.md) -- Successor
+- [`../lean-applied-reasoning/SKILL.md`](../../skills/lean-knowledge-formalization/SKILL.md) -- Successor
+- [`../lean-applied-reasoning/SKILL.md`](../../skills/lean-knowledge-formalization/SKILL.md) -- Successor
+- [`../lean-knowledge-formalization/SKILL.md`](../../skills/lean-knowledge-formalization/SKILL.md) -- Successor
 
 # Applied Intelligence Analysis Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-applied-reasoning/SKILL.md`](../skills/lean-applied-reasoning/SKILL.md).
+> embedded in [`skills/lean-applied-reasoning/SKILL.md`](../../skills/lean-knowledge-formalization/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.
@@ -1912,7 +1912,7 @@ Mathematical and systematic frameworks for creating, evaluating, and executing s
 ## Detailed reference
 
 Full content for `lean-applied-reasoning` lives in
-[`references/lean-applied-reasoning-handbook.md`](../../references/lean-applied-reasoning-handbook.md).
+[`references/lean-applied-reasoning-handbook.md`](lean-knowledge-formalization-handbook.md).
 Load that file when the skill is convened; the SKILL.md only carries
 the dispatch contract and the parts index.
 
@@ -1931,15 +1931,15 @@ the dispatch contract and the parts index.
 
 ## See also
 
-- [`../../references/lean-applied-reasoning-handbook.md`](../../references/lean-applied-reasoning-handbook.md) -- Full handbook (extracted from this skill)
-- [`../lean-applied-reasoning/SKILL.md`](../lean-applied-reasoning/SKILL.md) -- Successor
-- [`../lean-math-optimization/SKILL.md`](../lean-math-optimization/SKILL.md) -- Successor
-- [`../lean-applied-reasoning/SKILL.md`](../lean-applied-reasoning/SKILL.md) -- Successor
+- [`../../references/lean-applied-reasoning-handbook.md`](lean-knowledge-formalization-handbook.md) -- Full handbook (extracted from this skill)
+- [`../lean-applied-reasoning/SKILL.md`](../../skills/lean-knowledge-formalization/SKILL.md) -- Successor
+- [`../lean-math-optimization/SKILL.md`](../../skills/lean-math-optimization/SKILL.md) -- Successor
+- [`../lean-applied-reasoning/SKILL.md`](../../skills/lean-knowledge-formalization/SKILL.md) -- Successor
 
 # Applied Strategy Analysis Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-applied-reasoning/SKILL.md`](../skills/lean-applied-reasoning/SKILL.md).
+> embedded in [`skills/lean-applied-reasoning/SKILL.md`](../../skills/lean-knowledge-formalization/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.

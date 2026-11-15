@@ -23,7 +23,7 @@ handoffs:
   - skill:lean-retro-methodology
   - skill:lean-doc-sync
 metadata:
-  version: 0.2.0
+  version: 0.5.0
   source_spec: skills/lean-ai-formalization/SKILL.md (this file)
   last_reviewed: '2026-05-27'
 ---
@@ -63,8 +63,8 @@ specifications,
 - STOP if the AI system is agentic/emergent -- delegate dynamics modelling to `@lean-ai-formalization` first.
 ## Handoffs
 - **Predecessors:** `agent:gateway`, `skill:lean-research`.
-- **Successors:** `skill:lean-proof-review`, `skill:lean-enforcement`, `skill:lean-zettelkasten`,
-  `skill:lean-doc-feedback`.
+- **Successors:** `skill:lean-proof-review`, `skill:lean-verification-gate`, `skill:lean-retro-methodology`,
+  `skill:lean-doc-sync`.
 ---
 ## Detailed reference
 - **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-ai-formalization-tables.md`](../../references/cards/lean-ai-formalization-tables.md)

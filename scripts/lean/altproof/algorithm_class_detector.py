@@ -29,7 +29,7 @@ PERM_ENUM_RE = re.compile(r"\b(?:Equiv\.Perm|Finset\.powerset|Finset\.univ\.filt
 WF_BRANCH_RE = re.compile(r"\b(?:WellFounded\.fix|wfRec|decreasing_by)\b")
 PIPELINE_RE = re.compile(r"\bList\.range\b[^\n]*?(?:List\.(?:map|foldl|filter)|\.(?:map|foldl|filter))\b")
 ACC_OPP_RE = re.compile(r"\bdef\s+(\w+)[^:=]*?:=[^\n]*?\b(\1)\b[^\n]*?\b(\1)\b")
-TYPE_SPECIALIZATION_RE = re.compile(r"\b\w+\s*:\s*(?:[αa-zA-Z0-9_]+\s*→\s*ℝ|\(g\s*:\s*[αa-zA-Z0-9_]+\s*→\s*ℝ\))\b")
+TYPE_SPECIALIZATION_RE = re.compile(r"\b\w+\s*:\s*(?:[\u03b1a-zA-Z0-9_]+\s*\u2192\s*\u211d|\(g\s*:\s*[\u03b1a-zA-Z0-9_]+\s*\u2192\s*\u211d\))\b")
 TACTIC_BLOAT_RE = re.compile(r"\bunfold\s+\w+[^\n]*\n\s*refine\b")
 SWAR_BIT_PACKING_SUBSTITUTION_RE = re.compile(
     r"(?:\bmatch\b[\s\S]{0,240}?\|[^\n]+=>[^\n]+\n\s*\|[^\n]+=>[^\n]+\n\s*\|[^\n]+=>|"

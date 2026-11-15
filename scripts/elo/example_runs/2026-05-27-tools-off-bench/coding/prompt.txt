@@ -7,7 +7,7 @@ CRITICAL RULES (must be obeyed exactly):
 4. You may use Python standard library imports (place them inside the function body, or all at the top of your output).
 5. Your output must be parseable as a single Python module.
 
-Output format — use these EXACT separator lines, one per problem, in order:
+Output format - use these EXACT separator lines, one per problem, in order:
 
 === P1 ===
 <your function definition for P1>

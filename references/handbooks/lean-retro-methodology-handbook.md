@@ -38,7 +38,7 @@ loader_hint: Load when @lean-retro-methodology routes here for methodology detai
 # Lean Retro Methodology Handbook
 
 > **Layering note.** This file holds the deep methodology content
-> previously embedded in [`skills/lean-retro-methodology/SKILL.md`](../skills/lean-retro-methodology/SKILL.md).
+> previously embedded in [`skills/lean-retro-methodology/SKILL.md`](../../skills/lean-retro-methodology/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + the parts index. This file holds the full
 > encyclopaedia of the retro protocol; adapting to project scale; enforcement scripts; cross-skill optimization, etc.
@@ -494,7 +494,7 @@ Each RETRO phase has its own RALPH loop:
 > Cold-tier skill -- invoked explicitly by name (`@lean-zettelkasten`) from
 > review and synthesis flows. No MANDATORY preamble: the gates in §Behavioural
 > rules are advisory and reviewed at synthesis time rather than per-note.
-> Persist is still required (FSIA-R-11-09) but is local to the
+> Persist is still required but is local to the
 > `docs/project/lean/docs/zettelkasten/` tree.
 
 ## Routing
@@ -542,7 +542,6 @@ Each RETRO phase has its own RALPH loop:
   (post-proof pattern capture) seed fleeting notes. Outbound: `@lean-doc-improvement` consumes permanent notes that imply paper updates;
   `@lean-quality-engine` consumes permanent notes that imply skill or methodology changes.
 - **Source spec**: `specs/lean/zettelkasten/requirements.md` -- every G-rule traces to an AC there.
-- **Related ADRs**: ADR-0076 (skill-as-contract), ADR-0080 (handoff DAG), ADR-0079 (cold-tier loading rationale).
 
 ## Common failure modes
 
@@ -557,5 +556,5 @@ Each RETRO phase has its own RALPH loop:
 
 - This `SKILL.md` is the canonical v2 zettelkasten contract for this package.
 - [`../../zettelkasten/_index.md`](../../zettelkasten/_index.md) -- live ZK index this skill maintains.
-- [`../lean-doc-feedback/SKILL.md`](../lean-doc-feedback/SKILL.md) -- v2 sibling on the documentation side of the DAG.
+- [`../lean-doc-feedback/SKILL.md`](../../skills/lean-doc-sync/SKILL.md) -- v2 sibling on the documentation side of the DAG.
 

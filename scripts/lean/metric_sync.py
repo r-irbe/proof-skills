@@ -6,7 +6,7 @@ Reports mismatches between actual codebase state and documented metrics.
 Referenced by lean-doc-improvement Part 6 and lean-gateway SK-06.
 
 Usage:
-    python3 scripts/metric_sync.py [--lean-dir EASCI] [--paper docs/easci-tufte.tex]
+    python3 scripts/metric_sync.py [--lean-dir Project] [--paper docs/paper.tex]
 """
 
 import argparse
@@ -105,10 +105,10 @@ def extract_paper_metrics(paper_path: Path) -> dict[str, int | None]:
 def main():
     parser = argparse.ArgumentParser(description="Sync Lean metrics with paper")
     parser.add_argument(
-        "--lean-dir", type=Path, default=Path("EASCI"), help="Directory containing .lean files"
+        "--lean-dir", type=Path, default=Path("Project"), help="Directory containing .lean files"
     )
     parser.add_argument(
-        "--paper", type=Path, default=Path("docs/easci-tufte.tex"), help="Paper LaTeX file to check"
+        "--paper", type=Path, default=Path("docs/paper.tex"), help="Paper LaTeX file to check"
     )
     args = parser.parse_args()
 

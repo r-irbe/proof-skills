@@ -1,11 +1,11 @@
 ---
-name: lean-retro-facilitator
-description: RETRO cycle facilitator for corpus consolidation, lemma extraction, and Zettelkasten curation.
-role_container: gardener
-overlay_type: operational
-primary_skill: lean-retro-methodology
-tools: read, write, edit, bash, mcp:lean-lsp
-model: sonnet
+name: "lean-retro-facilitator"
+description: "RETRO cycle facilitator for corpus consolidation, lemma extraction, and Zettelkasten curation."
+role_container: "gardener"
+overlay_type: "operational"
+primary_skill: "lean-retro-methodology"
+tools: "read, write, edit, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `lean-retro-facilitator` (Container: `gardener`)

@@ -1,6 +1,6 @@
 # `00-CONVENTIONS.md` -- Cross-Template Lean 4 Module Conventions (v3)
 
-> **Status**: v3 canonical standard (`proof-skills` v0.4.0).
+> **Status**: v3.1 canonical standard (`proof-skills` v0.5.0).
 > Every template in [`core/`](core/), [`workflow/`](workflow/), and [`packs/`](packs/) inherits the conventions on this page.
 
 ---

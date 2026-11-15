@@ -40,7 +40,7 @@ In stochastic consensus and Markov non-equilibrium networks:
 
 ## References
 * FLT: `StochasticCCV/Core/ModularJacobianHomologicalPairing.lean`
-* Mazur, B. (1977), *Modular curves and the Eisenstein ideal*, Publ. Math. IHÃS.
+* Mazur, B. (1977), *Modular curves and the Eisenstein ideal*, Publ. Math. IHES.
 * Merel, L. (1994), *Universal Fourier expansions of modular forms*, Lecture Notes in Math.
 * Manin, Yu. I. (1972), *Parabolic points and zeta functions of modular curves*, Izv. Akad. Nauk SSSR.
 

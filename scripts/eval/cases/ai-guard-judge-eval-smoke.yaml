@@ -1,6 +1,6 @@
 id: ai-guard-judge-eval-smoke
 title: ai-guard-judge-eval dispatch smoke check
-skill: packs/applied-strategy/skills/ai-guard-judge-eval
+skill: ai-guard-judge-eval
 ensemble_rubric: applied-domain-quality
 difficulty: easy
 input:
@@ -22,3 +22,4 @@ grader: deterministic
 tags:
 - smoke
 - ai-guard-judge-eval
+pack: applied-strategy

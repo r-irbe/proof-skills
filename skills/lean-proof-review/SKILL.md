@@ -22,7 +22,7 @@ handoffs:
   - skill:lean-verification-gate
   - skill:lean-doc-sync
 metadata:
-  version: 0.2.2
+  version: 0.5.0
   source_spec: specs/lean/proof-review/requirements.md
   last_reviewed: '2026-10-20'
 ---
@@ -65,9 +65,8 @@ audit if
 - Confidence < 90 % on a tactic suggestion → mark as advisory, do NOT block.
 - Scope drift (edits to non-proof files) → immediate STOP, re-anchor.
 ## Handoffs
-- **Predecessors / successors:** see FM `handoffs` (grammar from ADR-0080).
+- **Predecessors / successors:** see FM `handoffs`.
 - **Source spec:** `specs/lean/proof-review/requirements.md` -- every G-rule traces to an AC there.
-- **Related ADRs:** ADR-0076, ADR-0080.
 - **Reference:** see
   [`references/handbooks/lean-proof-review-handbook.md`](../../references/handbooks/lean-proof-review-handbook.md) for the full
   project automation stack, proof-search priority table, reusable `Tactics` lemma library,
@@ -81,3 +80,5 @@ Full encyclopedic reference, decision trees, and lookup tables live in
   Complete
   `lean-proof-review` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router
+- [`tests/route-independence.yaml`](tests/route-independence.yaml) -- Smoke test
+- [`tests/search-review.yaml`](tests/search-review.yaml) -- Smoke test

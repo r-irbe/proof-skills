@@ -301,7 +301,7 @@
         "Measure theory obligations when extending to continuous or uncountably infinite state spaces"
       ],
       "lean4_target_tactics": [
-        "EASCI/StochasticCCV/ contraction bounds",
+        "Markov chain contraction bounds",
         "inductive invariant preservation",
         "Nat.div_add_mod"
       ],
@@ -424,7 +424,7 @@
       "dialect_semantics": "`Groups_Big.sum` over `'a set` (returning `0` automatically when `infinite A`).",
       "dialect_idiom": "Translate `(∑x∈A. f x)` under `finite A` to `∑ x ∈ A, f x` over `A : Finset α`.",
       "dialect_pitfalls": [
-        "Isabelle `∑x∈A. f x` defaults to `0` on infinite sets; if finiteness is not obvious in Lean 4, use `finsum` (`∑ᶠ x, f x`) or carry `A : Finset α`"
+        "Isabelle `∑x∈A. f x` defaults to `0` on infinite sets; if finiteness is not obvious in Lean 4, use `finsum` (`∑^f x, f x`) or carry `A : Finset α`"
       ],
       "lean4_target_tactics": [
         "Finset.sum_congr",
@@ -510,7 +510,7 @@
         "Tendsto.comp",
         "Tendsto.add"
       ],
-      "lean4_target_syntax": "Tendsto f (𝓝 x) (𝓝 y) | Tendsto u atTop (𝓝 l) | ∀ᶠ n in atTop, P n"
+      "lean4_target_syntax": "Tendsto f (𝓝 x) (𝓝 y) | Tendsto u atTop (𝓝 l) | ∀^f n in atTop, P n"
     }
   ]
 }

@@ -1,0 +1,21 @@
+id: lean-setup-smoke
+title: lean-setup toolchain pin and Lake server bootstrap smoke check
+skill: lean-setup
+ensemble_rubric: lean-setup-import-quality
+difficulty: easy
+input:
+  prompt: Apply the lean-setup workflow to pin lean-toolchain to v4.34.1 and verify
+    lake env lean --version.
+  expected_output_substring: Pin leanprover/lean4:v4.34.1 in lean-toolchain and verify
+    lean --version matches lake env lean --version.
+expected:
+  contains:
+  - lean-setup
+  - leanprover/lean4:v4\.34\.1|lean-toolchain
+  - lake env lean --version
+  not_contains:
+  - \bsorry\b
+grader: deterministic
+tags:
+- smoke
+- lean-setup

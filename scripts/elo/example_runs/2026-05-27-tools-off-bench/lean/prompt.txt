@@ -7,7 +7,7 @@ CRITICAL RULES (must be obeyed exactly):
 4. Lean 4 (toolchain `leanprover/lean4:v4.30.0`), STDLIB ONLY (no Mathlib). You may use `Nat.add_comm`, `Nat.add_zero`, `List.length_append`, `List.reverse_reverse`, `Nat.succ_le_succ`, etc.
 5. The `omega` tactic IS AVAILABLE (it ships with Lean stdlib via `Init.Omega`). The `simp`, `rfl`, `exact`, `induction`, `match`, `decide` tactics are also available.
 
-Output format — use these EXACT separator lines, one per problem, in order:
+Output format - use these EXACT separator lines, one per problem, in order:
 
 === T1 ===
 <your proof for T1, e.g. `by omega` or `Nat.add_comm a b` or a `by` block>

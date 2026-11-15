@@ -23,7 +23,7 @@ handoffs:
   - skill:lean-proof-review
   - skill:lean-verification-gate
 metadata:
-  version: 0.2.0
+  version: 0.5.0
   source_spec: skills/lean-math-foundations/SKILL.md (this file)
   last_reviewed: '2026-05-27'
 ---
@@ -78,7 +78,7 @@ finished proof
 - **Successors:** `skill:lean-proof` (apply the foundational pattern in a concrete proof),
   `skill:lean-proof-review` (verify axiom
   impact),
-  `skill:lean-enforcement` (run native-decide / `#print axioms` checks after the change).
+  `skill:lean-verification-gate` (run native-decide / `#print axioms` checks after the change).
 ## Detailed reference
 - **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-math-foundations-tables.md`](../../references/cards/lean-math-foundations-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in

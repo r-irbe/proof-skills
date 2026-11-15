@@ -8,7 +8,7 @@ extracted_from: skills/lean-math-analysis/SKILL.md
 # Real Analysis & Topology Encyclopaedia (Lean 4)
 
 > **Layering note.** This file holds the deep encyclopaedia content
-> previously embedded in [`skills/lean-math-analysis/SKILL.md`](../skills/lean-math-analysis/SKILL.md).
+> previously embedded in [`skills/lean-math-analysis/SKILL.md`](../../skills/lean-math-analysis/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow / Recovery /
 > Handoffs) and the high-frequency pitfalls / recipes; this file holds the
 > full reference content. Zero fidelity loss vs the pre-layering revision.
@@ -156,7 +156,7 @@ theorem cusp_potential_deriv (x a b : ℝ) :
 ### 4.2 Contraction Mapping Theorem
 
 Extracted to single canonical reference:
-[`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md).
+[`references/lean4-contraction-catalog.md`](lean-math-analysis-handbook.md).
 That file owns the `ContractingWith` API, fixed-point lemma list, the
 affine trust-contraction pattern, and the project contraction-theorem
 index.  When citing a Banach lemma, link there rather than restating
@@ -254,7 +254,7 @@ theorem convex_in_simplex (hλ : 0 ≤ λ) (hλ1 : λ ≤ 1)
 ## Part 7 -- Research Council Integration
 
 Consolidated into the single canonical routing matrix:
-[`research-council-skill-map.md`](research-council-skill-map.md)
+[`research-council-skill-map.md`](../protocols/research-council-skill-map.md)
 (see the "Analysis" section).  When dispatching a question to a
 council member, cite that table rather than restating the rows here.
 
@@ -271,14 +271,14 @@ council member, cite that table rather than restating the rows here.
 ### 8.2 IVT Patterns
 
 Extracted to single canonical reference:
-[`references/lean4-ivt-patterns.md`](../../references/lean4-ivt-patterns.md).
+[`references/lean4-ivt-patterns.md`](lean-math-analysis-handbook.md).
 That file owns the full incantation, polynomial-continuity prerequisite,
 project `asymmetric_three_roots_ivt` application, and the pitfall table.
 
 ### 8.3 Contraction Theorem Library
 
 Extracted to single canonical reference:
-[`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md).
+[`references/lean4-contraction-catalog.md`](lean-math-analysis-handbook.md).
 That file owns the `ContractingWith` API, geometric-decay lemma, the
 affine trust-contraction pattern, the project contraction-theorem
 index, and the Lyapunov direct-method bridge.
@@ -322,7 +322,7 @@ Guide to formalizing analysis and topology in Lean 4 using Mathlib's filter-base
 ## Detailed reference
 
 Full encyclopaedia content (Parts 1 through 8) lives in
-[`references/lean4-math-analysis.md`](../../references/lean4-math-analysis.md). Load that file
+[`references/lean4-math-analysis.md`](lean-math-analysis-handbook.md). Load that file
 when authoring; the SKILL.md only carries the dispatch contract and
 the high-frequency pitfalls / recipes (kept inline below).
 
@@ -371,10 +371,10 @@ If nothing fires, fall back to explicit `apply HasDerivAt.comp`, `apply Continuo
 
 When `Tendsto` won't simp:
 
-- **`eventually_atTop`** rewrites `∀ᶠ n in atTop, P n` to `∃ N, ∀ n ≥ N, P n` -- switch when classical existence is easier than filter algebra.
+- **`eventually_atTop`** rewrites `∀^f n in atTop, P n` to `∃ N, ∀ n ≥ N, P n` -- switch when classical existence is easier than filter algebra.
 - **`Filter.tendsto_atTop_atTop`** -- discrete `f n → ∞`: prove `∀ b, ∃ N, ∀ n ≥ N, b ≤ f n`.
 - **`Tendsto.comp`** -- composition of limits; the most common building block.
-- **`Filter.eventually_iff_exists_mem`** -- convert between `∀ᶠ` and explicit set membership.
+- **`Filter.eventually_iff_exists_mem`** -- convert between `∀^f` and explicit set membership.
 - **`Metric.tendsto_atTop`** -- for metric-space convergence, use the `ε / δ` form directly when filter-arithmetic gets stuck.
 
 When integration limits won't compute:
@@ -387,11 +387,11 @@ When integration limits won't compute:
 
 ## See also
 
-- [`../../references/lean4-math-analysis.md`](../../references/lean4-math-analysis.md) -- Real Analysis & Topology Encyclopaedia (full encyclopaedia,
+- [`../../references/lean4-math-analysis.md`](lean-math-analysis-handbook.md) -- Real Analysis & Topology Encyclopaedia (full encyclopaedia,
   extracted from this skill)
-- [`../../templates/Template_Analysis.md`](../../templates/Template_Analysis.md) -- Template: Real analysis (continuity, Lipschitz, sqrt)
-- [`../../references/lean4-proof-strategy.md`](../../references/lean4-proof-strategy.md) -- Proof strategy & error priority
-- [`../../references/lean4-tactic-hierarchy.md`](../../references/lean4-tactic-hierarchy.md) -- Tactic priority for analysis goals
+- [`../../templates/Template_Analysis.md`](../../templates/packs/domain-starters/Template_Analysis.md) -- Template: Real analysis (continuity, Lipschitz, sqrt)
+- [`../../references/lean4-proof-strategy.md`](../protocols/lean4-proof-strategy.md) -- Proof strategy & error priority
+- [`../../references/lean4-tactic-hierarchy.md`](../protocols/lean4-tactic-hierarchy.md) -- Tactic priority for analysis goals
 
 ---
 
@@ -449,12 +449,12 @@ Topological and analytic foundations for dynamical systems, convergence proofs, 
 
 | Theorem | Statement | Common application |
 |---|---|---|
-| **Banach** | Contraction on complete metric space ⟹ unique fixed point | Bellman operator, governance Lyapunov |
+| **Banach** | Contraction on complete metric space ⇒ unique fixed point | Bellman operator, governance Lyapunov |
 | **Brouwer** | Continuous map $B^n → B^n$ has fixed point | Trust equilibrium existence |
-| **Schauder** | Continuous map on compact convex ⟹ fixed point | Infinite-dimensional generalizations |
-| **Kakutani** | Upper-hemicontinuous correspondence ⟹ fixed point | Nash equilibrium existence |
-| **Tarski** | Monotone function on complete lattice ⟹ fixed point | Lattice-ordered quality gates |
-| **Knaster-Tarski** | Monotone on CPO ⟹ least/greatest fixed points | Order-theoretic gate properties |
+| **Schauder** | Continuous map on compact convex ⇒ fixed point | Infinite-dimensional generalizations |
+| **Kakutani** | Upper-hemicontinuous correspondence ⇒ fixed point | Nash equilibrium existence |
+| **Tarski** | Monotone function on complete lattice ⇒ fixed point | Lattice-ordered quality gates |
+| **Knaster-Tarski** | Monotone on CPO ⇒ least/greatest fixed points | Order-theoretic gate properties |
 
 ### 1.3 Contraction Mapping Theory
 
@@ -488,8 +488,8 @@ For $\phi_t : X → X$ continuous:
 
 Bounded phase spaces such as quality measures in $[0,1]^n$ are compact:
 - **Bolzano-Weierstrass**: Every sequence has convergent subsequence
-- **Arzela-Ascoli**: Equicontinuous + pointwise bounded ⟹ compact in $C(X)$
-- **Prokhorov**: Tight probability measures ⟹ compact (for stochastic CCV)
+- **Arzela-Ascoli**: Equicontinuous + pointwise bounded ⇒ compact in $C(X)$
+- **Prokhorov**: Tight probability measures ⇒ compact (for stochastic CCV)
 
 ### 2.3 Stability Topology
 
@@ -524,7 +524,7 @@ Bounded phase spaces such as quality measures in $[0,1]^n$ are compact:
 - **Spectrum**: $\sigma(A) = \{\lambda : (A - \lambda I) \text{ not invertible}\}$
 - **Spectral radius**: $\rho(A) = \max |\sigma(A)|$
 - **Spectral gap**: $1 - \rho_2$ where $\rho_2$ = second-largest eigenvalue modulus
-- **Perron-Frobenius**: Non-negative matrix ⟹ dominant eigenvalue real, positive
+- **Perron-Frobenius**: Non-negative matrix ⇒ dominant eigenvalue real, positive
 - **Common use**: spectral gaps of stochastic transition matrices govern mixing time
 
 ---
@@ -629,7 +629,7 @@ mathematical role:
 | Mathematical Intent | Lean 4 / Mathlib Tactic | Notes |
 | :--- | :--- | :--- |
 | Prove continuity, differentiability, or measurability | `by fun_prop` | Supersedes legacy `continuity` for most composite expressions |
-| Work with eventualities `∀ᶠ x in l, P x` | `filter_upwards [h1, h2] with x hx1 hx2` | Avoids unfolding `Filter.Eventually` |
+| Work with eventualities `∀^f x in l, P x` | `filter_upwards [h1, h2] with x hx1 hx2` | Avoids unfolding `Filter.Eventually` |
 | Convert normed distance `dist x y` to `‖x - y‖` | `simp only [dist_eq_norm]` | Bridges `MetricSpace` and `NormedAddCommGroup` |
 | Apply Extreme Value Theorem on compact set | `IsCompact.exists_isMinOn` / `IsCompact.exists_isMaxOn` | Requires `hs : IsCompact s`, `hne : s.Nonempty`, `hf : ContinuousOn f s` |
 
@@ -648,7 +648,7 @@ mathematical role:
 # Real Analysis & Topology Encyclopaedia (Lean 4)
 
 > **Layering note.** This file holds the deep encyclopaedia content
-> previously embedded in [`skills/lean-math-analysis/SKILL.md`](../skills/lean-math-analysis/SKILL.md).
+> previously embedded in [`skills/lean-math-analysis/SKILL.md`](../../skills/lean-math-analysis/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow / Recovery /
 > Handoffs) and the high-frequency pitfalls / recipes; this file holds the
 > full reference content. Zero fidelity loss vs the pre-layering revision.
@@ -796,7 +796,7 @@ theorem cusp_potential_deriv (x a b : ℝ) :
 ### 4.2 Contraction Mapping Theorem
 
 Extracted to single canonical reference:
-[`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md).
+[`references/lean4-contraction-catalog.md`](lean-math-analysis-handbook.md).
 That file owns the `ContractingWith` API, fixed-point lemma list, the
 affine trust-contraction pattern, and the project contraction-theorem
 index.  When citing a Banach lemma, link there rather than restating
@@ -894,7 +894,7 @@ theorem convex_in_simplex (hλ : 0 ≤ λ) (hλ1 : λ ≤ 1)
 ## Part 7 -- Research Council Integration
 
 Consolidated into the single canonical routing matrix:
-[`research-council-skill-map.md`](research-council-skill-map.md)
+[`research-council-skill-map.md`](../protocols/research-council-skill-map.md)
 (see the "Analysis" section).  When dispatching a question to a
 council member, cite that table rather than restating the rows here.
 
@@ -911,14 +911,14 @@ council member, cite that table rather than restating the rows here.
 ### 8.2 IVT Patterns
 
 Extracted to single canonical reference:
-[`references/lean4-ivt-patterns.md`](../../references/lean4-ivt-patterns.md).
+[`references/lean4-ivt-patterns.md`](lean-math-analysis-handbook.md).
 That file owns the full incantation, polynomial-continuity prerequisite,
 project `asymmetric_three_roots_ivt` application, and the pitfall table.
 
 ### 8.3 Contraction Theorem Library
 
 Extracted to single canonical reference:
-[`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md).
+[`references/lean4-contraction-catalog.md`](lean-math-analysis-handbook.md).
 That file owns the `ContractingWith` API, geometric-decay lemma, the
 affine trust-contraction pattern, the project contraction-theorem
 index, and the Lyapunov direct-method bridge.

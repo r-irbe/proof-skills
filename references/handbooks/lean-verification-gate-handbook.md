@@ -302,7 +302,7 @@ Each level catches what the level below cannot. No single level is sufficient al
 
 ## See also
 
-- [`../../templates/Template_Verification.md`](../../templates/Template_Verification.md) -- Template: What to enforce and how
+- [`../../templates/Template_Verification.md`](../../templates/core/Template_Verification.md) -- Template: What to enforce and how
 - [`../../scripts/lean/`](../../scripts/lean/) -- Runnable enforcement scripts (project-agnostic)
 
 ---
@@ -344,7 +344,7 @@ Each level catches what the level below cannot. No single level is sufficient al
    `pruneHeaderNatDomain`], `lean-rules` via `node tools/lean-lsp-mcp/bin/lean-rules.js`, `pi-lens` [`pilens_ast_grep_search`, `pilens_diagnostics`] as
    sub-second structural pre-checks before `lake build`, or `pi-harness-bridge` policy/unicode gates); read the repository's `lakefile.lean` + recent
    commit log.
-2. **Run** [execute] -- execute the script(s) in the order documented in [`REFERENCE.md`](./REFERENCE.md) Part 2; capture stdout, stderr, exit code,
+2. **Run** [execute] -- execute the script(s) in the order documented in [`REFERENCE.md`](lean-verification-gate-handbook.md) Part 2; capture stdout, stderr, exit code,
    artefact paths.
 3. **Validate** [validate] -- interpret exit codes against the blocking-vs-advisory table; for blocking failures, HALT and route to recovery.
 4. **Aggregate** [validate] -- compose a per-script status line + overall pass/fail; surface advisories without blocking.
@@ -361,10 +361,9 @@ Each level catches what the level below cannot. No single level is sufficient al
 
 ## Handoffs
 
-- **Predecessors / successors:** see FM `handoffs` (grammar from ADR-0080).
+- **Predecessors / successors:** see FM `handoffs`.
 - **Source spec:** `specs/lean/enforcement/requirements.md` -- every G-rule traces to an AC there.
-- **Related ADRs:** ADR-0076, ADR-0080.
-- **Reference:** see [`REFERENCE.md`](./REFERENCE.md) for the full script inventory, integration matrix, anti-patterns, and the workflow-gate enforcement
+- **Reference:** see [`REFERENCE.md`](lean-verification-gate-handbook.md) for the full script inventory, integration matrix, anti-patterns, and the workflow-gate enforcement
   model (original v1 content, preserved verbatim).
 
 ## Common failure modes

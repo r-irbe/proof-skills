@@ -21,7 +21,7 @@ handoffs:
   - skill:lean-doc-sync
   - skill:lean-corpus-audit
 metadata:
-  version: 0.2.0
+  version: 0.5.0
   source_spec: specs/lean/blueprint/requirements.md
   last_reviewed: '2026-05-26'
 ---
@@ -29,7 +29,7 @@ metadata:
 # lean-blueprint
 > ⚠️ **MANDATORY** (hot-tier): the gates in §Behavioural rules and the Persist
 > step in §Workflow are CI-enforced. Skipping Persist = incomplete, regardless
-> of artefact quality (FSIA-R-11-09).
+> of artefact quality (GT-26).
 ## Routing
 - **USE FOR:** generating a navigable formal blueprint from a Lean 4 codebase; annotating definitions and
   theorems with
@@ -65,9 +65,8 @@ metadata:
 - Confidence < 80 % on annotation strategy → STOP, ask.
 - Context degradation signals (≥2 from AGENTS.md) → recommend fresh session.
 ## Handoffs
-- **Predecessors / successors**: see FM `handoffs` (grammar from ADR-0080).
+- **Predecessors / successors**: see FM `handoffs`.
 - **Source spec**: `specs/lean/blueprint/requirements.md` -- every G-rule traces to an AC there.
-- **Related ADRs**: ADR-0076, ADR-0080.
 ## Detailed reference
 - **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-blueprint-tables.md`](../../references/cards/lean-blueprint-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in

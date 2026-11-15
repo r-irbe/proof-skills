@@ -3,8 +3,8 @@
 
 Captures the Lean corpus baseline from:
 - docs/tracking/axiom_audit.md (theorem / module totals)
-- EASCI/**/*.lean (decl, simp, axiom, sorry/admit, noncomputable scans)
-- EASCI/ReinforcementLearning/**/*.lean (per-module LOC)
+- Project/**/*.lean (decl, simp, axiom, sorry/admit, noncomputable scans)
+- Project/Core/**/*.lean (per-module LOC)
 
 Default mode diffs the current capture against the frozen snapshot and exits:
 - 0 if clean
@@ -39,7 +39,7 @@ try:
     _LEAN_DIR = _CFG.lean_dir
 except Exception:
     REPO = Path(_os.environ.get("LEAN_PROJECT_ROOT", Path.cwd())).resolve()
-    _LEAN_DIR = _os.environ.get("LEAN_CORPUS_DIR", "EASCI")
+    _LEAN_DIR = _os.environ.get("LEAN_CORPUS_DIR", "Project")
 _GIT_ROOT_PROC = subprocess.run(
     ["git", "rev-parse", "--show-toplevel"],
     cwd=REPO,
@@ -52,12 +52,12 @@ try:
     REPO_IN_GIT = REPO.relative_to(GIT_ROOT)
 except ValueError:
     REPO_IN_GIT = Path(".")
-EASCI_ROOT = REPO if _LEAN_DIR in ("", ".") else (REPO / _LEAN_DIR)
+PROJECT_ROOT = REPO if _LEAN_DIR in ("", ".") else (REPO / _LEAN_DIR)
 AUDIT_PATH = REPO / "docs" / "tracking" / "axiom_audit.md"
 DEFAULT_SNAPSHOT = REPO / "docs" / "refactor" / "wave-14" / "b2-prep-phaseD-axiom-snapshot.json"
 
-RL_CORE = "EASCI/ReinforcementLearning/Core.lean"
-RL_BELLMAN = "EASCI/ReinforcementLearning/Core/Bellman.lean"
+RL_CORE = "Project/Core.lean"
+RL_BELLMAN = "Project/Core/Bellman.lean"
 DECL_KINDS = ("theorem", "lemma", "def", "instance", "structure", "inductive")
 EXIT_OK = 0
 EXIT_REGRESSION = 2
@@ -135,10 +135,10 @@ def git_show_text(ref: str, rel: str) -> str:
 
 def lean_relpaths(ref: str | None = None) -> list[str]:
     if ref is None:
-        return sorted(relpath(path) for path in EASCI_ROOT.rglob("*.lean"))
+        return sorted(relpath(path) for path in PROJECT_ROOT.rglob("*.lean"))
 
     proc = subprocess.run(
-        ["git", "ls-tree", "-r", "--name-only", ref, "--", repo_rel_to_git("EASCI")],
+        ["git", "ls-tree", "-r", "--name-only", ref, "--", repo_rel_to_git("Project")],
         cwd=GIT_ROOT,
         check=True,
         capture_output=True,
@@ -329,7 +329,7 @@ def capture_current(ref: str | None = None) -> dict[str, object]:
     loc_by_rl_module = {
         rel: int(metrics["loc"])
         for rel, metrics in file_metrics.items()
-        if rel.startswith("EASCI/ReinforcementLearning/")
+        if rel.startswith("Project/Core/")
     }
 
     totals = {
@@ -351,7 +351,7 @@ def capture_current(ref: str | None = None) -> dict[str, object]:
         "decl_totals": aggregate_decls(file_metrics),
         "rl_core_decls": dict(file_metrics[RL_CORE]["decls"]),
         "rl_bellman_decls": dict(file_metrics[RL_BELLMAN]["decls"]),
-        "other_easci_decls": aggregate_decls(file_metrics, exclude={RL_CORE, RL_BELLMAN}),
+        "other_project_decls": aggregate_decls(file_metrics, exclude={RL_CORE, RL_BELLMAN}),
         "simp_count_rl": int(file_metrics[RL_CORE]["simp"]),
         "simp_count_bellman": int(file_metrics[RL_BELLMAN]["simp"]),
         "simp_counts": simp_counts,
@@ -424,7 +424,7 @@ def diff_snapshot(snapshot: dict[str, object], current: dict[str, object]) -> di
     noncomputable_after = int(current["totals"]["noncomputable"])
     note_if_changed("noncomputable", noncomputable_before, noncomputable_after)
 
-    for bucket in ("rl_core_decls", "rl_bellman_decls", "other_easci_decls"):
+    for bucket in ("rl_core_decls", "rl_bellman_decls", "other_project_decls"):
         for kind in DECL_KINDS:
             before = int(snapshot[bucket][kind])
             after = int(current[bucket][kind])

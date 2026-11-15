@@ -21,7 +21,7 @@ handoffs:
   - skill:lean-proof-review
   - skill:lean-retro-methodology
 metadata:
-  version: 0.2.0
+  version: 0.5.0
   source_spec: skills/lean-knowledge-formalization/SKILL.md (this file)
   last_reviewed: '2026-05-27'
 ---
@@ -63,7 +63,7 @@ architectures.
   `@lean-math-discrete`.
 ## Handoffs
 - **Predecessors:** `agent:gateway`, `skill:lean-research`.
-- **Successors:** `skill:lean-proof-review`, `skill:lean-causal-reasoning`, `skill:lean-zettelkasten`.
+- **Successors:** `skill:lean-proof-review`, `skill:lean-knowledge-formalization`, `skill:lean-retro-methodology`.
 ---
 ## Detailed reference
 - **Layer-1 Fast Lookup Card (read first)**:

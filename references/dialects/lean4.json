@@ -297,7 +297,7 @@
       "canonical_name": "Invariant Certificates & Lyapunov Energy Functions",
       "category": "verification_logic",
       "dialect_tactics": [
-        "EASCI/StochasticCCV/ contraction bounds",
+        "Markov chain contraction bounds",
         "inductive invariant preservation",
         "Nat.div_add_mod"
       ],
@@ -309,7 +309,7 @@
         "Loss of monotonicity in composite state spaces"
       ],
       "lean4_target_tactics": [
-        "EASCI/StochasticCCV/ contraction bounds",
+        "Markov chain contraction bounds",
         "inductive invariant preservation",
         "Nat.div_add_mod"
       ],
@@ -517,9 +517,9 @@
         "Tendsto.comp",
         "Tendsto.add"
       ],
-      "dialect_syntax_pattern": "Tendsto f (𝓝 x) (𝓝 y) | Tendsto u atTop (𝓝 l) | ∀ᶠ n in atTop, P n",
+      "dialect_syntax_pattern": "Tendsto f (𝓝 x) (𝓝 y) | Tendsto u atTop (𝓝 l) | ∀^f n in atTop, P n",
       "dialect_semantics": "Order-lattice `Filter α` where `Tendsto f l₁ l₂` is `Filter.map f l₁ ≤ l₂`, unifying sequence limits (`atTop`), topological neighborhoods (`𝓝 x`), punctured limits (`𝓝[≠] x`), and measure (`ae μ`).",
-      "dialect_idiom": "Prove continuity with `fun_prop` (or `continuity`), combine eventualities `∀ᶠ` with `filter_upwards`, and compose limits via `Tendsto.comp` instead of unfolding `(ε, δ)`.",
+      "dialect_idiom": "Prove continuity with `fun_prop` (or `continuity`), combine eventualities `∀^f` with `filter_upwards`, and compose limits via `Tendsto.comp` instead of unfolding `(ε, δ)`.",
       "dialect_pitfalls": [
         "Avoid unfolding `Metric.tendsto_nhds` to `(ε, δ)` unless proving a base metric primitive",
         "Distinguish `𝓝 x` (includes `x`) from `𝓝[≠] x` (punctured neighborhood used in derivatives)"
@@ -531,7 +531,7 @@
         "Tendsto.comp",
         "Tendsto.add"
       ],
-      "lean4_target_syntax": "Tendsto f (𝓝 x) (𝓝 y) | Tendsto u atTop (𝓝 l) | ∀ᶠ n in atTop, P n"
+      "lean4_target_syntax": "Tendsto f (𝓝 x) (𝓝 y) | Tendsto u atTop (𝓝 l) | ∀^f n in atTop, P n"
     }
   ]
 }

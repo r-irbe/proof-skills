@@ -235,7 +235,7 @@ macro "<proj>_mono_corollaries" : tactic => `(tactic|
    `simp only [<explicit list>]` + `linarith`/`omega` in *finished*
    proofs to insulate against future Mathlib `@[simp]` churn.
 
-`first_par` (Lean v4.28.0): syntax parses, tactic **not implemented**.
+`first_par` (Lean v4.34.1): syntax parses, tactic **not implemented**.
 When implemented, mechanical swap `first` → `first_par`; until then,
 keep branches order-independent so the swap is safe. -/
 
@@ -323,4 +323,4 @@ end MyProj.Tactics
 * [`Template_Theorem.md`](./Template_Theorem.md)
 * [`Template_DataModule.md`](./Template_DataModule.md)
 * [`Template_Bridge.md`](./Template_Bridge.md)
-* [`../references/lean4-tactic-hierarchy.md`](../references/lean4-tactic-hierarchy.md)
+* [`../references/lean4-tactic-hierarchy.md`](../../references/protocols/lean4-tactic-hierarchy.md)

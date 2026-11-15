@@ -77,10 +77,10 @@ package MyProject where
 
 -- -- mathlib -------------------------------------------------------------
 -- REQUIRED: Mathlib provides all analysis, algebra, tactics.
--- ALWAYS pin to a specific tag (e.g., v4.28.0) for reproducibility.
+-- ALWAYS pin to a specific tag (e.g., v4.34.1) for reproducibility.
 -- PITFALL: Using `main` or `master` branch breaks reproducibility.
 require mathlib from git
-  "https://github.com/leanprover-community/mathlib4.git" @ "v4.28.0"
+  "https://github.com/leanprover-community/mathlib4.git" @ "v4.34.1"
 
 -- -- cslib ---------------------------------------------------------------
 -- For example: cslib for Qq (type-safe quotation in custom tactics).
@@ -173,7 +173,7 @@ lean_lib MyProject where
 ## §2  lean-toolchain File
 
 ```
-leanprover/lean4:v4.28.0
+leanprover/lean4:v4.34.1
 ```
 
 TEMPLATE: Create `lean-toolchain` (no extension) in the project root.

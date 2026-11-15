@@ -50,3 +50,42 @@ extracted_from: skills/counterexample-first-proving/SKILL.md
 2. **Boundary Witness Sweep**: Test `{0, 1, 2, maxBound}` and degenerate structures (`∅`, singleton, duplicate elements).
 3. **Property-Based Shrinking**: Invoke `lean_counterexample_search` (isolated scratch copy; zero source pollution).
 4. **Escalation Contract**: When a counterexample witness `w` is confirmed (`¬ P w`), Prover MUST NOT silently weaken the theorem signature; record `w` in the handoff packet and return to `specifier`.
+
+---
+
+## 3. Worked Patterns & Scratch-Harness Idioms
+
+### 3.1 Galois-Pruned Boundary Grid Before Random Fuzzing
+Random generators rarely hit exact equality planes (`a + b = c`), zero-divisors, or `Nat` subtraction truncation corners (`a < b`). Always probe the deterministic Galois boundary lattice first:
+- **`Nat` / `UInt64`**: `{0, 1, 2, k - 1, k, k + 1}` and pairs with `a = 0, b = 1` (`0 - 1 = 0`).
+- **Lists / Sequences**: `[]`, `[0]`, `[0, 0]` (duplicate elements break injectivity/nodup assumptions), and `[1, 0]` (unsorted order).
+- **Graphs / Relations**: empty graph (`0` vertices), isolated vertex, self-loop, 2-cycle (non-DAG), and disconnected two-component graph.
+
+```lean
+-- Ephemeral scratch probe (NEVER commit into library modules):
+section ScratchFalsify
+def checkClaim (a b : Nat) : Bool :=
+  decide ((a - b) + b = a)
+
+-- Immediately exposes (0, 1) -> false without invoking heavy tactics!
+#eval (List.range 4).flatMap fun a =>
+  (List.range 4).filterMap fun b =>
+    if checkClaim a b then none else some (a, b)
+end ScratchFalsify
+```
+
+### 3.2 Testing Non-Decidable `Real` / Topological Conjectures via Rational Specialization
+When a theorem quantifies over `[Field K]` or `Real`, `Plausible` cannot directly decide equality on arbitrary reals. Specialize the statement in a scratch block to `Rat` (`ℚ`) or `Fin n -> Rat` over `{ -2, -1, -1/2, 0, 1/2, 1, 2 }`:
+1. If the specialized `ℚ` claim fails on `(-1/2, 1)`, the universal `ℝ` theorem is refuted immediately (since `ℚ` embeds into `ℝ` preserving ring and order operations).
+2. If the specialized claim holds on all rational witnesses up to denominator 4, inspect whether completeness (`sSup`, `Tendsto`) or positivity (`0 < x`) was omitted from hypotheses.
+
+### 3.3 Mid-Proof Subgoal Falsification Rule (10-Step Cutoff)
+Whenever an `induction`, `rw`, or `cases` step leaves an open subgoal that resists closure for more than 10 tactic steps:
+1. Extract the current subgoal context and target via `lean_goal(filePath, line, col, target="filtered")`.
+2. Form a standalone scratch lemma from that subgoal and run `lean_counterexample_search(strategy="dense")`.
+3. Over 40% of stuck induction steps in practice stem from an **under-strengthened induction hypothesis** (where the subgoal is literally false for general `ih` inputs even though the top-level theorem is true!). Shrinking pinpoints the missing invariant term immediately.
+
+## 4. Pitfalls, Recovery & Handoffs
+- **Never commit `#eval` or `plausible` calls** into production library files; keep falsification strictly in `lean_counterexample_search` or untracked scratch probes.
+- **Vacuous Precondition Trap**: If `Plausible` reports "gave up after 100 discarded samples", your hypotheses `h1 ∧ h2` may be mutually inconsistent (`FIDELITY-01` vacuity)! Construct a positive witness (`example : ∃ x, Precond x`) before proving `Precond x → Concl x`.
+- **Handoffs**: Predecessors: `lean-specification`, `lean-proof`. Successors: `lean-specification` (on counterexample `w`), `lean-proof` (once falsification passes clean).

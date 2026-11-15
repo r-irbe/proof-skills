@@ -10,7 +10,7 @@ Supports:
   - altproof report <sandbox_dir> <out_dir>
   - altproof routes [--json | --regen]
 
-Scoped Unicode policy (INV-001; typographic-free by default).
+Strict 7-bit ASCII only (INV-001).
 """
 
 from __future__ import annotations
@@ -36,11 +36,15 @@ SUBCOMMANDS = (
     "routes",
     "legibility",
     "axiom-profiles",
+    "coupling-scan",
 )
 
 
 def _cmd_rank(argv: list[str]) -> int:
-    from cost_ranker import Weights, cost, leanprogress_scorer
+    if __package__:
+        from .cost_ranker import Weights, cost, leanprogress_scorer
+    else:
+        from cost_ranker import Weights, cost, leanprogress_scorer
 
     parser = argparse.ArgumentParser(
         prog="altproof rank",
@@ -76,7 +80,10 @@ def _cmd_rank(argv: list[str]) -> int:
 
 
 def _cmd_extract(argv: list[str]) -> int:
-    from extraction_detector import detect_v3, module_symbols
+    if __package__:
+        from .extraction_detector import detect_v3, module_symbols
+    else:
+        from extraction_detector import detect_v3, module_symbols
 
     parser = argparse.ArgumentParser(
         prog="altproof extract",
@@ -105,8 +112,14 @@ def _cmd_extract(argv: list[str]) -> int:
 
 
 def _cmd_routes(argv: list[str]) -> int:
-    import gen_route_table
-    from route_definitions import ROUTES
+    if __package__:
+        from . import gen_route_table
+    else:
+        import gen_route_table
+    if __package__:
+        from .route_definitions import ROUTES
+    else:
+        from route_definitions import ROUTES
 
     parser = argparse.ArgumentParser(
         prog="altproof routes",
@@ -145,15 +158,24 @@ def main(argv: list[str] | None = None) -> int:
     rest = args[1:]
 
     if cmd in ("detect-v4", "detect_v4"):
-        import detect_v4
+        if __package__:
+            from . import detect_v4
+        else:
+            import detect_v4
         return detect_v4.main(rest)
     if cmd in ("dispatch", "tactic-dispatcher", "tactic_dispatcher"):
-        import tactic_dispatcher
+        if __package__:
+            from . import tactic_dispatcher
+        else:
+            import tactic_dispatcher
         return tactic_dispatcher._cli_main(rest)
     if cmd in ("rank", "cost-ranker", "cost_ranker"):
         return _cmd_rank(rest)
     if cmd in ("cluster", "have-cluster", "have_cluster"):
-        import have_cluster
+        if __package__:
+            from . import have_cluster
+        else:
+            import have_cluster
         if not rest or rest[0] in ("-h", "--help"):
             print("usage: altproof cluster <root_dir> [out_report.md]")
             return 0
@@ -168,14 +190,26 @@ def main(argv: list[str] | None = None) -> int:
     if cmd in ("routes", "route-table", "route_table"):
         return _cmd_routes(rest)
     if cmd == "legibility":
-        import legibility
+        if __package__:
+            from . import legibility
+        else:
+            import legibility
         if not rest or rest[0] in ("-h", "--help"):
             print("usage: altproof legibility <file.lean>")
             return 0
         return legibility.main(["legibility.py"] + rest)
     if cmd in ("axiom-profiles", "axiom_profiles"):
-        import axiom_profiles
+        if __package__:
+            from . import axiom_profiles
+        else:
+            import axiom_profiles
         return axiom_profiles.main(rest)
+    if cmd in ("coupling-scan", "coupling_scan", "coupling_scanner"):
+        if __package__:
+            from . import coupling_scanner
+        else:
+            import coupling_scanner
+        return coupling_scanner.main(rest)
 
     mod_path = HERE / (cmd.replace("-", "_") + ".py")
     if mod_path.exists():

@@ -6,7 +6,7 @@ dict from a YAML case, this grader checks:
 * every pattern in ``expected.contains`` matches (regex, multiline);
 * no pattern in ``expected.not_contains`` matches.
 
-It does not call any LLM. It is intentionally dumb — the kind of grader
+It does not call any LLM. It is intentionally dumb - the kind of grader
 you wire up first because it has zero variance and zero cost.
 """
 

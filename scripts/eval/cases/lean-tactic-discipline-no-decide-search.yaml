@@ -6,7 +6,7 @@ difficulty: easy
 input:
   prompt: 'Prove in Lean 4 that the sum 1 + 2 + ... + 100 equals 5050.
 
-    Use a structured proof, not `decide` or `native_decide` — those
+    Use a structured proof, not `decide` or `native_decide` - those
 
     are reduction hammers, not arguments.
 

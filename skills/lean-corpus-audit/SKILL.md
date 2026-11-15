@@ -22,7 +22,7 @@ handoffs:
   - skill:lean-tautology-triage
   - skill:lean-retro-methodology
 metadata:
-  version: 0.4.0
+  version: 0.5.0
   source_spec: Unified from lean-quality-engine, lean-deep-audit, and lean-retroactive-audit
   last_reviewed: 2026-11
 ---

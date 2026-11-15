@@ -51,7 +51,7 @@ aggregation:
   pass_floor: 4
 
 provenance: |
-  R22 (Round 22) — new rubric introduced 2026-05-27 to give the
+  R22 (Round 22) - new rubric introduced 2026-05-27 to give the
   calibration corpus a finer hook on tactic-discipline failures,
   complementing the existing `lean-proof-quality` rubric (which
   scores proof CORRECTNESS).

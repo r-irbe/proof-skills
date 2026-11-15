@@ -5,10 +5,10 @@
   "handbooks_count": 38,
   "dialects_count": 6,
   "counts": {
-    "goal_shape_templates": 148,
-    "intent_phrasebook": 132,
-    "error_to_fix": 110,
-    "total_rows": 390
+    "goal_shape_templates": 149,
+    "intent_phrasebook": 134,
+    "error_to_fix": 111,
+    "total_rows": 394
   },
   "goal_shape_templates": [
     {
@@ -1026,34 +1026,56 @@
     {
       "handbook": "lean-proof-refactor-handbook",
       "goal_shape": "Proof `> 50 LOC` with repeated sub-block",
-      "route_or_concordance": "`CUT` -> private helper lemma",
-      "template": "Extract only when reusable (`>= 2` call sites or clean conceptual boundary)",
+      "route_or_concordance": "`CUT` -> private/module helper lemma",
+      "template": "Extract only when reusable (`>= 2` call sites or clean conceptual invariant)",
       "columns": {
         "Goal / Term Shape": "Proof `> 50 LOC` with repeated sub-block",
-        "Primary Tactic / Pattern": "`CUT` -> private helper lemma",
-        "Canonical Recipe / Notes": "Extract only when reusable (`>= 2` call sites or clean conceptual boundary)"
+        "Primary Tactic / Pattern": "`CUT` -> private/module helper lemma",
+        "Canonical Recipe / Notes": "Extract only when reusable (`>= 2` call sites or clean conceptual invariant)"
       }
     },
     {
       "handbook": "lean-proof-refactor-handbook",
-      "goal_shape": "Concrete coordinate/bit-level proof duplicated",
-      "route_or_concordance": "Abstraction-Concrete Duality lift",
-      "template": "Prove once over abstract algebraic/order structure; instantiate at call sites",
+      "goal_shape": "Concrete coordinate/`Real` proof using only ring/order ops",
+      "route_or_concordance": "Statement-level mixin generalization",
+      "template": "Generalize `[CommRing R] [LinearOrder R] [IsOrderedRing R]`; keep `Real` theorem as 1-line corollary",
       "columns": {
-        "Goal / Term Shape": "Concrete coordinate/bit-level proof duplicated",
-        "Primary Tactic / Pattern": "Abstraction-Concrete Duality lift",
-        "Canonical Recipe / Notes": "Prove once over abstract algebraic/order structure; instantiate at call sites"
+        "Goal / Term Shape": "Concrete coordinate/`Real` proof using only ring/order ops",
+        "Primary Tactic / Pattern": "Statement-level mixin generalization",
+        "Canonical Recipe / Notes": "Generalize `[CommRing R] [LinearOrder R] [IsOrderedRing R]`; keep `Real` theorem as 1-line corollary"
       }
     },
     {
       "handbook": "lean-proof-refactor-handbook",
-      "goal_shape": "Slow `Prop`-friendly recursive `specFn` in runtime path",
+      "goal_shape": "Slow `Prop`-friendly `specFn` vs fast monomorphic `fastFn`",
       "route_or_concordance": "`@[csimp] theorem specFn_eq_fastFn` (`SAIR-LAW-07`)",
-      "template": "Keep `specFn` for proofs; route execution to monomorphic `fastFn`",
+      "template": "Keep `specFn` clean for proofs; route LCNF execution & `rw` to `fastFn`",
       "columns": {
-        "Goal / Term Shape": "Slow `Prop`-friendly recursive `specFn` in runtime path",
+        "Goal / Term Shape": "Slow `Prop`-friendly `specFn` vs fast monomorphic `fastFn`",
         "Primary Tactic / Pattern": "`@[csimp] theorem specFn_eq_fastFn` (`SAIR-LAW-07`)",
-        "Canonical Recipe / Notes": "Keep `specFn` for proofs; route execution to monomorphic `fastFn`"
+        "Canonical Recipe / Notes": "Keep `specFn` clean for proofs; route LCNF execution & `rw` to `fastFn`"
+      }
+    },
+    {
+      "handbook": "lean-proof-refactor-handbook",
+      "goal_shape": "Parametric hot kernel step (`1,600x..3,345x` WHNF penalty)",
+      "route_or_concordance": "`WAVE-13 G1` `rfl`-bridged Duality",
+      "template": "Specialize hot `def` to raw unboxed `Nat`; prove parametric lemma in cold section; bridge via `rfl`",
+      "columns": {
+        "Goal / Term Shape": "Parametric hot kernel step (`1,600x..3,345x` WHNF penalty)",
+        "Primary Tactic / Pattern": "`WAVE-13 G1` `rfl`-bridged Duality",
+        "Canonical Recipe / Notes": "Specialize hot `def` to raw unboxed `Nat`; prove parametric lemma in cold section; bridge via `rfl`"
+      }
+    },
+    {
+      "handbook": "lean-proof-refactor-handbook",
+      "goal_shape": "Verbose `Finset.sum` linearity or monotonicity block",
+      "route_or_concordance": "`sum_congr_ring` / `finset_mono` / `finset_nonneg`",
+      "template": "Collapse 15-40 line `Finset.sum` proofs to 1-line AltProof combinators",
+      "columns": {
+        "Goal / Term Shape": "Verbose `Finset.sum` linearity or monotonicity block",
+        "Primary Tactic / Pattern": "`sum_congr_ring` / `finset_mono` / `finset_nonneg`",
+        "Canonical Recipe / Notes": "Collapse 15-40 line `Finset.sum` proofs to 1-line AltProof combinators"
       }
     },
     {
@@ -1212,182 +1234,170 @@
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "goal_shape": "`let x := e; ... x ... x ...` inside recursive step",
-      "route_or_concordance": "`SAIR-LAW-01`, `SAIR-LAW-01B`",
+      "goal_shape": "`let x := e` inside hot `@Nat.rec` step body",
+      "route_or_concordance": "`SAIR-LAW-01`, `SAIR-LAW-01B`, `ADR-INV-0025`",
       "template": "`kernel-friendly-term-design`",
       "columns": {
-        "Goal / Term Shape": "`let x := e; ... x ... x ...` inside recursive step",
-        "Primary SAIR Law(s)": "`SAIR-LAW-01`, `SAIR-LAW-01B`",
+        "Goal / Term Shape": "`let x := e` inside hot `@Nat.rec` step body",
+        "Primary SAIR Law(s)": "`SAIR-LAW-01`, `SAIR-LAW-01B`, `ADR-INV-0025`",
         "Recommended AltProof Route": "`kernel-friendly-term-design`",
-        "Canonical Kernel Pattern / Tactic": "Bind once via `let x := e` when referenced >=2 times (DAG sharing); inline when referenced once (avoid `Let` + zeta tax)"
+        "Canonical Kernel Pattern / Tactic": "Inline single-use `let` bindings (`Expr::Let` + zeta tax); bind `let x := e` only when `>= 2` uses are dynamically evaluated on the active path AND confirmed by `real - twinlit` PMU"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "goal_shape": "Sibling calls `g (f x)` and `h (f x)` in same branch",
+      "goal_shape": "Sibling calls `(f x, g (f x))` or `Nat.add (f x) (f x)`",
       "route_or_concordance": "`SAIR-LAW-01C`",
       "template": "`kernel-friendly-term-design`",
       "columns": {
-        "Goal / Term Shape": "Sibling calls `g (f x)` and `h (f x)` in same branch",
+        "Goal / Term Shape": "Sibling calls `(f x, g (f x))` or `Nat.add (f x) (f x)`",
         "Primary SAIR Law(s)": "`SAIR-LAW-01C`",
         "Recommended AltProof Route": "`kernel-friendly-term-design`",
-        "Canonical Kernel Pattern / Tactic": "Hoist `let fx := f x` before the branch or tuple application"
+        "Canonical Kernel Pattern / Tactic": "Lean's WHNF cache is NOT shared across sibling `Expr` nodes; hoist `let fx := f x` once when `f` is non-trivial"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "goal_shape": "Closed expression `2^64 - 1` or `List.range 64` inside loop",
+      "goal_shape": "Closed expression `(1 <<< 64) - 1` or table inside lambda",
       "route_or_concordance": "`SAIR-LAW-02`, `SAIR-LAW-11`",
       "template": "`closed-def-whnf-caching`",
       "columns": {
-        "Goal / Term Shape": "Closed expression `2^64 - 1` or `List.range 64` inside loop",
+        "Goal / Term Shape": "Closed expression `(1 <<< 64) - 1` or table inside lambda",
         "Primary SAIR Law(s)": "`SAIR-LAW-02`, `SAIR-LAW-11`",
         "Recommended AltProof Route": "`closed-def-whnf-caching`",
-        "Canonical Kernel Pattern / Tactic": "Hoist to top-level `def C : Nat := ...` or evaluate at elaboration time via `eval_nat%`"
+        "Canonical Kernel Pattern / Tactic": "Hoist to a top-level closed `def` (memoized in `m_st->m_whnf`) or pre-evaluate at elaboration time via `eval_nat%`"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "goal_shape": "Deeply curried `fun a b c d => ...` where `a, b, c` are invariant",
-      "route_or_concordance": "`SAIR-LAW-02B`, `SAIR-LAW-04`",
+      "goal_shape": "Deeply curried `fun a b c d => ...` or `k + 1` step increment",
+      "route_or_concordance": "`SAIR-LAW-02B`, `SAIR-LAW-03`, `SAIR-LAW-03B`",
       "template": "`kernel-friendly-term-design`",
       "columns": {
-        "Goal / Term Shape": "Deeply curried `fun a b c d => ...` where `a, b, c` are invariant",
-        "Primary SAIR Law(s)": "`SAIR-LAW-02B`, `SAIR-LAW-04`",
+        "Goal / Term Shape": "Deeply curried `fun a b c d => ...` or `k + 1` step increment",
+        "Primary SAIR Law(s)": "`SAIR-LAW-02B`, `SAIR-LAW-03`, `SAIR-LAW-03B`",
         "Recommended AltProof Route": "`kernel-friendly-term-design`",
-        "Canonical Kernel Pattern / Tactic": "Place invariant binders outermost and vary only the innermost accumulator; eta-reduce point-free wrappers"
+        "Canonical Kernel Pattern / Tactic": "Place invariant binders outermost; prefer `Nat.succ k` on `@Nat.rec` step accumulators and `Nat.add 1 q` (constant on LHS) on non-structural counters (`ADR-INV-0025`)"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "goal_shape": "Commutative Nat op `acc + 1` or `n &&& (2^k - 1)`",
-      "route_or_concordance": "`SAIR-LAW-03`, `SAIR-LAW-03B`",
+      "goal_shape": "`termination_by` / `brecOn` or `if h : c then ... else ...`",
+      "route_or_concordance": "`SAIR-LAW-06`, `SAIR-LAW-07`, `SAIR-LAW-08`",
       "template": "`kernel-friendly-term-design`",
       "columns": {
-        "Goal / Term Shape": "Commutative Nat op `acc + 1` or `n &&& (2^k - 1)`",
-        "Primary SAIR Law(s)": "`SAIR-LAW-03`, `SAIR-LAW-03B`",
+        "Goal / Term Shape": "`termination_by` / `brecOn` or `if h : c then ... else ...`",
+        "Primary SAIR Law(s)": "`SAIR-LAW-06`, `SAIR-LAW-07`, `SAIR-LAW-08`",
         "Recommended AltProof Route": "`kernel-friendly-term-design`",
-        "Canonical Kernel Pattern / Tactic": "Put small constant on LHS (`1 + acc`) when helpful for structural reduction, or replace `n % 2^k` with `n &&& mask`"
+        "Canonical Kernel Pattern / Tactic": "Replace `WellFounded.fix`/`brecOn` with direct `@Nat.rec`; replace `ite`/`dite` (`Decidable` synthesis) with `@Bool.rec` or `cond` (`cond` also compiles in LCNF)"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "goal_shape": "Well-founded recursion `termination_by` / `brecOn`",
-      "route_or_concordance": "`SAIR-LAW-06`, `SAIR-LAW-07`",
-      "template": "`kernel-friendly-term-design`",
-      "columns": {
-        "Goal / Term Shape": "Well-founded recursion `termination_by` / `brecOn`",
-        "Primary SAIR Law(s)": "`SAIR-LAW-06`, `SAIR-LAW-07`",
-        "Recommended AltProof Route": "`kernel-friendly-term-design`",
-        "Canonical Kernel Pattern / Tactic": "Refactor to structural `Nat.rec` / fuel recursion or attach `@[csimp]` dual-path theorem for compiled execution"
-      }
-    },
-    {
-      "handbook": "lean-sair-kernel-optimization-handbook",
-      "goal_shape": "`if c then a else b` on `Bool` inside hot kernel loop",
-      "route_or_concordance": "`SAIR-LAW-08`",
-      "template": "`constructive-decidable-reduction`",
-      "columns": {
-        "Goal / Term Shape": "`if c then a else b` on `Bool` inside hot kernel loop",
-        "Primary SAIR Law(s)": "`SAIR-LAW-08`",
-        "Recommended AltProof Route": "`constructive-decidable-reduction`",
-        "Canonical Kernel Pattern / Tactic": "Replace `ite` (which synthesizes `Decidable` dictionary) with `Bool.rec b a c` or `cond c a b`"
-      }
-    },
-    {
-      "handbook": "lean-sair-kernel-optimization-handbook",
-      "goal_shape": "Nested tuple state `(a, (b, (c, d)))` in `Nat.rec`",
+      "goal_shape": "Nested tuple state `(a, (b, (c, d)))` or wide CPS arity",
       "route_or_concordance": "`SAIR-LAW-09`, `SAIR-LAW-10`, `SAIR-LAW-24`",
       "template": "`kernel-friendly-term-design`",
       "columns": {
-        "Goal / Term Shape": "Nested tuple state `(a, (b, (c, d)))` in `Nat.rec`",
+        "Goal / Term Shape": "Nested tuple state `(a, (b, (c, d)))` or wide CPS arity",
         "Primary SAIR Law(s)": "`SAIR-LAW-09`, `SAIR-LAW-10`, `SAIR-LAW-24`",
         "Recommended AltProof Route": "`kernel-friendly-term-design`",
-        "Canonical Kernel Pattern / Tactic": "Flatten into a dedicated `structure State` or CPS continuation `k a b c d` (optimal arity <= 6)"
+        "Canonical Kernel Pattern / Tactic": "Flatten into unboxed CPS (`<= 6` scalar registers) or SWAR width-2 word pairs (`SAIR-LAW-24`: width-2 + 1-bit step beats width-1, width-3, and width-4)"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "goal_shape": "Signed integer difference `(a : Int) - (b : Int)` in kernel",
+      "goal_shape": "Signed recurrence `a - b` or modular polynomial GCD",
       "route_or_concordance": "`SAIR-LAW-12`, `SAIR-LAW-12B`",
       "template": "`kernel-friendly-term-design`",
       "columns": {
-        "Goal / Term Shape": "Signed integer difference `(a : Int) - (b : Int)` in kernel",
+        "Goal / Term Shape": "Signed recurrence `a - b` or modular polynomial GCD",
         "Primary SAIR Law(s)": "`SAIR-LAW-12`, `SAIR-LAW-12B`",
         "Recommended AltProof Route": "`kernel-friendly-term-design`",
-        "Canonical Kernel Pattern / Tactic": "Represent as unboxed `Nat` pair `(pos, neg)` or direct `Nat.rec` sign-magnitude without `Quot.mk` overhead"
+        "Canonical Kernel Pattern / Tactic": "Avoid `Int`/`Rat`/`ZMod` boxing in hot kernels; use direct `@Nat.rec` sign-magnitude or unnormalized `(pos, neg)` `Nat` pairs"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "goal_shape": "`x * x` on multi-limb vs single-limb `Nat`",
+      "goal_shape": "`x * x` on multi-limb (`>= 32` limbs) vs single-limb `Nat`",
       "route_or_concordance": "`SAIR-LAW-13`, `SAIR-LAW-13B`",
       "template": "`gmp-swar-word-packing`",
       "columns": {
-        "Goal / Term Shape": "`x * x` on multi-limb vs single-limb `Nat`",
+        "Goal / Term Shape": "`x * x` on multi-limb (`>= 32` limbs) vs single-limb `Nat`",
         "Primary SAIR Law(s)": "`SAIR-LAW-13`, `SAIR-LAW-13B`",
         "Recommended AltProof Route": "`gmp-swar-word-packing`",
-        "Canonical Kernel Pattern / Tactic": "Share `let y := x; y * y` so GMP `mpz_mul(r, a, a)` dispatches to Karatsuba/squaring fast path"
+        "Canonical Kernel Pattern / Tactic": "`mpz_mul(r, a, a)` triggers `mpn_sqr` above `SQR_TOOM2_THRESHOLD` (~30 limbs), saving `-14%..-21%` in own window (`NR-076`); below ~20 limbs `let`-sharing overhead dominates"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "goal_shape": "`n / 2^k` and `n % 2^k` on large `Nat`",
+      "goal_shape": "`n / 2^k`, `n % 2^k`, or base-`B` Horner digit packing",
       "route_or_concordance": "`SAIR-LAW-14`, `SAIR-LAW-14B`, `SAIR-LAW-14C`",
       "template": "`gmp-swar-word-packing`",
       "columns": {
-        "Goal / Term Shape": "`n / 2^k` and `n % 2^k` on large `Nat`",
+        "Goal / Term Shape": "`n / 2^k`, `n % 2^k`, or base-`B` Horner digit packing",
         "Primary SAIR Law(s)": "`SAIR-LAW-14`, `SAIR-LAW-14B`, `SAIR-LAW-14C`",
         "Recommended AltProof Route": "`gmp-swar-word-packing`",
-        "Canonical Kernel Pattern / Tactic": "Replace with `Nat.shiftRight n k` and `Nat.land n ((1 <<< k) - 1)`; align Horner chunks to 64-bit limb multiples"
+        "Canonical Kernel Pattern / Tactic": "Replace `/ 2^k` and `% 2^k` with `Nat.shiftRight` and `Nat.land`; aggregate Horner digits in balanced binary chunks aligned to 64-bit GMP limbs (`SAIR-LAW-16B`)"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "goal_shape": "Fixed-width array/vector recurrence `dp[i] = dp[i-1] + dp[i-k]`",
-      "route_or_concordance": "`SAIR-LAW-15`, `SAIR-LAW-16`, `SAIR-LAW-16B`",
+      "goal_shape": "Fixed-width array/DP recurrence or bitboard transition",
+      "route_or_concordance": "`SAIR-LAW-15`, `SAIR-LAW-16`, `SAIR-LAW-20`",
       "template": "`gmp-swar-word-packing`",
       "columns": {
-        "Goal / Term Shape": "Fixed-width array/vector recurrence `dp[i] = dp[i-1] + dp[i-k]`",
-        "Primary SAIR Law(s)": "`SAIR-LAW-15`, `SAIR-LAW-16`, `SAIR-LAW-16B`",
+        "Goal / Term Shape": "Fixed-width array/DP recurrence or bitboard transition",
+        "Primary SAIR Law(s)": "`SAIR-LAW-15`, `SAIR-LAW-16`, `SAIR-LAW-20`",
         "Recommended AltProof Route": "`gmp-swar-word-packing`",
-        "Canonical Kernel Pattern / Tactic": "Pack `k` lanes of `b` bits into a single GMP `Nat` word (Kronecker SWAR); unroll fixed-trip inner loops via binary doubling"
+        "Canonical Kernel Pattern / Tactic": "Pack `k` lanes into one GMP `Nat` word (Kronecker SWAR); unroll fixed-trip kernels via binary-doubling combinators (`t0..t6`); evaluate cellular/crypto rules in ANF (`^^^`, `&&&`, `"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "goal_shape": "Graph/automaton state space exploration in `decide`",
+      "goal_shape": "Finite-state graph/polyomino/automaton frontier search",
       "route_or_concordance": "`SAIR-LAW-17`, `SAIR-LAW-18`, `SAIR-LAW-18B`",
       "template": "`algorithm-class-substitution`",
       "columns": {
-        "Goal / Term Shape": "Graph/automaton state space exploration in `decide`",
+        "Goal / Term Shape": "Finite-state graph/polyomino/automaton frontier search",
         "Primary SAIR Law(s)": "`SAIR-LAW-17`, `SAIR-LAW-18`, `SAIR-LAW-18B`",
         "Recommended AltProof Route": "`algorithm-class-substitution`",
-        "Canonical Kernel Pattern / Tactic": "Canonicalize state words in CBV order; represent frontier sets as bitset/ZDD masks; isolate lowest set bit via `x &&& (0 - x)`"
+        "Canonical Kernel Pattern / Tactic": "Canonicalize states as CBV `Nat` words (never tree-recurse over lists); compress frontiers as ZDD/bitmasks; count/test 1-bit shift overlaps (`overlap := w &&& (w >>> 1)`) without `Nat` underflow"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "goal_shape": "Branching search with multiple pruning guards",
-      "route_or_concordance": "`SAIR-LAW-19`, `SAIR-LAW-19B`, `SAIR-LAW-20`",
+      "goal_shape": "Branching search with lookahead constraints & symmetry",
+      "route_or_concordance": "`SAIR-LAW-19`, `SAIR-LAW-19B`, `SAIR-LAW-21`",
       "template": "`algorithm-class-substitution`",
       "columns": {
-        "Goal / Term Shape": "Branching search with multiple pruning guards",
-        "Primary SAIR Law(s)": "`SAIR-LAW-19`, `SAIR-LAW-19B`, `SAIR-LAW-20`",
+        "Goal / Term Shape": "Branching search with lookahead constraints & symmetry",
+        "Primary SAIR Law(s)": "`SAIR-LAW-19`, `SAIR-LAW-19B`, `SAIR-LAW-21`",
         "Recommended AltProof Route": "`algorithm-class-substitution`",
-        "Canonical Kernel Pattern / Tactic": "Combine lookahead masks into a single bitwise `!= 0` check; short-circuit `mask == 0` before recursion; use ANF/Zhegalkin word ops"
+        "Canonical Kernel Pattern / Tactic": "Fuse lookahead checks into one bitwise mask guard; short-circuit `Nat.beq avail 0` immediately; prove finite symmetry/heuristic reorderings via decoupled `List.Perm` certificates"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "goal_shape": "Proof of `List.Perm` or finite invariant inside `rfl`",
-      "route_or_concordance": "`SAIR-LAW-21`, `SAIR-LAW-22`, `SAIR-LAW-23`",
-      "template": "`constructive-decidable-reduction`",
+      "goal_shape": "Parametric hot `def step (cfg : Config)` vs concrete loop",
+      "route_or_concordance": "`SAIR-LAW-22..25B`, `WAVE-13 G1`",
+      "template": "`abstraction-concrete-duality`",
       "columns": {
-        "Goal / Term Shape": "Proof of `List.Perm` or finite invariant inside `rfl`",
-        "Primary SAIR Law(s)": "`SAIR-LAW-21`, `SAIR-LAW-22`, `SAIR-LAW-23`",
-        "Recommended AltProof Route": "`constructive-decidable-reduction`",
-        "Canonical Kernel Pattern / Tactic": "Keep `Prop` proofs and typeclass dictionaries completely out of the runtime computation cone; bridge via a separate soundness theorem"
+        "Goal / Term Shape": "Parametric hot `def step (cfg : Config)` vs concrete loop",
+        "Primary SAIR Law(s)": "`SAIR-LAW-22..25B`, `WAVE-13 G1`",
+        "Recommended AltProof Route": "`abstraction-concrete-duality`",
+        "Canonical Kernel Pattern / Tactic": "Specialize hot `def`s to raw unboxed `Nat` literals (`1,600x..3,345x` penalty for parametric hot steps!); state general parametric theorems separately and bridge via `rfl` (`<= 1%` cost)"
+      }
+    },
+    {
+      "handbook": "lean-sair-kernel-optimization-handbook",
+      "goal_shape": "Hardware codegen from verified Lean bit/word kernel",
+      "route_or_concordance": "`PolyBitOp`, Exact-vs-Packed Lowering",
+      "template": "`proof-carrying-codegen`",
+      "columns": {
+        "Goal / Term Shape": "Hardware codegen from verified Lean bit/word kernel",
+        "Primary SAIR Law(s)": "`PolyBitOp`, Exact-vs-Packed Lowering",
+        "Recommended AltProof Route": "`proof-carrying-codegen`",
+        "Canonical Kernel Pattern / Tactic": "Emit MLIR (`ctpop`/`gpu.shuffle xor`), Ada `sm_89` PTX, AVX2/AVX-512 Rust, or freestanding C++20; enforce `exact` (`GMP`/`rug`) vs `checked-small -> NeedsWide` overflow traps (`N01..N12`)"
       }
     },
     {
@@ -2263,11 +2273,11 @@
     },
     {
       "handbook": "lean-math-analysis-handbook",
-      "intent": "Work with eventualities `forall  x in l, P x`",
+      "intent": "Work with eventualities `forall ^f x in l, P x`",
       "tactic_or_idiom": "`filter_upwards [h1, h2] with x hx1 hx2`",
       "notes": "Avoids unfolding `Filter.Eventually`",
       "columns": {
-        "Mathematical Intent": "Work with eventualities `forall  x in l, P x`",
+        "Mathematical Intent": "Work with eventualities `forall ^f x in l, P x`",
         "Lean 4 / Mathlib Tactic": "`filter_upwards [h1, h2] with x hx1 hx2`",
         "Notes": "Avoids unfolding `Filter.Eventually`"
       }
@@ -2617,22 +2627,44 @@
       "handbook": "lean-proof-refactor-handbook",
       "intent": "Slim a long proof corpus without regressions",
       "tactic_or_idiom": "`scripts/lean/proof_quality.py` + `CUT / CONSIDERED-NEGATIVE / DEFER`",
-      "notes": "Preserve public theorem signatures byte-for-byte",
+      "notes": "Preserve public theorem signatures byte-for-byte; gate every batch on `0` warnings/errors",
       "columns": {
         "User / Engineer Intent": "Slim a long proof corpus without regressions",
         "Recommended Tool / Idiom": "`scripts/lean/proof_quality.py` + `CUT / CONSIDERED-NEGATIVE / DEFER`",
-        "Actionable Recipe": "Preserve public theorem signatures byte-for-byte"
+        "Actionable Recipe": "Preserve public theorem signatures byte-for-byte; gate every batch on `0` warnings/errors"
       }
     },
     {
       "handbook": "lean-proof-refactor-handbook",
-      "intent": "Eliminate single-use helper bloat ('bundle effect')",
+      "intent": "Eliminate single-use helper bloat (\"bundle effect\")",
       "tactic_or_idiom": "`CONSIDERED-NEGATIVE` adjudication",
       "notes": "Do not split linear single-use glue that merely relocates line count",
       "columns": {
-        "User / Engineer Intent": "Eliminate single-use helper bloat ('bundle effect')",
+        "User / Engineer Intent": "Eliminate single-use helper bloat (\"bundle effect\")",
         "Recommended Tool / Idiom": "`CONSIDERED-NEGATIVE` adjudication",
         "Actionable Recipe": "Do not split linear single-use glue that merely relocates line count"
+      }
+    },
+    {
+      "handbook": "lean-proof-refactor-handbook",
+      "intent": "Audit which `Real`-typed theorems can be generalized",
+      "tactic_or_idiom": "`python3 -m altproof.coupling_scanner`",
+      "notes": "Classify into `abstraction-safe` (algebraic/order), `nat-mixed`, or `real-specific` (`exp`/`log`/`nhds`)",
+      "columns": {
+        "User / Engineer Intent": "Audit which `Real`-typed theorems can be generalized",
+        "Recommended Tool / Idiom": "`python3 -m altproof.coupling_scanner`",
+        "Actionable Recipe": "Classify into `abstraction-safe` (algebraic/order), `nat-mixed`, or `real-specific` (`exp`/`log`/`nhds`)"
+      }
+    },
+    {
+      "handbook": "lean-proof-refactor-handbook",
+      "intent": "Share proof structure across multiple concrete bit/SWAR kernels",
+      "tactic_or_idiom": "`WAVE-13 G1` Cold Parametric Theorem + `rfl` Bridge",
+      "notes": "Prove once over `(step : State -> State)`; instantiate on concrete `fastStep` at `<= 1%` WHNF cost",
+      "columns": {
+        "User / Engineer Intent": "Share proof structure across multiple concrete bit/SWAR kernels",
+        "Recommended Tool / Idiom": "`WAVE-13 G1` Cold Parametric Theorem + `rfl` Bridge",
+        "Actionable Recipe": "Prove once over `(step : State -> State)`; instantiate on concrete `fastStep` at `<= 1%` WHNF cost"
       }
     },
     {
@@ -2791,79 +2823,79 @@
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "intent": "\"Speed up `rfl` / `decide` on a recursive function\"",
-      "tactic_or_idiom": "`SAIR-LAW-06`, `SAIR-LAW-07`, `SAIR-LAW-02`",
-      "notes": "Replace `WellFounded.fix` with structural `Nat.rec`; hoist closed constants outside `Nat.rec` step lambdas",
+      "intent": "\"Speed up `rfl` / `decide +kernel` on a recursive function\"",
+      "tactic_or_idiom": "`SAIR-LAW-06`, `SAIR-LAW-02`, `SAIR-LAW-23`",
+      "notes": "Replace `WellFounded.fix` with direct `@Nat.rec`; hoist closed constants outside step lambdas; replace polymorphic `+`/`*` with `Nat.add`/`Nat.mul`",
       "columns": {
-        "User / Engineer Intent": "\"Speed up `rfl` / `decide` on a recursive function\"",
-        "Target SAIR Law(s)": "`SAIR-LAW-06`, `SAIR-LAW-07`, `SAIR-LAW-02`",
-        "Actionable Transformation Recipe": "Replace `WellFounded.fix` with structural `Nat.rec`; hoist closed constants outside `Nat.rec` step lambdas"
+        "User / Engineer Intent": "\"Speed up `rfl` / `decide +kernel` on a recursive function\"",
+        "Target SAIR Law(s)": "`SAIR-LAW-06`, `SAIR-LAW-02`, `SAIR-LAW-23`",
+        "Actionable Transformation Recipe": "Replace `WellFounded.fix` with direct `@Nat.rec`; hoist closed constants outside step lambdas; replace polymorphic `+`/`*` with `Nat.add`/`Nat.mul`"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "intent": "\"Eliminate `Classical.choice` from a `Nat`/`Bool`/`BitVec` theorem\"",
-      "tactic_or_idiom": "`SAIR-LAW-08`, `SAIR-LAW-22`, `SAIR-LAW-23`",
-      "notes": "Use AltProof Route 9 (`constructive-decidable-reduction`): replace `split`/`by_cases` with `Bool.and_eq_true`, `decide_eq_true_eq`, `omega`, or `bv_decide`",
+      "intent": "\"Abstract repeated proof logic without slowing down the kernel\"",
+      "tactic_or_idiom": "`WAVE-13 G1`, `SAIR-LAW-07`, `SAIR-LAW-22B`",
+      "notes": "Keep hot `def` specialized to raw unboxed `Nat` + inline `nat_lit`s; state a parametric proof theorem over abstract step parameters and discharge the concrete instance by `rfl`",
       "columns": {
-        "User / Engineer Intent": "\"Eliminate `Classical.choice` from a `Nat`/`Bool`/`BitVec` theorem\"",
-        "Target SAIR Law(s)": "`SAIR-LAW-08`, `SAIR-LAW-22`, `SAIR-LAW-23`",
-        "Actionable Transformation Recipe": "Use AltProof Route 9 (`constructive-decidable-reduction`): replace `split`/`by_cases` with `Bool.and_eq_true`, `decide_eq_true_eq`, `omega`, or `bv_decide`"
+        "User / Engineer Intent": "\"Abstract repeated proof logic without slowing down the kernel\"",
+        "Target SAIR Law(s)": "`WAVE-13 G1`, `SAIR-LAW-07`, `SAIR-LAW-22B`",
+        "Actionable Transformation Recipe": "Keep hot `def` specialized to raw unboxed `Nat` + inline `nat_lit`s; state a parametric proof theorem over abstract step parameters and discharge the concrete instance by `rfl`"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "intent": "\"Avoid recomputing a huge constant inside every recursion step\"",
-      "tactic_or_idiom": "`SAIR-LAW-02`, `SAIR-LAW-11`, `SAIR-LAW-25B`",
-      "notes": "Use AltProof Route 10 (`closed-def-whnf-caching`): define a closed top-level `def C : Nat := ...` (cached in `m_st->m_whnf`) or compute via `eval_nat%`",
+      "intent": "\"Choose `Nat.succ k` vs `Nat.add 1 k` in a tight loop\"",
+      "tactic_or_idiom": "`ADR-INV-0025`, `SAIR-LAW-03`",
+      "notes": "Use `Nat.succ k` when `k` is consumed by a structural `@Nat.rec` eliminator (`Expr::App(Const(\"Nat.succ\"), k)` directly matches the `succ` arm); use `Nat.add 1 q` for arithmetic counters evaluated to `nat_lit`",
       "columns": {
-        "User / Engineer Intent": "\"Avoid recomputing a huge constant inside every recursion step\"",
-        "Target SAIR Law(s)": "`SAIR-LAW-02`, `SAIR-LAW-11`, `SAIR-LAW-25B`",
-        "Actionable Transformation Recipe": "Use AltProof Route 10 (`closed-def-whnf-caching`): define a closed top-level `def C : Nat := ...` (cached in `m_st->m_whnf`) or compute via `eval_nat%`"
+        "User / Engineer Intent": "\"Choose `Nat.succ k` vs `Nat.add 1 k` in a tight loop\"",
+        "Target SAIR Law(s)": "`ADR-INV-0025`, `SAIR-LAW-03`",
+        "Actionable Transformation Recipe": "Use `Nat.succ k` when `k` is consumed by a structural `@Nat.rec` eliminator (`Expr::App(Const(\"Nat.succ\"), k)` directly matches the `succ` arm); use `Nat.add 1 q` for arithmetic counters evaluated to `nat_lit`"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "intent": "\"Vectorize a DP table or cellular automaton inside Lean's kernel\"",
-      "tactic_or_idiom": "`SAIR-LAW-15`, `SAIR-LAW-16B`, `SAIR-LAW-20`",
-      "notes": "Use AltProof Route 11 (`gmp-swar-word-packing`): pack `k` lanes into a `b`-bit `Nat` word (aligning `b` to multiples of 64 bits where possible)",
+      "intent": "\"Eliminate `Classical.choice` and `Lean.ofReduceBool` from a proof\"",
+      "tactic_or_idiom": "`SAIR-LAW-08`, `SAIR-LAW-22`, `sair_decide`",
+      "notes": "Replace `if`/`split` with `@Bool.rec`/`cond`; close concrete goals with 3-rung `sair_decide` (`first",
       "columns": {
-        "User / Engineer Intent": "\"Vectorize a DP table or cellular automaton inside Lean's kernel\"",
-        "Target SAIR Law(s)": "`SAIR-LAW-15`, `SAIR-LAW-16B`, `SAIR-LAW-20`",
-        "Actionable Transformation Recipe": "Use AltProof Route 11 (`gmp-swar-word-packing`): pack `k` lanes into a `b`-bit `Nat` word (aligning `b` to multiples of 64 bits where possible)"
+        "User / Engineer Intent": "\"Eliminate `Classical.choice` and `Lean.ofReduceBool` from a proof\"",
+        "Target SAIR Law(s)": "`SAIR-LAW-08`, `SAIR-LAW-22`, `sair_decide`",
+        "Actionable Transformation Recipe": "Replace `if`/`split` with `@Bool.rec`/`cond`; close concrete goals with 3-rung `sair_decide` (`first"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "intent": "\"Reduce memory allocation and `Prod.mk` boxing in state loops\"",
-      "tactic_or_idiom": "`SAIR-LAW-09`, `SAIR-LAW-10`, `SAIR-LAW-24`",
-      "notes": "Convert tuple returns `(a, b, c)` into CPS (`fun k => k a b c`) or a flat `structure` with unboxed scalar fields",
+      "intent": "\"Implement branch-free low-bit cut/mask on `Nat` words\"",
+      "tactic_or_idiom": "`SAIR-LAW-14`, Nov 11-12 Cut/Mask Contract",
+      "notes": "Exploit truncating `Nat.sub`: when `k <= s`, `k - s = 0` yields `1 <<< 0 - 1 = 0` mask automatically; guard multi-limb shifts with `Nat.ble a (1 <<< (k - s) - 1)` skip-to-plain-shift when profitable",
       "columns": {
-        "User / Engineer Intent": "\"Reduce memory allocation and `Prod.mk` boxing in state loops\"",
-        "Target SAIR Law(s)": "`SAIR-LAW-09`, `SAIR-LAW-10`, `SAIR-LAW-24`",
-        "Actionable Transformation Recipe": "Convert tuple returns `(a, b, c)` into CPS (`fun k => k a b c`) or a flat `structure` with unboxed scalar fields"
+        "User / Engineer Intent": "\"Implement branch-free low-bit cut/mask on `Nat` words\"",
+        "Target SAIR Law(s)": "`SAIR-LAW-14`, Nov 11-12 Cut/Mask Contract",
+        "Actionable Transformation Recipe": "Exploit truncating `Nat.sub`: when `k <= s`, `k - s = 0` yields `1 <<< 0 - 1 = 0` mask automatically; guard multi-limb shifts with `Nat.ble a (1 <<< (k - s) - 1)` skip-to-plain-shift when profitable"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "intent": "\"Prune dead search branches in a kernel-checked solver\"",
-      "tactic_or_idiom": "`SAIR-LAW-18`, `SAIR-LAW-19`, `SAIR-LAW-19B`",
-      "notes": "Represent frontiers as `Nat` bitmasks; test `(frontier &&& validMask) == 0` before spawning recursive calls",
+      "intent": "\"Lower a Lean SWAR/BitVec kernel to C++20, Rust SIMD, or CUDA PTX\"",
+      "tactic_or_idiom": "`PolyBitOp`, Exact-vs-Packed Lowering",
+      "notes": "Prove equivalence to spec in Lean (`Template_ProofCarryingCodegen.lean`), lower pure bitwise kernels via `PolyBitOp`, and guard multi-limb arithmetic with `checked-small -> NeedsWide` + operand snapshotting",
       "columns": {
-        "User / Engineer Intent": "\"Prune dead search branches in a kernel-checked solver\"",
-        "Target SAIR Law(s)": "`SAIR-LAW-18`, `SAIR-LAW-19`, `SAIR-LAW-19B`",
-        "Actionable Transformation Recipe": "Represent frontiers as `Nat` bitmasks; test `(frontier &&& validMask) == 0` before spawning recursive calls"
+        "User / Engineer Intent": "\"Lower a Lean SWAR/BitVec kernel to C++20, Rust SIMD, or CUDA PTX\"",
+        "Target SAIR Law(s)": "`PolyBitOp`, Exact-vs-Packed Lowering",
+        "Actionable Transformation Recipe": "Prove equivalence to spec in Lean (`Template_ProofCarryingCodegen.lean`), lower pure bitwise kernels via `PolyBitOp`, and guard multi-limb arithmetic with `checked-small -> NeedsWide` + operand snapshotting"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "intent": "\"Clean up unreadably large unrolled definitions without losing speed\"",
-      "tactic_or_idiom": "`SAIR-LAW-16`, `SAIR-LAW-25`, `SAIR-LAW-25B`",
-      "notes": "Use binary-doubling combinators (`t0..t6`) with elaboration-time pre-unfolding (`preunfold%` / `unroll_top%`) and named `abbrev` constants",
+      "intent": "\"Stream verified state transitions over zero-copy IPC / NVMe\"",
+      "tactic_or_idiom": "`alignas(128)` SPSC, `.leangrph`, `io_uring`",
+      "notes": "Separate cache lines to `128 B` (Zen 3 L2 streamer prefetch pair), align `.leangrph` CSR headers to `128 B` (`64 B` magic/counts + `64 B` SHA-256), and register `2 MB` `HugeTLB` buffers with `io_uring`",
       "columns": {
-        "User / Engineer Intent": "\"Clean up unreadably large unrolled definitions without losing speed\"",
-        "Target SAIR Law(s)": "`SAIR-LAW-16`, `SAIR-LAW-25`, `SAIR-LAW-25B`",
-        "Actionable Transformation Recipe": "Use binary-doubling combinators (`t0..t6`) with elaboration-time pre-unfolding (`preunfold%` / `unroll_top%`) and named `abbrev` constants"
+        "User / Engineer Intent": "\"Stream verified state transitions over zero-copy IPC / NVMe\"",
+        "Target SAIR Law(s)": "`alignas(128)` SPSC, `.leangrph`, `io_uring`",
+        "Actionable Transformation Recipe": "Separate cache lines to `128 B` (Zen 3 L2 streamer prefetch pair), align `.leangrph` CSR headers to `128 B` (`64 B` magic/counts + `64 B` SHA-256), and register `2 MB` `HugeTLB` buffers with `io_uring`"
       }
     },
     {
@@ -3180,11 +3212,11 @@
       "handbook": "hol-metamath-adapter-handbook",
       "error_pattern": "Punctured limit mismatch on `(f --> l) (at a)`",
       "cause": "HOL Light `at a` excludes `a` (`0 < dist(x,a) < e`)",
-      "fix": "Translate `at a` to `[!=] a` (`nhdsWithin a {a}`) in Mathlib (`CONC-20`)",
+      "fix": "Translate `at a` to `[!=] a` (`nhdsWithin a {a}^c`) in Mathlib (`CONC-20`)",
       "columns": {
         "Porting Bug / Error": "Punctured limit mismatch on `(f --> l) (at a)`",
         "Foundational Cause (HOL / Metamath vs Lean 4)": "HOL Light `at a` excludes `a` (`0 < dist(x,a) < e`)",
-        "Deterministic Fix": "Translate `at a` to `[!=] a` (`nhdsWithin a {a}`) in Mathlib (`CONC-20`)"
+        "Deterministic Fix": "Translate `at a` to `[!=] a` (`nhdsWithin a {a}^c`) in Mathlib (`CONC-20`)"
       }
     },
     {
@@ -3224,11 +3256,11 @@
       "handbook": "isabelle-isar-adapter-handbook",
       "error_pattern": "`(sumxinA. f x)` lacks `Finset` in Lean",
       "cause": "Isabelle `sum` takes `'a set` and returns `0` if `infinite A`",
-      "fix": "Either type `A : Finset ` with `sum x in A, f x` or use `sum x in A, f x` (`finsum`)",
+      "fix": "Either type `A : Finset ` with `sum x in A, f x` or use `sum^f x in A, f x` (`finsum`)",
       "columns": {
         "Porting Pitfall / Error": "`(sumxinA. f x)` lacks `Finset` in Lean",
         "Semantic Delta (Isabelle vs Lean 4)": "Isabelle `sum` takes `'a set` and returns `0` if `infinite A`",
-        "Deterministic Fix": "Either type `A : Finset ` with `sum x in A, f x` or use `sum x in A, f x` (`finsum`)"
+        "Deterministic Fix": "Either type `A : Finset ` with `sum x in A, f x` or use `sum^f x in A, f x` (`finsum`)"
       }
     },
     {
@@ -3279,11 +3311,11 @@
       "handbook": "itp-cross-porting-handbook",
       "error_pattern": "Limit theorem fails at `x` (`Tendsto f ( x)`)",
       "cause": "Source (`Isabelle` / `HOL Light`) `at x` excludes `x` (`0 < dist y x`)",
-      "fix": "Replace ` x` with punctured neighborhood `[!=] x` (`nhdsWithin x {x}`)",
+      "fix": "Replace ` x` with punctured neighborhood `[!=] x` (`nhdsWithin x {x}^c`)",
       "columns": {
         "Porting Defect / Error": "Limit theorem fails at `x` (`Tendsto f ( x)`)",
         "Foundational Cause": "Source (`Isabelle` / `HOL Light`) `at x` excludes `x` (`0 < dist y x`)",
-        "Fix": "Replace ` x` with punctured neighborhood `[!=] x` (`nhdsWithin x {x}`)"
+        "Fix": "Replace ` x` with punctured neighborhood `[!=] x` (`nhdsWithin x {x}^c`)"
       }
     },
     {
@@ -3871,24 +3903,46 @@
     },
     {
       "handbook": "lean-proof-refactor-handbook",
-      "error_pattern": "Extracted helper requires 9 awkward context variables",
+      "error_pattern": "Extracted helper requires 9+ awkward context variables",
       "cause": "Cut boundary sliced mid-tactic state",
       "fix": "Widen cut to a natural mathematical invariant or mark `CONSIDERED-NEGATIVE`",
       "columns": {
-        "Symptom / Error / Bottleneck": "Extracted helper requires 9 awkward context variables",
+        "Symptom / Error / Bottleneck": "Extracted helper requires 9+ awkward context variables",
         "Root Cause": "Cut boundary sliced mid-tactic state",
         "Remediating Fix": "Widen cut to a natural mathematical invariant or mark `CONSIDERED-NEGATIVE`"
       }
     },
     {
       "handbook": "lean-proof-refactor-handbook",
+      "error_pattern": "Generalizing a hot `def` slowed `rfl`/`decide` by `> 1,000x`",
+      "cause": "`WAVE-13 G1`: dictionary/closure dispatch inside hot `@Nat.rec`",
+      "fix": "Revert hot `def` to concrete monomorphic `Nat.*` ops; move polymorphism strictly to cold `theorem` layer",
+      "columns": {
+        "Symptom / Error / Bottleneck": "Generalizing a hot `def` slowed `rfl`/`decide` by `> 1,000x`",
+        "Root Cause": "`WAVE-13 G1`: dictionary/closure dispatch inside hot `@Nat.rec`",
+        "Remediating Fix": "Revert hot `def` to concrete monomorphic `Nat.*` ops; move polymorphism strictly to cold `theorem` layer"
+      }
+    },
+    {
+      "handbook": "lean-proof-refactor-handbook",
       "error_pattern": "Public theorem signature changed during refactor",
-      "cause": "Hard boundary violation",
-      "fix": "Revert signature edit; add generalized lemma alongside and prove old via 1-liner",
+      "cause": "Hard API boundary violation",
+      "fix": "Revert signature edit; add generalized lemma alongside and prove original signature via 1-liner",
       "columns": {
         "Symptom / Error / Bottleneck": "Public theorem signature changed during refactor",
-        "Root Cause": "Hard boundary violation",
-        "Remediating Fix": "Revert signature edit; add generalized lemma alongside and prove old via 1-liner"
+        "Root Cause": "Hard API boundary violation",
+        "Remediating Fix": "Revert signature edit; add generalized lemma alongside and prove original signature via 1-liner"
+      }
+    },
+    {
+      "handbook": "lean-proof-refactor-handbook",
+      "error_pattern": "Commute-diagram lift increased total LOC on tiny state",
+      "cause": "Commute pattern overhead (`<= 5` state ops)",
+      "fix": "Apply Commute diagram lifts only above the `> 20` state-operation threshold",
+      "columns": {
+        "Symptom / Error / Bottleneck": "Commute-diagram lift increased total LOC on tiny state",
+        "Root Cause": "Commute pattern overhead (`<= 5` state ops)",
+        "Remediating Fix": "Apply Commute diagram lifts only above the `> 20` state-operation threshold"
       }
     },
     {
@@ -4036,79 +4090,68 @@
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "error_pattern": "`(deterministic) timeout at whnf, maximum number of heartbeats (200000) has been reached`",
-      "cause": "Deep unfolding of `WellFounded.fix` / `brecOn` or unshared subtrees in `is_def_eq`",
-      "fix": "`SAIR-LAW-06` (switch to structural `Nat.rec`), `SAIR-LAW-01B` (share repeated subexpressions via `let`), `SAIR-LAW-02` (hoist closed subtrees)",
+      "error_pattern": "`(deterministic) timeout at whnf, maximum number of heartbeats`",
+      "cause": "Unfolding `WellFounded.fix`/`brecOn`, parametric typeclass dictionaries in hot step (`WAVE-13 G1`), or unshared sibling WHNF trees",
+      "fix": "`SAIR-LAW-06` (`@Nat.rec`), `SAIR-LAW-23` (primitive `Nat.*` constants), `WAVE-13 G1` (monomorphize hot `def`)",
       "columns": {
-        "Symptom / Elaborator Error / Bottleneck": "`(deterministic) timeout at whnf, maximum number of heartbeats (200000) has been reached`",
-        "Root Cause in `type_checker.cpp`": "Deep unfolding of `WellFounded.fix` / `brecOn` or unshared subtrees in `is_def_eq`",
-        "Remediating SAIR Law(s) & Fix": "`SAIR-LAW-06` (switch to structural `Nat.rec`), `SAIR-LAW-01B` (share repeated subexpressions via `let`), `SAIR-LAW-02` (hoist closed subtrees)"
+        "Symptom / Elaborator Error / Bottleneck": "`(deterministic) timeout at whnf, maximum number of heartbeats`",
+        "Root Cause in `type_checker.cpp` / Lowering": "Unfolding `WellFounded.fix`/`brecOn`, parametric typeclass dictionaries in hot step (`WAVE-13 G1`), or unshared sibling WHNF trees",
+        "Remediating SAIR Law(s) & Fix": "`SAIR-LAW-06` (`@Nat.rec`), `SAIR-LAW-23` (primitive `Nat.*` constants), `WAVE-13 G1` (monomorphize hot `def`)"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "error_pattern": "`theorem depends on axiom Classical.choice` on decidable arithmetic",
-      "cause": "`if ... then ... else ...` or `split` used `Classical.propDecidable` instead of `Bool` / `Decidable` instance",
-      "fix": "`SAIR-LAW-08`, `SAIR-LAW-23`, Route 9 (`constructive-decidable-reduction`): switch to `cond`, `Bool.rec`, `omega`, or `bv_decide`",
+      "error_pattern": "`code generator does not support recursor 'Nat.rec' / 'Bool.rec'`",
+      "cause": "Raw `@Nat.rec` / `@Bool.rec` is fast in kernel WHNF (`rfl`), but Lean 4's LCNF native compiler requires structural `match` / `cond`",
+      "fix": "Use `@Nat.rec`/`@Bool.rec` only in kernel-evaluated `rfl` lanes, OR pair with a computable `@[csimp]` twin using `cond` + structural pattern matching (`SAIR-LAW-07`, `SAIR-LAW-08`)",
       "columns": {
-        "Symptom / Elaborator Error / Bottleneck": "`theorem depends on axiom Classical.choice` on decidable arithmetic",
-        "Root Cause in `type_checker.cpp`": "`if ... then ... else ...` or `split` used `Classical.propDecidable` instead of `Bool` / `Decidable` instance",
-        "Remediating SAIR Law(s) & Fix": "`SAIR-LAW-08`, `SAIR-LAW-23`, Route 9 (`constructive-decidable-reduction`): switch to `cond`, `Bool.rec`, `omega`, or `bv_decide`"
+        "Symptom / Elaborator Error / Bottleneck": "`code generator does not support recursor 'Nat.rec' / 'Bool.rec'`",
+        "Root Cause in `type_checker.cpp` / Lowering": "Raw `@Nat.rec` / `@Bool.rec` is fast in kernel WHNF (`rfl`), but Lean 4's LCNF native compiler requires structural `match` / `cond`",
+        "Remediating SAIR Law(s) & Fix": "Use `@Nat.rec`/`@Bool.rec` only in kernel-evaluated `rfl` lanes, OR pair with a computable `@[csimp]` twin using `cond` + structural pattern matching (`SAIR-LAW-07`, `SAIR-LAW-08`)"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "error_pattern": "`maximum recursion depth has been reached` during `rfl` / `decide`",
-      "cause": "Non-tail-recursive list pipeline or deep left-associated expression tree",
-      "fix": "`SAIR-LAW-10` (CPS / tail accumulator), `SAIR-LAW-16` (binary-doubling tree instead of linear chain)",
+      "error_pattern": "Microbenchmark win (`-5%`) turns into full-file regression (`+3%`)",
+      "cause": "`ADR-INV-0025` Single-Consumer Isolation Paradox: microbench evaluated result directly to WHNF without realistic downstream consumer",
+      "fix": "Always benchmark inside the real consumer pipeline using `real - twinlit` PMU **sum-of-per-slot-medians-of-three** (`instructions:u`)",
       "columns": {
-        "Symptom / Elaborator Error / Bottleneck": "`maximum recursion depth has been reached` during `rfl` / `decide`",
-        "Root Cause in `type_checker.cpp`": "Non-tail-recursive list pipeline or deep left-associated expression tree",
-        "Remediating SAIR Law(s) & Fix": "`SAIR-LAW-10` (CPS / tail accumulator), `SAIR-LAW-16` (binary-doubling tree instead of linear chain)"
+        "Symptom / Elaborator Error / Bottleneck": "Microbenchmark win (`-5%`) turns into full-file regression (`+3%`)",
+        "Root Cause in `type_checker.cpp` / Lowering": "`ADR-INV-0025` Single-Consumer Isolation Paradox: microbench evaluated result directly to WHNF without realistic downstream consumer",
+        "Remediating SAIR Law(s) & Fix": "Always benchmark inside the real consumer pipeline using `real - twinlit` PMU **sum-of-per-slot-medians-of-three** (`instructions:u`)"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "error_pattern": "`Nat.div` / `Nat.mod` dominates kernel profile (`>40%` instructions)",
-      "cause": "Repeated division/modulo by powers of 2 or fixed bases in inner loop",
-      "fix": "`SAIR-LAW-14` (`>>>` and `&&&`), `SAIR-LAW-14B` (chunked Horner radix), `SAIR-LAW-14C` (bitwise subpipeline)",
+      "error_pattern": "Wrong answer `0` when isolating lowest set bit with `x &&& (0 - x)`",
+      "cause": "Truncating `Nat` subtraction evaluates `0 - x = 0` for all `x : Nat`! Two's-complement `-x` only holds on `BitVec w` / `UInt64`",
+      "fix": "Never write `0 - x` on `Nat`! On `BitVec w` use `x &&& (-x)`; on `Nat` clear lowest bit via `x &&& (x - 1)` (for `x > 0`) or compute 1-bit shift overlap `x &&& (x >>> 1)` (`SAIR-LAW-18B`)",
       "columns": {
-        "Symptom / Elaborator Error / Bottleneck": "`Nat.div` / `Nat.mod` dominates kernel profile (`>40%` instructions)",
-        "Root Cause in `type_checker.cpp`": "Repeated division/modulo by powers of 2 or fixed bases in inner loop",
-        "Remediating SAIR Law(s) & Fix": "`SAIR-LAW-14` (`>>>` and `&&&`), `SAIR-LAW-14B` (chunked Horner radix), `SAIR-LAW-14C` (bitwise subpipeline)"
+        "Symptom / Elaborator Error / Bottleneck": "Wrong answer `0` when isolating lowest set bit with `x &&& (0 - x)`",
+        "Root Cause in `type_checker.cpp` / Lowering": "Truncating `Nat` subtraction evaluates `0 - x = 0` for all `x : Nat`! Two's-complement `-x` only holds on `BitVec w` / `UInt64`",
+        "Remediating SAIR Law(s) & Fix": "Never write `0 - x` on `Nat`! On `BitVec w` use `x &&& (-x)`; on `Nat` clear lowest bit via `x &&& (x - 1)` (for `x > 0`) or compute 1-bit shift overlap `x &&& (x >>> 1)` (`SAIR-LAW-18B`)"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "error_pattern": "Slow `is_def_eq` on functions carrying proof witnesses `{x : Nat // P x}`",
-      "cause": "Kernel reduces proof terms inside `Subtype` projections during WHNF",
-      "fix": "`SAIR-LAW-22` (`ZeroPropRuntimeCone`), `SAIR-LAW-22B` (`HotColdSeparation`): compute on raw `Nat`, prove `P` externally",
+      "error_pattern": "`depends on axiom Lean.ofReduceBool` / `Lean.trustCompiler`",
+      "cause": "Proof invoked `native_decide`, `decide +native`, or `bv_decide` on a strict 3-axiom target",
+      "fix": "Switch to 3-rung `sair_decide` (`first",
       "columns": {
-        "Symptom / Elaborator Error / Bottleneck": "Slow `is_def_eq` on functions carrying proof witnesses `{x : Nat // P x}`",
-        "Root Cause in `type_checker.cpp`": "Kernel reduces proof terms inside `Subtype` projections during WHNF",
-        "Remediating SAIR Law(s) & Fix": "`SAIR-LAW-22` (`ZeroPropRuntimeCone`), `SAIR-LAW-22B` (`HotColdSeparation`): compute on raw `Nat`, prove `P` externally"
+        "Symptom / Elaborator Error / Bottleneck": "`depends on axiom Lean.ofReduceBool` / `Lean.trustCompiler`",
+        "Root Cause in `type_checker.cpp` / Lowering": "Proof invoked `native_decide`, `decide +native`, or `bv_decide` on a strict 3-axiom target",
+        "Remediating SAIR Law(s) & Fix": "Switch to 3-rung `sair_decide` (`first"
       }
     },
     {
       "handbook": "lean-sair-kernel-optimization-handbook",
-      "error_pattern": "High heartbeat count on `Prod.fst` / `Prod.snd` chains",
-      "cause": "Repeated projection reduction `proj(0, mk(a, b))` across recursion steps",
-      "fix": "`SAIR-LAW-09` (`UnboxedProductSpine`), `SAIR-LAW-10` (`CpsPairElim`)",
+      "error_pattern": "Native Rust/C++ port silently overflows or corrupts aliased buffer",
+      "cause": "Arbitrary-precision Lean `Nat`/`Int` lowered to fixed `u64`/`i64` without width guard, or in-place `out == lhs` clobbered before read",
+      "fix": "Enforce `checked-small -> NeedsWide` fallback to `GMP`/`rug`, snapshot aliased inputs before mutation, and run `#eval` vs native conformance vectors `N01..N12`",
       "columns": {
-        "Symptom / Elaborator Error / Bottleneck": "High heartbeat count on `Prod.fst` / `Prod.snd` chains",
-        "Root Cause in `type_checker.cpp`": "Repeated projection reduction `proj(0, mk(a, b))` across recursion steps",
-        "Remediating SAIR Law(s) & Fix": "`SAIR-LAW-09` (`UnboxedProductSpine`), `SAIR-LAW-10` (`CpsPairElim`)"
-      }
-    },
-    {
-      "handbook": "lean-sair-kernel-optimization-handbook",
-      "error_pattern": "`bv_decide` fails to apply because goal uses unbounded `Nat` bitwise ops",
-      "cause": "Goal is stated over `Nat.land`/`Nat.lor` rather than fixed-width `BitVec w`",
-      "fix": "Bridge bounded `Nat` `< 2^w` to `BitVec w` via `BitVec.ofNat`, close with `bv_decide` (`SAIR-LAW-15`, `SAIR-LAW-20`)",
-      "columns": {
-        "Symptom / Elaborator Error / Bottleneck": "`bv_decide` fails to apply because goal uses unbounded `Nat` bitwise ops",
-        "Root Cause in `type_checker.cpp`": "Goal is stated over `Nat.land`/`Nat.lor` rather than fixed-width `BitVec w`",
-        "Remediating SAIR Law(s) & Fix": "Bridge bounded `Nat` `< 2^w` to `BitVec w` via `BitVec.ofNat`, close with `bv_decide` (`SAIR-LAW-15`, `SAIR-LAW-20`)"
+        "Symptom / Elaborator Error / Bottleneck": "Native Rust/C++ port silently overflows or corrupts aliased buffer",
+        "Root Cause in `type_checker.cpp` / Lowering": "Arbitrary-precision Lean `Nat`/`Int` lowered to fixed `u64`/`i64` without width guard, or in-place `out == lhs` clobbered before read",
+        "Remediating SAIR Law(s) & Fix": "Enforce `checked-small -> NeedsWide` fallback to `GMP`/`rug`, snapshot aliased inputs before mutation, and run `#eval` vs native conformance vectors `N01..N12`"
       }
     },
     {
@@ -4669,11 +4712,11 @@
           "handbook": "hol-metamath-adapter-handbook",
           "error_pattern": "Punctured limit mismatch on `(f --> l) (at a)`",
           "cause": "HOL Light `at a` excludes `a` (`0 < dist(x,a) < e`)",
-          "fix": "Translate `at a` to `[!=] a` (`nhdsWithin a {a}`) in Mathlib (`CONC-20`)",
+          "fix": "Translate `at a` to `[!=] a` (`nhdsWithin a {a}^c`) in Mathlib (`CONC-20`)",
           "columns": {
             "Porting Bug / Error": "Punctured limit mismatch on `(f --> l) (at a)`",
             "Foundational Cause (HOL / Metamath vs Lean 4)": "HOL Light `at a` excludes `a` (`0 < dist(x,a) < e`)",
-            "Deterministic Fix": "Translate `at a` to `[!=] a` (`nhdsWithin a {a}`) in Mathlib (`CONC-20`)"
+            "Deterministic Fix": "Translate `at a` to `[!=] a` (`nhdsWithin a {a}^c`) in Mathlib (`CONC-20`)"
           }
         },
         {
@@ -4880,11 +4923,11 @@
           "handbook": "isabelle-isar-adapter-handbook",
           "error_pattern": "`(sumxinA. f x)` lacks `Finset` in Lean",
           "cause": "Isabelle `sum` takes `'a set` and returns `0` if `infinite A`",
-          "fix": "Either type `A : Finset ` with `sum x in A, f x` or use `sum x in A, f x` (`finsum`)",
+          "fix": "Either type `A : Finset ` with `sum x in A, f x` or use `sum^f x in A, f x` (`finsum`)",
           "columns": {
             "Porting Pitfall / Error": "`(sumxinA. f x)` lacks `Finset` in Lean",
             "Semantic Delta (Isabelle vs Lean 4)": "Isabelle `sum` takes `'a set` and returns `0` if `infinite A`",
-            "Deterministic Fix": "Either type `A : Finset ` with `sum x in A, f x` or use `sum x in A, f x` (`finsum`)"
+            "Deterministic Fix": "Either type `A : Finset ` with `sum x in A, f x` or use `sum^f x in A, f x` (`finsum`)"
           }
         },
         {
@@ -5080,11 +5123,11 @@
           "handbook": "itp-cross-porting-handbook",
           "error_pattern": "Limit theorem fails at `x` (`Tendsto f ( x)`)",
           "cause": "Source (`Isabelle` / `HOL Light`) `at x` excludes `x` (`0 < dist y x`)",
-          "fix": "Replace ` x` with punctured neighborhood `[!=] x` (`nhdsWithin x {x}`)",
+          "fix": "Replace ` x` with punctured neighborhood `[!=] x` (`nhdsWithin x {x}^c`)",
           "columns": {
             "Porting Defect / Error": "Limit theorem fails at `x` (`Tendsto f ( x)`)",
             "Foundational Cause": "Source (`Isabelle` / `HOL Light`) `at x` excludes `x` (`0 < dist y x`)",
-            "Fix": "Replace ` x` with punctured neighborhood `[!=] x` (`nhdsWithin x {x}`)"
+            "Fix": "Replace ` x` with punctured neighborhood `[!=] x` (`nhdsWithin x {x}^c`)"
           }
         },
         {
@@ -6242,11 +6285,11 @@
         },
         {
           "handbook": "lean-math-analysis-handbook",
-          "intent": "Work with eventualities `forall  x in l, P x`",
+          "intent": "Work with eventualities `forall ^f x in l, P x`",
           "tactic_or_idiom": "`filter_upwards [h1, h2] with x hx1 hx2`",
           "notes": "Avoids unfolding `Filter.Eventually`",
           "columns": {
-            "Mathematical Intent": "Work with eventualities `forall  x in l, P x`",
+            "Mathematical Intent": "Work with eventualities `forall ^f x in l, P x`",
             "Lean 4 / Mathlib Tactic": "`filter_upwards [h1, h2] with x hx1 hx2`",
             "Notes": "Avoids unfolding `Filter.Eventually`"
           }
@@ -7352,41 +7395,63 @@
     "lean-proof-refactor-handbook": {
       "file": "references/handbooks/lean-proof-refactor-handbook.md",
       "skill_ref": "skills/lean-proof-refactor/SKILL.md",
-      "goal_shape_count": 3,
-      "intent_count": 2,
-      "error_count": 2,
+      "goal_shape_count": 5,
+      "intent_count": 4,
+      "error_count": 4,
       "goal_shape_templates": [
         {
           "handbook": "lean-proof-refactor-handbook",
           "goal_shape": "Proof `> 50 LOC` with repeated sub-block",
-          "route_or_concordance": "`CUT` -> private helper lemma",
-          "template": "Extract only when reusable (`>= 2` call sites or clean conceptual boundary)",
+          "route_or_concordance": "`CUT` -> private/module helper lemma",
+          "template": "Extract only when reusable (`>= 2` call sites or clean conceptual invariant)",
           "columns": {
             "Goal / Term Shape": "Proof `> 50 LOC` with repeated sub-block",
-            "Primary Tactic / Pattern": "`CUT` -> private helper lemma",
-            "Canonical Recipe / Notes": "Extract only when reusable (`>= 2` call sites or clean conceptual boundary)"
+            "Primary Tactic / Pattern": "`CUT` -> private/module helper lemma",
+            "Canonical Recipe / Notes": "Extract only when reusable (`>= 2` call sites or clean conceptual invariant)"
           }
         },
         {
           "handbook": "lean-proof-refactor-handbook",
-          "goal_shape": "Concrete coordinate/bit-level proof duplicated",
-          "route_or_concordance": "Abstraction-Concrete Duality lift",
-          "template": "Prove once over abstract algebraic/order structure; instantiate at call sites",
+          "goal_shape": "Concrete coordinate/`Real` proof using only ring/order ops",
+          "route_or_concordance": "Statement-level mixin generalization",
+          "template": "Generalize `[CommRing R] [LinearOrder R] [IsOrderedRing R]`; keep `Real` theorem as 1-line corollary",
           "columns": {
-            "Goal / Term Shape": "Concrete coordinate/bit-level proof duplicated",
-            "Primary Tactic / Pattern": "Abstraction-Concrete Duality lift",
-            "Canonical Recipe / Notes": "Prove once over abstract algebraic/order structure; instantiate at call sites"
+            "Goal / Term Shape": "Concrete coordinate/`Real` proof using only ring/order ops",
+            "Primary Tactic / Pattern": "Statement-level mixin generalization",
+            "Canonical Recipe / Notes": "Generalize `[CommRing R] [LinearOrder R] [IsOrderedRing R]`; keep `Real` theorem as 1-line corollary"
           }
         },
         {
           "handbook": "lean-proof-refactor-handbook",
-          "goal_shape": "Slow `Prop`-friendly recursive `specFn` in runtime path",
+          "goal_shape": "Slow `Prop`-friendly `specFn` vs fast monomorphic `fastFn`",
           "route_or_concordance": "`@[csimp] theorem specFn_eq_fastFn` (`SAIR-LAW-07`)",
-          "template": "Keep `specFn` for proofs; route execution to monomorphic `fastFn`",
+          "template": "Keep `specFn` clean for proofs; route LCNF execution & `rw` to `fastFn`",
           "columns": {
-            "Goal / Term Shape": "Slow `Prop`-friendly recursive `specFn` in runtime path",
+            "Goal / Term Shape": "Slow `Prop`-friendly `specFn` vs fast monomorphic `fastFn`",
             "Primary Tactic / Pattern": "`@[csimp] theorem specFn_eq_fastFn` (`SAIR-LAW-07`)",
-            "Canonical Recipe / Notes": "Keep `specFn` for proofs; route execution to monomorphic `fastFn`"
+            "Canonical Recipe / Notes": "Keep `specFn` clean for proofs; route LCNF execution & `rw` to `fastFn`"
+          }
+        },
+        {
+          "handbook": "lean-proof-refactor-handbook",
+          "goal_shape": "Parametric hot kernel step (`1,600x..3,345x` WHNF penalty)",
+          "route_or_concordance": "`WAVE-13 G1` `rfl`-bridged Duality",
+          "template": "Specialize hot `def` to raw unboxed `Nat`; prove parametric lemma in cold section; bridge via `rfl`",
+          "columns": {
+            "Goal / Term Shape": "Parametric hot kernel step (`1,600x..3,345x` WHNF penalty)",
+            "Primary Tactic / Pattern": "`WAVE-13 G1` `rfl`-bridged Duality",
+            "Canonical Recipe / Notes": "Specialize hot `def` to raw unboxed `Nat`; prove parametric lemma in cold section; bridge via `rfl`"
+          }
+        },
+        {
+          "handbook": "lean-proof-refactor-handbook",
+          "goal_shape": "Verbose `Finset.sum` linearity or monotonicity block",
+          "route_or_concordance": "`sum_congr_ring` / `finset_mono` / `finset_nonneg`",
+          "template": "Collapse 15-40 line `Finset.sum` proofs to 1-line AltProof combinators",
+          "columns": {
+            "Goal / Term Shape": "Verbose `Finset.sum` linearity or monotonicity block",
+            "Primary Tactic / Pattern": "`sum_congr_ring` / `finset_mono` / `finset_nonneg`",
+            "Canonical Recipe / Notes": "Collapse 15-40 line `Finset.sum` proofs to 1-line AltProof combinators"
           }
         }
       ],
@@ -7395,46 +7460,90 @@
           "handbook": "lean-proof-refactor-handbook",
           "intent": "Slim a long proof corpus without regressions",
           "tactic_or_idiom": "`scripts/lean/proof_quality.py` + `CUT / CONSIDERED-NEGATIVE / DEFER`",
-          "notes": "Preserve public theorem signatures byte-for-byte",
+          "notes": "Preserve public theorem signatures byte-for-byte; gate every batch on `0` warnings/errors",
           "columns": {
             "User / Engineer Intent": "Slim a long proof corpus without regressions",
             "Recommended Tool / Idiom": "`scripts/lean/proof_quality.py` + `CUT / CONSIDERED-NEGATIVE / DEFER`",
-            "Actionable Recipe": "Preserve public theorem signatures byte-for-byte"
+            "Actionable Recipe": "Preserve public theorem signatures byte-for-byte; gate every batch on `0` warnings/errors"
           }
         },
         {
           "handbook": "lean-proof-refactor-handbook",
-          "intent": "Eliminate single-use helper bloat ('bundle effect')",
+          "intent": "Eliminate single-use helper bloat (\"bundle effect\")",
           "tactic_or_idiom": "`CONSIDERED-NEGATIVE` adjudication",
           "notes": "Do not split linear single-use glue that merely relocates line count",
           "columns": {
-            "User / Engineer Intent": "Eliminate single-use helper bloat ('bundle effect')",
+            "User / Engineer Intent": "Eliminate single-use helper bloat (\"bundle effect\")",
             "Recommended Tool / Idiom": "`CONSIDERED-NEGATIVE` adjudication",
             "Actionable Recipe": "Do not split linear single-use glue that merely relocates line count"
+          }
+        },
+        {
+          "handbook": "lean-proof-refactor-handbook",
+          "intent": "Audit which `Real`-typed theorems can be generalized",
+          "tactic_or_idiom": "`python3 -m altproof.coupling_scanner`",
+          "notes": "Classify into `abstraction-safe` (algebraic/order), `nat-mixed`, or `real-specific` (`exp`/`log`/`nhds`)",
+          "columns": {
+            "User / Engineer Intent": "Audit which `Real`-typed theorems can be generalized",
+            "Recommended Tool / Idiom": "`python3 -m altproof.coupling_scanner`",
+            "Actionable Recipe": "Classify into `abstraction-safe` (algebraic/order), `nat-mixed`, or `real-specific` (`exp`/`log`/`nhds`)"
+          }
+        },
+        {
+          "handbook": "lean-proof-refactor-handbook",
+          "intent": "Share proof structure across multiple concrete bit/SWAR kernels",
+          "tactic_or_idiom": "`WAVE-13 G1` Cold Parametric Theorem + `rfl` Bridge",
+          "notes": "Prove once over `(step : State -> State)`; instantiate on concrete `fastStep` at `<= 1%` WHNF cost",
+          "columns": {
+            "User / Engineer Intent": "Share proof structure across multiple concrete bit/SWAR kernels",
+            "Recommended Tool / Idiom": "`WAVE-13 G1` Cold Parametric Theorem + `rfl` Bridge",
+            "Actionable Recipe": "Prove once over `(step : State -> State)`; instantiate on concrete `fastStep` at `<= 1%` WHNF cost"
           }
         }
       ],
       "error_to_fix": [
         {
           "handbook": "lean-proof-refactor-handbook",
-          "error_pattern": "Extracted helper requires 9 awkward context variables",
+          "error_pattern": "Extracted helper requires 9+ awkward context variables",
           "cause": "Cut boundary sliced mid-tactic state",
           "fix": "Widen cut to a natural mathematical invariant or mark `CONSIDERED-NEGATIVE`",
           "columns": {
-            "Symptom / Error / Bottleneck": "Extracted helper requires 9 awkward context variables",
+            "Symptom / Error / Bottleneck": "Extracted helper requires 9+ awkward context variables",
             "Root Cause": "Cut boundary sliced mid-tactic state",
             "Remediating Fix": "Widen cut to a natural mathematical invariant or mark `CONSIDERED-NEGATIVE`"
           }
         },
         {
           "handbook": "lean-proof-refactor-handbook",
+          "error_pattern": "Generalizing a hot `def` slowed `rfl`/`decide` by `> 1,000x`",
+          "cause": "`WAVE-13 G1`: dictionary/closure dispatch inside hot `@Nat.rec`",
+          "fix": "Revert hot `def` to concrete monomorphic `Nat.*` ops; move polymorphism strictly to cold `theorem` layer",
+          "columns": {
+            "Symptom / Error / Bottleneck": "Generalizing a hot `def` slowed `rfl`/`decide` by `> 1,000x`",
+            "Root Cause": "`WAVE-13 G1`: dictionary/closure dispatch inside hot `@Nat.rec`",
+            "Remediating Fix": "Revert hot `def` to concrete monomorphic `Nat.*` ops; move polymorphism strictly to cold `theorem` layer"
+          }
+        },
+        {
+          "handbook": "lean-proof-refactor-handbook",
           "error_pattern": "Public theorem signature changed during refactor",
-          "cause": "Hard boundary violation",
-          "fix": "Revert signature edit; add generalized lemma alongside and prove old via 1-liner",
+          "cause": "Hard API boundary violation",
+          "fix": "Revert signature edit; add generalized lemma alongside and prove original signature via 1-liner",
           "columns": {
             "Symptom / Error / Bottleneck": "Public theorem signature changed during refactor",
-            "Root Cause": "Hard boundary violation",
-            "Remediating Fix": "Revert signature edit; add generalized lemma alongside and prove old via 1-liner"
+            "Root Cause": "Hard API boundary violation",
+            "Remediating Fix": "Revert signature edit; add generalized lemma alongside and prove original signature via 1-liner"
+          }
+        },
+        {
+          "handbook": "lean-proof-refactor-handbook",
+          "error_pattern": "Commute-diagram lift increased total LOC on tiny state",
+          "cause": "Commute pattern overhead (`<= 5` state ops)",
+          "fix": "Apply Commute diagram lifts only above the `> 20` state-operation threshold",
+          "columns": {
+            "Symptom / Error / Bottleneck": "Commute-diagram lift increased total LOC on tiny state",
+            "Root Cause": "Commute pattern overhead (`<= 5` state ops)",
+            "Remediating Fix": "Apply Commute diagram lifts only above the `> 20` state-operation threshold"
           }
         }
       ]
@@ -7958,346 +8067,323 @@
     "lean-sair-kernel-optimization-handbook": {
       "file": "references/handbooks/lean-sair-kernel-optimization-handbook.md",
       "skill_ref": "skills/lean-sair-kernel-optimization/SKILL.md",
-      "goal_shape_count": 15,
+      "goal_shape_count": 14,
       "intent_count": 7,
-      "error_count": 7,
+      "error_count": 6,
       "goal_shape_templates": [
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "goal_shape": "`let x := e; ... x ... x ...` inside recursive step",
-          "route_or_concordance": "`SAIR-LAW-01`, `SAIR-LAW-01B`",
+          "goal_shape": "`let x := e` inside hot `@Nat.rec` step body",
+          "route_or_concordance": "`SAIR-LAW-01`, `SAIR-LAW-01B`, `ADR-INV-0025`",
           "template": "`kernel-friendly-term-design`",
           "columns": {
-            "Goal / Term Shape": "`let x := e; ... x ... x ...` inside recursive step",
-            "Primary SAIR Law(s)": "`SAIR-LAW-01`, `SAIR-LAW-01B`",
+            "Goal / Term Shape": "`let x := e` inside hot `@Nat.rec` step body",
+            "Primary SAIR Law(s)": "`SAIR-LAW-01`, `SAIR-LAW-01B`, `ADR-INV-0025`",
             "Recommended AltProof Route": "`kernel-friendly-term-design`",
-            "Canonical Kernel Pattern / Tactic": "Bind once via `let x := e` when referenced >=2 times (DAG sharing); inline when referenced once (avoid `Let` + zeta tax)"
+            "Canonical Kernel Pattern / Tactic": "Inline single-use `let` bindings (`Expr::Let` + zeta tax); bind `let x := e` only when `>= 2` uses are dynamically evaluated on the active path AND confirmed by `real - twinlit` PMU"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "goal_shape": "Sibling calls `g (f x)` and `h (f x)` in same branch",
+          "goal_shape": "Sibling calls `(f x, g (f x))` or `Nat.add (f x) (f x)`",
           "route_or_concordance": "`SAIR-LAW-01C`",
           "template": "`kernel-friendly-term-design`",
           "columns": {
-            "Goal / Term Shape": "Sibling calls `g (f x)` and `h (f x)` in same branch",
+            "Goal / Term Shape": "Sibling calls `(f x, g (f x))` or `Nat.add (f x) (f x)`",
             "Primary SAIR Law(s)": "`SAIR-LAW-01C`",
             "Recommended AltProof Route": "`kernel-friendly-term-design`",
-            "Canonical Kernel Pattern / Tactic": "Hoist `let fx := f x` before the branch or tuple application"
+            "Canonical Kernel Pattern / Tactic": "Lean's WHNF cache is NOT shared across sibling `Expr` nodes; hoist `let fx := f x` once when `f` is non-trivial"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "goal_shape": "Closed expression `2^64 - 1` or `List.range 64` inside loop",
+          "goal_shape": "Closed expression `(1 <<< 64) - 1` or table inside lambda",
           "route_or_concordance": "`SAIR-LAW-02`, `SAIR-LAW-11`",
           "template": "`closed-def-whnf-caching`",
           "columns": {
-            "Goal / Term Shape": "Closed expression `2^64 - 1` or `List.range 64` inside loop",
+            "Goal / Term Shape": "Closed expression `(1 <<< 64) - 1` or table inside lambda",
             "Primary SAIR Law(s)": "`SAIR-LAW-02`, `SAIR-LAW-11`",
             "Recommended AltProof Route": "`closed-def-whnf-caching`",
-            "Canonical Kernel Pattern / Tactic": "Hoist to top-level `def C : Nat := ...` or evaluate at elaboration time via `eval_nat%`"
+            "Canonical Kernel Pattern / Tactic": "Hoist to a top-level closed `def` (memoized in `m_st->m_whnf`) or pre-evaluate at elaboration time via `eval_nat%`"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "goal_shape": "Deeply curried `fun a b c d => ...` where `a, b, c` are invariant",
-          "route_or_concordance": "`SAIR-LAW-02B`, `SAIR-LAW-04`",
+          "goal_shape": "Deeply curried `fun a b c d => ...` or `k + 1` step increment",
+          "route_or_concordance": "`SAIR-LAW-02B`, `SAIR-LAW-03`, `SAIR-LAW-03B`",
           "template": "`kernel-friendly-term-design`",
           "columns": {
-            "Goal / Term Shape": "Deeply curried `fun a b c d => ...` where `a, b, c` are invariant",
-            "Primary SAIR Law(s)": "`SAIR-LAW-02B`, `SAIR-LAW-04`",
+            "Goal / Term Shape": "Deeply curried `fun a b c d => ...` or `k + 1` step increment",
+            "Primary SAIR Law(s)": "`SAIR-LAW-02B`, `SAIR-LAW-03`, `SAIR-LAW-03B`",
             "Recommended AltProof Route": "`kernel-friendly-term-design`",
-            "Canonical Kernel Pattern / Tactic": "Place invariant binders outermost and vary only the innermost accumulator; eta-reduce point-free wrappers"
+            "Canonical Kernel Pattern / Tactic": "Place invariant binders outermost; prefer `Nat.succ k` on `@Nat.rec` step accumulators and `Nat.add 1 q` (constant on LHS) on non-structural counters (`ADR-INV-0025`)"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "goal_shape": "Commutative Nat op `acc + 1` or `n &&& (2^k - 1)`",
-          "route_or_concordance": "`SAIR-LAW-03`, `SAIR-LAW-03B`",
+          "goal_shape": "`termination_by` / `brecOn` or `if h : c then ... else ...`",
+          "route_or_concordance": "`SAIR-LAW-06`, `SAIR-LAW-07`, `SAIR-LAW-08`",
           "template": "`kernel-friendly-term-design`",
           "columns": {
-            "Goal / Term Shape": "Commutative Nat op `acc + 1` or `n &&& (2^k - 1)`",
-            "Primary SAIR Law(s)": "`SAIR-LAW-03`, `SAIR-LAW-03B`",
+            "Goal / Term Shape": "`termination_by` / `brecOn` or `if h : c then ... else ...`",
+            "Primary SAIR Law(s)": "`SAIR-LAW-06`, `SAIR-LAW-07`, `SAIR-LAW-08`",
             "Recommended AltProof Route": "`kernel-friendly-term-design`",
-            "Canonical Kernel Pattern / Tactic": "Put small constant on LHS (`1 + acc`) when helpful for structural reduction, or replace `n % 2^k` with `n &&& mask`"
+            "Canonical Kernel Pattern / Tactic": "Replace `WellFounded.fix`/`brecOn` with direct `@Nat.rec`; replace `ite`/`dite` (`Decidable` synthesis) with `@Bool.rec` or `cond` (`cond` also compiles in LCNF)"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "goal_shape": "Well-founded recursion `termination_by` / `brecOn`",
-          "route_or_concordance": "`SAIR-LAW-06`, `SAIR-LAW-07`",
-          "template": "`kernel-friendly-term-design`",
-          "columns": {
-            "Goal / Term Shape": "Well-founded recursion `termination_by` / `brecOn`",
-            "Primary SAIR Law(s)": "`SAIR-LAW-06`, `SAIR-LAW-07`",
-            "Recommended AltProof Route": "`kernel-friendly-term-design`",
-            "Canonical Kernel Pattern / Tactic": "Refactor to structural `Nat.rec` / fuel recursion or attach `@[csimp]` dual-path theorem for compiled execution"
-          }
-        },
-        {
-          "handbook": "lean-sair-kernel-optimization-handbook",
-          "goal_shape": "`if c then a else b` on `Bool` inside hot kernel loop",
-          "route_or_concordance": "`SAIR-LAW-08`",
-          "template": "`constructive-decidable-reduction`",
-          "columns": {
-            "Goal / Term Shape": "`if c then a else b` on `Bool` inside hot kernel loop",
-            "Primary SAIR Law(s)": "`SAIR-LAW-08`",
-            "Recommended AltProof Route": "`constructive-decidable-reduction`",
-            "Canonical Kernel Pattern / Tactic": "Replace `ite` (which synthesizes `Decidable` dictionary) with `Bool.rec b a c` or `cond c a b`"
-          }
-        },
-        {
-          "handbook": "lean-sair-kernel-optimization-handbook",
-          "goal_shape": "Nested tuple state `(a, (b, (c, d)))` in `Nat.rec`",
+          "goal_shape": "Nested tuple state `(a, (b, (c, d)))` or wide CPS arity",
           "route_or_concordance": "`SAIR-LAW-09`, `SAIR-LAW-10`, `SAIR-LAW-24`",
           "template": "`kernel-friendly-term-design`",
           "columns": {
-            "Goal / Term Shape": "Nested tuple state `(a, (b, (c, d)))` in `Nat.rec`",
+            "Goal / Term Shape": "Nested tuple state `(a, (b, (c, d)))` or wide CPS arity",
             "Primary SAIR Law(s)": "`SAIR-LAW-09`, `SAIR-LAW-10`, `SAIR-LAW-24`",
             "Recommended AltProof Route": "`kernel-friendly-term-design`",
-            "Canonical Kernel Pattern / Tactic": "Flatten into a dedicated `structure State` or CPS continuation `k a b c d` (optimal arity <= 6)"
+            "Canonical Kernel Pattern / Tactic": "Flatten into unboxed CPS (`<= 6` scalar registers) or SWAR width-2 word pairs (`SAIR-LAW-24`: width-2 + 1-bit step beats width-1, width-3, and width-4)"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "goal_shape": "Signed integer difference `(a : Int) - (b : Int)` in kernel",
+          "goal_shape": "Signed recurrence `a - b` or modular polynomial GCD",
           "route_or_concordance": "`SAIR-LAW-12`, `SAIR-LAW-12B`",
           "template": "`kernel-friendly-term-design`",
           "columns": {
-            "Goal / Term Shape": "Signed integer difference `(a : Int) - (b : Int)` in kernel",
+            "Goal / Term Shape": "Signed recurrence `a - b` or modular polynomial GCD",
             "Primary SAIR Law(s)": "`SAIR-LAW-12`, `SAIR-LAW-12B`",
             "Recommended AltProof Route": "`kernel-friendly-term-design`",
-            "Canonical Kernel Pattern / Tactic": "Represent as unboxed `Nat` pair `(pos, neg)` or direct `Nat.rec` sign-magnitude without `Quot.mk` overhead"
+            "Canonical Kernel Pattern / Tactic": "Avoid `Int`/`Rat`/`ZMod` boxing in hot kernels; use direct `@Nat.rec` sign-magnitude or unnormalized `(pos, neg)` `Nat` pairs"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "goal_shape": "`x * x` on multi-limb vs single-limb `Nat`",
+          "goal_shape": "`x * x` on multi-limb (`>= 32` limbs) vs single-limb `Nat`",
           "route_or_concordance": "`SAIR-LAW-13`, `SAIR-LAW-13B`",
           "template": "`gmp-swar-word-packing`",
           "columns": {
-            "Goal / Term Shape": "`x * x` on multi-limb vs single-limb `Nat`",
+            "Goal / Term Shape": "`x * x` on multi-limb (`>= 32` limbs) vs single-limb `Nat`",
             "Primary SAIR Law(s)": "`SAIR-LAW-13`, `SAIR-LAW-13B`",
             "Recommended AltProof Route": "`gmp-swar-word-packing`",
-            "Canonical Kernel Pattern / Tactic": "Share `let y := x; y * y` so GMP `mpz_mul(r, a, a)` dispatches to Karatsuba/squaring fast path"
+            "Canonical Kernel Pattern / Tactic": "`mpz_mul(r, a, a)` triggers `mpn_sqr` above `SQR_TOOM2_THRESHOLD` (~30 limbs), saving `-14%..-21%` in own window (`NR-076`); below ~20 limbs `let`-sharing overhead dominates"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "goal_shape": "`n / 2^k` and `n % 2^k` on large `Nat`",
+          "goal_shape": "`n / 2^k`, `n % 2^k`, or base-`B` Horner digit packing",
           "route_or_concordance": "`SAIR-LAW-14`, `SAIR-LAW-14B`, `SAIR-LAW-14C`",
           "template": "`gmp-swar-word-packing`",
           "columns": {
-            "Goal / Term Shape": "`n / 2^k` and `n % 2^k` on large `Nat`",
+            "Goal / Term Shape": "`n / 2^k`, `n % 2^k`, or base-`B` Horner digit packing",
             "Primary SAIR Law(s)": "`SAIR-LAW-14`, `SAIR-LAW-14B`, `SAIR-LAW-14C`",
             "Recommended AltProof Route": "`gmp-swar-word-packing`",
-            "Canonical Kernel Pattern / Tactic": "Replace with `Nat.shiftRight n k` and `Nat.land n ((1 <<< k) - 1)`; align Horner chunks to 64-bit limb multiples"
+            "Canonical Kernel Pattern / Tactic": "Replace `/ 2^k` and `% 2^k` with `Nat.shiftRight` and `Nat.land`; aggregate Horner digits in balanced binary chunks aligned to 64-bit GMP limbs (`SAIR-LAW-16B`)"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "goal_shape": "Fixed-width array/vector recurrence `dp[i] = dp[i-1] + dp[i-k]`",
-          "route_or_concordance": "`SAIR-LAW-15`, `SAIR-LAW-16`, `SAIR-LAW-16B`",
+          "goal_shape": "Fixed-width array/DP recurrence or bitboard transition",
+          "route_or_concordance": "`SAIR-LAW-15`, `SAIR-LAW-16`, `SAIR-LAW-20`",
           "template": "`gmp-swar-word-packing`",
           "columns": {
-            "Goal / Term Shape": "Fixed-width array/vector recurrence `dp[i] = dp[i-1] + dp[i-k]`",
-            "Primary SAIR Law(s)": "`SAIR-LAW-15`, `SAIR-LAW-16`, `SAIR-LAW-16B`",
+            "Goal / Term Shape": "Fixed-width array/DP recurrence or bitboard transition",
+            "Primary SAIR Law(s)": "`SAIR-LAW-15`, `SAIR-LAW-16`, `SAIR-LAW-20`",
             "Recommended AltProof Route": "`gmp-swar-word-packing`",
-            "Canonical Kernel Pattern / Tactic": "Pack `k` lanes of `b` bits into a single GMP `Nat` word (Kronecker SWAR); unroll fixed-trip inner loops via binary doubling"
+            "Canonical Kernel Pattern / Tactic": "Pack `k` lanes into one GMP `Nat` word (Kronecker SWAR); unroll fixed-trip kernels via binary-doubling combinators (`t0..t6`); evaluate cellular/crypto rules in ANF (`^^^`, `&&&`, `"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "goal_shape": "Graph/automaton state space exploration in `decide`",
+          "goal_shape": "Finite-state graph/polyomino/automaton frontier search",
           "route_or_concordance": "`SAIR-LAW-17`, `SAIR-LAW-18`, `SAIR-LAW-18B`",
           "template": "`algorithm-class-substitution`",
           "columns": {
-            "Goal / Term Shape": "Graph/automaton state space exploration in `decide`",
+            "Goal / Term Shape": "Finite-state graph/polyomino/automaton frontier search",
             "Primary SAIR Law(s)": "`SAIR-LAW-17`, `SAIR-LAW-18`, `SAIR-LAW-18B`",
             "Recommended AltProof Route": "`algorithm-class-substitution`",
-            "Canonical Kernel Pattern / Tactic": "Canonicalize state words in CBV order; represent frontier sets as bitset/ZDD masks; isolate lowest set bit via `x &&& (0 - x)`"
+            "Canonical Kernel Pattern / Tactic": "Canonicalize states as CBV `Nat` words (never tree-recurse over lists); compress frontiers as ZDD/bitmasks; count/test 1-bit shift overlaps (`overlap := w &&& (w >>> 1)`) without `Nat` underflow"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "goal_shape": "Branching search with multiple pruning guards",
-          "route_or_concordance": "`SAIR-LAW-19`, `SAIR-LAW-19B`, `SAIR-LAW-20`",
+          "goal_shape": "Branching search with lookahead constraints & symmetry",
+          "route_or_concordance": "`SAIR-LAW-19`, `SAIR-LAW-19B`, `SAIR-LAW-21`",
           "template": "`algorithm-class-substitution`",
           "columns": {
-            "Goal / Term Shape": "Branching search with multiple pruning guards",
-            "Primary SAIR Law(s)": "`SAIR-LAW-19`, `SAIR-LAW-19B`, `SAIR-LAW-20`",
+            "Goal / Term Shape": "Branching search with lookahead constraints & symmetry",
+            "Primary SAIR Law(s)": "`SAIR-LAW-19`, `SAIR-LAW-19B`, `SAIR-LAW-21`",
             "Recommended AltProof Route": "`algorithm-class-substitution`",
-            "Canonical Kernel Pattern / Tactic": "Combine lookahead masks into a single bitwise `!= 0` check; short-circuit `mask == 0` before recursion; use ANF/Zhegalkin word ops"
+            "Canonical Kernel Pattern / Tactic": "Fuse lookahead checks into one bitwise mask guard; short-circuit `Nat.beq avail 0` immediately; prove finite symmetry/heuristic reorderings via decoupled `List.Perm` certificates"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "goal_shape": "Proof of `List.Perm` or finite invariant inside `rfl`",
-          "route_or_concordance": "`SAIR-LAW-21`, `SAIR-LAW-22`, `SAIR-LAW-23`",
-          "template": "`constructive-decidable-reduction`",
+          "goal_shape": "Parametric hot `def step (cfg : Config)` vs concrete loop",
+          "route_or_concordance": "`SAIR-LAW-22..25B`, `WAVE-13 G1`",
+          "template": "`abstraction-concrete-duality`",
           "columns": {
-            "Goal / Term Shape": "Proof of `List.Perm` or finite invariant inside `rfl`",
-            "Primary SAIR Law(s)": "`SAIR-LAW-21`, `SAIR-LAW-22`, `SAIR-LAW-23`",
-            "Recommended AltProof Route": "`constructive-decidable-reduction`",
-            "Canonical Kernel Pattern / Tactic": "Keep `Prop` proofs and typeclass dictionaries completely out of the runtime computation cone; bridge via a separate soundness theorem"
+            "Goal / Term Shape": "Parametric hot `def step (cfg : Config)` vs concrete loop",
+            "Primary SAIR Law(s)": "`SAIR-LAW-22..25B`, `WAVE-13 G1`",
+            "Recommended AltProof Route": "`abstraction-concrete-duality`",
+            "Canonical Kernel Pattern / Tactic": "Specialize hot `def`s to raw unboxed `Nat` literals (`1,600x..3,345x` penalty for parametric hot steps!); state general parametric theorems separately and bridge via `rfl` (`<= 1%` cost)"
+          }
+        },
+        {
+          "handbook": "lean-sair-kernel-optimization-handbook",
+          "goal_shape": "Hardware codegen from verified Lean bit/word kernel",
+          "route_or_concordance": "`PolyBitOp`, Exact-vs-Packed Lowering",
+          "template": "`proof-carrying-codegen`",
+          "columns": {
+            "Goal / Term Shape": "Hardware codegen from verified Lean bit/word kernel",
+            "Primary SAIR Law(s)": "`PolyBitOp`, Exact-vs-Packed Lowering",
+            "Recommended AltProof Route": "`proof-carrying-codegen`",
+            "Canonical Kernel Pattern / Tactic": "Emit MLIR (`ctpop`/`gpu.shuffle xor`), Ada `sm_89` PTX, AVX2/AVX-512 Rust, or freestanding C++20; enforce `exact` (`GMP`/`rug`) vs `checked-small -> NeedsWide` overflow traps (`N01..N12`)"
           }
         }
       ],
       "intent_phrasebook": [
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "intent": "\"Speed up `rfl` / `decide` on a recursive function\"",
-          "tactic_or_idiom": "`SAIR-LAW-06`, `SAIR-LAW-07`, `SAIR-LAW-02`",
-          "notes": "Replace `WellFounded.fix` with structural `Nat.rec`; hoist closed constants outside `Nat.rec` step lambdas",
+          "intent": "\"Speed up `rfl` / `decide +kernel` on a recursive function\"",
+          "tactic_or_idiom": "`SAIR-LAW-06`, `SAIR-LAW-02`, `SAIR-LAW-23`",
+          "notes": "Replace `WellFounded.fix` with direct `@Nat.rec`; hoist closed constants outside step lambdas; replace polymorphic `+`/`*` with `Nat.add`/`Nat.mul`",
           "columns": {
-            "User / Engineer Intent": "\"Speed up `rfl` / `decide` on a recursive function\"",
-            "Target SAIR Law(s)": "`SAIR-LAW-06`, `SAIR-LAW-07`, `SAIR-LAW-02`",
-            "Actionable Transformation Recipe": "Replace `WellFounded.fix` with structural `Nat.rec`; hoist closed constants outside `Nat.rec` step lambdas"
+            "User / Engineer Intent": "\"Speed up `rfl` / `decide +kernel` on a recursive function\"",
+            "Target SAIR Law(s)": "`SAIR-LAW-06`, `SAIR-LAW-02`, `SAIR-LAW-23`",
+            "Actionable Transformation Recipe": "Replace `WellFounded.fix` with direct `@Nat.rec`; hoist closed constants outside step lambdas; replace polymorphic `+`/`*` with `Nat.add`/`Nat.mul`"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "intent": "\"Eliminate `Classical.choice` from a `Nat`/`Bool`/`BitVec` theorem\"",
-          "tactic_or_idiom": "`SAIR-LAW-08`, `SAIR-LAW-22`, `SAIR-LAW-23`",
-          "notes": "Use AltProof Route 9 (`constructive-decidable-reduction`): replace `split`/`by_cases` with `Bool.and_eq_true`, `decide_eq_true_eq`, `omega`, or `bv_decide`",
+          "intent": "\"Abstract repeated proof logic without slowing down the kernel\"",
+          "tactic_or_idiom": "`WAVE-13 G1`, `SAIR-LAW-07`, `SAIR-LAW-22B`",
+          "notes": "Keep hot `def` specialized to raw unboxed `Nat` + inline `nat_lit`s; state a parametric proof theorem over abstract step parameters and discharge the concrete instance by `rfl`",
           "columns": {
-            "User / Engineer Intent": "\"Eliminate `Classical.choice` from a `Nat`/`Bool`/`BitVec` theorem\"",
-            "Target SAIR Law(s)": "`SAIR-LAW-08`, `SAIR-LAW-22`, `SAIR-LAW-23`",
-            "Actionable Transformation Recipe": "Use AltProof Route 9 (`constructive-decidable-reduction`): replace `split`/`by_cases` with `Bool.and_eq_true`, `decide_eq_true_eq`, `omega`, or `bv_decide`"
+            "User / Engineer Intent": "\"Abstract repeated proof logic without slowing down the kernel\"",
+            "Target SAIR Law(s)": "`WAVE-13 G1`, `SAIR-LAW-07`, `SAIR-LAW-22B`",
+            "Actionable Transformation Recipe": "Keep hot `def` specialized to raw unboxed `Nat` + inline `nat_lit`s; state a parametric proof theorem over abstract step parameters and discharge the concrete instance by `rfl`"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "intent": "\"Avoid recomputing a huge constant inside every recursion step\"",
-          "tactic_or_idiom": "`SAIR-LAW-02`, `SAIR-LAW-11`, `SAIR-LAW-25B`",
-          "notes": "Use AltProof Route 10 (`closed-def-whnf-caching`): define a closed top-level `def C : Nat := ...` (cached in `m_st->m_whnf`) or compute via `eval_nat%`",
+          "intent": "\"Choose `Nat.succ k` vs `Nat.add 1 k` in a tight loop\"",
+          "tactic_or_idiom": "`ADR-INV-0025`, `SAIR-LAW-03`",
+          "notes": "Use `Nat.succ k` when `k` is consumed by a structural `@Nat.rec` eliminator (`Expr::App(Const(\"Nat.succ\"), k)` directly matches the `succ` arm); use `Nat.add 1 q` for arithmetic counters evaluated to `nat_lit`",
           "columns": {
-            "User / Engineer Intent": "\"Avoid recomputing a huge constant inside every recursion step\"",
-            "Target SAIR Law(s)": "`SAIR-LAW-02`, `SAIR-LAW-11`, `SAIR-LAW-25B`",
-            "Actionable Transformation Recipe": "Use AltProof Route 10 (`closed-def-whnf-caching`): define a closed top-level `def C : Nat := ...` (cached in `m_st->m_whnf`) or compute via `eval_nat%`"
+            "User / Engineer Intent": "\"Choose `Nat.succ k` vs `Nat.add 1 k` in a tight loop\"",
+            "Target SAIR Law(s)": "`ADR-INV-0025`, `SAIR-LAW-03`",
+            "Actionable Transformation Recipe": "Use `Nat.succ k` when `k` is consumed by a structural `@Nat.rec` eliminator (`Expr::App(Const(\"Nat.succ\"), k)` directly matches the `succ` arm); use `Nat.add 1 q` for arithmetic counters evaluated to `nat_lit`"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "intent": "\"Vectorize a DP table or cellular automaton inside Lean's kernel\"",
-          "tactic_or_idiom": "`SAIR-LAW-15`, `SAIR-LAW-16B`, `SAIR-LAW-20`",
-          "notes": "Use AltProof Route 11 (`gmp-swar-word-packing`): pack `k` lanes into a `b`-bit `Nat` word (aligning `b` to multiples of 64 bits where possible)",
+          "intent": "\"Eliminate `Classical.choice` and `Lean.ofReduceBool` from a proof\"",
+          "tactic_or_idiom": "`SAIR-LAW-08`, `SAIR-LAW-22`, `sair_decide`",
+          "notes": "Replace `if`/`split` with `@Bool.rec`/`cond`; close concrete goals with 3-rung `sair_decide` (`first",
           "columns": {
-            "User / Engineer Intent": "\"Vectorize a DP table or cellular automaton inside Lean's kernel\"",
-            "Target SAIR Law(s)": "`SAIR-LAW-15`, `SAIR-LAW-16B`, `SAIR-LAW-20`",
-            "Actionable Transformation Recipe": "Use AltProof Route 11 (`gmp-swar-word-packing`): pack `k` lanes into a `b`-bit `Nat` word (aligning `b` to multiples of 64 bits where possible)"
+            "User / Engineer Intent": "\"Eliminate `Classical.choice` and `Lean.ofReduceBool` from a proof\"",
+            "Target SAIR Law(s)": "`SAIR-LAW-08`, `SAIR-LAW-22`, `sair_decide`",
+            "Actionable Transformation Recipe": "Replace `if`/`split` with `@Bool.rec`/`cond`; close concrete goals with 3-rung `sair_decide` (`first"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "intent": "\"Reduce memory allocation and `Prod.mk` boxing in state loops\"",
-          "tactic_or_idiom": "`SAIR-LAW-09`, `SAIR-LAW-10`, `SAIR-LAW-24`",
-          "notes": "Convert tuple returns `(a, b, c)` into CPS (`fun k => k a b c`) or a flat `structure` with unboxed scalar fields",
+          "intent": "\"Implement branch-free low-bit cut/mask on `Nat` words\"",
+          "tactic_or_idiom": "`SAIR-LAW-14`, Nov 11-12 Cut/Mask Contract",
+          "notes": "Exploit truncating `Nat.sub`: when `k <= s`, `k - s = 0` yields `1 <<< 0 - 1 = 0` mask automatically; guard multi-limb shifts with `Nat.ble a (1 <<< (k - s) - 1)` skip-to-plain-shift when profitable",
           "columns": {
-            "User / Engineer Intent": "\"Reduce memory allocation and `Prod.mk` boxing in state loops\"",
-            "Target SAIR Law(s)": "`SAIR-LAW-09`, `SAIR-LAW-10`, `SAIR-LAW-24`",
-            "Actionable Transformation Recipe": "Convert tuple returns `(a, b, c)` into CPS (`fun k => k a b c`) or a flat `structure` with unboxed scalar fields"
+            "User / Engineer Intent": "\"Implement branch-free low-bit cut/mask on `Nat` words\"",
+            "Target SAIR Law(s)": "`SAIR-LAW-14`, Nov 11-12 Cut/Mask Contract",
+            "Actionable Transformation Recipe": "Exploit truncating `Nat.sub`: when `k <= s`, `k - s = 0` yields `1 <<< 0 - 1 = 0` mask automatically; guard multi-limb shifts with `Nat.ble a (1 <<< (k - s) - 1)` skip-to-plain-shift when profitable"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "intent": "\"Prune dead search branches in a kernel-checked solver\"",
-          "tactic_or_idiom": "`SAIR-LAW-18`, `SAIR-LAW-19`, `SAIR-LAW-19B`",
-          "notes": "Represent frontiers as `Nat` bitmasks; test `(frontier &&& validMask) == 0` before spawning recursive calls",
+          "intent": "\"Lower a Lean SWAR/BitVec kernel to C++20, Rust SIMD, or CUDA PTX\"",
+          "tactic_or_idiom": "`PolyBitOp`, Exact-vs-Packed Lowering",
+          "notes": "Prove equivalence to spec in Lean (`Template_ProofCarryingCodegen.lean`), lower pure bitwise kernels via `PolyBitOp`, and guard multi-limb arithmetic with `checked-small -> NeedsWide` + operand snapshotting",
           "columns": {
-            "User / Engineer Intent": "\"Prune dead search branches in a kernel-checked solver\"",
-            "Target SAIR Law(s)": "`SAIR-LAW-18`, `SAIR-LAW-19`, `SAIR-LAW-19B`",
-            "Actionable Transformation Recipe": "Represent frontiers as `Nat` bitmasks; test `(frontier &&& validMask) == 0` before spawning recursive calls"
+            "User / Engineer Intent": "\"Lower a Lean SWAR/BitVec kernel to C++20, Rust SIMD, or CUDA PTX\"",
+            "Target SAIR Law(s)": "`PolyBitOp`, Exact-vs-Packed Lowering",
+            "Actionable Transformation Recipe": "Prove equivalence to spec in Lean (`Template_ProofCarryingCodegen.lean`), lower pure bitwise kernels via `PolyBitOp`, and guard multi-limb arithmetic with `checked-small -> NeedsWide` + operand snapshotting"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "intent": "\"Clean up unreadably large unrolled definitions without losing speed\"",
-          "tactic_or_idiom": "`SAIR-LAW-16`, `SAIR-LAW-25`, `SAIR-LAW-25B`",
-          "notes": "Use binary-doubling combinators (`t0..t6`) with elaboration-time pre-unfolding (`preunfold%` / `unroll_top%`) and named `abbrev` constants",
+          "intent": "\"Stream verified state transitions over zero-copy IPC / NVMe\"",
+          "tactic_or_idiom": "`alignas(128)` SPSC, `.leangrph`, `io_uring`",
+          "notes": "Separate cache lines to `128 B` (Zen 3 L2 streamer prefetch pair), align `.leangrph` CSR headers to `128 B` (`64 B` magic/counts + `64 B` SHA-256), and register `2 MB` `HugeTLB` buffers with `io_uring`",
           "columns": {
-            "User / Engineer Intent": "\"Clean up unreadably large unrolled definitions without losing speed\"",
-            "Target SAIR Law(s)": "`SAIR-LAW-16`, `SAIR-LAW-25`, `SAIR-LAW-25B`",
-            "Actionable Transformation Recipe": "Use binary-doubling combinators (`t0..t6`) with elaboration-time pre-unfolding (`preunfold%` / `unroll_top%`) and named `abbrev` constants"
+            "User / Engineer Intent": "\"Stream verified state transitions over zero-copy IPC / NVMe\"",
+            "Target SAIR Law(s)": "`alignas(128)` SPSC, `.leangrph`, `io_uring`",
+            "Actionable Transformation Recipe": "Separate cache lines to `128 B` (Zen 3 L2 streamer prefetch pair), align `.leangrph` CSR headers to `128 B` (`64 B` magic/counts + `64 B` SHA-256), and register `2 MB` `HugeTLB` buffers with `io_uring`"
           }
         }
       ],
       "error_to_fix": [
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "error_pattern": "`(deterministic) timeout at whnf, maximum number of heartbeats (200000) has been reached`",
-          "cause": "Deep unfolding of `WellFounded.fix` / `brecOn` or unshared subtrees in `is_def_eq`",
-          "fix": "`SAIR-LAW-06` (switch to structural `Nat.rec`), `SAIR-LAW-01B` (share repeated subexpressions via `let`), `SAIR-LAW-02` (hoist closed subtrees)",
+          "error_pattern": "`(deterministic) timeout at whnf, maximum number of heartbeats`",
+          "cause": "Unfolding `WellFounded.fix`/`brecOn`, parametric typeclass dictionaries in hot step (`WAVE-13 G1`), or unshared sibling WHNF trees",
+          "fix": "`SAIR-LAW-06` (`@Nat.rec`), `SAIR-LAW-23` (primitive `Nat.*` constants), `WAVE-13 G1` (monomorphize hot `def`)",
           "columns": {
-            "Symptom / Elaborator Error / Bottleneck": "`(deterministic) timeout at whnf, maximum number of heartbeats (200000) has been reached`",
-            "Root Cause in `type_checker.cpp`": "Deep unfolding of `WellFounded.fix` / `brecOn` or unshared subtrees in `is_def_eq`",
-            "Remediating SAIR Law(s) & Fix": "`SAIR-LAW-06` (switch to structural `Nat.rec`), `SAIR-LAW-01B` (share repeated subexpressions via `let`), `SAIR-LAW-02` (hoist closed subtrees)"
+            "Symptom / Elaborator Error / Bottleneck": "`(deterministic) timeout at whnf, maximum number of heartbeats`",
+            "Root Cause in `type_checker.cpp` / Lowering": "Unfolding `WellFounded.fix`/`brecOn`, parametric typeclass dictionaries in hot step (`WAVE-13 G1`), or unshared sibling WHNF trees",
+            "Remediating SAIR Law(s) & Fix": "`SAIR-LAW-06` (`@Nat.rec`), `SAIR-LAW-23` (primitive `Nat.*` constants), `WAVE-13 G1` (monomorphize hot `def`)"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "error_pattern": "`theorem depends on axiom Classical.choice` on decidable arithmetic",
-          "cause": "`if ... then ... else ...` or `split` used `Classical.propDecidable` instead of `Bool` / `Decidable` instance",
-          "fix": "`SAIR-LAW-08`, `SAIR-LAW-23`, Route 9 (`constructive-decidable-reduction`): switch to `cond`, `Bool.rec`, `omega`, or `bv_decide`",
+          "error_pattern": "`code generator does not support recursor 'Nat.rec' / 'Bool.rec'`",
+          "cause": "Raw `@Nat.rec` / `@Bool.rec` is fast in kernel WHNF (`rfl`), but Lean 4's LCNF native compiler requires structural `match` / `cond`",
+          "fix": "Use `@Nat.rec`/`@Bool.rec` only in kernel-evaluated `rfl` lanes, OR pair with a computable `@[csimp]` twin using `cond` + structural pattern matching (`SAIR-LAW-07`, `SAIR-LAW-08`)",
           "columns": {
-            "Symptom / Elaborator Error / Bottleneck": "`theorem depends on axiom Classical.choice` on decidable arithmetic",
-            "Root Cause in `type_checker.cpp`": "`if ... then ... else ...` or `split` used `Classical.propDecidable` instead of `Bool` / `Decidable` instance",
-            "Remediating SAIR Law(s) & Fix": "`SAIR-LAW-08`, `SAIR-LAW-23`, Route 9 (`constructive-decidable-reduction`): switch to `cond`, `Bool.rec`, `omega`, or `bv_decide`"
+            "Symptom / Elaborator Error / Bottleneck": "`code generator does not support recursor 'Nat.rec' / 'Bool.rec'`",
+            "Root Cause in `type_checker.cpp` / Lowering": "Raw `@Nat.rec` / `@Bool.rec` is fast in kernel WHNF (`rfl`), but Lean 4's LCNF native compiler requires structural `match` / `cond`",
+            "Remediating SAIR Law(s) & Fix": "Use `@Nat.rec`/`@Bool.rec` only in kernel-evaluated `rfl` lanes, OR pair with a computable `@[csimp]` twin using `cond` + structural pattern matching (`SAIR-LAW-07`, `SAIR-LAW-08`)"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "error_pattern": "`maximum recursion depth has been reached` during `rfl` / `decide`",
-          "cause": "Non-tail-recursive list pipeline or deep left-associated expression tree",
-          "fix": "`SAIR-LAW-10` (CPS / tail accumulator), `SAIR-LAW-16` (binary-doubling tree instead of linear chain)",
+          "error_pattern": "Microbenchmark win (`-5%`) turns into full-file regression (`+3%`)",
+          "cause": "`ADR-INV-0025` Single-Consumer Isolation Paradox: microbench evaluated result directly to WHNF without realistic downstream consumer",
+          "fix": "Always benchmark inside the real consumer pipeline using `real - twinlit` PMU **sum-of-per-slot-medians-of-three** (`instructions:u`)",
           "columns": {
-            "Symptom / Elaborator Error / Bottleneck": "`maximum recursion depth has been reached` during `rfl` / `decide`",
-            "Root Cause in `type_checker.cpp`": "Non-tail-recursive list pipeline or deep left-associated expression tree",
-            "Remediating SAIR Law(s) & Fix": "`SAIR-LAW-10` (CPS / tail accumulator), `SAIR-LAW-16` (binary-doubling tree instead of linear chain)"
+            "Symptom / Elaborator Error / Bottleneck": "Microbenchmark win (`-5%`) turns into full-file regression (`+3%`)",
+            "Root Cause in `type_checker.cpp` / Lowering": "`ADR-INV-0025` Single-Consumer Isolation Paradox: microbench evaluated result directly to WHNF without realistic downstream consumer",
+            "Remediating SAIR Law(s) & Fix": "Always benchmark inside the real consumer pipeline using `real - twinlit` PMU **sum-of-per-slot-medians-of-three** (`instructions:u`)"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "error_pattern": "`Nat.div` / `Nat.mod` dominates kernel profile (`>40%` instructions)",
-          "cause": "Repeated division/modulo by powers of 2 or fixed bases in inner loop",
-          "fix": "`SAIR-LAW-14` (`>>>` and `&&&`), `SAIR-LAW-14B` (chunked Horner radix), `SAIR-LAW-14C` (bitwise subpipeline)",
+          "error_pattern": "Wrong answer `0` when isolating lowest set bit with `x &&& (0 - x)`",
+          "cause": "Truncating `Nat` subtraction evaluates `0 - x = 0` for all `x : Nat`! Two's-complement `-x` only holds on `BitVec w` / `UInt64`",
+          "fix": "Never write `0 - x` on `Nat`! On `BitVec w` use `x &&& (-x)`; on `Nat` clear lowest bit via `x &&& (x - 1)` (for `x > 0`) or compute 1-bit shift overlap `x &&& (x >>> 1)` (`SAIR-LAW-18B`)",
           "columns": {
-            "Symptom / Elaborator Error / Bottleneck": "`Nat.div` / `Nat.mod` dominates kernel profile (`>40%` instructions)",
-            "Root Cause in `type_checker.cpp`": "Repeated division/modulo by powers of 2 or fixed bases in inner loop",
-            "Remediating SAIR Law(s) & Fix": "`SAIR-LAW-14` (`>>>` and `&&&`), `SAIR-LAW-14B` (chunked Horner radix), `SAIR-LAW-14C` (bitwise subpipeline)"
+            "Symptom / Elaborator Error / Bottleneck": "Wrong answer `0` when isolating lowest set bit with `x &&& (0 - x)`",
+            "Root Cause in `type_checker.cpp` / Lowering": "Truncating `Nat` subtraction evaluates `0 - x = 0` for all `x : Nat`! Two's-complement `-x` only holds on `BitVec w` / `UInt64`",
+            "Remediating SAIR Law(s) & Fix": "Never write `0 - x` on `Nat`! On `BitVec w` use `x &&& (-x)`; on `Nat` clear lowest bit via `x &&& (x - 1)` (for `x > 0`) or compute 1-bit shift overlap `x &&& (x >>> 1)` (`SAIR-LAW-18B`)"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "error_pattern": "Slow `is_def_eq` on functions carrying proof witnesses `{x : Nat // P x}`",
-          "cause": "Kernel reduces proof terms inside `Subtype` projections during WHNF",
-          "fix": "`SAIR-LAW-22` (`ZeroPropRuntimeCone`), `SAIR-LAW-22B` (`HotColdSeparation`): compute on raw `Nat`, prove `P` externally",
+          "error_pattern": "`depends on axiom Lean.ofReduceBool` / `Lean.trustCompiler`",
+          "cause": "Proof invoked `native_decide`, `decide +native`, or `bv_decide` on a strict 3-axiom target",
+          "fix": "Switch to 3-rung `sair_decide` (`first",
           "columns": {
-            "Symptom / Elaborator Error / Bottleneck": "Slow `is_def_eq` on functions carrying proof witnesses `{x : Nat // P x}`",
-            "Root Cause in `type_checker.cpp`": "Kernel reduces proof terms inside `Subtype` projections during WHNF",
-            "Remediating SAIR Law(s) & Fix": "`SAIR-LAW-22` (`ZeroPropRuntimeCone`), `SAIR-LAW-22B` (`HotColdSeparation`): compute on raw `Nat`, prove `P` externally"
+            "Symptom / Elaborator Error / Bottleneck": "`depends on axiom Lean.ofReduceBool` / `Lean.trustCompiler`",
+            "Root Cause in `type_checker.cpp` / Lowering": "Proof invoked `native_decide`, `decide +native`, or `bv_decide` on a strict 3-axiom target",
+            "Remediating SAIR Law(s) & Fix": "Switch to 3-rung `sair_decide` (`first"
           }
         },
         {
           "handbook": "lean-sair-kernel-optimization-handbook",
-          "error_pattern": "High heartbeat count on `Prod.fst` / `Prod.snd` chains",
-          "cause": "Repeated projection reduction `proj(0, mk(a, b))` across recursion steps",
-          "fix": "`SAIR-LAW-09` (`UnboxedProductSpine`), `SAIR-LAW-10` (`CpsPairElim`)",
+          "error_pattern": "Native Rust/C++ port silently overflows or corrupts aliased buffer",
+          "cause": "Arbitrary-precision Lean `Nat`/`Int` lowered to fixed `u64`/`i64` without width guard, or in-place `out == lhs` clobbered before read",
+          "fix": "Enforce `checked-small -> NeedsWide` fallback to `GMP`/`rug`, snapshot aliased inputs before mutation, and run `#eval` vs native conformance vectors `N01..N12`",
           "columns": {
-            "Symptom / Elaborator Error / Bottleneck": "High heartbeat count on `Prod.fst` / `Prod.snd` chains",
-            "Root Cause in `type_checker.cpp`": "Repeated projection reduction `proj(0, mk(a, b))` across recursion steps",
-            "Remediating SAIR Law(s) & Fix": "`SAIR-LAW-09` (`UnboxedProductSpine`), `SAIR-LAW-10` (`CpsPairElim`)"
-          }
-        },
-        {
-          "handbook": "lean-sair-kernel-optimization-handbook",
-          "error_pattern": "`bv_decide` fails to apply because goal uses unbounded `Nat` bitwise ops",
-          "cause": "Goal is stated over `Nat.land`/`Nat.lor` rather than fixed-width `BitVec w`",
-          "fix": "Bridge bounded `Nat` `< 2^w` to `BitVec w` via `BitVec.ofNat`, close with `bv_decide` (`SAIR-LAW-15`, `SAIR-LAW-20`)",
-          "columns": {
-            "Symptom / Elaborator Error / Bottleneck": "`bv_decide` fails to apply because goal uses unbounded `Nat` bitwise ops",
-            "Root Cause in `type_checker.cpp`": "Goal is stated over `Nat.land`/`Nat.lor` rather than fixed-width `BitVec w`",
-            "Remediating SAIR Law(s) & Fix": "Bridge bounded `Nat` `< 2^w` to `BitVec w` via `BitVec.ofNat`, close with `bv_decide` (`SAIR-LAW-15`, `SAIR-LAW-20`)"
+            "Symptom / Elaborator Error / Bottleneck": "Native Rust/C++ port silently overflows or corrupts aliased buffer",
+            "Root Cause in `type_checker.cpp` / Lowering": "Arbitrary-precision Lean `Nat`/`Int` lowered to fixed `u64`/`i64` without width guard, or in-place `out == lhs` clobbered before read",
+            "Remediating SAIR Law(s) & Fix": "Enforce `checked-small -> NeedsWide` fallback to `GMP`/`rug`, snapshot aliased inputs before mutation, and run `#eval` vs native conformance vectors `N01..N12`"
           }
         }
       ]
@@ -9403,7 +9489,7 @@
             "Manual polynomial energy inequalities in Agda require long `<=-Reasoning` chains that collapse to `nlinarith` or `positivity` in Lean 4"
           ],
           "lean4_target_tactics": [
-            "EASCI/StochasticCCV/ contraction bounds",
+            "Markov chain contraction bounds",
             "inductive invariant preservation",
             "Nat.div_add_mod"
           ],
@@ -9594,7 +9680,7 @@
             "Tendsto.comp",
             "Tendsto.add"
           ],
-          "lean4_target_syntax": "Tendsto f ( x) ( y) | Tendsto u atTop ( l) | forall  n in atTop, P n"
+          "lean4_target_syntax": "Tendsto f ( x) ( y) | Tendsto u atTop ( l) | forall ^f n in atTop, P n"
         }
       ]
     },
@@ -9870,7 +9956,7 @@
             "Manual reconstruction of state space equivalence lemmas"
           ],
           "lean4_target_tactics": [
-            "EASCI/StochasticCCV/ contraction bounds",
+            "Markov chain contraction bounds",
             "inductive invariant preservation",
             "Nat.div_add_mod"
           ],
@@ -10062,7 +10148,7 @@
           "dialect_syntax_pattern": "(f --> l) (at a within s) | (s ---> l) sequentially",
           "dialect_idiom": "Map `(s ---> l) sequentially` -> `Tendsto s atTop ( l)` and `(f --> l) (at a)` -> `Tendsto f ([!=] a) ( l)`.",
           "dialect_pitfalls": [
-            "Like Isabelle, HOL Light's `at a` is punctured (`0 < dist(x,a) < d`), corresponding to `[!=] a` (`nhdsWithin a {a}`) in Mathlib"
+            "Like Isabelle, HOL Light's `at a` is punctured (`0 < dist(x,a) < d`), corresponding to `[!=] a` (`nhdsWithin a {a}^c`) in Mathlib"
           ],
           "lean4_target_tactics": [
             "fun_prop",
@@ -10071,7 +10157,7 @@
             "Tendsto.comp",
             "Tendsto.add"
           ],
-          "lean4_target_syntax": "Tendsto f ( x) ( y) | Tendsto u atTop ( l) | forall  n in atTop, P n"
+          "lean4_target_syntax": "Tendsto f ( x) ( y) | Tendsto u atTop ( l) | forall ^f n in atTop, P n"
         }
       ]
     },
@@ -10358,7 +10444,7 @@
             "Measure theory obligations when extending to continuous or uncountably infinite state spaces"
           ],
           "lean4_target_tactics": [
-            "EASCI/StochasticCCV/ contraction bounds",
+            "Markov chain contraction bounds",
             "inductive invariant preservation",
             "Nat.div_add_mod"
           ],
@@ -10476,7 +10562,7 @@
           "dialect_syntax_pattern": "(sumxinA. f x) | (xinA. f x)",
           "dialect_idiom": "Translate `(sumxinA. f x)` under `finite A` to `sum x in A, f x` over `A : Finset `.",
           "dialect_pitfalls": [
-            "Isabelle `sumxinA. f x` defaults to `0` on infinite sets; if finiteness is not obvious in Lean 4, use `finsum` (`sum x, f x`) or carry `A : Finset `"
+            "Isabelle `sumxinA. f x` defaults to `0` on infinite sets; if finiteness is not obvious in Lean 4, use `finsum` (`sum^f x, f x`) or carry `A : Finset `"
           ],
           "lean4_target_tactics": [
             "Finset.sum_congr",
@@ -10559,7 +10645,7 @@
             "Tendsto.comp",
             "Tendsto.add"
           ],
-          "lean4_target_syntax": "Tendsto f ( x) ( y) | Tendsto u atTop ( l) | forall  n in atTop, P n"
+          "lean4_target_syntax": "Tendsto f ( x) ( y) | Tendsto u atTop ( l) | forall ^f n in atTop, P n"
         }
       ]
     },
@@ -10843,7 +10929,7 @@
           "canonical_name": "Invariant Certificates & Lyapunov Energy Functions",
           "category": "verification_logic",
           "dialect_tactics": [
-            "EASCI/StochasticCCV/ contraction bounds",
+            "Markov chain contraction bounds",
             "inductive invariant preservation",
             "Nat.div_add_mod"
           ],
@@ -10854,7 +10940,7 @@
             "Loss of monotonicity in composite state spaces"
           ],
           "lean4_target_tactics": [
-            "EASCI/StochasticCCV/ contraction bounds",
+            "Markov chain contraction bounds",
             "inductive invariant preservation",
             "Nat.div_add_mod"
           ],
@@ -11055,8 +11141,8 @@
             "Tendsto.comp",
             "Tendsto.add"
           ],
-          "dialect_syntax_pattern": "Tendsto f ( x) ( y) | Tendsto u atTop ( l) | forall  n in atTop, P n",
-          "dialect_idiom": "Prove continuity with `fun_prop` (or `continuity`), combine eventualities `forall ` with `filter_upwards`, and compose limits via `Tendsto.comp` instead of unfolding `(, )`.",
+          "dialect_syntax_pattern": "Tendsto f ( x) ( y) | Tendsto u atTop ( l) | forall ^f n in atTop, P n",
+          "dialect_idiom": "Prove continuity with `fun_prop` (or `continuity`), combine eventualities `forall ^f` with `filter_upwards`, and compose limits via `Tendsto.comp` instead of unfolding `(, )`.",
           "dialect_pitfalls": [
             "Avoid unfolding `Metric.tendsto_nhds` to `(, )` unless proving a base metric primitive",
             "Distinguish ` x` (includes `x`) from `[!=] x` (punctured neighborhood used in derivatives)"
@@ -11068,7 +11154,7 @@
             "Tendsto.comp",
             "Tendsto.add"
           ],
-          "lean4_target_syntax": "Tendsto f ( x) ( y) | Tendsto u atTop ( l) | forall  n in atTop, P n"
+          "lean4_target_syntax": "Tendsto f ( x) ( y) | Tendsto u atTop ( l) | forall ^f n in atTop, P n"
         }
       ]
     },
@@ -11366,7 +11452,7 @@
             "When scaling real Lyapunov energies to `Nat` in Lean 4 (`x 100`), guard all subtraction steps `(V s' <= V s)` against `Nat.sub` truncation"
           ],
           "lean4_target_tactics": [
-            "EASCI/StochasticCCV/ contraction bounds",
+            "Markov chain contraction bounds",
             "inductive invariant preservation",
             "Nat.div_add_mod"
           ],
@@ -11570,7 +11656,7 @@
             "Tendsto.comp",
             "Tendsto.add"
           ],
-          "lean4_target_syntax": "Tendsto f ( x) ( y) | Tendsto u atTop ( l) | forall  n in atTop, P n"
+          "lean4_target_syntax": "Tendsto f ( x) ( y) | Tendsto u atTop ( l) | forall ^f n in atTop, P n"
         }
       ]
     },
@@ -11864,7 +11950,7 @@
             "State space explosion when composing parallel processes without abstraction layers"
           ],
           "lean4_target_tactics": [
-            "EASCI/StochasticCCV/ contraction bounds",
+            "Markov chain contraction bounds",
             "inductive invariant preservation",
             "Nat.div_add_mod"
           ],
@@ -12067,7 +12153,7 @@
             "Tendsto.comp",
             "Tendsto.add"
           ],
-          "lean4_target_syntax": "Tendsto f ( x) ( y) | Tendsto u atTop ( l) | forall  n in atTop, P n"
+          "lean4_target_syntax": "Tendsto f ( x) ( y) | Tendsto u atTop ( l) | forall ^f n in atTop, P n"
         }
       ]
     }

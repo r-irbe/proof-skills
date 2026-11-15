@@ -27,8 +27,14 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from extraction_detector import detect_v3, module_symbols
-from report_renderer import BlockReport, render_file
+if __package__:
+    from .extraction_detector import detect_v3, module_symbols
+else:
+    from extraction_detector import detect_v3, module_symbols
+if __package__:
+    from .report_renderer import BlockReport, render_file
+else:
+    from report_renderer import BlockReport, render_file
 
 DECL_START_RE = re.compile(
     r"^(?:@[^\n]*\n)*\s*(?:theorem|lemma|def|instance|abbrev)\s+([A-Za-z_][\w']*)",
@@ -39,14 +45,35 @@ MAX_BLOCKS_PER_FILE = 50
 
 
 def bytepos(p) -> int:
-    return int(p["byteIdx"]) if isinstance(p, dict) else int(p)
+    """Read a nonnegative integral trace offset without coercing floats/bools."""
+    value = p.get("byteIdx") if isinstance(p, dict) else p
+    try:
+        if isinstance(value, bool) or not isinstance(value, (int, str)):
+            raise ValueError("expected integer")
+        offset = int(value)
+        if offset < 0:
+            raise ValueError("negative offset")
+    except (ValueError, TypeError, OverflowError) as exc:
+        raise ValueError(f"invalid trace byte offset: {value!r}") from exc
+    return offset
 
 
 def blocks_for_file(ast: dict, source: str) -> list[tuple[list, str]]:
     """Group tactic traces into (block, proof_text) pairs."""
+    # Lean/LeanDojo offsets address UTF-8 bytes, not Python characters.
+    byte_to_char = {0: 0}
+    byte_offset = 0
+    for index, character in enumerate(source, 1):
+        byte_offset += len(character.encode("utf-8"))
+        byte_to_char[byte_offset] = index
     blocks, cur = [], []
     for tc in ast.get("tactics", []):
-        pos, end = bytepos(tc["pos"]), bytepos(tc["endPos"])
+        start_byte, end_byte = bytepos(tc["pos"]), bytepos(tc["endPos"])
+        if start_byte > end_byte:
+            raise ValueError("reversed trace byte range")
+        if start_byte not in byte_to_char or end_byte not in byte_to_char:
+            raise ValueError("trace byte range is out of bounds or splits a UTF-8 character")
+        pos, end = byte_to_char[start_byte], byte_to_char[end_byte]
         if cur and pos != cur[-1][1]:
             blocks.append(cur)
             cur = []
@@ -88,7 +115,7 @@ def report_one(ast_path: Path, sandbox: Path) -> tuple[str, int, int, str] | Non
         return None
     try:
         ast = json.loads(ast_path.read_text())
-        source = src.read_text()
+        source = src.read_bytes().decode("utf-8")
     except Exception:
         return None
     file_syms = module_symbols(source)
@@ -128,10 +155,10 @@ def report_one(ast_path: Path, sandbox: Path) -> tuple[str, int, int, str] | Non
 
     by_line = {}
     for saving, br in entries:
-        by_line[br.line_start] = getattr(br, "theorem", "?")
+        by_line[str(br.line_start)] = getattr(br, "theorem", "?")
 
     def _sub(m):
-        thm = by_line.get(int(m.group(1)), "?")
+        thm = by_line.get(m.group(1), "?")
         return f"#### `{thm}` (lines {m.group(1)}-{m.group(2)})"
 
     md = _re.sub(r"#### proof at lines (\d+)-(\d+)", _sub, md)
@@ -171,7 +198,7 @@ def main() -> int:
         "|---|---|---|",
     ]
     for nc, nb, rel in index:
-        lines.append(f"| {nc} | {nb} | [{rel}](../../../easci/lean/{rel}) |")
+        lines.append(f"| {nc} | {nb} | [{rel}]({rel}.md) |")
     (out_dir / "INDEX.md").write_text("\n".join(lines) + "\n")
     print(f"SUITE: {n_files} files, {n_blocks} blocks, {n_cands} candidates -> {out_dir}")
     return 0

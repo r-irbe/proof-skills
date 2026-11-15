@@ -21,7 +21,7 @@ handoffs:
   successors:
   - skill:lean-retro-methodology
 metadata:
-  version: 0.4.0
+  version: 0.5.0
   source_spec: Unified from lean-pr and lean-upstream-porting
   last_reviewed: 2026-11
 ---

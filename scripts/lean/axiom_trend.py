@@ -6,7 +6,7 @@ Default mode avoids worktree churn by streaming historical file contents from
 The metric definitions intentionally match `w14b2_axiom_diff.py`:
 - theorem total comes from `docs/tracking/axiom_audit.md`
 - axiom / sorry / admit / simp counts come from comment-aware source scans of
-  `EASCI/**/*.lean`
+  `Project/**/*.lean`
 """
 
 from __future__ import annotations
@@ -22,7 +22,7 @@ if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 from axiom_diff import GIT_ROOT, REPO, REPO_IN_GIT, SUMMARY_PATTERNS, scan_text
 
-EASCI_TREE = (REPO_IN_GIT / "EASCI").as_posix()
+PROJECT_TREE = (REPO_IN_GIT / "Project").as_posix()
 AUDIT_REL = "docs/tracking/axiom_audit.md"
 AUDIT_PATH_IN_GIT = (REPO_IN_GIT / AUDIT_REL).as_posix()
 SPARK_BARS = "▁▂▃▄▅▆▇█"
@@ -165,7 +165,7 @@ def parse_audit_summary_text(text: str, source: str) -> dict[str, int]:
 
 
 def read_ref_texts(ref: str) -> dict[str, str]:
-    ls_tree = run_git(["ls-tree", "-r", "--full-tree", ref, "--", EASCI_TREE, AUDIT_PATH_IN_GIT])
+    ls_tree = run_git(["ls-tree", "-r", "--full-tree", ref, "--", PROJECT_TREE, AUDIT_PATH_IN_GIT])
 
     blobs_by_oid: dict[str, list[str]] = {}
     ordered_oids: list[str] = []
@@ -260,7 +260,7 @@ def capture_worktree_metrics() -> dict[str, int]:
         "admit": 0,
         "simp_attrs": 0,
     }
-    for lean_file in sorted((REPO / "EASCI").rglob("*.lean")):
+    for lean_file in sorted((REPO / "Project").rglob("*.lean")):
         metrics = scan_text(lean_file.read_text(encoding="utf-8"))
         totals["axioms"] += int(metrics["axioms"])
         totals["sorry"] += int(metrics["sorry_tactical"])

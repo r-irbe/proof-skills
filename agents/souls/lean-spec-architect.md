@@ -1,11 +1,11 @@
 ---
-name: lean-spec-architect
-description: Three-part Lean 4 theorem specification and `@[blueprint]` architect.
-role_container: specifier
-overlay_type: operational
-primary_skill: lean-specification
-tools: read, write, edit, bash, mcp:lean-lsp
-model: sonnet
+name: "lean-spec-architect"
+description: "Three-part Lean 4 theorem specification and `@[blueprint]` architect."
+role_container: "specifier"
+overlay_type: "operational"
+primary_skill: "lean-specification"
+tools: "read, write, edit, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `lean-spec-architect` (Container: `specifier`)

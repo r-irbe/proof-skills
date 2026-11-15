@@ -91,4 +91,4 @@ extracted_from: skills/lean-pedagogical-exposition/SKILL.md
 
 - **Predecessors**: `skill:lean-formalization-breakdown`, `skill:lean-blueprint`
 - **Successors**: `skill:lean-zettelkasten` (saving to knowledge graph), `skill:lean-doc-improvement` (documentation polishing).
-- **Reference Catalog**: [`references/lean_to_math_exposition_patterns.md`](../../references/lean_to_math_exposition_patterns.md)
+- **Reference Catalog**: [`references/lean_to_math_exposition_patterns.md`](../protocols/lean_to_math_exposition_patterns.md)

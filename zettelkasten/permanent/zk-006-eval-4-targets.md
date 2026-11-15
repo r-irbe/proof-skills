@@ -1,8 +1,8 @@
 ---
 id: zk-006
-title: Four eval targets per ADR-0039
+title: Four orthogonal skill evaluation targets
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-11-15
 type: permanent
 tags: [evals, methodology]
 refs:
@@ -13,30 +13,12 @@ status: validated
 confidence: high
 ---
 
-# Four eval targets per ADR-0039
+# Four orthogonal skill evaluation targets
 
-**Claim.** ADR-0039 splits "skill evaluation" into four orthogonal
-targets, each with its own metric and failure mode: **Instructions**
-(adherence to declared skill policy), **Skills** (dispatch reliability
-+ output-quality delta with/without the skill), **Coding outputs**
-(generated Lean compiles, passes ACs, no `sorry`), and
-**Trajectories** (multi-step workflows reproduce, e.g. SK-61 → SK-39 →
-SK-10). Conflating them costs roughly 25pp of eval signal (R32 F1,
-cited in ADR-0076 §Evidence).
+**Claim.** Skill evaluation decomposes into four orthogonal targets, each with its own metric and failure signature: **Instructions** (adherence to declared G-rules), **Skills** (dispatch routing + L0/L1/L2 contract fidelity), **Coding outputs** (generated Lean 4 compiles cleanly with zero `sorry` and clean axiom closure), and **Trajectories** (multi-step workflows reproduce deterministically). Conflating them loses ~25 percentage points of diagnostic signal.
 
-**Evidence.** Table in `lab/design/01-adrs.md` §5.1. The
-mandatory rule: *"Every eval fixture under `lab/evals/` MUST declare
-which of these four it targets"* (ADR-0039 §"Four evaluation
-targets", line 42). The fork's harness layout under
-`lab/evals/cases/` and `lab/evals/runners/` already separates fixture
-files, so the declaration goes in frontmatter.
+**Evidence.** Enforced across `scripts/eval/cases/*.yaml`, `scripts/eval/run_eval.py`, and `tests/test_cross_language_fidelity_parity.py`, separating routing assertions from kernel compilation checks.
 
-**Implication.** Three knock-ons. (1) Every eval case file in
-`lab/evals/cases/` must declare its target; a single fixture cannot
-mix them. (2) Aggregation is per-skill, *not* per-target — collapsing
-across targets re-introduces the 25pp loss. (3) The non-deterministic
-ELO method in [[zk-007]] computes one rating channel **per target**;
-the TDAD loop in [[zk-005]] writes one fixture **per target**; failure
-tags use the AgentRx labels in [[zk-003]].
+**Implication.** Three rules follow. (1) Every eval case in `scripts/eval/cases/` declares its target explicitly. (2) Aggregation stays per-skill and per-target rather than collapsing disparate axes into one opaque average. (3) Glicko-2 ranking in [[zk-007]] tracks rating channels per target, TDAD in [[zk-005]] authors fixtures per target, and failure tags follow AgentRx in [[zk-003]].
 
 See also: [[zk-003]], [[zk-005]], [[zk-007]].

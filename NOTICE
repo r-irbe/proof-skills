@@ -6,7 +6,7 @@ the open-source Lean 4 and formal verification community, including historical
 concepts from "leanprover/skills" (https://github.com/leanprover/skills),
 licensed under the Apache License, Version 2.0.
 
-All 65 active v2 skills in `skills/` and reference handbooks in `references/`
+All 38 active v0.5.0 core skills in `skills/`, 7 opt-in pack skills in `packs/`, Layer-1 cards, and Layer-2 handbooks in `references/`
 are maintained directly as first-party artifacts in this repository.
 
 Per Section 4 of the Apache License 2.0, this NOTICE file is preserved in

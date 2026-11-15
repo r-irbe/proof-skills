@@ -703,7 +703,7 @@ python3 scripts/workflow_gate.py --status
 ## Routing
 
 - **USE FOR:** receiving a Lean 4 task at session start, decomposing it into phases, routing each phase to the appropriate skill in
-  [`REFERENCE.md`](./REFERENCE.md) Part 1's registry; deciding fan-in vs fan-out vs sequential topology; maintaining the per-task state document; detecting
+  [`REFERENCE.md`](lean-gateway-handbook.md) Part 1's registry; deciding fan-in vs fan-out vs sequential topology; maintaining the per-task state document; detecting
   context-collapse signals and prescribing a fresh session.
 - **DO NOT USE FOR:** writing a proof (delegate to `@lean-proof`); reviewing a proof (delegate to `@lean-proof-review`); editing docs (delegate to
   `@lean-doc-improvement`); running scripts (delegate to `@lean-enforcement`).
@@ -745,11 +745,10 @@ python3 scripts/workflow_gate.py --status
 
 ## Handoffs
 
-- **Predecessors / successors:** see FM `handoffs` (grammar from ADR-0080).
+- **Predecessors / successors:** see FM `handoffs`.
 - **Dispatch targets:** see FM `dispatch_targets` for the full set of downstream skills the gateway may delegate to.
 - **Source spec:** `specs/lean/gateway/requirements.md` -- every G-rule traces to an AC there.
-- **Related ADRs:** ADR-0076, ADR-0080.
-- **Reference:** see [`REFERENCE.md`](./REFERENCE.md) for the full skill registry, context-collapse signal list, feedback-loop topology, fan-in/fan-out
+- **Reference:** see [`REFERENCE.md`](lean-gateway-handbook.md) for the full skill registry, context-collapse signal list, feedback-loop topology, fan-in/fan-out
   patterns, health dashboard schema, hierarchy management, enforcement-script orchestration, and ecosystem topology diagram (original v1 content, preserved
   verbatim).
 
@@ -767,7 +766,7 @@ python3 scripts/workflow_gate.py --status
 # Lean Integration Protocol Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-integration-protocol/SKILL.md`](../skills/lean-integration-protocol/SKILL.md).
+> embedded in [`skills/lean-integration-protocol/SKILL.md`](../../skills/lean-gateway/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.

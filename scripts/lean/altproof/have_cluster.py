@@ -80,7 +80,7 @@ def render_report(clusters: dict[str, dict]) -> str:
         "---",
         'garden_schema_version: "0.1"',
         'taxonomy_version: "0.1.0"',
-        "doc_id: tacitdoc:altproof-have-clusters",
+        "doc_id: altproof:have-clusters",
         'title: "Cross-theorem have-clustering (S5 v1)"',
         "document_role: research",
         "lifecycle_state: active",
@@ -138,7 +138,7 @@ def detect_structural_golf_opportunities(proof_text: str) -> list[dict]:
       4. `OVER_DECOMPOSED_OMEGA_CHAIN`: 2+ sequential `have` steps closed by `omega`/`linarith`/`grind`
          feeding into a final `omega`/`linarith`/`grind`.
       5. `MULTILINE_PROJECTION_DESTRUCTURE`: 2+ lines extracting `.1`/`.2`/`.fst`/`.snd`/`.left`/`.right`
-         from the same hypothesis instead of `obtain ⟨a, b⟩ := h`.
+         from the same hypothesis instead of `obtain <a, b> := h`.
       6. `SINGLE_USE_TRIVIAL_BINDING`: `have h := x.symm` / `have h := rfl` / `have h := by rfl`
          used at most once.
     """

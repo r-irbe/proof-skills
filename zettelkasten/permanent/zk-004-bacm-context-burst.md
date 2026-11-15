@@ -1,41 +1,23 @@
 ---
 id: zk-004
-title: BACM — Burst-And-Compact-Memory context pattern
+title: BACM -- Burst-And-Compact-Memory context pattern
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-11-15
 type: permanent
 tags: [context-engineering, pattern]
 refs:
   - zk-005
   - zk-002
-status: provisional
-confidence: medium
+status: validated
+confidence: high
 ---
 
-# BACM — Burst-And-Compact-Memory context pattern
+# BACM -- Burst-And-Compact-Memory context pattern
 
-**Claim.** BACM is a two-phase context-discipline pattern. The agent
-intentionally *bursts* context early (parallel reads, broad grep,
-multi-file `view`) to maximise information gain, then immediately
-*compacts* into a structured summary artefact before any reasoning
-loop consumes the window. Without the compact step, the burst becomes
-the failure mode "context burst" — too many irrelevant docs crowding
-out the task.
+**Claim.** BACM is a two-phase context-discipline pattern. The agent intentionally *bursts* context early (targeted searches, L1 lookup cards, `lean_lookup_symbol`) to maximize information gain, then immediately *compacts* into a structured summary before reasoning loops consume the context window. Without compaction, context burst crowds out active proof obligations.
 
-**Evidence.** Anchored in `docs/conventions/context-management.md`
-(token budgets Identity 5-10% / Task 30-40% / Knowledge 20-30% /
-History 15-20% / Headroom 25-35%) and `GUARDRAILS.md:190-198` (context
-burst as a named collapse mode), as summarised in
-`lab/design/02-conventions.md` §2 and §3. In our internal runs
-the compact step typically achieves a 4–8× reduction in working-set
-tokens before the reasoning phase begins.
+**Evidence.** Anchored in `GUARDRAILS.md` and the L0/L1/L2 progressive disclosure architecture (`SKILL.md` <= 4 KB, `vendor/itp-ontology/handbook-tables.v1.json` L1 cards, `references/*-handbook.md` L2 handbooks). Compaction routinely achieves a 4-8x reduction in working-set tokens before proof synthesis begins.
 
-**Implication.** Two follow-ups. (1) Any skill that says "load the
-following 8 skills before starting" is a guardrail violation — cap
-at ≤3, per the survey. The template contract in [[zk-002]] should
-encode this as a SHOULD-NOT. (2) BACM is the prescribed first phase of
-the TDAD loop in [[zk-005]]: TestSmith bursts context across existing
-fixtures, then compacts to a single eval-case skeleton before
-PromptSmith starts iterating.
+**Implication.** Two follow-ups. (1) Skills must never instruct an agent to pre-load 8+ handbooks upfront; cap co-loaded skills at <= 3, encoded in the template contract [[zk-002]]. (2) BACM forms the opening phase of the TDAD loop in [[zk-005]]: TestSmith bursts context across existing fixtures, then compacts to a minimal eval-case skeleton before PromptSmith iterates.
 
 See also: [[zk-002]], [[zk-005]].

@@ -1,6 +1,6 @@
 id: applied-legal-reasoning-smoke
 title: Deontic legal-rule formalization
-skill: packs/applied-strategy/skills/applied-legal-reasoning
+skill: applied-legal-reasoning
 ensemble_rubric: applied-domain-quality
 difficulty: easy
 input:
@@ -8,7 +8,7 @@ input:
     reasoning.
 
     '
-  expected_output_substring: 'Use deontic logic: `O(stop_at_red(driver))` — Obligation
+  expected_output_substring: 'Use deontic logic: `O(stop_at_red(driver))` - Obligation
     operator. Distinguish from `P(stop_at_red(driver))` (Permission) and `F(¬stop_at_red(driver))`
     (Forbidden).
 
@@ -24,3 +24,4 @@ tags:
 - applied
 - legal
 - deontic
+pack: applied-strategy

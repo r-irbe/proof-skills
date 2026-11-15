@@ -1,11 +1,11 @@
 ---
-name: research-gamma-epistemics
-description: Research Council Member Gamma (Epistemics, Causal & AI Safety): KRR, causal DAGs, deontic logic, and verifiable AI.
-role_container: specifier
-overlay_type: council-research
-primary_skill: research-council
-tools: read, write, edit, bash, mcp:lean-lsp
-model: sonnet
+name: "research-gamma-epistemics"
+description: "Research Council Member Gamma (Epistemics, Causal & AI Safety): KRR, causal DAGs, deontic logic, and verifiable AI."
+role_container: "specifier"
+overlay_type: "council-research"
+primary_skill: "research-council"
+tools: "read, write, edit, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `research-gamma-epistemics` (Container: `specifier`)

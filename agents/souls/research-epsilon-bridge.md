@@ -1,11 +1,11 @@
 ---
-name: research-epsilon-bridge
-description: Research Council Member Epsilon (Cross-ITP & Literature Bridge): concordance mapping, book indexing, and synthesis.
-role_container: specifier
-overlay_type: council-research
-primary_skill: research-council
-tools: read, write, edit, bash, mcp:lean-lsp
-model: sonnet
+name: "research-epsilon-bridge"
+description: "Research Council Member Epsilon (Cross-ITP & Literature Bridge): concordance mapping, book indexing, and synthesis."
+role_container: "specifier"
+overlay_type: "council-research"
+primary_skill: "research-council"
+tools: "read, write, edit, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `research-epsilon-bridge` (Container: `specifier`)

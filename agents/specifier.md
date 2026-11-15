@@ -4,7 +4,7 @@ description: Role #1 Specifier container: decomposes informal mathematical claim
 tools: read, write, edit, bash, mcp:lean-lsp
 model: sonnet
 role_index: 1
-mcp_allowlist: [lean_search, lean_lookup_symbol, lean_decl_references, lean_module_hierarchy, lean_diagnostics, lean_counterexample_search, lean_blueprint, lean_metrics]
+mcp_allowlist: [lean_search, lean_lookup_symbol, lean_decl_references, lean_module_hierarchy, lean_navigate, lean_diagnostics, lean_counterexample_search, lean_blueprint, lean_metrics, lean_theorem_preflight, lean_skill_dispatch]
 ---
 
 # Specifier (Role #1 -- Blueprint & Theorem Specification Architect)
@@ -14,7 +14,7 @@ You are the **Specifier** (Role #1 of the 5 canonical `proof-skills` Role-Actor 
 ## Role-Scoped MCP Allowlist (`lean-lsp`)
 
 Allowed `lean-lsp` MCP tools for this container:
-`lean_search`, `lean_lookup_symbol`, `lean_decl_references`, `lean_module_hierarchy`, `lean_diagnostics`, `lean_counterexample_search`, `lean_blueprint`, `lean_metrics`
+`lean_search`, `lean_lookup_symbol`, `lean_decl_references`, `lean_module_hierarchy`, `lean_navigate`, `lean_diagnostics`, `lean_counterexample_search`, `lean_blueprint`, `lean_metrics`, `lean_theorem_preflight`, `lean_skill_dispatch`
 
 ## Core Responsibilities
 
@@ -40,11 +40,7 @@ Allowed `lean-lsp` MCP tools for this container:
 - `@lean-gateway`
 - `@lean-specification`
 - `@lean-blueprint`
-- `@lean-blueprint`
-- `@lean-blueprint`
 - `@lean-doc-sync`
-- `@lean-research`
-- `@research-council`
 - `@lean-research`
 - `@research-council`
 

@@ -304,7 +304,7 @@ elab "myproject_bound" : tactic => do
  ### §11  first_par (v4.28 Parallel Tactic Alternatives)
 
 ```lean
--- NOTE: `first_par` syntax exists in v4.28.0 but the tactic is NOT YET
+-- NOTE: `first_par` syntax exists in v4.34.1 but the tactic is NOT YET
 -- IMPLEMENTED. It will error with "has not been implemented". Use sequential
 -- `first | tac1 | tac2 | tac3` instead until a future Lean version enables it.
 -- When available, first_par will run tactics in parallel on multicore.
@@ -343,7 +343,7 @@ Before committing:
 - [ ] Qq-based tactics handle elaboration failures with `throwError`
 - [ ] `register_grind_attr` used for project-specific attributes
 - [ ] `grind_pattern` used for custom relation E-matching
-- [ ] `first_par` NOT YET AVAILABLE in v4.28.0 -- use `first` until implemented
+- [ ] `first_par` NOT YET AVAILABLE in v4.34.1 -- use `first` until implemented
 
  ### §14  #grind_lint (v4.28)
 
@@ -391,7 +391,7 @@ Before committing:
  ### §16  first_par for Automation (v4.28)
 
 ```lean
--- NOTE: `first_par` syntax exists in v4.28.0 but the tactic is NOT YET
+-- NOTE: `first_par` syntax exists in v4.34.1 but the tactic is NOT YET
 -- IMPLEMENTED. It will error with "has not been implemented". Use sequential
 -- `first | tac1 | tac2 | tac3` instead until a future Lean version enables it.
 -- When available, first_par will run tactics in parallel on multicore.

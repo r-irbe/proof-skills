@@ -100,8 +100,8 @@ lake exe cache get
 
 ## See also
 
-- [`../../references/lean4-lsp-guide.md`](../../references/lean4-lsp-guide.md) -- Lean 4 Language Server Protocol comprehensive guide
+- [`../../references/lean4-lsp-guide.md`](../protocols/lean4-lsp-guide.md) -- Lean 4 Language Server Protocol comprehensive guide
 - [`../../references/upstream/lean-bug-report-pipeline.md`](../../references/upstream/lean-bug-report-pipeline.md) -- Upstream bug report pipeline
-- [`../lean-bisect/SKILL.md`](../lean-bisect/SKILL.md) -- Git bisect across toolchain commits
-- [`../lean-pr/SKILL.md`](../lean-pr/SKILL.md) -- Pull request preparation workflow
-- [`../lean-proof/SKILL.md`](../lean-proof/SKILL.md) -- Interactive proving contract
+- [`../lean-bisect/SKILL.md`](../../skills/lean-bisect/SKILL.md) -- Git bisect across toolchain commits
+- [`../lean-pr/SKILL.md`](../../skills/lean-upstream-pr/SKILL.md) -- Pull request preparation workflow
+- [`../lean-proof/SKILL.md`](../../skills/lean-proof/SKILL.md) -- Interactive proving contract

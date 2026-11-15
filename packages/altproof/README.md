@@ -1,23 +1,19 @@
-# AltProof -- Speculative Alternative-Proof & Elegance Meta-Tactics for Lean 4
+# AltProof v0.5.0 -- Equality Saturation, Core SolveByElim, SAIR Superoptimizers, and Elegance Meta-Tactics
 
-`AltProof` is a standalone Lean 4 + Mathlib4 meta-tactic package and AST feature-guided
-route explorer from [`proof-skills`](https://github.com/r-irbe/proof-skills). It provides:
+`AltProof` (`v0.5.0`) is a two-layer Lean 4 meta-tactic and compile-time superoptimization package from [`proof-skills`](https://github.com/r-irbe/proof-skills):
 
-1. **Goal AST & Local Context Feature Detector (`GoalFeatures`, `extractGoalFeatures`)**:
-   Inspects the active `MVarId` target `Expr` and non-implementation local context
-   declarations to classify `Finset.sum`, `abs`/`norm`/`dist`, `ite`/`dite`/`decide`,
-   negation/contradiction, `Nat`/`Int` arithmetic, `WellFounded.fix`, and `BitVec` shapes.
-2. **Two-Axis Cost Ranker (`computeCostX10`, `TwoAxisScore`)**:
-   Combines the B1 `extraction-outranks` reader-elegance metric with machine-side
-   kernel/elaborator heartbeat cost (`IO.getNumHeartbeats`).
-3. **Finite-Sum & Automated Reduction Tactics (`sum_congr_ring`, `finset_nonneg`, `finset_mono`, `alt_proof`)**:
-   One-step normalization and pointwise discharge for `Finset.sum` linear combinations,
-   non-negativity, monotonicity, and standard arithmetic/algebraic goals.
-4. **Speculative In-Kernel Route & BFS Explorer (`elegance?`, `bfs_elegance?`)**:
-   Filters the 11-route table (`routeTable`) by `GoalFeatures` relevance, probes single-step
-   and bounded depth-`<= 3` Best-First Search (`tryBfsCandidateClosers`) closers inside
-   `withoutModifyingState`, ranks succeeding closers by `computeCostX10`, and emits
-   clickable `TryThis.addSuggestion` code actions.
+- **Layer 1 (`AltProof.Core` -- `import Lean` only, 0 Mathlib, 0 Rust FFI)**:
+  - **20-Route Advisor & Two-Axis Cost Ranker** (`routeTable`, `GoalFeatures`, `computeCostX10`).
+  - **`eqsat_rw` / `egg_rw`**: Pure-Lean bidirectional equality & congruence saturation (`congrArg`, `congrFun`, `Eq.trans`, `Eq.symm`) in `MetaM` reconstructing kernel-checked proof terms with `[propext, Classical.choice, Quot.sound]` hygiene and zero Cargo/FFI dependencies.
+  - **`backchain`**: Curated bounded depth-first backchaining wrapper over core Lean's `Lean.Elab.Tactic.SolveByElim` (`solve_by_elim`).
+  - **`grind_close`**: Bounded e-graph congruence closure and E-matching closer backed by core Lean's `grind`.
+  - **`contra_direct`**: Constructive negation, `Bool`, and `Decidable` normalizer eliminating `Classical.choice` leakage from `split`/`by_cases`.
+  - **`sair_decide`**: Strict 3-rung kernel-clean decision macro (`rfl | decide +kernel | omega`) with zero `Lean.ofReduceBool`.
+  - **`eval_nat%`, `preunfold%`, `swar_unroll%`**: SAIR elaboration-time superoptimizers folding closed `Nat`/`Bool` subterms to raw `Expr.lit (.natVal v)` (`nat_lit`), unrolling static trip-count loops, and hash-consing DAGs via `Lean.ShareCommon.shareCommon` with zero `Lean.*` constants in exported terms.
+- **Layer 2 (`AltProof.Tactics` -- Mathlib4 BigOperators & Speculative Search)**:
+  - **`sum_congr_ring` & `calc_ring_sum`**: One-step `Finset.sum` linear combination, double-sum commutation (`Finset.sum_comm`), and pointwise ring congruence closers.
+  - **`finset_nonneg`, `finset_mono`, & `gcongr_pos`**: Automated `Finset.sum` non-negativity, monotonicity, and structural `gcongr` side-goal closers with universal hypothesis specialization (`specializePointwiseHyps`).
+  - **`alt_proof`, `elegance?`, & `bfs_elegance?`**: Speculative `withoutModifyingState` closer cascade and depth-`<= 3` Best-First Search emitting `TryThis.addSuggestion` code actions ranked by `IO.getNumHeartbeats` and `computeCostX10`.
 
 ---
 
@@ -25,11 +21,11 @@ route explorer from [`proof-skills`](https://github.com/r-irbe/proof-skills). It
 
 ### Option 1: Lake Git Dependency (Subdirectory)
 
-Add `altproof` to your `lakefile.lean`:
+Add `altproof` to your `lakefile.lean` (pinned to Lean `v4.34.1`):
 
 ```lean
 require altproof from git
-  "https://github.com/r-irbe/proof-skills.git" @ "main" / "packages/altproof"
+  "https://github.com/r-irbe/proof-skills.git" @ "v0.5.0" / "packages/altproof"
 ```
 
 Or in `lakefile.toml`:
@@ -38,38 +34,44 @@ Or in `lakefile.toml`:
 [[require]]
 name = "altproof"
 git = "https://github.com/r-irbe/proof-skills.git"
-rev = "main"
+rev = "v0.5.0"
 subDir = "packages/altproof"
 ```
 
-Then import and open the tactics in your Lean 4 files:
+Then import either `AltProof.Core` (zero-Mathlib projects) or `AltProof` (full Mathlib projects):
 
 ```lean
 import AltProof
 
-open AltProof
--- or `open AltProof.Tactics`
+open AltProof.Core AltProof.Tactics
 ```
 
-### Option 2: Direct Single-File Copy (Vendor-In)
+### Option 2: Direct Single-File Copy (Core-Only or Mathlib)
 
-`AltProof/Tactics.lean` is self-contained (requiring only `Mathlib.Tactic`,
-`Mathlib.Algebra.BigOperators.Group.Finset.Basic`, and
-`Mathlib.Algebra.BigOperators.Ring.Finset`). You can copy
-`packages/altproof/AltProof/Tactics.lean` directly into your project tree.
+- Copy `packages/altproof/AltProof/Core.lean` into any core-only (`import Lean`) project.
+- Copy `templates/core/examples/Template_AltProofTactics.lean` for a single-file Mathlib4 drop-in.
 
 ---
 
-## Tactic Reference Table
+## Tactic & Elaborator Reference Table
 
-| Tactic | Purpose | Primary Mechanism |
-| :--- | :--- | :--- |
-| `sum_congr_ring` | Normalizes `Finset.sum` linear combinations (`a * sum f +/- b * sum g`) and closes pointwise ring equalities. | `Finset.sum_add_distrib`, `Finset.sum_sub_distrib`, `Finset.mul_sum`, `Finset.sum_mul`, and `Finset.sum_congr rfl (fun _ _ => by ring)`. |
-| `finset_nonneg` | Discharges `0 <= sum i in s, f i` (including nested double sums). | `Finset.sum_nonneg` + `specializePointwiseHyps` + `positivity`, `linarith`, `nlinarith`, `omega`, `solve_by_elim`, recursive `finset_nonneg`, or `aesop`. |
-| `finset_mono` | Discharges `sum i in s, f i <= sum i in s, g i` (including nested double sums). | `Finset.sum_le_sum` + `specializePointwiseHyps` + `linarith`, `nlinarith`, `omega`, `positivity`, `gcongr`, `solve_by_elim`, recursive `finset_mono`, or `aesop`. |
-| `alt_proof` | Automated fast reduction cascade across decidable, Presburger, ring, and finite-sum goals. | Ordered `first` cascade: `rfl`, `assumption`, `bv_decide`, `decide`, `omega`, `ring`, `sum_congr_ring`, `finset_nonneg`, `finset_mono`, `positivity`, `linarith`, `nlinarith`, `norm_num`, `aesop`. |
-| `elegance?` | Speculative AST-guided route advisor and single-step + depth-`<= 3` BFS closer probe. | Extracts `GoalFeatures`, filters `routeTable`, probes candidates in `withoutModifyingState` with `IO.getNumHeartbeats`, and emits `TryThis.addSuggestion`. |
-| `bfs_elegance?` | Explicit bounded depth-`<= 3` in-kernel Best-First Search (`Proposal 9C`). | Probes structural decomposition prefixes (`intros; alt_proof`, `constructor <;> alt_proof`, `push_neg; alt_proof`, `intros; sum_congr_ring`) in `withoutModifyingState`. |
+| Tactic / Elaborator | Layer | Purpose | Primary Mechanism |
+| :--- | :--- | :--- | :--- |
+| `eqsat_rw` / `egg_rw` | `Core` | Bidirectional equational & congruence saturation where `simp` loops or stalls. | Meet-in-the-middle `MetaM` saturation (`congrArg`, `congrFun`, `Eq.trans`, `Eq.symm`) + `grind` fallback. |
+| `backchain` | `Core` | Bounded Horn-clause / implication / conjunction backchaining without `aesop`. | `Lean.Elab.Tactic.SolveByElim` (`solve_by_elim (maxDepth := 6)`). |
+| `grind_close` | `Core` | Core e-graph congruence closure & E-matching closer. | `(grind; done)` with optional `[params]`. |
+| `contra_direct` | `Core` | Constructive boolean/negation normalizer avoiding `Classical.choice`. | `Bool.and_eq_true`, `decide_eq_true_eq`, `absurd` + `decide +kernel` / `omega`. |
+| `sair_decide` | `Core` | 3-axiom contest-clean decidable/Presburger closer (`0` `Lean.ofReduceBool`). | `first \| rfl \| decide +kernel \| omega`. |
+| `eval_nat% t` | `Core` | Compile-time closed `Nat` constant folding to raw `nat_lit`. | Pure `MetaM` evaluator emitting `mkRawNatLit v` (`0` `Lean.*` exports). |
+| `preunfold% [d, ...] t` | `Core` | Compile-time helper unfolding, closed-branch pruning, and DAG sharing. | Beta/zeta/proj reduction + `Bool.rec` pruning + `ShareCommon.shareCommon`. |
+| `swar_unroll% k b s` | `Core` | Compile-time static loop unrolling (`0 .. k-1`) for SWAR kernels. | Iterated `preunfoldExprWith` + `ShareCommon.shareCommon`. |
+| `sum_congr_ring` | `Tactics` | Normalizes `Finset.sum` linear combinations and pointwise ring equalities. | `Finset.sum_add_distrib`, `sum_sub_distrib`, `mul_sum`, `sum_mul`, `Finset.sum_congr`. |
+| `calc_ring_sum` | `Tactics` | Multi-step swapped double-sum (`Finset.sum_comm`) and scalar ring closer. | `Finset.sum_comm` + `sum_congr_ring` + `ring`. |
+| `finset_nonneg` | `Tactics` | Discharges `0 <= sum i in s, f i` (including nested double sums). | `Finset.sum_nonneg` + `specializePointwiseHyps` + `positivity`/`linarith`/`solve_by_elim`. |
+| `finset_mono` | `Tactics` | Discharges `sum i in s, f i <= sum i in s, g i` (including nested double sums). | `Finset.sum_le_sum` + `specializePointwiseHyps` + `gcongr_pos`/`linarith`/`solve_by_elim`. |
+| `gcongr_pos` | `Tactics` | Structural monotonicity congruence closing positivity/linear side-goals. | `gcongr <;> first \| rfl \| assumption \| positivity \| linarith \| nlinarith \| omega`. |
+| `alt_proof` | `Tactics` | Automated 20-step fast reduction cascade across core and Mathlib goals. | Ordered `first` cascade from `rfl` through `eqsat_rw`, `backchain`, `sum_congr_ring`, `grind_close`, `aesop`. |
+| `elegance?` / `bfs_elegance?` | `Tactics` | Speculative AST-guided 20-route advisor + depth-`<= 3` BFS explorer. | `withoutModifyingState` + `IO.getNumHeartbeats` + `computeCostX10` + `TryThis.addSuggestion`. |
 
 ---
 

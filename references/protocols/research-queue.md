@@ -2,7 +2,7 @@
 
 Single canonical reference for prioritising, parallelising, and
 budgeting research tasks dispatched from
-[`lean-research/SKILL.md`](../skills/lean-research/SKILL.md) Part 9.
+[`lean-research/SKILL.md`](../../skills/lean-research/SKILL.md) Part 9.
 
 ---
 
@@ -40,7 +40,7 @@ overall task is the *max* of sub-question budgets, not the sum.
 ## Budget Tracking
 
 Each research task carries a time budget set by the depth level
-chosen in [`lean-research`](../skills/lean-research/SKILL.md) Part 4
+chosen in [`lean-research`](../../skills/lean-research/SKILL.md) Part 4
 (Quick / Standard / Deep / Exhaustive).
 
 If the budget is exceeded:

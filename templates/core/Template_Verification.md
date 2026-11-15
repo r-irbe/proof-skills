@@ -108,13 +108,13 @@ set_option autoImplicit false
 -- Classify each theorem's axiom set:
 --   ✅ Constructive  : {propext, Quot.sound}
 --   ✅ Classical      : {propext, Quot.sound, Classical.choice}
---   ✅ NativeDecide   : above + {Lean.ofReduceBool}
+--   ❌ NativeDecide   : contains `Lean.ofReduceBool` (`native_decide` banned by GT-30/31)
 --   ❌ Incomplete     : contains `sorryAx`
 --   ❌ Nonstandard    : contains user-defined axioms
 --
 -- Filter command for unexpected axioms:
 --   lake env lean scripts/_axiom_check.lean 2>&1 \
---     | grep -v "propext\|Quot.sound\|Classical.choice\|ofReduceBool" \
+--     | grep -v "propext\|Quot.sound\|Classical.choice" \
 --     | grep -v "depends on axioms:"
 -- Any remaining output indicates a problem.
 ```
@@ -148,8 +148,7 @@ set_option autoImplicit false
 --   Compiles to native code, runs OUTSIDE the kernel.
 --   FAST, but NOT kernel-checkable (trusts the compiler).
 --   In `#print axioms` output appears as `Lean.ofReduceBool`.
---   Use when `decide` exceeds `maxHeartbeats`.
--- Rule of thumb: `decide` for < 10^4 states, `native_decide` beyond.
+--   BANNED in proof bodies (GT-30/31): use `decide +kernel`, `bv_decide`, `sair_decide`, or a `@[csimp]` twin + `rfl`.
 
 -- -- Universe consistency ---------------------------------------------
 -- Sort 0 = Prop, Sort 1 = Type 0, Sort 2 = Type 1, ...
@@ -179,10 +178,9 @@ example : square 1 = 1 := by decide          -- boundary
   guard (square 0 = 0)
   return "all assertions passed"
 
--- Level 3: `native_decide` for large finite checks
--- TEMPLATE: replace with your large-scale decidable proposition.
--- example : (List.range 1000).all (fun n => square n ≥ n) = true := by
---   native_decide
+-- Level 3: `decide +kernel` or `sair_decide` for kernel-verified finite checks (never `native_decide`)
+-- example : (List.range 100).all (fun n => square n ≥ n) = true := by
+--   decide +kernel
 
 -- Edge cases: always test zero, one, boundary, max representable.
 -- For ×100 quantities, test 0, 1, 50, 99, 100.
@@ -277,7 +275,7 @@ example : square 4 ≤ square 5 := by decide
 -- one nightly may fail on the next due to API changes.
 --
 -- Record in the module docstring or `lakefile.lean`:
---   • `lean-toolchain` version (e.g., `leanprover/lean4:v4.17.0`)
+--   • `lean-toolchain` version (e.g., `leanprover/lean4:v4.34.1`)
 --   • Mathlib commit hash or date
 ```
 

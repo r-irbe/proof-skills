@@ -21,52 +21,46 @@ handoffs:
   - skill:lean-proof-review
   - skill:lean-verification-gate
 metadata:
-  version: 0.4.0
-  source_spec: SAIR-LAW-01..25B kernel reduction & hardware lowering catalog
-  last_reviewed: 2026-11
+  version: 0.5.0
+  source_spec: SAIR-LAW-01..25B (39 laws), WAVE-13 G1 & PolyBitOp lowering
+  last_reviewed: '2026-11'
 ---
 
-# Lean 4 Kernel WHNF, SWAR & Codegen Optimization (`SAIR-LAW-01..25B`)
+# Lean 4 Kernel WHNF, SWAR & Proof-Carrying Codegen (`SAIR-LAW-01..25B`)
 
-Enforce the concrete-execution half of the Abstraction-Concrete Duality: keep `Prop` specifications clean and
-abstract, while making computable witnesses, `rfl`/`decide +kernel` reductions, and C++/SIMD/SIMT extraction
-targets monomorphic, unboxed, and cache-aligned.
+Enforce the concrete half of Abstraction-Concrete Duality (`WAVE-13 G1`): keep `Prop` specs abstract (`<= 1%` cost via `rfl` bridges), while making hot `def`
+kernels and hardware targets (`PolyBitOp` MLIR / CUDA `sm_89` / AVX2 / C++20) monomorphic and unboxed (avoiding the `1,600x..3,345x` parametric hot penalty).
 
 ## Routing
-- **USE FOR:** speeding up `whnf` / `is_def_eq`, replacing `WellFounded.fix`/`brecOn` with `Nat.rec`/`Bool.rec`,
-  bridging abstract specs to fast implementations via `@[csimp]`, GMP SWAR Kronecker packing, Frontier-ZDD state
-  compression, and Twinlit PMU benchmarking.
+- **USE FOR:** speeding up `whnf` / `is_def_eq`, explicit `Nat.rec`/`Bool.rec`/`cond` lowering, `@[csimp]` twins, SWAR packing (`width-2 + 1-bit`), ZDD
+  bitboards, sum-of-medians-of-three `twinlit` PMU profiling, and proof-carrying SWAR/SIMD/SIMT/C++20 codegen (`checked-small -> NeedsWide`).
 - **DO NOT USE FOR:** general theorem proving (`@lean-proof`) or splitting long `Prop` proofs (`@lean-proof-refactor`).
 
 ## Workflow
-1. **Baseline & Static Audit** -- Run `lean_diagnostics` and `lean_metrics` (`action: "altproof"`) to flag
-  `KernelBrecOnTax`, `KernelPowerOfTwoDivMod`, `ite` dictionary synthesis (`SAIR-LAW-08`), and non-zero `Prop`
-  runtime cones (`SAIR-LAW-22`).
-2. **Separate Spec from Compute (`SAIR-LAW-07`)** -- Keep the public `specFn` mathematically clean; write a
-  monomorphic `fastFn` over raw `Nat`/`BitVec`/flat `structure` or CPS (`SAIR-LAW-09..10`) and link via `@[csimp]
-  theorem specFn_eq_fastFn : specFn = fastFn`.
-3. **Apply WHNF & Word-Level Reductions** -- Hoist closed constants to top-level `def` (`SAIR-LAW-02`/`11`
-  `m_st->m_whnf` cache), share repeated subtrees (`let y := x; y * y` for `mpn_sqr`, `SAIR-LAW-13`), replace `/
-  2^k` and `% 2^k` with `>>>` and `&&&` (`SAIR-LAW-14`), and pack fixed-width DP/automaton lanes via Kronecker SWAR
-  or ZDD/ANF masks (`SAIR-LAW-15..20`).
-4. **Verify Kernel-Clean Axiom Gate & PMU Gain** -- Discharge decidable checks with `sair_decide` (`rfl | decide
-  +kernel | omega`), never `native_decide` or `bv_decide` when `Lean.ofReduceBool` is forbidden, and verify >5%
-  deterministic instruction reduction (`perf stat -e instructions:u` against a Twinlit control).
+1. **Static Audit** -- Run `lean_diagnostics` and `lean_metrics` (`action: "altproof"`) to detect `brecOn` (`SAIR-LAW-06`), `ite` (`SAIR-LAW-08`), power-of-two
+   `/` or `%` (`SAIR-LAW-14`), typeclass dictionaries (`SAIR-LAW-23`), and `Prop`/`Fin` in hot cones (`SAIR-LAW-22`).
+2. **`WAVE-13 G1` Section-1/2/3 Split** -- Put readable `abbrev` formulas in Section 1, specialize hot `def`s in Section 2 to primitive `Nat.*` ops + raw
+   `nat_lit` constants (`SAIR-LAW-25B`), and bridge to abstract theorems in Section 3 via `rfl` (`@[csimp]` for LCNF).
+3. **WHNF, SWAR & Lowering Laws** -- Use `Nat.succ` for `Nat.rec` step accumulators vs `Nat.add 1` for counters, share multi-limb squares only above ~30 limbs
+   (`SAIR-LAW-13`), use `Nat.land w (Nat.shiftRight w s)` or `w &&& (w - 1)` on `Nat` (`SAIR-LAW-18B`), and enforce `checked-small -> NeedsWide` + operand
+   snapshotting in C++20/PTX (`Template_ProofCarryingCodegen.md`).
+4. **3-Axiom & PMU Gate** -- Close checks with `sair_decide` (`first | rfl | decide +kernel | omega`), never `native_decide`, and verify net `real - twinlit`
+   gain via sum-of-per-slot-medians-of-three (`perf stat -e instructions:u`).
 
 ## Recovery & STOP
-- If an unrolled or `let`-expanded rewrite regresses PMU instructions (`NR-024` zeta-expansion tax), revert
-  immediately and hoist to a closed helper definition.
-- Never alter public theorem statements or introduce `unsafe` / `@[implemented_by]` / `@[extern]` kernel escapes.
+- Revert any `let`-sharing (`SAIR-LAW-01B`) or unrolling rewrite that regresses full-pipeline `real - twinlit` instructions.
+- Never alter public theorem signatures or introduce `unsafe` / `@[implemented_by]` / `@[extern]` escapes on kernel-scored paths.
 
 ## Handoffs
 - **Predecessors:** `lean-proof`, `lean-proof-refactor`.
 - **Successors:** `lean-proof-review`, `lean-verification-gate`.
 
 ## Detailed reference
-- Fast 3-table lookup card: [`../../references/cards/lean-sair-kernel-optimization-tables.md`](../../references/cards/lean-sair-kernel-optimization-tables.md)
+- Fast lookup card: [`../../references/cards/lean-sair-kernel-optimization-tables.md`](../../references/cards/lean-sair-kernel-optimization-tables.md)
 - Full handbook: [`../../references/handbooks/lean-sair-kernel-optimization-handbook.md`](../../references/handbooks/lean-sair-kernel-optimization-handbook.md)
-- Core template: [`../../templates/core/Template_KernelWHNF_SAIR.md`](../../templates/core/Template_KernelWHNF_SAIR.md)
+- Templates: [`../../templates/core/Template_KernelWHNF_SAIR.md`](../../templates/core/Template_KernelWHNF_SAIR.md),
+  [`../../templates/core/Template_ProofCarryingCodegen.md`](../../templates/core/Template_ProofCarryingCodegen.md)
 
 ## See also
-- [`../lean-proof-refactor/SKILL.md`](../lean-proof-refactor/SKILL.md) -- Abstraction-Concrete Duality refactoring
-- [`../lean-core-only/SKILL.md`](../lean-core-only/SKILL.md) -- Core-only proving without Mathlib
+- [`../lean-proof-refactor/SKILL.md`](../lean-proof-refactor/SKILL.md)
+- [`../lean-core-only/SKILL.md`](../lean-core-only/SKILL.md)

@@ -21,7 +21,7 @@ handoffs:
   - skill:lean-proof
   - skill:lean-specification
 metadata:
-  version: 0.4.0
+  version: 0.5.0
   source_spec: Galois-pruned Plausible falsification & boundary-witness protocol
   last_reviewed: 2026-11
 ---

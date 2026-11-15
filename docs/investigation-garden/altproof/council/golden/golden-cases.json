@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "alt-proof golden cases v1",
-    "source": "docs/easci/lean/docs/tracking/long-proof-campaign-report.md (the 17-decomposition series + 36 shared lemmas)",
+    "source": "docs/tracking/long-proof-campaign-report.md (17-decomposition series + 36 shared lemmas)",
     "purpose": [
       "cost-weight calibration (ballot B1 experimentation harness)",
       "per-transformation robustness studies (ballot B3 JAR16 discipline)",

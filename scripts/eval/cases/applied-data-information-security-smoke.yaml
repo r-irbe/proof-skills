@@ -1,6 +1,6 @@
 id: applied-data-information-security-smoke
 title: Confidentiality classification
-skill: packs/applied-strategy/skills/applied-data-information-security
+skill: applied-data-information-security
 ensemble_rubric: applied-domain-quality
 difficulty: easy
 input:
@@ -25,3 +25,4 @@ tags:
 - applied
 - security
 - gdpr
+pack: applied-strategy

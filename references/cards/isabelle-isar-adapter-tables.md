@@ -39,7 +39,7 @@ skill_ref: "skills/isabelle-isar-adapter/SKILL.md"
 | Error / Bottleneck | Root Cause | Remediating Fix |
 | :--- | :--- | :--- |
 | Limit / derivative proof fails at `x = a` | Isabelle `at a` is the *punctured* filter `[!=] a`; `nhds a` is unpunctured ` a` | Map Isabelle `(f  l) (at a)` to `Tendsto f ([!=] a) ( l)` and `(f  l) (nhds a)` to `Tendsto f ( a) ( l)` |
-| `(sumxinA. f x)` lacks `Finset` in Lean | Isabelle `sum` takes `'a set` and returns `0` if `infinite A` | Either type `A : Finset ` with `sum x in A, f x` or use `sum x in A, f x` (`finsum`) |
+| `(sumxinA. f x)` lacks `Finset` in Lean | Isabelle `sum` takes `'a set` and returns `0` if `infinite A` | Either type `A : Finset ` with `sum x in A, f x` or use `sum^f x in A, f x` (`finsum`) |
 | Type variable `'a` assumed non-empty | Every HOL type `'a` is inhabited (`exists  x :: 'a. True`); Lean `Type u` can be empty | Add `[Nonempty ]` or `[Inhabited ]` when a proof uses `SOME x. True` (`Classical.arbitrary`) |
 | `space M` carrier membership hypotheses `x in space M` | Isabelle `measure` carries a subset `space M subset UNIV` | Drop `x in space M` when `M` is a measure on the type ``, or restrict via `Measure.restrict  s` |
 | Multiple `interpretation` blocks clash on same type | Isabelle locales are named; Lean typeclasses are keyed by type | Use a `structure` bundle or a `Type` wrapper synonym for secondary locale interpretations |

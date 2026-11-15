@@ -23,7 +23,7 @@ handoffs:
   - skill:lean-doc-sync
   - skill:lean-review-council
 metadata:
-  version: 0.2.0
+  version: 0.5.0
   source_spec: skills/lean-retro-methodology/SKILL.md (this file)
   last_reviewed: '2026-05-27'
 ---
@@ -65,7 +65,7 @@ RETRO phases.
 - STOP on detection of any handbook Part 8 anti-pattern -- back out and re-plan.
 ## Handoffs
 - **Predecessors:** `agent:gateway`, `skill:lean-review-council`, `skill:lean-research`.
-- **Successors:** `skill:lean-enforcement`, `skill:lean-zettelkasten`, `skill:lean-doc-feedback`,
+- **Successors:** `skill:lean-verification-gate`, `skill:lean-retro-methodology`, `skill:lean-doc-sync`,
   `skill:lean-review-council`.
 ---
 ## Detailed reference

@@ -1,6 +1,6 @@
 id: applied-engineering-disciplines-smoke
 title: Cross-discipline failure mode
-skill: packs/applied-strategy/skills/applied-engineering-disciplines
+skill: applied-engineering-disciplines
 ensemble_rubric: applied-domain-quality
 difficulty: easy
 input:
@@ -25,3 +25,4 @@ tags:
 - applied
 - engineering
 - coupled
+pack: applied-strategy

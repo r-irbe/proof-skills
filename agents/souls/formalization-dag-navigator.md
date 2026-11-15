@@ -1,11 +1,11 @@
 ---
-name: formalization-dag-navigator
-description: Module dependency DAG navigator, cycle detector, and critical-path analyzer.
-role_container: specifier
-overlay_type: analyst
-primary_skill: lean-blueprint
-tools: read, write, edit, bash, mcp:lean-lsp
-model: sonnet
+name: "formalization-dag-navigator"
+description: "Module dependency DAG navigator, cycle detector, and critical-path analyzer."
+role_container: "specifier"
+overlay_type: "analyst"
+primary_skill: "lean-blueprint"
+tools: "read, write, edit, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `formalization-dag-navigator` (Container: `specifier`)

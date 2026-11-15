@@ -1,11 +1,11 @@
 ---
-name: sair-kernel-optimizer
-description: SAIR Middle-IR, kernel reduction, and BitVec/SWAR proof-term optimizer.
-role_container: prover
-overlay_type: operational
-primary_skill: lean-sair-kernel-optimization
-tools: read, write, edit, bash, mcp:lean-lsp
-model: sonnet
+name: "sair-kernel-optimizer"
+description: "SAIR Middle-IR, kernel reduction, and BitVec/SWAR proof-term optimizer."
+role_container: "prover"
+overlay_type: "operational"
+primary_skill: "lean-sair-kernel-optimization"
+tools: "read, write, edit, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `sair-kernel-optimizer` (Container: `prover`)

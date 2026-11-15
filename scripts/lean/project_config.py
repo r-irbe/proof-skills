@@ -5,7 +5,7 @@ Walks upward from `start_dir` (default: cwd) to discover `lean-project.toml`
 (or `.lean-analyzer.toml`), or falls back to zero-config `lakefile.lean` /
 `lakefile.toml` auto-discovery.
 
-Scoped Unicode policy (INV-001; typographic-free by default). Zero external dependencies (uses stdlib
+Strict 7-bit ASCII only (INV-001). Zero external dependencies (uses stdlib
 `tomllib` on Python >=3.11 with a pure-stdlib TOML parser fallback).
 """
 
@@ -345,12 +345,10 @@ def find_project_root(start_dir: Path | str | None = None) -> tuple[Path, Path |
                         break
                     p = p.parent
                 return cur, None
-        nested = cur / "docs" / "easci" / "lean" / "lean-project.toml"
-        if nested.is_file():
-            return nested.parent, nested
-        nested_lf = cur / "docs" / "easci" / "lean" / "lakefile.lean"
-        if nested_lf.is_file():
-            return nested_lf.parent, None
+        # Check up to 2-level nested subprojects for lean-project.toml when run at repo root
+        for cand_toml in sorted(cur.glob("*/*/lean-project.toml")) + sorted(cur.glob("*/*/*/lean-project.toml")):
+            if cand_toml.is_file():
+                return cand_toml.parent, cand_toml
         if cur.parent == cur:
             break
         cur = cur.parent

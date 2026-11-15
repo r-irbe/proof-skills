@@ -24,7 +24,7 @@ skill_ref: "skills/lean-math-analysis/SKILL.md"
 | Intent | Recommended Pattern / Tool | Recipe |
 | :--- | :--- | :--- |
 | Prove continuity, differentiability, or measurability | `by fun_prop` | Supersedes legacy `continuity` for most composite expressions |
-| Work with eventualities `forall  x in l, P x` | `filter_upwards [h1, h2] with x hx1 hx2` | Avoids unfolding `Filter.Eventually` |
+| Work with eventualities `forall ^f x in l, P x` | `filter_upwards [h1, h2] with x hx1 hx2` | Avoids unfolding `Filter.Eventually` |
 | Convert normed distance `dist x y` to `x - y` | `simp only [dist_eq_norm]` | Bridges `MetricSpace` and `NormedAddCommGroup` |
 | Apply Extreme Value Theorem on compact set | `IsCompact.exists_isMinOn` / `IsCompact.exists_isMaxOn` | Requires `hs : IsCompact s`, `hne : s.Nonempty`, `hf : ContinuousOn f s` |
 

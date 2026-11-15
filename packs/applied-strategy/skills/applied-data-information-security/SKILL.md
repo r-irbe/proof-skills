@@ -11,7 +11,7 @@ handoffs:
   predecessors: ["agent:gateway", "skill:lean-research"]
   successors: ["skill:lean-security-formalization", "skill:applied-engineering-disciplines", "skill:lean-knowledge-formalization"]
 metadata:
-  version: "0.2.0"
+  version: "0.5.0"
   source_spec: "skills/applied-data-information-security/SKILL.md (this file)"
   last_reviewed: "2026-05-27"
 ---
@@ -44,7 +44,7 @@ properties of
   reliability/safety
   overlap,
    to
-   `@lean-zettelkasten`.
+   `@lean-retro-methodology`.
 ## Recovery & STOP
 - STOP if the question demands a Lean proof -- delegate to `@lean-security-formalization`.
 - STOP if the question is about cryptographic-protocol design -- escalate to `@research-council` if the body
@@ -57,9 +57,9 @@ properties of
 ---
 ## Detailed reference
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/applied-data-information-security-handbook.md`](../../references/applied-data-information-security-handbook.md)
+[`handbooks/applied-data-information-security-handbook.md`](../../handbooks/applied-data-information-security-handbook.md)
 .
 ## See also
-- [`../../references/applied-data-information-security-handbook.md`](../../references/applied-data-information-security-handbook.md)
+- [`../../handbooks/applied-data-information-security-handbook.md`](../../handbooks/applied-data-information-security-handbook.md)
   -- Handbook
-- [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router
+- [`../lean-gateway/SKILL.md`](../../../../skills/lean-gateway/SKILL.md) -- Top-level skill router

@@ -189,7 +189,7 @@ def lint_zettelkasten(zk_dir: Path) -> list[dict]:
                     issues.append({
                         'severity': 'warn',
                         'type': 'stale-fleeting',
-                        'message': f'Fleeting note is {age.days} days old — promote or discard',
+                        'message': f'Fleeting note is {age.days} days old - promote or discard',
                         'file': note['path'],
                     })
             except ValueError:
@@ -208,7 +208,7 @@ def main():
 
     if not args.zk_dir.exists():
         print(f"Zettelkasten directory not found: {args.zk_dir}")
-        print("(This is normal for a new project — create notes to populate it)")
+        print("(This is normal for a new project - create notes to populate it)")
         sys.exit(0)
 
     issues = lint_zettelkasten(args.zk_dir)

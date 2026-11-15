@@ -39,7 +39,7 @@ loader_hint: Load when @research-council routes here for methodology details; no
 # Research Council Handbook
 
 > **Layering note.** This file holds the deep methodology content
-> previously embedded in [`skills/research-council/SKILL.md`](../skills/research-council/SKILL.md).
+> previously embedded in [`skills/research-council/SKILL.md`](../../skills/research-council/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + the parts index. This file holds the full
 > encyclopaedia of the five research members; the research loop (dual to ralph); epistemic mapping (rumsfeld matrix); cross-disciplinary research domains, etc.
@@ -527,7 +527,7 @@ Key findings from bifurcation formalization establishing templates for all dynam
 # Epistemic Discovery Engine Handbook
 
 > **Layering note.** This file holds the deep methodology content
-> previously embedded in [`skills/epistemic-discovery-engine/SKILL.md`](../skills/epistemic-discovery-engine/SKILL.md).
+> previously embedded in [`skills/epistemic-discovery-engine/SKILL.md`](../../skills/research-council/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + the parts index. This file holds the full
 > encyclopaedia of discovery modes; uu hunting protocols; reporting and outputs; integration architecture, etc.
@@ -901,7 +901,7 @@ Allocate 20% of discovery effort to areas with NO current KU items. Rationale: i
 # Research Synthesis Engine Handbook
 
 > **Layering note.** This file holds the deep methodology content
-> previously embedded in [`skills/research-synthesis-engine/SKILL.md`](../skills/research-synthesis-engine/SKILL.md).
+> previously embedded in [`skills/research-synthesis-engine/SKILL.md`](../../skills/research-council/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + the parts index. This file holds the full
 > encyclopaedia of the five synthesis roles; the synthesize loop; synthesis products; duality with review council, etc.

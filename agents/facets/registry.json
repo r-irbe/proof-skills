@@ -1,6 +1,6 @@
 {
   "schema_version": "3.0.0",
-  "description": "Canonical 5 Role-Actor Containers + 24 Soul Overlays + 38 Core Lean Skills + Opt-In Packs Registry for proof-skills v0.4.0.",
+  "description": "Canonical 5 Role-Actor Containers + 24 Soul Overlays + 38 Core Lean Skills + Opt-In Packs Registry for proof-skills v0.5.0.",
   "role_containers": {
     "specifier": {
       "role_index": 1,
@@ -17,10 +17,13 @@
         "lean_lookup_symbol",
         "lean_decl_references",
         "lean_module_hierarchy",
+        "lean_navigate",
         "lean_diagnostics",
         "lean_counterexample_search",
         "lean_blueprint",
-        "lean_metrics"
+        "lean_metrics",
+        "lean_theorem_preflight",
+        "lean_skill_dispatch"
       ],
       "primary_skills": [
         "lean-gateway",
@@ -55,12 +58,19 @@
       "mcp_allowlist": [
         "lean_goal",
         "lean_diagnostics",
+        "lean_server_status",
         "lean_counterexample_search",
+        "lean_multi_attempt",
+        "lean_repair_proof",
         "lean_lookup_symbol",
         "lean_decl_references",
+        "lean_navigate",
         "lean_search",
+        "lean_ffi",
         "lean_exec",
-        "lean_resync"
+        "lean_theorem_preflight",
+        "lean_resync",
+        "lean_skill_dispatch"
       ],
       "primary_skills": [
         "lean-proof",
@@ -105,13 +115,18 @@
         "mcp:lean-lsp"
       ],
       "mcp_allowlist": [
-        "lean_diagnostics",
         "lean_axiom_closure",
         "lean_metrics",
+        "lean_diagnostics",
+        "lean_server_status",
         "lean_counterexample_search",
+        "lean_minimal_hypotheses",
+        "lean_profile_proof",
         "lean_lookup_symbol",
         "lean_decl_references",
         "lean_module_hierarchy",
+        "lean_navigate",
+        "lean_ffi",
         "lean_search"
       ],
       "primary_skills": [
@@ -145,11 +160,16 @@
       "mcp_allowlist": [
         "lean_goal",
         "lean_diagnostics",
+        "lean_multi_attempt",
+        "lean_minimal_hypotheses",
+        "lean_profile_proof",
         "lean_lookup_symbol",
         "lean_decl_references",
+        "lean_navigate",
         "lean_search",
         "lean_blueprint",
-        "lean_metrics"
+        "lean_metrics",
+        "lean_resync"
       ],
       "primary_skills": [
         "lean-proof-refactor",
@@ -177,8 +197,12 @@
         "lean_lookup_symbol",
         "lean_decl_references",
         "lean_module_hierarchy",
+        "lean_navigate",
+        "lean_blueprint",
         "lean_metrics",
-        "lean_axiom_closure"
+        "lean_axiom_closure",
+        "lean_server_status",
+        "lean_skill_dispatch"
       ],
       "primary_skills": [
         "lean-retro-methodology",
@@ -494,5 +518,6 @@
     "math-product-management": "packs/applied-strategy/skills/math-product-management",
     "math-project-management": "packs/applied-strategy/skills/math-project-management",
     "math-strategy-studio": "packs/applied-strategy/skills/math-strategy-studio"
-  }
+  },
+  "version": "0.5.0"
 }

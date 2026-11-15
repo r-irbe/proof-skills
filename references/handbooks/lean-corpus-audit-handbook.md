@@ -316,8 +316,8 @@ When QA discovers systemic issues:
 
 ## See also
 
-- [`../../templates/Template_Verification.md`](../../templates/Template_Verification.md) -- Template: Axiom auditing and test completeness
-- [`../../templates/Template_Performance.md`](../../templates/Template_Performance.md) -- Template: Build-perf, parallelism, tactic speed
+- [`../../templates/Template_Verification.md`](../../templates/core/Template_Verification.md) -- Template: Axiom auditing and test completeness
+- [`../../templates/Template_Performance.md`](../../templates/core/Template_KernelWHNF_SAIR.md) -- Template: Build-perf, parallelism, tactic speed
 - [`../../scripts/lean/`](../../scripts/lean/) -- Runnable enforcement scripts (axiom audit, import hygiene, proof quality)
 
 ---
@@ -375,10 +375,9 @@ When QA discovers systemic issues:
 
 ## Handoffs
 
-- **Predecessors / successors:** see FM `handoffs` (grammar from ADR-0080).
+- **Predecessors / successors:** see FM `handoffs`.
 - **Source spec:** `specs/lean/quality-engine/requirements.md` -- every G-rule traces to an AC there.
-- **Related ADRs:** ADR-0076, ADR-0080.
-- **Reference:** see [`REFERENCE.md`](./REFERENCE.md) for the seven-dimension matrix, weights, lifecycle phases, anti-patterns, and reliability-engineering
+- **Reference:** see [`REFERENCE.md`](lean-corpus-audit-handbook.md) for the seven-dimension matrix, weights, lifecycle phases, anti-patterns, and reliability-engineering
   details (original v1 content, preserved verbatim).
 
 ## Common failure modes
@@ -510,8 +509,8 @@ an unregistered finding gets rediscovered.
 
 ## See also
 
-- [`references/scripts/tautology_scan.py`](./references/scripts/tautology_scan.py) - P3 spec-baking and trivial-proof scanner.
-- [`references/scripts/deep_audit_census.py`](./references/scripts/deep_audit_census.py) - P4 inhabitation and P5 type-continuity census scanner.
+- [`references/scripts/tautology_scan.py`](../../scripts/lean/proof_quality.py) - P3 spec-baking and trivial-proof scanner.
+- [`references/scripts/deep_audit_census.py`](../../scripts/lean/formalization_breakdown.py) - P4 inhabitation and P5 type-continuity census scanner.
 
 
 ---
@@ -521,7 +520,7 @@ an unregistered finding gets rediscovered.
 # Lean Retroactive Audit Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-retroactive-audit/SKILL.md`](../skills/lean-retroactive-audit/SKILL.md).
+> embedded in [`skills/lean-retroactive-audit/SKILL.md`](../../skills/lean-corpus-audit/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.

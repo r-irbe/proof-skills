@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Originally extracted from a Lean 4 verification project and genericized for the proof-skills toolkit.
-# check-native-decide.sh — audit `native_decide` justifications in a Lean source tree.
+# check-native-decide.sh - audit `native_decide` justifications in a Lean source tree.
 #
 # Usage:
 #   check-native-decide.sh LEAN_DIR
@@ -17,9 +17,9 @@
 # reported as an UNJUSTIFIED site and the script exits 1.
 #
 # Exit codes:
-#   0  — every native_decide site is justified (or there are zero sites)
-#   1  — at least one unjustified site
-#   2  — usage / I/O error
+#   0  - every native_decide site is justified (or there are zero sites)
+#   1  - at least one unjustified site
+#   2  - usage / I/O error
 
 set -euo pipefail
 

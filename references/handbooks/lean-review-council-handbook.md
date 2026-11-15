@@ -41,7 +41,7 @@ loader_hint: Load when @lean-review-council routes here for council methodology 
 # Lean 4 Review Council Handbook
 
 > **Layering note.** This file holds the deep methodology content previously
-> embedded in [`skills/lean-review-council/SKILL.md`](../skills/lean-review-council/SKILL.md).
+> embedded in [`skills/lean-review-council/SKILL.md`](../../skills/lean-review-council/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow / Recovery /
 > Handoffs), the ASCII architecture diagram, and Part 12 (Execution Protocol)
 > as the quick-start workflow. This file holds the full encyclopaedia of

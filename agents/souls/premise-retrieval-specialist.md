@@ -1,11 +1,11 @@
 ---
-name: premise-retrieval-specialist
-description: Multi-source premise retrieval specialist across Loogle, Mathlib, Kuzu book graphs, and arXiv.
-role_container: specifier
-overlay_type: operational
-primary_skill: lean-research
-tools: read, write, edit, bash, mcp:lean-lsp
-model: sonnet
+name: "premise-retrieval-specialist"
+description: "Multi-source premise retrieval specialist across Loogle, Mathlib, Kuzu book graphs, and arXiv."
+role_container: "specifier"
+overlay_type: "operational"
+primary_skill: "lean-research"
+tools: "read, write, edit, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `premise-retrieval-specialist` (Container: `specifier`)

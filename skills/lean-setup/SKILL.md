@@ -22,7 +22,7 @@ handoffs:
   - skill:lean-mwe
   - skill:lean-bisect
 metadata:
-  version: 0.3.0
+  version: 0.5.0
   source_spec: specs/lean/setup/requirements.md
   last_reviewed: '2026-09-16'
 r_caveats:
@@ -92,3 +92,4 @@ Full encyclopedic reference, decision trees, and lookup tables live in
 - [`../../references/handbooks/lean-setup-handbook.md`](../../references/handbooks/lean-setup-handbook.md) -- Complete
   `lean-setup` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router
+- [`tests/lake-env-version.yaml`](tests/lake-env-version.yaml) -- Smoke test

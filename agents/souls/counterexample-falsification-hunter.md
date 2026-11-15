@@ -1,11 +1,11 @@
 ---
-name: counterexample-falsification-hunter
-description: Plausible property-based testing and boundary-witness falsification hunter.
-role_container: prover
-overlay_type: operational
-primary_skill: counterexample-first-proving
-tools: read, write, edit, bash, mcp:lean-lsp
-model: sonnet
+name: "counterexample-falsification-hunter"
+description: "Plausible property-based testing and boundary-witness falsification hunter."
+role_container: "prover"
+overlay_type: "operational"
+primary_skill: "counterexample-first-proving"
+tools: "read, write, edit, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `counterexample-falsification-hunter` (Container: `prover`)

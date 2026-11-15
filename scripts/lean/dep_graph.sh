@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Originally extracted from a Lean 4 verification project and genericized for the proof-skills toolkit.
-# dep_graph.sh — generate a Lean project module dependency graph in DOT format.
+# dep_graph.sh - generate a Lean project module dependency graph in DOT format.
 #
 # Usage:
 #   dep_graph.sh [--project NS] LEAN_DIR [LAYER_CONFIG]

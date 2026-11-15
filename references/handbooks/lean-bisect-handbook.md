@@ -80,8 +80,8 @@ Use the `lean-bisect` script (in the lean4 repo at `script/lean-bisect`) to find
 
 ## See also
 
-- [`../../references/lean4-lsp-guide.md`](../../references/lean4-lsp-guide.md) -- Lean 4 Language Server Protocol comprehensive guide
+- [`../../references/lean4-lsp-guide.md`](../protocols/lean4-lsp-guide.md) -- Lean 4 Language Server Protocol comprehensive guide
 - [`../../references/upstream/lean-bug-report-pipeline.md`](../../references/upstream/lean-bug-report-pipeline.md) -- Shared bug-report pipeline
-- [`../lean-mwe/SKILL.md`](../lean-mwe/SKILL.md) -- Minimal working example construction
-- [`../lean-pr/SKILL.md`](../lean-pr/SKILL.md) -- PR submission workflow
-- [`../lean-setup/SKILL.md`](../lean-setup/SKILL.md) -- Toolchain installation and setup
+- [`../lean-mwe/SKILL.md`](../../skills/lean-mwe/SKILL.md) -- Minimal working example construction
+- [`../lean-pr/SKILL.md`](../../skills/lean-upstream-pr/SKILL.md) -- PR submission workflow
+- [`../lean-setup/SKILL.md`](../../skills/lean-setup/SKILL.md) -- Toolchain installation and setup

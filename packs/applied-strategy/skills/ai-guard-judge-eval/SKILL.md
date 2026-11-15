@@ -12,6 +12,8 @@ dispatch_targets: []
 handoffs:
   predecessors: ["skill:applied-data-information-security", "skill:lean-ai-formalization"]
   successors: ["skill:lean-ai-formalization", "skill:applied-engineering-disciplines"]
+metadata:
+  version: "0.5.0"
 ---
 
 # ai-guard-judge-eval
@@ -52,9 +54,9 @@ Operational dispatch contract for `@ai-guard-judge-eval`.
   integration).
 ## Detailed reference
 Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/ai-guard-judge-eval-handbook.md`](../../references/ai-guard-judge-eval-handbook.md) .
+[`handbooks/ai-guard-judge-eval-handbook.md`](../../handbooks/ai-guard-judge-eval-handbook.md) .
 ## See also
-- [`../../references/ai-guard-judge-eval-handbook.md`](../../references/ai-guard-judge-eval-handbook.md) --
+- [`../../handbooks/ai-guard-judge-eval-handbook.md`](../../handbooks/ai-guard-judge-eval-handbook.md) --
   Complete
   `ai-guard-judge-eval` Handbook
-- [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router
+- [`../lean-gateway/SKILL.md`](../../../../skills/lean-gateway/SKILL.md) -- Top-level skill router

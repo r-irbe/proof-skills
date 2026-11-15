@@ -29,7 +29,7 @@ In multi-agent consensus and belief dynamics:
 * `vorticity_scaling_invariance`: homogeneous scaling behavior
 
 ## References
-* NavierStokesAndEuler: `Euler/CanonicalVorticityConfinement.lean`, `Euler/OrdinaryEulerBKM.lean`, `Euler/Solution.lean`
+* FluidPDE example modules: `Euler/CanonicalVorticityConfinement.lean`, `Euler/OrdinaryEulerBKM.lean`, `Euler/Solution.lean`
 * Beale, J. T., Kato, T., Majda, A. (1984), *Remarks on the Breakdown of Smooth Solutions for the 3-D Euler Equations*, Commun. Math. Phys. 94, 61-66
 * Tao, T. (2016), *Finite time blowup for an averaged three-dimensional Navier-Stokes equation*, J. Amer. Math. Soc. 29, 601-674
 

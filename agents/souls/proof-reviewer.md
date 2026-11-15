@@ -1,11 +1,11 @@
 ---
-name: proof-reviewer
-description: Read-only 4-layer Lean 4 proof reviewer (Soundness, Faithfulness, Non-Vacuity, Hygiene).
-role_container: auditor
-overlay_type: analyst
-primary_skill: lean-upstream-proof-review
-tools: read, grep, find, ls, bash, mcp:lean-lsp
-model: sonnet
+name: "proof-reviewer"
+description: "Read-only 4-layer Lean 4 proof reviewer (Soundness, Faithfulness, Non-Vacuity, Hygiene)."
+role_container: "auditor"
+overlay_type: "analyst"
+primary_skill: "lean-proof-review"
+tools: "read, grep, find, ls, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `proof-reviewer` (Container: `auditor`)

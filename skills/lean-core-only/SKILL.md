@@ -23,7 +23,7 @@ handoffs:
   - skill:lean-verification-gate
   - skill:lean-mwe
 metadata:
-  version: 0.1.0
+  version: 0.5.0
   source_spec: skills/lean-core-only/SKILL.md (this file)
   last_reviewed: '2026-10-16'
 ---

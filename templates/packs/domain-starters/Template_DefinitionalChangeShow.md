@@ -3,10 +3,10 @@
 Use this template for **definitional goal anchoring**, **syntactic target reshaping**,
 **typeclass expansion suppression**, and **deterministic forward proof construction**.
 
-In large-scale agentic formalizations (NavierStokesAndEuler, 2,659 modules):
-Autonomous synthesis frameworks (GPT-6 Astra, Codex) maintain high proof reliability
+In large-scale agentic formalizations (2,600+ module continuum PDE corpora):
+Autonomous synthesis frameworks maintain high proof reliability
 by asserting the exact syntactic form of intermediate expressions before invoking tactics.
-In the NavierStokesAndEuler corpus:
+In large continuum PDE corpora:
 * `change` is invoked 7,064 times to redefine the goal to a definitionally equal target.
 * `show` is invoked 2,490 times to specify the precise expected proposition or term type.
 * Definitional anchoring prevents Lean 4 from triggering uncontrolled typeclass searches,
@@ -28,7 +28,7 @@ In multi-agent proof engineering:
 * `scale_anchor_homomorphism`: linear compatibility under positive scaling
 
 ## References
-* NavierStokesAndEuler: `Euler/OrdinaryEulerBKM.lean`, `NavierStokes/ActualBaseVelocityBounds.lean`
+* FluidPDE example modules: `Euler/OrdinaryEulerBKM.lean`, `FluidPDE/ActualBaseVelocityBounds.lean`
 * Lean 4 Reference Manual: Definitional Equality and Tactic Modes (change, show)
 * Mathlib 4: `Mathlib.Tactic.TypeCheck`, `Mathlib.Tactic.DefEqTransformations`
 

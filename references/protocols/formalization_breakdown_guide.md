@@ -11,8 +11,8 @@ This engineering reference establishes the canonical methodology for analyzing,
 deconstructing, and synthesizing monumental Lean 4 formalizations (ranging from 100
 modules to 60,000+ modules). The protocols documented here derive from our formal
 investigations of:
-1. The Fermat's Last Theorem formalization (60,475 modules, Anthropic PBC).
-2. The Navier-Stokes & Euler finite-time blowup formalization (2,659 modules, OpenAI).
+1. Large-scale algebraic number theory formalizations (60,000+ modules, e.g. Fermat's Last Theorem).
+2. Large-scale continuum PDE blowup formalizations (2,600+ modules, multi-scale fluid singularity analysis).
 
 The objective of a formalization breakdown is threefold:
 1. **Structural Truth**: Establishing an automated, machine-checked census of code lines,
@@ -107,8 +107,8 @@ A formalization breakdown must quantify four core topological dimensions:
   Any cycle constitutes an immediate fatal compilation defect.
 - **Topological Layer Depth**: The maximum length of an internal import path from a leaf
   definition to the final top-level theorem.
-  - FLT formalization: 49 layers across landmark theorems.
-  - Navier-Stokes & Euler formalization: 96 layers.
+  - Algebraic number theory corpus: 49 layers across landmark theorems.
+  - Continuum PDE blowup corpus: 96 layers.
 - **Landmark Theorem Hubs**: Modules with high in-degree (frequently imported foundational
   results) or high out-degree (terminal synthesizers).
 

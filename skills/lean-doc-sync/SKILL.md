@@ -23,7 +23,7 @@ handoffs:
   - skill:lean-pedagogical-exposition
   - skill:lean-retro-methodology
 metadata:
-  version: 0.4.0
+  version: 0.5.0
   source_spec: Unified from lean-doc-requirements, lean-doc-improvement, lean-doc-feedback,
     and lean-report
   last_reviewed: 2026-11

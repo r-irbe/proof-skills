@@ -12,7 +12,7 @@ input:
     `(R : Action → ℝ) (isNoOp : Action → Prop) (Rbaseline : ℝ) : Prop`. Reply with
     the
 
-    Lean 4 code only — no prose.
+    Lean 4 code only - no prose.
 
     '
   expected_output_substring: "def NoNoOpHack (R : Action → ℝ) (isNoOp : Action → Prop)\

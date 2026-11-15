@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """U4 missing-API sweep: simp-lemma inventory, instance gaps, decidability.
 
-Scans the EASCI corpus (default) for the three mechanical classes the
+Scans the Project corpus (default) for the three mechanical classes the
 U4 wave definition names:
 
   simp-nf   - `@[simp]` lemmas carrying explicit hypotheses between the
@@ -20,7 +20,7 @@ Also carries the U3a follow-up lint: a `/--` docstring immediately
 before a `set_option ... in` line is a Lean parse error (hit in
 Profiling.lean, Phase 1145).
 
-Usage: python3 scripts/u4_api_gap_scan.py [ROOT]   (ROOT defaults to EASCI)
+Usage: python3 scripts/u4_api_gap_scan.py [ROOT]   (ROOT defaults to Project)
 Exit 0 always - this is a census, not a gate.
 """
 
@@ -79,7 +79,7 @@ def main(argv=None):
     import argparse
     parser = argparse.ArgumentParser(description="U4 missing-API sweep: simp-lemma inventory, instance gaps, decidability.")
     parser.add_argument("pos_root", nargs="?", default=None, help="Optional positional Lean corpus directory")
-    parser.add_argument("--root", "--lean-dir", dest="root", default=os.environ.get("LEAN_DIR", "EASCI"), help="Corpus directory to scan")
+    parser.add_argument("--root", "--lean-dir", dest="root", default=os.environ.get("LEAN_DIR", "Project"), help="Corpus directory to scan")
     args = parser.parse_args(argv)
     root = args.pos_root if args.pos_root is not None else args.root
     total = {"simp_nf": 0, "inst_gap": 0, "classical": 0, "doc_setopt": 0}

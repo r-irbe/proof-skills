@@ -1457,7 +1457,7 @@
       "provers": {
         "lean4": {
           "tactics": [
-            "EASCI/StochasticCCV/ contraction bounds",
+            "Markov chain contraction bounds",
             "inductive invariant preservation",
             "Nat.div_add_mod"
           ],
@@ -2083,7 +2083,7 @@
           "semantics": "`Groups_Big.sum` over `'a set` (returning `0` automatically when `infinite A`).",
           "idiomatic_pattern": "Translate `(∑x∈A. f x)` under `finite A` to `∑ x ∈ A, f x` over `A : Finset α`.",
           "pitfalls": [
-            "Isabelle `∑x∈A. f x` defaults to `0` on infinite sets; if finiteness is not obvious in Lean 4, use `finsum` (`∑ᶠ x, f x`) or carry `A : Finset α`"
+            "Isabelle `∑x∈A. f x` defaults to `0` on infinite sets; if finiteness is not obvious in Lean 4, use `finsum` (`∑^f x, f x`) or carry `A : Finset α`"
           ]
         },
         "hol_light": {
@@ -2395,9 +2395,9 @@
             "Tendsto.comp",
             "Tendsto.add"
           ],
-          "syntax_pattern": "Tendsto f (𝓝 x) (𝓝 y) | Tendsto u atTop (𝓝 l) | ∀ᶠ n in atTop, P n",
+          "syntax_pattern": "Tendsto f (𝓝 x) (𝓝 y) | Tendsto u atTop (𝓝 l) | ∀^f n in atTop, P n",
           "semantics": "Order-lattice `Filter α` where `Tendsto f l₁ l₂` is `Filter.map f l₁ ≤ l₂`, unifying sequence limits (`atTop`), topological neighborhoods (`𝓝 x`), punctured limits (`𝓝[≠] x`), and measure (`ae μ`).",
-          "idiomatic_pattern": "Prove continuity with `fun_prop` (or `continuity`), combine eventualities `∀ᶠ` with `filter_upwards`, and compose limits via `Tendsto.comp` instead of unfolding `(ε, δ)`.",
+          "idiomatic_pattern": "Prove continuity with `fun_prop` (or `continuity`), combine eventualities `∀^f` with `filter_upwards`, and compose limits via `Tendsto.comp` instead of unfolding `(ε, δ)`.",
           "pitfalls": [
             "Avoid unfolding `Metric.tendsto_nhds` to `(ε, δ)` unless proving a base metric primitive",
             "Distinguish `𝓝 x` (includes `x`) from `𝓝[≠] x` (punctured neighborhood used in derivatives)"
@@ -2444,7 +2444,7 @@
           "semantics": "Directed nets (`net`) with `at a`, `at a within s`, `sequentially`, and `at_posinfinity`.",
           "idiomatic_pattern": "Map `(s ---> l) sequentially` -> `Tendsto s atTop (𝓝 l)` and `(f --> l) (at a)` -> `Tendsto f (𝓝[≠] a) (𝓝 l)`.",
           "pitfalls": [
-            "Like Isabelle, HOL Light's `at a` is punctured (`0 < dist(x,a) < d`), corresponding to `𝓝[≠] a` (`nhdsWithin a {a}ᶜ`) in Mathlib"
+            "Like Isabelle, HOL Light's `at a` is punctured (`0 < dist(x,a) < d`), corresponding to `𝓝[≠] a` (`nhdsWithin a {a}^c`) in Mathlib"
           ]
         },
         "agda": {

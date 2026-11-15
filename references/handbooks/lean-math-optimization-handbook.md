@@ -8,7 +8,7 @@ extracted_from: skills/lean-math-optimization/SKILL.md
 # Optimization & Decision Theory Encyclopaedia (Lean 4)
 
 > **Layering note.** This file holds the deep encyclopaedia content
-> previously embedded in [`skills/lean-math-optimization/SKILL.md`](../skills/lean-math-optimization/SKILL.md).
+> previously embedded in [`skills/lean-math-optimization/SKILL.md`](../../skills/lean-math-optimization/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow / Recovery /
 > Handoffs) and the high-frequency pitfalls / recipes; this file holds the
 > full reference content. Zero fidelity loss vs the pre-layering revision.
@@ -34,7 +34,7 @@ def IsMinOn (f : α → ℝ) (S : Set α) (x : α) : Prop :=
 | First-order necessary | `∇f(x*) = 0` (unconstrained) | `HasDerivAt f 0 x` |
 | Second-order sufficient | `∇²f(x*) > 0` | Positive definiteness of Hessian |
 | KKT (constrained) | Lagrangian stationarity + complementarity | Structure with multipliers |
-| Convex: global = local | `ConvexOn ℝ S f → IsLocalMinOn ⟹ IsMinOn` | `ConvexOn.isMinOn_of_isLocalMinOn` |
+| Convex: global = local | `ConvexOn ℝ S f → IsLocalMinOn ⇒ IsMinOn` | `ConvexOn.isMinOn_of_isLocalMinOn` |
 
 ### 1.3 Project Optimization Problems
 
@@ -106,7 +106,7 @@ def IsMinOn (f : α → ℝ) (S : Set α) (x : α) : Prop :=
 ### 3.2 Banach Fixed Point Theorem in Lean
 
 Consolidated into single canonical reference:
-[`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md)
+[`references/lean4-contraction-catalog.md`](lean-math-analysis-handbook.md)
 (§1 Mathlib API, §4 project contraction-theorem index -- `BellmanOperator.contracting` row).
 
 Project Bellman operator one-liner: the Bellman operator on bounded
@@ -289,7 +289,7 @@ Guide to formalizing optimization, game theory, RL theory, and decision-making i
 ## Detailed reference
 
 Full encyclopaedia content (Parts 1 through 7) lives in
-[`references/lean4-math-optimization.md`](../../references/lean4-math-optimization.md). Load that file
+[`references/lean4-math-optimization.md`](lean-math-optimization-handbook.md). Load that file
 when authoring; the SKILL.md only carries the dispatch contract and
 the high-frequency pitfalls / recipes (kept inline below).
 
@@ -306,7 +306,7 @@ the high-frequency pitfalls / recipes (kept inline below).
 ## Part 8 -- Research Council Integration
 
 Consolidated into the single canonical routing matrix:
-[`references/research-council-skill-map.md`](../../references/research-council-skill-map.md)
+[`references/research-council-skill-map.md`](../protocols/research-council-skill-map.md)
 (see the "Optimization" section).  When dispatching a question to a
 council member, cite that table rather than restating the rows here.
 
@@ -349,11 +349,11 @@ council member, cite that table rather than restating the rows here.
 
 ## See also
 
-- [`../../references/lean4-math-optimization.md`](../../references/lean4-math-optimization.md) -- Optimization & Decision Theory Encyclopaedia (full
+- [`../../references/lean4-math-optimization.md`](lean-math-optimization-handbook.md) -- Optimization & Decision Theory Encyclopaedia (full
   encyclopaedia, extracted from this skill)
-- [`../../templates/Template_Dynamics.md`](../../templates/Template_Dynamics.md) -- Template: Fixed-point and contraction iterations
-- [`../../templates/Template_Arithmetic.md`](../../templates/Template_Arithmetic.md) -- Template: Scaled-Nat thresholds and convex bounds
-- [`../../references/lean4-tactic-hierarchy.md`](../../references/lean4-tactic-hierarchy.md) -- Tactic priority for arithmetic goals
+- [`../../templates/Template_Dynamics.md`](../../templates/packs/domain-starters/Template_Dynamics.md) -- Template: Fixed-point and contraction iterations
+- [`../../templates/Template_Arithmetic.md`](../../templates/packs/domain-starters/Template_Arithmetic.md) -- Template: Scaled-Nat thresholds and convex bounds
+- [`../../references/lean4-tactic-hierarchy.md`](../protocols/lean4-tactic-hierarchy.md) -- Tactic priority for arithmetic goals
 
 ---
 
@@ -506,7 +506,7 @@ Mathematical optimization and strategic interaction theory, applied to reinforce
 
 - **Bellman optimality**: $V^*(s) = \max_a [R(s,a) + \gamma \sum_{s'} P(s'|s,a) V^*(s')]$
 - **Contraction mapping**: $\|TV - TV'\|_\infty \le \gamma \|V - V'\|_\infty$
-- **Policy improvement**: $\pi_{k+1}$ greedy w.r.t. $V^{\pi_k}$ ⟹ $V^{\pi_{k+1}} \ge V^{\pi_k}$
+- **Policy improvement**: $\pi_{k+1}$ greedy w.r.t. $V^{\pi_k}$ ⇒ $V^{\pi_{k+1}} \ge V^{\pi_k}$
 - **Regret bounds**: Policy gradient regret $\tilde{O}(\sqrt{T})$
 
 ### 4.3 Safe RL
@@ -609,7 +609,7 @@ Do not assume repository-local Lean modules, tactics, or namespaces exist unless
 # Optimization & Decision Theory Encyclopaedia (Lean 4)
 
 > **Layering note.** This file holds the deep encyclopaedia content
-> previously embedded in [`skills/lean-math-optimization/SKILL.md`](../skills/lean-math-optimization/SKILL.md).
+> previously embedded in [`skills/lean-math-optimization/SKILL.md`](../../skills/lean-math-optimization/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow / Recovery /
 > Handoffs) and the high-frequency pitfalls / recipes; this file holds the
 > full reference content. Zero fidelity loss vs the pre-layering revision.
@@ -635,7 +635,7 @@ def IsMinOn (f : α → ℝ) (S : Set α) (x : α) : Prop :=
 | First-order necessary | `∇f(x*) = 0` (unconstrained) | `HasDerivAt f 0 x` |
 | Second-order sufficient | `∇²f(x*) > 0` | Positive definiteness of Hessian |
 | KKT (constrained) | Lagrangian stationarity + complementarity | Structure with multipliers |
-| Convex: global = local | `ConvexOn ℝ S f → IsLocalMinOn ⟹ IsMinOn` | `ConvexOn.isMinOn_of_isLocalMinOn` |
+| Convex: global = local | `ConvexOn ℝ S f → IsLocalMinOn ⇒ IsMinOn` | `ConvexOn.isMinOn_of_isLocalMinOn` |
 
 ### 1.3 Project Optimization Problems
 
@@ -707,7 +707,7 @@ def IsMinOn (f : α → ℝ) (S : Set α) (x : α) : Prop :=
 ### 3.2 Banach Fixed Point Theorem in Lean
 
 Consolidated into single canonical reference:
-[`references/lean4-contraction-catalog.md`](../../references/lean4-contraction-catalog.md)
+[`references/lean4-contraction-catalog.md`](lean-math-analysis-handbook.md)
 (§1 Mathlib API, §4 project contraction-theorem index -- `BellmanOperator.contracting` row).
 
 Project Bellman operator one-liner: the Bellman operator on bounded

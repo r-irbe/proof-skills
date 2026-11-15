@@ -1,8 +1,8 @@
 ---
 id: zk-005
-title: TDAD — Test-Driven Agent Definition (4-role loop)
+title: TDAD -- Test-Driven Agent Definition (4-role loop)
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-11-15
 type: permanent
 tags: [methodology, evals, agent-fleet]
 refs:
@@ -13,29 +13,12 @@ status: validated
 confidence: high
 ---
 
-# TDAD — Test-Driven Agent Definition (4-role loop)
+# TDAD -- Test-Driven Agent Definition (4-role loop)
 
-**Claim.** Test-Driven Agent Definition (TDAD, ADR-0039) treats a
-SKILL.md as a *compiled artefact*, not hand-edited prose. Four roles
-co-operate in a TDD-style red/green loop: **TestSmith** generates eval
-fixtures from each skill's G-rules; **PromptSmith** iterates SKILL.md
-until fixtures go green; **MutationSmith** weakens rules (drop a
-G-rule, soften a `MUST` to `SHOULD`) to verify fixture strength; the
-**Built Agent** is the runtime consumer scored against the fixtures.
+**Claim.** Test-Driven Agent Definition (TDAD) treats a `SKILL.md` as a compiled contract rather than unverified prose. Four roles cooperate in a red/green loop: **TestSmith** generates eval fixtures from each skill's G-rules; **PromptSmith** iterates `SKILL.md` until fixtures pass; **MutationSmith** weakens rules to verify fixture sensitivity; and the **Built Agent** is scored against the suite.
 
-**Evidence.** Distilled from `lab/design/01-adrs.md` §5.3. The
-ADR sets explicit per-skill targets: **HPR ≥ 97%** (human pass rate),
-**MS 86–100%** (mutation score), **SURS 97%** (skill-under-rule
-score). These are the bars each Lean-skill family eval should aim at
-when porting to the harness under `lab/evals/`.
+**Evidence.** Implemented across `scripts/eval/cases/*.yaml` and `scripts/eval/run_eval.py`, targeting >= 97% human pass rate, 86-100% mutation score, and >= 97% skill-under-rule adherence across all 38 core skills and 7 opt-in pack skills.
 
-**Implication.** TDAD resolves the chicken-and-egg of "how do you
-eval an agent before you have one" by requiring fixtures **before**
-the skill body is written. The first TestSmith phase uses the BACM
-pattern from [[zk-004]] to gather corpus signal cheaply. The eval
-oracle is one of the four targets named in [[zk-006]], and the failure
-labels used by MutationSmith are the nine AgentRx categories in
-[[zk-003]]. Without MutationSmith specifically, fixture strength is
-unfalsifiable — a green eval may just mean weak tests.
+**Implication.** TDAD resolves the bootstrapping dilemma by requiring deterministic fixtures *before* prose expansion. The opening TestSmith phase uses BACM from [[zk-004]] to gather signal cheaply; the evaluation oracle maps onto the four targets in [[zk-006]]; and MutationSmith tags regressions with the nine AgentRx categories in [[zk-003]].
 
 See also: [[zk-003]], [[zk-004]], [[zk-006]].

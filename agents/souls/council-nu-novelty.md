@@ -1,11 +1,11 @@
 ---
-name: council-nu-novelty
-description: Review Council Member Nu (Novelty Scout): Mathlib/corpus deduplication and generalization readiness.
-role_container: auditor
-overlay_type: council-review
-primary_skill: lean-review-council
-tools: read, grep, find, ls, bash, mcp:lean-lsp
-model: sonnet
+name: "council-nu-novelty"
+description: "Review Council Member Nu (Novelty Scout): Mathlib/corpus deduplication and generalization readiness."
+role_container: "auditor"
+overlay_type: "council-review"
+primary_skill: "lean-review-council"
+tools: "read, grep, find, ls, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `council-nu-novelty` (Container: `auditor`)

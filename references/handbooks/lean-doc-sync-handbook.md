@@ -36,7 +36,7 @@ extracted_from: skills/lean-doc-sync/SKILL.md
 # Blueprint-to-Report Pipeline Handbook (Lean 4)
 
 > **Layering note.** This file holds the deep pipeline content previously
-> embedded in [`skills/lean-report/SKILL.md`](../skills/lean-report/SKILL.md).
+> embedded in [`skills/lean-report/SKILL.md`](../../skills/lean-doc-sync/SKILL.md).
 > The SKILL.md keeps the dispatch contract, the Execution Checklist (Part 12),
 > the Troubleshooting table (Part 13), and the Output Artifacts summary (Part 14).
 > This file holds the full encyclopaedia of pipeline stages, agent-driven
@@ -508,7 +508,7 @@ For each key result, include a paragraph contextualizing it within the project a
 
 ## Part 5B -- Lean 4.28 Features for Report Generation
 
-The Project formalization uses Lean v4.28.0 and Mathlib v4.28.0. Report narration should acknowledge the following Lean 4.28 features that heavily influence proof style:
+The Project formalization uses Lean v4.34.1 and Mathlib v4.34.1. Report narration should acknowledge the following Lean 4.28 features that heavily influence proof style:
 
 ### 5B.1 `grind` -- Primary Tactic (776 uses)
 
@@ -818,9 +818,9 @@ Innovation) framework for knowledge phase-adaptive governance.
 The formalization comprises \textbf{31} Lean~4 files across
 \textbf{17} logical modules totaling \textbf{37,693} lines of
 code, containing \textbf{2,186} theorems and lemmas,
-all verified by the Lean~4 kernel (v4.28.0) with \textbf{zero}
+all verified by the Lean~4 kernel (v4.34.1) with \textbf{zero}
 uses of \texttt{sorry} and \textbf{zero} custom axioms beyond
-those in Mathlib~v4.28.0.
+those in Mathlib~v4.34.1.
 
 The framework models organizational knowledge transfer through
 seven interlocking components: (1)~quality gates controlling
@@ -841,7 +841,7 @@ governance policy, safety envelope decomposition for agentic
 trust management, and PROV-O provenance formalization ensuring
 chain-of-custody invariants for knowledge artifacts.
 
-All proofs are constructive where possible and use Mathlib~v4.28.0
+All proofs are constructive where possible and use Mathlib~v4.34.1
 as the mathematical library. A navigable dependency graph and
 interactive web blueprint accompany this report.
 
@@ -934,106 +934,75 @@ jobs:
 
 ---
 
-## Part 9 -- Audit Integration
+## Part 9 -- Audit Integration Template (Example Corpus)
 
-The report must incorporate findings from the comprehensive Project codebase audit. The following audit artifacts should be referenced and their findings reflected in the report narrative.
+The report should incorporate findings from the project's codebase audit. Use a structured table to link audit artifacts to report sections:
 
-### 9.1 Audit Reference Documents
+### 9.1 Audit Reference Documents (Example)
 
 | Document | Content | Report Integration |
 |---|---|---|
-| `RECOMMENDATIONS-V3-FINAL.md` | 66 recommendations across all modules | Acknowledge addressed items; flag open items in appendix |
-| `STATISTICS-RECONCILIATION.md` | Verified codebase metrics (31 files, 37,693 lines, 2,186 theorems) | Use as authoritative source for all statistics |
-| `IMPLEMENTATION-SEQUENCE.md` | 6-phase implementation plan | Reference in "Future Work" section |
+| `AUDIT-RECOMMENDATIONS.md` | Cross-module audit findings and open items | Acknowledge addressed items; flag open items in appendix |
+| `STATISTICS-RECONCILIATION.md` | Verified codebase metrics (`lake build` + census) | Use as authoritative source for all statistics |
+| `ROADMAP.md` | Multi-phase formalization plan | Reference in "Future Work" section |
 
-### 9.2 P0 Critical Items (Must Acknowledge in Report)
+### 9.2 Critical Scope & Fidelity Caveats (Must Acknowledge in Report)
 
-The report MUST explicitly acknowledge these four critical findings:
+Every formalization report MUST explicitly distinguish proved claims from modeling hypotheses:
 
-1. **Perron-Frobenius existence gap**: Uniqueness of the stationary distribution is proved, but existence is assumed (via `Inhabited` instance). The report should state: "We prove uniqueness of the stationary distribution; existence is assumed as a hypothesis and represents a formalization gap to be closed with a constructive Perron-Frobenius proof."
+1. **Existence vs. uniqueness**: When uniqueness of a fixed point or stationary distribution is proved under an `[Inhabited X]` or existence hypothesis, state explicitly: "Uniqueness is mechanically proved; constructive existence remains an explicit hypothesis."
+2. **Linearized vs. nonlinear scope**: When Lyapunov or contraction bounds apply to a linearized step function rather than the full nonlinear transition, state the exact domain of the formal guarantee.
+3. **Exhaustive pattern matching**: Flag any classifier or transition function that uses a catch-all `| _ =>` branch rather than exhaustive constructor matching.
+4. **Zero unbacked quantitative claims**: Remove any numerical suitability or speedup figure from earlier drafts that lacks either a formal bound or a reproducible benchmark artifact.
 
-2. **Lyapunov bridge scope**: The Lyapunov stability analysis applies to the affine `govStep` function, not the full Project dynamics. The report should clarify: "The convergence guarantee applies to the linearized governance step; extending to the full nonlinear Project dynamics remains future work."
+### 9.3 Verified Codebase Statistics Table
 
-3. **`classifyFull` catch-all**: The current `classifyFull` function uses a catch-all `| _ =>` branch. The report should note the recommended migration to `classifyFullStrict` with exhaustive pattern matching. Do not present the classifier as total without this caveat.
+Include a machine-verified metrics block in the report appendix:
 
-4. **Remove 92.3% suitability figure**: This figure appeared in earlier drafts but has no formal backing. The report must NOT cite it.
-
-### 9.3 Semantic Fidelity Caveats
-
-The following semantic caveats must be noted in the relevant chapters:
-
-- **CCV simplex is the project's operationalization** (CN-7): The CCV simplex formalized here is the project's operationalization of Collins' Category Vector, not Collins' original construction. State this clearly in Ch 4.
-- **phiCCV excludes somatic tacit knowledge**: The `phiCCV` function operates on the explicit (r, s, k) triple and does not capture somatic/embodied TK. Note that a `CCVWeighted` extension exists for future integration.
-- **Birkhoff misnomer**: Six theorems in StochasticCCV reference "Birkhoff" but actually prove Doeblin contraction or stationary distribution properties. The report should use "Doeblin contraction" or "stationary distribution" terminology, not "Birkhoff ergodic theorem."
-
-### 9.4 Verified Codebase Statistics
-
-Use these audit-verified statistics throughout the report:
-
-| Metric | Value |
-|---|---|
-| Lean files | 31 |
-| Total lines | 37,693 |
-| Theorems + lemmas | 2,186 |
-| `sorry` count | 0 |
-| `axiom` count | 0 |
-| Lean version | v4.28.0 |
-| Mathlib version | v4.28.0 |
-| `grind` uses | 776 |
-| `native_decide` uses | 68 |
-| Logical modules | 17 |
+| Metric | Source of Truth | Gate |
+|---|---|---|
+| Lean files | `find <Root> -name '*.lean' \| wc -l` | Re-derived per build |
+| Theorems + lemmas | `lean_metrics(action: "census")` | Within 100% of compiled `.olean` |
+| `sorry` count | `check_sorry.sh` / `lean-rules` | Hard `0` |
+| Custom `axiom` count | `axiom_audit.py` / `lean_axiom_closure` | Hard `0` (`propext`, `Classical.choice`, `Quot.sound` only) |
+| `native_decide` count | `lean-rules` (`rule-lean-no-native-decide`) | Hard `0` |
+| Lean & Mathlib version | `lean-toolchain` + `lake-manifest.json` | Pinned (`v4.34.1`) |
 
 ---
 
-## Part 10 -- Project-specific Configuration
+## Part 10 -- Project-Specific Configuration (`lean-project.toml` & `skills-overrides/`)
 
-### 10.1 Module-to-Chapter Mapping
+Keep project-specific module-to-chapter mappings and notation tables in the project's local `skills-overrides/` overlay (`subst_table.json` and `*-domain-deltas.md`) rather than hardcoding them in shared skill handbooks:
+
+### 10.1 Module-to-Chapter Mapping Schema
 
 | Module | Chapter | Part | Key Narrative Focus |
 |---|---|---|---|
-| Tactics | Ch 1 | I | Automation: grind (776 uses), native\_decide, custom tactics |
-| QualityGates | Ch 2 | I | G1--G5 gate monotonicity, pipeline pass biconditionals |
-| PhaseClassification | Ch 3 | I | 3-regime σ²-based classification, completeness |
-| CCVGating | Ch 4 | II | CCV simplex (Project operationalization, not Collins original), φ\_CCV modulation |
-| CuspCatastrophe | Ch 5 | II | A₃ singularity, hysteresis, bistable equilibria |
-| PhasePortrait | Ch 6 | II | 4D phase space, TKS detection, entropy bounds |
-| ProvenanceChain | Ch 7 | II | PROV-O DAG, stage monotonicity, depth invariants |
-| PipelineAdaptive | Ch 8 | III | DGD adaptive thresholds, fixed-point convergence |
-| StochasticCCV/Core | Ch 9 | III | 3×3 row-stochastic matrices, stationary distribution, Doeblin contraction |
-| StochasticCCV/Information | Ch 10 | III | Information-theoretic CCV properties |
-| PipelineBypass | Ch 11 | III | Bypass path semantics, safety-preserving shortcuts |
-| ReinforcementLearning | Ch 12 | IV | MDP governance, Bellman monotonicity, reward shaping |
-| AgenticSafety | Ch 11 | IV | Trust simplex, safety envelopes, autonomy bounds |
+| `Core.Foundations` | Ch 1 | I | Foundational definitions, algebraic structures, custom tactics (`decide +kernel`, `omega`, `grind`) |
+| `Core.Invariants` | Ch 2 | I | Monotonicity, preservation biconditionals, lattice bounds |
+| `Dynamics.Stability` | Ch 3 | II | Lyapunov functions, contraction mappings, fixed-point convergence |
+| `Stochastic.Markov` | Ch 4 | II | Row-stochastic kernels, stationary distributions, ergodic bounds |
+| `Optimization.Control` | Ch 5 | III | Bellman operators, policy improvement, safety envelopes |
+| `Verification.Soundness` | Ch 6 | III | End-to-end soundness theorems and non-vacuity witnesses |
 
-### 10.2 Key Narrative Arcs
+### 10.2 Cross-Chapter Narrative Arcs
 
-**Thread 1 -- Quality Flow**: G1--G5 gates (Ch 2) → CCV modulation (Ch 4) → Pipeline adaptation (Ch 8) → Final convergence (Ch 12)
+1. **Foundations to Invariants**: Definitions (Ch 1) -> Preservation lemmas (Ch 2) -> End-to-end soundness (Ch 6).
+2. **Dynamics to Control**: Deterministic stability (Ch 3) -> Stochastic kernels (Ch 4) -> Optimal control (Ch 5).
 
-**Thread 2 -- Phase Dynamics**: σ² classification (Ch 3) → Full portrait (Ch 6) → Stochastic drift (Ch 9) → MDP control (Ch 10)
+Call out these threads explicitly in transition paragraphs between chapters.
 
-**Thread 3 -- Safety Assurance**: Cusp catastrophe (Ch 5) → Safety envelopes (Ch 11) → Lyapunov bounds (Ch 12)
+### 10.3 Notation Consistency Table
 
-**Thread 4 -- Provenance**: Chain invariants (Ch 7) → Stage monotonicity → Pipeline completeness (Ch 8)
+Maintain a single bidirectional symbol dictionary between the primary LaTeX paper (`docs/paper.tex`) and Lean identifiers:
 
-These threads should be explicitly called out in transition paragraphs between chapters.
-
-### 10.3 Notation Conventions
-
-Ensure consistency with the primary paper (`docs/project-tufte.tex`):
-
-| Symbol | Meaning | Lean Name | Module |
+| LaTeX Symbol | Meaning | Lean Identifier | Module |
 |---|---|---|---|
-| $\phi = (R, D, C, V)$ | Phase point | `PhasePoint` | LyapunovStability |
-| $\sigma^2$ | Stress squared | `StressSq` | PhaseClassification |
-| $\varphi_{\mathrm{CCV}}(r,s,k)$ | CCV gate function | `phiCCV` | CCVGating |
-| $V(\phi, \phi^*)$ | Lyapunov function | `lyapunovQuadratic` | LyapunovStability |
-| $\mathbf{M}$ | Stochastic matrix | `StochMatrix3` | StochasticCCV |
-| $\pi : S \to A$ | MDP policy | `MDPPolicy` | ReinforcementLearning |
-| $\gamma$ | Discount factor (×100) | `γ100` | ReinforcementLearning |
-| $(t_r, t_s, t_k)$ | Agent trust triple | `AgentTrust` | AgenticSafety |
-| $\mathrm{G}_i(\cdot, \tau_i)$ | Quality gate $i$ | `G1`..`G5` | QualityGates |
-| $U(a,b,x) = x^4/4 + ax^2/2 + bx$ | Cusp potential | `cuspPotential` | CuspCatastrophe |
-| $4a^3 + 27b^2$ | Cusp discriminant | `cuspDiscriminant` | CuspCatastrophe |
+| $S$ | State space | `StateSpace` | `Core.Foundations` |
+| $V(x)$ | Lyapunov candidate | `lyapunovVal` | `Dynamics.Stability` |
+| $P$ | Markov transition kernel | `TransitionKernel` | `Stochastic.Markov` |
+| $\mathcal{T}$ | Bellman operator | `bellmanOp` | `Optimization.Control` |
+| $\gamma \in [0, 1)$ | Discount factor | `discountFactor` | `Optimization.Control` |
 
 ---
 
@@ -1099,7 +1068,7 @@ Gateway routing:
 # Lean Doc Improvement Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-doc-improvement/SKILL.md`](../skills/lean-doc-improvement/SKILL.md).
+> embedded in [`skills/lean-doc-improvement/SKILL.md`](../../skills/lean-doc-sync/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.
@@ -1325,8 +1294,8 @@ Findings during document update may trigger:
 | Sorry count | 0 | [computed] | [match/stale] |
 | Modules | 12 | [computed] | [match/stale] |
 | Coverage % | [N]% | [computed] | [match/stale] |
-| Lean version | 4.28.0 | [computed] | [match/stale] |
-| Mathlib version | 4.28.0 | [computed] | [match/stale] |
+| Lean version | 4.34.1 | [computed] | [match/stale] |
+| Mathlib version | 4.34.1 | [computed] | [match/stale] |
 
 ## Stale Metrics: [N]
 ## Errata Pending Paper Update: [N]
@@ -1349,7 +1318,7 @@ The `metric_sync.py` enforcement script (see lean-gateway SK-06 enforcement scri
 # Lean Doc Requirements Handbook
 
 > **Layering note.** This file holds the deep content previously
-> embedded in [`skills/lean-doc-requirements/SKILL.md`](../skills/lean-doc-requirements/SKILL.md).
+> embedded in [`skills/lean-doc-requirements/SKILL.md`](../../skills/lean-doc-sync/SKILL.md).
 > The SKILL.md keeps the dispatch contract (Routing / Workflow /
 > Recovery / Handoffs) + a parts index. This file holds the full
 > encyclopaedia. Zero fidelity loss vs the pre-layering revision.
@@ -1365,10 +1334,10 @@ Document → Section scan → Claim extraction → Formalization →
 
 ### Input Sources (priority order)
 
-1. **Primary paper** (`docs/project-tufte.tex`) -- mathematical claims, theorems, equations
-2. **Technical reports** (`docs/tech_report_copy1.txt`, `docs/theory-report-copy-2.txt`) -- extended proofs, design rationale
-3. **System requirements** (`docs/system_requirements_final.md`) -- functional properties to verify
-4. **Analysis documents** (`docs/analysis-plan/`) -- verification targets
+1. **Primary paper** (`docs/paper.tex`) -- mathematical claims, theorems, equations
+2. **Technical reports** (`docs/technical-report.md`) -- extended proofs, design rationale
+3. **System requirements** (`docs/requirements.md`) -- functional properties to verify
+4. **Blueprint & specs** (`blueprint/`, `specs/`) -- verification targets
 
 ---
 
@@ -1400,10 +1369,10 @@ For each extracted claim:
 - LaTeX environment: [theorem/equation/prose]
 - Verbatim text: [exact quote, max 200 chars]
 
-## Classification
-- Type: [theorem | definition | bound | identity | monotonicity | convergence | safety | other]
-- Domain: [quality-gates | phase-classification | pipeline | CCV | cusp | provenance | lyapunov | RL | agentic-safety | stochastic]
-- Complexity: [trivial | routine | moderate | hard | research-level]
+- Classification:
+  - Type: [theorem | definition | bound | identity | monotonicity | convergence | safety | other]
+  - Domain: [foundations | discrete | stochastic | dynamical | optimization | analysis | ai-safety | knowledge | security]
+  - Complexity: [trivial | routine | moderate | hard | research-level]
 
 ## Informal Statement
 [One-paragraph plain English interpretation]
@@ -1456,13 +1425,13 @@ Informal text rarely states all hypotheses explicitly. Infer from:
 
 When project-specific terms appear without qualification:
 
-| Term | Default Hypothesis |
+| Domain term | Default Hypothesis |
 |---|---|
-| Quality score | `∈ Set.Icc 0 1` |
-| Phase | Member of `PhaseType` enum |
-| Pipeline | `PipelineConfig` structure |
-| CCV values | Non-negative real |
-| Decision boundary | Defined on `ℝⁿ` with appropriate topology |
+| Normalized score | `in Set.Icc 0 1` |
+| Discrete regime | Member of finite inductive type |
+| Configuration | Explicit `Config` structure |
+| Simplex vector | Non-negative coordinates summing to `1` (or scaled integer simplex) |
+| Decision boundary | Defined on `Real^n` with explicit metric |
 | Convergence | With respect to explicit metric or norm |
 | Safety bound | Via Lyapunov function or contraction mapping |
 
@@ -1568,7 +1537,7 @@ The traceability record:
 ```markdown
 ## Trace: [claim_id]
 - Forward: DOC-3-001 → SPEC-20250718-001 → quality_gate_monotone (QualityGates.lean:L45)
-- Backward: quality_gate_monotone → SPEC-20250718-001 → DOC-3-001 (project-tufte.tex §3.1)
+- Backward: quality_gate_monotone -> SPEC-20250718-001 -> DOC-3-001 (paper.tex §3.1)
 - Status: verified (all links valid, theorem compiles, matches claim)
 ```
 
@@ -1624,7 +1593,6 @@ Trigger re-extraction when:
 
 - **Predecessors / successors**: see FM `handoffs`.
 - **Source spec**: `specs/lean/doc-feedback/requirements.md`.
-- **Related ADRs**: ADR-0076.
 
 ## Common failure modes
 

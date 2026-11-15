@@ -1,6 +1,6 @@
 # Core-only Lean 4 profile (no Mathlib)
 
-Handbook for [`skills/lean-core-only`](../skills/lean-core-only/SKILL.md).
+Handbook for [`skills/lean-core-only`](../../skills/lean-core-only/SKILL.md).
 Everything below is about a lane whose artifact may import the Lean toolchain
 only: a judge/contest submission, a vendored artifact, or a `lakefile.toml`
 package with no dependencies.

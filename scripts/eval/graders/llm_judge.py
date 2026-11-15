@@ -5,13 +5,13 @@ Per the design in ``lab/design/01-eval-framework.md §4.2``. The grader is
 split into three pure functions plus an orchestration boundary:
 
 * ``build_prompt(case, response, rubric)``   → str (the judge prompt)
-* ``parse_judge_response(text, scale)``      → dict {score, rationale, …}
+* ``parse_judge_response(text, scale)``      → dict {score, rationale, ...}
 * ``aggregate(scores, rubric)``              → int (minority-veto / median)
 * ``grade(case, response, judge_responses, rubric)`` → GradeResult
 
 The orchestrator (``dispatch_judge.py`` or the human / Copilot CLI agent
 running this session) is responsible for *executing* the prompt against
-one or more judge models. This module never calls an API directly — that
+one or more judge models. This module never calls an API directly - that
 boundary lets us swap dispatchers (Anthropic SDK, OpenAI SDK, local
 Claude sub-agent, etc.) without touching the grader.
 

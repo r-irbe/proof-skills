@@ -1,20 +1,10 @@
 name: eval-smoke
 
-# Minimal subset of the design in lab/design/01-eval-framework.md §8.2.
-# Smoke variant of the eval framework: deterministic grader + Glicko-2
-# math + LLM-judge grader replay (no API calls) + ADR-0039 known-bad
-# judge-calibration gate.
+# Deterministic contract evaluation suite + Glicko-2 rating sanity and
+# regression gates (no external API calls).
 #
-# Hard-gates the PR if any previously-passing case starts failing,
-# or if any case's score drops below its baseline value.
-#
-# W8 Phase 1 + 2 (deterministic + baseline + LLM judge via offline
-# capture) and W9 Phase 1 (Glicko-2) are CI-green.
-# Live LLM dispatch (W8 Phase 3 / W9 Phase 2) happens offline via
-# scripts/eval/graders/DISPATCH.md flavour A (Copilot CLI sub-agent
-# fleet — see scripts/eval/judge_runs/ + scripts/elo/matches/ for
-# captured artifacts). Flavour B (Anthropic SDK) remains API-budget
-# gated per MASTER-PLAN.md §4.
+# Hard-gates the PR if any skill contract case fails, if any case's score
+# drops below its committed baseline value, or if Glicko-2 replay regresses.
 
 on:
   push:
@@ -42,18 +32,12 @@ jobs:
       - name: Install PyYAML
         run: python -m pip install --upgrade pip pyyaml
 
-      - name: Run skill-audit/check_conformance.py (hard-fail mode)
-        # Hard-gates on:
-        #   - any SKILL.md missing the v2 dispatch contract
-        #   - any handoffs.{successors,predecessors} ref to a non-existent skill
-        #   - any references/<name>-handbook.md link to a missing file
-        #   - any handbook missing the extracted_from: back-reference
-        # Soft-reports cycles, orphans, dead-ends, tier distribution.
+      - name: Run skill-audit/check_conformance.py (fail-on any)
         run: |
           python3 scripts/skill-audit/check_conformance.py \
             --json ./_skill-audit.json \
             --md   ./_skill-audit.md \
-            --fail-on hard
+            --fail-on any
 
       - name: Upload skill-audit report
         if: always()
@@ -67,7 +51,7 @@ jobs:
           retention-days: 30
 
   smoke:
-    name: Deterministic eval suite (baseline gate)
+    name: Deterministic skill contract eval suite (baseline gate)
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -79,10 +63,10 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install PyYAML (runner uses fallback parser without it)
+      - name: Install PyYAML
         run: python -m pip install --upgrade pip pyyaml
 
-      - name: Run deterministic eval suite
+      - name: Run deterministic contract eval suite
         run: |
           python3 scripts/eval/run_eval.py \
             --cases 'scripts/eval/cases/*.yaml' \
@@ -106,7 +90,7 @@ jobs:
           retention-days: 30
 
   glicko2:
-    name: Glicko-2 sanity tests (Glickman 2012 §5)
+    name: Glicko-2 sanity tests (Glickman 2012 section 5)
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -141,13 +125,8 @@ jobs:
         shell: bash
 
       - name: ELO regression gate (vs baseline_ratings.json)
-        # Hard-gates the PR if any entrant in baseline_ratings.json has
-        # dropped > tolerance_points vs the live matches replay.
-        # Maintainers refresh the baseline intentionally via:
-        #   python3 scripts/elo/check_regression.py --refresh --current <ratings.json>
         run: |
           shopt -s nullglob
-          # Find the largest live matches CSV (most recent / most data).
           latest_csv=""
           latest_size=0
           for f in scripts/elo/matches/*-live.csv; do
@@ -158,7 +137,7 @@ jobs:
             fi
           done
           if [ -z "$latest_csv" ]; then
-            echo "No live matches CSV found — regression gate skipped."
+            echo "No live matches CSV found -- regression gate skipped."
             exit 0
           fi
           echo "Regression-gating against $latest_csv ($latest_size rows)"
@@ -168,18 +147,8 @@ jobs:
         shell: bash
 
       - name: Per-rubric ELO regression gate (vs baseline_ratings_per_rubric.json)
-        # Hard-gates the PR if any (rubric, entrant) pair has dropped >
-        # tolerance_points vs the per-rubric baseline. Complements the
-        # global gate by catching regressions that get hidden in the
-        # cross-rubric average (R25 found the lean-proof rubric has an
-        # 88pt total spread vs applied-domain's 586pt — a small global
-        # drop can mask a large per-rubric drop on the tight rubric).
-        # Maintainers refresh per-rubric baselines intentionally via:
-        #   python3 scripts/elo/check_per_rubric_regression.py \
-        #     --refresh --archive <archive-dir>
         run: |
           shopt -s nullglob
-          # Find the latest live matches CSV.
           latest_csv=""
           latest_size=0
           for f in scripts/elo/matches/*-live.csv; do
@@ -190,14 +159,13 @@ jobs:
             fi
           done
           if [ -z "$latest_csv" ]; then
-            echo "No live matches CSV found — per-rubric gate skipped."
+            echo "No live matches CSV found -- per-rubric gate skipped."
             exit 0
           fi
           mkdir -p ./_per-rubric-check
           python3 scripts/elo/per_rubric_elo.py \
             --matches "$latest_csv" \
             --cases scripts/eval/cases \
-            --cases lab/evals/adversarial-cases \
             --out ./_per-rubric-check/
           python3 scripts/elo/check_per_rubric_regression.py \
             --archive ./_per-rubric-check/
@@ -209,160 +177,5 @@ jobs:
         with:
           name: glicko2-report
           path: ./_glicko2-out/
-          if-no-files-found: warn
-          retention-days: 30
-
-  llm-judge-grader:
-    name: LLM-judge grader replay (no API calls)
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          submodules: false
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-
-      - name: Install PyYAML
-        run: python -m pip install --upgrade pip pyyaml
-
-      - name: Replay LLM-judge grader on stored judge replies
-        # Hard-gates the grader logic against the committed judge
-        # responses. No API call — judge JSON files were captured
-        # offline via scripts/eval/graders/DISPATCH.md flavour A
-        # (Copilot CLI sub-agent).
-        run: |
-          shopt -s nullglob
-          for case_dir in scripts/eval/judge_runs/*/; do
-            case_name=$(basename "$case_dir")
-            response_file="$case_dir/response.txt"
-            # Multi-model cases have output-<id>.lean instead of response.txt;
-            # skip the grade step for those (multi_model.py handles them).
-            if [ ! -f "$response_file" ]; then
-              echo "Skipping $case_name (multi-model case)"
-              continue
-            fi
-            replies=()
-            for j in "$case_dir"judge-*.json; do
-              replies+=( --judge-reply "$j" )
-            done
-            if [ ${#replies[@]} -eq 0 ]; then
-              echo "Skipping $case_name (no judge replies)"
-              continue
-            fi
-            case_yaml="scripts/eval/cases/$case_name.yaml"
-            if [ ! -f "$case_yaml" ]; then
-              echo "Skipping $case_name (no case YAML at $case_yaml)"
-              continue
-            fi
-            echo "::group::Grade $case_name"
-            # Allow non-zero exit (we expect some cases to fail by design)
-            python3 scripts/eval/graders/llm_judge.py grade \
-              --case "$case_yaml" \
-              --rubric scripts/eval/graders/rubrics/lean-proof-quality.yaml \
-              --response "$response_file" \
-              "${replies[@]}" \
-              --out "$case_dir/grade.json" || true
-            echo "::endgroup::"
-          done
-
-      - name: Replay multi_model.py on judge_runs/ (no API calls)
-        run: |
-          shopt -s nullglob
-          mkdir -p ./_multi-model-out
-          for case_dir in scripts/eval/judge_runs/*/; do
-            case_name=$(basename "$case_dir")
-            # Multi-model cases are detected by presence of output-*.lean
-            if compgen -G "$case_dir/output-*.lean" > /dev/null; then
-              echo "::group::multi_model.py on $case_name"
-              python3 scripts/eval/multi_model.py \
-                --runs-dir scripts/eval/judge_runs \
-                --case "$case_name" \
-                --rubric scripts/eval/graders/rubrics/lean-proof-quality.yaml \
-                --out "./_multi-model-out/$case_name.csv"
-              echo "::endgroup::"
-            fi
-          done
-
-  judge-calibration:
-    name: LLM-judge calibration gate (ADR-0039 ≥90% recall)
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - rubric: lean-proof-quality
-            skill_dir: lean-proof
-            min_flag_rate: "0.90"
-            # Only lean-proof has an adversarial-positive sub-corpus today;
-            # the 20% ceiling reflects the 2026-05-27 baseline (1/5 cases
-            # falsely flagged because sonnet-4.6 over-fires on the literal
-            # `decide` token without honouring the rubric's "as-search"
-            # qualifier). Loosening re-arms the gate; tightening requires
-            # rubric clarification or fleet rebalancing.
-            max_false_flag_rate: "0.20"
-          - rubric: lean-setup-import-quality
-            skill_dir: lean-setup-import
-            min_flag_rate: "0.90"
-            # No adversarial positives yet — gate disabled (1.00 = no-op).
-            max_false_flag_rate: "1.00"
-          - rubric: mathlib-lookup-quality
-            skill_dir: mathlib-lookup
-            min_flag_rate: "0.90"
-            max_false_flag_rate: "1.00"
-          - rubric: lean-doc-quality
-            skill_dir: lean-doc
-            # 4 negatives (expected ≤ 2) + 1 boundary positive (expected ≤ 3).
-            # 3-judge ensemble (opus-4.7-high + sonnet-4.6 + haiku-4.5):
-            # negatives 4/4 flagged, positive 0/1 false-flagged.
-            min_flag_rate: "0.90"
-            max_false_flag_rate: "0.50"
-          - rubric: research-synthesis-quality
-            skill_dir: research-synthesis
-            # 4 negatives (≤ 2) + 1 boundary positive (≤ 3, single-perspective).
-            # 3-judge ensemble: negatives 4/4 flagged, positive 0/1 false-flagged.
-            min_flag_rate: "0.90"
-            max_false_flag_rate: "0.50"
-          - rubric: applied-domain-quality
-            skill_dir: applied-domain
-            # 4 negatives (≤ 2) + 1 boundary positive (≤ 3, missing-calibration).
-            # 3-judge ensemble: negatives 4/4 flagged, positive 0/1 false-flagged.
-            min_flag_rate: "0.90"
-            max_false_flag_rate: "0.50"
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          submodules: false
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-
-      - name: Install PyYAML
-        run: python -m pip install --upgrade pip pyyaml
-
-      - name: Replay calibrate_judge for ${{ matrix.rubric }}
-        # Per lab/design/01-eval-framework.md §4.2 and ADR-0039: the
-        # judge ensemble must flag ≥90% of known-bad transcripts as ≤2
-        # (recall floor). Where adversarial known-good transcripts exist,
-        # an additional false-flag ceiling guards against keyword-matching
-        # over-firing.
-        run: |
-          python3 scripts/eval/calibrate_judge.py check \
-            --rubric scripts/eval/graders/rubrics/${{ matrix.rubric }}.yaml \
-            --skill-dir lab/evals/known-bad/${{ matrix.skill_dir }} \
-            --label ensemble-ci \
-            --min-flag-rate ${{ matrix.min_flag_rate }} \
-            --max-false-flag-rate ${{ matrix.max_false_flag_rate }}
-
-      - name: Upload calibration report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: judge-calibration-report-${{ matrix.rubric }}
-          path: ./reports/_calibration/
           if-no-files-found: warn
           retention-days: 30

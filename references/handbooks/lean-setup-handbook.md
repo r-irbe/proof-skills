@@ -35,7 +35,7 @@ extracted_from: skills/lean-setup/SKILL.md
 > step in Section Workflow are enforced. There is no CI in this repo -- the gates are
 > enforced by the setup agent itself and reflected in the `lean-toolchain`
 > files committed to the clone. Skipping Persist = incomplete, regardless of
-> whether the build succeeded (FSIA-R-11-09).
+> whether the build succeeded.
 
 ## Routing
 
@@ -81,7 +81,7 @@ extracted_from: skills/lean-setup/SKILL.md
    `moreServerArgs` in `lakefile.lean`.
 4. **Verify** [validate] -- `lean --version` matches target (G-6); `lake env lean --version` agrees (G-7); `lake serve` starts without watchdog errors. On
    disagreement, fix overrides; max 3 attempts then escalate.
-5. **Persist** [persist] *(MANDATORY, FSIA-R-11-09)* -- commit `lean-toolchain` and lakefile updates, record chosen toolchain in state tracker. **Skipping
+5. **Persist** [persist] *(MANDATORY)* -- commit `lean-toolchain` and lakefile updates, record chosen toolchain in state tracker. **Skipping
    Persist = incomplete.**
 6. **Configure Agent Environment (`apm-configure`)** [execute] -- register `lean4-lsp-mcp` in host MCP configuration and establish plugin discovery
    symlinks for Antigravity and Gemini CLI agents.
@@ -113,7 +113,7 @@ extracted_from: skills/lean-setup/SKILL.md
 ## See also
 
 - This `SKILL.md` is the canonical v2 toolchain-setup contract for this package.
-- [`../../templates/Template_Lakefile.md`](../../templates/Template_Lakefile.md) -- annotated lakefile reference.
-- [`../../references/lean4-lsp-guide.md`](../../references/lean4-lsp-guide.md) -- comprehensive Lean 4 Language Server Protocol guide.
-- [`../lean-build/SKILL.md`](../lean-build/SKILL.md) -- Lake build and cache retrieval contract.
-- [`../lean-proof/SKILL.md`](../lean-proof/SKILL.md) -- v2 sibling, the typical successor in the DAG.
+- [`../../templates/Template_Lakefile.md`](../../templates/core/Template_Lakefile.md) -- annotated lakefile reference.
+- [`../../references/lean4-lsp-guide.md`](../protocols/lean4-lsp-guide.md) -- comprehensive Lean 4 Language Server Protocol guide.
+- [`../lean-build/SKILL.md`](../../skills/lean-build/SKILL.md) -- Lake build and cache retrieval contract.
+- [`../lean-proof/SKILL.md`](../../skills/lean-proof/SKILL.md) -- v2 sibling, the typical successor in the DAG.

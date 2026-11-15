@@ -239,9 +239,9 @@ double-escape (`\\(`).
 ## Calibration -- adding a judge corpus (optional)
 
 For skills where LLM-judge quality matters (proof-quality, blueprint,
-spec writing, etc.), you can add a calibration corpus per ADR-0039:
+spec writing, etc.), you can add a calibration corpus:
 
-1. **Create `lab/evals/known-bad/<skill>/<task-id>.transcript.md`**
+1. **Create `scripts/eval/known-bad/<skill>/<task-id>.transcript.md`**
    with YAML preamble:
    ```yaml
    ---
@@ -262,17 +262,17 @@ spec writing, etc.), you can add a calibration corpus per ADR-0039:
    ```bash
    python3 scripts/eval/calibrate_judge.py build \
      --rubric scripts/eval/graders/rubrics/<rubric>.yaml \
-     --transcript lab/evals/known-bad/<skill>/<task-id>.transcript.md \
+     --transcript scripts/eval/known-bad/<skill>/<task-id>.transcript.md \
      > /tmp/judge-prompt.txt
    # Dispatch /tmp/judge-prompt.txt to N judges, capture JSON replies,
-   # save to lab/evals/known-bad/<skill>/_replies/<task-id>/<judge>.json
+   # save to scripts/eval/known-bad/<skill>/_replies/<task-id>/<judge>.json
    ```
 
 3. **Validate the corpus passes:**
    ```bash
    python3 scripts/eval/calibrate_judge.py check \
      --rubric scripts/eval/graders/rubrics/<rubric>.yaml \
-     --skill-dir lab/evals/known-bad/<skill> \
+     --skill-dir scripts/eval/known-bad/<skill> \
      --label ensemble-2026-XX-XX \
      --min-flag-rate 0.90
    ```
@@ -309,9 +309,6 @@ spec writing, etc.), you can add a calibration corpus per ADR-0039:
 - [ ] CI green:
       `skill-conformance`, `smoke`, `glicko2`, `llm-judge-grader`,
       `judge-calibration` -- all 5 jobs pass.
-- [ ] If touching a tier classification or moving handoff edges:
-      update `lab/skill-audit/audit-2026-05-27-snapshot.md` headline
-      counts.
 
 ---
 
@@ -324,5 +321,4 @@ This authoring guide consolidates the conventions established across:
 - **Pass 16-17**: per-skill polish, handoff DAG audit, override v2
   migration, audit-script promotion.
 
-See `lab/MASTER-PLAN.md` and the session checkpoints under
-`lab/` for the historical design rationale.
+See `ARCHITECTURE.md` and `TAXONOMY.md` for the v3 skill layering design rationale.

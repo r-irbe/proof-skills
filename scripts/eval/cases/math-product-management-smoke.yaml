@@ -1,6 +1,6 @@
 id: math-product-management-smoke
 title: Roadmap prioritisation rubric
-skill: packs/applied-strategy/skills/math-product-management
+skill: math-product-management
 ensemble_rubric: applied-domain-quality
 difficulty: easy
 input:
@@ -23,3 +23,4 @@ grader: deterministic
 tags:
 - math
 - product-management
+pack: applied-strategy

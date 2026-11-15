@@ -20,7 +20,7 @@ handoffs:
   - skill:lean-retro-methodology
   - skill:lean-doc-sync
 metadata:
-  version: 0.1.0
+  version: 0.5.0
   source_spec: references/lean_to_math_exposition_patterns.md
   last_reviewed: '2026-09-28'
 ---
@@ -60,8 +60,8 @@ metadata:
 - If dependency extraction is incomplete because `.ilean` artifacts are missing, run a targeted build via
   `@lean-build` first.
 ## Handoffs
-- **Predecessors**: `skill:lean-formalization-breakdown`, `skill:lean-blueprint`
-- **Successors**: `skill:lean-zettelkasten` (saving to knowledge graph), `skill:lean-doc-improvement`
+- **Predecessors**: `skill:lean-blueprint`, `skill:lean-blueprint`
+- **Successors**: `skill:lean-retro-methodology` (saving to knowledge graph), `skill:lean-doc-sync`
   (documentation polishing).
 - **Reference Catalog**:
   [`references/protocols/lean_to_math_exposition_patterns.md`](../../references/protocols/lean_to_math_exposition_patterns.md)

@@ -45,7 +45,7 @@ PROJECT_EXPECTED_AXIOMS: set[str] = set()
 
 # Axioms that indicate problems
 FORBIDDEN_PATTERNS = [
-    'sorryAx',           # From sorry — proof incomplete
+    'sorryAx',           # From sorry - proof incomplete
     'Decidable.decide',  # Sometimes indicates missing decidability
 ]
 
@@ -288,7 +288,7 @@ def extract_theorems(lean_dir: Path) -> dict[str, list[dict]]:
 
 # W19-B1.5-a1 helpers (B-01): expose name projections for downstream callers.
 def decl_names(records: list[dict]) -> list[str]:
-    """Return all qualified names (named + anon) — useful for set membership."""
+    """Return all qualified names (named + anon) - useful for set membership."""
     return [r['name'] for r in records]
 
 

@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
-# Full Enforcement Pipeline
-# Runs all enforcement scripts in dependency order and produces a combined report.
+# Full Enforcement Pipeline (Two-Tier: Tier 1 lean-rules + Tier 2 Audit & Gate Checks)
+# Runs declarative AST/regex lint rules followed by structural, axiom, and quality gates.
 #
 # Usage:
 #   ./enforce_all.sh [LEAN_DIR] [--strict]
+# Environment overrides:
+#   LEAN_RULES_PROFILE=core|default|sair|fluid-pde|p2m|all (default: core)
 
 set -uo pipefail
 
-LEAN_DIR="${1:-EASCI}"
+LEAN_DIR="${1:-src}"
 STRICT="${2:-}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SKILLS_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 CALLER_SCRIPTS="${ENFORCE_SCRIPTS_DIR:-scripts}"
 TRACKING_DIR="${TRACKING_DIR:-docs/tracking}"
+LEAN_RULES_PROFILE="${LEAN_RULES_PROFILE:-core}"
+LEAN_RULES_BIN="$SKILLS_ROOT/tools/lean-lsp-mcp/bin/lean-rules.js"
 EXIT_CODE=0
 
 mkdir -p "$TRACKING_DIR"
@@ -41,6 +46,7 @@ echo "       LEAN ENFORCEMENT PIPELINE          "
 echo "=========================================="
 echo ""
 echo "Lean directory: $LEAN_DIR"
+echo "Rules profile:  $LEAN_RULES_PROFILE"
 echo "Tracking output: $TRACKING_DIR"
 echo ""
 
@@ -54,8 +60,21 @@ else
     exit 2
 fi
 
-# Phase 2: Pre-review checks
-echo "=== Phase 2: Static Analysis ==="
+# Phase 2: Tier 1 Declarative Rules (lean-rules) + Tier 2 Static Analysis
+echo "=== Phase 2: Tier 1 Declarative Lint Rules & Tier 2 Static Analysis ==="
+
+echo "--- Tier 1: lean-rules (--profile=$LEAN_RULES_PROFILE) ---"
+if command -v node >/dev/null 2>&1 && [ -f "$LEAN_RULES_BIN" ]; then
+    if node "$LEAN_RULES_BIN" --profile="$LEAN_RULES_PROFILE" "$LEAN_DIR" 2>&1; then
+        echo "[PASS] lean-rules ($LEAN_RULES_PROFILE): PASS"
+    else
+        echo "[WARN] lean-rules ($LEAN_RULES_PROFILE): findings reported"
+        EXIT_CODE=1
+    fi
+else
+    echo "[INFO] node or lean-rules.js unavailable -- falling back to shell council_precheck.sh"
+fi
+echo ""
 
 echo "--- Council Pre-Check ---"
 if run_sh council_precheck.sh "$LEAN_DIR" 2>&1; then
@@ -144,8 +163,8 @@ echo ""
 # Phase 7: Build Timing
 echo "=== Phase 7: Build Timing ==="
 
-TIMING_JSON="${LAKE_TIMING_JSON:-/tmp/w14b2-baseline/w14b2-slice-0-build-timing.json}"
-if [ -f "$TIMING_JSON" ]; then
+TIMING_JSON="${LAKE_TIMING_JSON:-}"
+if [ -n "$TIMING_JSON" ] && [ -f "$TIMING_JSON" ]; then
     echo "--- Build Timing Report ---"
     if run_py build_timing_report.py "$TIMING_JSON" "$TRACKING_DIR/lake_timing.md" 2>&1; then
         echo "[PASS] Build timing: generated ($TRACKING_DIR/lake_timing.md)"
@@ -154,7 +173,7 @@ if [ -f "$TIMING_JSON" ]; then
         EXIT_CODE=1
     fi
 else
-    echo "[INFO] Build timing: no fresh timing JSON at $TIMING_JSON -- skipping."
+    echo "[INFO] Build timing: no LAKE_TIMING_JSON provided -- skipping."
 fi
 echo ""
 

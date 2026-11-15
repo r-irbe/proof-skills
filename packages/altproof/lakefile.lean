@@ -2,7 +2,7 @@ import Lake
 open Lake DSL
 
 package altproof where
-  version := v!"0.4.0"
+  version := v!"0.5.0"
   leanOptions := #[
     ⟨`autoImplicit, false⟩
   ]

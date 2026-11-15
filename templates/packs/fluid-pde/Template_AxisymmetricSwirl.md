@@ -29,7 +29,7 @@ In multi-agent consensus and belief dynamics:
 * `margin_strict_anti_mono_swirl`: strict decrease of margin under increased swirl intensity
 
 ## References
-* NavierStokesAndEuler: `CylinderAngleEvolution.lean`, `ActualSlowAxis.lean`, `BaseAngularGrowth.lean`
+* FluidPDE example modules: `CylinderAngleEvolution.lean`, `ActualSlowAxis.lean`, `BaseAngularGrowth.lean`
 * Hou, T. Y., Luo, G. (2014), *Toward the finite-time blowup of the 3D axisymmetric Euler equations*, Multiscale Model. Simul. 12, 1722-1776
 * Majda, A. J., Bertozzi, A. L. (2002), *Vorticity and Incompressible Flow*, Cambridge University Press
 

@@ -25,7 +25,7 @@ handoffs:
   - skill:lean-proof
   - skill:lean-proof-review
 metadata:
-  version: 0.2.0
+  version: 0.5.0
   source_spec: skills/itp-cross-porting/SKILL.md (this file)
   last_reviewed: '2026-10-27'
 ---

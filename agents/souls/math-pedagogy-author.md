@@ -1,11 +1,11 @@
 ---
-name: math-pedagogy-author
-description: Textbook-grade mathematical exposition author translating Lean 4 proofs into clear prose.
-role_container: editor
-overlay_type: analyst
-primary_skill: lean-pedagogical-exposition
-tools: read, write, edit, bash, mcp:lean-lsp
-model: sonnet
+name: "math-pedagogy-author"
+description: "Textbook-grade mathematical exposition author translating Lean 4 proofs into clear prose."
+role_container: "editor"
+overlay_type: "analyst"
+primary_skill: "lean-pedagogical-exposition"
+tools: "read, write, edit, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `math-pedagogy-author` (Container: `editor`)

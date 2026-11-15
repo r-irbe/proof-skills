@@ -1,8 +1,8 @@
 ---
 id: zk-index
-title: Proof-skills zettelkasten — seed index
+title: Proof-skills zettelkasten -- index
 created: 2026-05-27
-updated: 2026-05-29
+updated: 2026-11-15
 type: literature
 tags: [moc, index, seed]
 refs:
@@ -16,96 +16,51 @@ refs:
   - zk-008
   - zk-009
   - zk-010
-status: provisional
+  - zk-011
+  - zk-012
+  - zk-013
+  - zk-014
+  - zk-015
+status: validated
 confidence: high
 ---
 
-# Proof-skills zettelkasten — seed index
+# Proof-skills zettelkasten -- index
 
-This is the entry-point Map-of-Content for the first ten seed notes.
-The notes capture early findings from the proof-skills work
-(survey material, skill-audit, eval framework, multi-model runner, and
-the ranking prototype that later became the Glicko-2 live corpus) and
-follow a simplified Luhmann 3-tier model:
-**fleeting** → **literature** → **permanent**. All ten seeds are
-`permanent` (with two at `confidence: medium` while we collect more
-runs).
+This is the entry-point Map-of-Content for the fifteen permanent notes in `proof-skills` (`v0.5.0`).
+The notes follow a simplified Luhmann 3-tier model (`fleeting -> literature -> permanent`) and anchor the toolkit's template-v2 contracts, evaluation methodology, SAIR kernel WHNF laws, spec-compute duality, proof-carrying hardware codegen, two-tier WASM static analysis, and pure-Lean equality saturation.
 
-The seed IDs are short (`zk-001` … `zk-010`) for legibility while the
-graph is small. When the design in `lab/design/05-zettelkasten.md`
-lands, these will be re-IDed to the timestamp scheme
-`ZK-YYYYMMDDHHMM` and the `refs:` fields rewritten in lock-step —
-filenames-as-IDs make this a mechanical migration.
-
-## Seed catalogue
+## Permanent note catalogue
 
 | ID | Title | Tier-1 tag | Confidence |
 |---|---|---|---|
 | [[zk-001]] | Fork rationale and project-agnostic override architecture | provenance | high |
 | [[zk-002]] | Skill-template v2 frontmatter contract | template-contract | high |
-| [[zk-003]] | AgentRx 9-category failure taxonomy | concept | high |
-| [[zk-004]] | BACM — Burst-And-Compact-Memory context pattern | pattern | medium |
-| [[zk-005]] | TDAD — Test-Driven Agent Definition (4-role loop) | methodology | high |
-| [[zk-006]] | Four eval targets per ADR-0039 | concept | high |
-| [[zk-007]] | ELO for non-deterministic agents | pattern | medium |
-| [[zk-008]] | Lean 4 tactic priority hierarchy | pattern | high |
-| [[zk-009]] | Skill consolidation rubric — merge, split, keep | decision | high |
-| [[zk-010]] | Multi-model cost–quality Pareto | synthesis | medium |
-
-## Link graph (ASCII)
-
-Edges below are outgoing `refs:` from each note. Arrows read
-"depends on / cites".
-
-```
-
-   ┌──────────────────────────┐            ┌──────────────────────────┐
-   │       zk-002             │◀───┘──────▶│        zk-009            │
-   │  template-v2 contract    │◀───────────│  consolidation rubric    │
-   └─────────┬────────────────┘            └──┬────────────────┬──────┘
-             │                                │                │
-             ▼                                ▼                ▼
-   ┌──────────────────────────┐    ┌──────────────────────────┐
-   │       zk-008             │    │        zk-003            │◀─────┐
-   │  Lean tactic hierarchy   │    │  AgentRx 9-category tax. │      │
-   └──────────────────────────┘    └──┬────────────────┬──────┘      │
-                                      │                │             │
-                                      ▼                ▼             │
-                          ┌─────────────────────────┐  │             │
-                          │       zk-006            │◀─┘             │
-                          │  4 eval targets         │                │
-                          └──┬──────────────────┬───┘                │
-                             │                  │                    │
-                             ▼                  ▼                    │
-              ┌──────────────────────┐  ┌──────────────────────┐     │
-              │      zk-005          │  │      zk-007          │─────┘
-              │  TDAD 4-role loop    │  │  ELO for agents      │
-              └──────────┬───────────┘  └──────────┬───────────┘
-                         │                         │
-                         ▼                         ▼
-              ┌──────────────────────┐  ┌──────────────────────┐
-              │      zk-004          │  │      zk-010          │
-              │  BACM context burst  │  │  multi-model Pareto  │
-              └──────────────────────┘  └──────────────────────┘
-```
+| [[zk-003]] | AgentRx 9-category failure taxonomy | taxonomy | high |
+| [[zk-004]] | BACM -- Burst-And-Compact-Memory context pattern | pattern | high |
+| [[zk-005]] | TDAD -- Test-Driven Agent Definition (4-role loop) | methodology | high |
+| [[zk-006]] | Four orthogonal skill evaluation targets | evals | high |
+| [[zk-007]] | Glicko-2 and ELO ranking for stochastic agents | ranking | high |
+| [[zk-008]] | Lean 4 unified tactic priority hierarchy | tactics | high |
+| [[zk-009]] | Skill consolidation rubric -- merge, split, keep | governance | high |
+| [[zk-010]] | Multi-model cost-quality Pareto across model x reasoning-effort | synthesis | high |
+| [[zk-011]] | SAIR 39 kernel WHNF laws and nat_lit mechanics | sair | high |
+| [[zk-012]] | Abstraction-concrete duality and hot parameterization penalty | duality | high |
+| [[zk-013]] | Proof-carrying hardware codegen -- PolyBitOp, CheckedWord, and N01..N12 | codegen | high |
+| [[zk-014]] | Two-tier WASM static analyzer and 5-role 21-tool MCP architecture | mcp | high |
+| [[zk-015]] | Pure-Lean equality saturation and cross-ITP concordance | eqsat | high |
 
 ## Reading paths
 
-- **Newcomer to the fork** — start at [[zk-002]] → [[zk-009]].
-- **Building eval cases** — [[zk-006]] → [[zk-005]] → [[zk-003]] →
-  [[zk-007]].
-- **Lean-proof-review migration** — [[zk-008]] → [[zk-002]] →
-  [[zk-009]].
-- **Cost-aware model selection** — [[zk-010]] → [[zk-007]] →
-  [[zk-006]].
+- **Toolkit & override architecture** -- [[zk-001]] -> [[zk-002]] -> [[zk-009]] -> [[zk-014]].
+- **Evaluation & ranking** -- [[zk-006]] -> [[zk-005]] -> [[zk-003]] -> [[zk-007]] -> [[zk-010]] -> [[zk-004]].
+- **Lean 4 proving, equality saturation & cross-ITP porting** -- [[zk-008]] -> [[zk-015]] -> [[zk-014]].
+- **Kernel WHNF superoptimization & hardware codegen** -- [[zk-011]] -> [[zk-012]] -> [[zk-013]].
 
-## Invariants the index promises
+## Invariants enforced by `scripts/lean/zettelkasten_lint.py`
 
-1. Every seed note has a YAML frontmatter block with the schema
-   declared in this index.
-2. Every seed note has ≥ 2 outgoing `refs:` to other seed notes.
-3. Every seed note is ≤ 300 words.
-4. Every outgoing `refs:` entry is matched by an inline `[[zk-NNN]]`
-   wikilink in the body, and vice versa.
-5. Historical source paths may appear in seed-note evidence, but current
-   active tooling paths must be cited in any new or refreshed note.
+1. Every note has a YAML frontmatter block declaring `id`, `title`, `created`, `updated`, `type`, `tags`, `refs`, `status`, and `confidence`.
+2. Every permanent note has `>= 2` outgoing `refs:` to other permanent notes and `>= 1` incoming link.
+3. Every permanent note stays concise (`<= 300` words).
+4. Every outgoing `refs:` entry is matched by an inline `[[zk-NNN]]` wikilink in the body, and vice versa.
+5. Zero private downstream identifiers or repository-external paths appear in any note.

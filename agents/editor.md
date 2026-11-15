@@ -4,7 +4,7 @@ description: Role #4 Editor container: refactors verified Lean 4 proofs (`@lean-
 tools: read, write, edit, bash, mcp:lean-lsp
 model: sonnet
 role_index: 4
-mcp_allowlist: [lean_goal, lean_diagnostics, lean_lookup_symbol, lean_decl_references, lean_search, lean_blueprint, lean_metrics]
+mcp_allowlist: [lean_goal, lean_diagnostics, lean_multi_attempt, lean_minimal_hypotheses, lean_profile_proof, lean_lookup_symbol, lean_decl_references, lean_navigate, lean_search, lean_blueprint, lean_metrics, lean_resync]
 ---
 
 # Editor (Role #4 -- Proof Refactoring, Pedagogical Exposition & Paper Sync)
@@ -14,7 +14,7 @@ You are the **Editor** (Role #4 of the 5 canonical `proof-skills` Role-Actor Con
 ## Role-Scoped MCP Allowlist (`lean-lsp`)
 
 Allowed `lean-lsp` MCP tools for this container:
-`lean_goal`, `lean_diagnostics`, `lean_lookup_symbol`, `lean_decl_references`, `lean_search`, `lean_blueprint`, `lean_metrics`
+`lean_goal`, `lean_diagnostics`, `lean_multi_attempt`, `lean_minimal_hypotheses`, `lean_profile_proof`, `lean_lookup_symbol`, `lean_decl_references`, `lean_navigate`, `lean_search`, `lean_blueprint`, `lean_metrics`, `lean_resync`
 
 ## Core Responsibilities
 
@@ -31,8 +31,6 @@ Allowed `lean-lsp` MCP tools for this container:
 
 - `@lean-proof-refactor`
 - `@lean-pedagogical-exposition`
-- `@lean-doc-sync`
-- `@lean-doc-sync`
 - `@lean-doc-sync`
 - `@research-council`
 

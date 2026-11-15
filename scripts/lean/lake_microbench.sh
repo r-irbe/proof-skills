@@ -8,13 +8,13 @@
 #     --output docs/refactor/findings/lake-microbench-pre-phaseD.json
 #
 # Full mode:
-#   * Deletes only `.lake/build/{lib/lean,ir}/EASCI*` artifacts, preserving Mathlib cache.
-#   * Times `lake build EASCI` as the cold full-corpus baseline.
-#   * Then re-times each benchmark module by deleting only that module's own EASCI
+#   * Deletes only `.lake/build/{lib/lean,ir}/Project*` artifacts, preserving Mathlib cache.
+#   * Times `lake build Project` as the cold full-corpus baseline.
+#   * Then re-times each benchmark module by deleting only that module's own Project
 #     artifacts before an incremental `lake build ...` rebuild.
 #
 # Quick mode (`--quick`):
-#   * Skips the global cold delete and the cold `lake build EASCI` pass.
+#   * Skips the global cold delete and the cold `lake build Project` pass.
 #   * Still deletes each benchmark module's own artifacts before timing it, so local
 #     iteration stays incremental (~2-3 min instead of the 15-25 min cold pass).
 #
@@ -49,7 +49,7 @@ from typing import Sequence
 
 import os
 
-DEFAULT_ROOT_MODULE = os.environ.get("LAKE_MICROBENCH_ROOT_MODULE", "EASCI")
+DEFAULT_ROOT_MODULE = os.environ.get("LAKE_MICROBENCH_ROOT_MODULE", "Project")
 DEFAULT_REQUESTED_MODULES = (
     tuple(
         m.strip()
@@ -140,23 +140,23 @@ def module_from_relative_path(path: Path) -> str:
     return ".".join(without_suffix.parts)
 
 
-def load_easci_imports(repo_root: Path) -> list[str]:
-    easci_path = repo_root / "EASCI.lean"
+def load_project_imports(repo_root: Path) -> list[str]:
+    project_path = repo_root / "Project.lean"
     imports: list[str] = []
-    for raw_line in easci_path.read_text(encoding="utf-8").splitlines():
+    for raw_line in project_path.read_text(encoding="utf-8").splitlines():
         line = raw_line.strip()
         if not line.startswith("import "):
             continue
         imported = line.split(None, 1)[1].strip()
-        if imported.startswith("EASCI."):
+        if imported.startswith("Project."):
             imports.append(imported)
     return imports
 
 
 def discover_group_targets(repo_root: Path, label: str, include_root: bool) -> tuple[str, ...]:
-    suffix = label.removeprefix("EASCI.")
-    root_file = repo_root / "EASCI" / f"{suffix}.lean"
-    group_dir = repo_root / "EASCI" / suffix
+    suffix = label.removeprefix("Project.")
+    root_file = repo_root / "Project" / f"{suffix}.lean"
+    group_dir = repo_root / "Project" / suffix
 
     targets = [
         module_from_relative_path(path.relative_to(repo_root))
@@ -168,11 +168,11 @@ def discover_group_targets(repo_root: Path, label: str, include_root: bool) -> t
 
 
 def group_targets(repo_root: Path, label: str) -> tuple[tuple[str, ...], bool, str | None]:
-    suffix = label.removeprefix("EASCI.")
-    root_file = repo_root / "EASCI" / f"{suffix}.lean"
-    group_dir = repo_root / "EASCI" / suffix
+    suffix = label.removeprefix("Project.")
+    root_file = repo_root / "Project" / f"{suffix}.lean"
+    group_dir = repo_root / "Project" / suffix
 
-    if label == "EASCI.Probability":
+    if label == "Project.Probability":
         targets = discover_group_targets(repo_root, label, include_root=True)
         if not targets:
             raise SystemExit(
@@ -190,8 +190,8 @@ def group_targets(repo_root: Path, label: str) -> tuple[tuple[str, ...], bool, s
             f"Cannot benchmark {label}: expected umbrella file {root_file.relative_to(repo_root)}."
         )
 
-    if label == "EASCI.ReinforcementLearning":
-        # Root-only incremental `lake build EASCI.ReinforcementLearning` can miss the
+    if label == "Project.Core":
+        # Root-only incremental `lake build Project.Core` can miss the
         # Core/Bellman dependency edge after purging RL artifacts, so expand this one group.
         return (
             discover_group_targets(repo_root, label, include_root=True),
@@ -203,12 +203,12 @@ def group_targets(repo_root: Path, label: str) -> tuple[tuple[str, ...], bool, s
 
 
 def build_module_specs(repo_root: Path) -> tuple[list[ModuleSpec], list[str]]:
-    imports = load_easci_imports(repo_root)
+    imports = load_project_imports(repo_root)
     missing = [module for module in NON_SYNTHETIC_MODULES if module not in imports]
     if missing:
         missing_text = ", ".join(missing)
         raise SystemExit(
-            f"EASCI.lean is missing expected benchmark imports: {missing_text}. "
+            f"Project.lean is missing expected benchmark imports: {missing_text}. "
             "Update the benchmark list before running the suite."
         )
 
@@ -217,15 +217,15 @@ def build_module_specs(repo_root: Path) -> tuple[list[ModuleSpec], list[str]]:
     specs: list[ModuleSpec] = []
     probability_inserted = False
     for module in ordered_import_modules:
-        if module == "EASCI.ReinforcementLearning" and not probability_inserted:
+        if module == "Project.Core" and not probability_inserted:
             probability_targets, probability_synthetic, probability_note = group_targets(
-                repo_root, "EASCI.Probability"
+                repo_root, "Project.Probability"
             )
             specs.append(
                 ModuleSpec(
-                    label="EASCI.Probability",
+                    label="Project.Probability",
                     targets=probability_targets,
-                    artifact_prefix="EASCI/Probability",
+                    artifact_prefix="Project/Probability",
                     synthetic=probability_synthetic,
                     note=probability_note,
                 )
@@ -244,13 +244,13 @@ def build_module_specs(repo_root: Path) -> tuple[list[ModuleSpec], list[str]]:
 
     if not probability_inserted:
         probability_targets, probability_synthetic, probability_note = group_targets(
-            repo_root, "EASCI.Probability"
+            repo_root, "Project.Probability"
         )
         specs.append(
             ModuleSpec(
-                label="EASCI.Probability",
+                label="Project.Probability",
                 targets=probability_targets,
-                artifact_prefix="EASCI/Probability",
+                artifact_prefix="Project/Probability",
                 synthetic=probability_synthetic,
                 note=probability_note,
             )
@@ -368,7 +368,7 @@ def main(argv: Sequence[str]) -> int:
         shutil.rmtree(log_dir)
     log_dir.mkdir(parents=True, exist_ok=True)
 
-    module_specs, easci_imports = build_module_specs(repo_root)
+    module_specs, project_imports = build_module_specs(repo_root)
 
     metadata = {
         "captured_at": now_iso(),
@@ -378,7 +378,7 @@ def main(argv: Sequence[str]) -> int:
         "lean_toolchain": (repo_root / "lean-toolchain").read_text(encoding="utf-8").strip(),
         "repo_root": str(repo_root),
         "requested_modules": list(REQUESTED_MODULES),
-        "easci_imports": easci_imports,
+        "project_imports": project_imports,
     }
 
     print(f"[w14b2] output JSON: {display_path(output_path, repo_root)}")
@@ -393,20 +393,20 @@ def main(argv: Sequence[str]) -> int:
     if args.quick:
         full_corpus = {
             "skipped": True,
-            "reason": "--quick skips the cold EASCI purge and cold full-corpus lake build.",
+            "reason": "--quick skips the cold Project purge and cold full-corpus lake build.",
         }
     else:
-        purged = purge_artifact_prefix(repo_root, "EASCI")
+        purged = purge_artifact_prefix(repo_root, "Project")
         print(f"[w14b2] purged {purged} artifacts for cold full-corpus run")
-        full_log = log_dir / "full-corpus-EASCI.log"
+        full_log = log_dir / "full-corpus-Project.log"
         full_corpus = {
-            "artifact_prefix": "EASCI",
+            "artifact_prefix": "Project",
             "log_path": display_path(full_log, repo_root),
             "purged_artifacts": purged,
             "skipped": False,
-            "targets": ["EASCI"],
+            "targets": ["Project"],
         }
-        full_corpus.update(run_build(repo_root, ["lake", "build", "EASCI"], full_log))
+        full_corpus.update(run_build(repo_root, ["lake", "build", "Project"], full_log))
         if int(full_corpus["exit_code"]) != 0:
             errors.append("cold full-corpus build failed")
 

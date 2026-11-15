@@ -22,7 +22,7 @@ handoffs:
   - skill:lean-upstream-pr
   - skill:lean-retro-methodology
 metadata:
-  version: 0.3.0
+  version: 0.5.0
   source_spec: skills/lean-bisect/SKILL.md
   last_reviewed: '2026-09-16'
   migrated_from: repo-native first-party promotion
@@ -95,3 +95,4 @@ Full encyclopedic reference, decision trees, and lookup tables live in
 - [`../../references/handbooks/lean-bisect-handbook.md`](../../references/handbooks/lean-bisect-handbook.md) -- Complete
   `lean-bisect` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router
+- [`tests/example.yaml`](tests/example.yaml) -- Smoke test

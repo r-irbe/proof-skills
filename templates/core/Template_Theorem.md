@@ -277,7 +277,7 @@ export MyProj.Analysis.Squares (sq_pair_zero_iff)
 * [`Template_DataModule.md`](./Template_DataModule.md) -- carrier types you'll cite from §"Substrate"
 * [`Template_TacticHelper.md`](./Template_TacticHelper.md) -- where to put reusable `@[grind]` bridge lemmas
 * [`Template_Bridge.md`](./Template_Bridge.md) -- for re-exporting upstream symbols
-* [`../references/lean4-tactic-hierarchy.md`](../references/lean4-tactic-hierarchy.md) -- terminator priority
+* [`../references/lean4-tactic-hierarchy.md`](../../references/protocols/lean4-tactic-hierarchy.md) -- terminator priority
 * `<Project>/AGENT.md` -- your project-specific conventions (cast cheat-sheet, naming, etc.)
 
 

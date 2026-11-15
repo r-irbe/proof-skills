@@ -1,11 +1,11 @@
 ---
-name: research-beta-dynamics
-description: Research Council Member Beta (Analysis, Dynamics & PDEs): topology, measure theory, Lyapunov, and stochastic systems.
-role_container: specifier
-overlay_type: council-research
-primary_skill: research-council
-tools: read, write, edit, bash, mcp:lean-lsp
-model: sonnet
+name: "research-beta-dynamics"
+description: "Research Council Member Beta (Analysis, Dynamics & PDEs): topology, measure theory, Lyapunov, and stochastic systems."
+role_container: "specifier"
+overlay_type: "council-research"
+primary_skill: "research-council"
+tools: "read, write, edit, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `research-beta-dynamics` (Container: `specifier`)

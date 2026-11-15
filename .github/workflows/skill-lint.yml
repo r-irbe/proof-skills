@@ -6,21 +6,24 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   apm-validate:
-    name: APM manifest + skill-collection validation
+    name: APM manifest, Lean v4.34.1 compilation, WASM rules & v0.5.0 integrity gates
     runs-on: ubuntu-latest
-    # Hard-gating: package MUST stay APM-installable.
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
         with:
-          submodules: false
+          submodules: recursive
 
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
-      - name: Install Python and Node.js dependencies
+      - name: Install Python dependencies
         run: python -m pip install --upgrade pip pyyaml pytest
 
       - name: Setup Node.js
@@ -28,30 +31,50 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Install elan and Lean v4.34.1 toolchain
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain leanprover/lean4:v4.34.1
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Verify embedded lean-lsp-mcp engine pin and WASM artifact
+        run: python3 scripts/check-engine-pin
+
       - name: Validate apm.yml + skills/<name>/SKILL.md (strict)
-        run: python scripts/lint/apm_validate.py --strict
+        run: python3 scripts/lint/apm_validate.py --strict
 
       - name: Emit JSON summary
-        run: python scripts/lint/apm_validate.py --json
+        run: python3 scripts/lint/apm_validate.py --json
 
       - name: Check repository structure (strict + self-test)
-        run: python scripts/check-structure --strict --self-test
+        run: |
+          python3 scripts/check-structure --strict
+          python3 scripts/check-structure --self-test
 
-      - name: Check skill conformance
-        run: python scripts/skill-audit/check_conformance.py --fail-on any
-
-      - name: Run proof quality tests
-        run: python scripts/lean/proof_quality_test.py
-
-      - name: Run graph query ontology tests
-        run: python tests/test_graph_query_ontology.py
-
-      - name: Run lean-serve-broker unit and E2E tests
-        run: python tools/lean-serve-broker/test_lean_serve_broker.py
-
-      - name: Run Lean DAG visualizer tests
-        run: node tools/visualizer/test_lean_dag_visualizer.mjs
-
+      - name: Check skill conformance, handoffs, and relative links
+        run: python3 scripts/skill-audit/check_conformance.py --fail-on any
 
       - name: Verify Layer-1 lookup cards & handbook-tables.v1.json sync
         run: python3 scripts/lean/compile_handbook_tables.py --check
+
+      - name: Lint Zettelkasten knowledge graph (strict)
+        run: python3 scripts/lean/zettelkasten_lint.py --zk-dir zettelkasten --strict
+
+      - name: Run public confidentiality & path leak audit
+        run: python3 scripts/lint/privacy_audit.py
+
+      - name: Run two-tier WASM lean-rules (core profile) on AltProof & Lean exemplars
+        run: node tools/lean-lsp-mcp/bin/lean-rules.js --profile=core packages/altproof templates/core/examples
+
+      - name: Run deterministic contract evaluation suite (60 cases)
+        run: python3 scripts/eval/run_eval.py
+
+      - name: Run proof quality, broker, and visualizer tests
+        run: |
+          python3 scripts/lean/proof_quality_test.py
+          python3 tools/lean-serve-broker/test_lean_serve_broker.py
+          node tools/visualizer/test_lean_dag_visualizer.mjs
+
+      - name: Run full pytest suite (including Core Lean v4.34.1 compilation)
+        env:
+          PROOF_SKILLS_REQUIRE_LEAN: "1"
+        run: pytest -q

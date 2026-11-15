@@ -1,0 +1,20 @@
+id: lean-research-smoke
+title: lean-research discovery ladder and Mathlib/Loogle lookup smoke check
+skill: lean-research
+ensemble_rubric: mathlib-lookup-quality
+difficulty: easy
+input:
+  prompt: Apply the lean-research discovery ladder using references/cards/lean-research-tables.md.
+  expected_output_substring: Run the discovery ladder across Loogle, Mathlib, and
+    Reservoir and record structured findings.
+expected:
+  contains:
+  - lean-research
+  - discovery-ladder|Loogle|Mathlib
+  - card_installed=true
+  not_contains:
+  - \bsorry\b
+grader: deterministic
+tags:
+- smoke
+- lean-research

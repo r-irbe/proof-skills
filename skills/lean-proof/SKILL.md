@@ -23,7 +23,7 @@ handoffs:
   - skill:lean-mwe
   - skill:lean-retro-methodology
 metadata:
-  version: 0.2.2
+  version: 0.5.0
   source_spec: specs/lean/proof/requirements.md
   last_reviewed: '2026-10-20'
 r_caveats:
@@ -77,7 +77,7 @@ widening, and
   re-anchor the
   theorem.
 ## Handoffs
-- **Predecessors / successors**: see FM `handoffs` (grammar from ADR-0080). Typical inbound: `@lean-setup`
+- **Predecessors / successors**: see FM `handoffs`. Typical inbound: `@lean-setup`
   confirms toolchain;
   `@lean-specification`
   supplies the theorem; `@lean-research` supplies tactic strategy. Typical outbound: `@lean-proof-review`
@@ -93,3 +93,5 @@ Full encyclopedic reference, decision trees, and lookup tables live in
 - [`../../references/handbooks/lean-proof-handbook.md`](../../references/handbooks/lean-proof-handbook.md) -- Complete
   `lean-proof` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router
+- [`tests/example.yaml`](tests/example.yaml) -- Smoke test
+- [`tests/matcher-transparency.yaml`](tests/matcher-transparency.yaml) -- Smoke test

@@ -81,7 +81,7 @@
    "name": "header-boilerplate",
    "expect": "clean",
    "file_symbols": [],
-   "block": "Copyright (c) 2026 EASCI Contributors\\nSPDX-License-Identifier: Apache-2.0"
+   "block": "Copyright (c) 2026 Project Contributors\\nSPDX-License-Identifier: Apache-2.0"
   },
   {
    "name": "keyword-tokens-only",

@@ -1,11 +1,11 @@
 ---
-name: council-omega-chair
-description: Review Council Member Omega (Synthesis Chair): RALPH loop arbitration, SDR calculation, and final sign-off.
-role_container: auditor
-overlay_type: council-review
-primary_skill: lean-review-council
-tools: read, grep, find, ls, bash, mcp:lean-lsp
-model: sonnet
+name: "council-omega-chair"
+description: "Review Council Member Omega (Synthesis Chair): RALPH loop arbitration, SDR calculation, and final sign-off."
+role_container: "auditor"
+overlay_type: "council-review"
+primary_skill: "lean-review-council"
+tools: "read, grep, find, ls, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `council-omega-chair` (Container: `auditor`)

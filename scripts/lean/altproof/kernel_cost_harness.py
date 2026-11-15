@@ -2,7 +2,7 @@
 
 Profiles Lean 4 theorem elaboration and kernel reduction heartbeats
 and wall-clock duration via `lake env lean`.
-Scoped Unicode policy (INV-001; typographic-free by default).
+Strict 7-bit ASCII only (INV-001).
 """
 
 from __future__ import annotations

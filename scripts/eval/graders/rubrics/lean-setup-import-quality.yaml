@@ -7,7 +7,7 @@ description: |
   `lean-setup-import` skill / case (`scripts/eval/cases/lean-setup-import.yaml`).
 
   Apply rubric LITERALLY. Don't invent intermediate scores. Don't reward
-  length — terse correct setups should score 5.
+  length - terse correct setups should score 5.
 
 definitions:
   1: |

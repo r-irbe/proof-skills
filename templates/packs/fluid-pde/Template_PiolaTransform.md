@@ -29,7 +29,7 @@ In multi-agent consensus and belief dynamics:
 * `piola_current_mono_itn`: strict monotonicity with respect to inverse transpose operator norm
 
 ## References
-* NavierStokesAndEuler: `Euler/PacketPiolaAlgebra.lean`, `Euler/PacketConstructedPiola.lean`, `Euler/PacketPiola.lean`
+* FluidPDE example modules: `Euler/PacketPiolaAlgebra.lean`, `Euler/PacketConstructedPiola.lean`, `Euler/PacketPiola.lean`
 * Marsden, J. E., Hughes, T. J. R. (1983), *Mathematical Foundations of Elasticity*, Prentice-Hall
 * Chorin, A. J., Marsden, J. E. (1993), *A Mathematical Introduction to Fluid Mechanics*, Springer-Verlag
 

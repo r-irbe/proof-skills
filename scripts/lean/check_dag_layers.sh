@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Originally extracted from a Lean 4 verification project and genericized for the proof-skills toolkit.
-# check_dag_layers.sh — verify Lean module DAG layer discipline.
+# check_dag_layers.sh - verify Lean module DAG layer discipline.
 #
 # Usage:
 #   check_dag_layers.sh LEAN_DIR LAYER_CONFIG

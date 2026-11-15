@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Concatenate the whole EASCI corpus into one namespace-scoped Lean file.
+"""Concatenate the whole Project corpus into one namespace-scoped Lean file.
 
 Deterministic: no timestamps; the same corpus state always produces the
 same output bytes (sha256 stable). Order is topological by the modules'
-EASCI-internal import graph (Kahn's algorithm, lexicographic tie-break).
-All non-EASCI imports (Mathlib, Cslib, ...) are hoisted to one shared
+Project-internal import graph (Kahn's algorithm, lexicographic tie-break).
+All non-Project imports (Mathlib, Cslib, ...) are hoisted to one shared
 header in first-encounter order, deduplicated.
 
 Scoping: every module body is wrapped in its own `section ... end` so
@@ -13,14 +13,14 @@ By default every declaration keeps its exact corpus full name (root
 declarations stay at root, namespaced ones stay in their namespaces).
 With `--namespaces`, files that declare no namespace but DO carry
 root-level declarations are additionally wrapped in their
-module-mirroring namespace (EASCI/A/B.lean -> namespace EASCI.A.B),
+module-mirroring namespace (Project/A/B.lean -> namespace Project.A.B),
 which changes those declarations' full names - use only when the
 consuming tool wants literal namespace coverage and name identity with
 the corpus is not required.
 
 Outputs (regenerable; gitignored):
-  generated/EASCI-concat.lean         the giant file
-  generated/EASCI-concat.manifest.json  per-module metadata + stats
+  generated/Project-concat.lean         the giant file
+  generated/Project-concat.manifest.json  per-module metadata + stats
 """
 
 from __future__ import annotations
@@ -41,7 +41,7 @@ NS_RE = re.compile(r"^namespace\s+(\S+)")
 
 
 def module_name(rel: str) -> str:
-    """Suffix-less posix rel path EASCI/A/B -> the module name EASCI.A.B."""
+    """Suffix-less posix rel path Project/A/B -> the module name Project.A.B."""
     return rel.replace("/", ".")
 
 
@@ -68,8 +68,8 @@ def parse_module(path: Path) -> dict:
     }
 
 
-def topo_order(modules: dict[str, dict], project: str = "EASCI") -> list[str]:
-    """Kahn's algorithm over EASCI-internal imports; lexicographic tie-break."""
+def topo_order(modules: dict[str, dict], project: str = "Project") -> list[str]:
+    """Kahn's algorithm over Project-internal imports; lexicographic tie-break."""
     internal: dict[str, list[str]] = {}
     for name, mod in modules.items():
         deps = []
@@ -103,7 +103,7 @@ def topo_order(modules: dict[str, dict], project: str = "EASCI") -> list[str]:
     return order
 
 
-def concat(src: Path, wrap_namespaces: bool, project: str = "EASCI") -> tuple[str, dict]:
+def concat(src: Path, wrap_namespaces: bool, project: str = "Project") -> tuple[str, dict]:
     corpus = src / project
     files = sorted(corpus.rglob("*.lean"))
     if not files:
@@ -111,7 +111,7 @@ def concat(src: Path, wrap_namespaces: bool, project: str = "EASCI") -> tuple[st
 
     modules: dict[str, dict] = {}
     for f in files:
-        rel = f.relative_to(src).with_suffix("").as_posix()  # EASCI/A/B
+        rel = f.relative_to(src).with_suffix("").as_posix()  # Project/A/B
         modules[module_name(rel)] = {**parse_module(f), "rel": rel}
 
     order = topo_order(modules, project)
@@ -128,13 +128,13 @@ def concat(src: Path, wrap_namespaces: bool, project: str = "EASCI") -> tuple[st
     total_decls = sum(m["decl_count"] for m in modules.values())
     out: list[str] = []
     out.append("/-! GENERATED ARTIFACT - do not edit; regenerate with")
-    out.append("    docs/easci/lean/scripts/concat_corpus.py")
+    out.append("    scripts/lean/concat_corpus.py")
     out.append("")
     out.append(f"    modules: {len(modules)}")
     out.append(f"    declarations: {total_decls}")
     out.append(f"    mode: {'namespaces' if wrap_namespaces else 'name-preserving sections'}")
     out.append("")
-    out.append("    One namespace-scoped concatenation of the EASCI corpus.")
+    out.append("    One namespace-scoped concatenation of the Project corpus.")
     out.append("    Order: topological by internal imports. External imports are")
     out.append("    hoisted here. Each module body is scoped in its own section so")
     out.append("    open/set_option/variable cannot leak. Declaration full names are")
@@ -183,7 +183,7 @@ def concat(src: Path, wrap_namespaces: bool, project: str = "EASCI") -> tuple[st
                 "namespaces": mod["namespaces"],
                 "decl_count": mod["decl_count"],
                 "root_decl_wrapped": wrapped,
-                "easci_imports": [
+                "project_imports": [
                     i for i in mod["imports"] if i in modules
                 ],
                 "external_imports": [
@@ -318,7 +318,7 @@ def main(argv: list[str] | None = None) -> int:
         _default_proj = _cfg.lean_dir if _cfg.lean_dir not in ("", ".") else _cfg.name
     except Exception:
         _default_src = Path.cwd()
-        _default_proj = "EASCI"
+        _default_proj = "Project"
 
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument(

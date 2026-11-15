@@ -136,7 +136,7 @@ explicitly a dependency update.
 
 ## See also
 
-- [`../../templates/Template_Lakefile.md`](../../templates/Template_Lakefile.md) -- Template: Annotated lakefile and CI patterns
-- [`../../references/lean4-module-dependency-guide.md`](../../references/lean4-module-dependency-guide.md) -- DAG enforcement and splitting workflow
-- [`../../references/lean4-lsp-guide.md`](../../references/lean4-lsp-guide.md) -- Lean 4 Language Server Protocol comprehensive guide
-- [`../lean-proof/SKILL.md`](../lean-proof/SKILL.md) -- Interactive LSP proving contract
+- [`../../templates/Template_Lakefile.md`](../../templates/core/Template_Lakefile.md) -- Template: Annotated lakefile and CI patterns
+- [`../../references/lean4-module-dependency-guide.md`](../protocols/lean4-module-dependency-guide.md) -- DAG enforcement and splitting workflow
+- [`../../references/lean4-lsp-guide.md`](../protocols/lean4-lsp-guide.md) -- Lean 4 Language Server Protocol comprehensive guide
+- [`../lean-proof/SKILL.md`](../../skills/lean-proof/SKILL.md) -- Interactive LSP proving contract

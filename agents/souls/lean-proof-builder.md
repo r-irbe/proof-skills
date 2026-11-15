@@ -1,11 +1,11 @@
 ---
-name: lean-proof-builder
-description: Step-by-step interactive Lean 4 tactic synthesis specialist.
-role_container: prover
-overlay_type: operational
-primary_skill: lean-upstream-proof
-tools: read, write, edit, bash, mcp:lean-lsp
-model: sonnet
+name: "lean-proof-builder"
+description: "Step-by-step interactive Lean 4 tactic synthesis specialist."
+role_container: "prover"
+overlay_type: "operational"
+primary_skill: "lean-proof"
+tools: "read, write, edit, bash, mcp:lean-lsp"
+model: "sonnet"
 ---
 
 # Soul Overlay: `lean-proof-builder` (Container: `prover`)

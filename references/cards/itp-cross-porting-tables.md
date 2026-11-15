@@ -37,7 +37,7 @@ skill_ref: "skills/itp-cross-porting/SKILL.md"
 | Error / Bottleneck | Root Cause | Remediating Fix |
 | :--- | :--- | :--- |
 | False theorem after porting `a - b` on naturals | Source (`Metamath` `N c_ C`) uses untruncated subtraction; Lean `Nat.sub` truncates at `0` | Cast to `Int` (`(a : Int) - b`) or add precondition `h : b <= a` before `omega` |
-| Limit theorem fails at `x` (`Tendsto f ( x)`) | Source (`Isabelle` / `HOL Light`) `at x` excludes `x` (`0 < dist y x`) | Replace ` x` with punctured neighborhood `[!=] x` (`nhdsWithin x {x}`) |
+| Limit theorem fails at `x` (`Tendsto f ( x)`) | Source (`Isabelle` / `HOL Light`) `at x` excludes `x` (`0 < dist y x`) | Replace ` x` with punctured neighborhood `[!=] x` (`nhdsWithin x {x}^c`) |
 | `failed to synthesize Decidable` on ported boolean reflection | Source uses `bool` predicate where Lean uses `Prop` | Add `open Classical in` locally or bridge via `decide` with `[DecidablePred P]` |
 | Universe mismatch `Type u` vs `Set` when porting Agda `Set` | Agda `Set` is `Type 0` whereas Mathlib `Set ` is ` -> Prop` | Map Agda `Set` (universe) to `Type*` and Agda `Pred A l` to `Set A` |
 | Division-by-zero discrepancy (`a / 0 = 0`) | Source guards `b != 0` implicitly in partial domain | Add explicit `(hb : b != 0)` hypothesis and discharge via `field_simp [hb]; ring` |

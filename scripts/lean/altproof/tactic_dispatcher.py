@@ -9,11 +9,12 @@ optimal automated tactic substitutions:
     (`[[altproof.tactics]]`) via `project_config.py` (with fallback defaults
     when `include_project_tactics=True` and no `lean-project.toml` is found).
 
-Scoped Unicode policy (INV-001; typographic-free by default).
+Strict 7-bit ASCII only (INV-001).
 """
 
 from __future__ import annotations
 
+import math
 import re
 import sys
 from dataclasses import dataclass, field
@@ -46,18 +47,16 @@ BITVEC_RE = re.compile(
 SWAR_PACK_RE = re.compile(
     r"(?:\bpreunfold%\b|\bunroll_top%\b|\bshiftLeft\b.*?\bshiftRight\b|\bKronecker\b|\bSWAR\b)"
 )
-WHNF_CONST_RE = re.compile(
-    r"(?:\beval_nat%\b|\bnat_lit\s+\d{20,}\b|\brawNatLit\b)"
-)
+WHNF_CONST_RE = re.compile(r"(?:\beval_nat%\b|\bnat_lit\s+\d{20,}\b|\brawNatLit\b)")
 
 # Default declarative project tactic plugin specs (used when `lean-project.toml`
 # defines `[[altproof.tactics]]` or when `include_project_tactics=True` in
 # standalone fixture tests).
 DEFAULT_PROJECT_TACTIC_SPECS: list[dict[str, Any]] = [
     {
-        "tactic": "easci_omega",
+        "tactic": "scaled_omega",
         "target_pattern": "scaled-simplex-nat-arithmetic",
-        "match_regex": r"(?:\bScale100\b|\beasci_omega\b|\bEASCI\b)",
+        "match_regex": r"(?:\bScale100\b|\bscaled_omega\b|\bScaledInt\b)",
         "match_scope": "goal_or_proof",
         "requires_arith": True,
         "rationale": "Project-specific Scale100 wrapper unfolding scaled-integer definitions before omega.",
@@ -119,13 +118,13 @@ def load_declarative_tactic_specs(start_dir: Path | str | None = None) -> list[d
     _lean_scripts = Path(__file__).resolve().parent.parent
     if str(_lean_scripts) not in sys.path:
         sys.path.insert(0, str(_lean_scripts))
-    try:
+    if __package__:
+        from .project_config import load_project_config
+    else:
         from project_config import load_project_config
-        cfg = load_project_config(start_dir)
-        if cfg.altproof_tactics:
-            return cfg.altproof_tactics
-    except Exception:
-        pass
+    cfg = load_project_config(start_dir)
+    if cfg.altproof_tactics:
+        return cfg.altproof_tactics
     return DEFAULT_PROJECT_TACTIC_SPECS
 
 
@@ -157,24 +156,55 @@ def _evaluate_declarative_tactic_specs(
             hit = bool(rx.search(target) or rx.search(proof))
         if hit:
             tname = str(spec["tactic"])
+            heartbeat_value = spec.get("estimated_heartbeats", 200)
+            confidence_value = spec.get("confidence", 0.9)
+            try:
+                if isinstance(heartbeat_value, bool) or not isinstance(heartbeat_value, (int, str)):
+                    raise ValueError("heartbeats must be an integer")
+                if isinstance(confidence_value, bool):
+                    raise ValueError("confidence must be numeric")
+                heartbeats = int(heartbeat_value)
+                confidence = float(confidence_value)
+                if heartbeats < 0 or not math.isfinite(confidence) or not 0 <= confidence <= 1:
+                    raise ValueError("score out of range")
+            except (TypeError, ValueError, OverflowError) as exc:
+                raise ValueError(f"invalid tactic score for {tname}: {exc}") from exc
             matched_names.add(tname)
             recs.append(
                 TacticRecommendation(
                     tactic=tname,
                     target_pattern=str(spec.get("target_pattern", tname)),
                     rationale=str(spec.get("rationale", "")),
-                    estimated_heartbeats=int(spec.get("estimated_heartbeats", 200)),
-                    confidence=float(spec.get("confidence", 0.9)),
+                    estimated_heartbeats=heartbeats,
+                    confidence=confidence,
                 )
             )
     return recs, matched_names
 
 
 def build_qf_bv_smt2_prescreen(goal_text: str, default_width: int = 64) -> str:
-    """Generate a lightweight QF_BV SMT-LIB2 pre-screening script for a BitVec goal."""
+    """Generate declaration-only SMT scaffolding, not an encoded proof obligation."""
     target = _extract_goal_target(goal_text)
-    width_m = re.search(r"\bBitVec\s+(\d+)\b", goal_text or "")
-    width = int(width_m.group(1)) if width_m else default_width
+    explicit_widths = []
+    for occurrence in re.finditer(r"\bBitVec\b", goal_text or ""):
+        remainder = (goal_text or "")[occurrence.end() :]
+        token = re.match(r"[ \t]+([^\s(),;:\[\]{}]+)", remainder)
+        if token is None or re.fullmatch(r"[0-9]+", token.group(1)) is None:
+            raise ValueError(
+                "unsupported explicit BitVec width: expected a positive integer literal"
+            )
+        continuation = remainder[token.end() :].lstrip(" \t")
+        if continuation.startswith(("+", "-", "*", "/", "%", "^", ".")):
+            raise ValueError("unsupported explicit BitVec width expression")
+        try:
+            explicit_widths.append(int(token.group(1)))
+        except ValueError as exc:
+            raise ValueError("unsupported explicit BitVec width integer") from exc
+    if len(set(explicit_widths)) > 1:
+        raise ValueError("mixed BitVec widths are unsupported by this scaffold")
+    width = explicit_widths[0] if explicit_widths else default_width
+    if isinstance(width, bool) or not isinstance(width, int) or width <= 0:
+        raise ValueError("SMT BitVec width must be a positive integer")
     raw_vars = sorted(
         {
             tok
@@ -203,8 +233,10 @@ def build_qf_bv_smt2_prescreen(goal_text: str, default_width: int = 64) -> str:
     lines = ["(set-logic QF_BV)"]
     for v in raw_vars[:12]:
         lines.append(f"(declare-const {v} (_ BitVec {width}))")
-    lines.append(f"; Goal target: {target}")
-    lines.append("; Negated verification condition for Z3/cvc5 pre-screening:")
+    lines.append("; Goal target (comment only):")
+    lines.extend("; " + line for line in target.splitlines())
+    lines.append("; Advisory declaration-only scaffold.")
+    lines.append("; No goal assertion is encoded; solver output cannot verify this goal.")
     lines.append("(check-sat)")
     return "\n".join(lines)
 
@@ -235,6 +267,16 @@ def recommend_tactics(
 
     # 0. Fixed-width BitVec / SWAR goals -> bv_decide (top-priority finisher)
     if BITVEC_RE.search(goal) or BITVEC_RE.search(proof) or "bv_decide" in proof:
+        try:
+            scaffold_parameters = {
+                "qf_bv_status": "declaration-only",
+                "qf_bv_smt2": build_qf_bv_smt2_prescreen(goal),
+            }
+        except ValueError as exc:
+            scaffold_parameters = {
+                "qf_bv_status": "unsupported",
+                "qf_bv_reason": str(exc),
+            }
         recommendations.append(
             TacticRecommendation(
                 tactic="bv_decide",
@@ -242,7 +284,7 @@ def recommend_tactics(
                 rationale="Bit-blasted CaDiCaL LRAT reflection finisher for fixed-width BitVec / SWAR goals; zero Classical.choice overhead.",
                 estimated_heartbeats=60,
                 confidence=0.97,
-                parameters={"qf_bv_smt2": build_qf_bv_smt2_prescreen(goal)},
+                parameters=scaffold_parameters,
             )
         )
 
@@ -378,13 +420,21 @@ def dispatch_and_score(goal_text: str, current_proof_text: str = "") -> dict:
     _dir = str(Path(__file__).resolve().parent)
     if _dir not in sys.path:
         sys.path.insert(0, _dir)
-    from cost_ranker import cost
-    from legibility import RENDERABLE_PATTERNS, score_block
+    if __package__:
+        from .cost_ranker import cost
+    else:
+        from cost_ranker import cost
+    if __package__:
+        from .legibility import RENDERABLE_PATTERNS, score_block
+    else:
+        from legibility import RENDERABLE_PATTERNS, score_block
 
     recs = recommend_tactics(goal_text, current_proof_text)
     leg = score_block(current_proof_text or "", RENDERABLE_PATTERNS)
     lines = max(1, leg["steps"])
-    baseline_cost_x10 = round(cost(lines=lines, shared_lemmas=0, upstream=False, kernel_cost=0.0) * 10)
+    baseline_cost_x10 = round(
+        cost(lines=lines, shared_lemmas=0, upstream=False, kernel_cost=0.0) * 10
+    )
     best_tactic = recs[0].tactic if recs else None
     best_hb = recs[0].estimated_heartbeats if recs else 0
     return {
@@ -409,17 +459,26 @@ def dispatch_and_score(goal_text: str, current_proof_text: str = "") -> dict:
 def _cli_main(argv: list[str] | None = None) -> int:
     import argparse
     import json
+
     parser = argparse.ArgumentParser(description="AltProof Tactic Advisor & Two-Axis Scorer")
     parser.add_argument("--goal", default="", help="Lean 4 goal state string")
     parser.add_argument("--proof", default="", help="Current proof block string")
     parser.add_argument("--self-test", action="store_true", help="Run built-in self-test suite")
     args = parser.parse_args(argv)
     if args.self_test:
-        r1 = dispatch_and_score("|- Finset.sum s (fun i => f i) <= Finset.sum s (fun i => g i)", "apply Finset.sum_le_sum")
+        r1 = dispatch_and_score(
+            "|- Finset.sum s (fun i => f i) <= Finset.sum s (fun i => g i)",
+            "apply Finset.sum_le_sum",
+        )
         assert any(x["tactic"] == "finset_mono" for x in r1["recommendations"]), r1
-        r2 = dispatch_and_score("|- 0 <= Finset.sum s (fun i => (f i)^2)", "apply Finset.sum_nonneg")
+        r2 = dispatch_and_score(
+            "|- 0 <= Finset.sum s (fun i => (f i)^2)", "apply Finset.sum_nonneg"
+        )
         assert any(x["tactic"] == "finset_nonneg" for x in r2["recommendations"]), r2
-        r3 = dispatch_and_score("|- Finset.sum s (fun i => a * f i) = a * Finset.sum s (fun i => f i)", "rw [Finset.mul_sum]")
+        r3 = dispatch_and_score(
+            "|- Finset.sum s (fun i => a * f i) = a * Finset.sum s (fun i => f i)",
+            "rw [Finset.mul_sum]",
+        )
         assert any(x["tactic"] == "sum_congr_ring" for x in r3["recommendations"]), r3
         r4 = dispatch_and_score("x y : BitVec 64 |- (x ^^^ y) ^^^ y = x", "bv_decide")
         assert r4["best_tactic"] == "bv_decide", r4

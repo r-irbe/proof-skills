@@ -16,7 +16,7 @@ Design constants (default):
     initial rating r₀  = 1500
     initial RD φ₀      = 350
     initial vol σ₀     = 0.06
-    system constant τ  = 0.5      (per design §3 table — LMSYS uses ~0.6)
+    system constant τ  = 0.5      (per design §3 table - LMSYS uses ~0.6)
     convergence ε      = 1e-6
 
 Verified against Glickman's worked example (§5):
@@ -230,7 +230,7 @@ def compute_glicko2(
 ) -> tuple[dict[str, PlayerState], dict[str, int]]:
     """Group matches into rating periods; update each entrant once per period.
 
-    Glicko-2 is designed for batch updates — the design doc §3 specifies
+    Glicko-2 is designed for batch updates - the design doc §3 specifies
     "1 week or 100 games per entrant, whichever first." We use the
     100-games batching here since CSV input is order-only.
 
@@ -263,7 +263,7 @@ def compute_glicko2(
 
         st_a = _ensure(pid_a)
         st_b = _ensure(pid_b)
-        # Use the *current* rating snapshot as the opponent — Glickman's
+        # Use the *current* rating snapshot as the opponent - Glickman's
         # rating-period model assumes opponents are static within a period.
         opp_a = replace(st_a.rating)
         opp_b = replace(st_b.rating)

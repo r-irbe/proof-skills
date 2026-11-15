@@ -31,7 +31,7 @@ BREAKDOWN_SCRIPT = SCRIPT_DIR / "formalization_breakdown.py"
 DEFAULT_PRESETS = {
     "markov": "packages/stochastic-ccv",
     "flt": "fermats-last-theorem",
-    "nse": "NavierStokesAndEuler",
+    "nse": "FluidPDE",
 }
 
 
@@ -42,7 +42,7 @@ def load_presets(repo_root: Path, presets_file: str | None = None) -> dict[str, 
         candidates.append(Path(presets_file))
     candidates.extend([
         repo_root / "skills-overrides" / "visualizer_presets.json",
-        repo_root / "docs" / "easci" / "lean" / "skills-overrides" / "visualizer_presets.json",
+        repo_root / "docs" / "project" / "lean" / "skills-overrides" / "visualizer_presets.json",
         SKILLS_DIR.parent / "skills-overrides" / "visualizer_presets.json",
     ])
     for cand in candidates:

@@ -9,7 +9,7 @@ description: |
   lean-doc-requirements, lean-blueprint, lean-report, lean-specification.
 
   Apply rubric LITERALLY. Don't invent intermediate scores. Don't
-  reward length — a precise, navigable doc in 200 LOC outranks a
+  reward length - a precise, navigable doc in 200 LOC outranks a
   rambling 2000-LOC one.
 
 definitions:

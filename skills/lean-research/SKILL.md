@@ -27,7 +27,7 @@ handoffs:
   - skill:lean-proof
   - skill:lean-proof-review
 metadata:
-  version: 0.2.0
+  version: 0.5.0
   source_spec: skills/lean-research/SKILL.md (this file)
   last_reviewed: '2026-05-27'
 ---
@@ -82,8 +82,8 @@ E).
 - **Predecessors:** `agent:gateway`, `skill:lean-proof`, `skill:lean-proof-review`,
   `skill:lean-specification`,
   `skill:lean-blueprint`.
-- **Successors:** `skill:lean-zettelkasten`, `skill:research-council`, `skill:research-synthesis-engine`,
-  `skill:lean-package-research`,
+- **Successors:** `skill:lean-retro-methodology`, `skill:research-council`, `skill:research-council`,
+  `skill:lean-dependency-management`,
   `skill:lean-proof`, `skill:lean-proof-review`.
 ---
 ## Detailed reference
@@ -94,3 +94,4 @@ Full encyclopedic reference, decision trees, and lookup tables live in
 - [`../../references/handbooks/lean-research-handbook.md`](../../references/handbooks/lean-research-handbook.md) -- Complete
   `lean-research` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router
+- [`tests/theorem-search.yaml`](tests/theorem-search.yaml) -- Smoke test

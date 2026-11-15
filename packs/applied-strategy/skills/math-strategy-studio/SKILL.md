@@ -2,16 +2,16 @@
 name: "math-strategy-studio"
 description: |
   USE FOR: Strategic mathematical thinking: brainstorming, problem decomposition, proof strategy design.
-  DO NOT USE FOR: strategy analysis methodology generally (@lean-applied-reasoning).
+  DO NOT USE FOR: strategy analysis methodology generally (@lean-knowledge-formalization).
   TRIGGERS: strategy studio, brainstorming, problem decomposition.
 tier: "warm"
 runtime_targets: [copilot-cli, claude-code, antigravity, pi, cursor, gemini-cli]
 dispatch_targets: []
 handoffs:
   predecessors: ["agent:gateway", "skill:lean-research"]
-  successors: ["skill:lean-specification", "skill:research-council", "skill:lean-zettelkasten"]
+  successors: ["skill:lean-specification", "skill:research-council", "skill:lean-retro-methodology"]
 metadata:
-  version: "0.2.0"
+  version: "0.5.0"
   source_spec: "skills/math-strategy-studio/SKILL.md (this file)"
   last_reviewed: "2026-05-27"
 ---
@@ -31,9 +31,9 @@ connections between
   the systematic
 research-council and
   review-council skills.
-- **DO NOT USE FOR:** strategy analysis methodology generally (use @lean-applied-reasoning); research
+- **DO NOT USE FOR:** strategy analysis methodology generally (use @lean-knowledge-formalization); research
   synthesis (use
-  @research-synthesis-engine); Lean
+  @research-council); Lean
   specification (use @lean-specification).
 - **TRIGGERS:** strategy studio, brainstorming, problem decomposition, proof strategy, creative hypothesis,
   mathematical
@@ -46,18 +46,18 @@ research-council and
 3. Score the candidates; recommend the top strategy with explicit assumptions and fallbacks.
 4. Hand off: to `@lean-specification` for proof-strategy execution, to `@research-council` for hypothesis
   vetting, to
-  `@lean-zettelkasten`.
+  `@lean-retro-methodology`.
 ## Recovery & STOP
-- STOP if the question is applied-strategy (not mathematical) -- delegate to `@lean-applied-reasoning`.
+- STOP if the question is applied-strategy (not mathematical) -- delegate to `@lean-knowledge-formalization`.
 - STOP if no candidate scores above the belief floor -- escalate to `@research-council`.
-- STOP if the question is about synthesising prior work -- delegate to `@research-synthesis-engine`.
+- STOP if the question is about synthesising prior work -- delegate to `@research-council`.
 ## Handoffs
 - **Predecessors:** `agent:gateway`, `skill:lean-research`.
-- **Successors:** `skill:lean-specification`, `skill:research-council`, `skill:lean-zettelkasten`.
+- **Successors:** `skill:lean-specification`, `skill:research-council`, `skill:lean-retro-methodology`.
 ---
 ## Detailed reference
 Full content for `math-strategy-studio` lives in
-[`references/math-strategy-studio-handbook.md`](../../references/math-strategy-studio-handbook.md).
+[`handbooks/math-strategy-studio-handbook.md`](../../handbooks/math-strategy-studio-handbook.md).
 Load that file when the skill is convened; the SKILL.md only carries
 the dispatch contract and the parts index.
 | Section | Topic |
@@ -71,9 +71,9 @@ the dispatch contract and the parts index.
 | Part 7 | Research Council Integration |
 ---
 ## See also
-- [`../../references/math-strategy-studio-handbook.md`](../../references/math-strategy-studio-handbook.md) --
+- [`../../handbooks/math-strategy-studio-handbook.md`](../../handbooks/math-strategy-studio-handbook.md) --
   Full handbook
   (extracted from this skill)
-- [`../lean-specification/SKILL.md`](../lean-specification/SKILL.md) -- Successor
-- [`../research-council/SKILL.md`](../research-council/SKILL.md) -- Successor
-- [`../lean-zettelkasten/SKILL.md`](../lean-zettelkasten/SKILL.md) -- Successor
+- [`../lean-specification/SKILL.md`](../../../../skills/lean-specification/SKILL.md) -- Successor
+- [`../research-council/SKILL.md`](../../../../skills/research-council/SKILL.md) -- Successor
+- [`../lean-zettelkasten/SKILL.md`](../../../../skills/lean-retro-methodology/SKILL.md) -- Successor

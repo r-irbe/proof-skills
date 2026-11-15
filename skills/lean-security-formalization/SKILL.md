@@ -22,7 +22,7 @@ handoffs:
   - skill:lean-verification-gate
   - skill:lean-retro-methodology
 metadata:
-  version: 0.2.0
+  version: 0.5.0
   source_spec: skills/lean-security-formalization/SKILL.md (this file)
   last_reviewed: '2026-05-27'
 ---
@@ -59,7 +59,7 @@ properties.
 - STOP if the property has not been formally stated -- delegate to `@lean-specification`.
 ## Handoffs
 - **Predecessors:** `agent:gateway`, `skill:lean-research`.
-- **Successors:** `skill:lean-proof-review`, `skill:lean-enforcement`, `skill:lean-zettelkasten`.
+- **Successors:** `skill:lean-proof-review`, `skill:lean-verification-gate`, `skill:lean-retro-methodology`.
 ---
 ## Detailed reference
 - **Layer-1 Fast Lookup Card (read first)**:

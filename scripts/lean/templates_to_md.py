@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Originally extracted from a Lean 4 verification project and genericized for the proof-skills toolkit.
 """
-templates_to_md.py — convert templates/Template_*.lean to Markdown.
+templates_to_md.py - convert templates/Template_*.lean to Markdown.
 
 Converts each `/-! ... -/` block to a Markdown section and wraps every
 intervening Lean source span in a ```lean ... ``` fence.

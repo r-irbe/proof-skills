@@ -213,46 +213,58 @@ def build_prover_graph(garden_root: Path, out_dir: Path) -> dict[str, Any]:
                 "file_path": str(sfile.relative_to(garden_root.parent.parent)),
             })
 
-    # Ingest Zettels (books, itp, derived, concepts, invariants)
-    zettels_dir = garden_root / "zettels"
+    # Ingest Zettels (garden zettels + repository zettelkasten/permanent/*.md)
+    zettels_dirs = [
+        garden_root / "zettels",
+        Path(__file__).resolve().parent.parent / "zettelkasten" / "permanent",
+    ]
     zettels: list[dict[str, Any]] = []
     seen_zids: set[str] = set()
-    if zettels_dir.exists():
-        for zf in sorted(zettels_dir.glob("**/*.md")):
-            txt = zf.read_text(encoding="utf-8", errors="ignore")
-            fm = extract_frontmatter(txt)
-            zid = to_ascii(fm.get("id") or zf.stem)
-            if zid in seen_zids:
-                continue
-            seen_zids.add(zid)
-            ztitle = fm.get("title") or zf.stem
-            zlayer = 4
-            try:
-                zlayer = int(fm.get("layer", 4))
-            except Exception:
+    repo_root = Path(__file__).resolve().parent.parent
+    for zettels_dir in zettels_dirs:
+        if zettels_dir.exists():
+            for zf in sorted(zettels_dir.glob("**/*.md")):
+                txt = zf.read_text(encoding="utf-8", errors="ignore")
+                fm = extract_frontmatter(txt)
+                zid = to_ascii(fm.get("id") or zf.stem)
+                if zid in seen_zids:
+                    continue
+                seen_zids.add(zid)
+                ztitle = fm.get("title") or zf.stem
                 zlayer = 4
-            zstatus = fm.get("status", "verified")
-            zmat = fm.get("maturity", "seedling")
-            zver = fm.get("verification", "anchor-resolved")
-            zbook = fm.get("source_book", "")
-            zanchor = fm.get("source_anchor", "")
-            zconcept = fm.get("master_concept", "")
-            rel_list = fm.get("related", [])
-            if isinstance(rel_list, str):
-                rel_list = [rel_list]
-            zettels.append({
-                "id": to_ascii(zid),
-                "title": to_ascii(ztitle),
-                "layer": zlayer,
-                "status": to_ascii(zstatus),
-                "maturity": to_ascii(zmat),
-                "verification": to_ascii(zver),
-                "source_book": to_ascii(zbook),
-                "source_anchor": to_ascii(zanchor),
-                "master_concept": to_ascii(zconcept),
-                "related": [to_ascii(r) for r in rel_list if r],
-                "file_path": str(zf.relative_to(garden_root.parent.parent)),
-            })
+                try:
+                    zlayer = int(fm.get("layer", 4))
+                except Exception:
+                    zlayer = 4
+                zstatus = fm.get("status", "verified")
+                zmat = fm.get("maturity", "evergreen" if "zettelkasten" in str(zf) else "seedling")
+                zver = fm.get("verification", "lint-verified" if "zettelkasten" in str(zf) else "anchor-resolved")
+                zbook = fm.get("source_book", "")
+                zanchor = fm.get("source_anchor", "")
+                zconcept = fm.get("master_concept", "")
+                rel_list = fm.get("related", fm.get("refs", []))
+                if isinstance(rel_list, str):
+                    rel_list = [rel_list]
+                try:
+                    rel_fp = str(zf.relative_to(repo_root))
+                except ValueError:
+                    try:
+                        rel_fp = str(zf.relative_to(garden_root.parent.parent))
+                    except ValueError:
+                        rel_fp = zf.name
+                zettels.append({
+                    "id": to_ascii(zid),
+                    "title": to_ascii(ztitle),
+                    "layer": zlayer,
+                    "status": to_ascii(zstatus),
+                    "maturity": to_ascii(zmat),
+                    "verification": to_ascii(zver),
+                    "source_book": to_ascii(zbook),
+                    "source_anchor": to_ascii(zanchor),
+                    "master_concept": to_ascii(zconcept),
+                    "related": [to_ascii(r) for r in rel_list if r],
+                    "file_path": to_ascii(rel_fp),
+                })
 
     kuzu_built = False
     if HAS_KUZU:
@@ -450,301 +462,55 @@ def build_prover_graph(garden_root: Path, out_dir: Path) -> dict[str, Any]:
     }
 
 
-def build_internal_graph(garden_root: Path, out_dir: Path) -> dict[str, Any]:
+def build_project_graph(project_root: Path, out_dir: Path) -> dict[str, Any]:
+    """Generic project-level Lean declaration graph builder."""
     out_dir.mkdir(parents=True, exist_ok=True)
-    db_path = out_dir / "project_internal.kuzu"
+    db_path = out_dir / "project_declarations.kuzu"
     remove_path(db_path)
 
-    mocs_dir = garden_root / "mocs"
-    inbox_dir = garden_root / "inbox"
-    mocs: list[dict[str, Any]] = []
-    artifacts: list[dict[str, Any]] = []
-
-    if mocs_dir.exists():
-        for mfile in sorted(mocs_dir.glob("*.md")):
-            mocs.append({
-                "id": mfile.stem,
-                "title": to_ascii(mfile.stem),
-                "file_path": str(mfile.relative_to(garden_root.parent.parent)),
-            })
-
-    if inbox_dir.exists():
-        for ifile in sorted(inbox_dir.glob("*.md")):
-            artifacts.append({
-                "id": ifile.stem,
-                "title": to_ascii(ifile.stem),
-                "size_bytes": ifile.stat().st_size,
-                "file_path": str(ifile.relative_to(garden_root.parent.parent)),
-            })
-
-    # Ingest Requirements from system_requirements_final.md
-    req_file = garden_root.parent / "system_requirements_final.md"
-    requirements: list[dict[str, Any]] = []
-    if req_file.exists():
-        txt = req_file.read_text(encoding="utf-8")
-        for m in re.finditer(r'^\|\s*(FUNC-\d+)\s*\|\s*\*\*?([^*|]+)\*\*?\s*\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|', txt, re.MULTILINE):
-            requirements.append({
-                "id": to_ascii(m.group(1).strip()),
-                "title": to_ascii(m.group(2).strip()),
-                "description": to_ascii(m.group(3).strip())[:200],
-                "priority": to_ascii(m.group(4).strip()),
-                "source": to_ascii(m.group(5).strip())[:100],
-            })
-
-    # Ingest ADRs
-    adrs: list[dict[str, Any]] = []
-    adr_dirs = [garden_root / "adrs", garden_root.parent.parent / "specs" / "adr"]
-    for adir in adr_dirs:
-        if adir.exists():
-            for af in sorted(adir.glob("*.md")):
-                txt = af.read_text(encoding="utf-8", errors="ignore")
-                fm = extract_frontmatter(txt)
-                aid = fm.get("id") or af.stem
-                title = fm.get("title") or af.stem
-                stat = fm.get("status") or fm.get("disposition") or "active"
-                mat = fm.get("maturity") or "seedling"
-                adrs.append({
-                    "id": to_ascii(aid),
-                    "title": to_ascii(title),
-                    "status": to_ascii(stat),
-                    "maturity": to_ascii(mat),
-                    "file_path": str(af.relative_to(garden_root.parent.parent)),
-                    "text": txt,
-                })
-
-    # Ingest Evidence Cards (Claims and Dossiers)
-    evidence: list[dict[str, Any]] = []
-    ev_dir = garden_root / "evidence"
-    if ev_dir.exists():
-        for ef in sorted(ev_dir.glob("*.md")):
-            txt = ef.read_text(encoding="utf-8", errors="ignore")
-            fm = extract_frontmatter(txt)
-            eid = fm.get("id") or ef.stem
-            title = fm.get("title") or ef.stem
-            kind = "dossier" if ef.stem.startswith("DOSSIER") else "claim"
-            evidence.append({
-                "id": to_ascii(eid),
-                "title": to_ascii(title),
-                "kind": kind,
-                "file_path": str(ef.relative_to(garden_root.parent.parent)),
-                "text": txt,
-            })
-
-    # Ingest Landmark Lean Declarations
-    lean_root = garden_root.parent / "easci" / "lean" / "EASCI"
     lean_decls: list[dict[str, Any]] = []
-    key_modules = [
-        "Synthesis/ContinuousRelaxationTree.lean",
-        "Synthesis/SimulationPreorder.lean",
-        "Synthesis/RefinementTower.lean",
-        "Synthesis/CoupledDynamics.lean",
-        "Synthesis/HybridDynamics.lean",
-        "Synthesis/TensorUnification.lean",
-        "Synthesis/ProductState.lean",
-        "QualityGates.lean",
-        "AgenticSafety/Core/TrustVector.lean",
-        "AgenticSafety/Core/TrustDynamics.lean",
-        "ProvenanceChain/Core.lean",
-        "PhasePortrait/Core.lean",
-        "Logic/DynamicEpistemicAndRevision.lean",
-        "Logic/TopologicalEpistemic.lean",
-        "Logic/UnawarenessAndTacitKnowledge.lean",
-        "Logic/HMSUnawarenessLattice.lean",
-        "Logic/NominalEpistemicNabla.lean",
-        "Logic/ProofTheoreticSemantics.lean",
-        "Logic/BMSActionModelLogic.lean",
-        "Logic/TopologicalEpistemicPlanning.lean",
-        "Synthesis/LyapunovIncentive.lean",
-        "CuspCatastrophe/Core.lean",
-        "StochasticCCV/Doeblin.lean",
-        "CCVEContraction.lean",
-        "ReinforcementLearning/SymbioticPOMDP.lean",
-        "TensorNetwork/TensorMDP.lean",
-        "TensorNetwork/JunctionTree.lean",
-        "AgenticSafety/KalmanConsensus.lean",
-        "Logic/AumannAgreement.lean",
-    ]
-    decl_re = re.compile(r'^(theorem|lemma|def|structure|class)\s+([A-Za-z0-9_.\']+)', re.MULTILINE)
-    for mod_rel in key_modules:
-        lf = lean_root / mod_rel
-        if lf.exists():
-            lines = lf.read_text(encoding="utf-8", errors="ignore").splitlines()
-            for idx, line in enumerate(lines, start=1):
-                m = decl_re.match(line)
-                if m:
-                    kind, name = m.group(1), m.group(2)
-                    mod_name = mod_rel.replace('/', '.').replace('.lean', '')
-                    decl_id = f"EASCI.{mod_name}.{name}"
-                    lean_decls.append({
-                        "id": to_ascii(decl_id),
-                        "name": to_ascii(name),
-                        "kind": to_ascii(kind),
-                        "module": to_ascii(mod_name),
-                        "file_path": f"docs/easci/lean/EASCI/{mod_rel}",
-                        "line": idx,
-                    })
+    decl_re = re.compile(r"^(theorem|lemma|def|structure|class)\s+([A-Za-z0-9_.']+)", re.MULTILINE)
+    for lf in sorted(project_root.rglob("*.lean")):
+        if ".lake" in lf.parts or "node_modules" in lf.parts:
+            continue
+        lines = lf.read_text(encoding="utf-8", errors="ignore").splitlines()
+        rel_path = str(lf.relative_to(project_root))
+        mod_name = rel_path.replace("/", ".").removesuffix(".lean")
+        for idx, line in enumerate(lines, start=1):
+            m = decl_re.match(line)
+            if m:
+                kind, name = m.group(1), m.group(2)
+                lean_decls.append({
+                    "id": to_ascii(f"{mod_name}.{name}"),
+                    "name": to_ascii(name),
+                    "kind": to_ascii(kind),
+                    "module": to_ascii(mod_name),
+                    "file_path": to_ascii(rel_path),
+                    "line": idx,
+                })
 
     kuzu_built = False
     if HAS_KUZU:
         try:
             kdb = kuzu.Database(str(db_path))
             kconn = kuzu.Connection(kdb)
-
-            kconn.execute("CREATE NODE TABLE MOC (id STRING, title STRING, file_path STRING, PRIMARY KEY(id))")
-            kconn.execute("CREATE NODE TABLE InternalArtifact (id STRING, title STRING, size_bytes INT64, file_path STRING, PRIMARY KEY(id))")
-            kconn.execute("CREATE NODE TABLE Requirement (id STRING, title STRING, description STRING, priority STRING, source STRING, PRIMARY KEY(id))")
-            kconn.execute("CREATE NODE TABLE ADR (id STRING, title STRING, status STRING, maturity STRING, file_path STRING, PRIMARY KEY(id))")
-            kconn.execute("CREATE NODE TABLE EvidenceCard (id STRING, title STRING, kind STRING, file_path STRING, PRIMARY KEY(id))")
             kconn.execute("CREATE NODE TABLE LeanDeclaration (id STRING, name STRING, kind STRING, module STRING, file_path STRING, line INT64, PRIMARY KEY(id))")
-
-            kconn.execute("CREATE REL TABLE ADR_SATISFIES_REQUIREMENT (FROM ADR TO Requirement)")
-            kconn.execute("CREATE REL TABLE ADR_GROUNDED_IN_EVIDENCE (FROM ADR TO EvidenceCard)")
-            kconn.execute("CREATE REL TABLE LEAN_VERIFIES_ADR (FROM LeanDeclaration TO ADR)")
-            kconn.execute("CREATE REL TABLE LEAN_IMPLEMENTS_REQUIREMENT (FROM LeanDeclaration TO Requirement)")
-            kconn.execute("CREATE REL TABLE EVIDENCE_SUPPORTS_REQUIREMENT (FROM EvidenceCard TO Requirement)")
-            kconn.execute("CREATE REL TABLE EVIDENCE_SUPPORTS_DOSSIER (FROM EvidenceCard TO EvidenceCard)")
-            kconn.execute("CREATE REL TABLE MOC_INDEXES_RECORD (FROM MOC TO ADR)")
-
-            for m in mocs:
-                safe_id = sanitize_val(m["id"])
-                safe_title = sanitize_val(m["title"])
-                safe_p = sanitize_val(m["file_path"])
-                kconn.execute('CREATE (m:MOC {id: "' + safe_id + '", title: "' + safe_title + '", file_path: "' + safe_p + '"})')
-
-            for a in artifacts:
-                safe_id = sanitize_val(a["id"])
-                safe_title = sanitize_val(a["title"])
-                safe_p = sanitize_val(a["file_path"])
-                kconn.execute('CREATE (a:InternalArtifact {id: "' + safe_id + '", title: "' + safe_title + '", size_bytes: ' + str(a["size_bytes"]) + ', file_path: "' + safe_p + '"})')
-
-            req_ids = set()
-            for r in requirements:
-                rid = sanitize_val(r["id"])
-                rtitle = sanitize_val(r["title"])
-                rdesc = sanitize_val(r["description"])
-                rprio = sanitize_val(r["priority"])
-                rsrc = sanitize_val(r["source"])
-                kconn.execute('CREATE (r:Requirement {id: "' + rid + '", title: "' + rtitle + '", description: "' + rdesc + '", priority: "' + rprio + '", source: "' + rsrc + '"})')
-                req_ids.add(rid)
-
-            adr_ids = set()
-            for adr in adrs:
-                aid = sanitize_val(adr["id"])
-                atitle = sanitize_val(adr["title"])
-                astat = sanitize_val(adr["status"])
-                amat = sanitize_val(adr["maturity"])
-                apath = sanitize_val(adr["file_path"])
-                kconn.execute('CREATE (a:ADR {id: "' + aid + '", title: "' + atitle + '", status: "' + astat + '", maturity: "' + amat + '", file_path: "' + apath + '"})')
-                adr_ids.add(aid)
-
-            ev_ids = set()
-            for ev in evidence:
-                eid = sanitize_val(ev["id"])
-                etitle = sanitize_val(ev["title"])
-                ekind = sanitize_val(ev["kind"])
-                epath = sanitize_val(ev["file_path"])
-                kconn.execute('CREATE (e:EvidenceCard {id: "' + eid + '", title: "' + etitle + '", kind: "' + ekind + '", file_path: "' + epath + '"})')
-                ev_ids.add(eid)
-
             for ld in lean_decls:
                 did = sanitize_val(ld["id"])
                 dname = sanitize_val(ld["name"])
                 dkind = sanitize_val(ld["kind"])
                 dmod = sanitize_val(ld["module"])
                 dpath = sanitize_val(ld["file_path"])
-                kconn.execute('CREATE (l:LeanDeclaration {id: "' + did + '", name: "' + dname + '", kind: "' + dkind + '", module: "' + dmod + '", file_path: "' + dpath + '", line: ' + str(ld["line"]) + '})')
-
-            # Traceability: ADR -> Requirement
-            canonical_adr_req: dict[str, list[str]] = {
-                "ADR-INV-0001": ["FUNC-117", "FUNC-118"],
-                "ADR-INV-0002": ["FUNC-04", "FUNC-115"],
-                "ADR-INV-0004": ["FUNC-119", "FUNC-162"],
-                "ADR-INV-0006": ["FUNC-07"],
-                "ADR-INV-0008": ["FUNC-127"],
-                "ADR-INV-0009": ["FUNC-125"],
-                "ADR-INV-0016": ["FUNC-105", "FUNC-106", "FUNC-107", "FUNC-188", "FUNC-189", "FUNC-190", "FUNC-191"],
-                "adr-001-frozen-epistemic-formal-core": ["FUNC-01"],
-                "adr-002-tamper-evident-hash-chain-custody": ["FUNC-116"],
-                "adr-004-subjective-logic-belief-fusion": ["FUNC-09", "FUNC-10"],
-                "adr-inv-0015-multi-agent-cognitive-governance": ["FUNC-105"],
-            }
-            for adr in adrs:
-                aid = sanitize_val(adr["id"])
-                txt = adr.get("text", "")
-                found_reqs = set(re.findall(r'FUNC-\d+', txt))
-                if aid in canonical_adr_req:
-                    found_reqs.update(canonical_adr_req[aid])
-                for rid in found_reqs:
-                    if rid in req_ids:
-                        kconn.execute('MATCH (a:ADR {id: "' + aid + '"}), (r:Requirement {id: "' + rid + '"}) CREATE (a)-[:ADR_SATISFIES_REQUIREMENT]->(r)')
-
-            # Traceability: ADR -> Evidence
-            canonical_adr_ev: dict[str, list[str]] = {
-                "ADR-INV-0016": ["DOSSIER-ALGOS-TENTH-LOOK"],
-                "ADR-INV-0001": ["DOSSIER-INV-NST-2024-0847"],
-                "ADR-INV-0002": ["DOSSIER-04-REDLINED-TACTICAL-ENCLAVE"],
-                "ADR-INV-0003": ["DOSSIER-FILAB-AI-VIBES-FIRST-LOOK"],
-            }
-            for aid, evs in canonical_adr_ev.items():
-                if aid in adr_ids:
-                    for eid in evs:
-                        if eid in ev_ids:
-                            kconn.execute('MATCH (a:ADR {id: "' + aid + '"}), (e:EvidenceCard {id: "' + eid + '"}) CREATE (a)-[:ADR_GROUNDED_IN_EVIDENCE]->(e)')
-
-            # Traceability: LeanDeclaration -> ADR
-            for ld in lean_decls:
-                did = sanitize_val(ld["id"])
-                mod = ld["module"]
-                target_adr = None
-                if "SimulationPreorder" in mod or "ContinuousRelaxationTree" in mod or "RefinementTower" in mod or "CoupledDynamics" in mod or "HybridDynamics" in mod or "LyapunovIncentive" in mod:
-                    target_adr = "ADR-INV-0016"
-                elif "QualityGates" in mod:
-                    target_adr = "ADR-INV-0002"
-                elif "ProvenanceChain" in mod:
-                    target_adr = "adr-002-tamper-evident-hash-chain-custody"
-                elif "TrustVector" in mod or "TrustDynamics" in mod or "KalmanConsensus" in mod:
-                    target_adr = "adr-inv-0015-multi-agent-cognitive-governance"
-                elif "PhasePortrait" in mod:
-                    target_adr = "ADR-INV-0001"
-                elif "UnawarenessAndTacitKnowledge" in mod or "HMSUnawarenessLattice" in mod or "DynamicEpistemicAndRevision" in mod or "NominalEpistemicNabla" in mod or "ProofTheoreticSemantics" in mod or "BMSActionModelLogic" in mod or "TopologicalEpistemicPlanning" in mod or "JunctionTree" in mod or "AumannAgreement" in mod:
-                    target_adr = "ADR-INV-0016"
-
-                if target_adr and target_adr in adr_ids:
-                    kconn.execute('MATCH (l:LeanDeclaration {id: "' + did + '"}), (a:ADR {id: "' + target_adr + '"}) CREATE (l)-[:LEAN_VERIFIES_ADR]->(a)')
-
-            # Traceability: Evidence -> Requirement
-            canonical_ev_req: dict[str, list[str]] = {
-                "CLAIM-INV-NST-001": ["FUNC-14"],
-                "CLAIM-INV-NST-002": ["FUNC-14"],
-                "CLAIM-INV-NST-003": ["FUNC-14"],
-                "DOSSIER-INV-NST-2024-0847": ["FUNC-14", "FUNC-118"],
-                "DOSSIER-ALGOS-TENTH-LOOK": ["FUNC-105", "FUNC-106", "FUNC-107"],
-            }
-            for eid, rlist in canonical_ev_req.items():
-                if eid in ev_ids:
-                    for rid in rlist:
-                        if rid in req_ids:
-                            kconn.execute('MATCH (e:EvidenceCard {id: "' + eid + '"}), (r:Requirement {id: "' + rid + '"}) CREATE (e)-[:EVIDENCE_SUPPORTS_REQUIREMENT]->(r)')
-
-            # Evidence -> Dossier
-            for cid in ["CLAIM-INV-NST-001", "CLAIM-INV-NST-002", "CLAIM-INV-NST-003"]:
-                if cid in ev_ids and "DOSSIER-INV-NST-2024-0847" in ev_ids:
-                    kconn.execute('MATCH (c:EvidenceCard {id: "' + cid + '"}), (d:EvidenceCard {id: "DOSSIER-INV-NST-2024-0847"}) CREATE (c)-[:EVIDENCE_SUPPORTS_DOSSIER]->(d)')
-
+                kconn.execute("CREATE (l:LeanDeclaration {id: \"" + did + "\", name: \"" + dname + "\", kind: \"" + dkind + "\", module: \"" + dmod + "\", file_path: \"" + dpath + "\", line: " + str(ld["line"]) + "})")
             kuzu_built = True
         except Exception as exc:
-            print("Warning during internal Kuzu population: " + str(exc))
+            print("Warning during project Kuzu population: " + str(exc))
 
     return {
         "status": "success",
-        "scope": "project_internal",
+        "scope": "project_declarations",
         "kuzu_native": kuzu_built,
         "db_path": str(db_path),
-        "mocs": len(mocs),
-        "artifacts": len(artifacts),
-        "requirements": len(requirements),
-        "adrs": len(adrs),
-        "evidence": len(evidence),
         "lean_declarations": len(lean_decls),
     }
 
@@ -994,7 +760,7 @@ def self_test() -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Kuzu Property Graph Compiler & Exporter (TASK-LIB-07)")
-    parser.add_argument("--profile", choices=["prover", "internal", "cache", "all"], default="all", help="Graph profile to build")
+    parser.add_argument("--profile", choices=["prover", "project", "cache", "all"], default="all", help="Graph profile to build")
     parser.add_argument("--garden-root", default=os.environ.get("KUZU_GARDEN_ROOT", "."), help="Path to knowledge/garden root directory")
     parser.add_argument("--out-dir", default=os.environ.get("KUZU_OUT_DIR", "kuzu"), help="Output directory for databases")
     parser.add_argument("--cache-dir", default=".cache/kuzu", help="Output directory for transient cache database")
@@ -1018,9 +784,9 @@ def main() -> None:
                 shutil.copy2(zip_src, dest / "prover_knowledge.kz")
                 print("  -> Exported public archive to " + str(dest / "prover_knowledge.kz"))
 
-    if args.profile in ("internal", "all"):
-        res = build_internal_graph(garden_root, out_dir)
-        print("Internal Graph: " + str(res["requirements"]) + " requirements, " + str(res["adrs"]) + " ADRs, " + str(res["evidence"]) + " evidence cards, " + str(res["lean_declarations"]) + " Lean decls (native: " + str(res["kuzu_native"]) + ")")
+    if args.profile in ("project", "all"):
+        res = build_project_graph(garden_root, out_dir)
+        print("Project Graph: " + str(res["lean_declarations"]) + " Lean decls (native: " + str(res["kuzu_native"]) + ")")
 
     if args.profile in ("cache", "all"):
         res = init_cache_graph(cache_dir)

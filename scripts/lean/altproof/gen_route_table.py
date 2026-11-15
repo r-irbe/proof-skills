@@ -11,7 +11,10 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from route_definitions import ROUTES
+if __package__:
+    from .route_definitions import ROUTES
+else:
+    from route_definitions import ROUTES
 
 
 def generate() -> dict:
@@ -30,9 +33,6 @@ def main() -> int:
     out1 = Path(__file__).resolve().parent / "route-table.json"
     out1.write_text(payload, encoding="utf-8")
     for p in Path(__file__).resolve().parents:
-        cand_garden = p / "docs" / "investigation-garden" / "altproof" / "route-table.json"
-        if cand_garden.parent.exists():
-            cand_garden.write_text(payload, encoding="utf-8")
         cand_tools = p / "tools" / "altproof" / "route-table.json"
         if cand_tools.parent.exists() and cand_tools.resolve() != out1.resolve():
             cand_tools.write_text(payload, encoding="utf-8")

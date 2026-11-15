@@ -23,7 +23,7 @@ handoffs:
   - skill:lean-proof-review
   - skill:lean-verification-gate
 metadata:
-  version: 0.2.0
+  version: 0.5.0
   source_spec: skills/rocq-proof-adapter/SKILL.md (this file)
   last_reviewed: '2026-10-27'
 ---
@@ -70,7 +70,7 @@ idiomatic Lean 4.
   to `Nat.le` (`m <= n`) and solve with `omega`.
 ## Handoffs
 - **Predecessors:** `skill:lean-gateway`, `skill:itp-cross-porting`, `skill:lean-specification`.
-- **Successors:** `skill:lean-proof`, `skill:lean-proof-review`, `skill:lean-axiom-closure`.
+- **Successors:** `skill:lean-proof`, `skill:lean-proof-review`, `skill:lean-verification-gate`.
 ## Detailed reference
 - **Layer-1 Fast Lookup Card (read first)**: [`references/cards/rocq-proof-adapter-tables.md`](../../references/cards/rocq-proof-adapter-tables.md)
 Full encyclopedic reference, decision trees, and lookup tables live in

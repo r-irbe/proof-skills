@@ -217,7 +217,7 @@ def test_validate_patch_and_verify_statement_sandbox():
 def test_run_persist_journal_blocker_hash_2n_and_structural_coords(tmp_path: Path):
     ok, _ = validate_structural_coord("theorem foo: induction n: succ case")
     assert ok is True
-    bad_ok, bad_msg = validate_structural_coord("EASCI/Core.lean:142")
+    bad_ok, bad_msg = validate_structural_coord("Project/Core.lean:142")
     assert bad_ok is False
     assert "LINE_NUMBER_FORBIDDEN" in bad_msg
 
