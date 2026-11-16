@@ -52,6 +52,7 @@ These scripts are project-agnostic and portable across any Lean 4 repository. Ru
 ## AltProof Elegance & Kernel Optimization Suite (`scripts/lean/altproof/`)
 
 - `altproof/autoslim.py` (`altproof autoslim`) - Kernel-verified proof auto-slimmer wiring `lean-analyzer` `by ...` quickfixes to `lean4-lsp-mcp` (`bin/lean-autoslim.js`).
+- `altproof/tree_shake.py` (`altproof tree-shake`) - Declaration/module-level Lean 4 tree-shaker and double-blind anonymizer via `.ilean` reference graphs (`bin/lean-tree-shake.js`).
 - `altproof/cost_ranker.py` (`altproof_cost_ranker.py`) - Two-axis cost model (elegance + kernel cost).
 - `altproof/legibility.py` (`altproof_legibility.py`) - Verbose-lean4 discourse renderability scorer.
 - `altproof/tactic_dispatcher.py` (`altproof_tactic_advisor.py`) - Automated tactic selector and two-axis scorer (`--self-test`).

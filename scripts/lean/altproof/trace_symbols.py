@@ -114,7 +114,24 @@ class TraceIndex:
 
         refs = data.get("references") or {}
         if isinstance(refs, dict):
-            for rname, rinfo in refs.items():
+            for raw_key, rinfo in refs.items():
+                rname = raw_key
+                rmod = ""
+                if raw_key.startswith("{"):
+                    try:
+                        parsed_key = json.loads(raw_key)
+                        c_obj = parsed_key.get("c") if isinstance(parsed_key, dict) else None
+                        if isinstance(c_obj, dict):
+                            rmod = str(c_obj.get("m") or "")
+                            n_val = str(c_obj.get("n") or "")
+                            if n_val:
+                                same_root = "." in n_val and bool(rmod) and rmod.split(".")[0] == n_val.split(".")[0]
+                                if not rmod or n_val == rmod or n_val.startswith(rmod + ".") or same_root:
+                                    rname = n_val
+                                else:
+                                    rname = f"{rmod}.{n_val}"
+                    except (ValueError, TypeError):
+                        pass
                 if rname.startswith("_private."):
                     parts = rname.split(".")
                     short = parts[-1]

@@ -73,3 +73,53 @@ def test_autoslim_cli_and_kernel_verify_wiring(monkeypatch, tmp_path):
     assert res.success is True
     assert res.verification_level == "lean-kernel-batch"
 
+
+def test_tree_shake_cli_and_trace_symbols_json_keys(monkeypatch, tmp_path):
+    import json
+    import altproof.tree_shake as ts_mod
+    from altproof import cli as cli_mod
+    from altproof.trace_symbols import TraceIndex
+    from altproof.tactic_dispatcher import recommend_tactics
+
+    lib_dir = tmp_path / ".lake" / "build" / "lib" / "lean" / "DemoPkg"
+    lib_dir.mkdir(parents=True)
+    ilean_payload = {
+        "version": 5,
+        "module": "DemoPkg.Sample",
+        "decls": {"DemoPkg.Sample.foo": [1, 0, 1, 20]},
+        "references": {
+            json.dumps({"c": {"m": "DemoPkg.Sample", "n": "DemoPkg.Sample.bar"}}): {
+                "definition": [2, 0, 2, 20],
+                "usages": [[1, 10, 1, 13, "DemoPkg.Sample.foo"]],
+            }
+        },
+    }
+    (lib_dir / "Sample.ilean").write_text(json.dumps(ilean_payload), encoding="utf-8")
+    idx = TraceIndex(tmp_path)
+    assert "DemoPkg.Sample.bar" in idx.all_defined_symbols
+    assert "DemoPkg.Sample.DemoPkg.Sample.bar" not in idx.all_defined_symbols
+
+    fake_ts = {
+        "schemaVersion": 1,
+        "entryModules": ["DemoPkg.Sample"],
+        "granularity": "declaration",
+        "dryRun": True,
+        "anonymized": True,
+        "totalCorpusModules": 10,
+        "fileImportClosureModules": 4,
+        "keptModulesCount": 2,
+        "reachableDeclarationsCount": 7,
+        "prunedDeclarationsCount": 15,
+        "totalLinesBefore": 500,
+        "totalLinesAfter": 120,
+        "lineReductionPct": 76.0,
+        "byteReductionPct": 74.5,
+        "anonymityLeakHits": [],
+    }
+    monkeypatch.setattr(ts_mod, "run_tree_shake", lambda *a, **kw: fake_ts)
+    assert cli_mod.main(["tree-shake", "DemoPkg.Sample", "--anonymize", "--markdown"]) == 0
+
+    recs = recommend_tactics("|- Finset.sum Finset.univ (Matrix.vecMul d M) = Finset.sum Finset.univ d")
+    assert any(r.tactic == "markov_row_sum" for r in recs)
+
+

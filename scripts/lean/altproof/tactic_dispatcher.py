@@ -431,6 +431,51 @@ def recommend_tactics(
             )
         )
 
+    if (
+        re.search(r"\b(?:Matrix\.vecMul|Matrix\.mulVec|rowStochastic)\b", goal + " " + proof)
+        and has_finset_sum
+        and "=" in target_no_arrows
+        and not re.search(r"(?:<=|\u2264|<)", target_no_arrows)
+    ) or re.search(r"\bmarkov_row_sum\b", proof):
+        recommendations.append(
+            TacticRecommendation(
+                tactic="markov_row_sum",
+                target_pattern="sum_congr_ring",
+                rationale="Discharges row-stochastic mass-preservation (vecMul / Matrix.mul row sums) via sum_comm + mul_sum + row-sum instantiation.",
+                estimated_heartbeats=215,
+                confidence=0.93,
+            )
+        )
+
+    if (
+        re.search(r"\b1\s*-\s*[A-Za-z0-9_']+", goal + " " + proof)
+        and re.search(r"(?:<=|\u2264|=)", target_no_arrows)
+        and not BITVEC_RE.search(goal)
+    ) or re.search(r"\bconvex_comb\b", proof):
+        recommendations.append(
+            TacticRecommendation(
+                tactic="convex_comb",
+                target_pattern="finset_mono",
+                rationale="Discharges convex-combination simplex bounds and mass preservation via And-unpacking + bilinear nlinarith / sum_add_distrib.",
+                estimated_heartbeats=225,
+                confidence=0.91,
+            )
+        )
+
+    if (
+        re.search(r"\bMatrix\b", goal + " " + proof)
+        and re.search(r"0\s*(?:<=|\u2264|<)", target_no_arrows)
+    ) or re.search(r"\bmatrix_pos\b", proof):
+        recommendations.append(
+            TacticRecommendation(
+                tactic="matrix_pos",
+                target_pattern="finset_nonneg",
+                rationale="Discharges entrywise matrix/product non-negativity and finite Fin n matrix positivity.",
+                estimated_heartbeats=210,
+                confidence=0.90,
+            )
+        )
+
     has_pure_eq = bool(
         "=" in target_no_arrows
         and not re.search(r"(?:<=|>=|!=|\u2264|\u2265|\u2260)", target_no_arrows)

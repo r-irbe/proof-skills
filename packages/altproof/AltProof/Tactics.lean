@@ -14,6 +14,7 @@ import Mathlib.Tactic.GCongr
 import Mathlib.Tactic.Push
 import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Algebra.BigOperators.Field
+import Mathlib.Data.Matrix.Basic
 import Aesop
 
 set_option autoImplicit false
@@ -286,10 +287,209 @@ def evalFinsetMono : Tactic := fun _ => do
     | (finset_mono; done)
     | (aesop; done)))
 
+-- ============================================================================
+-- AltProof v0.6.0 Domain Closers (`convex_comb`, `markov_row_sum`, `matrix_pos`)
+-- ============================================================================
+
+/-- Unpack any WHNF-reducible 2-way conjunction hypotheses and `Matrix.rowStochastic`
+    membership hypotheses in the main goal's local context. -/
+def unpackContextAndHyps : TacticM Unit :=
+  withMainContext do
+    let env ← getEnv
+    let hasSumRow := env.contains `Matrix.sum_row_of_mem_rowStochastic
+    let hasNonnegRow := env.contains `Matrix.nonneg_of_mem_rowStochastic
+    let lctx ← getLCtx
+    for decl in lctx do
+      if !decl.isImplementationDetail && !decl.userName.hasMacroScopes then
+        let ty ← instantiateMVars decl.type
+        if ← isProp ty then
+          if hasSumRow then
+            try
+              let hSum ← mkAppM `Matrix.sum_row_of_mem_rowStochastic #[decl.toExpr]
+              let hSumTy ← instantiateMVars (← inferType hSum)
+              let g ← getMainGoal
+              let (_, g') ← g.note (decl.userName.appendAfter "_rowsum") hSum hSumTy
+              replaceMainGoal [g']
+            catch _ => pure ()
+          if hasNonnegRow then
+            try
+              let hNn ← mkAppM `Matrix.nonneg_of_mem_rowStochastic #[decl.toExpr]
+              let hNnTy ← instantiateMVars (← inferType hNn)
+              let g ← getMainGoal
+              let (_, g') ← g.note (decl.userName.appendAfter "_nonneg") hNn hNnTy
+              replaceMainGoal [g']
+            catch _ => pure ()
+          if !ty.isForall && !ty.isAppOfArity ``Eq 3 && !ty.isAppOfArity ``LE.le 4
+              && !ty.isAppOfArity ``LT.lt 4 && !ty.isAppOfArity ``Not 1 then
+            let tyWhnf ← whnf ty
+            if tyWhnf.isAppOfArity ``And 2 then
+              try
+                let p1 := tyWhnf.getArg! 0
+                let p2 := tyWhnf.getArg! 1
+                let e1 ← mkAppM ``And.left #[decl.toExpr]
+                let e2 ← mkAppM ``And.right #[decl.toExpr]
+                let g1 ← getMainGoal
+                let (_, g2) ← g1.note (decl.userName.appendAfter "_fst") e1 p1
+                let (_, g3) ← g2.note (decl.userName.appendAfter "_snd") e2 p2
+                replaceMainGoal [g3]
+              catch _ => pure ()
+
+/-- Instantiate universally quantified local hypotheses at matching local value variables. -/
+def instantiateLocalForallEqsAndBounds : TacticM Unit :=
+  withMainContext do
+    let lctx ← getLCtx
+    let mut valVars : Array (Expr × Expr) := #[]
+    let mut forallHyps : Array (Name × Expr × Expr) := #[]
+    for decl in lctx do
+      if !decl.isImplementationDetail && !decl.userName.hasMacroScopes then
+        let ty ← instantiateMVars decl.type
+        if !(← isProp ty) && !ty.isForall then
+          valVars := valVars.push (decl.toExpr, ty)
+        else if (← isProp ty) && ty.isForall then
+          forallHyps := forallHyps.push (decl.userName, decl.toExpr, ty)
+    for (baseName, hypExpr, ty) in forallHyps do
+      let dom1 := ty.bindingDomain!
+      for (v1, v1Ty) in valVars do
+        if ← withoutModifyingState (isDefEq dom1 v1Ty) then
+          try
+            let app1 ← mkAppM' hypExpr #[v1]
+            let app1Ty ← instantiateMVars (← inferType app1)
+            if !app1Ty.isForall then
+              let g ← getMainGoal
+              let (_, g') ← g.note (baseName.appendAfter "_inst") app1 app1Ty
+              replaceMainGoal [g']
+            if app1Ty.isForall then
+              let dom2 := app1Ty.bindingDomain!
+              for (v2, v2Ty) in valVars do
+                if ← withoutModifyingState (isDefEq dom2 v2Ty) then
+                  let app2 ← mkAppM' app1 #[v2]
+                  let app2Ty ← instantiateMVars (← inferType app2)
+                  if !app2Ty.isForall then
+                    let g ← getMainGoal
+                    let (_, g') ← g.note (baseName.appendAfter "_inst2") app2 app2Ty
+                    replaceMainGoal [g']
+          catch _ => pure ()
+
+/-- `convex_comb`: discharges convex-combination, affine-interpolation, and simplex-bound obligations. -/
+syntax (name := convexCombTactic) "convex_comb" : tactic
+
+@[tactic convexCombTactic]
+def evalConvexComb : Tactic := fun _ => do
+  try evalTactic (← `(tactic| intros)) catch _ => pure ()
+  unpackContextAndHyps
+  unpackContextAndHyps
+  instantiateLocalForallEqsAndBounds
+  let linTerms : Array (TSyntax `term) ← withMainContext do
+    let mut acc : Array (TSyntax `term) := #[]
+    let lctx ← getLCtx
+    for decl in lctx do
+      if !decl.isImplementationDetail then
+        let ty ← instantiateMVars decl.type
+        if ty.isAppOfArity ``LE.le 4 then
+          let lhs := ty.getArg! 2
+          let rhs := ty.getArg! 3
+          try
+            let diff ← mkAppM ``HSub.hSub #[rhs, lhs]
+            let stx ← PrettyPrinter.delab diff
+            if acc.size < 8 then
+              acc := acc.push stx
+          catch _ => pure ()
+    pure acc
+  let mut prodTerms : Array (TSyntax `term) := #[]
+  for i in [:linTerms.size] do
+    for j in [i:linTerms.size] do
+      if prodTerms.size < 20 then
+        let ti := linTerms[i]!
+        let tj := linTerms[j]!
+        prodTerms := prodTerms.push (← `(mul_nonneg (by linarith : 0 ≤ $ti) (by linarith : 0 ≤ $tj)))
+  evalTactic (← `(tactic|
+    first
+    | (ring; done)
+    | linarith
+    | (positivity; done)
+    | nlinarith [$prodTerms,*]
+    | (simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib] at *
+       simp only [← Finset.mul_sum, ← Finset.sum_mul] at *
+       simp_all only [mul_one, one_mul, add_zero, zero_add]
+       first
+       | done
+       | (ring; done)
+       | linarith
+       | nlinarith [$prodTerms,*])
+    | (constructor <;> convex_comb; done)))
+
+/-- `markov_row_sum`: discharges row-stochastic mass-preservation, Markov kernel normalization,
+    convex mixtures of stochastic matrices, and Laplacian zero-row-sum obligations. -/
+syntax (name := markovRowSumTactic) "markov_row_sum" : tactic
+
+@[tactic markovRowSumTactic]
+def evalMarkovRowSum : Tactic := fun _ => do
+  try evalTactic (← `(tactic| intros)) catch _ => pure ()
+  unpackContextAndHyps
+  unpackContextAndHyps
+  instantiateLocalForallEqsAndBounds
+  let rowSumLemmas : Array (TSyntax `Lean.Parser.Tactic.simpLemma) ← withMainContext do
+    let mut acc : Array (TSyntax `Lean.Parser.Tactic.simpLemma) := #[]
+    let lctx ← getLCtx
+    for decl in lctx do
+      if !decl.isImplementationDetail then
+        let ty ← instantiateMVars decl.type
+        if (← isProp ty) && (ty.isForall || ty.isAppOfArity ``Eq 3) then
+          if acc.size < 16 then
+            let idStx := mkIdent decl.userName
+            acc := acc.push (← `(Lean.Parser.Tactic.simpLemma| $idStx:ident))
+    pure acc
+  evalTactic (← `(tactic|
+    first
+    | (simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.sum_mul] at *
+       simp_all only [mul_one, one_mul, add_zero, zero_add, sub_self]
+       first | done | (ring; done) | linarith)
+    | (dsimp only [Matrix.vecMul, Matrix.mulVec, Matrix.mul_apply, dotProduct]
+       first
+       | (rw [Finset.sum_comm]
+          simp only [← Finset.mul_sum, ← Finset.sum_mul, mul_one, one_mul, $rowSumLemmas,*]
+          first | done | (sum_congr_ring; done) | (ring; done))
+       | (simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.sum_mul]
+          try rw [Finset.sum_comm]
+          simp only [← Finset.mul_sum, ← Finset.sum_mul, mul_one, one_mul, $rowSumLemmas,*]
+          first | done | (sum_congr_ring; done) | (ring; done)))
+    | (simp only [Matrix.vecMul_eq_sum, Matrix.mulVec_eq_sum, Pi.smul_apply, smul_eq_mul, Finset.sum_apply]
+       rw [Finset.sum_comm]
+       simp only [← Finset.mul_sum, ← Finset.sum_mul, mul_one, one_mul, $rowSumLemmas,*]
+       first | done | (sum_congr_ring; done) | (ring; done))
+    | (calc_ring_sum; done)))
+
+/-- `matrix_pos`: discharges entrywise non-negativity and strict positivity of matrices,
+    transition kernels, matrix products, and finite concrete `Fin n` matrices. -/
+syntax (name := matrixPosTactic) "matrix_pos" : tactic
+
+@[tactic matrixPosTactic]
+def evalMatrixPos : Tactic := fun _ => do
+  try evalTactic (← `(tactic| intros)) catch _ => pure ()
+  unpackContextAndHyps
+  unpackContextAndHyps
+  instantiateLocalForallEqsAndBounds
+  evalTactic (← `(tactic|
+    first
+    | assumption
+    | (positivity; done)
+    | linarith
+    | omega
+    | (finset_nonneg; done)
+    | (dsimp only [Matrix.mul_apply, Matrix.vecMul, Matrix.mulVec, dotProduct, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.of_apply]
+       first
+       | (positivity; done)
+       | (finset_nonneg; done)
+       | linarith
+       | nlinarith
+       | (fin_cases ‹_› <;> first | (norm_num; done) | (decide; done) | (simp; done) | (fin_cases ‹_› <;> first | (norm_num; done) | (decide; done) | (simp; done))))
+    | (fin_cases ‹_› <;> first | (norm_num; done) | (decide; done) | (simp; done) | (fin_cases ‹_› <;> first | (norm_num; done) | (decide; done) | (simp; done)))))
+
 /-- `alt_proof`: ordered automated reduction cascade that attempts fast kernel-friendly
     closers (`rfl`, `assumption`, `bv_decide`, `decide`, `omega`, `ring`, `sum_congr_ring`,
-    `calc_ring_sum`, `finset_nonneg`, `finset_mono`, `gcongr_pos`, `positivity`, `linarith`,
-    `nlinarith`, `norm_num`, `eqsat_rw`, `contra_direct`, `backchain`, `aesop`). -/
+    `calc_ring_sum`, `finset_nonneg`, `finset_mono`, `convex_comb`, `markov_row_sum`, `matrix_pos`,
+    `gcongr_pos`, `positivity`, `linarith`, `nlinarith`, `norm_num`, `eqsat_rw`, `contra_direct`,
+    `backchain`, `aesop`). -/
 syntax (name := altProofTactic) "alt_proof" : tactic
 
 macro_rules
@@ -305,6 +505,9 @@ macro_rules
       | (calc_ring_sum; done)
       | (finset_nonneg; done)
       | (finset_mono; done)
+      | (convex_comb; done)
+      | (markov_row_sum; done)
+      | (matrix_pos; done)
       | gcongr_pos
       | (positivity; done)
       | linarith
@@ -418,6 +621,9 @@ def evalElegance : Tactic := fun stx =>
       ("calc_ring_sum", `(tactic| calc_ring_sum)),
       ("finset_nonneg", `(tactic| finset_nonneg)),
       ("finset_mono", `(tactic| finset_mono)),
+      ("convex_comb", `(tactic| convex_comb)),
+      ("markov_row_sum", `(tactic| markov_row_sum)),
+      ("matrix_pos", `(tactic| matrix_pos)),
       ("gcongr_pos", `(tactic| gcongr_pos)),
       ("positivity", `(tactic| positivity)),
       ("linarith", `(tactic| linarith)),
@@ -478,6 +684,11 @@ export AltProof.Tactics (
   specializePointwiseHyps
   evalFinsetNonneg
   evalFinsetMono
+  unpackContextAndHyps
+  instantiateLocalForallEqsAndBounds
+  evalConvexComb
+  evalMarkovRowSum
+  evalMatrixPos
   CandidateResult
   tryCandidateCloser
   tryBfsCandidateClosers
