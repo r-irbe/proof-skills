@@ -2,6 +2,7 @@
 """Unified CLI entrypoint for lean-altproof (`altproof <subcommand>`).
 
 Supports:
+  - altproof autoslim <file.lean> [--apply] [--mode auto|lsp|batch] [--allow-altproof-import]
   - altproof detect-v4 <file.lean> [--trace-root DIR] [--source-rel REL]
   - altproof dispatch [--goal GOAL] [--proof PROOF] [--self-test]
   - altproof rank [--lines N] [--shared-lemmas K] [--upstream] [--kernel-cost S]
@@ -27,6 +28,7 @@ if str(HERE) not in sys.path:
 
 
 SUBCOMMANDS = (
+    "autoslim",
     "detect-v4",
     "dispatch",
     "rank",
@@ -143,6 +145,7 @@ def main(argv: list[str] | None = None) -> int:
     if not args or args[0] in ("-h", "--help", "help"):
         print("usage: altproof <subcommand> [args]\n")
         print("subcommands:")
+        print("  autoslim        Run kernel-verified proof auto-slimmer (lean-analyzer + lean-lsp)")
         print("  detect-v4       Run .ilean / TraceIndex S2+S3 extraction detector on a Lean file")
         print("  dispatch        Run AltProof tactic advisor and two-axis legibility scorer")
         print("  rank            Compute two-axis B1 extraction-outranks + SAIR kernel cost")
@@ -157,6 +160,12 @@ def main(argv: list[str] | None = None) -> int:
     cmd = args[0]
     rest = args[1:]
 
+    if cmd in ("autoslim", "auto-slim", "auto_slim", "slim"):
+        if __package__:
+            from . import autoslim
+        else:
+            import autoslim
+        return autoslim.main(rest)
     if cmd in ("detect-v4", "detect_v4"):
         if __package__:
             from . import detect_v4

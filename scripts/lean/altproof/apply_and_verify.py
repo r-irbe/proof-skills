@@ -21,6 +21,10 @@ from pathlib import Path as _Path
 if str(_Path(__file__).resolve().parent) not in _sys.path:
     _sys.path.insert(0, str(_Path(__file__).resolve().parent))
 if __package__:
+    from .autoslim import run_autoslim
+else:
+    from autoslim import run_autoslim
+if __package__:
     from .candidate_patcher import patch_candidate
 else:
     from candidate_patcher import patch_candidate
@@ -94,17 +98,90 @@ def apply_and_verify_tactic(
     )
 
 
-def main() -> int:
+def verify_file_with_lean(
+    file_path: str | Path,
+    *,
+    apply: bool = False,
+    mode: str = "auto",
+    allow_altproof_import: bool = False,
+) -> PatchVerificationResult:
+    """Run real Lean 4 kernel-verified auto-slimming via `lean-autoslim`."""
+    target = Path(file_path).expanduser().resolve()
+    original_text = target.read_text(encoding="utf-8")
+    report = run_autoslim(
+        target,
+        apply=apply,
+        mode=mode,
+        allow_altproof_import=allow_altproof_import,
+    )
+    transformed_text = target.read_text(encoding="utf-8") if apply else original_text
+    accepted = int(report.get("verifiedCount", report.get("candidatesAccepted", 0)))
+    found = int(report.get("candidatesDiscovered", report.get("candidatesFound", 0)))
+    saved = int(report.get("netLinesSaved", report.get("totalLinesSaved", 0)))
+    mode_used = str(report.get("backendUsed", report.get("modeUsed", mode)))
+    notes = [
+        f"Kernel verification backend: {mode_used} (accepted {accepted}/{found}, saved {saved} lines)",
+    ]
+    for e in report.get("edits") or []:
+        notes.append(
+            f"{e.get('theoremName', '')} [{e.get('route', '')}] -> "
+            f"{e.get('newText', '')} (-{e.get('linesSaved', 0)} lines)"
+        )
+    return PatchVerificationResult(
+        file_path=str(target),
+        target_pattern="ALTPROOF-ROUTE",
+        success=accepted > 0,
+        original_text=original_text,
+        transformed_text=transformed_text,
+        tactic_recommendation=None,
+        verification_notes=notes,
+        verification_level=f"lean-kernel-{mode_used}",
+        lean_verified=True,
+        trust_audited=False,
+    )
+
+
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Propose a structural AltProof patch without Lean verification"
+        description="Propose a structural AltProof patch or run Lean kernel-verified auto-slimming"
     )
     parser.add_argument("file", type=Path, help="Target Lean 4 file")
-    parser.add_argument("--pattern", default="linarith", help="Target pattern to replace")
-    args = parser.parse_args()
+    parser.add_argument("--pattern", default="linarith", help="Target pattern to replace (structural mode)")
+    parser.add_argument(
+        "--kernel-verify",
+        action="store_true",
+        help="Verify proof replacements through Lean 4 via lean-autoslim",
+    )
+    parser.add_argument("--apply", action="store_true", help="Write verified slimmed file (with --kernel-verify)")
+    parser.add_argument(
+        "--mode",
+        choices=("auto", "lsp", "batch"),
+        default="auto",
+        help="Verification backend when --kernel-verify is active",
+    )
+    parser.add_argument(
+        "--allow-altproof-import",
+        action="store_true",
+        help="Permit custom AltProof tactics when --kernel-verify is active",
+    )
+    args = parser.parse_args(argv)
 
     if not args.file.exists():
         print(f"Error: {args.file} not found", file=sys.stderr)
         return 1
+
+    if args.kernel_verify:
+        res = verify_file_with_lean(
+            args.file,
+            apply=args.apply,
+            mode=args.mode,
+            allow_altproof_import=args.allow_altproof_import,
+        )
+        print(f"File: {res.file_path}")
+        print(f"Status: {'TRANSFORMED_KERNEL_VERIFIED' if res.success else 'NO_SLIMMING_CANDIDATES'}")
+        for n in res.verification_notes or []:
+            print(f"  - {n}")
+        return 0
 
     content = args.file.read_text(encoding="utf-8")
     res = apply_and_verify_tactic(content, file_path=str(args.file), target_pattern=args.pattern)
