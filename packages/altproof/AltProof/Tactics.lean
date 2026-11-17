@@ -6,60 +6,26 @@ SPDX-License-Identifier: Apache-2.0
 -/
 
 import AltProof.Core
-import Mathlib.Tactic.Ring
-import Mathlib.Tactic.Linarith
-import Mathlib.Tactic.Positivity
-import Mathlib.Tactic.NormNum
-import Mathlib.Tactic.GCongr
-import Mathlib.Tactic.Push
-import Mathlib.Algebra.BigOperators.Fin
-import Mathlib.Algebra.BigOperators.Field
-import Mathlib.Data.Matrix.Basic
-import Aesop
+import AltProof.Closers
 
 set_option autoImplicit false
 
 /-!
 # AltProof.Tactics -- Speculative Alternative-Proof & Elegance Meta-Tactics
 
-Production Layer-0 implementation of the AltProof tactic suite
-(`SPEC-ALT-PROOF-DES`, `ALT_PROOF_SAIR_BRIDGE`):
+Composes `AltProof.Core` (20-route advisor, `eqsat_rw`, `backchain`, `contra_direct`,
+`kernel_decide` / `sair_decide`, `eval_nat%`, `preunfold%`, `swar_unroll%`) and
+`AltProof.Closers` (`sum_congr_ring`, `calc_ring_sum`, `gcongr_pos`, `finset_nonneg`,
+`finset_mono`, `convex_comb`, `markov_row_sum`, `matrix_pos`, `sup_norm_scale`,
+`deriv_quot_ring`, and finite/norm bridge lemmas) into:
 
-1. **Core-Only Foundation (`AltProof.Core`, `import Lean` only)**:
-   - 20-route `routeTable`, `GoalFeatures` AST & local-context detector, `computeCostX10` ranker.
-   - `eqsat_rw` / `egg_rw`: pure-Lean bidirectional equality & congruence saturation (`congrArg` /
-     `congrFun` / `Eq.trans`) in `MetaM` with zero Rust FFI and 3-axiom clean proof reconstruction.
-   - `backchain`: bounded `solve_by_elim` backchaining wrapper over `Lean.Elab.Tactic.SolveByElim`.
-   - `grind_close`: bounded e-graph congruence & E-matching closer via core Lean `grind`.
-   - `contra_direct`: constructive negation / `Bool` / `Decidable` normalizer avoiding `Classical.choice`.
-   - `sair_decide`: strict 3-rung kernel-clean decision macro (`rfl | decide +kernel | omega`).
-   - `eval_nat%`, `preunfold%`, `swar_unroll%`: compile-time SAIR constant/combinator superoptimizers.
+1. **`alt_proof` Meta-Tactic**: ordered automated reduction cascade.
+2. **Speculative `elegance?` & `bfs_elegance?` Interactive Explorers**:
+   AST feature detection, `withoutModifyingState` heartbeat profiling, `computeCostX10`
+   ranking, and `TryThis` suggestion emission.
 
-2. **Mathlib-Tier Big-Operator & Monotonicity Closers**:
-   - `sum_congr_ring`: Normalizes `Finset.sum` linearity (`sum_add_distrib`, `sum_sub_distrib`,
-     `mul_sum`, `sum_mul`) and closes pointwise congruence goals via
-     `Finset.sum_congr rfl fun _ _ => by ring`.
-   - `calc_ring_sum`: Multi-step `Finset.sum` telescoping, double-sum commutation (`Finset.sum_comm`),
-     and scalar/linear ring normalization closer.
-   - `finset_nonneg`: Discharges `0 ≤ ∑ i ∈ s, f i` via `Finset.sum_nonneg` and
-     pointwise hypothesis instantiation (`specializePointwiseHyps`).
-   - `finset_mono`: Discharges `∑ i ∈ s, f i ≤ ∑ i ∈ s, g i` via `Finset.sum_le_sum`,
-     pointwise hypothesis instantiation (`specializePointwiseHyps`), and ordered-ring
-     monotonicity closers.
-   - `gcongr_pos`: Structural monotonicity congruence (`gcongr`) discharging all positivity and
-     linear side-goals automatically via `assumption | positivity | linarith | nlinarith | omega`.
-
-3. **`alt_proof` Meta-Tactic**:
-   Ordered automated reduction cascade (`rfl`, `assumption`, `sair_decide`, `bv_decide`, `decide`,
-   `omega`, `ring`, `eqsat_rw`, `backchain`, `contra_direct`, `sum_congr_ring`, `calc_ring_sum`,
-   `finset_nonneg`, `finset_mono`, `gcongr_pos`, `positivity`, `linarith`, `nlinarith`, `norm_num`,
-   `grind_close`, `aesop`).
-
-4. **Speculative `elegance?` & `bfs_elegance?` Tactics**:
-   - Filters `routeTable` (20 canonical routes) by relevance against `GoalFeatures`.
-   - Speculatively executes candidate closers inside `withoutModifyingState`, measuring exact
-     heartbeat consumption via `IO.getNumHeartbeats`, ranking succeeding closers by `computeCostX10`,
-     and emitting clickable `TryThis.addSuggestion` code actions.
+Production modules that only require non-interactive proof-body closers can import
+`AltProof.Closers` directly without pulling in interactive advisor infrastructure.
 -/
 
 open Lean Meta Elab Tactic
@@ -88,408 +54,26 @@ export AltProof.Core (
   buildUnrolledLoop
 )
 
-/-- `sum_congr_ring`: normalizes `Finset.sum` linear combinations (`sum_add_distrib`,
-    `sum_sub_distrib`, `sum_neg_distrib`, `mul_sum`, `sum_mul`, `sum_div`, scalar-sum factors,
-    and multi-sum linear combinations `a * ∑ f ± b * ∑ g ± c * ∑ h`) and discharges pointwise
-    ring equalities under `Finset.sum` via `Finset.sum_congr rfl fun _ _ => by ring`. Always
-    closes the goal or fails cleanly so `first` combinators can backtrack reliably. -/
-syntax (name := sumCongrRingTactic) "sum_congr_ring" : tactic
-
-macro_rules
-  | `(tactic| sum_congr_ring) => `(tactic|
-      first
-      | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring)
-      | (rw [← Finset.sum_sub_distrib]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))
-      | (rw [← Finset.sum_add_distrib]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))
-      | (rw [Finset.mul_sum]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))
-      | (rw [← Finset.mul_sum]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))
-      | (rw [Finset.sum_mul]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))
-      | (rw [← Finset.sum_mul]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))
-      | (rw [Finset.sum_div]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))
-      | (rw [← Finset.sum_div]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))
-      | (simp only [Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib, ← Finset.sum_neg_distrib];
-         first
-         | done
-         | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring)
-         | (rw [← Finset.mul_sum]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))
-         | (rw [← Finset.sum_mul]; first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); ring))))
-
-/-- `calc_ring_sum`: multi-step `Finset.sum` commutation (`Finset.sum_comm`), separable double-sum
-    factorization (`(∑ a, ∑ b, f a * g b) = (∑ a, f a) * (∑ b, g b)`), scalar distribution,
-    and telescoping closer extending `sum_congr_ring` to swapped double sums. -/
-syntax (name := calcRingSumTactic) "calc_ring_sum" : tactic
-
-macro_rules
-  | `(tactic| calc_ring_sum) => `(tactic|
-      first
-      | (sum_congr_ring; done)
-      | (rw [Finset.sum_comm]; sum_congr_ring; done)
-      | (simp_rw [← Finset.mul_sum]; sum_congr_ring; done)
-      | (rw [Finset.sum_mul]; simp_rw [Finset.mul_sum];
-         first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); sum_congr_ring; done))
-      | (rw [← Finset.sum_mul]; simp_rw [← Finset.mul_sum];
-         first | done | (refine Finset.sum_congr rfl (fun _ _ => ?_); sum_congr_ring; done))
-      | (simp only [Finset.mul_sum, Finset.sum_mul]; rw [Finset.sum_comm];
-         first
-         | done
-         | (refine Finset.sum_congr rfl (fun _ _ => ?_); sum_congr_ring; done)
-         | (refine Finset.sum_congr rfl (fun _ _ => ?_); refine Finset.sum_congr rfl (fun _ _ => ?_); ring; done))
-      | (rw [Finset.sum_sub_distrib]; ring; done)
-      | (rw [Finset.sum_add_distrib]; ring; done))
-
-/-- `gcongr_pos`: structural monotonicity congruence (`gcongr`) that automatically discharges
-    all side-conditions and leaf inequalities via `assumption`, `positivity`, `linarith`,
-    `nlinarith`, or `omega`. -/
-syntax (name := gcongrPosTactic) "gcongr_pos" : tactic
-
-macro_rules
-  | `(tactic| gcongr_pos) => `(tactic|
-      (gcongr <;> first | rfl | assumption | (positivity; done) | linarith | nlinarith | omega; done))
-
-/-- Instantiate universally quantified local hypotheses of the form `∀ x : α, ...`,
-    `∀ x ∈ s, ...`, `∀ x : α, ∀ j : κ, ...`, and 2-way conjunction predicates (such as
-    `hp : (∀ i, 0 ≤ p i) ∧ ∑ i, p i = 1` or WHNF-reducible `Coherent p` / `realRowStochastic M`)
-    at the freshly introduced index `iFVar` and membership `hiFVar` (and any secondary local
-    context variables `j : κ`) so pointwise arithmetic/positivity closers and nested sum tactics
-    can see them directly. Skips non-`Prop` function declarations (e.g., `f : ι → ℝ`) so local
-    context is not polluted with value terms. -/
-def specializePointwiseHyps (iFVar hiFVar : Expr) : TacticM Unit :=
-  withMainContext do
-    let iType ← inferType iFVar
-    let hiType ← inferType hiFVar
-    let lctx ← getLCtx
-    let mut ctxFVars : Array (Expr × Expr) := #[]
-    let mut propHyps : Array (Name × Expr × Expr) := #[]
-    for decl in lctx do
-      if !decl.isImplementationDetail && !decl.userName.hasMacroScopes then
-        let dTy ← instantiateMVars decl.type
-        if !(← isProp dTy) && !dTy.isForall then
-          ctxFVars := ctxFVars.push (decl.toExpr, dTy)
-      if !decl.isImplementationDetail && decl.fvarId != iFVar.fvarId! && decl.fvarId != hiFVar.fvarId! then
-        let ty ← instantiateMVars decl.type
-        if ← isProp ty then
-          propHyps := propHyps.push (decl.userName, decl.toExpr, ty)
-          if !ty.isForall && !ty.isAppOfArity ``Eq 3 && !ty.isAppOfArity ``LE.le 4
-              && !ty.isAppOfArity ``LT.lt 4 && !ty.isAppOfArity ``Not 1 then
-            let tyWhnf ← whnf ty
-            if tyWhnf.isAppOfArity ``And 2 then
-              try
-                let p1 := tyWhnf.getArg! 0
-                let p2 := tyWhnf.getArg! 1
-                let e1 ← mkAppM ``And.left #[decl.toExpr]
-                let e2 ← mkAppM ``And.right #[decl.toExpr]
-                let g1 ← getMainGoal
-                let (_, g2) ← g1.note (decl.userName.appendAfter "_fst") e1 p1
-                let (_, g3) ← g2.note (decl.userName.appendAfter "_snd") e2 p2
-                replaceMainGoal [g3]
-                propHyps := propHyps.push (decl.userName.appendAfter "_fst", e1, p1)
-                propHyps := propHyps.push (decl.userName.appendAfter "_snd", e2, p2)
-              catch _ => pure ()
-    for (baseName, hypExpr, ty) in propHyps do
-      if ty.isForall then
-        let dom := ty.bindingDomain!
-        if ← withoutModifyingState (isDefEq dom iType) then
-          try
-            let app1 ← mkAppM' hypExpr #[iFVar]
-            let app1Ty ← instantiateMVars (← inferType app1)
-            let val ← if app1Ty.isForall then
-              if ← withoutModifyingState (isDefEq app1Ty.bindingDomain! hiType) then
-                mkAppM' app1 #[hiFVar]
-              else
-                pure app1
-            else
-              pure app1
-            let valTy ← instantiateMVars (← inferType val)
-            let goal ← getMainGoal
-            let (_, goal') ← goal.note (baseName.appendAfter "_pt") val valTy
-            replaceMainGoal [goal']
-            if !valTy.isForall && !valTy.isAppOfArity ``Eq 3 && !valTy.isAppOfArity ``LE.le 4
-                && !valTy.isAppOfArity ``LT.lt 4 && !valTy.isAppOfArity ``Not 1 then
-              let valWhnf ← whnf valTy
-              if valWhnf.isAppOfArity ``And 2 then
-                try
-                  let vp1 := valWhnf.getArg! 0
-                  let vp2 := valWhnf.getArg! 1
-                  let ve1 ← mkAppM ``And.left #[val]
-                  let ve2 ← mkAppM ``And.right #[val]
-                  let ga ← getMainGoal
-                  let (_, gb) ← ga.note (baseName.appendAfter "_pt_fst") ve1 vp1
-                  let (_, gc) ← gb.note (baseName.appendAfter "_pt_snd") ve2 vp2
-                  replaceMainGoal [gc]
-                catch _ => pure ()
-            if valTy.isForall then
-              let dom2 := valTy.bindingDomain!
-              if !(← isProp dom2) then
-                for (fvarExpr, fvarTy) in ctxFVars do
-                  if fvarExpr.fvarId! != iFVar.fvarId! then
-                    if ← withoutModifyingState (isDefEq dom2 fvarTy) then
-                      let val2 ← mkAppM' val #[fvarExpr]
-                      let val2Ty ← instantiateMVars (← inferType val2)
-                      let g ← getMainGoal
-                      let (_, g') ← g.note (baseName.appendAfter "_pt2") val2 val2Ty
-                      replaceMainGoal [g']
-          catch _ => pure ()
-
-/-- `finset_nonneg`: discharges `0 ≤ ∑ i ∈ s, f i` (and nested double sums
-    `0 ≤ ∑ i, ∑ j, f i j`) by applying `Finset.sum_nonneg`, instantiating any
-    universally quantified or `And`-packaged local hypotheses `h : ∀ i, ...` or
-    `h : ∀ i ∈ s, ...` at the introduced summation index, and closing the pointwise
-    non-negativity obligation via `positivity`, `linarith`, `nlinarith`, `omega`,
-    `mul_assoc` + `solve_by_elim` (including `mul_self_nonneg`), recursive `finset_nonneg`,
-    or `aesop`. -/
-syntax (name := finsetNonnegTactic) "finset_nonneg" : tactic
-
-@[tactic finsetNonnegTactic]
-def evalFinsetNonneg : Tactic := fun _ => do
-  evalTactic (← `(tactic| apply Finset.sum_nonneg))
-  let goal ← getMainGoal
-  let (#[iFVar, hiFVar], goal') ← goal.introNP 2
-    | throwError "finset_nonneg: expected 2 binders after Finset.sum_nonneg"
-  replaceMainGoal [goal']
-  specializePointwiseHyps (.fvar iFVar) (.fvar hiFVar)
-  evalTactic (← `(tactic|
-    first
-    | (positivity; done)
-    | linarith
-    | nlinarith
-    | omega
-    | (solve_by_elim (maxDepth := 6) [mul_nonneg, mul_self_nonneg, add_nonneg, sq_nonneg, pow_nonneg, abs_nonneg, div_nonneg]; done)
-    | (simp only [mul_assoc]; solve_by_elim (maxDepth := 6) [mul_nonneg, mul_self_nonneg, add_nonneg, sq_nonneg, pow_nonneg, abs_nonneg, div_nonneg]; done)
-    | (finset_nonneg; done)
-    | (aesop; done)))
-
-/-- `finset_mono`: discharges `∑ i ∈ s, f i ≤ ∑ i ∈ s, g i` (and nested double sums
-    `∑ i, ∑ j, f i j ≤ ∑ i, ∑ j, g i j`) by applying `Finset.sum_le_sum`,
-    instantiating any universally quantified local hypotheses `h : ∀ i, ...` or
-    `h : ∀ i ∈ s, ...` at the introduced summation index, and closing the pointwise
-    inequality obligation `f i ≤ g i` via `rfl`, `assumption`, `linarith`, `nlinarith`,
-    `omega`, `positivity`, `gcongr_pos`, `solve_by_elim`, recursive `finset_mono`, or `aesop`. -/
-syntax (name := finsetMonoTactic) "finset_mono" : tactic
-
-@[tactic finsetMonoTactic]
-def evalFinsetMono : Tactic := fun _ => do
-  evalTactic (← `(tactic| apply Finset.sum_le_sum))
-  let goal ← getMainGoal
-  let (#[iFVar, hiFVar], goal') ← goal.introNP 2
-    | throwError "finset_mono: expected 2 binders after Finset.sum_le_sum"
-  replaceMainGoal [goal']
-  specializePointwiseHyps (.fvar iFVar) (.fvar hiFVar)
-  evalTactic (← `(tactic|
-    first
-    | rfl
-    | assumption
-    | linarith
-    | nlinarith
-    | omega
-    | (positivity; done)
-    | gcongr_pos
-    | (solve_by_elim (maxDepth := 6) [mul_le_mul_of_nonneg_left, mul_le_mul_of_nonneg_right, add_le_add, sub_le_sub_right, sub_le_sub_left, sq_nonneg, abs_nonneg, le_refl]; done)
-    | (finset_mono; done)
-    | (aesop; done)))
-
--- ============================================================================
--- AltProof v0.6.0 Domain Closers (`convex_comb`, `markov_row_sum`, `matrix_pos`)
--- ============================================================================
-
-/-- Unpack any WHNF-reducible 2-way conjunction hypotheses and `Matrix.rowStochastic`
-    membership hypotheses in the main goal's local context. -/
-def unpackContextAndHyps : TacticM Unit :=
-  withMainContext do
-    let env ← getEnv
-    let hasSumRow := env.contains `Matrix.sum_row_of_mem_rowStochastic
-    let hasNonnegRow := env.contains `Matrix.nonneg_of_mem_rowStochastic
-    let lctx ← getLCtx
-    for decl in lctx do
-      if !decl.isImplementationDetail && !decl.userName.hasMacroScopes then
-        let ty ← instantiateMVars decl.type
-        if ← isProp ty then
-          if hasSumRow then
-            try
-              let hSum ← mkAppM `Matrix.sum_row_of_mem_rowStochastic #[decl.toExpr]
-              let hSumTy ← instantiateMVars (← inferType hSum)
-              let g ← getMainGoal
-              let (_, g') ← g.note (decl.userName.appendAfter "_rowsum") hSum hSumTy
-              replaceMainGoal [g']
-            catch _ => pure ()
-          if hasNonnegRow then
-            try
-              let hNn ← mkAppM `Matrix.nonneg_of_mem_rowStochastic #[decl.toExpr]
-              let hNnTy ← instantiateMVars (← inferType hNn)
-              let g ← getMainGoal
-              let (_, g') ← g.note (decl.userName.appendAfter "_nonneg") hNn hNnTy
-              replaceMainGoal [g']
-            catch _ => pure ()
-          if !ty.isForall && !ty.isAppOfArity ``Eq 3 && !ty.isAppOfArity ``LE.le 4
-              && !ty.isAppOfArity ``LT.lt 4 && !ty.isAppOfArity ``Not 1 then
-            let tyWhnf ← whnf ty
-            if tyWhnf.isAppOfArity ``And 2 then
-              try
-                let p1 := tyWhnf.getArg! 0
-                let p2 := tyWhnf.getArg! 1
-                let e1 ← mkAppM ``And.left #[decl.toExpr]
-                let e2 ← mkAppM ``And.right #[decl.toExpr]
-                let g1 ← getMainGoal
-                let (_, g2) ← g1.note (decl.userName.appendAfter "_fst") e1 p1
-                let (_, g3) ← g2.note (decl.userName.appendAfter "_snd") e2 p2
-                replaceMainGoal [g3]
-              catch _ => pure ()
-
-/-- Instantiate universally quantified local hypotheses at matching local value variables. -/
-def instantiateLocalForallEqsAndBounds : TacticM Unit :=
-  withMainContext do
-    let lctx ← getLCtx
-    let mut valVars : Array (Expr × Expr) := #[]
-    let mut forallHyps : Array (Name × Expr × Expr) := #[]
-    for decl in lctx do
-      if !decl.isImplementationDetail && !decl.userName.hasMacroScopes then
-        let ty ← instantiateMVars decl.type
-        if !(← isProp ty) && !ty.isForall then
-          valVars := valVars.push (decl.toExpr, ty)
-        else if (← isProp ty) && ty.isForall then
-          forallHyps := forallHyps.push (decl.userName, decl.toExpr, ty)
-    for (baseName, hypExpr, ty) in forallHyps do
-      let dom1 := ty.bindingDomain!
-      for (v1, v1Ty) in valVars do
-        if ← withoutModifyingState (isDefEq dom1 v1Ty) then
-          try
-            let app1 ← mkAppM' hypExpr #[v1]
-            let app1Ty ← instantiateMVars (← inferType app1)
-            if !app1Ty.isForall then
-              let g ← getMainGoal
-              let (_, g') ← g.note (baseName.appendAfter "_inst") app1 app1Ty
-              replaceMainGoal [g']
-            if app1Ty.isForall then
-              let dom2 := app1Ty.bindingDomain!
-              for (v2, v2Ty) in valVars do
-                if ← withoutModifyingState (isDefEq dom2 v2Ty) then
-                  let app2 ← mkAppM' app1 #[v2]
-                  let app2Ty ← instantiateMVars (← inferType app2)
-                  if !app2Ty.isForall then
-                    let g ← getMainGoal
-                    let (_, g') ← g.note (baseName.appendAfter "_inst2") app2 app2Ty
-                    replaceMainGoal [g']
-          catch _ => pure ()
-
-/-- `convex_comb`: discharges convex-combination, affine-interpolation, and simplex-bound obligations. -/
-syntax (name := convexCombTactic) "convex_comb" : tactic
-
-@[tactic convexCombTactic]
-def evalConvexComb : Tactic := fun _ => do
-  try evalTactic (← `(tactic| intros)) catch _ => pure ()
-  unpackContextAndHyps
+export AltProof.Closers (
+  specializePointwiseHyps
+  evalFinsetNonneg
+  evalFinsetMono
   unpackContextAndHyps
   instantiateLocalForallEqsAndBounds
-  let linTerms : Array (TSyntax `term) ← withMainContext do
-    let mut acc : Array (TSyntax `term) := #[]
-    let lctx ← getLCtx
-    for decl in lctx do
-      if !decl.isImplementationDetail then
-        let ty ← instantiateMVars decl.type
-        if ty.isAppOfArity ``LE.le 4 then
-          let lhs := ty.getArg! 2
-          let rhs := ty.getArg! 3
-          try
-            let diff ← mkAppM ``HSub.hSub #[rhs, lhs]
-            let stx ← PrettyPrinter.delab diff
-            if acc.size < 8 then
-              acc := acc.push stx
-          catch _ => pure ()
-    pure acc
-  let mut prodTerms : Array (TSyntax `term) := #[]
-  for i in [:linTerms.size] do
-    for j in [i:linTerms.size] do
-      if prodTerms.size < 20 then
-        let ti := linTerms[i]!
-        let tj := linTerms[j]!
-        prodTerms := prodTerms.push (← `(mul_nonneg (by linarith : 0 ≤ $ti) (by linarith : 0 ≤ $tj)))
-  evalTactic (← `(tactic|
-    first
-    | (ring; done)
-    | linarith
-    | (positivity; done)
-    | nlinarith [$prodTerms,*]
-    | (simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib] at *
-       simp only [← Finset.mul_sum, ← Finset.sum_mul] at *
-       simp_all only [mul_one, one_mul, add_zero, zero_add]
-       first
-       | done
-       | (ring; done)
-       | linarith
-       | nlinarith [$prodTerms,*])
-    | (constructor <;> convex_comb; done)))
-
-/-- `markov_row_sum`: discharges row-stochastic mass-preservation, Markov kernel normalization,
-    convex mixtures of stochastic matrices, and Laplacian zero-row-sum obligations. -/
-syntax (name := markovRowSumTactic) "markov_row_sum" : tactic
-
-@[tactic markovRowSumTactic]
-def evalMarkovRowSum : Tactic := fun _ => do
-  try evalTactic (← `(tactic| intros)) catch _ => pure ()
-  unpackContextAndHyps
-  unpackContextAndHyps
-  instantiateLocalForallEqsAndBounds
-  let rowSumLemmas : Array (TSyntax `Lean.Parser.Tactic.simpLemma) ← withMainContext do
-    let mut acc : Array (TSyntax `Lean.Parser.Tactic.simpLemma) := #[]
-    let lctx ← getLCtx
-    for decl in lctx do
-      if !decl.isImplementationDetail then
-        let ty ← instantiateMVars decl.type
-        if (← isProp ty) && (ty.isForall || ty.isAppOfArity ``Eq 3) then
-          if acc.size < 16 then
-            let idStx := mkIdent decl.userName
-            acc := acc.push (← `(Lean.Parser.Tactic.simpLemma| $idStx:ident))
-    pure acc
-  evalTactic (← `(tactic|
-    first
-    | (simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.sum_mul] at *
-       simp_all only [mul_one, one_mul, add_zero, zero_add, sub_self]
-       first | done | (ring; done) | linarith)
-    | (dsimp only [Matrix.vecMul, Matrix.mulVec, Matrix.mul_apply, dotProduct]
-       first
-       | (rw [Finset.sum_comm]
-          simp only [← Finset.mul_sum, ← Finset.sum_mul, mul_one, one_mul, $rowSumLemmas,*]
-          first | done | (sum_congr_ring; done) | (ring; done))
-       | (simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.sum_mul]
-          try rw [Finset.sum_comm]
-          simp only [← Finset.mul_sum, ← Finset.sum_mul, mul_one, one_mul, $rowSumLemmas,*]
-          first | done | (sum_congr_ring; done) | (ring; done)))
-    | (simp only [Matrix.vecMul_eq_sum, Matrix.mulVec_eq_sum, Pi.smul_apply, smul_eq_mul, Finset.sum_apply]
-       rw [Finset.sum_comm]
-       simp only [← Finset.mul_sum, ← Finset.sum_mul, mul_one, one_mul, $rowSumLemmas,*]
-       first | done | (sum_congr_ring; done) | (ring; done))
-    | (calc_ring_sum; done)))
-
-/-- `matrix_pos`: discharges entrywise non-negativity and strict positivity of matrices,
-    transition kernels, matrix products, and finite concrete `Fin n` matrices. -/
-syntax (name := matrixPosTactic) "matrix_pos" : tactic
-
-@[tactic matrixPosTactic]
-def evalMatrixPos : Tactic := fun _ => do
-  try evalTactic (← `(tactic| intros)) catch _ => pure ()
-  unpackContextAndHyps
-  unpackContextAndHyps
-  instantiateLocalForallEqsAndBounds
-  evalTactic (← `(tactic|
-    first
-    | assumption
-    | (positivity; done)
-    | linarith
-    | omega
-    | (finset_nonneg; done)
-    | (dsimp only [Matrix.mul_apply, Matrix.vecMul, Matrix.mulVec, dotProduct, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.of_apply]
-       first
-       | (positivity; done)
-       | (finset_nonneg; done)
-       | linarith
-       | nlinarith
-       | (fin_cases ‹_› <;> first | (norm_num; done) | (decide; done) | (simp; done) | (fin_cases ‹_› <;> first | (norm_num; done) | (decide; done) | (simp; done))))
-    | (fin_cases ‹_› <;> first | (norm_num; done) | (decide; done) | (simp; done) | (fin_cases ‹_› <;> first | (norm_num; done) | (decide; done) | (simp; done)))))
+  evalConvexComb
+  evalMarkovRowSum
+  evalMatrixPos
+  sup'_const_mul_of_nonneg
+  fin_card_filter_Ico
+  natAbs_le_div_of_cast_abs_le
+  zero_sum_vecMul_l1_le_of_entry_floor
+)
 
 /-- `alt_proof`: ordered automated reduction cascade that attempts fast kernel-friendly
     closers (`rfl`, `assumption`, `bv_decide`, `decide`, `omega`, `ring`, `sum_congr_ring`,
     `calc_ring_sum`, `finset_nonneg`, `finset_mono`, `convex_comb`, `markov_row_sum`, `matrix_pos`,
-    `gcongr_pos`, `positivity`, `linarith`, `nlinarith`, `norm_num`, `eqsat_rw`, `contra_direct`,
-    `backchain`, `aesop`). -/
+    `sup_norm_scale`, `deriv_quot_ring`, `gcongr_pos`, `positivity`, `linarith`, `nlinarith`,
+    `norm_num`, `eqsat_rw`, `contra_direct`, `backchain`, `aesop`). -/
 syntax (name := altProofTactic) "alt_proof" : tactic
 
 macro_rules
@@ -508,6 +92,8 @@ macro_rules
       | (convex_comb; done)
       | (markov_row_sum; done)
       | (matrix_pos; done)
+      | (sup_norm_scale; done)
+      | (deriv_quot_ring; done)
       | gcongr_pos
       | (positivity; done)
       | linarith
@@ -546,8 +132,7 @@ def tryCandidateCloser (tacName : String) (tacStx : Syntax) (steps : Nat := 1) :
     catch _ =>
       return none
 
-/-- Bounded depth-$D$ ($D \le 3$) in-kernel `withoutModifyingState` Best-First Search
-    (`Proposal 9C` / `nanoproof` / `MiniF2F` in-kernel search). -/
+/-- Bounded depth-$D$ ($D \le 3$) in-kernel `withoutModifyingState` Best-First Search. -/
 def tryBfsCandidateClosers (feats : GoalFeatures) : TacticM (Array (CandidateResult × TSyntax `tactic)) := do
   let mut bfsCandidates : List (Nat × String × TacticM (TSyntax `tactic)) := [
     (2, "intros; alt_proof", `(tactic| (intros; alt_proof))),
@@ -567,6 +152,9 @@ def tryBfsCandidateClosers (feats : GoalFeatures) : TacticM (Array (CandidateRes
       (2, "intros; finset_nonneg", `(tactic| (intros; finset_nonneg)))
     ]
   bfsCandidates := bfsCandidates ++ [
+    (2, "norm_cast; alt_proof", `(tactic| (norm_cast; alt_proof))),
+    (2, "push_cast; ring", `(tactic| (push_cast; ring))),
+    (2, "field_simp; ring", `(tactic| (field_simp; ring))),
     (3, "intros; constructor <;> alt_proof", `(tactic| (intros; constructor <;> alt_proof)))
   ]
   let mut successes : Array (CandidateResult × TSyntax `tactic) := #[]
@@ -578,10 +166,10 @@ def tryBfsCandidateClosers (feats : GoalFeatures) : TacticM (Array (CandidateRes
     if a.costX10 != b.costX10 then a.costX10 < b.costX10 else a.heartbeats < b.heartbeats)
 
 /-- `bfs_elegance?`: Bounded depth-$D$ ($D \le 3$) in-kernel `withoutModifyingState` Best-First
-    Search explorer (`Proposal 9C`). -/
+    Search explorer. -/
 syntax (name := bfsEleganceTactic) "bfs_elegance?" : tactic
 
-/-- `elegance?`: AST-aware speculative route & tactic explorer (`SPEC-ALT-PROOF-DES`). -/
+/-- `elegance?`: AST-aware speculative route & tactic explorer. -/
 syntax (name := eleganceTactic) "elegance?" : tactic
 
 @[tactic eleganceTactic, tactic bfsEleganceTactic]
@@ -598,7 +186,6 @@ def evalElegance : Tactic := fun stx =>
     for r in relRoutes do
       logInfo m!"  * [{r.family}] {r.id}: {r.rewriteHint} ({r.costHint})"
 
-    -- Speculative candidate closer sweep in saved state (each probe gets a 200,000-heartbeat window, i.e. 200_000 * 1000)
     let runBoundedProbe (name : String) (tacStx : Syntax) (steps : Nat := 1) : TacticM (Option CandidateResult) :=
       withTheReader Core.Context ({ · with maxHeartbeats := 200000000 }) do
         tryCandidateCloser name tacStx (steps := steps)
@@ -610,7 +197,10 @@ def evalElegance : Tactic := fun stx =>
     let candidates : List (String × TacticM (TSyntax `tactic)) := bitVecCandidates ++ [
       ("rfl", `(tactic| rfl)),
       ("assumption", `(tactic| assumption)),
-      ("sair_decide", `(tactic| sair_decide)),
+      ("kernel_decide", `(tactic| kernel_decide)),
+      ("grind_close", `(tactic| grind_close)),
+      ("simp_all", `(tactic| (simp_all; done))),
+      ("norm_cast", `(tactic| (norm_cast; done))),
       ("backchain", `(tactic| backchain)),
       ("contra_direct", `(tactic| contra_direct)),
       ("decide", `(tactic| decide)),
@@ -624,6 +214,8 @@ def evalElegance : Tactic := fun stx =>
       ("convex_comb", `(tactic| convex_comb)),
       ("markov_row_sum", `(tactic| markov_row_sum)),
       ("matrix_pos", `(tactic| matrix_pos)),
+      ("sup_norm_scale", `(tactic| sup_norm_scale)),
+      ("deriv_quot_ring", `(tactic| deriv_quot_ring)),
       ("gcongr_pos", `(tactic| gcongr_pos)),
       ("positivity", `(tactic| positivity)),
       ("linarith", `(tactic| linarith)),
@@ -689,6 +281,10 @@ export AltProof.Tactics (
   evalConvexComb
   evalMarkovRowSum
   evalMatrixPos
+  sup'_const_mul_of_nonneg
+  fin_card_filter_Ico
+  natAbs_le_div_of_cast_abs_le
+  zero_sum_vecMul_l1_le_of_entry_floor
   CandidateResult
   tryCandidateCloser
   tryBfsCandidateClosers

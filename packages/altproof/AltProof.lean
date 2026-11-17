@@ -6,4 +6,5 @@ SPDX-License-Identifier: Apache-2.0
 -/
 
 import AltProof.Core
+import AltProof.Closers
 import AltProof.Tactics

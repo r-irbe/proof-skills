@@ -2,13 +2,17 @@ import Lake
 open Lake DSL
 
 package altproof where
-  version := v!"0.5.0"
+  version := v!"0.6.1"
   leanOptions := #[
     ⟨`autoImplicit, false⟩
   ]
 
 require mathlib from git
   "https://github.com/leanprover-community/mathlib4.git" @ "v4.34.1"
+
+lean_lib AltProofClosers where
+  srcDir := "."
+  roots := #[`AltProof.Closers]
 
 @[default_target]
 lean_lib AltProof where

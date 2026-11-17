@@ -5,7 +5,7 @@ Bridges to `lean4-lsp-mcp` (`bin/lean-tree-shake.js`) for `.ilean` reference-clo
 slicing, transitive import promotion, optional double-blind anonymization, and
 metadata-scrubbed `.tar.gz` artifact generation.
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free source).
 """
 
 from __future__ import annotations

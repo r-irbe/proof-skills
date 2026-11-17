@@ -437,4 +437,35 @@ theorem bfs_elegance_push_not_pin : ¬ (∀ n : Nat, n < 0) := by
   push Not
   exact ⟨0, by omega⟩
 
+/-! ### 5. AltProof.Closers v0.6.1 Harvested Domain Closers & Bridge Pins -/
+
+/-- `sup_norm_scale` factors non-negative scalar multipliers out of `Finset.sup'`. -/
+theorem sup_norm_scale_pin {ι : Type*} (s : Finset ι) (hs : s.Nonempty)
+    (c : ℝ) (hc : 0 ≤ c) (f : ι → ℝ) :
+    s.sup' hs (fun i => c * f i) = c * s.sup' hs f := by
+  sup_norm_scale
+
+/-- `deriv_quot_ring` clears denominators on quotient-difference identities in one step. -/
+theorem deriv_quot_ring_pin (Z E D : ℝ) (hZ : Z ≠ 0) :
+    (-D * E * Z - E * (-D * E)) / Z ^ 2 = -D * (E / Z) * (1 - E / Z) := by
+  deriv_quot_ring
+
+/-- `fin_card_filter_Ico` computes exact slice cardinality on `Fin N`. -/
+theorem fin_card_filter_Ico_pin :
+    (Finset.univ.filter (fun i : Fin 10 => 3 ≤ i.val ∧ i.val < 8)).card = 5 := by
+  rw [fin_card_filter_Ico]
+  norm_num
+
+/-- `natAbs_le_div_of_cast_abs_le` bridges real `|·|` bounds to integer `natAbs` floor bounds. -/
+theorem natAbs_le_div_pin (S : ℤ) (h : |(S : ℝ)| ≤ (9 : ℝ) / (2 : ℝ)) :
+    S.natAbs ≤ 4 :=
+  natAbs_le_div_of_cast_abs_le S 9 2 (by omega) h
+
+/-- `zero_sum_vecMul_l1_le_of_entry_floor` proves Doeblin zero-sum $\ell^1$ contraction. -/
+theorem doeblin_zero_sum_l1_pin
+    (M : Matrix (Fin 3) (Fin 3) ℝ) (hrow : ∀ i, ∑ j, M i j = 1)
+    (δ : ℝ) (hM : ∀ i j, δ ≤ M i j) (d : Fin 3 → ℝ) (hd0 : ∑ i, d i = 0) :
+    ∑ j, |∑ i, d i * M i j| ≤ (1 - 3 * δ) * ∑ i, |d i| := by
+  simpa using zero_sum_vecMul_l1_le_of_entry_floor M hrow δ hM d hd0
+
 end AltProof.Tests

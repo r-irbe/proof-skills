@@ -294,16 +294,22 @@ def filterRelevantRoutes (f : GoalFeatures) : List Route :=
 -- 2. Core Structural & Decision Tactics (`sair_decide`, `backchain`, `grind_close`, `contra_direct`)
 -- ============================================================================
 
-/-- `sair_decide`: strict 3-rung kernel-clean decision macro (`rfl | decide +kernel | omega`)
+/-- `kernel_decide`: strict 3-rung kernel-clean decision macro (`rfl | decide +kernel | omega`)
     preserving `[propext, Classical.choice, Quot.sound]` with zero `Lean.ofReduceBool`. -/
-syntax (name := sairDecideTactic) "sair_decide" : tactic
+syntax (name := kernelDecideTactic) "kernel_decide" : tactic
 
 macro_rules
-  | `(tactic| sair_decide) => `(tactic|
+  | `(tactic| kernel_decide) => `(tactic|
       first
       | rfl
       | decide +kernel
       | omega)
+
+/-- `sair_decide`: compatibility alias for `kernel_decide`. -/
+syntax (name := sairDecideTactic) "sair_decide" : tactic
+
+macro_rules
+  | `(tactic| sair_decide) => `(tactic| kernel_decide)
 
 /-- `backchain` / `backchain [lem1, lem2, ...]`: core-only bounded backchaining wrapper over
     `Lean.Elab.Tactic.SolveByElim` (`solve_by_elim`) with `maxDepth := 6`. Works in zero-Mathlib
