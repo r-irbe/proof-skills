@@ -21,7 +21,7 @@ from altproof.candidate_patcher import (
 def test_patch_list_pipeline():
     original = """
     def sumEvens (n : Nat) : Nat :=
-      (List.range n).map (fun x => x * 2) |>.foldl (+ + +) 0
+      (List.range n).map (fun x => x * 2) |>.foldl (\u00b7 + \u00b7) 0
     """
     patched, receipts = patch_list_pipeline(original)
     assert len(receipts) == 1
@@ -38,7 +38,7 @@ def test_apply_candidate_patch():
         estimated_kernel_speedup=3.5,
     )
     ec = evaluate_candidate(cand)
-    original = "(List.range n).map (fun x => x * 2) |>.foldl (+ + +) 0"
+    original = "(List.range n).map (fun x => x * 2) |>.foldl (\u00b7 + \u00b7) 0"
     patched, receipt = apply_candidate_patch(original, ec)
     assert receipt is not None
     assert "Finset.sum" in patched

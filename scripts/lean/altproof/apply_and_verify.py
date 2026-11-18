@@ -118,8 +118,10 @@ def verify_file_with_lean(
     accepted = int(report.get("verifiedCount", report.get("candidatesAccepted", 0)))
     found = int(report.get("candidatesDiscovered", report.get("candidatesFound", 0)))
     saved = int(report.get("netLinesSaved", report.get("totalLinesSaved", 0)))
-    mode_used = str(report.get("backendUsed", report.get("modeUsed", mode)))
-    verified = accepted > 0 and mode_used in {"batch", "lsp"}
+    mode_used = str(report.get("backendUsed", report.get("modeUsed", "unknown")))
+    verified = (accepted > 0 and mode_used in {"batch", "lsp"}
+                and report.get("completed", True) is True
+                and report.get("finalCheckPassed", True) is True)
     attempted = int(report.get("verificationAttempts", 0)) > 0 and mode_used in {"batch", "lsp"}
     notes = [
         f"Kernel verification backend: {mode_used} (accepted {accepted}/{found}, saved {saved} lines)",
@@ -132,7 +134,7 @@ def verify_file_with_lean(
     return PatchVerificationResult(
         file_path=str(target),
         target_pattern="ALTPROOF-ROUTE",
-        success=accepted > 0,
+        success=verified,
         original_text=original_text,
         transformed_text=transformed_text,
         tactic_recommendation=None,
@@ -181,10 +183,10 @@ def main(argv: list[str] | None = None) -> int:
             allow_altproof_import=args.allow_altproof_import,
         )
         print(f"File: {res.file_path}")
-        print(f"Status: {'TRANSFORMED_KERNEL_VERIFIED' if res.success else 'NO_SLIMMING_CANDIDATES'}")
+        print(f"Status: {'TRANSFORMED_KERNEL_VERIFIED' if res.success else 'NO_VERIFIED_TRANSFORMATION'}")
         for n in res.verification_notes or []:
             print(f"  - {n}")
-        return 0
+        return 0 if res.success else 2
 
     content = args.file.read_text(encoding="utf-8")
     res = apply_and_verify_tactic(content, file_path=str(args.file), target_pattern=args.pattern)

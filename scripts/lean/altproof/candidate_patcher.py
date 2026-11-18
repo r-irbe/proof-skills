@@ -20,7 +20,7 @@ else:
 
 @dataclass
 class PatchReceipt:
-    """Transformation receipt for an applied algorithmic substitution."""
+    """Structural substitution receipt; no Lean verification is performed."""
 
     theorem: str
     pattern: str
@@ -28,16 +28,16 @@ class PatchReceipt:
     patched_snippet: str
     lines_saved: float
     estimated_speedup: float
-    status: str = "applied"
+    status: str = "applied-unverified"
 
 
 def patch_list_pipeline(source_text: str) -> tuple[str, list[PatchReceipt]]:
-    """Transform inefficient List.range pipelines into direct Finset/structural folds."""
+    """Propose Finset folds; callers must verify types and equivalence with Lean."""
     receipts: list[PatchReceipt] = []
     
-    # Pattern: (List.range n).map (f) |>.foldl (+) 0 -> Finset.sum (Finset.range n) (f)
+    # A mapped range folded with addition and zero becomes a proposed Finset sum.
     pipeline_pattern = re.compile(
-        r"\(List\.range\s+(\w+)\)\.map\s+([^\n|]+)\s*\|\>\.foldl\s*\(\+\s*\+\s*\+\)\s*0"
+        r"\(List\.range\s+(\w+)\)\.map\s+([^\n|]+)\s*\|\>\.foldl\s*\(\s*\u00b7\s*\+\s*\u00b7\s*\)\s*0(?![\w.])"
     )
 
     def repl(m: re.Match) -> str:
@@ -50,7 +50,7 @@ def patch_list_pipeline(source_text: str) -> tuple[str, list[PatchReceipt]]:
                 pattern="list-pipeline-overhead",
                 original_snippet=m.group(0),
                 patched_snippet=patched,
-                lines_saved=1.0,
+                lines_saved=float(m.group(0).count("\n") - patched.count("\n")),
                 estimated_speedup=3.5,
             )
         )
@@ -75,14 +75,15 @@ def apply_candidate_patch(
             r.theorem = cand.theorem or r.theorem
             return new_text, r
 
-    # Fallback/stub receipt for high-level algorithm replacement
+    # Unsupported or unmatched candidates have no source transformation.
     receipt = PatchReceipt(
         theorem=cand.theorem,
         pattern=cand.pattern,
         original_snippet=cand.evidence,
-        patched_snippet=f"-- AltProof: substituted {cand.pattern} via {cand.suggested_replacement}",
-        lines_saved=evaluated_candidate.before_score.elegance_cost - evaluated_candidate.after_score.elegance_cost,
+        patched_snippet=cand.evidence,
+        lines_saved=0.0,
         estimated_speedup=cand.estimated_kernel_speedup,
+        status="not-applied",
     )
     return text, receipt
 
