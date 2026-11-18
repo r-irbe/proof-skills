@@ -10,7 +10,10 @@ Default `--mode check` launches neither Lean nor a build. It requires a complete
 successful schema-v2 receipt and verifies SHA-256 fingerprints of the current
 source/module set, compiled artifacts and sidecars, project configuration,
 adapter/helper, compiler executable and compiled import-library context. File
-size and timestamps are not evidence of unchanged contents. Missing/failed,
+size and mtime alone do not establish unchanged contents. Imported digests are
+reused only when resolved path, device, inode, size, mtime and ctime all match
+and the timestamp is at least two seconds old. Source and target artifact bytes
+are still hashed. `--rehash-imports` reads and hashes every import again. Missing/failed,
 malformed, legacy and stale receipts return nonzero and cannot be gate eligible.
 
 Use `--mode rebuild` explicitly to build the default target and every selected
@@ -47,3 +50,7 @@ Custom environment inputs are hashed without recording their values; transport
 variables (`CODEX_*`, `_`, `PWD`, `OLDPWD`, `SHLVL`) are not admitted build inputs.
 Freshness covers the recorded build context, not arbitrary external I/O or
 volatile transport inputs used by executable Lake configuration.
+
+Digest reuse relies on normal local-filesystem identity/ctime semantics. Strict
+rehash is available when independent byte reads are required. Producer snapshots
+before and after replay always perform full import hashing.

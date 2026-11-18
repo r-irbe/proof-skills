@@ -140,4 +140,20 @@ class ReceiptTests(unittest.TestCase):
         with patch.dict(os.environ,{'CUSTOM_LEAN_IMPORT_PATH':'new-context'}):
             self.assertEqual(self.inspect()['status'],'stale')
 
+    def test_unchanged_import_digest_is_reused_but_strict_mode_rehashes(self):
+        original=self.m.regular_bytes;reads=[]
+        def observed(file,*args):
+            reads.append(str(file));return original(file,*args)
+        future=max(entry['stat']['ctimeNs'] for item in self.data['contextHashes'].values() if isinstance(item,dict) and 'files' in item for entry in item['files'].values())+3_000_000_000
+        with patch.object(self.m.time,'time_ns',return_value=future),patch.object(self.m,'regular_bytes',side_effect=observed):
+            self.assertEqual(self.inspect()['status'],'verified')
+            self.assertNotIn(str(self.root/'deps/Dep.olean'),reads)
+            reads.clear()
+            self.assertEqual(self.m.inspect_receipt(self.root,'Fixture',self.receipt,rehash_imports=True)['status'],'verified')
+            self.assertIn(str(self.root/'deps/Dep.olean'),reads)
+
+    def test_dependency_bytes_changed_with_restored_mtime_are_stale(self):
+        file=self.root/'deps/Dep.olean';old=file.stat();file.write_bytes(b'new');os.utime(file,ns=(old.st_atime_ns,old.st_mtime_ns))
+        self.assertEqual(self.inspect()['status'],'stale')
+
 if __name__=='__main__':unittest.main()

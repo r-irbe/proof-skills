@@ -141,7 +141,7 @@ def confined(project, relative):
     return candidate
 
 
-def context_hashes(context):
+def context_hashes(context, cache=None):
     roots=context['libraryRoots']
     if not isinstance(roots,list) or not roots or len(set(roots))!=len(roots) or any(not isinstance(r,str) or not Path(r).is_absolute() for r in roots):
         raise ValueError('Invalid or empty compiled import context')
@@ -155,6 +155,8 @@ def context_hashes(context):
             result['library:'+raw] = None
             continue
         entries = {}
+        old_entries=(cache or {}).get('library:'+raw,{}) or {}
+        old_entries=old_entries.get('files',{})
         seen = set()
         def walk(directory):
             resolved = directory.resolve()
@@ -165,10 +167,20 @@ def context_hashes(context):
                 if item.is_dir():
                     walk(item)
                 elif item.name.endswith(('.olean', '.olean.server', '.olean.private')):
-                    entries[str(item.relative_to(root))] = {
-                        'path': str(item.resolve()),
-                        'sha256': hashlib.sha256(regular_bytes(item, 512*1024*1024)).hexdigest(),
-                    }
+                    relative=str(item.relative_to(root));info=item.lstat()
+                    if not stat.S_ISREG(info.st_mode):raise ValueError('Expected regular compiled import')
+                    identity={'device':info.st_dev,'inode':info.st_ino,'size':info.st_size,
+                              'mtimeNs':info.st_mtime_ns,'ctimeNs':info.st_ctime_ns}
+                    resolved=str(item.resolve());previous=old_entries.get(relative,{})
+                    reusable=(previous.get('path')==resolved and previous.get('stat')==identity
+                              and info.st_ino>0 and 2_000_000_000<=time.time_ns()-info.st_ctime_ns
+                              and isinstance(previous.get('sha256'),str)
+                              and re.fullmatch('[a-f0-9]{64}',previous['sha256']) is not None)
+                    hashed=previous['sha256'] if reusable else digest(item)
+                    final=item.lstat()
+                    if (info.st_dev,info.st_ino,info.st_size,info.st_mtime_ns,info.st_ctime_ns)!=(final.st_dev,final.st_ino,final.st_size,final.st_mtime_ns,final.st_ctime_ns):
+                        raise ValueError('Compiled import changed during hashing')
+                    entries[relative]={'path':resolved,'sha256':hashed,'stat':identity}
         walk(root)
         result['library:'+raw] = {'path':str(root.resolve()),'files':entries}
     return result
@@ -204,7 +216,7 @@ def result_record(status, receipt, reasons, data=None):
     return output
 
 
-def inspect_receipt(project, prefix, receipt):
+def inspect_receipt(project, prefix, receipt, rehash_imports=False):
     project = project.resolve()
     if not receipt.exists():
         return result_record('missing', receipt, ['No receipt; mode=rebuild is required'])
@@ -246,11 +258,14 @@ def inspect_receipt(project, prefix, receipt):
         if data['toolHashes'] != tool_hashes(): reasons.append('Census adapter/helper changed')
         if data['context']['environment'] != ambient_environment() or context['environmentFingerprint']!=environment_fingerprint(): reasons.append('Compiler/import environment changed')
         if Path(resolve_compiler(project)).resolve()!=Path(context['compilerPath']).resolve():reasons.append('Active compiler resolution changed')
-        if data['contextHashes'] != context_hashes(data['context']): reasons.append('Compiler/import artifacts changed')
+        if reasons:
+            return result_record('stale',receipt,reasons,data)
+        if data['contextHashes'] != context_hashes(data['context'],None if rehash_imports else data['contextHashes']): reasons.append('Compiler/import artifacts changed')
         if {str(p.relative_to(project)):digest(p) for p in source_files(project,prefix)} != sources:
             reasons.append('Sources changed during receipt check')
         if regular_bytes(receipt) != raw: reasons.append('Receipt changed during check')
         result=result_record('stale' if reasons else 'verified',receipt,reasons,data)
+        result['importHashPolicy']='full-rehash' if rehash_imports else 'verified-digest-plus-file-identity'
         result['receiptSha256']=hashlib.sha256(raw).hexdigest()
         result['contextFingerprint']=hashlib.sha256(json.dumps(data['contextHashes'],sort_keys=True).encode()).hexdigest()
         return result
@@ -366,13 +381,14 @@ def main(argv=None):
     parser.add_argument('--prefix',required=True)
     parser.add_argument('--receipt','--output',dest='receipt',type=Path,required=True)
     parser.add_argument('--mode',choices=['check','rebuild'],default='check')
+    parser.add_argument('--rehash-imports',action='store_true',help='Rehash every imported artifact instead of reusing verified file-identity digests')
     args=parser.parse_args(argv);start=time.monotonic()
     def interrupted(_signal, _frame):
         raise KeyboardInterrupt()
     signal.signal(signal.SIGTERM, interrupted)
     try:
         if args.mode == 'rebuild':rebuild(args.project_root,args.prefix,args.receipt)
-        result=inspect_receipt(args.project_root,args.prefix,args.receipt)
+        result=inspect_receipt(args.project_root,args.prefix,args.receipt,rehash_imports=args.rehash_imports)
     except KeyboardInterrupt:
         result=result_record('unverified',args.receipt,['Kernel census interrupted'])
     except (OSError,ValueError,RuntimeError,subprocess.SubprocessError) as error:
