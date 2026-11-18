@@ -4,6 +4,8 @@ import os
 from pathlib import Path
 import shutil
 import signal
+import subprocess
+import sys
 import tempfile
 import time
 import unittest
@@ -132,6 +134,72 @@ if __name__=='__main__':
         job=self.start()['job']['id'];self.settled(job);data=self.jobs.read_job(self.project,job)
         data['state']='running';data['worker']['boot']='previous-boot';data['worker']['namespace']='previous-namespace';self.jobs.write_job(self.project,data)
         result=self.jobs.status_job(self.project,'Fixture',job);self.assertEqual(result['job']['state'],'interrupted')
+
+
+    def test_concurrent_subprocess_starts_share_one_job_and_execution(self):
+        (self.project/'behavior').write_text('hang')
+        barrier=self.base/'release-controllers'
+        controllers=[]
+        launcher="""
+import pathlib,runpy,sys,time
+barrier=pathlib.Path(sys.argv[1]);ready=pathlib.Path(sys.argv[2]);script=sys.argv[3]
+arguments=sys.argv[4:];ready.write_text('ready');deadline=time.monotonic()+5
+while not barrier.exists():
+    if time.monotonic()>deadline:raise SystemExit('controller barrier timeout')
+    time.sleep(.005)
+sys.argv=[script]+arguments
+runpy.run_path(script,run_name='__main__')
+"""
+        def reap(process):
+            if process.poll() is None:process.kill()
+            process.wait(timeout=5)
+        for index in range(2):
+            ready=self.base/('controller-ready-'+str(index))
+            argv=[sys.executable,'-c',launcher,str(barrier),str(ready),
+                  str(self.toolkit/'kernel_census_jobs.py'),'--project-root',str(self.project),
+                  '--prefix','Fixture','--receipt',str(self.receipt),'--mode','start','--timeout-ms','10000']
+            process=subprocess.Popen(argv,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+            controllers.append((process,ready));self.addCleanup(reap,process)
+        deadline=time.monotonic()+5
+        while not all(ready.exists() for _,ready in controllers):
+            if time.monotonic()>deadline:self.fail('separate controllers did not reach the start barrier')
+            time.sleep(.005)
+        barrier.write_text('release')
+        results=[]
+        for process,_ in controllers:
+            stdout,stderr=process.communicate(timeout=10)
+            self.assertEqual(process.returncode,0,stderr+'\n'+stdout)
+            result=json.loads(stdout);self.ids.append(result['job']['id']);results.append(result)
+        self.assertEqual(results[0]['job']['id'],results[1]['job']['id'])
+        self.assertEqual(sum(result.get('deduplicated',False) is True for result in results),1)
+        self.wait_started()
+        self.assertEqual((self.project/'executions').read_text(),'run\n')
+        self.assertEqual(len(list(self.jobs.job_root(self.project).glob('*/job.json'))),1)
+
+    def test_progress_log_tail_is_bounded_for_build_and_replay(self):
+        self.receipt.parent.mkdir(parents=True)
+        content=b'old-line\n'*2000+b'latest-progress\n'
+        for suffix,phase in [('.build.log','building'),('.replay.log','kernel-replay')]:
+            with self.subTest(phase=phase):
+                log=self.receipt.with_suffix(suffix).with_name(self.receipt.with_suffix(suffix).name+'.tmp-12345')
+                log.write_bytes(content)
+                result=self.jobs.progress({'receiptPath':str(self.receipt),'state':'running','enginePid':12345})
+                self.assertEqual(result['phase'],phase)
+                self.assertEqual(result['logTail'],content[-4096:].decode())
+                self.assertLessEqual(len(result['logTail']),4096)
+                log.unlink()
+
+    def test_progress_refuses_symlink_log_without_disclosing_target(self):
+        self.receipt.parent.mkdir(parents=True)
+        outside=self.base/'unrelated-log';outside.write_text('unrelated-private-log-contents')
+        log=self.receipt.with_suffix('.build.log').with_name(self.receipt.with_suffix('.build.log').name+'.tmp-12345')
+        log.symlink_to(outside)
+        start=time.monotonic()
+        result=self.jobs.progress({'receiptPath':str(self.receipt),'state':'running','enginePid':12345})
+        self.assertLess(time.monotonic()-start,1)
+        self.assertEqual(result['logTail'],'')
+        self.assertNotIn('unrelated-private-log-contents',json.dumps(result))
+        self.assertEqual(outside.read_text(),'unrelated-private-log-contents')
 
 
 if __name__=='__main__':unittest.main()
