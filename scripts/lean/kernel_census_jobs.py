@@ -167,6 +167,7 @@ def status_job(project,prefix,job_id,rehash_imports=False):
 
 
 def validate_start(project,prefix,receipt,timeout_ms):
+    if '..' in receipt.parts:raise ValueError('Receipt parent path components are not canonical')
     if sys.platform!='linux' or not Path('/proc/self/stat').exists():raise ValueError('Durable census jobs currently require Linux/proc')
     if not project.is_dir() or not (project/'lean-toolchain').is_file():raise ValueError('Expected a Lean project')
     if re.fullmatch(r'[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*',prefix) is None:raise ValueError('Invalid module prefix')

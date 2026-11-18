@@ -202,4 +202,33 @@ runpy.run_path(script,run_name='__main__')
         self.assertEqual(outside.read_text(),'unrelated-private-log-contents')
 
 
+    def test_parent_component_receipt_alias_is_refused_before_new_job(self):
+        (self.project/'behavior').write_text('hang')
+        first=self.start();self.wait_started()
+        intermediary=self.receipt.parent/'intermediary';intermediary.mkdir()
+        alias=intermediary/'..'/self.receipt.name
+        with self.assertRaisesRegex(ValueError,'parent|canonical'):
+            duplicate=self.jobs.start_job(self.project,'Fixture',alias,timeout_ms=10000)
+            self.ids.append(duplicate['job']['id'])
+        controller=subprocess.run([sys.executable,str(self.toolkit/'kernel_census_jobs.py'),
+            '--project-root',str(self.project),'--prefix','Fixture','--receipt',str(alias),
+            '--mode','start','--timeout-ms','10000'],capture_output=True,text=True,timeout=5)
+        result=json.loads(controller.stdout)
+        if result.get('job',{}).get('id'):self.ids.append(result['job']['id'])
+        self.assertEqual(controller.returncode,2,controller.stderr)
+        self.assertEqual(result['status'],'unverified')
+        self.assertIn('canonical',str(result))
+        self.assertEqual(len(list(self.jobs.job_root(self.project).glob('*/job.json'))),1)
+        self.assertEqual((self.project/'executions').read_text(),'run\n')
+        self.assertTrue(self.jobs.worker_matches(self.jobs.read_job(self.project,first['job']['id'])))
+
+    def test_receipt_symlink_is_not_silently_resolved(self):
+        self.receipt.parent.mkdir(parents=True)
+        target=self.project/'other-receipt.json';target.write_text(json.dumps({'mutableCache':True}))
+        self.receipt.symlink_to(target)
+        with self.assertRaises((OSError,ValueError)):
+            self.jobs.start_job(self.project,'Fixture',self.receipt,timeout_ms=10000)
+        self.assertFalse(self.jobs.job_root(self.project).exists())
+        self.assertEqual(json.loads(target.read_text()),{'mutableCache':True})
+
 if __name__=='__main__':unittest.main()
