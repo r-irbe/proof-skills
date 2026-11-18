@@ -35,12 +35,12 @@ def resolve_lean_autoslim_bin(skills_root: Path | None = None) -> tuple[list[str
 
     here = Path(__file__).resolve()
     root = skills_root or here.parents[3]
-    search_candidates: list[Path] = [
-        root / "tools" / "lean-lsp-mcp" / "bin" / "lean-autoslim.js",
-        root / "packages" / "lean-analysis" / "bin" / "lean-autoslim.js",
-    ]
+    # Prefer the maintained host integration over an optional nested tooling clone.
+    search_candidates: list[Path] = [root / "packages" / "lean-analysis" / "bin" / "lean-autoslim.js"]
     for anc in root.parents:
         search_candidates.append(anc / "packages" / "lean-analysis" / "bin" / "lean-autoslim.js")
+    search_candidates.append(root / "tools" / "lean-lsp-mcp" / "bin" / "lean-autoslim.js")
+    for anc in root.parents:
         search_candidates.append(anc / "tools" / "lean-lsp-mcp" / "bin" / "lean-autoslim.js")
 
     for cand in search_candidates:
@@ -58,7 +58,7 @@ def resolve_lean_autoslim_bin(skills_root: Path | None = None) -> tuple[list[str
 
 
 def run_autoslim(
-    file_path: str | Path,
+    file_path: str | Path | list[str | Path],
     *,
     apply: bool = False,
     mode: str = "auto",
@@ -68,13 +68,15 @@ def run_autoslim(
     timeout_ms: int = 25000,
 ) -> dict[str, Any]:
     """Execute kernel-verified auto-slimmer on `file_path` and return parsed JSON report."""
-    target = Path(file_path).expanduser().resolve()
-    if not target.is_file():
-        raise FileNotFoundError(f"Lean file not found: {target}")
+    targets = [Path(p).expanduser().resolve() for p in (file_path if isinstance(file_path, list) else [file_path])]
+    if not targets:
+        raise ValueError("At least one Lean file is required")
+    for target in targets if not isinstance(file_path, list) else []:
+        if not target.is_file():
+            raise FileNotFoundError(f"Lean file not found: {target}")
 
     cmd_prefix, _ = resolve_lean_autoslim_bin()
-    cmd: list[str] = list(cmd_prefix) + [
-        str(target),
+    cmd: list[str] = list(cmd_prefix) + [str(target) for target in targets] + [
         "--json",
         "--mode",
         mode,
@@ -112,11 +114,21 @@ def run_autoslim(
 
     if not isinstance(payload, dict):
         raise RuntimeError("lean-autoslim JSON payload must be an object")
+    if proc.returncode != 0 and not (payload.get("kind") == "batch"
+            and payload.get("completed") is False and isinstance(payload.get("reports"), list)
+            and isinstance(payload.get("failures"), list)):
+        raise RuntimeError(f"lean-autoslim failed (exit={proc.returncode}): {proc.stderr.strip() or stdout[:400]}")
     return payload
 
 
 def format_autoslim_markdown(report: dict[str, Any]) -> str:
     """Render concise Markdown summary of an `AutoSlimReport` dict."""
+    if report.get("kind") == "batch":
+        return "\n\n".join([
+            f"## Batch fixes: {len(report.get('reports', []))}/{report.get('filesRequested', 0)} files processed",
+            *(format_autoslim_markdown(r) for r in report.get("reports", [])),
+            *(f"Failed: {r.get('filePath', '')}: {r.get('error', '')}" for r in report.get("failures", [])),
+        ])
     verified = int(report.get("verifiedCount", report.get("candidatesAccepted", 0)))
     discovered = int(report.get("candidatesDiscovered", report.get("candidatesFound", 0)))
     rejected_cnt = int(report.get("rejectedCount", report.get("candidatesRejected", 0)))
@@ -124,7 +136,7 @@ def format_autoslim_markdown(report: dict[str, Any]) -> str:
     bytes_saved = int(report.get("netBytesSaved", report.get("totalBytesSaved", 0)))
     backend = str(report.get("backendUsed", report.get("modeUsed", "unknown")))
     lines = [
-        f"## Kernel-Verified Auto-Slimmer (`{report.get('filePath', '')}`)",
+        f"## Auto-Slimmer (`{report.get('filePath', '')}`)",
         f"- **Backend:** `{backend}` (`applied={report.get('applied', False)}`)",
         f"- **Candidates:** `{verified}/{discovered}` verified (`{rejected_cnt}` rejected)",
         f"- **Delta:** `{report.get('linesBefore', 0)} -> {report.get('linesAfter', 0)}` lines "
@@ -152,7 +164,7 @@ def main(argv: list[str] | None = None) -> int:
         prog="altproof autoslim",
         description="Kernel-verified Lean 4 proof auto-slimmer (lean-analyzer + lean-lsp)",
     )
-    parser.add_argument("file", type=Path, help="Target .lean file")
+    parser.add_argument("files", type=Path, nargs="+", help="Target .lean files")
     parser.add_argument("--apply", action="store_true", help="Write verified slimmed file atomically")
     parser.add_argument(
         "--mode",
@@ -179,7 +191,7 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         report = run_autoslim(
-            args.file,
+            args.files if len(args.files) > 1 else args.files[0],
             apply=args.apply,
             mode=args.mode,
             allow_altproof_import=args.allow_altproof_import,
@@ -195,7 +207,7 @@ def main(argv: list[str] | None = None) -> int:
         print(format_autoslim_markdown(report))
     else:
         print(json.dumps(report, indent=2))
-    return 0
+    return 1 if report.get("kind") == "batch" and report.get("completed") is False else 0
 
 
 if __name__ == "__main__":

@@ -119,6 +119,8 @@ def verify_file_with_lean(
     found = int(report.get("candidatesDiscovered", report.get("candidatesFound", 0)))
     saved = int(report.get("netLinesSaved", report.get("totalLinesSaved", 0)))
     mode_used = str(report.get("backendUsed", report.get("modeUsed", mode)))
+    verified = accepted > 0 and mode_used in {"batch", "lsp"}
+    attempted = int(report.get("verificationAttempts", 0)) > 0 and mode_used in {"batch", "lsp"}
     notes = [
         f"Kernel verification backend: {mode_used} (accepted {accepted}/{found}, saved {saved} lines)",
     ]
@@ -135,8 +137,9 @@ def verify_file_with_lean(
         transformed_text=transformed_text,
         tactic_recommendation=None,
         verification_notes=notes,
-        verification_level=f"lean-kernel-{mode_used}",
-        lean_verified=True,
+        verification_level=(f"lean-kernel-{mode_used}" if verified else
+                            f"lean-kernel-{mode_used}-rejected" if attempted else "not-performed"),
+        lean_verified=verified,
         trust_audited=False,
     )
 
