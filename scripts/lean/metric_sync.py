@@ -14,6 +14,9 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from lean_source_lex import neutralize_lean_source
+
 
 def compute_lean_metrics(lean_dir: Path) -> dict[str, int]:
     """Compute actual metrics from the Lean codebase."""
@@ -26,18 +29,25 @@ def compute_lean_metrics(lean_dir: Path) -> dict[str, int]:
         "module_count": 0,
     }
 
-    theorem_pattern = re.compile(r"^theorem\s+", re.MULTILINE)
-    lemma_pattern = re.compile(r"^lemma\s+", re.MULTILINE)
-    def_pattern = re.compile(r"^(def|structure|inductive|class)\s+", re.MULTILINE)
+    prefix = r"^\s*(?:@\[[^\]]*\]\s*)*(?:(?:private|protected|public|noncomputable|unsafe|partial|local|meta)\s+)*"
+    theorem_pattern = re.compile(prefix + r"theorem\s+", re.MULTILINE)
+    lemma_pattern = re.compile(prefix + r"lemma\s+", re.MULTILINE)
+    def_pattern = re.compile(prefix + r"(?:def|structure|inductive|class|abbrev)\s+", re.MULTILINE)
     sorry_pattern = re.compile(r"\bsorry\b")
 
-    for lean_file in sorted(lean_dir.glob("*.lean")):
+    if not lean_dir.is_dir():
+        raise ValueError(f"Lean directory does not exist: {lean_dir}")
+    for lean_file in sorted(lean_dir.rglob("*.lean")):
+        if any(part.startswith(".") for part in lean_file.relative_to(lean_dir).parts):
+            continue
         metrics["module_count"] += 1
         with open(lean_file, encoding="utf-8") as f:
             content = f.read()
             lines = content.splitlines()
 
         metrics["total_lines"] += len(lines)
+        content = neutralize_lean_source(content)
+        content = re.sub(r"«[^»]*»", lambda m: "".join("\n" if c == "\n" else " " for c in m.group()), content)
         metrics["total_theorems"] += len(theorem_pattern.findall(content))
         metrics["total_lemmas"] += len(lemma_pattern.findall(content))
         metrics["total_definitions"] += len(def_pattern.findall(content))
@@ -54,6 +64,7 @@ def extract_paper_metrics(paper_path: Path) -> dict[str, int | None]:
         "total_lines": None,
         "total_theorems": None,
         "total_definitions": None,
+        "total_lemmas": None,
         "total_sorry": None,
         "module_count": None,
     }
@@ -64,41 +75,16 @@ def extract_paper_metrics(paper_path: Path) -> dict[str, int | None]:
     with open(paper_path, encoding="utf-8") as f:
         content = f.read()
 
-    # Common patterns in LaTeX for stating metrics
-    patterns = {
-        "total_lines": [
-            r"(\d[\d,]+)\s*lines?\s*of\s*(?:Lean|formal)",
-            r"lines?\s*(?:of\s*code)?[:\s]*(\d[\d,]+)",
-        ],
-        "total_theorems": [
-            r"(\d[\d,]+)\s*theorems?",
-            r"theorems?[:\s]*(\d[\d,]+)",
-        ],
-        "total_definitions": [
-            r"(\d[\d,]+)\s*definitions?",
-        ],
-        "total_sorry": [
-            r"(\d+)\s*sorry",
-            r"sorry[:\s]*(\d+)",
-            r"zero\s*sorry",
-        ],
-        "module_count": [
-            r"(\d+)\s*modules?",
-            r"modules?[:\s]*(\d+)",
-        ],
-    }
-
-    for key, pats in patterns.items():
-        for pat in pats:
-            m = re.search(pat, content, re.IGNORECASE)
-            if m:
-                if "zero" in pat.lower():
-                    metrics[key] = 0
-                else:
-                    val = m.group(1).replace(",", "")
-                    metrics[key] = int(val)
-                break
-
+    # Explicit source metrics avoid conflating compiled declarations or unrelated
+    # theorem counts in prose with this recursive textual source census.
+    explicit = {}
+    for key, value in re.findall(r"^%\s*lean-metric\s+(\w+)\s*:\s*(\d+)\s*$", content, re.MULTILINE):
+        if key in explicit and explicit[key] != value:
+            raise ValueError(f"Conflicting paper claims for {key}")
+        explicit[key] = value
+    for key in metrics:
+        if key in explicit:
+            metrics[key] = int(explicit[key])
     return metrics
 
 
@@ -112,8 +98,20 @@ def main():
     )
     args = parser.parse_args()
 
-    actual = compute_lean_metrics(args.lean_dir)
-    paper = extract_paper_metrics(args.paper)
+    if not args.paper.is_file():
+        parser.error(f"Paper does not exist: {args.paper}")
+    try:
+        actual = compute_lean_metrics(args.lean_dir)
+    except ValueError as exc:
+        parser.error(str(exc))
+    if actual["module_count"] == 0:
+        parser.error("No Lean source files in the requested coverage set")
+    try:
+        paper = extract_paper_metrics(args.paper)
+    except ValueError as exc:
+        parser.error(str(exc))
+    print(f"Source coverage: {args.lean_dir.resolve()}, recursive, hidden directories excluded")
+    print("Counts are lexical source metrics, not a kernel census. Paper claims require % lean-metric KEY: VALUE.")
 
     print("Metric Sync Report")
     print("=" * 60)
@@ -166,7 +164,7 @@ def main():
         sys.exit(1)
     elif unknowns > 0:
         print(f"WARN: {unknowns} metric(s) not found in paper (may need manual check)")
-        sys.exit(0)
+        sys.exit(2)
     else:
         print("OK: All metrics in sync")
         sys.exit(0)

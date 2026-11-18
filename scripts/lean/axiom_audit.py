@@ -32,6 +32,9 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from lean_source_lex import neutralize_lean_source
+
 # Axioms that are expected and acceptable
 EXPECTED_AXIOMS = {
     'propext',           # Propositional extensionality (Lean core)
@@ -66,7 +69,7 @@ DECLARATION_RE = re.compile(
     r'^(?P<attrs>(?:@\[[^\]]*\]\s*)*)'
     r'(?P<modifiers>(?:(?:private|local|protected|noncomputable|unsafe|partial|meta)\s+)*)'
     r'(?P<kind>theorem|lemma|instance|example|def)\b'
-    r'(?:\s+(?P<name>[^\s(:{\[\u27e8|]+))?'
+    r'(?:\s+(?P<name>(?:«[^»]*»|[^\s(:{\[\u27e8|«»])+))?'
     r'(?P<rest>.*)$'
 )
 # A `def` is only audit-relevant when it carries @[simp] AND returns Prop
@@ -82,7 +85,7 @@ PROP_RETURN_RE = re.compile(r':\s*[^:=]*\bProp\b')
 RAW_AXIOM_RE = re.compile(
     r'^(?:@\[[^\]]*\]\s*)*'
     r'(?:(?:private|local|protected|noncomputable|unsafe|partial|meta)\s+)*'
-    r'axiom\s+(?P<name>[^\s(:{]+)'
+    r'axiom\s+(?P<name>(?:«[^»]*»|[^\s(:{«»])+)'
 )
 
 
@@ -208,7 +211,7 @@ def extract_theorems_from_file(lean_file: Path) -> list[dict]:
     names: list[dict] = []
 
     with open(lean_file, encoding='utf-8') as f:
-        source = strip_comments_preserving_newlines(f.read())
+        source = neutralize_lean_source(f.read())
 
     for raw_line in source.splitlines():
         line = raw_line.strip()
@@ -219,6 +222,10 @@ def extract_theorems_from_file(lean_file: Path) -> list[dict]:
         if namespace_match is not None:
             name = namespace_match.group(1)
             scope_stack.append(('namespace', name, resolve_namespace_name(name, scope_stack)))
+            continue
+
+        if line == "mutual":
+            scope_stack.append(("mutual", None, None))
             continue
 
         section_match = SECTION_RE.match(line)
@@ -323,7 +330,7 @@ def extract_raw_axioms_from_file(lean_file: Path) -> list[tuple[int, str]]:
     them and how `PROJECT_EXPECTED_AXIOMS` is keyed).
     """
     with open(lean_file, encoding='utf-8') as f:
-        source = strip_comments_preserving_newlines(f.read())
+        source = neutralize_lean_source(f.read())
 
     scope_stack: list[tuple[str, str | None, str | None]] = []
     findings: list[tuple[int, str]] = []
@@ -335,6 +342,9 @@ def extract_raw_axioms_from_file(lean_file: Path) -> list[tuple[int, str]]:
         if ns_match is not None:
             name = ns_match.group(1)
             scope_stack.append(('namespace', name, resolve_namespace_name(name, scope_stack)))
+            continue
+        if line == "mutual":
+            scope_stack.append(("mutual", None, None))
             continue
         sec_match = SECTION_RE.match(line)
         if sec_match is not None:
@@ -458,6 +468,15 @@ def parse_axiom_output(theorems: dict[str, list[str]], axiom_output: Path,
     }
     errors: list[str] = []
     unmapped: list[str] = []
+    seen: set[str] = set()
+
+    def record(name, axioms):
+        if name in seen:
+            errors.append(f'Duplicate axiom result for {name}')
+            return
+        seen.add(name)
+        record_theorem_report(name, axioms, theorem_to_module, module_data, unmapped)
+
     pending_theorem: str | None = None
     pending_axiom_lines: list[str] = []
 
@@ -473,13 +492,7 @@ def parse_axiom_output(theorems: dict[str, list[str]], axiom_output: Path,
                 pending_axiom_lines.append(line)
                 if ']' not in line:
                     continue
-                record_theorem_report(
-                    pending_theorem,
-                    parse_axiom_list('\n'.join(pending_axiom_lines)),
-                    theorem_to_module,
-                    module_data,
-                    unmapped,
-                )
+                record(pending_theorem, parse_axiom_list('\n'.join(pending_axiom_lines)))
                 pending_theorem = None
                 pending_axiom_lines = []
                 continue
@@ -505,7 +518,10 @@ def parse_axiom_output(theorems: dict[str, list[str]], axiom_output: Path,
             if theorem_name is None:
                 continue
 
-            record_theorem_report(theorem_name, axioms, theorem_to_module, module_data, unmapped)
+            record(theorem_name, axioms)
+
+    if pending_theorem is not None:
+        errors.append(f'Unterminated axiom result for {pending_theorem}')
 
     # W37-B4-a1: inject raw `axiom` declarations into the reported channel.
     if raw_axioms:
@@ -718,7 +734,7 @@ def load_expected_axioms(path: Path | None) -> set[str]:
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Lean 4 axiom contamination audit')
+    parser = argparse.ArgumentParser(description='Lean 4 axiom contamination audit', allow_abbrev=False)
     parser.add_argument('--lean-dir', type=Path, default=Path('MyProject'),
                         help='Directory containing .lean files')
     parser.add_argument('--project', default='MyProject',
@@ -738,6 +754,10 @@ def main():
         PROJECT_EXPECTED_AXIOMS = load_expected_axioms(args.expected_axioms)
     except (OSError, json.JSONDecodeError, ValueError) as exc:
         print(f"error: could not load --expected-axioms: {exc}", file=sys.stderr)
+        sys.exit(2)
+
+    if any(a == "--axiom-output" or a.startswith("--axiom-output=") for a in sys.argv[1:]) and not args.axiom_output.is_file() and not args.generate_script:
+        print(f"error: missing kernel capture: {args.axiom_output}", file=sys.stderr)
         sys.exit(2)
 
     theorems = extract_theorems(args.lean_dir)
@@ -797,6 +817,16 @@ def main():
             f.write(script_content)
         print(f"Lean axiom check script written to {script_path}")
         print(f"Run: lake env lean {script_path}")
+
+    if delta > 0:
+        sys.exit(1)
+    if analysis is None:
+        print('Kernel coverage not checked: no captured output; source scan only.')
+    elif (capture_stale or analysis['errors'] or analysis['unmapped']
+          or analysis['forbidden_module_count'] or analysis['unexpected_module_count']
+          or any(info['missing'] for info in analysis['modules'].values())):
+        print('FAIL: kernel capture has errors, forbidden dependencies or incomplete named coverage.')
+        sys.exit(1)
 
 
 if __name__ == '__main__':
