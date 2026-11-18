@@ -108,3 +108,17 @@ def test_partial_batch_preserves_receipt_and_cli_failure(tmp_path, monkeypatch, 
     assert autoslim.run_autoslim([present, missing]) == payload
     assert autoslim.main([str(present), str(missing)]) == 1
     assert json.loads(capsys.readouterr().out) == payload
+
+
+def test_ranking_controls_forward_without_changing_verification(tmp_path, monkeypatch):
+    target = tmp_path / "Demo.lean"
+    target.write_text("theorem demo : True := by trivial\n")
+    monkeypatch.setattr(autoslim, "resolve_lean_autoslim_bin", lambda: (["node", "demo.js"], target))
+    seen = []
+    def run(cmd, **kwargs):
+        seen.extend(cmd)
+        return SimpleNamespace(returncode=0, stdout="{}", stderr="")
+    monkeypatch.setattr(autoslim.subprocess, "run", run)
+    autoslim.run_autoslim(target, ranking_history_path=tmp_path / "history.json", rank_by_size=False)
+    assert seen[seen.index("--ranking-history") + 1] == str(tmp_path / "history.json")
+    assert "--source-order" in seen

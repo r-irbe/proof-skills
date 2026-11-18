@@ -539,6 +539,24 @@ class SubprocessE2ETests(unittest.TestCase):
         finally:
             env.stop()
 
+    def test_attach_survives_idle_connection_timeout(self):
+        env = BrokerEnv(os.path.join(self.tmp_dir, "root"))
+        env.start()
+        try:
+            cli = env.attach()
+            try:
+                rid = cli.request("initialize", {})
+                cli.wait_response(rid)
+                # The connect deadline must not become a persistent read deadline.
+                time.sleep(1.5)
+                rid = cli.request("work/echo", {"after_idle": True})
+                response = cli.wait_response(rid)
+                self.assertEqual(response["result"]["echo"], {"after_idle": True})
+            finally:
+                cli.close()
+        finally:
+            env.stop()
+
     def test_did_open_broadcasts_diagnostics(self):
         env = BrokerEnv(os.path.join(self.tmp_dir, "root"))
         env.start()

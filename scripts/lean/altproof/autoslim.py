@@ -69,6 +69,8 @@ def run_autoslim(
     checkpoint_dir: str | Path | None = None,
     resume: bool = True,
     group_size: int = 4,
+    ranking_history_path: str | Path | None = None,
+    rank_by_size: bool = True,
     max_verification_attempts: int | None = None,
 ) -> dict[str, Any]:
     """Execute kernel-verified auto-slimmer on `file_path` and return parsed JSON report."""
@@ -98,6 +100,10 @@ def run_autoslim(
         cmd.append("--fresh")
     if max_verification_attempts is not None:
         cmd.extend(["--max-attempts", str(max_verification_attempts)])
+    if ranking_history_path is not None:
+        cmd.extend(["--ranking-history", str(Path(ranking_history_path).expanduser().absolute())])
+    if not rank_by_size:
+        cmd.append("--source-order")
     if allow_altproof_import:
         cmd.append("--allow-altproof-import")
     for r in routes or []:
@@ -207,6 +213,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--timeout-ms", type=int, default=25000, help="Per-attempt timeout in milliseconds")
     parser.add_argument("--checkpoint-dir", type=Path, help="Durable progress directory")
     parser.add_argument("--fresh", action="store_true", help="Ignore previous matching progress")
+    parser.add_argument("--ranking-history", type=Path, help="Optional route/tactic outcome history")
+    parser.add_argument("--source-order", action="store_true", help="Visit candidates in source order")
     parser.add_argument("--group-size", type=int, default=4, help="Candidates per compiler group (1..32)")
     parser.add_argument("--max-attempts", type=int, help="Compiler attempt budget including final check")
     parser.add_argument("--markdown", action="store_true", help="Emit Markdown summary instead of JSON")
@@ -224,6 +232,8 @@ def main(argv: list[str] | None = None) -> int:
             checkpoint_dir=args.checkpoint_dir,
             resume=not args.fresh,
             group_size=args.group_size,
+            ranking_history_path=args.ranking_history,
+            rank_by_size=not args.source_order,
             max_verification_attempts=args.max_attempts,
         )
     except Exception as exc:

@@ -712,6 +712,9 @@ def cmd_attach(root: str) -> NoReturn:
     if conn is None:
         die("could not reach or start broker for %s" % root, 4)
 
+    # Connection establishment is bounded; the persistent relay may be idle
+    # while Lean elaborates. A socket timeout here would close stdout silently.
+    conn.settimeout(None)
     signal.signal(signal.SIGPIPE, signal.SIG_IGN)
 
     def pump(read_fn, send_fn, close_fn):
