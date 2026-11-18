@@ -31,3 +31,9 @@ skill_ref: "skills/lean-verification-gate/SKILL.md"
 | :--- | :--- | :--- |
 | `depends on axiom sorryAx` | Unfinished subgoal or upstream `sorry` import | Locate culprit via `lean_axiom_closure` and route to `@lean-proof` |
 | `depends on axiom Lean.ofReduceBool` | `native_decide` or `bv_decide` used in strict kernel lane | Replace with `sair_decide` (`rfl |
+
+## Compiled kernel receipts
+
+For compiled proof coverage and SHA-based freshness, use
+[compiled-kernel-census](../protocols/compiled-kernel-census.md).
+Static source census and source axiom scans are different evidence classes.
