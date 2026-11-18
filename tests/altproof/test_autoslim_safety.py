@@ -7,6 +7,47 @@ from altproof import autoslim
 from altproof import apply_and_verify
 
 
+def test_wrapper_preserves_symlink_paths_for_strict_engine_validation(tmp_path, monkeypatch):
+    real = tmp_path / "real.lean"
+    real.write_text("theorem demo : True := by trivial\n")
+    alias = tmp_path / "alias.lean"
+    alias.symlink_to(real)
+    directory = tmp_path / "directory"
+    directory.mkdir()
+    link = tmp_path / "progress"
+    link.symlink_to(directory, target_is_directory=True)
+    seen = []
+    monkeypatch.setattr(autoslim, "resolve_lean_autoslim_bin", lambda: (["node", "demo.js"], real))
+    def run(cmd, **kwargs):
+        seen[:] = cmd
+        return SimpleNamespace(returncode=0, stdout="{}", stderr="")
+    monkeypatch.setattr(autoslim.subprocess, "run", run)
+    autoslim.run_autoslim(alias, checkpoint_dir=link)
+    assert str(alias) in seen
+    assert seen[seen.index("--checkpoint-dir") + 1] == str(link)
+
+
+def test_resume_controls_and_incomplete_single_receipt(tmp_path, monkeypatch, capsys):
+    target = tmp_path / "Demo.lean"
+    target.write_text("theorem demo : True := by trivial\n")
+    payload = {"schemaVersion": 1, "filePath": str(target), "completed": False,
+               "stopReason": "attempt-budget", "verifiedCount": 0, "applied": False,
+               "checkpointPath": str(tmp_path / "progress.jsonl")}
+    monkeypatch.setattr(autoslim, "resolve_lean_autoslim_bin", lambda: (["node", "demo.js"], target))
+    seen = []
+    def run(cmd, **kwargs):
+        seen[:] = cmd
+        return SimpleNamespace(returncode=1, stdout=json.dumps(payload), stderr="")
+    monkeypatch.setattr(autoslim.subprocess, "run", run)
+    assert autoslim.run_autoslim(target, checkpoint_dir=tmp_path, resume=False,
+                                group_size=3, max_verification_attempts=0) == payload
+    for flag, value in [("--checkpoint-dir", str(tmp_path)), ("--group-size", "3"), ("--max-attempts", "0")]:
+        assert seen[seen.index(flag) + 1] == value
+    assert "--fresh" in seen
+    assert autoslim.main([str(target), "--checkpoint-dir", str(tmp_path), "--fresh", "--group-size", "3", "--max-attempts", "0"]) == 1
+    assert json.loads(capsys.readouterr().out) == payload
+
+
 def test_nonzero_cli_exit_is_an_error_even_with_valid_json(tmp_path, monkeypatch):
     target = tmp_path / "Demo.lean"
     target.write_text("theorem demo : True := by trivial\n")

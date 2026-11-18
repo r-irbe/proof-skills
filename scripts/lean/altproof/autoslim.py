@@ -66,9 +66,13 @@ def run_autoslim(
     routes: list[str] | None = None,
     max_candidates: int = 50,
     timeout_ms: int = 25000,
+    checkpoint_dir: str | Path | None = None,
+    resume: bool = True,
+    group_size: int = 4,
+    max_verification_attempts: int | None = None,
 ) -> dict[str, Any]:
     """Execute kernel-verified auto-slimmer on `file_path` and return parsed JSON report."""
-    targets = [Path(p).expanduser().resolve() for p in (file_path if isinstance(file_path, list) else [file_path])]
+    targets = [Path(os.path.abspath(Path(p).expanduser())) for p in (file_path if isinstance(file_path, list) else [file_path])]
     if not targets:
         raise ValueError("At least one Lean file is required")
     for target in targets if not isinstance(file_path, list) else []:
@@ -87,6 +91,13 @@ def run_autoslim(
     ]
     if apply:
         cmd.append("--apply")
+    cmd.extend(["--group-size", str(group_size)])
+    if checkpoint_dir is not None:
+        cmd.extend(["--checkpoint-dir", str(Path(os.path.abspath(Path(checkpoint_dir).expanduser())))])
+    if not resume:
+        cmd.append("--fresh")
+    if max_verification_attempts is not None:
+        cmd.extend(["--max-attempts", str(max_verification_attempts)])
     if allow_altproof_import:
         cmd.append("--allow-altproof-import")
     for r in routes or []:
@@ -114,9 +125,15 @@ def run_autoslim(
 
     if not isinstance(payload, dict):
         raise RuntimeError("lean-autoslim JSON payload must be an object")
-    if proc.returncode != 0 and not (payload.get("kind") == "batch"
+    partial_batch = (payload.get("kind") == "batch"
             and payload.get("completed") is False and isinstance(payload.get("reports"), list)
-            and isinstance(payload.get("failures"), list)):
+            and isinstance(payload.get("failures"), list))
+    partial_single = (payload.get("schemaVersion") == 1 and payload.get("completed") is False
+                      and payload.get("stopReason") in ("attempt-budget", "final-check-failed", "verification-inconclusive")
+                      and payload.get("verifiedCount") == 0 and payload.get("applied") is False
+                      and payload.get("filePath") in [str(target) for target in targets]
+                      and isinstance(payload.get("checkpointPath"), str))
+    if proc.returncode != 0 and not (proc.returncode == 1 and (partial_batch or partial_single)):
         raise RuntimeError(f"lean-autoslim failed (exit={proc.returncode}): {proc.stderr.strip() or stdout[:400]}")
     return payload
 
@@ -138,6 +155,8 @@ def format_autoslim_markdown(report: dict[str, Any]) -> str:
     lines = [
         f"## Auto-Slimmer (`{report.get('filePath', '')}`)",
         f"- **Backend:** `{backend}` (`applied={report.get('applied', False)}`)",
+        f"- **Progress:** completed={report.get('completed', True)}, resumed={report.get('resumedCandidates', 0)}, "
+        f"cache hits={report.get('cacheHits', 0)}, final check={report.get('finalCheckPassed')}",
         f"- **Candidates:** `{verified}/{discovered}` verified (`{rejected_cnt}` rejected)",
         f"- **Delta:** `{report.get('linesBefore', 0)} -> {report.get('linesAfter', 0)}` lines "
         f"(`-{lines_saved}`), `-{bytes_saved}` bytes",
@@ -186,6 +205,10 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--max-candidates", type=int, default=50, help="Maximum candidates to evaluate")
     parser.add_argument("--timeout-ms", type=int, default=25000, help="Per-attempt timeout in milliseconds")
+    parser.add_argument("--checkpoint-dir", type=Path, help="Durable progress directory")
+    parser.add_argument("--fresh", action="store_true", help="Ignore previous matching progress")
+    parser.add_argument("--group-size", type=int, default=4, help="Candidates per compiler group (1..32)")
+    parser.add_argument("--max-attempts", type=int, help="Compiler attempt budget including final check")
     parser.add_argument("--markdown", action="store_true", help="Emit Markdown summary instead of JSON")
     args = parser.parse_args(argv)
 
@@ -198,6 +221,10 @@ def main(argv: list[str] | None = None) -> int:
             routes=args.routes,
             max_candidates=args.max_candidates,
             timeout_ms=args.timeout_ms,
+            checkpoint_dir=args.checkpoint_dir,
+            resume=not args.fresh,
+            group_size=args.group_size,
+            max_verification_attempts=args.max_attempts,
         )
     except Exception as exc:
         print(f"error: {exc}", file=sys.stderr)
@@ -207,7 +234,7 @@ def main(argv: list[str] | None = None) -> int:
         print(format_autoslim_markdown(report))
     else:
         print(json.dumps(report, indent=2))
-    return 1 if report.get("kind") == "batch" and report.get("completed") is False else 0
+    return 1 if report.get("completed") is False else 0
 
 
 if __name__ == "__main__":
