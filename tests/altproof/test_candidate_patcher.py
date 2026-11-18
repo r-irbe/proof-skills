@@ -36,6 +36,7 @@ def test_apply_candidate_patch():
         evidence="List.range",
         suggested_replacement="Finset.sum",
         estimated_kernel_speedup=3.5,
+        details={"line_offset": 1},
     )
     ec = evaluate_candidate(cand)
     original = "(List.range n).map (fun x => x * 2) |>.foldl (\u00b7 + \u00b7) 0"

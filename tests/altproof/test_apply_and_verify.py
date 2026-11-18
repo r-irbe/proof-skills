@@ -7,10 +7,12 @@ import pytest
 from altproof.apply_and_verify import apply_and_verify_tactic
 
 
-def test_apply_and_verify_tactic_matched():
+def test_apply_and_verify_tactic_identical_recommendation_is_skipped():
     src = "theorem foo (x : Nat) : x + 0 = x := by linarith"
     res = apply_and_verify_tactic(src, target_pattern="linarith")
-    assert res.success is True
+    assert res.success is False
+    assert res.changed is False
+    assert res.transformed_text == src
     assert "omega" in res.transformed_text or "linarith" in res.transformed_text
     assert res.tactic_recommendation is not None
     assert len(res.verification_notes) >= 2
@@ -70,7 +72,7 @@ def test_autoslim_cli_and_kernel_verify_wiring(monkeypatch, tmp_path):
 
     res = aav.verify_file_with_lean(sample, apply=False)
     assert res.lean_verified is True
-    assert res.success is True
+    assert res.success is False
     assert res.verification_level == "lean-kernel-batch"
 
 

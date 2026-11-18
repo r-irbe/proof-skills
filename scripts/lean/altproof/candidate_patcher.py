@@ -31,14 +31,16 @@ class PatchReceipt:
     status: str = "applied-unverified"
 
 
+_PIPELINE_PATTERN = re.compile(
+    r"\(List\.range\s+(\w+)\)\.map\s+([^\n|]+)\s*\|\>\.foldl\s*\(\s*\u00b7\s*\+\s*\u00b7\s*\)\s*0(?![\w.])"
+)
+
 def patch_list_pipeline(source_text: str) -> tuple[str, list[PatchReceipt]]:
     """Propose Finset folds; callers must verify types and equivalence with Lean."""
     receipts: list[PatchReceipt] = []
     
     # A mapped range folded with addition and zero becomes a proposed Finset sum.
-    pipeline_pattern = re.compile(
-        r"\(List\.range\s+(\w+)\)\.map\s+([^\n|]+)\s*\|\>\.foldl\s*\(\s*\u00b7\s*\+\s*\u00b7\s*\)\s*0(?![\w.])"
-    )
+    pipeline_pattern = _PIPELINE_PATTERN
 
     def repl(m: re.Match) -> str:
         var = m.group(1)
@@ -68,12 +70,21 @@ def apply_candidate_patch(
     cand = evaluated_candidate.candidate
     text = source_text
 
-    if cand.pattern == "list-pipeline-overhead":
-        new_text, receipts = patch_list_pipeline(text)
-        if receipts:
-            r = receipts[0]
-            r.theorem = cand.theorem or r.theorem
-            return new_text, r
+    # Detector offsets are character positions in this exact source, not line numbers.
+    # Refuse stale or unlocated candidates instead of searching other declarations.
+    offset = cand.details.get("line_offset")
+    if (cand.pattern == "list-pipeline-overhead" and type(offset) is int
+            and 0 <= offset < len(text) and cand.evidence
+            and text.startswith(cand.evidence, offset)):
+        matches = [m for m in _PIPELINE_PATTERN.finditer(text)
+                   if m.start() <= offset and offset + len(cand.evidence) <= m.end()]
+        if len(matches) == 1:
+            match = matches[0]
+            replacement, receipts = patch_list_pipeline(match.group(0))
+            if len(receipts) == 1:
+                receipt = receipts[0]
+                receipt.theorem = cand.theorem or receipt.theorem
+                return text[:match.start()] + replacement + text[match.end():], receipt
 
     # Unsupported or unmatched candidates have no source transformation.
     receipt = PatchReceipt(
@@ -100,10 +111,10 @@ class SimplePatchResult:
 
 def patch_candidate(source_text: str, target_pattern: str, replacement: str) -> SimplePatchResult:
     """Replace occurrences of target_pattern with replacement."""
-    if target_pattern in source_text:
+    if target_pattern and target_pattern in source_text:
         new_text = source_text.replace(target_pattern, replacement)
         return SimplePatchResult(
-            patched=True,
+            patched=new_text != source_text,
             transformed_text=new_text,
             lines_before=source_text.count("\n") + 1,
             lines_after=new_text.count("\n") + 1,

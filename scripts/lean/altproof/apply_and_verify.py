@@ -38,8 +38,8 @@ else:
 class PatchVerificationResult:
     """Structural patch receipt, not a Lean proof-verification result.
 
-    The legacy success field means a textual patch matched; it does not imply
-    changed text, Lean acceptance, trust auditing, or measured improvement.
+    Structural success means the returned source text changed. Kernel success
+    means a verified change was published; lean_verified also covers proposals.
     """
 
     file_path: str
@@ -52,6 +52,8 @@ class PatchVerificationResult:
     verification_level: str = "structural-only"
     lean_verified: bool = False
     trust_audited: bool = False
+    changed: bool = False
+    applied: bool = False
 
 
 def apply_and_verify_tactic(
@@ -84,7 +86,7 @@ def apply_and_verify_tactic(
         )
         success = True
     else:
-        notes.append(f"Pattern '{target_pattern}' not found in source; text unmodified")
+        notes.append(f"Pattern '{target_pattern}' not found or replacement identical; text unmodified")
         success = False
 
     return PatchVerificationResult(
@@ -93,6 +95,7 @@ def apply_and_verify_tactic(
         success=success,
         original_text=source_text,
         transformed_text=patch_res.transformed_text,
+        changed=patch_res.patched,
         tactic_recommendation=primary_rec,
         verification_notes=notes,
     )
@@ -107,14 +110,14 @@ def verify_file_with_lean(
 ) -> PatchVerificationResult:
     """Run real Lean 4 kernel-verified auto-slimming via `lean-autoslim`."""
     target = Path(file_path).expanduser().resolve()
-    original_text = target.read_text(encoding="utf-8")
+    original_text = target.read_bytes().decode("utf-8")
     report = run_autoslim(
         target,
         apply=apply,
         mode=mode,
         allow_altproof_import=allow_altproof_import,
     )
-    transformed_text = target.read_text(encoding="utf-8") if apply else original_text
+    transformed_text = target.read_bytes().decode("utf-8") if apply else original_text
     accepted = int(report.get("verifiedCount", report.get("candidatesAccepted", 0)))
     found = int(report.get("candidatesDiscovered", report.get("candidatesFound", 0)))
     saved = int(report.get("netLinesSaved", report.get("totalLinesSaved", 0)))
@@ -134,7 +137,9 @@ def verify_file_with_lean(
     return PatchVerificationResult(
         file_path=str(target),
         target_pattern="ALTPROOF-ROUTE",
-        success=verified,
+        success=verified and apply and report.get("applied") is True and transformed_text != original_text,
+        changed=transformed_text != original_text,
+        applied=verified and apply and report.get("applied") is True and transformed_text != original_text,
         original_text=original_text,
         transformed_text=transformed_text,
         tactic_recommendation=None,
@@ -183,10 +188,12 @@ def main(argv: list[str] | None = None) -> int:
             allow_altproof_import=args.allow_altproof_import,
         )
         print(f"File: {res.file_path}")
-        print(f"Status: {'TRANSFORMED_KERNEL_VERIFIED' if res.success else 'NO_VERIFIED_TRANSFORMATION'}")
+        status = ("TRANSFORMED_KERNEL_VERIFIED" if res.success else
+                  "PROPOSED_KERNEL_VERIFIED" if res.lean_verified else "NO_VERIFIED_TRANSFORMATION")
+        print(f"Status: {status}")
         for n in res.verification_notes or []:
             print(f"  - {n}")
-        return 0 if res.success else 2
+        return 0 if res.lean_verified else 2
 
     content = args.file.read_text(encoding="utf-8")
     res = apply_and_verify_tactic(content, file_path=str(args.file), target_pattern=args.pattern)
