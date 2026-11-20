@@ -132,3 +132,29 @@ def test_lean_rules_core_profile_and_privacy_audit_clean():
             timeout=60,
         )
         assert lr.returncode == 0, f"lean-rules --profile=core failed:\n{lr.stdout}\n{lr.stderr}"
+
+
+def test_public_graph_ignores_local_garden_and_matches_shipped_projection(tmp_path):
+    garden = tmp_path / "private-garden"
+    book = garden / "source-materials" / "books" / "private-book"
+    book.mkdir(parents=True)
+    (book / "anchors.v1.json").write_text(json.dumps({"rows": [{
+        "anchor": "private-anchor", "heading_text": "Private notebook",
+        "leittext": "private-excerpt-marker", "print_page": 7,
+    }]}), encoding="ascii")
+    output = tmp_path / "release"
+    command = [sys.executable, str(ROOT / "graph" / "export_kuzu.py")]
+    subprocess.run(command + ["--garden-root", str(garden), "--out-dir", str(output)],
+                   check=True)
+    archive = output / "prover_knowledge.kz"
+    subprocess.run(command + ["--check-public", str(archive)], check=True)
+    subprocess.run(command + ["--check-public", str(ROOT / "kuzu" / archive.name)],
+                   check=True)
+    local = tmp_path / "local"
+    subprocess.run(command + ["--profile", "prover", "--garden-root", str(garden),
+                              "--out-dir", str(local), "--export-public", str(output)],
+                   check=True)
+    subprocess.run(command + ["--check-public", str(archive)], check=True)
+    rejected = subprocess.run(command + ["--check-public", str(local / archive.name)],
+                              capture_output=True)
+    assert rejected.returncode != 0
