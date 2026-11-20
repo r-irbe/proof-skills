@@ -27,7 +27,7 @@ extracted_from: skills/lean-verification-gate/SKILL.md
 | Symptom / Error / Bottleneck | Root Cause | Remediating Fix |
 | :--- | :--- | :--- |
 | `depends on axiom sorryAx` | Unfinished subgoal or upstream `sorry` import | Locate culprit via `lean_axiom_closure` and route to `@lean-proof` |
-| `depends on axiom Lean.ofReduceBool` | `native_decide` or `bv_decide` used in strict kernel lane | Replace with `sair_decide` (`rfl | decide +kernel | omega`) |
+| `depends on axiom Lean.ofReduceBool` | `native_decide` or `bv_decide` used in strict kernel lane | Replace with `kernel_decide` (`rfl | decide +kernel | omega`) |
 
 ---
 

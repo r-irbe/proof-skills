@@ -1,8 +1,8 @@
 # `Template_ProofCarryingCodegen.md` -- Proof-Carrying SWAR/SIMD/SIMT Hardware Lowering & Substrates (v3.1)
 
-> **Status**: v3.1 canonical template (`@lean-sair-kernel-optimization` + `@lean-proof-refactor`).
+> **Status**: v3.1 canonical template (`@lean-kernel-optimization` + `@lean-proof-refactor`).
 > **Compile-tested exemplar**: [`examples/Template_ProofCarryingCodegen.lean`](examples/Template_ProofCarryingCodegen.lean).
-> **Handbook**: [`../../references/handbooks/lean-sair-kernel-optimization-handbook.md`](../../references/handbooks/lean-sair-kernel-optimization-handbook.md) (§5).
+> **Handbook**: [`../../references/handbooks/lean-kernel-optimization-handbook.md`](../../references/handbooks/lean-kernel-optimization-handbook.md) (§5).
 
 ---
 

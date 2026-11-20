@@ -2,7 +2,7 @@
 name: "lean-proof-refactor"
 description: |
   USE FOR: slimming long proofs, helper-lemma extraction, and Abstraction-Concrete Duality (@[csimp] bridges).
-  DO NOT USE FOR: soundness review (@lean-proof-review) or SWAR tuning (@lean-sair-kernel-optimization).
+  DO NOT USE FOR: soundness review (@lean-proof-review) or SWAR tuning (@lean-kernel-optimization).
   TRIGGERS: long-proof, decompose proof, slim proof, abstraction-concrete, helper-lemma extraction.
 tier: warm
 runtime_targets:
@@ -18,7 +18,7 @@ handoffs:
   - skill:lean-proof
   - skill:lean-corpus-audit
   successors:
-  - skill:lean-sair-kernel-optimization
+  - skill:lean-kernel-optimization
   - skill:lean-proof-review
   - skill:lean-proof
 metadata:
@@ -54,7 +54,7 @@ concrete (`WAVE-13 G1`).
 
 ## Handoffs
 - **Predecessors:** `lean-proof`, `lean-corpus-audit`.
-- **Successors:** `lean-sair-kernel-optimization`, `lean-proof-review`, `lean-proof`.
+- **Successors:** `lean-kernel-optimization`, `lean-proof-review`, `lean-proof`.
 
 ## Detailed reference
 - Fast 3-table lookup card: [`../../references/cards/lean-proof-refactor-tables.md`](../../references/cards/lean-proof-refactor-tables.md)
@@ -63,5 +63,5 @@ concrete (`WAVE-13 G1`).
   [`../../templates/core/Template_ComputableTwin_Csimp.md`](../../templates/core/Template_ComputableTwin_Csimp.md)
 
 ## See also
-- [`../lean-sair-kernel-optimization/SKILL.md`](../lean-sair-kernel-optimization/SKILL.md) -- Kernel WHNF, SWAR & hardware lowering
+- [`../lean-kernel-optimization/SKILL.md`](../lean-kernel-optimization/SKILL.md) -- Kernel WHNF, SWAR & hardware lowering
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router

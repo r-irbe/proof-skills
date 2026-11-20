@@ -1,6 +1,6 @@
 # `Template_ComputableTwin_Csimp.md` -- Abstraction-Concrete Duality & `@[csimp]` Bridge (v3)
 
-> **Status**: v3 canonical template (`@lean-proof-refactor` + `@lean-sair-kernel-optimization`, `SAIR-LAW-06..10`, `SAIR-LAW-22`).
+> **Status**: v3 canonical template (`@lean-proof-refactor` + `@lean-kernel-optimization`, `KERNEL-LAW-06..10`, `KERNEL-LAW-22`).
 > **Compile-tested exemplar**: [`examples/Template_ComputableTwin_Csimp.lean`](examples/Template_ComputableTwin_Csimp.lean).
 
 ---
@@ -28,14 +28,14 @@ def triangularSpec : Nat → Nat
   | n + 1 => (n + 1) + triangularSpec n
 
 /-! ### §2 Concrete Implementation (`fastFn`) -- Hardware / WHNF Layer
-    * Zero `Prop` witnesses in runtime cone (`SAIR-LAW-22`)
-    * Tail-recursive / structural `Nat.rec` or closed formula (`SAIR-LAW-06`, `SAIR-LAW-10`)
-    * Bitwise `>>> 1` instead of `/ 2` in hot loops (`SAIR-LAW-14`) -/
+    * Zero `Prop` witnesses in runtime cone (`KERNEL-LAW-22`)
+    * Tail-recursive / structural `Nat.rec` or closed formula (`KERNEL-LAW-06`, `KERNEL-LAW-10`)
+    * Bitwise `>>> 1` instead of `/ 2` in hot loops (`KERNEL-LAW-14`) -/
 
 @[inline] def triangularFast (n : Nat) : Nat :=
   (n * (n + 1)) >>> 1
 
-/-! ### §3 Equivalence Proof & `@[csimp]` Compiler Bridge (`SAIR-LAW-07`) -/
+/-! ### §3 Equivalence Proof & `@[csimp]` Compiler Bridge (`KERNEL-LAW-07`) -/
 
 theorem triangularSpec_eq_mul_div (n : Nat) :
     2 * triangularSpec n = n * (n + 1) := by

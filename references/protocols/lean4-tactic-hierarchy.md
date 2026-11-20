@@ -4,12 +4,12 @@
 > Project-agnostic. Pair with [`lean4-proof-strategy.md`](./lean4-proof-strategy.md) and [`../../templates/core/Template_AltProofTactics.md`](../../templates/core/Template_AltProofTactics.md).
 
 When a goal is not immediately obvious, evaluate tactics in this deterministic cost-and-soundness order:
-**`rfl` -> `bv_decide` / `decide +kernel` / `sair_decide` / `norm_num` / `ring` -> `omega` / `linarith` / `nlinarith` / `positivity` -> `grind` / `eqsat_rw` -> `simp only [...]` -> `backchain` -> `aesop`**.
+**`rfl` -> `bv_decide` / `decide +kernel` / `kernel_decide` / `norm_num` / `ring` -> `omega` / `linarith` / `nlinarith` / `positivity` -> `grind` / `eqsat_rw` -> `simp only [...]` -> `backchain` -> `aesop`**.
 
 | Rung | Tactic / Term Macro | Domain & Guarantees |
 |---:|---|---|
-| 1 | `rfl` / `eval_nat%` / `preunfold%` / `swar_unroll%` | Zero-overhead definitional WHNF reduction and SAIR compile-time term superoptimizers (`AltProof.Core`). |
-| 2 | `bv_decide` / `decide +kernel` / `sair_decide` | Kernel-verified finite bitvector and decidable propositions. **NEVER use `native_decide`** (`Lean.ofReduceBool` is banned by `GT-30/31`). |
+| 1 | `rfl` / `eval_nat%` / `preunfold%` / `swar_unroll%` | Zero-overhead definitional WHNF reduction and kernel compile-time term superoptimizers (`AltProof.Core`). |
+| 2 | `bv_decide` / `decide +kernel` / `kernel_decide` | Kernel-verified finite bitvector and decidable propositions. **NEVER use `native_decide`** (`Lean.ofReduceBool` is banned by `GT-30/31`). |
 | 3 | `norm_num` / `ring` / `field_simp` | Concrete numeric normalization, polynomial ring identities, and denominator clearing (`Q`/`R`). |
 | 4 | `omega` / `linarith` / `positivity` / `nlinarith` | Domain-specific linear (`Nat`/`Int`/`Q`/`R`), sign (`0 <= e`, `0 < e`), and quadratic/Lyapunov arithmetic. |
 | 5 | `grind` / `grind_close` / `eqsat_rw [rules]` (`egg_rw`) | E-graph congruence closure (`Lean 4.34.1` `grind`) and AltProof bounded equality-saturation bidirectional rewriting (`AltProof.Core`). |
@@ -24,7 +24,7 @@ When a goal is not immediately obvious, evaluate tactics in this deterministic c
 `native_decide` compiles Lean expressions to native code outside the trusted kernel and injects `Lean.ofReduceBool` into `#print axioms`. Under `GUARDRAILS.md` (`GT-30/31`) and `lean-rules` (`rule-lean-no-native-decide`), `native_decide` is **banned in proof bodies**. Replace it with:
 1. `rfl` paired with a `@[csimp]` computable twin (`Template_ComputableTwin_Csimp.md`),
 2. `bv_decide` for fixed-width `BitVec` goals,
-3. `decide +kernel` or `sair_decide` (`first | rfl | decide +kernel | omega`), or
+3. `decide +kernel` or `kernel_decide` (`first | rfl | decide +kernel | omega`), or
 4. `norm_num` for concrete arithmetic constants.
 
 ---

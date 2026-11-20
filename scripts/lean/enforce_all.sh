@@ -5,7 +5,7 @@
 # Usage:
 #   ./enforce_all.sh [LEAN_DIR] [--strict]
 # Environment overrides:
-#   LEAN_RULES_PROFILE=core|default|sair|fluid-pde|p2m|all (default: core)
+#   LEAN_RULES_PROFILE=core|default|kernel|fluid-pde|p2m|all (default: core)
 
 set -uo pipefail
 

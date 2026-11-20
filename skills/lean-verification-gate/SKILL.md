@@ -16,7 +16,7 @@ dispatch_targets: []
 handoffs:
   predecessors:
   - skill:lean-proof
-  - skill:lean-sair-kernel-optimization
+  - skill:lean-kernel-optimization
   - skill:lean-proof-repair
   successors:
   - skill:lean-proof-review
@@ -49,11 +49,11 @@ Execute all deterministic, machine-verifiable trust gates over a Lean 4 build be
 
 ## Recovery & STOP
 - Any custom `axiom`, `sorryAx`, or unapproved `Lean.ofReduceBool` / `Lean.trustCompiler` dependency is a hard
-  blocker; return immediately to `@lean-proof` or `@lean-sair-kernel-optimization`.
+  blocker; return immediately to `@lean-proof` or `@lean-kernel-optimization`.
 - Always quote the scanned declaration/module count (never treat an empty scan manifest as a pass).
 
 ## Handoffs
-- **Predecessors:** `lean-proof`, `lean-sair-kernel-optimization`, `lean-proof-repair`.
+- **Predecessors:** `lean-proof`, `lean-kernel-optimization`, `lean-proof-repair`.
 - **Successors:** `lean-proof-review`, `lean-review-council`, `lean-doc-sync`.
 
 ## Detailed reference

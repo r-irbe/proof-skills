@@ -19,7 +19,7 @@ extracted_from: skills/lean-proof-refactor/SKILL.md
 | :--- | :--- | :--- |
 | Proof `> 50 LOC` with repeated sub-block | `CUT` -> private/module helper lemma | Extract only when reusable (`>= 2` call sites or clean conceptual invariant) |
 | Concrete coordinate/`Real` proof using only ring/order ops | Statement-level mixin generalization | Generalize `[CommRing R] [LinearOrder R] [IsOrderedRing R]`; keep `Real` theorem as 1-line corollary |
-| Slow `Prop`-friendly `specFn` vs fast monomorphic `fastFn` | `@[csimp] theorem specFn_eq_fastFn` (`SAIR-LAW-07`) | Keep `specFn` clean for proofs; route LCNF execution & `rw` to `fastFn` |
+| Slow `Prop`-friendly `specFn` vs fast monomorphic `fastFn` | `@[csimp] theorem specFn_eq_fastFn` (`KERNEL-LAW-07`) | Keep `specFn` clean for proofs; route LCNF execution & `rw` to `fastFn` |
 | Parametric hot kernel step (`1,600x..3,345x` WHNF penalty) | `WAVE-13 G1` `rfl`-bridged Duality | Specialize hot `def` to raw unboxed `Nat`; prove parametric lemma in cold section; bridge via `rfl` |
 | Verbose `Finset.sum` linearity or monotonicity block | `sum_congr_ring` / `finset_mono` / `finset_nonneg` | Collapse 15-40 line `Finset.sum` proofs to 1-line AltProof combinators |
 
@@ -86,7 +86,7 @@ Combine structural extraction with the 3-tier AltProof pipeline ([`Template_AltP
    - `sum_congr_ring`: normalizes `Finset.sum` linearity (`sum_add_distrib`, `sum_sub_distrib`, `mul_sum`, `sum_mul`, `sum_neg_distrib`) and closes pointwise equalities via `Finset.sum_congr rfl` + `ring`.
    - `finset_mono`: discharges `Finset.sum s f <= Finset.sum s g` via `Finset.sum_le_sum`, automatic hypothesis specialization, and ordered-ring closers (`gcongr`, `linarith`, `positivity`, `omega`).
    - `finset_nonneg`: discharges `0 <= Finset.sum s f` via `Finset.sum_nonneg` + positivity/linear closers.
-   - `sair_decide`: strict 3-rung kernel-clean closer (`first | rfl | decide +kernel | omega`) free of `Lean.ofReduceBool`.
+   - `kernel_decide`: strict 3-rung kernel-clean closer (`first | rfl | decide +kernel | omega`) free of `Lean.ofReduceBool`.
    - `elegance?` / `alt_proof`: speculative search (`withoutModifyingState`) across ranked closers emitting `Try this: <tactic>`.
 2. **Tier 2 (MCP Goal Advisor & Two-Axis Scorer)**:
    - Query `lean_goal(filePath, line, col, target="altproof")` or `lean_metrics(target, action="altproof")` for ranked tactic recommendations and two-axis elegance/kernel-cost dominance verdicts.
@@ -102,4 +102,4 @@ Combine structural extraction with the 3-tier AltProof pipeline ([`Template_AltP
 ## Handoffs
 
 - **Predecessors:** `lean-proof` (initial green proof), `lean-corpus-audit` (long-proof census).
-- **Successors:** `lean-sair-kernel-optimization` (hot WHNF / SWAR / codegen tuning), `lean-proof-review` (4-layer soundness & style audit).
+- **Successors:** `lean-kernel-optimization` (hot WHNF / SWAR / codegen tuning), `lean-proof-review` (4-layer soundness & style audit).

@@ -23,8 +23,8 @@ Classification of all **38 active Lean 4 skills** (`+ 7` opt-in `pack-applied-st
 | [`counterexample-first-proving`](skills/counterexample-first-proving/SKILL.md) | Prover / Specifier | `core` | Plausible property testing & Galois-pruned boundary falsification. |
 | [`lean-proof`](skills/lean-proof/SKILL.md) | Prover | `core` | Interactive tactic synthesis via `lean_goal` & Layer-1 lookup cards. |
 | [`lean-proof-repair`](skills/lean-proof-repair/SKILL.md) | Prover | `core` | Proof repair across Lean toolchain and Mathlib bumps. |
-| [`lean-core-only`](skills/lean-core-only/SKILL.md) | Prover | `core` | Stdlib/Core-only proving without Mathlib (`omega`, `grind`, `sair_decide`). |
-| [`lean-sair-kernel-optimization`](skills/lean-sair-kernel-optimization/SKILL.md) | Prover | `core` | SAIR kernel WHNF, `@[csimp]` twins, ZDDs, and SWAR word packing (`SAIR-LAW-01..25B`). |
+| [`lean-core-only`](skills/lean-core-only/SKILL.md) | Prover | `core` | Stdlib/Core-only proving without Mathlib (`omega`, `grind`, `kernel_decide`). |
+| [`lean-kernel-optimization`](skills/lean-kernel-optimization/SKILL.md) | Prover | `core` | Kernel WHNF, `@[csimp]` twins, ZDDs, and SWAR word packing (`KERNEL-LAW-01..28`). |
 | [`lean-setup`](skills/lean-setup/SKILL.md) | Prover | `core` | Toolchain pins, `elan`, and singleton `lean-serve-broker` setup. |
 | [`lean-build`](skills/lean-build/SKILL.md) | Prover | `core` | Lake builds and `.olean` cache hygiene. |
 | [`lean-mwe`](skills/lean-mwe/SKILL.md) | Prover | `core` | Minimal Working Examples and `#guard_msgs` reproducers. |

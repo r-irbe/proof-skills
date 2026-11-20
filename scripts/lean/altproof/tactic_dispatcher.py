@@ -2,8 +2,8 @@
 
 Evaluates proof context, goal structure, and hypothesis types to recommend
 optimal automated tactic substitutions:
-  - Built-in core / Mathlib / SAIR tactics (`bv_decide`, `omega`, `linarith`,
-    `aesop`, `solve_by_elim`, `decide`, `ring`, plus SAIR SWAR/WHNF routes
+  - Built-in core / Mathlib / kernel tactics (`bv_decide`, `omega`, `linarith`,
+    `aesop`, `solve_by_elim`, `decide`, `ring`, plus kernel SWAR/WHNF routes
     `eval_nat%` and `preunfold%`)
   - Declarative project tactic plugins loaded from `lean-project.toml`
     (`[[altproof.tactics]]`) via `project_config.py` (with fallback defaults
@@ -34,7 +34,7 @@ class TacticRecommendation:
     parameters: dict = field(default_factory=dict)
 
 
-# Built-in core / Mathlib / SAIR goal and hypothesis classification patterns
+# Built-in core / Mathlib / kernel goal and hypothesis classification patterns
 NAT_TYPE_RE = re.compile(r"(?:\bNat\b|\bInt\b|\bdiv\b|\bmod\b|\u2115|\u2124)")
 ARITH_OP_RE = re.compile(r"(?:\+|-|\*|<=|<|>=|>|\u2264|\u2265)")
 PURE_NUM_ARITH_RE = re.compile(r"\b\d+\s*(?:\+|-|\*|<=|<|>=|>)\s*\d+\b")
@@ -288,7 +288,7 @@ def recommend_tactics(
             )
         )
 
-    # 0b. SAIR WHNF closed-constant, SWAR pre-unfolding, & 3-axiom sair_decide routes
+    # 0b. Kernel WHNF closed-constant, SWAR pre-unfolding, & 3-axiom kernel_decide routes
     if WHNF_CONST_RE.search(goal) or WHNF_CONST_RE.search(proof):
         recommendations.append(
             TacticRecommendation(
@@ -309,11 +309,11 @@ def recommend_tactics(
                 confidence=0.95,
             )
         )
-    if re.search(r"\b(?:sair_decide|Lean\.ofReduceBool)\b", goal) or "sair_decide" in proof:
+    if re.search(r"\b(?:kernel_decide|Lean\.ofReduceBool)\b", goal) or "kernel_decide" in proof:
         recommendations.append(
             TacticRecommendation(
-                tactic="sair_decide",
-                target_pattern="sair_decide",
+                tactic="kernel_decide",
+                target_pattern="kernel_decide",
                 rationale="Strict 3-axiom kernel-clean decision macro (rfl | decide +kernel | omega) with zero Lean.ofReduceBool.",
                 estimated_heartbeats=70,
                 confidence=0.95,

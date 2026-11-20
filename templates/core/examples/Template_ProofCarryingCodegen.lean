@@ -14,7 +14,7 @@ Standalone compile-tested exemplar for `Template_ProofCarryingCodegen.md`:
    addition whenever `checkedAdd62` returns `CheckedWord.small w`, with explicit
    `CheckedWord.needsWide` overflow trap at `>= 2^62`.
 3. **128-Byte Cache-Line SPSC Ring Index Invariant**: Power-of-two mask index
-   wrapping proven equivalent to `idx % cap` (`SAIR-LAW-14`) with bounded occupancy.
+   wrapping proven equivalent to `idx % cap` (`KERNEL-LAW-14`) with bounded occupancy.
 
 ## 2. Architecture & Bit Layout
 * `PolyBitOp` word: `UInt64` / `BitVec 64` lowered 1-to-1 to PTX `lop3.b32`,
@@ -63,7 +63,7 @@ theorem rule110CellAnf_eq_spec (l c r : Bool) :
 
 /-! ### 2. Exact-vs-Packed Arithmetic Lowering (`checked-small -> NeedsWide`) -/
 
-/-- Cold readable bound (`2^62 - 1`) and hot literal constant (`SAIR-LAW-25B`). -/
+/-- Cold readable bound (`2^62 - 1`) and hot literal constant (`KERNEL-LAW-25B`). -/
 abbrev specMaxSmall62 : Nat := (1 <<< 62) - 1
 def maxSmall62 : Nat := 4611686018427387903
 
@@ -107,7 +107,7 @@ theorem checkedAdd62_overflow_promotes :
 
 /-! ### 3. 128B Wait-Free SPSC Power-of-Two Ring Mask Equivalence -/
 
-/-- Masking `idx` by `2^k - 1` equals `idx % 2^k` (`SAIR-LAW-14` SPSC slot index). -/
+/-- Masking `idx` by `2^k - 1` equals `idx % 2^k` (`KERNEL-LAW-14` SPSC slot index). -/
 theorem spscSlotMask_eq_mod (idx k : Nat) :
     idx &&& ((1 <<< k) - 1) = idx % (1 <<< k) := by
   rw [Nat.shiftLeft_eq, Nat.one_mul, Nat.and_two_pow_sub_one_eq_mod]

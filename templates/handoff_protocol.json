@@ -43,7 +43,7 @@
     "lean-spec-architect",
     "counterexample-falsification-hunter",
     "abstract-interp-vacuity-auditor",
-    "sair-kernel-optimizer",
+    "kernel-optimizer",
     "premise-retrieval-specialist",
     "cross-itp-porter",
     "lean-retro-facilitator",

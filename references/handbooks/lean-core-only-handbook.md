@@ -12,7 +12,7 @@ extracted_from: skills/lean-core-only/SKILL.md
 | :--- | :--- | :--- |
 | Linear arithmetic over `Nat` / `Int` without Mathlib | `omega` | Replaces Mathlib `linarith` in Core-only lanes |
 | Congruence + E-matching + case-splitting without Mathlib | `grind` | Replaces `aesop` / `congr` chains in Lean v4.27+ Core |
-| Decidable finite identity without `Lean.ofReduceBool` | `sair_decide` (`rfl | decide +kernel | omega`) | Preserves strict 3-axiom kernel gate |
+| Decidable finite identity without `Lean.ofReduceBool` | `kernel_decide` (`rfl | decide +kernel | omega`) | Preserves strict 3-axiom kernel gate |
 
 ### Table 2: Intent-First (`phrasebook` Entry Point)
 

@@ -16,7 +16,7 @@ skill_ref: "skills/lean-proof-refactor/SKILL.md"
 | :--- | :--- | :--- |
 | Proof `> 50 LOC` with repeated sub-block | `CUT` -> private/module helper lemma | Extract only when reusable (`>= 2` call sites or clean conceptual invariant) |
 | Concrete coordinate/`Real` proof using only ring/order ops | Statement-level mixin generalization | Generalize `[CommRing R] [LinearOrder R] [IsOrderedRing R]`; keep `Real` theorem as 1-line corollary |
-| Slow `Prop`-friendly `specFn` vs fast monomorphic `fastFn` | `@[csimp] theorem specFn_eq_fastFn` (`SAIR-LAW-07`) | Keep `specFn` clean for proofs; route LCNF execution & `rw` to `fastFn` |
+| Slow `Prop`-friendly `specFn` vs fast monomorphic `fastFn` | `@[csimp] theorem specFn_eq_fastFn` (`KERNEL-LAW-07`) | Keep `specFn` clean for proofs; route LCNF execution & `rw` to `fastFn` |
 | Parametric hot kernel step (`1,600x..3,345x` WHNF penalty) | `WAVE-13 G1` `rfl`-bridged Duality | Specialize hot `def` to raw unboxed `Nat`; prove parametric lemma in cold section; bridge via `rfl` |
 | Verbose `Finset.sum` linearity or monotonicity block | `sum_congr_ring` / `finset_mono` / `finset_nonneg` | Collapse 15-40 line `Finset.sum` proofs to 1-line AltProof combinators |
 

@@ -16,7 +16,7 @@
         "family": "algorithm-class-substitution",
         "id": "algorithm-class-substitution",
         "match": "exponential or unhoisted recursion with an equivalent closed-form or DP reduction",
-        "provenance": "SAIR Lean Kernel Challenge lanes (partition in-place DP S1/S1b, primecount sieve S6)",
+        "provenance": "Lean kernel reduction lanes (partition in-place DP S1/S1b, primecount sieve S6)",
         "rewrite": "substitute algorithm class (e.g. in-place DP or structural sieve) and prove equivalence to spec"
       },
       {
@@ -24,7 +24,7 @@
         "family": "algorithm-class-substitution",
         "id": "gmp-swar-word-packing",
         "match": "inner loops over fixed-width integer/boolean arrays or linear recurrences with bounded slot bit-width, or manually unrolled block trees",
-        "provenance": "SAIR Lean Kernel Challenge (partition Kronecker SWAR convolution, ca-rule110 4-gate ANF + preunfold% t0..t6 block tree, fib unroll_top%, sha256 512-bit schedule window)",
+        "provenance": "Lean kernel WHNF (partition Kronecker SWAR convolution, ca-rule110 4-gate ANF + preunfold% t0..t6 block tree, fib unroll_top%, sha256 512-bit schedule window)",
         "rewrite": "pack k lanes into a single b-bit GMP Nat word (Kronecker substitution / bitboard ANF) and use elaboration-time pre-unfolding (elab 'preunfold%' / 'unroll_top%') over binary-doubling combinators (t0..t6) to eliminate multi-thousand-line source inlining with 0 runtime unfold overhead"
       }
     ],
@@ -124,7 +124,7 @@
         "family": "kernel-friendly-term-design",
         "id": "kernel-friendly-term-design",
         "match": "structural recursion or helper calls with heavy defeq unfolding overhead",
-        "provenance": "SAIR Lean Kernel Challenge lanes (primecount L1 structural trial division S5)",
+        "provenance": "Lean kernel reduction lanes (primecount L1 structural trial division S5)",
         "rewrite": "refactor to kernel-friendly primitives (structural Nat.rec, unrolled trial division, import-minimal path)"
       },
       {
@@ -140,16 +140,16 @@
         "family": "kernel-friendly-term-design",
         "id": "closed-def-whnf-caching",
         "match": "giant decimal nat_lit constants (>64 bits) or repeated closed shift-add/mask expressions inside Nat.rec/List.rec step lambdas",
-        "provenance": "SAIR Lean Kernel Challenge C++ type_checker.cpp whnf/m_whnf audit (partition DerivedConstants eval_nat% vs partCplusSpec, sha256 shaPaddingSuffix)",
+        "provenance": "Lean C++ type_checker.cpp whnf/m_whnf audit (partition DerivedConstants eval_nat% vs partCplusSpec, sha256 shaPaddingSuffix)",
         "rewrite": "evaluate closed constant expressions to raw nat_lit at elaboration time via an elab 'eval_nat%' macro (import Lean has 0 exported Lean.* refs), or hoist into a closed top-level def C : Nat := <formula> with a := rfl spec bridge (cached in m_st->m_whnf after 1 evaluation per kernel invocation)"
       },
       {
         "cost_hint": "0 Lean.ofReduceBool axioms; direct WHNF or verified Presburger closure",
         "family": "kernel-friendly-term-design",
-        "id": "sair_decide",
+        "id": "kernel_decide",
         "match": "decidable Nat/Bool/Int equality or inequality on a strict 3-axiom kernel lane where Lean.ofReduceBool is forbidden",
-        "provenance": "Template_SairDecide.lean + SAIR 3-axiom contest gate",
-        "rewrite": "close via sair_decide (first | rfl | decide +kernel | omega) without invoking native_decide or bv_decide"
+        "provenance": "Template_KernelDecide.lean + strict 3-axiom kernel gate",
+        "rewrite": "close via kernel_decide (first | rfl | decide +kernel | omega) without invoking native_decide or bv_decide"
       }
     ],
     "redirect": [

@@ -1,6 +1,6 @@
 # USER_GUIDE.md - proof-skills Practical Operator Guide
 
-`proof-skills` is a project-agnostic toolkit of 38 active v0.5.0 core Agent Skills (+ 7 opt-in applied-strategy pack skills, 100% <4,000B with Layer-1 lookup cards and Layer-2 handbooks), v3 Lean 4 proof, SAIR WHNF, proof-carrying codegen, and AltProof equality-saturation templates, 5 Pure Role-Actor Containers + 24 soul overlays, and an embedded 21-tool MCP server (`tools/lean-lsp-mcp`) for Lean 4 + Mathlib4 formal verification.
+`proof-skills` is a project-agnostic toolkit of 38 active v0.5.0 core Agent Skills (+ 7 opt-in applied-strategy pack skills, 100% <4,000B with Layer-1 lookup cards and Layer-2 handbooks), v3 Lean 4 proof, kernel WHNF, proof-carrying codegen, and AltProof equality-saturation templates, 5 Pure Role-Actor Containers + 24 soul overlays, and an embedded 21-tool MCP server (`tools/lean-lsp-mcp`) for Lean 4 + Mathlib4 formal verification.
 
 ---
 

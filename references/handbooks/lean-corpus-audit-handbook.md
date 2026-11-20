@@ -317,7 +317,7 @@ When QA discovers systemic issues:
 ## See also
 
 - [`../../templates/Template_Verification.md`](../../templates/core/Template_Verification.md) -- Template: Axiom auditing and test completeness
-- [`../../templates/Template_Performance.md`](../../templates/core/Template_KernelWHNF_SAIR.md) -- Template: Build-perf, parallelism, tactic speed
+- [`../../templates/Template_Performance.md`](../../templates/core/Template_KernelWHNF.md) -- Template: Build-perf, parallelism, tactic speed
 - [`../../scripts/lean/`](../../scripts/lean/) -- Runnable enforcement scripts (axiom audit, import hygiene, proof quality)
 
 ---

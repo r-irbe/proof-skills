@@ -151,7 +151,7 @@ def main(argv: list[str] | None = None) -> int:
         print("  tree-shake      Slice minimal reachable declarations/modules from .ilean graph")
         print("  detect-v4       Run .ilean / TraceIndex S2+S3 extraction detector on a Lean file")
         print("  dispatch        Run AltProof tactic advisor and two-axis legibility scorer")
-        print("  rank            Compute two-axis B1 extraction-outranks + SAIR kernel cost")
+        print("  rank            Compute two-axis B1 extraction-outranks + kernel reduction cost")
         print("  cluster         Run cross-theorem have-clustering (S5) over a Lean directory")
         print("  extract         Run v3 extraction detector on a Lean file")
         print("  report          Render whole-corpus elegance Markdown report suite")

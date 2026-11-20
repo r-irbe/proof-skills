@@ -1,23 +1,23 @@
-id: lean-sair-kernel-optimization-smoke
-title: lean-sair-kernel-optimization dispatch smoke check
-skill: lean-sair-kernel-optimization
+id: lean-kernel-optimization-smoke
+title: lean-kernel-optimization dispatch smoke check
+skill: lean-kernel-optimization
 ensemble_rubric: lean-proof-quality
 difficulty: easy
 input:
-  prompt: 'Apply the lean-sair-kernel-optimization skill workflow using references/cards/lean-sair-kernel-optimization-tables.md.
+  prompt: 'Apply the lean-kernel-optimization skill workflow using references/cards/lean-kernel-optimization-tables.md.
 
     '
-  expected_output_substring: 'Follow the lean-sair-kernel-optimization protocol with
+  expected_output_substring: 'Follow the lean-kernel-optimization protocol with
     zero unproven goals and clean kernel verification.
 
     '
 expected:
   contains:
-  - lean-sair-kernel-optimization|protocol|verify
+  - lean-kernel-optimization|protocol|verify
   not_contains:
   - sorry
   - admit
 grader: deterministic
 tags:
 - smoke
-- lean-sair-kernel-optimization
+- lean-kernel-optimization

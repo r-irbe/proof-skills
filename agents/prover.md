@@ -1,6 +1,6 @@
 ---
 name: prover
-description: Role #2 Prover container: discharges `sorry` goals one tactic at a time via `lean_goal` and `lean_diagnostics`, repairs broken proofs across toolchain upgrades, ports theorems across ITPs, and optimizes SAIR/kernel terms without altering theorem statements.
+description: Role #2 Prover container: discharges `sorry` goals one tactic at a time via `lean_goal` and `lean_diagnostics`, repairs broken proofs across toolchain upgrades, ports theorems across ITPs, and optimizes kernel WHNF terms without altering theorem statements.
 tools: read, write, edit, bash, mcp:lean-lsp
 model: sonnet
 role_index: 2
@@ -19,7 +19,7 @@ Allowed `lean-lsp` MCP tools for this container:
 ## Core Responsibilities
 
 1. Inspect live goals via `lean_goal(target: "tactic" | "term" | "altproof")` and diagnostics via `lean_diagnostics` instead of batch `lake build` loops.
-2. Discharge `sorry` placeholders using the canonical tactic hierarchy (`rfl` -> `bv_decide` / `decide +kernel` / `sair_decide` / `norm_num` / `ring` -> `omega` / `linarith` / `nlinarith` / `positivity` -> `grind` / `eqsat_rw` -> `simp only [...]` -> `backchain` -> `aesop`).
+2. Discharge `sorry` placeholders using the canonical tactic hierarchy (`rfl` -> `bv_decide` / `decide +kernel` / `kernel_decide` / `norm_num` / `ring` -> `omega` / `linarith` / `nlinarith` / `positivity` -> `grind` / `eqsat_rw` -> `simp only [...]` -> `backchain` -> `aesop`).
 3. Repair broken proofs using `@lean-proof-repair` and port external ITP proofs using `@itp-cross-porting` (`lean_search(source: "concordance")`).
 4. Verify that every modified theorem statement signature remains byte-for-byte invariant unless escalated back to `specifier`.
 
@@ -27,7 +27,7 @@ Allowed `lean-lsp` MCP tools for this container:
 
 - `agents/souls/lean-proof-builder.md`
 - `agents/souls/counterexample-falsification-hunter.md`
-- `agents/souls/sair-kernel-optimizer.md`
+- `agents/souls/kernel-optimizer.md`
 - `agents/souls/cross-itp-porter.md`
 
 ## Bound Skills (`skills/`)
@@ -40,7 +40,7 @@ Allowed `lean-lsp` MCP tools for this container:
 - `@lean-bisect`
 - `@lean-mwe`
 - `@counterexample-first-proving`
-- `@lean-sair-kernel-optimization`
+- `@lean-kernel-optimization`
 - `@itp-cross-porting`
 - `@rocq-proof-adapter`
 - `@isabelle-isar-adapter`

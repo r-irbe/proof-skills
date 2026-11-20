@@ -10,22 +10,22 @@ import Lean
 set_option autoImplicit false
 
 /-!
-# AltProof.Core -- Core-Only Route Table, Equality Saturation, SolveByElim, and SAIR Superoptimizers
+# AltProof.Core -- Core-Only Route Table, Equality Saturation, SolveByElim, and Kernel Superoptimizers
 
 Core-only (`import Lean`) definitions and tactics for the AltProof 20-route advisor,
 usable in zero-Mathlib projects without requiring Mathlib or external Rust FFI binaries:
 
 1. **20-Route Advisor & Two-Axis Cost Ranker (`routeTable`, `computeCostX10`, `GoalFeatures`)**:
-   Reader-elegance vs kernel-heartbeat cost model (`SPEC-ALT-PROOF-DES`, `ALT_PROOF_SAIR_BRIDGE`).
+   Reader-elegance vs kernel-heartbeat cost model (`SPEC-ALT-PROOF-DES`, `ALT_PROOF_KERNEL_BRIDGE`).
 2. **Pure-Lean Kernel-Checked Equality Saturation (`eqsat_rw`, `egg_rw`)**:
    Bounded e-graph / BFS equational rewrite saturation in `MetaM` with kernel-checked
    `Eq.trans` / `congrArg` / `congrFun` proof-term reconstruction (zero external FFI, 3-axiom clean).
-3. **Core Structural & Search Tactics (`backchain`, `grind_close`, `contra_direct`, `sair_decide`)**:
+3. **Core Structural & Search Tactics (`backchain`, `grind_close`, `contra_direct`, `kernel_decide`)**:
    - `backchain`: curated wrapper over core Lean's `Lean.Elab.Tactic.SolveByElim` (`solve_by_elim`).
    - `grind_close`: bounded e-graph congruence & E-matching closer via core Lean's `grind`.
    - `contra_direct`: constructive negation / `Bool` / `Decidable` normalizer avoiding `Classical.choice`.
-   - `sair_decide`: strict 3-rung kernel-clean decision macro (`rfl | decide +kernel | omega`).
-4. **SAIR Compile-Time Superoptimizers (`eval_nat%`, `preunfold%`, `swar_unroll%`)**:
+   - `kernel_decide`: strict 3-rung kernel-clean decision macro (`rfl | decide +kernel | omega`).
+4. **Kernel Compile-Time Superoptimizers (`eval_nat%`, `preunfold%`, `swar_unroll%`)**:
    - `eval_nat% t`: evaluates closed `Nat` arithmetic/bitwise formulas at elaboration time to raw
      `Expr.lit (.natVal v)` (`nat_lit`), leaving zero `Lean.*` constants in exported declarations.
    - `preunfold% [d1, ...] t`: unfolds selected definitions, beta/zeta/proj-reduces, folds closed
@@ -95,13 +95,13 @@ def routeTable : List Route := [
     matchShape := "exponential or unhoisted recursion with an equivalent closed-form or DP reduction",
     rewriteHint := "substitute algorithm class (e.g. in-place DP or structural sieve) and prove equivalence to spec",
     costHint := "highest kernel yield: 20-30x reduction in kernel steps / rfl time",
-    provenance := "SAIR Lean Kernel Challenge lanes (partition in-place DP S1/S1b, primecount sieve S6)" },
+    provenance := "Lean kernel reduction lanes (partition in-place DP S1/S1b, primecount sieve S6)" },
   { id := "kernel-friendly-term-design",
     family := "kernel-friendly-term-design",
     matchShape := "structural recursion or helper calls with heavy defeq unfolding overhead",
     rewriteHint := "refactor to kernel-friendly primitives (structural Nat.rec, unrolled trial division, import-minimal path)",
     costHint := "high kernel yield: reduces defeq heartbeats and avoids WellFounded.fix traps",
-    provenance := "SAIR Lean Kernel Challenge lanes (primecount L1 structural trial division S5)" },
+    provenance := "Lean kernel reduction lanes (primecount L1 structural trial division S5)" },
   { id := "constructive-decidable-reduction",
     family := "kernel-friendly-term-design",
     matchShape := "Classical.choice leakage in first-order Nat/Int/Bool/BitVec theorems caused by split on &&/And or classical by_cases",
@@ -113,13 +113,13 @@ def routeTable : List Route := [
     matchShape := "giant decimal nat_lit constants (>64 bits) or repeated closed shift-add/mask expressions inside Nat.rec/List.rec step lambdas",
     rewriteHint := "evaluate closed constant expressions to raw nat_lit at elaboration time via eval_nat% (import Lean has 0 exported Lean.* refs), or hoist into a closed top-level def C : Nat := <formula> with a := rfl spec bridge",
     costHint := "eval_nat% gives 0 runtime instruction overhead (vs +160K/invocation for closed def C) and eliminates multi-hundred-digit magic literals",
-    provenance := "SAIR Lean Kernel Challenge C++ type_checker.cpp whnf/m_whnf audit + AltProof.Core.eval_nat%" },
+    provenance := "Lean C++ type_checker.cpp whnf/m_whnf audit + AltProof.Core.eval_nat%" },
   { id := "gmp-swar-word-packing",
     family := "algorithm-class-substitution",
     matchShape := "inner loops over fixed-width integer/boolean arrays or linear recurrences with bounded slot bit-width, or manually unrolled block trees",
     rewriteHint := "pack k lanes into a single b-bit GMP Nat word (Kronecker substitution / bitboard ANF) and use preunfold% / swar_unroll% over binary-doubling combinators",
     costHint := "15-30x kernel instruction reduction on convolution/bitboard loops; preunfold% matches manual inlining at 4.2x smaller source",
-    provenance := "SAIR Lean Kernel Challenge + AltProof.Core.preunfold% / swar_unroll%" },
+    provenance := "Lean kernel WHNF + AltProof.Core.preunfold% / swar_unroll%" },
   { id := "bv_decide",
     family := "bitvector-decision",
     matchShape := "BitVec or fixed-width UInt8/UInt16/UInt32/UInt64 bitwise identity/inequality (&&&, |||, ^^^, <<<, >>>)",
@@ -150,12 +150,12 @@ def routeTable : List Route := [
     rewriteHint := "generalize fixed-arity parameters to Fin n / List or attach certified termination_by n - i decreasing_by omega",
     costHint := "eliminates fixed-arity duplication and WellFounded fuel boilerplate",
     provenance := "lean-analyzer SOUND-04 NatZoneDomain::check_nat_sub_decreasing + FIDELITY-08" },
-  { id := "sair_decide",
+  { id := "kernel_decide",
     family := "kernel-friendly-term-design",
     matchShape := "decidable Nat/Bool/Int equality or inequality on a strict 3-axiom kernel lane where Lean.ofReduceBool is forbidden",
-    rewriteHint := "close via sair_decide (first | rfl | decide +kernel | omega) without invoking native_decide or bv_decide",
+    rewriteHint := "close via kernel_decide (first | rfl | decide +kernel | omega) without invoking native_decide or bv_decide",
     costHint := "0 Lean.ofReduceBool axioms; direct WHNF or verified Presburger closure",
-    provenance := "Template_SairDecide.lean + SAIR 3-axiom contest gate" },
+    provenance := "Template_KernelDecide.lean + strict 3-axiom kernel gate" },
   { id := "proof-carrying-codegen",
     family := "abstraction-concrete-duality",
     matchShape := "verified BitVec/SWAR bitwise or width-guarded arithmetic kernel lowered to MLIR, CUDA sm_89 PTX, AVX2, or C++20",
@@ -177,7 +177,7 @@ def routeTable : List Route := [
 ]
 
 /-- Cost ranker weights per B1 `extraction-outranks` heuristic (scaled integers x10)
-    extended with the SAIR kernel-cost axis (`ALT_PROOF_SAIR_BRIDGE` A1). -/
+    extended with the kernel-cost axis (`ALT_PROOF_KERNEL_BRIDGE` A1). -/
 structure CostWeights where
   perLineX10 : Int := 1         -- 0.1 per line
   perSharedLemmaX10 : Int := 50  -- 5.0 bonus per shared lemma
@@ -194,7 +194,7 @@ def computeCostX10 (lines : Nat) (sharedLemmas : Nat) (upstream : Bool)
   let kCost := (kernelCost : Int) * w.kernelCostWeightX10
   base - bonus - up + kCost
 
-/-- Two-axis evaluation node per `ALT_PROOF_SAIR_BRIDGE` A1/A4: reader elegance vs machine kernel cost. -/
+/-- Two-axis evaluation node per `ALT_PROOF_KERNEL_BRIDGE` A1/A4: reader elegance vs machine kernel cost. -/
 structure TwoAxisScore where
   eleganceCostX10 : Int
   kernelHeartbeats : Nat
@@ -283,7 +283,7 @@ def filterRelevantRoutes (f : GoalFeatures) : List Route :=
     | "finset_nonneg" => f.hasFinsetSum
     | "finset_mono" => f.hasFinsetSum
     | "induction-rescaling" => f.hasNatArith || f.hasWellFounded
-    | "sair_decide" => f.hasIteOrDecide || f.hasNatArith
+    | "kernel_decide" => f.hasIteOrDecide || f.hasNatArith
     | "proof-carrying-codegen" => f.hasBitVec
     | "eqsat-congruence-closure" => f.hasEquality
     | "backchain-solve-by-elim" => !f.hasFinsetSum && !f.hasAbs && (f.hasNegOrContra || f.hasEquality)
@@ -291,7 +291,7 @@ def filterRelevantRoutes (f : GoalFeatures) : List Route :=
   if picked.isEmpty then routeTable.take 3 else picked
 
 -- ============================================================================
--- 2. Core Structural & Decision Tactics (`sair_decide`, `backchain`, `grind_close`, `contra_direct`)
+-- 2. Core Structural & Decision Tactics (`kernel_decide`, `backchain`, `grind_close`, `contra_direct`)
 -- ============================================================================
 
 /-- `kernel_decide`: strict 3-rung kernel-clean decision macro (`rfl | decide +kernel | omega`)
@@ -304,12 +304,6 @@ macro_rules
       | rfl
       | decide +kernel
       | omega)
-
-/-- `sair_decide`: compatibility alias for `kernel_decide`. -/
-syntax (name := sairDecideTactic) "sair_decide" : tactic
-
-macro_rules
-  | `(tactic| sair_decide) => `(tactic| kernel_decide)
 
 /-- `backchain` / `backchain [lem1, lem2, ...]`: core-only bounded backchaining wrapper over
     `Lean.Elab.Tactic.SolveByElim` (`solve_by_elim`) with `maxDepth := 6`. Works in zero-Mathlib
@@ -563,7 +557,7 @@ def evalEqsatRw : Tactic := fun stx =>
     throwError "eqsat_rw: bounded equality saturation did not connect LHS and RHS within node budget"
 
 -- ============================================================================
--- 4. SAIR Elaboration-Time Superoptimizers (`eval_nat%`, `preunfold%`, `swar_unroll%`)
+-- 4. Kernel Elaboration-Time Superoptimizers (`eval_nat%`, `preunfold%`, `swar_unroll%`)
 -- ============================================================================
 
 /-- Pure kernel-primitive evaluator for closed `Nat` expressions (`Expr`). Evaluates `Nat.add`,
@@ -645,7 +639,7 @@ partial def evalClosedNatExpr (e : Expr) : MetaM Nat := do
 
 /-- `eval_nat% t` elaborates `t : Nat` and evaluates it at elaboration time to a raw `nat_lit`
     (`Expr.lit (.natVal v)`), leaving zero `Lean.*` constants or runtime arithmetic in exported
-    declarations (`SAIR` Law 11 / `MetaPreUnfold.lean`). -/
+    declarations (`KERNEL-LAW-11` / `MetaPreUnfold.lean`). -/
 elab "eval_nat% " t:term : term => do
   let e ← elabTermAndSynthesize t (some (mkConst ``Nat))
   let e ← instantiateMVars e

@@ -9,7 +9,7 @@ type: hybrid
 
 profiles:
   core:
-    description: "Core Lean 4 proving, specification, Plausible falsification, proof repair, build, and SAIR kernel WHNF optimization."
+    description: "Core Lean 4 proving, specification, Plausible falsification, proof repair, build, and kernel WHNF optimization."
     agents:
       - agents/specifier.md
       - agents/prover.md
@@ -21,7 +21,7 @@ profiles:
       - skills/lean-proof
       - skills/lean-proof-repair
       - skills/lean-core-only
-      - skills/lean-sair-kernel-optimization
+      - skills/lean-kernel-optimization
       - skills/lean-build
       - skills/lean-setup
       - skills/lean-bisect

@@ -16,7 +16,7 @@ confidence: high
 
 # Two-tier WASM static analyzer and 5-role 21-tool MCP architecture
 
-**Claim.** Static Lean 4 quality enforcement scales cleanly across diverse repositories only when split into a universal **Tier-1 `core` profile** (sub-millisecond `lean_analyzer.wasm` abstract interpretation + universal `lean-rules` YAML checks) and opt-in **Tier-2 domain profiles** (`--profile=sair|fluid-pde|p2m|all` with `paths:` globs), surfaced alongside **21 MCP tools** partitioned across **5 specialist agent roles** (`specifier`, `prover`, `auditor`, `editor`, `gardener`).
+**Claim.** Static Lean 4 quality enforcement scales cleanly across diverse repositories only when split into a universal **Tier-1 `core` profile** (sub-millisecond `lean_analyzer.wasm` abstract interpretation + universal `lean-rules` YAML checks) and opt-in **Tier-2 domain profiles** (`--profile=kernel|fluid-pde|p2m|all` or `[rules] profile = "kernel"` in `lean-project.toml`, with `paths:` globs), surfaced alongside **21 MCP tools** partitioned across **5 specialist agent roles** (`specifier`, `prover`, `auditor`, `editor`, `gardener`).
 
 **Evidence.** Shipped in `tools/lean-lsp-mcp` (`bin/lean-rules.js`, `wasm/lean_analyzer.wasm` `<= 128 KiB`, `src/sota_engines.ts`) and `ROLES.md`. `lean_analyzer.wasm` catches `Nat` subtraction truncation (`SOUND-04`), division/modulo by zero, `Classical.choice` leakage, and `WellFounded` fuel traps before invoking `lake build`.
 

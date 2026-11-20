@@ -324,13 +324,13 @@ theorem elegance_bfs_intros_finset_pin
   intros
   sum_congr_ring
 
-/-- `sair_decide` closes kernel-clean decidable and Presburger obligations without `Lean.ofReduceBool`. -/
-theorem sair_decide_kernel_clean_pin (n : Nat) (h : n < 12) :
+/-- `kernel_decide` closes kernel-clean decidable and Presburger obligations without `Lean.ofReduceBool`. -/
+theorem kernel_decide_kernel_clean_pin (n : Nat) (h : n < 12) :
     (3 * 7 = 21) ∧ (n ≤ 12) := by
-  constructor <;> sair_decide
+  constructor <;> kernel_decide
 
 /-! ### 4. Equality Saturation (`eqsat_rw` / `egg_rw`), Core `backchain`, `grind_close`, `contra_direct`,
-    SAIR Compile-Time Superoptimizers (`eval_nat%`, `preunfold%`, `swar_unroll%`), & `gcongr_pos` / `calc_ring_sum` Pins -/
+    Kernel Compile-Time Superoptimizers (`eval_nat%`, `preunfold%`, `swar_unroll%`), & `gcongr_pos` / `calc_ring_sum` Pins -/
 
 /-- `eqsat_rw` (and alias `egg_rw`) performs bidirectional congruence saturation (`congrArg`, `Eq.trans`,
     `Eq.symm`) over local and supplied equational lemmas where directional `simp` would loop on commutativity. -/

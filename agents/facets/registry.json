@@ -81,7 +81,7 @@
         "lean-bisect",
         "lean-mwe",
         "counterexample-first-proving",
-        "lean-sair-kernel-optimization",
+        "lean-kernel-optimization",
         "itp-cross-porting",
         "rocq-proof-adapter",
         "isabelle-isar-adapter",
@@ -99,7 +99,7 @@
       "soul_overlays": [
         "lean-proof-builder",
         "counterexample-falsification-hunter",
-        "sair-kernel-optimizer",
+        "kernel-optimizer",
         "cross-itp-porter"
       ]
     },
@@ -279,12 +279,12 @@
       "primary_skill": "lean-tautology-triage",
       "description": "Abstract-interpretation auditor for Nat subtraction truncation, division-by-zero, and vacuous hypotheses."
     },
-    "sair-kernel-optimizer": {
-      "file": "agents/souls/sair-kernel-optimizer.md",
+    "kernel-optimizer": {
+      "file": "agents/souls/kernel-optimizer.md",
       "role_container": "prover",
       "overlay_type": "operational",
-      "primary_skill": "lean-sair-kernel-optimization",
-      "description": "SAIR Middle-IR, kernel reduction, and BitVec/SWAR proof-term optimizer."
+      "primary_skill": "lean-kernel-optimization",
+      "description": "Lean 4 kernel reduction, WHNF, and BitVec/SWAR proof-term optimizer."
     },
     "premise-retrieval-specialist": {
       "file": "agents/souls/premise-retrieval-specialist.md",
@@ -387,7 +387,7 @@
   },
   "domain_facets": {
     "core": {
-      "description": "Core Lean 4 proving, specification, falsification, repair, build, and SAIR kernel WHNF optimization (12 skills).",
+      "description": "Core Lean 4 proving, specification, falsification, repair, build, and kernel WHNF optimization (12 skills).",
       "skills": [
         "lean-gateway",
         "lean-specification",
@@ -396,7 +396,7 @@
         "lean-proof",
         "lean-proof-repair",
         "lean-core-only",
-        "lean-sair-kernel-optimization",
+        "lean-kernel-optimization",
         "lean-build",
         "lean-setup",
         "lean-bisect",
@@ -406,7 +406,7 @@
         "lean-spec-architect",
         "counterexample-falsification-hunter",
         "lean-proof-builder",
-        "sair-kernel-optimizer",
+        "kernel-optimizer",
         "abstraction-concrete-architect"
       ]
     },

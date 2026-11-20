@@ -24,7 +24,7 @@ extracted_from: skills/lean-proof-review/SKILL.md
 
 | Symptom / Error / Bottleneck | Root Cause | Remediating Fix |
 | :--- | :--- | :--- |
-| `#print axioms` reveals `Classical.choice` in constructive lane | `open Classical` or `by_cases` used on decidable predicate | Route to `@lean-sair-kernel-optimization` Route 9 (`Bool.rec` / `decide`) |
+| `#print axioms` reveals `Classical.choice` in constructive lane | `open Classical` or `by_cases` used on decidable predicate | Route to `@lean-kernel-optimization` Route 9 (`Bool.rec` / `decide`) |
 | Theorem has `0 sorry` but conclusion echoes hypothesis | `FIDELITY-01` (`HYPOTHESIS_ECHO`) | Reject in Layer 3 Non-Vacuity check and escalate to `specifier` |
 
 ---

@@ -14,7 +14,7 @@ set_option autoImplicit false
 # AltProof.Tactics -- Speculative Alternative-Proof & Elegance Meta-Tactics
 
 Composes `AltProof.Core` (20-route advisor, `eqsat_rw`, `backchain`, `contra_direct`,
-`kernel_decide` / `sair_decide`, `eval_nat%`, `preunfold%`, `swar_unroll%`) and
+`kernel_decide`, `eval_nat%`, `preunfold%`, `swar_unroll%`) and
 `AltProof.Closers` (`sum_congr_ring`, `calc_ring_sum`, `gcongr_pos`, `finset_nonneg`,
 `finset_mono`, `convex_comb`, `markov_row_sum`, `matrix_pos`, `sup_norm_scale`,
 `deriv_quot_ring`, and finite/norm bridge lemmas) into:

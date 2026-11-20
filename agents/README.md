@@ -9,7 +9,7 @@ Every sub-agent dispatch instantiates one of the 5 canonical Role-Actor Containe
 | Role # | Container File | Tools | Role-Scoped `lean-lsp` MCP Allowlist | Primary Responsibility |
 | :--- | :--- | :--- | :--- | :--- |
 | **#1** | `agents/specifier.md` | `read, write, edit, bash, mcp:lean-lsp` | `lean_search`, `lean_lookup_symbol`, `lean_decl_references`, `lean_module_hierarchy`, `lean_navigate`, `lean_diagnostics`, `lean_counterexample_search`, `lean_blueprint`, `lean_metrics`, `lean_theorem_preflight`, `lean_skill_dispatch` | Three-part theorem specifications, `@[blueprint]` scaffolding, DAG navigation, and pre-proof counterexample screening. |
-| **#2** | `agents/prover.md` | `read, write, edit, bash, mcp:lean-lsp` | `lean_goal`, `lean_diagnostics`, `lean_server_status`, `lean_counterexample_search`, `lean_multi_attempt`, `lean_repair_proof`, `lean_lookup_symbol`, `lean_decl_references`, `lean_navigate`, `lean_search`, `lean_ffi`, `lean_exec`, `lean_theorem_preflight`, `lean_resync`, `lean_skill_dispatch` | Interactive tactic synthesis, proof repair (`@lean-proof-repair`), cross-ITP porting (`@itp-cross-porting`), and SAIR kernel optimization without altering theorem signatures. |
+| **#2** | `agents/prover.md` | `read, write, edit, bash, mcp:lean-lsp` | `lean_goal`, `lean_diagnostics`, `lean_server_status`, `lean_counterexample_search`, `lean_multi_attempt`, `lean_repair_proof`, `lean_lookup_symbol`, `lean_decl_references`, `lean_navigate`, `lean_search`, `lean_ffi`, `lean_exec`, `lean_theorem_preflight`, `lean_resync`, `lean_skill_dispatch` | Interactive tactic synthesis, proof repair (`@lean-proof-repair`), cross-ITP porting (`@itp-cross-porting`), and kernel WHNF optimization without altering theorem signatures. |
 | **#3** | `agents/auditor.md` | `read, grep, find, ls, bash, mcp:lean-lsp` | `lean_axiom_closure`, `lean_metrics`, `lean_diagnostics`, `lean_server_status`, `lean_counterexample_search`, `lean_minimal_hypotheses`, `lean_profile_proof`, `lean_lookup_symbol`, `lean_decl_references`, `lean_module_hierarchy`, `lean_navigate`, `lean_ffi`, `lean_search` | **Strictly read-only** 4-layer proof reviews, axiom-closure lockdowns, vacuity/truncation auditing, and 5-member Review Council gates. |
 | **#4** | `agents/editor.md` | `read, write, edit, bash, mcp:lean-lsp` | `lean_goal`, `lean_diagnostics`, `lean_multi_attempt`, `lean_minimal_hypotheses`, `lean_profile_proof`, `lean_lookup_symbol`, `lean_decl_references`, `lean_navigate`, `lean_search`, `lean_blueprint`, `lean_metrics`, `lean_resync` | Post-proof refactoring (`@lean-proof-refactor`), textbook-grade pedagogical exposition (`@lean-pedagogical-exposition`), and LaTeX report sync (`@lean-doc-sync`). |
 | **#5** | `agents/gardener.md` | `read, write, edit, bash, mcp:lean-lsp` | `lean_search`, `lean_lookup_symbol`, `lean_decl_references`, `lean_module_hierarchy`, `lean_navigate`, `lean_blueprint`, `lean_metrics`, `lean_axiom_closure`, `lean_server_status`, `lean_skill_dispatch` | Zettelkasten graph curation (`@lean-retro-methodology`), RETRO retrospectives (`@lean-retro-methodology`), substrate hygiene, and upstream Mathlib PR preparation (`@lean-upstream-pr`). |
@@ -30,11 +30,11 @@ Rather than proliferating top-level agent containers, specialized personas live 
 7. `lean-spec-architect` -> `specifier` (`@lean-specification`)
 8. `counterexample-falsification-hunter` -> `prover` (`@counterexample-first-proving`)
 9. `abstract-interp-vacuity-auditor` -> `auditor` (`@lean-tautology-triage`)
-10. `sair-kernel-optimizer` -> `prover` (`@lean-sair-kernel-optimization`)
+10. `kernel-optimizer` -> `prover` (`@lean-kernel-optimization`)
 11. `premise-retrieval-specialist` -> `specifier` (`@lean-research`)
 12. `cross-itp-porter` -> `prover` (`@itp-cross-porting`)
 13. `lean-retro-facilitator` -> `gardener` (`@lean-retro-methodology`)
-14. `abstraction-concrete-architect` -> `editor` (`@lean-proof-refactor` + `SAIR-LAW-01..25B`)
+14. `abstraction-concrete-architect` -> `editor` (`@lean-proof-refactor` + `KERNEL-LAW-01..28`)
 
 ### C. 10 Review & Research Council Personas
 15. `council-sigma-soundness` -> `auditor` (`@lean-review-council` Member Sigma)

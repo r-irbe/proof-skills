@@ -43,20 +43,20 @@ set_option autoImplicit false
 2. **Singleton Language Server**: Attach all editors and MCP tools through `tools/lean-serve-broker/` (`CONV-LEAN-SERVE-SINGLETON`); never spawn competing `lake serve` daemons.
 3. **Pre-Proof Counterexample Screening**: Run `lean_counterexample_search` (`@counterexample-first-proving`) and check static `FIDELITY-04` (`Nat` subtraction truncation `a - b` when `a < b`) before investing >10 tactic steps.
 4. **Canonical Tactic Dispatch & `@[grind]` Tagging**:
-   - Dispatch order: `rfl` / `sair_decide` -> `simp only [...]` -> `omega` / `linarith` / `positivity` -> `ring` / `abel` -> `grind` / `aesop` -> structured `have` / `calc` / `induction`.
+   - Dispatch order: `rfl` / `kernel_decide` -> `simp only [...]` -> `omega` / `linarith` / `positivity` -> `ring` / `abel` -> `grind` / `aesop` -> structured `have` / `calc` / `induction`.
    - Annotate clean equational and forward-chaining lemmas with `@[grind =]` / `@[grind ->]` where reusable; never leave bare non-terminal `simp`.
 
 ---
 
 ## 3. The Abstraction-Concrete Duality (`@[csimp]` Twin Architecture)
 
-Across all modules (`Template_Theorem`, `Template_DataModule`, `Template_ComputableTwin_Csimp`, `Template_KernelWHNF_SAIR`):
+Across all modules (`Template_Theorem`, `Template_DataModule`, `Template_ComputableTwin_Csimp`, `Template_KernelWHNF`):
 
 1. **Abstract in `Prop` Specifications (Where Concreteness Adds Friction)**:
    - State theorems over minimal algebraic/order/lattice/metric interfaces (`Monoid`, `CommRing`, `PartialOrder`, `Fin n -> α`, `List α`) rather than fixed-arity parameters (`a0 a1 a2 a3`, `FIDELITY-08`) or raw bit-packed words.
 2. **Concrete in Computable Definitions & Kernel Witnesses (Where Abstractions Cost WHNF / Codegen)**:
-   - Eliminate polymorphic `ite`/`Decidable` dictionaries (`SAIR-LAW-08` -> `Bool.rec`), `WellFounded.fix`/`brecOn` (`SAIR-LAW-06` -> structural `Nat.rec`), nested `Prod` boxing (`SAIR-LAW-09` -> flat `structure` or CPS), and `Prop` witnesses inside runtime cones (`SAIR-LAW-22`).
-   - Connect the two layers via `@[csimp] theorem specFn_eq_fastFn : @specFn = @fastFn` (`SAIR-LAW-07`).
+   - Eliminate polymorphic `ite`/`Decidable` dictionaries (`KERNEL-LAW-08` -> `Bool.rec`), `WellFounded.fix`/`brecOn` (`KERNEL-LAW-06` -> structural `Nat.rec`), nested `Prod` boxing (`KERNEL-LAW-09` -> flat `structure` or CPS), and `Prop` witnesses inside runtime cones (`KERNEL-LAW-22`).
+   - Connect the two layers via `@[csimp] theorem specFn_eq_fastFn : @specFn = @fastFn` (`KERNEL-LAW-07`).
 
 ---
 
@@ -64,7 +64,7 @@ Across all modules (`Template_Theorem`, `Template_DataModule`, `Template_Computa
 
 - **Valid UTF-8 Lean 4 Mathematical Symbols**: Standard mathematical operators (`∀`, `∃`, `≤`, `≥`, `≠`, `→`, `↔`, `∑`, `∏`, `⊗`, `∈`, `⊆`, Greek/subscripts `α`, `β`, `ℝ`, `ℕ`, `ℤ`, `ℚ`) are idiomatic and encouraged in Lean 4 and Markdown math exposition.
 - **Banned Typographic Punctuation & Invisible Characters**: Curly quotes, en/em dashes (`--` in ASCII instead), horizontal ellipsis (`...` instead), NBSP (`\u00A0`), zero-width characters, and bidi overrides are strictly banned across all files.
-- **3-Axiom Kernel Lockdown**: Exported theorems must depend on at most `[propext, Classical.choice, Quot.sound]` (`@lean-verification-gate`). Avoid `native_decide` and `bv_decide` whenever `Lean.ofReduceBool` / `Lean.trustCompiler` is disallowed; use `sair_decide` (`examples/Template_SairDecide.lean`).
+- **3-Axiom Kernel Lockdown**: Exported theorems must depend on at most `[propext, Classical.choice, Quot.sound]` (`@lean-verification-gate`). Avoid `native_decide` and `bv_decide` whenever `Lean.ofReduceBool` / `Lean.trustCompiler` is disallowed; use `kernel_decide` (`examples/Template_KernelDecide.lean`).
 
 ---
 

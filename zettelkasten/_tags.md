@@ -26,9 +26,8 @@ Auto-maintained. Add tags here as they enter the corpus.
 | `multi-model` | zk-010 |
 | `cost` | zk-010 |
 | `synthesis` | zk-010 |
-| `sair` | zk-011, zk-012 |
 | `whnf` | zk-011, zk-012 |
-| `kernel` | zk-011 |
+| `kernel` | zk-011, zk-012 |
 | `optimization` | zk-011 |
 | `duality` | zk-012 |
 | `refactoring` | zk-012 |

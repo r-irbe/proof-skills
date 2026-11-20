@@ -144,7 +144,7 @@ extracted_from: skills/lean-proof/SKILL.md
 | Proving Intent | Canonical Action (`lean-lsp` + Lean 4) | Notes |
 | :--- | :--- | :--- |
 | Inspect live tactic state without `lake build` | `lean_goal(filePath, line, col, target: "tactic")` | Never insert `trace_state` into `.lean` files |
-| Get ranked alternative proof candidates | `lean_goal(filePath, line, col, target: "altproof")` | Queries SAIR/AltProof advisor |
+| Get ranked alternative proof candidates | `lean_goal(filePath, line, col, target: "altproof")` | Queries AltProof/kernel advisor |
 | Unpack nested existential & conjunctive hypothesis `h` | `rcases h with ⟨x, hx1, hx2⟩` | Or `obtain ⟨x, hx⟩ := h` |
 | Chain multi-step equality and inequality calculation | `calc a = b := by ... _ <= c := by ...` | Isolates each step's heartbeat budget |
 | Discharge routine propositional + simp subgoal | `aesop` or `grind` | Prefer explicit `simp only` when fast |

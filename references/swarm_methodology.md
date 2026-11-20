@@ -25,7 +25,7 @@ Agents operating on mathematical formalization face severe context limits when m
 The lifecycle is divided into five sequential Role-Actor Containers defined in [`ROLES.md`](../ROLES.md) and [`agents/facets/registry.json`](../agents/facets/registry.json):
 
 - **Specifier (`agents/specifier.md` -- Role #1)**: Informal-to-formal 3-part specification, `@[blueprint]` scaffolding, and pre-proof counterexample screening.
-- **Prover (`agents/prover.md` -- Role #2)**: Interactive tactic synthesis, proof repair (`@lean-proof-repair`), cross-ITP porting (`@itp-cross-porting`), and SAIR kernel optimization.
+- **Prover (`agents/prover.md` -- Role #2)**: Interactive tactic synthesis, proof repair (`@lean-proof-repair`), cross-ITP porting (`@itp-cross-porting`), and kernel WHNF optimization.
 - **Auditor (`agents/auditor.md` -- Role #3)**: Strictly read-only 4-layer proof review, axiom-closure lockdown (`lean_axiom_closure`), vacuity/truncation auditing, and Review Council arbitration.
 - **Editor (`agents/editor.md` -- Role #4)**: Post-proof helper-lemma extraction (`@lean-proof-refactor`), textbook-grade mathematical exposition (`@lean-pedagogical-exposition`), and LaTeX paper sync (`@lean-report`).
 - **Gardener (`agents/gardener.md` -- Role #5)**: Zettelkasten curation (`@lean-zettelkasten`), RETRO retrospectives (`@lean-retro-methodology`), and Mathlib upstream porting (`@lean-upstream-porting`).

@@ -13,13 +13,13 @@ For a detailed explanation of the Swarm methodology and multi-agent theory, see 
 
 ## 2. Prover (`agents/prover.md` -- Role #2)
 - **Role-Scoped `lean-lsp` MCP Allowlist (15 tools)**: `lean_goal`, `lean_diagnostics`, `lean_server_status`, `lean_counterexample_search`, `lean_multi_attempt`, `lean_repair_proof`, `lean_lookup_symbol`, `lean_decl_references`, `lean_navigate`, `lean_search`, `lean_ffi`, `lean_exec`, `lean_theorem_preflight`, `lean_resync`, `lean_skill_dispatch`
-- **Soul Overlays (`agents/souls/`)**: `lean-proof-builder`, `counterexample-falsification-hunter`, `sair-kernel-optimizer`, `cross-itp-porter`
-- **Skills**: `lean-proof`, `lean-proof-repair`, `lean-core-only`, `lean-build`, `lean-setup`, `lean-bisect`, `lean-mwe`, `counterexample-first-proving`, `lean-sair-kernel-optimization`, `itp-cross-porting`, `rocq-proof-adapter`, `isabelle-isar-adapter`, `hol-metamath-adapter`, `lean-math-foundations`, `lean-math-discrete`, `lean-math-stochastic`, `lean-math-dynamical`, `lean-math-optimization`, `lean-math-analysis`, `lean-ai-formalization`, `lean-knowledge-formalization`, `lean-security-formalization`
+- **Soul Overlays (`agents/souls/`)**: `lean-proof-builder`, `counterexample-falsification-hunter`, `kernel-optimizer`, `cross-itp-porter`
+- **Skills**: `lean-proof`, `lean-proof-repair`, `lean-core-only`, `lean-build`, `lean-setup`, `lean-bisect`, `lean-mwe`, `counterexample-first-proving`, `lean-kernel-optimization`, `itp-cross-porting`, `rocq-proof-adapter`, `isabelle-isar-adapter`, `hol-metamath-adapter`, `lean-math-foundations`, `lean-math-discrete`, `lean-math-stochastic`, `lean-math-dynamical`, `lean-math-optimization`, `lean-math-analysis`, `lean-ai-formalization`, `lean-knowledge-formalization`, `lean-security-formalization`
 - **Rules**:
   - No `trace_state` or diagnostic comments in source files; inspect live state via `lean-lsp` MCP (`lean_goal`, `lean_diagnostics`, `lean_multi_attempt`)
   - Run `lean_counterexample_search` (Galois-pruned Plausible) before manual proof search on suspect statements
   - Never alter theorem signatures or hypothesis types to make a proof pass; `native_decide` (`Lean.ofReduceBool`) is strictly banned
-  - Unified `v0.5.0` Tactic Hierarchy: `rfl` -> `bv_decide` / `decide +kernel` / `sair_decide` / `norm_num` / `ring` -> `omega` / `linarith` / `positivity` -> `grind` / `eqsat_rw` -> `simp only [...]` -> `backchain` -> `aesop`
+  - Unified `v0.5.0` Tactic Hierarchy: `rfl` -> `bv_decide` / `decide +kernel` / `kernel_decide` / `norm_num` / `ring` -> `omega` / `linarith` / `positivity` -> `grind` / `eqsat_rw` -> `simp only [...]` -> `backchain` -> `aesop`
 - **Stop Condition**: All goals closed (`0 sorry`) -> Hands off to `auditor`
 
 ## 3. Auditor (`agents/auditor.md` -- Role #3, Strictly Read-Only)

@@ -24,7 +24,7 @@ YYYY-MM-DD  ACTION  zk-NNN-slug                    notes
 2026-05-27  ADD     permanent/zk-009-skill-consolidation-rubric Seed note 9 of 10.
 2026-05-27  ADD     permanent/zk-010-multi-model-pareto  Seed note 10 of 10.
 2026-11-15  UPDATE  permanent/zk-001..zk-010             Aligned references with v0.5.0 paths, 38-skill cap, and unified tactic hierarchy.
-2026-11-15  ADD     permanent/zk-011-sair-whnf-laws      SAIR 39 WHNF laws and nat_lit mechanics.
+2026-11-15  ADD     permanent/zk-011-kernel-whnf-laws    Kernel WHNF laws and nat_lit mechanics.
 2026-11-15  ADD     permanent/zk-012-abstraction-concrete-duality Spec-compute duality and hot parameterization penalty.
 2026-11-15  ADD     permanent/zk-013-proof-carrying-hardware-codegen PolyBitOp, CheckedWord, and N01..N12 hardware codegen.
 2026-11-15  ADD     permanent/zk-014-two-tier-wasm-lean-rules Two-tier WASM analyzer and 5-role 21-tool MCP architecture.

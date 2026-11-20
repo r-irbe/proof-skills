@@ -19,6 +19,6 @@ confidence: high
 
 **Evidence.** Implemented and kernel-verified in `templates/core/Template_ProofCarryingCodegen.md` and `templates/core/examples/Template_ProofCarryingCodegen.lean`. `PolyBitOp.eval_xor_self` proves polymorphic width-invariant algebraic identities once for all `w`, while `CheckedWord.widen_exact` certifies zero unsigned truncation whenever `needsWide = false`.
 
-**Implication.** Hardware optimization no longer relies on unverified C++/CUDA intrinsics. Combine the SAIR WHNF laws in [[zk-011]] with the spec-compute duality in [[zk-012]] to synthesize zero-UB native code, and enforce static soundness invariants continuously via the two-tier WASM analyzer in [[zk-014]].
+**Implication.** Hardware optimization no longer relies on unverified C++/CUDA intrinsics. Combine the kernel WHNF laws in [[zk-011]] with the spec-compute duality in [[zk-012]] to synthesize zero-UB native code, and enforce static soundness invariants continuously via the two-tier WASM analyzer in [[zk-014]].
 
 See also: [[zk-011]], [[zk-012]], [[zk-014]].

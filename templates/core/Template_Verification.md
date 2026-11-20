@@ -148,7 +148,7 @@ set_option autoImplicit false
 --   Compiles to native code, runs OUTSIDE the kernel.
 --   FAST, but NOT kernel-checkable (trusts the compiler).
 --   In `#print axioms` output appears as `Lean.ofReduceBool`.
---   BANNED in proof bodies (GT-30/31): use `decide +kernel`, `bv_decide`, `sair_decide`, or a `@[csimp]` twin + `rfl`.
+--   BANNED in proof bodies (GT-30/31): use `decide +kernel`, `bv_decide`, `kernel_decide`, or a `@[csimp]` twin + `rfl`.
 
 -- -- Universe consistency ---------------------------------------------
 -- Sort 0 = Prop, Sort 1 = Type 0, Sort 2 = Type 1, ...
@@ -178,7 +178,7 @@ example : square 1 = 1 := by decide          -- boundary
   guard (square 0 = 0)
   return "all assertions passed"
 
--- Level 3: `decide +kernel` or `sair_decide` for kernel-verified finite checks (never `native_decide`)
+-- Level 3: `decide +kernel` or `kernel_decide` for kernel-verified finite checks (never `native_decide`)
 -- example : (List.range 100).all (fun n => square n ≥ n) = true := by
 --   decide +kernel
 

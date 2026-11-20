@@ -51,8 +51,8 @@ def test_index_md_skipped(tmp_path):
     assert "INDEX" not in str(files)
 
 
-def test_sair_kernel_cost_priority(tmp_path):
-    d = tmp_path / "reports_sair"
+def test_kernel_cost_priority(tmp_path):
+    d = tmp_path / "reports_kernel"
     d.mkdir()
     (d / "G.lean.md").write_text(
         "#### `thmSmall` (lines 1-10) . verbose score 0.10\n"

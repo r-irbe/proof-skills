@@ -229,7 +229,7 @@ theorem passesThreshold_mono (r : MyRecord) (t' : Nat)
 ```lean
 -- TEMPLATE: Use `by decide` for concrete, finite computation goals.
 -- These serve as unit tests embedded in the module.
--- PERFORMANCE: `decide` is slow for large types; use `decide +kernel` or `sair_decide` (`native_decide` is banned by GT-30/31)
+-- PERFORMANCE: `decide` is slow for large types; use `decide +kernel` or `kernel_decide` (`native_decide` is banned by GT-30/31)
 -- for computations involving >1000 steps.
 
 -- TEMPLATE: Replace these with your actual test cases.

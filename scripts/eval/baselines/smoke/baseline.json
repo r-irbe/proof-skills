@@ -185,7 +185,7 @@
       "passed": true,
       "score": 1.0
     },
-    "lean-sair-kernel-optimization-smoke": {
+    "lean-kernel-optimization-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0

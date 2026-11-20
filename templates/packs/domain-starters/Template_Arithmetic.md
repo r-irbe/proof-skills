@@ -13,7 +13,7 @@ Examples of modules at this layer:
 
 Tactic hierarchy for arithmetic (fast → slow):
 ```
-rfl -> bv_decide / decide +kernel / sair_decide / norm_num -> omega / linarith -> grind / eqsat_rw
+rfl -> bv_decide / decide +kernel / kernel_decide / norm_num -> omega / linarith -> grind / eqsat_rw
 ```
 Use `grind` as the default automation tactic; fall back to `omega`
 only when `grind` does not terminate.
@@ -340,7 +340,7 @@ Before committing:
 
 -- Decision flowchart:
 -- Is it concrete numeric computation? → norm_num
--- Is it large finite enumeration?     -> decide +kernel / bv_decide / sair_decide (never native_decide)
+-- Is it large finite enumeration?     -> decide +kernel / bv_decide / kernel_decide (never native_decide)
 -- Is it Nat/Int arithmetic?           → grind (default), omega (fallback)
 -- Does it involve @[grind] lemmas?    → grind (only option)
 ```

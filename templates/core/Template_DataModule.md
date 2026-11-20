@@ -288,5 +288,5 @@ export MyProj.Probability (Coin fair)
 ## v3 Upgrades (Abstraction-Concrete Duality & Zero-`Prop` Runtime Cones)
 
 When a `DataModule` defines both a mathematical carrier and hot executable operations:
-- Keep `Prop` invariants external to the runtime `structure` (`SAIR-LAW-22`: prefer raw carrier `State` + predicate `ValidState : State → Prop` over `{ s : State // ValidState s }` on hot execution paths).
+- Keep `Prop` invariants external to the runtime `structure` (`KERNEL-LAW-22`: prefer raw carrier `State` + predicate `ValidState : State → Prop` over `{ s : State // ValidState s }` on hot execution paths).
 - Pair induction-friendly recursive definitions with hardware-aligned `@[csimp]` twins using [`Template_ComputableTwin_Csimp.md`](Template_ComputableTwin_Csimp.md).

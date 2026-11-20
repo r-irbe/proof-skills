@@ -43,7 +43,7 @@ For rules of maintenance and the underlying philosophy of these guardrails, see 
 - GT-27: FAIL: Over-annotates stable modules -> REMEDY: Annotation budget goes to unstable surfaces
 - GT-28: FAIL: Re-runs `lake build` instead of escalating on third failure -> REMEDY: Same-error x3 -> STOP and escalate
 - GT-29: FAIL: States an existential or a bound instead of the exact numeric answer -> REMEDY: Answer form must match the requested form exactly
-- GT-30: FAIL: Introduces `native_decide`, `decide!`, or `decide +native` (`Lean.ofReduceBool`) in a proof or template -> REMEDY: Strictly banned (`rule-lean-no-native-decide`); use `decide +kernel`, `bv_decide` (where SAT certificate is kernel-checked), `rfl`, `norm_num`, or `sair_decide`
+- GT-30: FAIL: Introduces `native_decide`, `decide!`, or `decide +native` (`Lean.ofReduceBool`) in a proof or template -> REMEDY: Strictly banned (`rule-lean-no-native-decide`); use `decide +kernel`, `bv_decide` (where SAT certificate is kernel-checked), `rfl`, `norm_num`, or `kernel_decide`
 
 ### 7. Knowledge Synthesis & Zettelkasten
 - GT-31: FAIL: Leaves a computational `decide +kernel` finite-witness check permanent when a general structural theorem was requested -> REMEDY: File and prove the structural `forall` follow-up theorem

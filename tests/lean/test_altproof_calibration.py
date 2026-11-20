@@ -60,11 +60,11 @@ def test_upstream_bonus_dominates():
     assert cost(52, 1, upstream=True) < cost(52, 1)
 
 
-def test_sair_calibration_fixtures_rank_after_above_before():
-    """SAIR kernel-cost axis ranks AFTER above BEFORE on accepted fixtures (A1/A2 acceptance)."""
-    sair_path = GOLDEN / "sair-calibration.json"
-    assert sair_path.exists(), "sair-calibration.json missing"
-    fixtures = json.loads(sair_path.read_text())["fixtures"]
+def test_kernel_calibration_fixtures_rank_after_above_before():
+    """Kernel-cost axis ranks AFTER above BEFORE on accepted fixtures (A1/A2 acceptance)."""
+    kernel_path = GOLDEN / "kernel-calibration.json"
+    assert kernel_path.exists(), "kernel-calibration.json missing"
+    fixtures = json.loads(kernel_path.read_text())["fixtures"]
     accepted = [fx for fx in fixtures if fx.get("disposition") != "rejected"]
     w = Weights(kernel_cost_weight=1.0)
     passed = 0
@@ -72,7 +72,7 @@ def test_sair_calibration_fixtures_rank_after_above_before():
         b, a = fx["before"], fx["after"]
         if ranks_above(0, 0, before_kernel_cost=b, after_kernel_cost=a, w=w):
             passed += 1
-    assert passed >= len(accepted) * 3 // 4, f"Only {passed}/{len(accepted)} SAIR fixtures ranked cleanly"
+    assert passed >= len(accepted) * 3 // 4, f"Only {passed}/{len(accepted)} kernel calibration fixtures ranked cleanly"
 
 
 def test_formal_conjectures_calibration_fixtures_rank_cleanly():

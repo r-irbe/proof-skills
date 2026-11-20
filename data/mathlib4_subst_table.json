@@ -39,7 +39,7 @@
     "<StandardScale>": "ExampleProject.Foundations.standardScale",
     "<ModularSubpackageInterface>": "ProofSkills.Template_ModularSubpackageInterface",
     "<ProofCarryingCodegen>": "ProofSkills.Template_ProofCarryingCodegen",
-    "<KernelWHNFSAIR>": "ProofSkills.Template_KernelWHNF_SAIR",
+    "<KernelWHNF>": "ProofSkills.Template_KernelWHNF",
     "<AltProofTactics>": "ProofSkills.Template_AltProofTactics"
   }
 }

@@ -22,12 +22,12 @@ class Weights:
     per_line: float = 0.1  # cost per proof line
     per_shared_lemma: float = 5.0  # bonus per named shared lemma extracted
     upstream_bonus: float = 20.0  # extra bonus when Mathlib-absent (library-worthy)
-    kernel_cost_weight: float = 1.0  # weight per kernel-cost second (SAIR bridge A1)
+    kernel_cost_weight: float = 1.0  # weight per kernel-cost second (kernel-cost bridge A1)
 
 
 @dataclass
 class TwoAxisScore:
-    """Two-axis evaluation node per ALT_PROOF_SAIR_BRIDGE A1/A4."""
+    """Two-axis evaluation node per ALT_PROOF_KERNEL_BRIDGE A1/A4."""
 
     elegance_cost: float
     kernel_cost: float

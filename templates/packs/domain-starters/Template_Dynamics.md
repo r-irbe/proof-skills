@@ -331,7 +331,7 @@ Before committing:
 -- • Factor the proof into smaller lemmas
 -- • Use `have` blocks to create intermediate results
 -- • Replace enumeration with algebraic arguments
--- • Use `decide +kernel` or `sair_decide` for the finite/computational parts
+-- • Use `decide +kernel` or `kernel_decide` for the finite/computational parts
 
 -- 4. Profile before committing:
 --    #count_heartbeats theorem my_expensive_proof : ... := by ...

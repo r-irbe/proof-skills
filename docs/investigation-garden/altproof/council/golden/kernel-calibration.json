@@ -1,20 +1,20 @@
 {
   "meta": {
-    "name": "alt-proof SAIR calibration cases v1",
-    "source": "SAIR Lean Kernel Challenge artifacts in sair/kernel (WAVE3-RESULTS.md, measurements/RATIOS.md, lanes/*/NOTES.md)",
+    "name": "alt-proof kernel calibration cases v1",
+    "source": "Lean kernel reduction benchmark artifacts (WAVE3-RESULTS.md, measurements/RATIOS.md, lanes/*/NOTES.md)",
     "mirrors": "docs/investigation-garden/altproof/council/golden/golden-cases.json (same top-level schema; additive kernelCost key per fixture)",
     "purpose": [
       "add a kernel-cost axis to the golden-suite calibration (cost-weight family, ballot B1)",
       "supply the missing algorithm-class-substitution route family",
       "regression baseline for the sweep tool on a second, kernel-scored corpus"
     ],
-    "note": "every fixture is a REAL kernel-verified SAIR lane result; before/after are kernel-reduction seconds of a full 'with_unfolding_all rfl' reduction with maxHeartbeats 0 (local proxy for the contest PMU instruction count; ratios, not seconds, are transferable)"
+    "note": "every fixture is a REAL kernel-verified reduction lane result; before/after are kernel-reduction seconds of a full 'with_unfolding_all rfl' reduction with maxHeartbeats 0 (local proxy for the contest PMU instruction count; ratios, not seconds, are transferable)"
   },
   "fixtures": [
     {
       "id": 1,
       "theorem": "partitionSpec: impl 36 (in-place restricted-partition DP)",
-      "module": "SAIR kernel/partition lanes/L2",
+      "module": "kernel/partition lanes/L2",
       "before": 42.0,
       "after": 1.39,
       "route": "algorithm-class-substitution",
@@ -30,7 +30,7 @@
     {
       "id": 2,
       "theorem": "partitionSpec: six scored cases (14/18/22/26/32/36)",
-      "module": "SAIR kernel/partition lanes/L2",
+      "module": "kernel/partition lanes/L2",
       "before": 49.2,
       "after": 2.28,
       "route": "algorithm-class-substitution",
@@ -47,12 +47,12 @@
         }
       },
       "legibility": "low",
-      "note": "ratio grows with n (DP vs exponential); the strongest and cleanest SAIR cost table"
+      "note": "ratio grows with n (DP vs exponential); the strongest and cleanest kernel cost table"
     },
     {
       "id": 3,
       "theorem": "permanentSpecN: compact recursion + rowPairs (d=16)",
-      "module": "SAIR kernel/permanent lanes/L2",
+      "module": "kernel/permanent lanes/L2",
       "before": 36.6,
       "after": 11.6,
       "route": "extract-shared-block",
@@ -72,7 +72,7 @@
     {
       "id": 4,
       "theorem": "permanentSpecN: Ryser/Gray subset-DP (attempted substitution)",
-      "module": "SAIR kernel/permanent lanes/L2",
+      "module": "kernel/permanent lanes/L2",
       "before": 11.6,
       "after": 600.0,
       "route": "reflection-routes",
@@ -89,7 +89,7 @@
     {
       "id": 5,
       "theorem": "primeCountSpec: odd-divisor structural trial division (n=100)",
-      "module": "SAIR kernel/primecount lanes/L1",
+      "module": "kernel/primecount lanes/L1",
       "before": 2.56,
       "after": 2.76,
       "route": "kernel-friendly-term-design",
@@ -106,7 +106,7 @@
     {
       "id": 6,
       "theorem": "primeCountSpec: sieve of Eratosthenes (total T)",
-      "module": "SAIR kernel/primecount lanes/L2",
+      "module": "kernel/primecount lanes/L2",
       "before": 2.165,
       "after": 1.811,
       "route": "algorithm-class-substitution",
@@ -122,7 +122,7 @@
     {
       "id": 7,
       "theorem": "caRule110Spec: bit-parallel SWAR Nat word step (six endpoint cases)",
-      "module": "SAIR kernel/ca-rule110 lanes/L2",
+      "module": "kernel/ca-rule110 lanes/L2",
       "before": 129.5,
       "after": 3.55,
       "route": "algorithm-class-substitution",
@@ -138,7 +138,7 @@
     {
       "id": 8,
       "theorem": "sha256Spec: typeclass-unwrapped schedule + flattened masks (512 steps)",
-      "module": "SAIR kernel/sha256 lanes/L2",
+      "module": "kernel/sha256 lanes/L2",
       "before": 65.16,
       "after": 39.43,
       "route": "kernel-friendly-term-design",
@@ -154,7 +154,7 @@
     {
       "id": 9,
       "theorem": "sha256Spec: unrolled 16-arg let-bound schedule window (attempted)",
-      "module": "SAIR kernel/sha256 lanes/L2",
+      "module": "kernel/sha256 lanes/L2",
       "before": 0.77,
       "after": 1.39,
       "route": "kernel-friendly-term-design",
@@ -170,7 +170,7 @@
     {
       "id": 10,
       "theorem": "mertensSpec: odd-divisor WF-free structural factor scan (n=500)",
-      "module": "SAIR kernel/mertens lanes/L1",
+      "module": "kernel/mertens lanes/L1",
       "before": 4.85,
       "after": 3.44,
       "route": "kernel-friendly-term-design",
@@ -186,7 +186,7 @@
     {
       "id": 11,
       "theorem": "mertensSpec: list-based mu-sieve with Nat.Prime filter (attempted)",
-      "module": "SAIR kernel/mertens lanes/L2",
+      "module": "kernel/mertens lanes/L2",
       "before": 4.85,
       "after": 71.8,
       "route": "algorithm-class-substitution",
@@ -202,7 +202,7 @@
     {
       "id": 12,
       "theorem": "polydiscSpec: Bareiss fraction-free exact-division elimination (attempted)",
-      "module": "SAIR kernel/polydisc lanes/L2",
+      "module": "kernel/polydisc lanes/L2",
       "before": 0.082,
       "after": 0.688,
       "route": "algorithm-class-substitution",
@@ -218,7 +218,7 @@
     {
       "id": 13,
       "theorem": "fibSpec: Lucas-pair 2-mult doubling vs Nat.fastFib (attempted)",
-      "module": "SAIR kernel/fib lanes/L2",
+      "module": "kernel/fib lanes/L2",
       "before": 1.0,
       "after": 1.023,
       "route": "algorithm-class-substitution",
@@ -234,7 +234,7 @@
     {
       "id": 14,
       "theorem": "fibSpec: point-free CPS Bool.rec + Top8 prefix tree + Nat.pow mpn_sqr (Top8SymProof)",
-      "module": "SAIR kernel/fib lanes/L5",
+      "module": "kernel/fib lanes/L5",
       "before": 93.579,
       "after": 7.231,
       "route": "kernel-friendly-term-design",
@@ -249,7 +249,7 @@
     }
   ],
   "aggregate": {
-    "sair_fixtures": 14,
+    "kernel_fixtures": 14,
     "kernel_scored": 14,
     "measured_negatives": 5,
     "beauty_cost_inversions": 4,
@@ -258,6 +258,6 @@
       "kernel-friendly-term-design"
     ],
     "regressions": 0,
-    "upstream_source": "SAIR Lean Kernel Challenge Stage 1 Waves 3-6 (deadline 2026-11-20); boards top-3 within 0.5-2%"
+    "upstream_source": "Lean kernel reduction benchmark Waves 3-6; validated relative speedup ratios"
   }
 }

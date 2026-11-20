@@ -38,7 +38,7 @@ RENDERABLE_PATTERNS = [
     re.compile(r"^(unfold|simp|simp_rw|rw|erw)\b"),
     re.compile(
         r"^(linarith|nlinarith|omega|ring|ring_nf|field_simp"
-        r"|positivity|norm_num|rfl|exact\?|aesop|grind|decide|bv_decide|sair_decide"
+        r"|positivity|norm_num|rfl|exact\?|aesop|grind|decide|bv_decide|kernel_decide"
         r"|sum_congr_ring|calc_ring_sum|gcongr_pos|finset_nonneg|finset_mono"
         r"|wellformed_tac|channel_fields|eqsat_rw|egg_rw|backchain|contra_direct"
         r"|grind_close|push|alt_proof|elegance\?|bfs_elegance\?)\b"

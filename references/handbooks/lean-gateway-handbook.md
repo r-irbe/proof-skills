@@ -12,7 +12,7 @@ extracted_from: skills/lean-gateway/SKILL.md
 | :--- | :--- | :--- |
 | New informal conjecture or paper section | `specifier` -> `@lean-specification` | Screen with `@counterexample-first-proving` before `@lean-proof` |
 | `sorry` goal in existing `.lean` module | `prover` -> `@lean-proof` | Use `lean_goal` + Layer-1 lookup card |
-| Slow `rfl` / `decide` or C++/SIMD extraction | `prover`/`editor` -> `@lean-sair-kernel-optimization` | Bridge clean spec via `@[csimp]` twin (`SAIR-LAW-07`) |
+| Slow `rfl` / `decide` or C++/SIMD extraction | `prover`/`editor` -> `@lean-kernel-optimization` | Bridge clean spec via `@[csimp]` twin (`KERNEL-LAW-07`) |
 
 ### Table 2: Intent-First (`phrasebook` Entry Point)
 

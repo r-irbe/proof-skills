@@ -3,7 +3,7 @@
 Verifies that `proof_quality.py` (`audit_fidelity_defects`), `lean-analyzer`
 (`src/source_diagnostics.rs`), and `lean-lsp-mcp` (`src/proof_fidelity_audit.ts`)
 agree on the 8 canonical statement-vs-proof fidelity defects (`FIDELITY-01..08`),
-that the SAIR kernel optimization handbook documents all 39 `SAIR-LAW-01..25B`
+that the kernel optimization handbook documents all 42 `KERNEL-LAW-01..28`
 laws and 20 AltProof routes, and that standalone Core Lean exemplars + `AltProof.Core`
 compile cleanly with zero warnings under Lean `v4.34.1`.
 
@@ -121,55 +121,60 @@ def test_over_concrete_fixed_arity_thresholds():
     )
 
 
-def test_sair_handbook_covers_all_39_laws_and_routes():
-    hb_path = ROOT / "references" / "handbooks" / "lean-sair-kernel-optimization-handbook.md"
+def test_kernel_handbook_covers_all_42_laws_and_routes():
+    hb_path = ROOT / "references" / "handbooks" / "lean-kernel-optimization-handbook.md"
     assert hb_path.exists()
     text = hb_path.read_text(encoding="utf-8")
 
-    expected_39_sair_laws = {
-        "SAIR-LAW-01",
-        "SAIR-LAW-01B",
-        "SAIR-LAW-01C",
-        "SAIR-LAW-02",
-        "SAIR-LAW-02B",
-        "SAIR-LAW-03",
-        "SAIR-LAW-03B",
-        "SAIR-LAW-04",
-        "SAIR-LAW-05",
-        "SAIR-LAW-06",
-        "SAIR-LAW-07",
-        "SAIR-LAW-08",
-        "SAIR-LAW-09",
-        "SAIR-LAW-10",
-        "SAIR-LAW-11",
-        "SAIR-LAW-12",
-        "SAIR-LAW-12B",
-        "SAIR-LAW-13",
-        "SAIR-LAW-13B",
-        "SAIR-LAW-14",
-        "SAIR-LAW-14B",
-        "SAIR-LAW-14C",
-        "SAIR-LAW-15",
-        "SAIR-LAW-16",
-        "SAIR-LAW-16B",
-        "SAIR-LAW-17",
-        "SAIR-LAW-18",
-        "SAIR-LAW-18B",
-        "SAIR-LAW-19",
-        "SAIR-LAW-19B",
-        "SAIR-LAW-20",
-        "SAIR-LAW-21",
-        "SAIR-LAW-22",
-        "SAIR-LAW-22B",
-        "SAIR-LAW-22C",
-        "SAIR-LAW-23",
-        "SAIR-LAW-24",
-        "SAIR-LAW-25",
-        "SAIR-LAW-25B",
+    expected_39_kernel_laws = {
+        "KERNEL-LAW-01",
+        "KERNEL-LAW-01B",
+        "KERNEL-LAW-01C",
+        "KERNEL-LAW-02",
+        "KERNEL-LAW-02B",
+        "KERNEL-LAW-03",
+        "KERNEL-LAW-03B",
+        "KERNEL-LAW-04",
+        "KERNEL-LAW-05",
+        "KERNEL-LAW-06",
+        "KERNEL-LAW-07",
+        "KERNEL-LAW-08",
+        "KERNEL-LAW-09",
+        "KERNEL-LAW-10",
+        "KERNEL-LAW-11",
+        "KERNEL-LAW-12",
+        "KERNEL-LAW-12B",
+        "KERNEL-LAW-13",
+        "KERNEL-LAW-13B",
+        "KERNEL-LAW-14",
+        "KERNEL-LAW-14B",
+        "KERNEL-LAW-14C",
+        "KERNEL-LAW-15",
+        "KERNEL-LAW-16",
+        "KERNEL-LAW-16B",
+        "KERNEL-LAW-17",
+        "KERNEL-LAW-18",
+        "KERNEL-LAW-18B",
+        "KERNEL-LAW-19",
+        "KERNEL-LAW-19B",
+        "KERNEL-LAW-20",
+        "KERNEL-LAW-21",
+        "KERNEL-LAW-22",
+        "KERNEL-LAW-22B",
+        "KERNEL-LAW-22C",
+        "KERNEL-LAW-23",
+        "KERNEL-LAW-24",
+        "KERNEL-LAW-25",
+        "KERNEL-LAW-25B",
     }
-    assert len(expected_39_sair_laws) == 39
-    found_codes = set(re.findall(r"\bSAIR-LAW-\d{2}[A-Z]?\b", text))
-    assert expected_39_sair_laws <= found_codes
+    assert len(expected_39_kernel_laws) == 39
+    expected_42_kernel_laws = expected_39_kernel_laws | {
+        "KERNEL-LAW-26",
+        "KERNEL-LAW-27",
+        "KERNEL-LAW-28",
+    }
+    found_codes = set(re.findall(r"\bKERNEL-LAW-\d{2}[A-Z]?\b", text))
+    assert expected_42_kernel_laws <= found_codes
     assert "KernelBrecOnTax" in text and "KernelPowerOfTwoDivMod" in text
     assert "WAVE-13 G1" in text
 
@@ -185,22 +190,22 @@ def test_sair_handbook_covers_all_39_laws_and_routes():
     la_src = ROOT.parent / "lean-analyzer" / "src" / "source_diagnostics.rs"
     if la_src.exists():
         la_text = la_src.read_text(encoding="utf-8")
-        la_codes = set(re.findall(r'"(SAIR-LAW-\d{2}[A-Z]?)"', la_text))
-        assert expected_39_sair_laws == la_codes
+        la_codes = set(re.findall(r'"(KERNEL-LAW-\d{2}[A-Z]?)"', la_text))
+        assert expected_39_kernel_laws <= la_codes
         assert "OverConcreteFixedArity" in la_text and "FIDELITY-08" in la_text
 
     assert "twinlit" in text and "Danvy" in text
     assert "Lean.ofReduceBool" in text and "Classical.choice" in text
     assert (ROOT / "scripts" / "lean" / "olean_census.lean").is_file()
-    assert (ROOT / "templates" / "core" / "examples" / "Template_SairDecide.lean").is_file()
+    assert (ROOT / "templates" / "core" / "examples" / "Template_KernelDecide.lean").is_file()
     assert (ROOT / "templates" / "core" / "examples" / "Template_ComputableTwin_Csimp.lean").is_file()
-    assert (ROOT / "templates" / "core" / "examples" / "Template_KernelWHNF_SAIR.lean").is_file()
+    assert (ROOT / "templates" / "core" / "examples" / "Template_KernelWHNF.lean").is_file()
     assert (ROOT / "templates" / "core" / "examples" / "Template_ProofCarryingCodegen.lean").is_file()
     assert (ROOT / "templates" / "core" / "examples" / "Template_Theorem_Exemplar.lean").is_file()
     assert (ROOT / "packages" / "altproof" / "AltProof" / "Core.lean").is_file()
-    sair_decide_text = (ROOT / "templates" / "core" / "examples" / "Template_SairDecide.lean").read_text(encoding="utf-8")
-    assert 'macro "sair_decide"' in sair_decide_text
-    assert "decide +kernel" in sair_decide_text
+    kernel_decide_text = (ROOT / "templates" / "core" / "examples" / "Template_KernelDecide.lean").read_text(encoding="utf-8")
+    assert 'macro "kernel_decide"' in kernel_decide_text
+    assert "decide +kernel" in kernel_decide_text
 
 
 def test_core_lean_exemplars_and_altproof_core_compile_cleanly():
@@ -211,9 +216,9 @@ def test_core_lean_exemplars_and_altproof_core_compile_cleanly():
         return
 
     exemplars = [
-        ROOT / "templates" / "core" / "examples" / "Template_SairDecide.lean",
+        ROOT / "templates" / "core" / "examples" / "Template_KernelDecide.lean",
         ROOT / "templates" / "core" / "examples" / "Template_ComputableTwin_Csimp.lean",
-        ROOT / "templates" / "core" / "examples" / "Template_KernelWHNF_SAIR.lean",
+        ROOT / "templates" / "core" / "examples" / "Template_KernelWHNF.lean",
         ROOT / "templates" / "core" / "examples" / "Template_ProofCarryingCodegen.lean",
         ROOT / "templates" / "core" / "examples" / "Template_Theorem_Exemplar.lean",
         ROOT / "packages" / "altproof" / "AltProof" / "Core.lean",

@@ -50,7 +50,7 @@ Most cross-prover porting failures arise in **statement translation**, not tacti
 1. **Totalized Edge Values**: Check `a - b` on `Nat` (`0` when `a < b` in Lean/Rocq/Isabelle, vs negative integer in Metamath `set.mm`), `a / 0` (`0` in Lean/Mathlib, unspecified in HOL/Isabelle `real` in older libraries), and `Nat.pow 0 0 = 1`.
 2. **Carrier Non-Emptiness**: HOL Light and Isabelle/HOL types are guaranteed inhabited (`Nonempty α`); Lean 4, Rocq, and Agda types can be empty (`Empty`, `Fin 0`).
 3. **Filter Puncturing (`CONC-20`)**: Verify whether `at a` / `within` includes or excludes the basepoint `a` (`𝓝 a` vs `𝓝[≠] a`).
-4. **Axiomatic Footprint**: Agda `--without-K` / constructive Rocq proofs avoid `Classical.choice` and `propext`; ifconstructive purity is desired (`@lean-sair-kernel-optimization` Route 9), avoid `by_cases` / `Classical.choose` when `Decidable` instances exist.
+4. **Axiomatic Footprint**: Agda `--without-K` / constructive Rocq proofs avoid `Classical.choice` and `propext`; ifconstructive purity is desired (`@lean-kernel-optimization` Route 9), avoid `by_cases` / `Classical.choose` when `Decidable` instances exist.
 5. **Conjecture Falsification**: Run `lean_counterexample_search(strategy: "dense")` on every translated statement before porting its proof.
 
 ### Stage 2: Concordance Lookup (`CONC-01..20`)

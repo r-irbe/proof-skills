@@ -7,7 +7,7 @@ set_option autoImplicit false
 /-!
 # `Template_ComputableTwin_Csimp` -- Compile-Tested Exemplar
 
-Demonstrates the Abstraction-Concrete Duality (`SAIR-LAW-07`, `SAIR-LAW-14`, `SAIR-LAW-22`):
+Demonstrates the Abstraction-Concrete Duality (`KERNEL-LAW-07`, `KERNEL-LAW-14`, `KERNEL-LAW-22`):
 1. `triangularSpec`: clean structural-recursion specification for `Prop` proofs.
 2. `triangularFast`: concrete bitwise shift implementation without `Prop` runtime witnesses.
 3. `triangularSpec_csimp`: `@[csimp]` equivalence theorem bridging spec to fast codegen.
@@ -20,7 +20,7 @@ def triangularSpec : Nat → Nat
   | 0 => 0
   | n + 1 => (n + 1) + triangularSpec n
 
-/-- Hardware-friendly implementation using `>>> 1` (`SAIR-LAW-14`). -/
+/-- Hardware-friendly implementation using `>>> 1` (`KERNEL-LAW-14`). -/
 @[inline] def triangularFast (n : Nat) : Nat :=
   (n * (n + 1)) >>> 1
 

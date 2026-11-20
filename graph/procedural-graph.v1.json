@@ -206,10 +206,10 @@
       "reversibility": "full"
     },
     {
-      "id": "skill:lean-sair-kernel-optimization",
-      "name": "lean-sair-kernel-optimization",
+      "id": "skill:lean-kernel-optimization",
+      "name": "lean-kernel-optimization",
       "category": "kernel",
-      "description": "Core proof-skills v0.5.0 workflow contract for @lean-sair-kernel-optimization.",
+      "description": "Core proof-skills v0.5.0 workflow contract for @lean-kernel-optimization.",
       "reversibility": "full"
     },
     {
@@ -325,8 +325,8 @@
       "reversibility": "full"
     },
     {
-      "id": "tac:sair_decide",
-      "name": "sair_decide",
+      "id": "tac:kernel_decide",
+      "name": "kernel_decide",
       "category": "macro",
       "description": "Strict 3-rung kernel-clean closer (rfl | decide +kernel | omega) avoiding Lean.ofReduceBool.",
       "reversibility": "full"
@@ -460,14 +460,14 @@
       "target": "tac:bv_decide",
       "condition": "Goal is a fixed-width BitVec or closed constant identity.",
       "guidance": "Attempt rfl first; escalate to bv_decide on symbolic BitVec w goals.",
-      "pitfalls": "Note that bv_decide introduces Lean.ofReduceBool; use sair_decide on strict 3-axiom contest lanes."
+      "pitfalls": "Note that bv_decide introduces Lean.ofReduceBool; use kernel_decide on strict 3-axiom kernel lanes."
     },
     {
-      "source": "tac:sair_decide",
+      "source": "tac:kernel_decide",
       "relation": "alternative_to",
       "target": "tac:bv_decide",
-      "condition": "Strict 3-axiom contest lane forbids Lean.ofReduceBool and Lean.trustCompiler.",
-      "guidance": "Use sair_decide (rfl | decide +kernel | omega) to stay strictly inside [propext, Classical.choice, Quot.sound].",
+      "condition": "Strict 3-axiom kernel lane forbids Lean.ofReduceBool and Lean.trustCompiler.",
+      "guidance": "Use kernel_decide (rfl | decide +kernel | omega) to stay strictly inside [propext, Classical.choice, Quot.sound].",
       "pitfalls": "Never substitute native_decide (banned across the entire corpus by GT-30/31)."
     },
     {
@@ -497,7 +497,7 @@
     {
       "source": "tac:eval_nat",
       "relation": "complements",
-      "target": "skill:lean-sair-kernel-optimization",
+      "target": "skill:lean-kernel-optimization",
       "condition": "Closed shift-add or SWAR lane masks appear inside kernel-reduced definitions.",
       "guidance": "Fold closed constants at elaboration time via eval_nat% and unroll static loops via swar_unroll%.",
       "pitfalls": "Leaving OfNat.ofNat or open shift-add expressions inside Nat.rec step lambdas incurs ~160K WHNF instructions per call."
@@ -505,7 +505,7 @@
     {
       "source": "skill:lean-proof-refactor",
       "relation": "precedes",
-      "target": "skill:lean-sair-kernel-optimization",
+      "target": "skill:lean-kernel-optimization",
       "condition": "Theorem statement mixes abstract algebraic properties with bit-packed compute loops.",
       "guidance": "Establish clean f_spec + concrete f_fast connected by theorem f_eq : f_fast = f_spec := rfl (WAVE-13 G1 duality).",
       "pitfalls": "Threading typeclass dictionaries inside hot kernel loops causes a 1,600x-3,345x WHNF slowdown."

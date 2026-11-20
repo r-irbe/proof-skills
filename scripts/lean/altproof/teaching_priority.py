@@ -27,7 +27,7 @@ def priority_list(
     report_dir: Path,
     top: int = 20,
     kernel_weight: float = 1.0,
-    sair_mode: bool = False,
+    kernel_mode: bool = False,
 ) -> list[dict]:
     rows: list[dict] = []
     for md in sorted(report_dir.rglob("*.md")):
@@ -44,7 +44,7 @@ def priority_list(
             if saving <= 0 and kernel_saving <= 0:
                 continue
             priority = (saving + kernel_weight * kernel_saving) * (1.0 - verbose)
-            sair_priority = (kernel_saving if kernel_saving > 0 else float(saving)) * (1.0 - verbose)
+            kernel_priority = (kernel_saving if kernel_saving > 0 else float(saving)) * (1.0 - verbose)
             rows.append(
                 {
                     "file": str(md.relative_to(report_dir))[: -len(".md")],
@@ -53,8 +53,8 @@ def priority_list(
                     "verbose": verbose,
                     "saving": saving,
                     "kernel_saving": kernel_saving,
-                    "priority": sair_priority if sair_mode else priority,
-                    "sair_priority": sair_priority,
+                    "priority": kernel_priority if kernel_mode else priority,
+                    "kernel_priority": kernel_priority,
                 }
             )
     rows.sort(key=lambda r: -r["priority"])

@@ -28,7 +28,7 @@ confidence: high
 # Proof-skills zettelkasten -- index
 
 This is the entry-point Map-of-Content for the fifteen permanent notes in `proof-skills` (`v0.5.0`).
-The notes follow a simplified Luhmann 3-tier model (`fleeting -> literature -> permanent`) and anchor the toolkit's template-v2 contracts, evaluation methodology, SAIR kernel WHNF laws, spec-compute duality, proof-carrying hardware codegen, two-tier WASM static analysis, and pure-Lean equality saturation.
+The notes follow a simplified Luhmann 3-tier model (`fleeting -> literature -> permanent`) and anchor the toolkit's template-v2 contracts, evaluation methodology, kernel WHNF laws, spec-compute duality, proof-carrying hardware codegen, two-tier WASM static analysis, and pure-Lean equality saturation.
 
 ## Permanent note catalogue
 
@@ -44,7 +44,7 @@ The notes follow a simplified Luhmann 3-tier model (`fleeting -> literature -> p
 | [[zk-008]] | Lean 4 unified tactic priority hierarchy | tactics | high |
 | [[zk-009]] | Skill consolidation rubric -- merge, split, keep | governance | high |
 | [[zk-010]] | Multi-model cost-quality Pareto across model x reasoning-effort | synthesis | high |
-| [[zk-011]] | SAIR 39 kernel WHNF laws and nat_lit mechanics | sair | high |
+| [[zk-011]] | Kernel WHNF laws and nat_lit mechanics | kernel | high |
 | [[zk-012]] | Abstraction-concrete duality and hot parameterization penalty | duality | high |
 | [[zk-013]] | Proof-carrying hardware codegen -- PolyBitOp, CheckedWord, and N01..N12 | codegen | high |
 | [[zk-014]] | Two-tier WASM static analyzer and 5-role 21-tool MCP architecture | mcp | high |
