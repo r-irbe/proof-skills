@@ -21,12 +21,12 @@ handoffs:
   - skill:lean-proof-review
   - skill:lean-verification-gate
 metadata:
-  version: 0.5.0
-  source_spec: SAIR-LAW-01..25B (39 laws), WAVE-13 G1 & PolyBitOp lowering
+  version: 0.6.0
+  source_spec: SAIR-LAW-01..28 (42 laws), WAVE-13 G1, Wave-20 Recursor Lambda Size & PolyBitOp lowering
   last_reviewed: '2026-11'
 ---
 
-# Lean 4 Kernel WHNF, SWAR & Proof-Carrying Codegen (`SAIR-LAW-01..25B`)
+# Lean 4 Kernel WHNF, SWAR & Proof-Carrying Codegen (`SAIR-LAW-01..28`)
 
 Enforce the concrete half of Abstraction-Concrete Duality (`WAVE-13 G1`): keep `Prop` specs abstract (`<= 1%` cost via `rfl` bridges), while making hot `def`
 kernels and hardware targets (`PolyBitOp` MLIR / CUDA `sm_89` / AVX2 / C++20) monomorphic and unboxed (avoiding the `1,600x..3,345x` parametric hot penalty).
@@ -42,7 +42,8 @@ kernels and hardware targets (`PolyBitOp` MLIR / CUDA `sm_89` / AVX2 / C++20) mo
 2. **`WAVE-13 G1` Section-1/2/3 Split** -- Put readable `abbrev` formulas in Section 1, specialize hot `def`s in Section 2 to primitive `Nat.*` ops + raw
    `nat_lit` constants (`SAIR-LAW-25B`), and bridge to abstract theorems in Section 3 via `rfl` (`@[csimp]` for LCNF).
 3. **WHNF, SWAR & Lowering Laws** -- Use `Nat.succ` for `Nat.rec` step accumulators vs `Nat.add 1` for counters, share multi-limb squares only above ~30 limbs
-   (`SAIR-LAW-13`), use `Nat.land w (Nat.shiftRight w s)` or `w &&& (w - 1)` on `Nat` (`SAIR-LAW-18B`), and enforce `checked-small -> NeedsWide` + operand
+   (`SAIR-LAW-13`), keep **branching** recursor step-lambda bodies small (`<= 30` AST nodes) via first-order helper `def`s rather than inlined macros while keeping 100% branch-free step bodies inline (`SAIR-LAW-26` / `SAIR-LAW-28`),
+   use tail-recursive unboxed accumulators instead of non-tail `WPair.rec`/`Prod.rec` unpack-repack (`SAIR-LAW-27`), use `Nat.land w (Nat.shiftRight w s)` or `w &&& (w - 1)` on `Nat` (`SAIR-LAW-18B`), and enforce `checked-small -> NeedsWide` + operand
    snapshotting in C++20/PTX (`Template_ProofCarryingCodegen.md`).
 4. **3-Axiom & PMU Gate** -- Close checks with `sair_decide` (`first | rfl | decide +kernel | omega`), never `native_decide`, and verify net `real - twinlit`
    gain via sum-of-per-slot-medians-of-three (`perf stat -e instructions:u`).

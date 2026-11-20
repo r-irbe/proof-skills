@@ -2,13 +2,13 @@
   "schema_version": "1.0.0",
   "version": "1.0.0",
   "description": "Compiled Goal-Shape Templates, Intent-to-Tactic Phrasebook, Error-to-Fix tables, and Cross-ITP Dialect Mechanisms.",
-  "handbooks_count": 38,
+  "handbooks_count": 43,
   "dialects_count": 6,
   "counts": {
-    "goal_shape_templates": 149,
-    "intent_phrasebook": 134,
-    "error_to_fix": 111,
-    "total_rows": 394
+    "goal_shape_templates": 174,
+    "intent_phrasebook": 154,
+    "error_to_fix": 131,
+    "total_rows": 459
   },
   "goal_shape_templates": [
     {
@@ -298,6 +298,61 @@
       }
     },
     {
+      "handbook": "lean-asymptotic-algorithms-handbook",
+      "goal_shape": "Univariate polynomial discriminant in `Int[x]`",
+      "route_or_concordance": "`Subresultant PRS Algorithm`",
+      "template": "`subresultantPRS p (deriv p) 1 1`",
+      "columns": {
+        "Goal Shape": "Univariate polynomial discriminant in `Int[x]`",
+        "Target Typeclass / Lemma": "`Subresultant PRS Algorithm`",
+        "Proof Template": "`subresultantPRS p (deriv p) 1 1`"
+      }
+    },
+    {
+      "handbook": "lean-asymptotic-algorithms-handbook",
+      "goal_shape": "Sparse matrix permanent `perm(A)`",
+      "route_or_concordance": "`Dulmage-Mendelsohn Factorization`",
+      "template": "`perm(A) = prod (perm(A_i))`",
+      "columns": {
+        "Goal Shape": "Sparse matrix permanent `perm(A)`",
+        "Target Typeclass / Lemma": "`Dulmage-Mendelsohn Factorization`",
+        "Proof Template": "`perm(A) = prod (perm(A_i))`"
+      }
+    },
+    {
+      "handbook": "lean-asymptotic-algorithms-handbook",
+      "goal_shape": "Prime count `pi(x)` without seed tables",
+      "route_or_concordance": "`Dynamic Meissel-Lehmer Tree`",
+      "template": "`pi(x) = phi(x, a) + a - 1 - P2(x, a)`",
+      "columns": {
+        "Goal Shape": "Prime count `pi(x)` without seed tables",
+        "Target Typeclass / Lemma": "`Dynamic Meissel-Lehmer Tree`",
+        "Proof Template": "`pi(x) = phi(x, a) + a - 1 - P2(x, a)`"
+      }
+    },
+    {
+      "handbook": "lean-asymptotic-algorithms-handbook",
+      "goal_shape": "Prefix sum of Mobius `M(x)`",
+      "route_or_concordance": "`Deleglise-Rivat Hyperbola Sieve`",
+      "template": "`M(x) = sum_{k <= u} mu(k) + dynamic_hyperbola`",
+      "columns": {
+        "Goal Shape": "Prefix sum of Mobius `M(x)`",
+        "Target Typeclass / Lemma": "`Deleglise-Rivat Hyperbola Sieve`",
+        "Proof Template": "`M(x) = sum_{k <= u} mu(k) + dynamic_hyperbola`"
+      }
+    },
+    {
+      "handbook": "lean-asymptotic-algorithms-handbook",
+      "goal_shape": "Fixed padding hash schedule",
+      "route_or_concordance": "`Courtois-Naik-Song Schedule Folding`",
+      "template": "`w16 = sigma0(w1) + w0; fold_zero_words`",
+      "columns": {
+        "Goal Shape": "Fixed padding hash schedule",
+        "Target Typeclass / Lemma": "`Courtois-Naik-Song Schedule Folding`",
+        "Proof Template": "`w16 = sigma0(w1) + w0; fold_zero_words`"
+      }
+    },
+    {
       "handbook": "lean-bisect-handbook",
       "goal_shape": "Proof broke across Lean nightly / release range",
       "route_or_concordance": "`git bisect run lake env lean Repro.lean`",
@@ -361,6 +416,61 @@
         "Goal / Term Shape": "Fresh clone of Mathlib-dependent project",
         "Primary Tactic / Pattern": "`lake exe cache get` -> `lake build`",
         "Canonical Recipe / Notes": "Never compile Mathlib from source on CI/workstations"
+      }
+    },
+    {
+      "handbook": "lean-computational-reflection-handbook",
+      "goal_shape": "`fastStep s = specStep s` on fixed schedule",
+      "route_or_concordance": "`Computational Reflection`",
+      "template": "`change denote env (compileFast s) = denote env (compileSpec s); rw [compile_sound]; rfl`",
+      "columns": {
+        "Goal Shape": "`fastStep s = specStep s` on fixed schedule",
+        "Target Typeclass / Lemma": "`Computational Reflection`",
+        "Proof Template": "`change denote env (compileFast s) = denote env (compileSpec s); rw [compile_sound]; rfl`"
+      }
+    },
+    {
+      "handbook": "lean-computational-reflection-handbook",
+      "goal_shape": "`impl n = spec n` over inductive domain",
+      "route_or_concordance": "`Section 1/2/3 Induction Bridge`",
+      "template": "`intro n; induction n with | zero => rfl | succ n ih => exact step_bridge n ih`",
+      "columns": {
+        "Goal Shape": "`impl n = spec n` over inductive domain",
+        "Target Typeclass / Lemma": "`Section 1/2/3 Induction Bridge`",
+        "Proof Template": "`intro n; induction n with | zero => rfl | succ n ih => exact step_bridge n ih`"
+      }
+    },
+    {
+      "handbook": "lean-computational-reflection-handbook",
+      "goal_shape": "Monolithic 2,000-line tactic unfolding",
+      "route_or_concordance": "`Reflective Normalization`",
+      "template": "`have h : e = reify e' := rfl; rw [h, <- norm_sound]; rfl`",
+      "columns": {
+        "Goal Shape": "Monolithic 2,000-line tactic unfolding",
+        "Target Typeclass / Lemma": "`Reflective Normalization`",
+        "Proof Template": "`have h : e = reify e' := rfl; rw [h, <- norm_sound]; rfl`"
+      }
+    },
+    {
+      "handbook": "lean-computational-reflection-handbook",
+      "goal_shape": "Equivalence of 64-round word circuits",
+      "route_or_concordance": "`denote (compile c) = eval c`",
+      "template": "`refine Circuit.soundness_reflection _ _ _ rfl`",
+      "columns": {
+        "Goal Shape": "Equivalence of 64-round word circuits",
+        "Target Typeclass / Lemma": "`denote (compile c) = eval c`",
+        "Proof Template": "`refine Circuit.soundness_reflection _ _ _ rfl`"
+      }
+    },
+    {
+      "handbook": "lean-computational-reflection-handbook",
+      "goal_shape": "Proof-cone isolation audit",
+      "route_or_concordance": "`KERNEL-LAW-22 0-Prop Leakage`",
+      "template": "`set_option pp.all true in #check impl -- verify 0 Prop dependencies`",
+      "columns": {
+        "Goal Shape": "Proof-cone isolation audit",
+        "Target Typeclass / Lemma": "`KERNEL-LAW-22 0-Prop Leakage`",
+        "Proof Template": "`set_option pp.all true in #check impl -- verify 0 Prop dependencies`"
       }
     },
     {
@@ -482,6 +592,61 @@
         "Goal / Term Shape": "Paper appendix theorem/module table",
         "Primary Tactic / Pattern": "`scripts/lean/metric_sync.py`",
         "Canonical Recipe / Notes": "Re-derive exact counts from compiled `.olean` census"
+      }
+    },
+    {
+      "handbook": "lean-egraph-cpsat-superopt-handbook",
+      "goal_shape": "Common subexpressions across e-graph",
+      "route_or_concordance": "`CP-SAT Exact DAG Extraction`",
+      "template": "`model := CpModel(); model.Minimize(sum(cost * x)); solver.Solve(model)`",
+      "columns": {
+        "Goal Shape": "Common subexpressions across e-graph",
+        "Target Typeclass / Lemma": "`CP-SAT Exact DAG Extraction`",
+        "Proof Template": "`model := CpModel(); model.Minimize(sum(cost * x)); solver.Solve(model)`"
+      }
+    },
+    {
+      "handbook": "lean-egraph-cpsat-superopt-handbook",
+      "goal_shape": "Candidate rewrite rule `lhs -> rhs`",
+      "route_or_concordance": "`Dual-Certified Rewriting`",
+      "template": "`theorem sound : eval lhs = eval rhs; theorem cost : cost rhs <= cost lhs`",
+      "columns": {
+        "Goal Shape": "Candidate rewrite rule `lhs -> rhs`",
+        "Target Typeclass / Lemma": "`Dual-Certified Rewriting`",
+        "Proof Template": "`theorem sound : eval lhs = eval rhs; theorem cost : cost rhs <= cost lhs`"
+      }
+    },
+    {
+      "handbook": "lean-egraph-cpsat-superopt-handbook",
+      "goal_shape": "Bitwise logic simplification",
+      "route_or_concordance": "`3-Gate Zhegalkin Normal Form`",
+      "template": "`theorem maj_zhegalkin : (a &&& (b ^^^ c)) ^^^ (b &&& c) = (a &&& b) ^^^ (a &&& c) ^^^ (b &&& c)`",
+      "columns": {
+        "Goal Shape": "Bitwise logic simplification",
+        "Target Typeclass / Lemma": "`3-Gate Zhegalkin Normal Form`",
+        "Proof Template": "`theorem maj_zhegalkin : (a &&& (b ^^^ c)) ^^^ (b &&& c) = (a &&& b) ^^^ (a &&& c) ^^^ (b &&& c)`"
+      }
+    },
+    {
+      "handbook": "lean-egraph-cpsat-superopt-handbook",
+      "goal_shape": "Fixed schedule constant folding",
+      "route_or_concordance": "`E-Graph Equality Saturation`",
+      "template": "`egg_saturate rules [const_fold, shift_fold]; extract_dag`",
+      "columns": {
+        "Goal Shape": "Fixed schedule constant folding",
+        "Target Typeclass / Lemma": "`E-Graph Equality Saturation`",
+        "Proof Template": "`egg_saturate rules [const_fold, shift_fold]; extract_dag`"
+      }
+    },
+    {
+      "handbook": "lean-egraph-cpsat-superopt-handbook",
+      "goal_shape": "SWAR lane bit-budget allocation",
+      "route_or_concordance": "`CP-SAT Knapsack Model`",
+      "template": "`model.Add(sum(lane_widths) <= 62); solver.Solve(model)`",
+      "columns": {
+        "Goal Shape": "SWAR lane bit-budget allocation",
+        "Target Typeclass / Lemma": "`CP-SAT Knapsack Model`",
+        "Proof Template": "`model.Add(sum(lane_widths) <= 62); solver.Solve(model)`"
       }
     },
     {
@@ -1522,6 +1687,61 @@
       }
     },
     {
+      "handbook": "lean-unboxed-limbs-swar-handbook",
+      "goal_shape": "Wide state accumulator (256/512-bit)",
+      "route_or_concordance": "`Fiat-Crypto Unsaturated Limbs`",
+      "template": "`structure Limbs where (l0 l1 l2 l3 l4 : Nat); def add := ...`",
+      "columns": {
+        "Goal Shape": "Wide state accumulator (256/512-bit)",
+        "Target Typeclass / Lemma": "`Fiat-Crypto Unsaturated Limbs`",
+        "Proof Template": "`structure Limbs where (l0 l1 l2 l3 l4 : Nat); def add := ...`"
+      }
+    },
+    {
+      "handbook": "lean-unboxed-limbs-swar-handbook",
+      "goal_shape": "Parallel 2-lane 31-bit addition",
+      "route_or_concordance": "`Guarded SWAR Addition`",
+      "template": "`((a &&& mask) + (b &&& mask)) ^^^ ((a ^^^ b) &&& guard)`",
+      "columns": {
+        "Goal Shape": "Parallel 2-lane 31-bit addition",
+        "Target Typeclass / Lemma": "`Guarded SWAR Addition`",
+        "Proof Template": "`((a &&& mask) + (b &&& mask)) ^^^ ((a ^^^ b) &&& guard)`"
+      }
+    },
+    {
+      "handbook": "lean-unboxed-limbs-swar-handbook",
+      "goal_shape": "Bitfield extraction `(x / 2^s) % 2^k`",
+      "route_or_concordance": "`Branch-Free Low Cut`",
+      "template": "`(w >>> s) &&& ((1 <<< k) - 1)`",
+      "columns": {
+        "Goal Shape": "Bitfield extraction `(x / 2^s) % 2^k`",
+        "Target Typeclass / Lemma": "`Branch-Free Low Cut`",
+        "Proof Template": "`(w >>> s) &&& ((1 <<< k) - 1)`"
+      }
+    },
+    {
+      "handbook": "lean-unboxed-limbs-swar-handbook",
+      "goal_shape": "Ternary conditional `if c then a else b`",
+      "route_or_concordance": "`Zhegalkin Multiplexer`",
+      "template": "`b ^^^ (c &&& (a ^^^ b))`",
+      "columns": {
+        "Goal Shape": "Ternary conditional `if c then a else b`",
+        "Target Typeclass / Lemma": "`Zhegalkin Multiplexer`",
+        "Proof Template": "`b ^^^ (c &&& (a ^^^ b))`"
+      }
+    },
+    {
+      "handbook": "lean-unboxed-limbs-swar-handbook",
+      "goal_shape": "Bitwise choice `(e &&& f) ^^^ (~~~e &&& g)`",
+      "route_or_concordance": "`3-Gate Ch Circuit`",
+      "template": "`g ^^^ (e &&& (f ^^^ g))`",
+      "columns": {
+        "Goal Shape": "Bitwise choice `(e &&& f) ^^^ (~~~e &&& g)`",
+        "Target Typeclass / Lemma": "`3-Gate Ch Circuit`",
+        "Proof Template": "`g ^^^ (e &&& (f ^^^ g))`"
+      }
+    },
+    {
       "handbook": "lean-upstream-pr-handbook",
       "goal_shape": "Reusable general lemma inside domain repo",
       "route_or_concordance": "Generalize + Mathlib4 style pass",
@@ -1574,6 +1794,61 @@
         "Goal / Term Shape": "File missing `set_option autoImplicit false`",
         "Primary Tactic / Pattern": "Static enforcement lint",
         "Canonical Recipe / Notes": "Add `set_option autoImplicit false` immediately after `import`"
+      }
+    },
+    {
+      "handbook": "lean-worker-wrapper-cps-handbook",
+      "goal_shape": "Typeclass dictionaries in tight recursor",
+      "route_or_concordance": "`Worker/Wrapper Monomorphization`",
+      "template": "`def worker (x : Nat) : Nat; @[inline] def wrapper [C] (x) := worker x`",
+      "columns": {
+        "Goal Shape": "Typeclass dictionaries in tight recursor",
+        "Target Typeclass / Lemma": "`Worker/Wrapper Monomorphization`",
+        "Proof Template": "`def worker (x : Nat) : Nat; @[inline] def wrapper [C] (x) := worker x`"
+      }
+    },
+    {
+      "handbook": "lean-worker-wrapper-cps-handbook",
+      "goal_shape": "Merge branch subterms duplicating AST",
+      "route_or_concordance": "`Join Point Abstraction`",
+      "template": "`let joinPt := fun acc => ...; if c then joinPt a else joinPt b`",
+      "columns": {
+        "Goal Shape": "Merge branch subterms duplicating AST",
+        "Target Typeclass / Lemma": "`Join Point Abstraction`",
+        "Proof Template": "`let joinPt := fun acc => ...; if c then joinPt a else joinPt b`"
+      }
+    },
+    {
+      "handbook": "lean-worker-wrapper-cps-handbook",
+      "goal_shape": "Inductive constructor match in loop body",
+      "route_or_concordance": "`SpecConstr Specialization`",
+      "template": "`def workerA ...; def workerB ...; match c with | .A => workerA | .B => workerB`",
+      "columns": {
+        "Goal Shape": "Inductive constructor match in loop body",
+        "Target Typeclass / Lemma": "`SpecConstr Specialization`",
+        "Proof Template": "`def workerA ...; def workerB ...; match c with | .A => workerA | .B => workerB`"
+      }
+    },
+    {
+      "handbook": "lean-worker-wrapper-cps-handbook",
+      "goal_shape": "Higher-order continuation closure `(a -> b) -> b`",
+      "route_or_concordance": "`Defunctionalized Inductive Cont`",
+      "template": "`inductive Cont | halt | step (k : Cont); def applyCont : Cont -> a -> b`",
+      "columns": {
+        "Goal Shape": "Higher-order continuation closure `(a -> b) -> b`",
+        "Target Typeclass / Lemma": "`Defunctionalized Inductive Cont`",
+        "Proof Template": "`inductive Cont | halt | step (k : Cont); def applyCont : Cont -> a -> b`"
+      }
+    },
+    {
+      "handbook": "lean-worker-wrapper-cps-handbook",
+      "goal_shape": "Non-tail-recursive tuple re-boxing",
+      "route_or_concordance": "`Tail-Call Scalar Accumulator`",
+      "template": "`@Nat.rec (fun _ => Nat -> Nat -> Nat) (fun a b => a) (fun _ loop a b => loop (a+1) b)`",
+      "columns": {
+        "Goal Shape": "Non-tail-recursive tuple re-boxing",
+        "Target Typeclass / Lemma": "`Tail-Call Scalar Accumulator`",
+        "Proof Template": "`@Nat.rec (fun _ => Nat -> Nat -> Nat) (fun a b => a) (fun _ loop a b => loop (a+1) b)`"
       }
     },
     {
@@ -1986,6 +2261,50 @@
       }
     },
     {
+      "handbook": "lean-asymptotic-algorithms-handbook",
+      "intent": "Compute polynomial GCD without coefficient explosion",
+      "tactic_or_idiom": "`Ducos Subresultant PRS`",
+      "notes": "Exactly divides pseudo-remainder by `g * h^delta`",
+      "columns": {
+        "Mathematical Intent": "Compute polynomial GCD without coefficient explosion",
+        "Lean 4 / Mathlib Tactic": "`Ducos Subresultant PRS`",
+        "Notes": "Exactly divides pseudo-remainder by `g * h^delta`"
+      }
+    },
+    {
+      "handbook": "lean-asymptotic-algorithms-handbook",
+      "intent": "Factor reducible sparse matrix",
+      "tactic_or_idiom": "`Hopcroft-Karp + SCC decomposition`",
+      "notes": "Prunes non-matching zero-edges and factors permanent",
+      "columns": {
+        "Mathematical Intent": "Factor reducible sparse matrix",
+        "Lean 4 / Mathlib Tactic": "`Hopcroft-Karp + SCC decomposition`",
+        "Notes": "Prunes non-matching zero-edges and factors permanent"
+      }
+    },
+    {
+      "handbook": "lean-asymptotic-algorithms-handbook",
+      "intent": "Evaluate `phi(x, a)` dynamically",
+      "tactic_or_idiom": "`Legendre tree with square-root cutoff`",
+      "notes": "Prunes branches when `x < p_a^2` to bound recursion depth",
+      "columns": {
+        "Mathematical Intent": "Evaluate `phi(x, a)` dynamically",
+        "Lean 4 / Mathlib Tactic": "`Legendre tree with square-root cutoff`",
+        "Notes": "Prunes branches when `x < p_a^2` to bound recursion depth"
+      }
+    },
+    {
+      "handbook": "lean-asymptotic-algorithms-handbook",
+      "intent": "Fold zero-word message schedule",
+      "tactic_or_idiom": "`Algebraic simplification`",
+      "notes": "Simplifies words `w_9..w_14 = 0` out of recurrence equations",
+      "columns": {
+        "Mathematical Intent": "Fold zero-word message schedule",
+        "Lean 4 / Mathlib Tactic": "`Algebraic simplification`",
+        "Notes": "Simplifies words `w_9..w_14 = 0` out of recurrence equations"
+      }
+    },
+    {
       "handbook": "lean-bisect-handbook",
       "intent": "Find exact Mathlib commit that renamed/removed lemma",
       "tactic_or_idiom": "`git bisect` with `lean_lookup_symbol` / `lake env lean`",
@@ -2049,6 +2368,50 @@
         "User / Engineer Intent": "Recover from stale `.olean` hash mismatch",
         "Recommended Tool / Idiom": "`lake build <Target>` (or `lake clean` as last resort)",
         "Actionable Recipe": "Rebuild upstream `.Defs` module first"
+      }
+    },
+    {
+      "handbook": "lean-computational-reflection-handbook",
+      "intent": "Compress 3,000-line tactical proof into reflection",
+      "tactic_or_idiom": "`rw [<- norm_sound]; rfl`",
+      "notes": "Replaces repetitive rewrite sequences with certified decision procedure",
+      "columns": {
+        "Mathematical Intent": "Compress 3,000-line tactical proof into reflection",
+        "Lean 4 / Mathlib Tactic": "`rw [<- norm_sound]; rfl`",
+        "Notes": "Replaces repetitive rewrite sequences with certified decision procedure"
+      }
+    },
+    {
+      "handbook": "lean-computational-reflection-handbook",
+      "intent": "Enforce Section 1/2/3 Abstraction-Concrete Split",
+      "tactic_or_idiom": "`#verso split directives`",
+      "notes": "Separates motives, concrete kernel implementation, and correctness proofs",
+      "columns": {
+        "Mathematical Intent": "Enforce Section 1/2/3 Abstraction-Concrete Split",
+        "Lean 4 / Mathlib Tactic": "`#verso split directives`",
+        "Notes": "Separates motives, concrete kernel implementation, and correctness proofs"
+      }
+    },
+    {
+      "handbook": "lean-computational-reflection-handbook",
+      "intent": "Eliminate Prop leakage from computational core",
+      "tactic_or_idiom": "`extract_pure_computation`",
+      "notes": "Audits runtime definitions to ensure zero equality witnesses or proof types",
+      "columns": {
+        "Mathematical Intent": "Eliminate Prop leakage from computational core",
+        "Lean 4 / Mathlib Tactic": "`extract_pure_computation`",
+        "Notes": "Audits runtime definitions to ensure zero equality witnesses or proof types"
+      }
+    },
+    {
+      "handbook": "lean-computational-reflection-handbook",
+      "intent": "Verify reflection soundness via structural induction",
+      "tactic_or_idiom": "`induction e with ... <;> (dsimp [simplify]; omega)`",
+      "notes": "Establishes `denote (norm e) = denote e` for all AST instances",
+      "columns": {
+        "Mathematical Intent": "Verify reflection soundness via structural induction",
+        "Lean 4 / Mathlib Tactic": "`induction e with ... <;> (dsimp [simplify]; omega)`",
+        "Notes": "Establishes `denote (norm e) = denote e` for all AST instances"
       }
     },
     {
@@ -2137,6 +2500,50 @@
         "User / Engineer Intent": "Review documentation draft for undefined terms",
         "Recommended Tool / Idiom": "`feedback` mode readability pass",
         "Actionable Recipe": "Flag forward references, missing assumptions, and scope overclaims"
+      }
+    },
+    {
+      "handbook": "lean-egraph-cpsat-superopt-handbook",
+      "intent": "Extract sharing-optimal DAG from e-graph",
+      "tactic_or_idiom": "`CP-SAT ILP solver`",
+      "notes": "Solves 0-1 integer model minimizing shared node cost with acyclicity levels",
+      "columns": {
+        "Mathematical Intent": "Extract sharing-optimal DAG from e-graph",
+        "Lean 4 / Mathlib Tactic": "`CP-SAT ILP solver`",
+        "Notes": "Solves 0-1 integer model minimizing shared node cost with acyclicity levels"
+      }
+    },
+    {
+      "handbook": "lean-egraph-cpsat-superopt-handbook",
+      "intent": "Prove semantic soundness of rewrite rule",
+      "tactic_or_idiom": "`omega / bitwise lemmas`",
+      "notes": "Discharges algebraic equivalence without `bv_decide` or `native_decide`",
+      "columns": {
+        "Mathematical Intent": "Prove semantic soundness of rewrite rule",
+        "Lean 4 / Mathlib Tactic": "`omega / bitwise lemmas`",
+        "Notes": "Discharges algebraic equivalence without `bv_decide` or `native_decide`"
+      }
+    },
+    {
+      "handbook": "lean-egraph-cpsat-superopt-handbook",
+      "intent": "Prove cost reduction under KernelModel",
+      "tactic_or_idiom": "`by decide`",
+      "notes": "Verifies `whnfCost rhs <= whnfCost lhs` counting AST nodes and scalar limbs",
+      "columns": {
+        "Mathematical Intent": "Prove cost reduction under KernelModel",
+        "Lean 4 / Mathlib Tactic": "`by decide`",
+        "Notes": "Verifies `whnfCost rhs <= whnfCost lhs` counting AST nodes and scalar limbs"
+      }
+    },
+    {
+      "handbook": "lean-egraph-cpsat-superopt-handbook",
+      "intent": "Synthesize optimal schedule unrolling",
+      "tactic_or_idiom": "`CP-SAT sequence formulation`",
+      "notes": "Finds optimal operation ordering minimizing peak register pressure",
+      "columns": {
+        "Mathematical Intent": "Synthesize optimal schedule unrolling",
+        "Lean 4 / Mathlib Tactic": "`CP-SAT sequence formulation`",
+        "Notes": "Finds optimal operation ordering minimizing peak register pressure"
       }
     },
     {
@@ -2987,6 +3394,50 @@
       }
     },
     {
+      "handbook": "lean-unboxed-limbs-swar-handbook",
+      "intent": "Eliminate heap GMP allocations in wide states",
+      "tactic_or_idiom": "`Limb tuple unboxing`",
+      "notes": "Replaces single `Nat >= 2^63` with 5-tuple of 52-bit `< 2^63` limbs",
+      "columns": {
+        "Mathematical Intent": "Eliminate heap GMP allocations in wide states",
+        "Lean 4 / Mathlib Tactic": "`Limb tuple unboxing`",
+        "Notes": "Replaces single `Nat >= 2^63` with 5-tuple of 52-bit `< 2^63` limbs"
+      }
+    },
+    {
+      "handbook": "lean-unboxed-limbs-swar-handbook",
+      "intent": "Pack two 31-bit lanes into one 63-bit scalar",
+      "tactic_or_idiom": "`(x &&& 0x7FFFFFFF) ||| ((y &&& 0x7FFFFFFF) <<< 31)`",
+      "notes": "Keeps value strictly `< 2^62 < 2^63` (lean_box scalar)",
+      "columns": {
+        "Mathematical Intent": "Pack two 31-bit lanes into one 63-bit scalar",
+        "Lean 4 / Mathlib Tactic": "`(x &&& 0x7FFFFFFF) ||| ((y &&& 0x7FFFFFFF) <<< 31)`",
+        "Notes": "Keeps value strictly `< 2^62 < 2^63` (lean_box scalar)"
+      }
+    },
+    {
+      "handbook": "lean-unboxed-limbs-swar-handbook",
+      "intent": "Prevent cross-lane carry corruption",
+      "tactic_or_idiom": "`Bitwise SWAR guard mask`",
+      "notes": "Separates carry bits with top-lane zero guard positions",
+      "columns": {
+        "Mathematical Intent": "Prevent cross-lane carry corruption",
+        "Lean 4 / Mathlib Tactic": "`Bitwise SWAR guard mask`",
+        "Notes": "Separates carry bits with top-lane zero guard positions"
+      }
+    },
+    {
+      "handbook": "lean-unboxed-limbs-swar-handbook",
+      "intent": "Prove branch-free circuit equivalence",
+      "tactic_or_idiom": "`dsimp; omega`",
+      "notes": "Verifies `g ^^^ (e &&& (f ^^^ g)) = (e &&& f) ^^^ (~~~e &&& g)`",
+      "columns": {
+        "Mathematical Intent": "Prove branch-free circuit equivalence",
+        "Lean 4 / Mathlib Tactic": "`dsimp; omega`",
+        "Notes": "Verifies `g ^^^ (e &&& (f ^^^ g)) = (e &&& f) ^^^ (~~~e &&& g)`"
+      }
+    },
+    {
       "handbook": "lean-upstream-pr-handbook",
       "intent": "Check if lemma already exists in Mathlib",
       "tactic_or_idiom": "`lean_search(source: \"loogle\"",
@@ -3028,6 +3479,50 @@
         "User / Engineer Intent": "Verify proofs survive fresh kernel check",
         "Recommended Tool / Idiom": "Cold replay (`lake clean` / targeted rebuild)",
         "Actionable Recipe": "Quote scanned module & declaration counts in gate verdict"
+      }
+    },
+    {
+      "handbook": "lean-worker-wrapper-cps-handbook",
+      "intent": "Apply Worker/Wrapper split",
+      "tactic_or_idiom": "`Unpack structure at entry`",
+      "notes": "Keeps inner loop free of projections, dictionaries, and boxing",
+      "columns": {
+        "Mathematical Intent": "Apply Worker/Wrapper split",
+        "Lean 4 / Mathlib Tactic": "`Unpack structure at entry`",
+        "Notes": "Keeps inner loop free of projections, dictionaries, and boxing"
+      }
+    },
+    {
+      "handbook": "lean-worker-wrapper-cps-handbook",
+      "intent": "Establish Join Point in recursor",
+      "tactic_or_idiom": "`let joinPt := fun ...`",
+      "notes": "Retains single shared subterm node in kernel pointer cache",
+      "columns": {
+        "Mathematical Intent": "Establish Join Point in recursor",
+        "Lean 4 / Mathlib Tactic": "`let joinPt := fun ...`",
+        "Notes": "Retains single shared subterm node in kernel pointer cache"
+      }
+    },
+    {
+      "handbook": "lean-worker-wrapper-cps-handbook",
+      "intent": "Specialize call pattern (SpecConstr)",
+      "tactic_or_idiom": "`Split into monomorphic workers`",
+      "notes": "Eliminates inner pattern matching and branching overhead",
+      "columns": {
+        "Mathematical Intent": "Specialize call pattern (SpecConstr)",
+        "Lean 4 / Mathlib Tactic": "`Split into monomorphic workers`",
+        "Notes": "Eliminates inner pattern matching and branching overhead"
+      }
+    },
+    {
+      "handbook": "lean-worker-wrapper-cps-handbook",
+      "intent": "Defunctionalize closure continuation",
+      "tactic_or_idiom": "`First-order inductive dispatch`",
+      "notes": "Replaces lambda closures with token constructor matching",
+      "columns": {
+        "Mathematical Intent": "Defunctionalize closure continuation",
+        "Lean 4 / Mathlib Tactic": "`First-order inductive dispatch`",
+        "Notes": "Replaces lambda closures with token constructor matching"
       }
     },
     {
@@ -3374,6 +3869,50 @@
       }
     },
     {
+      "handbook": "lean-asymptotic-algorithms-handbook",
+      "error_pattern": "Integer coefficient overflow in polynomial PRS",
+      "cause": "Standard Euclidean pseudo-division blows up coefficients",
+      "fix": "Divide by Collins-Brown-Traub factor `g * h^delta` on each step",
+      "columns": {
+        "Error / Symptom": "Integer coefficient overflow in polynomial PRS",
+        "Root Cause": "Standard Euclidean pseudo-division blows up coefficients",
+        "Fix": "Divide by Collins-Brown-Traub factor `g * h^delta` on each step"
+      }
+    },
+    {
+      "handbook": "lean-asymptotic-algorithms-handbook",
+      "error_pattern": "Exponential state explosion in permanent",
+      "cause": "Dense evaluation of reducible matrix",
+      "fix": "Apply Dulmage-Mendelsohn decomposition to split into smaller diagonal blocks",
+      "columns": {
+        "Error / Symptom": "Exponential state explosion in permanent",
+        "Root Cause": "Dense evaluation of reducible matrix",
+        "Fix": "Apply Dulmage-Mendelsohn decomposition to split into smaller diagonal blocks"
+      }
+    },
+    {
+      "handbook": "lean-asymptotic-algorithms-handbook",
+      "error_pattern": "Memory exhaustion in prime sieve",
+      "cause": "Static table or naive sieve allocates `O(x)` memory",
+      "fix": "Use segmented dynamic wheel sieve running in `O(sqrt(x))` space",
+      "columns": {
+        "Error / Symptom": "Memory exhaustion in prime sieve",
+        "Root Cause": "Static table or naive sieve allocates `O(x)` memory",
+        "Fix": "Use segmented dynamic wheel sieve running in `O(sqrt(x))` space"
+      }
+    },
+    {
+      "handbook": "lean-asymptotic-algorithms-handbook",
+      "error_pattern": "Range-gated fallback triggered",
+      "cause": "Artificial contest band threshold",
+      "fix": "Replace band dispatch with single dynamic algorithm scaling for all `n`",
+      "columns": {
+        "Error / Symptom": "Range-gated fallback triggered",
+        "Root Cause": "Artificial contest band threshold",
+        "Fix": "Replace band dispatch with single dynamic algorithm scaling for all `n`"
+      }
+    },
+    {
       "handbook": "lean-bisect-handbook",
       "error_pattern": "Bisect takes hours rebuilding Mathlib at each step",
       "cause": "Running full `lake build` on uncached commits",
@@ -3437,6 +3976,50 @@
         "Symptom / Error / Bottleneck": "Multiple `lean --server` processes exhausting RAM",
         "Root Cause": "Direct `lake serve` spawned outside broker",
         "Remediating Fix": "Stop stray servers via `lean-serve-broker stop`"
+      }
+    },
+    {
+      "handbook": "lean-computational-reflection-handbook",
+      "error_pattern": "`maximum recursion depth exceeded during rfl`",
+      "cause": "Reified AST contains unreduced non-constructor redexes",
+      "fix": "Ensure reified expressions use closed inductive constructors; avoid unfolding large lambdas",
+      "columns": {
+        "Error / Symptom": "`maximum recursion depth exceeded during rfl`",
+        "Root Cause": "Reified AST contains unreduced non-constructor redexes",
+        "Fix": "Ensure reified expressions use closed inductive constructors; avoid unfolding large lambdas"
+      }
+    },
+    {
+      "handbook": "lean-computational-reflection-handbook",
+      "error_pattern": "`Lean.ofReduceBool introduced in axiom check`",
+      "cause": "Usage of `native_decide` or `bv_decide` on proof path",
+      "fix": "Replace with computational reflection (`rfl`) or kernel-verified decision procedure",
+      "columns": {
+        "Error / Symptom": "`Lean.ofReduceBool introduced in axiom check`",
+        "Root Cause": "Usage of `native_decide` or `bv_decide` on proof path",
+        "Fix": "Replace with computational reflection (`rfl`) or kernel-verified decision procedure"
+      }
+    },
+    {
+      "handbook": "lean-computational-reflection-handbook",
+      "error_pattern": "`motive is not type correct in Nat.rec`",
+      "cause": "Dependent motive in recursor carries `Prop` payload",
+      "fix": "Use monomorphic non-dependent motive; separate proof witness from computational accumulator",
+      "columns": {
+        "Error / Symptom": "`motive is not type correct in Nat.rec`",
+        "Root Cause": "Dependent motive in recursor carries `Prop` payload",
+        "Fix": "Use monomorphic non-dependent motive; separate proof witness from computational accumulator"
+      }
+    },
+    {
+      "handbook": "lean-computational-reflection-handbook",
+      "error_pattern": "`kernel WHNF heartbeat timeout on step`",
+      "cause": "Complex branching step body inside recursor",
+      "fix": "Factor branch arms into top-level helper definitions (`stepAux`) or use branch-free ANF",
+      "columns": {
+        "Error / Symptom": "`kernel WHNF heartbeat timeout on step`",
+        "Root Cause": "Complex branching step body inside recursor",
+        "Fix": "Factor branch arms into top-level helper definitions (`stepAux`) or use branch-free ANF"
       }
     },
     {
@@ -3525,6 +4108,50 @@
         "Symptom / Error / Bottleneck": "Prose claims theorem proved while `sorry` remains",
         "Root Cause": "Premature paper sync before `@lean-verification-gate`",
         "Remediating Fix": "Downgrade prose claim or block release until `0 sorry`"
+      }
+    },
+    {
+      "handbook": "lean-egraph-cpsat-superopt-handbook",
+      "error_pattern": "Tree-greedy extractor increases instruction count",
+      "cause": "Greedy tree extraction duplicates shared subterms",
+      "fix": "Use CP-SAT sharing-aware DAG extractor with e-class activation variables",
+      "columns": {
+        "Error / Symptom": "Tree-greedy extractor increases instruction count",
+        "Root Cause": "Greedy tree extraction duplicates shared subterms",
+        "Fix": "Use CP-SAT sharing-aware DAG extractor with e-class activation variables"
+      }
+    },
+    {
+      "handbook": "lean-egraph-cpsat-superopt-handbook",
+      "error_pattern": "Cycle detected in extracted e-graph expression",
+      "cause": "E-graph rewrite cycles permitted circular dependency",
+      "fix": "Add topological level constraints `l_c >= l_child + 1` in CP-SAT model",
+      "columns": {
+        "Error / Symptom": "Cycle detected in extracted e-graph expression",
+        "Root Cause": "E-graph rewrite cycles permitted circular dependency",
+        "Fix": "Add topological level constraints `l_c >= l_child + 1` in CP-SAT model"
+      }
+    },
+    {
+      "handbook": "lean-egraph-cpsat-superopt-handbook",
+      "error_pattern": "`Nat` subtraction underflow in rewrite proof",
+      "cause": "Truncated subtraction hazard on `Nat`",
+      "fix": "Guard rewrite with hypothesis `b <= a` or use bitwise XOR masking",
+      "columns": {
+        "Error / Symptom": "`Nat` subtraction underflow in rewrite proof",
+        "Root Cause": "Truncated subtraction hazard on `Nat`",
+        "Fix": "Guard rewrite with hypothesis `b <= a` or use bitwise XOR masking"
+      }
+    },
+    {
+      "handbook": "lean-egraph-cpsat-superopt-handbook",
+      "error_pattern": "Solver timeout on massive e-graphs",
+      "cause": "Excessive e-class count without pruning",
+      "fix": "Apply e-graph class compaction and greedy domain tightening before CP-SAT",
+      "columns": {
+        "Error / Symptom": "Solver timeout on massive e-graphs",
+        "Root Cause": "Excessive e-class count without pruning",
+        "Fix": "Apply e-graph class compaction and greedy domain tightening before CP-SAT"
       }
     },
     {
@@ -4243,6 +4870,50 @@
       }
     },
     {
+      "handbook": "lean-unboxed-limbs-swar-handbook",
+      "error_pattern": "Kernel WHNF slows down by 10x",
+      "cause": "Limb value exceeded `2^63 - 1`, allocating GMP mpz",
+      "fix": "Insert `&&& 0xFFFFFFFFFFFFF` mask at consumption points to maintain unboxed bound",
+      "columns": {
+        "Error / Symptom": "Kernel WHNF slows down by 10x",
+        "Root Cause": "Limb value exceeded `2^63 - 1`, allocating GMP mpz",
+        "Fix": "Insert `&&& 0xFFFFFFFFFFFFF` mask at consumption points to maintain unboxed bound"
+      }
+    },
+    {
+      "handbook": "lean-unboxed-limbs-swar-handbook",
+      "error_pattern": "`0 - x evaluates to 0 on Nat`",
+      "cause": "Truncated subtraction on Lean 4 `Nat`",
+      "fix": "Use bitwise NOT via XOR with explicit mask `x ^^^ 0xFFFFFFFF` rather than subtraction from zero",
+      "columns": {
+        "Error / Symptom": "`0 - x evaluates to 0 on Nat`",
+        "Root Cause": "Truncated subtraction on Lean 4 `Nat`",
+        "Fix": "Use bitwise NOT via XOR with explicit mask `x ^^^ 0xFFFFFFFF` rather than subtraction from zero"
+      }
+    },
+    {
+      "handbook": "lean-unboxed-limbs-swar-handbook",
+      "error_pattern": "Carry bits corrupt adjacent SWAR lane",
+      "cause": "Insufficient guard bits in SWAR packing",
+      "fix": "Restrict lane width to 31 bits with explicit MSB zero guard bit",
+      "columns": {
+        "Error / Symptom": "Carry bits corrupt adjacent SWAR lane",
+        "Root Cause": "Insufficient guard bits in SWAR packing",
+        "Fix": "Restrict lane width to 31 bits with explicit MSB zero guard bit"
+      }
+    },
+    {
+      "handbook": "lean-unboxed-limbs-swar-handbook",
+      "error_pattern": "Recursion timeout on wide limb propagation",
+      "cause": "Monolithic loop unrolling",
+      "fix": "Factor carry chain into linear unrolled struct update with tail-call passing",
+      "columns": {
+        "Error / Symptom": "Recursion timeout on wide limb propagation",
+        "Root Cause": "Monolithic loop unrolling",
+        "Fix": "Factor carry chain into linear unrolled struct update with tail-call passing"
+      }
+    },
+    {
       "handbook": "lean-upstream-pr-handbook",
       "error_pattern": "`#lint` fails on `docBlame` or `unusedArguments`",
       "cause": "Missing `/-- ... -/` docstring or extra typeclass",
@@ -4284,6 +4955,50 @@
         "Symptom / Error / Bottleneck": "`depends on axiom Lean.ofReduceBool`",
         "Root Cause": "`native_decide` or `bv_decide` used in strict kernel lane",
         "Remediating Fix": "Replace with `sair_decide` (`rfl"
+      }
+    },
+    {
+      "handbook": "lean-worker-wrapper-cps-handbook",
+      "error_pattern": "Excessive `instantiate_rev` overhead in kernel",
+      "cause": "Lambda abstractions with open bound variables in loop",
+      "fix": "Lift to top-level auxiliary definition or defunctionalize into first-order inductive type",
+      "columns": {
+        "Error / Symptom": "Excessive `instantiate_rev` overhead in kernel",
+        "Root Cause": "Lambda abstractions with open bound variables in loop",
+        "Fix": "Lift to top-level auxiliary definition or defunctionalize into first-order inductive type"
+      }
+    },
+    {
+      "handbook": "lean-worker-wrapper-cps-handbook",
+      "error_pattern": "Heap allocation inside recursor step",
+      "cause": "Constructor boxing `(a, b)` on each step",
+      "fix": "Unbox into separate scalar accumulator arguments in `@Nat.rec`",
+      "columns": {
+        "Error / Symptom": "Heap allocation inside recursor step",
+        "Root Cause": "Constructor boxing `(a, b)` on each step",
+        "Fix": "Unbox into separate scalar accumulator arguments in `@Nat.rec`"
+      }
+    },
+    {
+      "handbook": "lean-worker-wrapper-cps-handbook",
+      "error_pattern": "Typeclass projection cannot be reduced",
+      "cause": "Opaque dictionary in kernel",
+      "fix": "Supply explicit monomorphic instance or use Worker/Wrapper to eliminate typeclass before loop",
+      "columns": {
+        "Error / Symptom": "Typeclass projection cannot be reduced",
+        "Root Cause": "Opaque dictionary in kernel",
+        "Fix": "Supply explicit monomorphic instance or use Worker/Wrapper to eliminate typeclass before loop"
+      }
+    },
+    {
+      "handbook": "lean-worker-wrapper-cps-handbook",
+      "error_pattern": "Stack overflow on deep CPS reduction",
+      "cause": "Non-tail-recursive continuation chain",
+      "fix": "Convert continuation evaluator to tail-recursive accumulator loop",
+      "columns": {
+        "Error / Symptom": "Stack overflow on deep CPS reduction",
+        "Root Cause": "Non-tail-recursive continuation chain",
+        "Fix": "Convert continuation evaluator to tail-recursive accumulator loop"
       }
     },
     {
@@ -5266,6 +5981,162 @@
         }
       ]
     },
+    "lean-asymptotic-algorithms-handbook": {
+      "file": "references/handbooks/lean-asymptotic-algorithms-handbook.md",
+      "skill_ref": "skills/lean-math-discrete/SKILL.md",
+      "goal_shape_count": 5,
+      "intent_count": 4,
+      "error_count": 4,
+      "goal_shape_templates": [
+        {
+          "handbook": "lean-asymptotic-algorithms-handbook",
+          "goal_shape": "Univariate polynomial discriminant in `Int[x]`",
+          "route_or_concordance": "`Subresultant PRS Algorithm`",
+          "template": "`subresultantPRS p (deriv p) 1 1`",
+          "columns": {
+            "Goal Shape": "Univariate polynomial discriminant in `Int[x]`",
+            "Target Typeclass / Lemma": "`Subresultant PRS Algorithm`",
+            "Proof Template": "`subresultantPRS p (deriv p) 1 1`"
+          }
+        },
+        {
+          "handbook": "lean-asymptotic-algorithms-handbook",
+          "goal_shape": "Sparse matrix permanent `perm(A)`",
+          "route_or_concordance": "`Dulmage-Mendelsohn Factorization`",
+          "template": "`perm(A) = prod (perm(A_i))`",
+          "columns": {
+            "Goal Shape": "Sparse matrix permanent `perm(A)`",
+            "Target Typeclass / Lemma": "`Dulmage-Mendelsohn Factorization`",
+            "Proof Template": "`perm(A) = prod (perm(A_i))`"
+          }
+        },
+        {
+          "handbook": "lean-asymptotic-algorithms-handbook",
+          "goal_shape": "Prime count `pi(x)` without seed tables",
+          "route_or_concordance": "`Dynamic Meissel-Lehmer Tree`",
+          "template": "`pi(x) = phi(x, a) + a - 1 - P2(x, a)`",
+          "columns": {
+            "Goal Shape": "Prime count `pi(x)` without seed tables",
+            "Target Typeclass / Lemma": "`Dynamic Meissel-Lehmer Tree`",
+            "Proof Template": "`pi(x) = phi(x, a) + a - 1 - P2(x, a)`"
+          }
+        },
+        {
+          "handbook": "lean-asymptotic-algorithms-handbook",
+          "goal_shape": "Prefix sum of Mobius `M(x)`",
+          "route_or_concordance": "`Deleglise-Rivat Hyperbola Sieve`",
+          "template": "`M(x) = sum_{k <= u} mu(k) + dynamic_hyperbola`",
+          "columns": {
+            "Goal Shape": "Prefix sum of Mobius `M(x)`",
+            "Target Typeclass / Lemma": "`Deleglise-Rivat Hyperbola Sieve`",
+            "Proof Template": "`M(x) = sum_{k <= u} mu(k) + dynamic_hyperbola`"
+          }
+        },
+        {
+          "handbook": "lean-asymptotic-algorithms-handbook",
+          "goal_shape": "Fixed padding hash schedule",
+          "route_or_concordance": "`Courtois-Naik-Song Schedule Folding`",
+          "template": "`w16 = sigma0(w1) + w0; fold_zero_words`",
+          "columns": {
+            "Goal Shape": "Fixed padding hash schedule",
+            "Target Typeclass / Lemma": "`Courtois-Naik-Song Schedule Folding`",
+            "Proof Template": "`w16 = sigma0(w1) + w0; fold_zero_words`"
+          }
+        }
+      ],
+      "intent_phrasebook": [
+        {
+          "handbook": "lean-asymptotic-algorithms-handbook",
+          "intent": "Compute polynomial GCD without coefficient explosion",
+          "tactic_or_idiom": "`Ducos Subresultant PRS`",
+          "notes": "Exactly divides pseudo-remainder by `g * h^delta`",
+          "columns": {
+            "Mathematical Intent": "Compute polynomial GCD without coefficient explosion",
+            "Lean 4 / Mathlib Tactic": "`Ducos Subresultant PRS`",
+            "Notes": "Exactly divides pseudo-remainder by `g * h^delta`"
+          }
+        },
+        {
+          "handbook": "lean-asymptotic-algorithms-handbook",
+          "intent": "Factor reducible sparse matrix",
+          "tactic_or_idiom": "`Hopcroft-Karp + SCC decomposition`",
+          "notes": "Prunes non-matching zero-edges and factors permanent",
+          "columns": {
+            "Mathematical Intent": "Factor reducible sparse matrix",
+            "Lean 4 / Mathlib Tactic": "`Hopcroft-Karp + SCC decomposition`",
+            "Notes": "Prunes non-matching zero-edges and factors permanent"
+          }
+        },
+        {
+          "handbook": "lean-asymptotic-algorithms-handbook",
+          "intent": "Evaluate `phi(x, a)` dynamically",
+          "tactic_or_idiom": "`Legendre tree with square-root cutoff`",
+          "notes": "Prunes branches when `x < p_a^2` to bound recursion depth",
+          "columns": {
+            "Mathematical Intent": "Evaluate `phi(x, a)` dynamically",
+            "Lean 4 / Mathlib Tactic": "`Legendre tree with square-root cutoff`",
+            "Notes": "Prunes branches when `x < p_a^2` to bound recursion depth"
+          }
+        },
+        {
+          "handbook": "lean-asymptotic-algorithms-handbook",
+          "intent": "Fold zero-word message schedule",
+          "tactic_or_idiom": "`Algebraic simplification`",
+          "notes": "Simplifies words `w_9..w_14 = 0` out of recurrence equations",
+          "columns": {
+            "Mathematical Intent": "Fold zero-word message schedule",
+            "Lean 4 / Mathlib Tactic": "`Algebraic simplification`",
+            "Notes": "Simplifies words `w_9..w_14 = 0` out of recurrence equations"
+          }
+        }
+      ],
+      "error_to_fix": [
+        {
+          "handbook": "lean-asymptotic-algorithms-handbook",
+          "error_pattern": "Integer coefficient overflow in polynomial PRS",
+          "cause": "Standard Euclidean pseudo-division blows up coefficients",
+          "fix": "Divide by Collins-Brown-Traub factor `g * h^delta` on each step",
+          "columns": {
+            "Error / Symptom": "Integer coefficient overflow in polynomial PRS",
+            "Root Cause": "Standard Euclidean pseudo-division blows up coefficients",
+            "Fix": "Divide by Collins-Brown-Traub factor `g * h^delta` on each step"
+          }
+        },
+        {
+          "handbook": "lean-asymptotic-algorithms-handbook",
+          "error_pattern": "Exponential state explosion in permanent",
+          "cause": "Dense evaluation of reducible matrix",
+          "fix": "Apply Dulmage-Mendelsohn decomposition to split into smaller diagonal blocks",
+          "columns": {
+            "Error / Symptom": "Exponential state explosion in permanent",
+            "Root Cause": "Dense evaluation of reducible matrix",
+            "Fix": "Apply Dulmage-Mendelsohn decomposition to split into smaller diagonal blocks"
+          }
+        },
+        {
+          "handbook": "lean-asymptotic-algorithms-handbook",
+          "error_pattern": "Memory exhaustion in prime sieve",
+          "cause": "Static table or naive sieve allocates `O(x)` memory",
+          "fix": "Use segmented dynamic wheel sieve running in `O(sqrt(x))` space",
+          "columns": {
+            "Error / Symptom": "Memory exhaustion in prime sieve",
+            "Root Cause": "Static table or naive sieve allocates `O(x)` memory",
+            "Fix": "Use segmented dynamic wheel sieve running in `O(sqrt(x))` space"
+          }
+        },
+        {
+          "handbook": "lean-asymptotic-algorithms-handbook",
+          "error_pattern": "Range-gated fallback triggered",
+          "cause": "Artificial contest band threshold",
+          "fix": "Replace band dispatch with single dynamic algorithm scaling for all `n`",
+          "columns": {
+            "Error / Symptom": "Range-gated fallback triggered",
+            "Root Cause": "Artificial contest band threshold",
+            "Fix": "Replace band dispatch with single dynamic algorithm scaling for all `n`"
+          }
+        }
+      ]
+    },
     "lean-bisect-handbook": {
       "file": "references/handbooks/lean-bisect-handbook.md",
       "skill_ref": "skills/lean-bisect/SKILL.md",
@@ -5499,6 +6370,162 @@
             "Symptom / Error / Bottleneck": "Multiple `lean --server` processes exhausting RAM",
             "Root Cause": "Direct `lake serve` spawned outside broker",
             "Remediating Fix": "Stop stray servers via `lean-serve-broker stop`"
+          }
+        }
+      ]
+    },
+    "lean-computational-reflection-handbook": {
+      "file": "references/handbooks/lean-computational-reflection-handbook.md",
+      "skill_ref": "skills/lean-proof-refactor/SKILL.md",
+      "goal_shape_count": 5,
+      "intent_count": 4,
+      "error_count": 4,
+      "goal_shape_templates": [
+        {
+          "handbook": "lean-computational-reflection-handbook",
+          "goal_shape": "`fastStep s = specStep s` on fixed schedule",
+          "route_or_concordance": "`Computational Reflection`",
+          "template": "`change denote env (compileFast s) = denote env (compileSpec s); rw [compile_sound]; rfl`",
+          "columns": {
+            "Goal Shape": "`fastStep s = specStep s` on fixed schedule",
+            "Target Typeclass / Lemma": "`Computational Reflection`",
+            "Proof Template": "`change denote env (compileFast s) = denote env (compileSpec s); rw [compile_sound]; rfl`"
+          }
+        },
+        {
+          "handbook": "lean-computational-reflection-handbook",
+          "goal_shape": "`impl n = spec n` over inductive domain",
+          "route_or_concordance": "`Section 1/2/3 Induction Bridge`",
+          "template": "`intro n; induction n with | zero => rfl | succ n ih => exact step_bridge n ih`",
+          "columns": {
+            "Goal Shape": "`impl n = spec n` over inductive domain",
+            "Target Typeclass / Lemma": "`Section 1/2/3 Induction Bridge`",
+            "Proof Template": "`intro n; induction n with | zero => rfl | succ n ih => exact step_bridge n ih`"
+          }
+        },
+        {
+          "handbook": "lean-computational-reflection-handbook",
+          "goal_shape": "Monolithic 2,000-line tactic unfolding",
+          "route_or_concordance": "`Reflective Normalization`",
+          "template": "`have h : e = reify e' := rfl; rw [h, <- norm_sound]; rfl`",
+          "columns": {
+            "Goal Shape": "Monolithic 2,000-line tactic unfolding",
+            "Target Typeclass / Lemma": "`Reflective Normalization`",
+            "Proof Template": "`have h : e = reify e' := rfl; rw [h, <- norm_sound]; rfl`"
+          }
+        },
+        {
+          "handbook": "lean-computational-reflection-handbook",
+          "goal_shape": "Equivalence of 64-round word circuits",
+          "route_or_concordance": "`denote (compile c) = eval c`",
+          "template": "`refine Circuit.soundness_reflection _ _ _ rfl`",
+          "columns": {
+            "Goal Shape": "Equivalence of 64-round word circuits",
+            "Target Typeclass / Lemma": "`denote (compile c) = eval c`",
+            "Proof Template": "`refine Circuit.soundness_reflection _ _ _ rfl`"
+          }
+        },
+        {
+          "handbook": "lean-computational-reflection-handbook",
+          "goal_shape": "Proof-cone isolation audit",
+          "route_or_concordance": "`KERNEL-LAW-22 0-Prop Leakage`",
+          "template": "`set_option pp.all true in #check impl -- verify 0 Prop dependencies`",
+          "columns": {
+            "Goal Shape": "Proof-cone isolation audit",
+            "Target Typeclass / Lemma": "`KERNEL-LAW-22 0-Prop Leakage`",
+            "Proof Template": "`set_option pp.all true in #check impl -- verify 0 Prop dependencies`"
+          }
+        }
+      ],
+      "intent_phrasebook": [
+        {
+          "handbook": "lean-computational-reflection-handbook",
+          "intent": "Compress 3,000-line tactical proof into reflection",
+          "tactic_or_idiom": "`rw [<- norm_sound]; rfl`",
+          "notes": "Replaces repetitive rewrite sequences with certified decision procedure",
+          "columns": {
+            "Mathematical Intent": "Compress 3,000-line tactical proof into reflection",
+            "Lean 4 / Mathlib Tactic": "`rw [<- norm_sound]; rfl`",
+            "Notes": "Replaces repetitive rewrite sequences with certified decision procedure"
+          }
+        },
+        {
+          "handbook": "lean-computational-reflection-handbook",
+          "intent": "Enforce Section 1/2/3 Abstraction-Concrete Split",
+          "tactic_or_idiom": "`#verso split directives`",
+          "notes": "Separates motives, concrete kernel implementation, and correctness proofs",
+          "columns": {
+            "Mathematical Intent": "Enforce Section 1/2/3 Abstraction-Concrete Split",
+            "Lean 4 / Mathlib Tactic": "`#verso split directives`",
+            "Notes": "Separates motives, concrete kernel implementation, and correctness proofs"
+          }
+        },
+        {
+          "handbook": "lean-computational-reflection-handbook",
+          "intent": "Eliminate Prop leakage from computational core",
+          "tactic_or_idiom": "`extract_pure_computation`",
+          "notes": "Audits runtime definitions to ensure zero equality witnesses or proof types",
+          "columns": {
+            "Mathematical Intent": "Eliminate Prop leakage from computational core",
+            "Lean 4 / Mathlib Tactic": "`extract_pure_computation`",
+            "Notes": "Audits runtime definitions to ensure zero equality witnesses or proof types"
+          }
+        },
+        {
+          "handbook": "lean-computational-reflection-handbook",
+          "intent": "Verify reflection soundness via structural induction",
+          "tactic_or_idiom": "`induction e with ... <;> (dsimp [simplify]; omega)`",
+          "notes": "Establishes `denote (norm e) = denote e` for all AST instances",
+          "columns": {
+            "Mathematical Intent": "Verify reflection soundness via structural induction",
+            "Lean 4 / Mathlib Tactic": "`induction e with ... <;> (dsimp [simplify]; omega)`",
+            "Notes": "Establishes `denote (norm e) = denote e` for all AST instances"
+          }
+        }
+      ],
+      "error_to_fix": [
+        {
+          "handbook": "lean-computational-reflection-handbook",
+          "error_pattern": "`maximum recursion depth exceeded during rfl`",
+          "cause": "Reified AST contains unreduced non-constructor redexes",
+          "fix": "Ensure reified expressions use closed inductive constructors; avoid unfolding large lambdas",
+          "columns": {
+            "Error / Symptom": "`maximum recursion depth exceeded during rfl`",
+            "Root Cause": "Reified AST contains unreduced non-constructor redexes",
+            "Fix": "Ensure reified expressions use closed inductive constructors; avoid unfolding large lambdas"
+          }
+        },
+        {
+          "handbook": "lean-computational-reflection-handbook",
+          "error_pattern": "`Lean.ofReduceBool introduced in axiom check`",
+          "cause": "Usage of `native_decide` or `bv_decide` on proof path",
+          "fix": "Replace with computational reflection (`rfl`) or kernel-verified decision procedure",
+          "columns": {
+            "Error / Symptom": "`Lean.ofReduceBool introduced in axiom check`",
+            "Root Cause": "Usage of `native_decide` or `bv_decide` on proof path",
+            "Fix": "Replace with computational reflection (`rfl`) or kernel-verified decision procedure"
+          }
+        },
+        {
+          "handbook": "lean-computational-reflection-handbook",
+          "error_pattern": "`motive is not type correct in Nat.rec`",
+          "cause": "Dependent motive in recursor carries `Prop` payload",
+          "fix": "Use monomorphic non-dependent motive; separate proof witness from computational accumulator",
+          "columns": {
+            "Error / Symptom": "`motive is not type correct in Nat.rec`",
+            "Root Cause": "Dependent motive in recursor carries `Prop` payload",
+            "Fix": "Use monomorphic non-dependent motive; separate proof witness from computational accumulator"
+          }
+        },
+        {
+          "handbook": "lean-computational-reflection-handbook",
+          "error_pattern": "`kernel WHNF heartbeat timeout on step`",
+          "cause": "Complex branching step body inside recursor",
+          "fix": "Factor branch arms into top-level helper definitions (`stepAux`) or use branch-free ANF",
+          "columns": {
+            "Error / Symptom": "`kernel WHNF heartbeat timeout on step`",
+            "Root Cause": "Complex branching step body inside recursor",
+            "Fix": "Factor branch arms into top-level helper definitions (`stepAux`) or use branch-free ANF"
           }
         }
       ]
@@ -5848,6 +6875,162 @@
             "Symptom / Error / Bottleneck": "Prose claims theorem proved while `sorry` remains",
             "Root Cause": "Premature paper sync before `@lean-verification-gate`",
             "Remediating Fix": "Downgrade prose claim or block release until `0 sorry`"
+          }
+        }
+      ]
+    },
+    "lean-egraph-cpsat-superopt-handbook": {
+      "file": "references/handbooks/lean-egraph-cpsat-superopt-handbook.md",
+      "skill_ref": "skills/lean-specification/SKILL.md",
+      "goal_shape_count": 5,
+      "intent_count": 4,
+      "error_count": 4,
+      "goal_shape_templates": [
+        {
+          "handbook": "lean-egraph-cpsat-superopt-handbook",
+          "goal_shape": "Common subexpressions across e-graph",
+          "route_or_concordance": "`CP-SAT Exact DAG Extraction`",
+          "template": "`model := CpModel(); model.Minimize(sum(cost * x)); solver.Solve(model)`",
+          "columns": {
+            "Goal Shape": "Common subexpressions across e-graph",
+            "Target Typeclass / Lemma": "`CP-SAT Exact DAG Extraction`",
+            "Proof Template": "`model := CpModel(); model.Minimize(sum(cost * x)); solver.Solve(model)`"
+          }
+        },
+        {
+          "handbook": "lean-egraph-cpsat-superopt-handbook",
+          "goal_shape": "Candidate rewrite rule `lhs -> rhs`",
+          "route_or_concordance": "`Dual-Certified Rewriting`",
+          "template": "`theorem sound : eval lhs = eval rhs; theorem cost : cost rhs <= cost lhs`",
+          "columns": {
+            "Goal Shape": "Candidate rewrite rule `lhs -> rhs`",
+            "Target Typeclass / Lemma": "`Dual-Certified Rewriting`",
+            "Proof Template": "`theorem sound : eval lhs = eval rhs; theorem cost : cost rhs <= cost lhs`"
+          }
+        },
+        {
+          "handbook": "lean-egraph-cpsat-superopt-handbook",
+          "goal_shape": "Bitwise logic simplification",
+          "route_or_concordance": "`3-Gate Zhegalkin Normal Form`",
+          "template": "`theorem maj_zhegalkin : (a &&& (b ^^^ c)) ^^^ (b &&& c) = (a &&& b) ^^^ (a &&& c) ^^^ (b &&& c)`",
+          "columns": {
+            "Goal Shape": "Bitwise logic simplification",
+            "Target Typeclass / Lemma": "`3-Gate Zhegalkin Normal Form`",
+            "Proof Template": "`theorem maj_zhegalkin : (a &&& (b ^^^ c)) ^^^ (b &&& c) = (a &&& b) ^^^ (a &&& c) ^^^ (b &&& c)`"
+          }
+        },
+        {
+          "handbook": "lean-egraph-cpsat-superopt-handbook",
+          "goal_shape": "Fixed schedule constant folding",
+          "route_or_concordance": "`E-Graph Equality Saturation`",
+          "template": "`egg_saturate rules [const_fold, shift_fold]; extract_dag`",
+          "columns": {
+            "Goal Shape": "Fixed schedule constant folding",
+            "Target Typeclass / Lemma": "`E-Graph Equality Saturation`",
+            "Proof Template": "`egg_saturate rules [const_fold, shift_fold]; extract_dag`"
+          }
+        },
+        {
+          "handbook": "lean-egraph-cpsat-superopt-handbook",
+          "goal_shape": "SWAR lane bit-budget allocation",
+          "route_or_concordance": "`CP-SAT Knapsack Model`",
+          "template": "`model.Add(sum(lane_widths) <= 62); solver.Solve(model)`",
+          "columns": {
+            "Goal Shape": "SWAR lane bit-budget allocation",
+            "Target Typeclass / Lemma": "`CP-SAT Knapsack Model`",
+            "Proof Template": "`model.Add(sum(lane_widths) <= 62); solver.Solve(model)`"
+          }
+        }
+      ],
+      "intent_phrasebook": [
+        {
+          "handbook": "lean-egraph-cpsat-superopt-handbook",
+          "intent": "Extract sharing-optimal DAG from e-graph",
+          "tactic_or_idiom": "`CP-SAT ILP solver`",
+          "notes": "Solves 0-1 integer model minimizing shared node cost with acyclicity levels",
+          "columns": {
+            "Mathematical Intent": "Extract sharing-optimal DAG from e-graph",
+            "Lean 4 / Mathlib Tactic": "`CP-SAT ILP solver`",
+            "Notes": "Solves 0-1 integer model minimizing shared node cost with acyclicity levels"
+          }
+        },
+        {
+          "handbook": "lean-egraph-cpsat-superopt-handbook",
+          "intent": "Prove semantic soundness of rewrite rule",
+          "tactic_or_idiom": "`omega / bitwise lemmas`",
+          "notes": "Discharges algebraic equivalence without `bv_decide` or `native_decide`",
+          "columns": {
+            "Mathematical Intent": "Prove semantic soundness of rewrite rule",
+            "Lean 4 / Mathlib Tactic": "`omega / bitwise lemmas`",
+            "Notes": "Discharges algebraic equivalence without `bv_decide` or `native_decide`"
+          }
+        },
+        {
+          "handbook": "lean-egraph-cpsat-superopt-handbook",
+          "intent": "Prove cost reduction under KernelModel",
+          "tactic_or_idiom": "`by decide`",
+          "notes": "Verifies `whnfCost rhs <= whnfCost lhs` counting AST nodes and scalar limbs",
+          "columns": {
+            "Mathematical Intent": "Prove cost reduction under KernelModel",
+            "Lean 4 / Mathlib Tactic": "`by decide`",
+            "Notes": "Verifies `whnfCost rhs <= whnfCost lhs` counting AST nodes and scalar limbs"
+          }
+        },
+        {
+          "handbook": "lean-egraph-cpsat-superopt-handbook",
+          "intent": "Synthesize optimal schedule unrolling",
+          "tactic_or_idiom": "`CP-SAT sequence formulation`",
+          "notes": "Finds optimal operation ordering minimizing peak register pressure",
+          "columns": {
+            "Mathematical Intent": "Synthesize optimal schedule unrolling",
+            "Lean 4 / Mathlib Tactic": "`CP-SAT sequence formulation`",
+            "Notes": "Finds optimal operation ordering minimizing peak register pressure"
+          }
+        }
+      ],
+      "error_to_fix": [
+        {
+          "handbook": "lean-egraph-cpsat-superopt-handbook",
+          "error_pattern": "Tree-greedy extractor increases instruction count",
+          "cause": "Greedy tree extraction duplicates shared subterms",
+          "fix": "Use CP-SAT sharing-aware DAG extractor with e-class activation variables",
+          "columns": {
+            "Error / Symptom": "Tree-greedy extractor increases instruction count",
+            "Root Cause": "Greedy tree extraction duplicates shared subterms",
+            "Fix": "Use CP-SAT sharing-aware DAG extractor with e-class activation variables"
+          }
+        },
+        {
+          "handbook": "lean-egraph-cpsat-superopt-handbook",
+          "error_pattern": "Cycle detected in extracted e-graph expression",
+          "cause": "E-graph rewrite cycles permitted circular dependency",
+          "fix": "Add topological level constraints `l_c >= l_child + 1` in CP-SAT model",
+          "columns": {
+            "Error / Symptom": "Cycle detected in extracted e-graph expression",
+            "Root Cause": "E-graph rewrite cycles permitted circular dependency",
+            "Fix": "Add topological level constraints `l_c >= l_child + 1` in CP-SAT model"
+          }
+        },
+        {
+          "handbook": "lean-egraph-cpsat-superopt-handbook",
+          "error_pattern": "`Nat` subtraction underflow in rewrite proof",
+          "cause": "Truncated subtraction hazard on `Nat`",
+          "fix": "Guard rewrite with hypothesis `b <= a` or use bitwise XOR masking",
+          "columns": {
+            "Error / Symptom": "`Nat` subtraction underflow in rewrite proof",
+            "Root Cause": "Truncated subtraction hazard on `Nat`",
+            "Fix": "Guard rewrite with hypothesis `b <= a` or use bitwise XOR masking"
+          }
+        },
+        {
+          "handbook": "lean-egraph-cpsat-superopt-handbook",
+          "error_pattern": "Solver timeout on massive e-graphs",
+          "cause": "Excessive e-class count without pruning",
+          "fix": "Apply e-graph class compaction and greedy domain tightening before CP-SAT",
+          "columns": {
+            "Error / Symptom": "Solver timeout on massive e-graphs",
+            "Root Cause": "Excessive e-class count without pruning",
+            "Fix": "Apply e-graph class compaction and greedy domain tightening before CP-SAT"
           }
         }
       ]
@@ -8737,6 +9920,162 @@
         }
       ]
     },
+    "lean-unboxed-limbs-swar-handbook": {
+      "file": "references/handbooks/lean-unboxed-limbs-swar-handbook.md",
+      "skill_ref": "skills/lean-math-discrete/SKILL.md",
+      "goal_shape_count": 5,
+      "intent_count": 4,
+      "error_count": 4,
+      "goal_shape_templates": [
+        {
+          "handbook": "lean-unboxed-limbs-swar-handbook",
+          "goal_shape": "Wide state accumulator (256/512-bit)",
+          "route_or_concordance": "`Fiat-Crypto Unsaturated Limbs`",
+          "template": "`structure Limbs where (l0 l1 l2 l3 l4 : Nat); def add := ...`",
+          "columns": {
+            "Goal Shape": "Wide state accumulator (256/512-bit)",
+            "Target Typeclass / Lemma": "`Fiat-Crypto Unsaturated Limbs`",
+            "Proof Template": "`structure Limbs where (l0 l1 l2 l3 l4 : Nat); def add := ...`"
+          }
+        },
+        {
+          "handbook": "lean-unboxed-limbs-swar-handbook",
+          "goal_shape": "Parallel 2-lane 31-bit addition",
+          "route_or_concordance": "`Guarded SWAR Addition`",
+          "template": "`((a &&& mask) + (b &&& mask)) ^^^ ((a ^^^ b) &&& guard)`",
+          "columns": {
+            "Goal Shape": "Parallel 2-lane 31-bit addition",
+            "Target Typeclass / Lemma": "`Guarded SWAR Addition`",
+            "Proof Template": "`((a &&& mask) + (b &&& mask)) ^^^ ((a ^^^ b) &&& guard)`"
+          }
+        },
+        {
+          "handbook": "lean-unboxed-limbs-swar-handbook",
+          "goal_shape": "Bitfield extraction `(x / 2^s) % 2^k`",
+          "route_or_concordance": "`Branch-Free Low Cut`",
+          "template": "`(w >>> s) &&& ((1 <<< k) - 1)`",
+          "columns": {
+            "Goal Shape": "Bitfield extraction `(x / 2^s) % 2^k`",
+            "Target Typeclass / Lemma": "`Branch-Free Low Cut`",
+            "Proof Template": "`(w >>> s) &&& ((1 <<< k) - 1)`"
+          }
+        },
+        {
+          "handbook": "lean-unboxed-limbs-swar-handbook",
+          "goal_shape": "Ternary conditional `if c then a else b`",
+          "route_or_concordance": "`Zhegalkin Multiplexer`",
+          "template": "`b ^^^ (c &&& (a ^^^ b))`",
+          "columns": {
+            "Goal Shape": "Ternary conditional `if c then a else b`",
+            "Target Typeclass / Lemma": "`Zhegalkin Multiplexer`",
+            "Proof Template": "`b ^^^ (c &&& (a ^^^ b))`"
+          }
+        },
+        {
+          "handbook": "lean-unboxed-limbs-swar-handbook",
+          "goal_shape": "Bitwise choice `(e &&& f) ^^^ (~~~e &&& g)`",
+          "route_or_concordance": "`3-Gate Ch Circuit`",
+          "template": "`g ^^^ (e &&& (f ^^^ g))`",
+          "columns": {
+            "Goal Shape": "Bitwise choice `(e &&& f) ^^^ (~~~e &&& g)`",
+            "Target Typeclass / Lemma": "`3-Gate Ch Circuit`",
+            "Proof Template": "`g ^^^ (e &&& (f ^^^ g))`"
+          }
+        }
+      ],
+      "intent_phrasebook": [
+        {
+          "handbook": "lean-unboxed-limbs-swar-handbook",
+          "intent": "Eliminate heap GMP allocations in wide states",
+          "tactic_or_idiom": "`Limb tuple unboxing`",
+          "notes": "Replaces single `Nat >= 2^63` with 5-tuple of 52-bit `< 2^63` limbs",
+          "columns": {
+            "Mathematical Intent": "Eliminate heap GMP allocations in wide states",
+            "Lean 4 / Mathlib Tactic": "`Limb tuple unboxing`",
+            "Notes": "Replaces single `Nat >= 2^63` with 5-tuple of 52-bit `< 2^63` limbs"
+          }
+        },
+        {
+          "handbook": "lean-unboxed-limbs-swar-handbook",
+          "intent": "Pack two 31-bit lanes into one 63-bit scalar",
+          "tactic_or_idiom": "`(x &&& 0x7FFFFFFF) ||| ((y &&& 0x7FFFFFFF) <<< 31)`",
+          "notes": "Keeps value strictly `< 2^62 < 2^63` (lean_box scalar)",
+          "columns": {
+            "Mathematical Intent": "Pack two 31-bit lanes into one 63-bit scalar",
+            "Lean 4 / Mathlib Tactic": "`(x &&& 0x7FFFFFFF) ||| ((y &&& 0x7FFFFFFF) <<< 31)`",
+            "Notes": "Keeps value strictly `< 2^62 < 2^63` (lean_box scalar)"
+          }
+        },
+        {
+          "handbook": "lean-unboxed-limbs-swar-handbook",
+          "intent": "Prevent cross-lane carry corruption",
+          "tactic_or_idiom": "`Bitwise SWAR guard mask`",
+          "notes": "Separates carry bits with top-lane zero guard positions",
+          "columns": {
+            "Mathematical Intent": "Prevent cross-lane carry corruption",
+            "Lean 4 / Mathlib Tactic": "`Bitwise SWAR guard mask`",
+            "Notes": "Separates carry bits with top-lane zero guard positions"
+          }
+        },
+        {
+          "handbook": "lean-unboxed-limbs-swar-handbook",
+          "intent": "Prove branch-free circuit equivalence",
+          "tactic_or_idiom": "`dsimp; omega`",
+          "notes": "Verifies `g ^^^ (e &&& (f ^^^ g)) = (e &&& f) ^^^ (~~~e &&& g)`",
+          "columns": {
+            "Mathematical Intent": "Prove branch-free circuit equivalence",
+            "Lean 4 / Mathlib Tactic": "`dsimp; omega`",
+            "Notes": "Verifies `g ^^^ (e &&& (f ^^^ g)) = (e &&& f) ^^^ (~~~e &&& g)`"
+          }
+        }
+      ],
+      "error_to_fix": [
+        {
+          "handbook": "lean-unboxed-limbs-swar-handbook",
+          "error_pattern": "Kernel WHNF slows down by 10x",
+          "cause": "Limb value exceeded `2^63 - 1`, allocating GMP mpz",
+          "fix": "Insert `&&& 0xFFFFFFFFFFFFF` mask at consumption points to maintain unboxed bound",
+          "columns": {
+            "Error / Symptom": "Kernel WHNF slows down by 10x",
+            "Root Cause": "Limb value exceeded `2^63 - 1`, allocating GMP mpz",
+            "Fix": "Insert `&&& 0xFFFFFFFFFFFFF` mask at consumption points to maintain unboxed bound"
+          }
+        },
+        {
+          "handbook": "lean-unboxed-limbs-swar-handbook",
+          "error_pattern": "`0 - x evaluates to 0 on Nat`",
+          "cause": "Truncated subtraction on Lean 4 `Nat`",
+          "fix": "Use bitwise NOT via XOR with explicit mask `x ^^^ 0xFFFFFFFF` rather than subtraction from zero",
+          "columns": {
+            "Error / Symptom": "`0 - x evaluates to 0 on Nat`",
+            "Root Cause": "Truncated subtraction on Lean 4 `Nat`",
+            "Fix": "Use bitwise NOT via XOR with explicit mask `x ^^^ 0xFFFFFFFF` rather than subtraction from zero"
+          }
+        },
+        {
+          "handbook": "lean-unboxed-limbs-swar-handbook",
+          "error_pattern": "Carry bits corrupt adjacent SWAR lane",
+          "cause": "Insufficient guard bits in SWAR packing",
+          "fix": "Restrict lane width to 31 bits with explicit MSB zero guard bit",
+          "columns": {
+            "Error / Symptom": "Carry bits corrupt adjacent SWAR lane",
+            "Root Cause": "Insufficient guard bits in SWAR packing",
+            "Fix": "Restrict lane width to 31 bits with explicit MSB zero guard bit"
+          }
+        },
+        {
+          "handbook": "lean-unboxed-limbs-swar-handbook",
+          "error_pattern": "Recursion timeout on wide limb propagation",
+          "cause": "Monolithic loop unrolling",
+          "fix": "Factor carry chain into linear unrolled struct update with tail-call passing",
+          "columns": {
+            "Error / Symptom": "Recursion timeout on wide limb propagation",
+            "Root Cause": "Monolithic loop unrolling",
+            "Fix": "Factor carry chain into linear unrolled struct update with tail-call passing"
+          }
+        }
+      ]
+    },
     "lean-upstream-pr-handbook": {
       "file": "references/handbooks/lean-upstream-pr-handbook.md",
       "skill_ref": "skills/lean-upstream-pr/SKILL.md",
@@ -8902,6 +10241,162 @@
             "Symptom / Error / Bottleneck": "`depends on axiom Lean.ofReduceBool`",
             "Root Cause": "`native_decide` or `bv_decide` used in strict kernel lane",
             "Remediating Fix": "Replace with `sair_decide` (`rfl"
+          }
+        }
+      ]
+    },
+    "lean-worker-wrapper-cps-handbook": {
+      "file": "references/handbooks/lean-worker-wrapper-cps-handbook.md",
+      "skill_ref": "skills/lean-proof-refactor/SKILL.md",
+      "goal_shape_count": 5,
+      "intent_count": 4,
+      "error_count": 4,
+      "goal_shape_templates": [
+        {
+          "handbook": "lean-worker-wrapper-cps-handbook",
+          "goal_shape": "Typeclass dictionaries in tight recursor",
+          "route_or_concordance": "`Worker/Wrapper Monomorphization`",
+          "template": "`def worker (x : Nat) : Nat; @[inline] def wrapper [C] (x) := worker x`",
+          "columns": {
+            "Goal Shape": "Typeclass dictionaries in tight recursor",
+            "Target Typeclass / Lemma": "`Worker/Wrapper Monomorphization`",
+            "Proof Template": "`def worker (x : Nat) : Nat; @[inline] def wrapper [C] (x) := worker x`"
+          }
+        },
+        {
+          "handbook": "lean-worker-wrapper-cps-handbook",
+          "goal_shape": "Merge branch subterms duplicating AST",
+          "route_or_concordance": "`Join Point Abstraction`",
+          "template": "`let joinPt := fun acc => ...; if c then joinPt a else joinPt b`",
+          "columns": {
+            "Goal Shape": "Merge branch subterms duplicating AST",
+            "Target Typeclass / Lemma": "`Join Point Abstraction`",
+            "Proof Template": "`let joinPt := fun acc => ...; if c then joinPt a else joinPt b`"
+          }
+        },
+        {
+          "handbook": "lean-worker-wrapper-cps-handbook",
+          "goal_shape": "Inductive constructor match in loop body",
+          "route_or_concordance": "`SpecConstr Specialization`",
+          "template": "`def workerA ...; def workerB ...; match c with | .A => workerA | .B => workerB`",
+          "columns": {
+            "Goal Shape": "Inductive constructor match in loop body",
+            "Target Typeclass / Lemma": "`SpecConstr Specialization`",
+            "Proof Template": "`def workerA ...; def workerB ...; match c with | .A => workerA | .B => workerB`"
+          }
+        },
+        {
+          "handbook": "lean-worker-wrapper-cps-handbook",
+          "goal_shape": "Higher-order continuation closure `(a -> b) -> b`",
+          "route_or_concordance": "`Defunctionalized Inductive Cont`",
+          "template": "`inductive Cont | halt | step (k : Cont); def applyCont : Cont -> a -> b`",
+          "columns": {
+            "Goal Shape": "Higher-order continuation closure `(a -> b) -> b`",
+            "Target Typeclass / Lemma": "`Defunctionalized Inductive Cont`",
+            "Proof Template": "`inductive Cont | halt | step (k : Cont); def applyCont : Cont -> a -> b`"
+          }
+        },
+        {
+          "handbook": "lean-worker-wrapper-cps-handbook",
+          "goal_shape": "Non-tail-recursive tuple re-boxing",
+          "route_or_concordance": "`Tail-Call Scalar Accumulator`",
+          "template": "`@Nat.rec (fun _ => Nat -> Nat -> Nat) (fun a b => a) (fun _ loop a b => loop (a+1) b)`",
+          "columns": {
+            "Goal Shape": "Non-tail-recursive tuple re-boxing",
+            "Target Typeclass / Lemma": "`Tail-Call Scalar Accumulator`",
+            "Proof Template": "`@Nat.rec (fun _ => Nat -> Nat -> Nat) (fun a b => a) (fun _ loop a b => loop (a+1) b)`"
+          }
+        }
+      ],
+      "intent_phrasebook": [
+        {
+          "handbook": "lean-worker-wrapper-cps-handbook",
+          "intent": "Apply Worker/Wrapper split",
+          "tactic_or_idiom": "`Unpack structure at entry`",
+          "notes": "Keeps inner loop free of projections, dictionaries, and boxing",
+          "columns": {
+            "Mathematical Intent": "Apply Worker/Wrapper split",
+            "Lean 4 / Mathlib Tactic": "`Unpack structure at entry`",
+            "Notes": "Keeps inner loop free of projections, dictionaries, and boxing"
+          }
+        },
+        {
+          "handbook": "lean-worker-wrapper-cps-handbook",
+          "intent": "Establish Join Point in recursor",
+          "tactic_or_idiom": "`let joinPt := fun ...`",
+          "notes": "Retains single shared subterm node in kernel pointer cache",
+          "columns": {
+            "Mathematical Intent": "Establish Join Point in recursor",
+            "Lean 4 / Mathlib Tactic": "`let joinPt := fun ...`",
+            "Notes": "Retains single shared subterm node in kernel pointer cache"
+          }
+        },
+        {
+          "handbook": "lean-worker-wrapper-cps-handbook",
+          "intent": "Specialize call pattern (SpecConstr)",
+          "tactic_or_idiom": "`Split into monomorphic workers`",
+          "notes": "Eliminates inner pattern matching and branching overhead",
+          "columns": {
+            "Mathematical Intent": "Specialize call pattern (SpecConstr)",
+            "Lean 4 / Mathlib Tactic": "`Split into monomorphic workers`",
+            "Notes": "Eliminates inner pattern matching and branching overhead"
+          }
+        },
+        {
+          "handbook": "lean-worker-wrapper-cps-handbook",
+          "intent": "Defunctionalize closure continuation",
+          "tactic_or_idiom": "`First-order inductive dispatch`",
+          "notes": "Replaces lambda closures with token constructor matching",
+          "columns": {
+            "Mathematical Intent": "Defunctionalize closure continuation",
+            "Lean 4 / Mathlib Tactic": "`First-order inductive dispatch`",
+            "Notes": "Replaces lambda closures with token constructor matching"
+          }
+        }
+      ],
+      "error_to_fix": [
+        {
+          "handbook": "lean-worker-wrapper-cps-handbook",
+          "error_pattern": "Excessive `instantiate_rev` overhead in kernel",
+          "cause": "Lambda abstractions with open bound variables in loop",
+          "fix": "Lift to top-level auxiliary definition or defunctionalize into first-order inductive type",
+          "columns": {
+            "Error / Symptom": "Excessive `instantiate_rev` overhead in kernel",
+            "Root Cause": "Lambda abstractions with open bound variables in loop",
+            "Fix": "Lift to top-level auxiliary definition or defunctionalize into first-order inductive type"
+          }
+        },
+        {
+          "handbook": "lean-worker-wrapper-cps-handbook",
+          "error_pattern": "Heap allocation inside recursor step",
+          "cause": "Constructor boxing `(a, b)` on each step",
+          "fix": "Unbox into separate scalar accumulator arguments in `@Nat.rec`",
+          "columns": {
+            "Error / Symptom": "Heap allocation inside recursor step",
+            "Root Cause": "Constructor boxing `(a, b)` on each step",
+            "Fix": "Unbox into separate scalar accumulator arguments in `@Nat.rec`"
+          }
+        },
+        {
+          "handbook": "lean-worker-wrapper-cps-handbook",
+          "error_pattern": "Typeclass projection cannot be reduced",
+          "cause": "Opaque dictionary in kernel",
+          "fix": "Supply explicit monomorphic instance or use Worker/Wrapper to eliminate typeclass before loop",
+          "columns": {
+            "Error / Symptom": "Typeclass projection cannot be reduced",
+            "Root Cause": "Opaque dictionary in kernel",
+            "Fix": "Supply explicit monomorphic instance or use Worker/Wrapper to eliminate typeclass before loop"
+          }
+        },
+        {
+          "handbook": "lean-worker-wrapper-cps-handbook",
+          "error_pattern": "Stack overflow on deep CPS reduction",
+          "cause": "Non-tail-recursive continuation chain",
+          "fix": "Convert continuation evaluator to tail-recursive accumulator loop",
+          "columns": {
+            "Error / Symptom": "Stack overflow on deep CPS reduction",
+            "Root Cause": "Non-tail-recursive continuation chain",
+            "Fix": "Convert continuation evaluator to tail-recursive accumulator loop"
           }
         }
       ]

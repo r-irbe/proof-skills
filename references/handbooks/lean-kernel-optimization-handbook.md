@@ -254,6 +254,18 @@ extracted_from: skills/lean-sair-kernel-optimization/SKILL.md
     - **Kernel Mechanism**: Referencing a `reducible` `abbrev` formula (like `abbrev mask := (1 <<< 64) - 1`) inside a hot `@Nat.rec` step **re-unfolds the formula on every step**! Conversely, bare magic numbers in specs are unreadable.
     - **Rule**: Define readable `abbrev` formulas in Section 1 (cold spec), place **pre-computed raw `nat_lit` numerals** (or closed `def` constants cached in `m_st->m_whnf`) inside Section 2 hot `def`s, and connect them in Section 3 with a zero-runtime-cost `theorem hotMask_eq_specMask : hotMask = specMask := rfl` pin!
 
+40. **`SAIR-LAW-26` (`SairLaw26RecursorShellSpecialization` / `K-REC-LAMBDA-SIZE`) -- Recursor Shell Specialization & Branching Step Lambda Size Bounding (`<= 30` AST nodes)**
+    - **Kernel Mechanism**: In Lean 4's C++ kernel WHNF reduction, each recursor step evaluates `f k ih`. If `f` is an inline lambda containing nested branching (`Bool.rec`, `Int.rec`) exceeding 30 AST nodes, the kernel re-evaluates the lambda body substitution on every iteration.
+    - **Rule**: Factor branching recursor step lambdas exceeding 30 AST nodes into top-level first-order helper definitions (`def stepAux ...`). Keep pure 100% branch-free arithmetic step bodies inline to exploit `m_st->m_whnf` subterm caching.
+
+41. **`SAIR-LAW-27` (`SairLaw27ConstantVectorFlattening` / `K-TAIL-ACC-NO-BOX` / `K-CONSTRUCTOR-ACCUMULATOR`) -- Constant Vector Flattening & Unboxed Tail-Recursive Accumulators**
+    - **Kernel Mechanism**: Unpacking and repacking multi-variable state tuples (`Prod.rec`, `WPair.rec`) inside recursive step bodies builds intermediate projection and constructor allocation thunks. Moreover, non-constructor increments (`Nat.add 1 k`) build nested application thunks re-traversed $\Theta(s^2)$ times.
+    - **Rule**: Pass accumulators in constructor-normal form (`Nat.succ k`), and flatten multi-variable state into unboxed arguments in tail position, constructing the output pair/record once at the base case.
+
+42. **`SAIR-LAW-28` (`SairLaw28TwinlitMacroDeduplication` / `K-MACRO-DUPLICATION`) -- Proof-Irrelevant Twinlit Differential Measurement & Macro AST Duplication Elimination**
+    - **Kernel Mechanism**: Elaboration-time local macros expand repeated AST subtrees into multiple call sites, causing exponential expression tree growth in the kernel's reduction cone. Furthermore, standard boundary benchmarks retain unscored literal parse overhead.
+    - **Rule**: Factor multi-use macro subtrees into named top-level closed helper definitions to preserve kernel DAG sharing; measure pure reduction via the proof-irrelevant `real - twinlit` differential: `(impl n = impl n) ∧ (v = v)` with proof `⟨rfl, rfl⟩`.
+
 ---
 
 ## 4. Foundational Kernel Cost Laws (`ADR-INV-0025`, `WAVE-13 G1`, and Official PMU Metric)
@@ -272,8 +284,16 @@ extracted_from: skills/lean-sair-kernel-optimization/SKILL.md
 
 ### 4.3 Contest 3-Axiom Gate & Official Sum-of-Medians-of-Three `twinlit` PMU Protocol
 1. **Strict 3-Axiom Gate (`[propext, Classical.choice, Quot.sound]`)**:
-   - Forbidden on scored paths: `native_decide`, `decide +native`, `bv_decide` (all three emit `Lean.ofReduceBool` / `Lean.trustCompiler`), `sorry`, `partial`, `unsafe`, `@[implemented_by]`, `@[extern]`.
-   - Canonical 3-rung kernel closer:
+   - **Allowed Axiom Ceiling**: Transitively closed axioms for `Submission.impl_correct` must strictly satisfy:
+     $$\text{Axioms}(\text{Submission.impl\_correct}) \subseteq \{\text{propext}, \text{Classical.choice}, \text{Quot.sound}\}$$
+   - **Fatal Rejection Axioms**: Any presence of `Lean.ofReduceBool` (introduced by `native_decide` or `bv_decide`) or `sorryAx` (introduced by `sorry` or `admit`) causes immediate and fatal disqualification.
+   - **Prohibited Tactics & Attributes on Scored/Proof Paths**:
+     - `native_decide`, `decide +native`, `bv_decide` (introduce unapproved axiom `Lean.ofReduceBool`).
+     - `sorry`, `admit` (introduce unapproved axiom `sorryAx`).
+     - `partial`, `unsafe` (violate totality and kernel reducibility).
+     - `@[implemented_by]`, `@[extern]` (compiler-trusting bypasses that invalidate kernel evaluation).
+   - **Universal Correctness**: Must prove `impl_correct : ∀ n, impl n = spec n` universally; verifying sample inputs only is fatal rejection.
+   - **Canonical 3-rung kernel closer**:
      ```lean
      macro "sair_decide" : tactic =>
        `(tactic| first | rfl | decide +kernel | omega)
