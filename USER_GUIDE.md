@@ -40,6 +40,14 @@ The `prover` and `all` profiles build local graphs. Use a separate private outpu
 directory for them. `--export-public` writes the same restricted release
 projection even when used alongside a local build.
 
+The project initializer sets `PROVER_KNOWLEDGE_KZ` for the embedded MCP.
+Search the release index with `lean_search` and
+`{"source":"graph","query":"induction"}`. For tactic mappings use
+`{"source":"concordance","query":"induction","target_prover":"lean4"}`.
+Section browsing requires a private archive that includes sections.
+See the [MCP graph guide](tools/lean-lsp-mcp/USER_GUIDE.md#35-search-and-explore-the-knowledge-graph)
+for configuration, result limits and examples.
+
   - `tools/lean-serve-broker/*` and `tools/visualizer/*`
   - `scripts/check-structure` and `scripts/lint/apm_validate.py` (include pure-stdlib YAML fallbacks)
 - **Optional Python packages** (declared in [`pyproject.toml`](pyproject.toml) and [`requirements.txt`](requirements.txt)):
