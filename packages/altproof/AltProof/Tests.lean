@@ -468,4 +468,20 @@ theorem doeblin_zero_sum_l1_pin
     ∑ j, |∑ i, d i * M i j| ≤ (1 - 3 * δ) * ∑ i, |d i| := by
   simpa using zero_sum_vecMul_l1_le_of_entry_floor M hrow δ hM d hd0
 
+open Lean Elab Tactic in
+theorem elegance_closer_focus_pin (P Q : Prop) (hp : P) (hq : Q) : P ∧ Q := by
+  constructor
+  run_tac
+    let goals ← getGoals
+    let result ← tryCandidateCloser "assumption" (← `(tactic| assumption))
+    unless result.isSome do
+      throwError "A candidate closed the active goal but was rejected with a sibling pending"
+    let incomplete ← tryCandidateCloser "skip" (← `(tactic| skip))
+    unless incomplete.isNone do
+      throwError "An incomplete candidate was reported as a closer"
+    unless (← getGoals) == goals do
+      throwError "Speculation changed the original goal queue"
+  elegance?
+  all_goals assumption
+
 end AltProof.Tests

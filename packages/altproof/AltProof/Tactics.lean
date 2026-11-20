@@ -111,12 +111,13 @@ structure CandidateResult where
   costX10 : Int
 deriving Inhabited, Repr
 
-/-- Speculatively run `tacStx` without modifying proof state; return `some CandidateResult`
-    if the tactic closes all goals. Measures exact kernel/elaborator heartbeats via `IO.getNumHeartbeats`
+/-- Run `tacStx` on the active goal with recovery disabled. Accept it only if
+    it closes that goal and all subgoals it creates. Restore the caller's proof state.
+    Measure exact kernel/elaborator heartbeats via `IO.getNumHeartbeats`
     inside a fresh `withCurrHeartbeats` window so probing 15+ candidate closers never starves
     the caller's outer `maxHeartbeats` budget. -/
 def tryCandidateCloser (tacName : String) (tacStx : Syntax) (steps : Nat := 1) : TacticM (Option CandidateResult) := do
-  withCurrHeartbeats <| withoutModifyingState do
+  withCurrHeartbeats <| withoutModifyingState <| withoutRecover <| focus do
     try
       let hbStart ← IO.getNumHeartbeats
       evalTactic tacStx
@@ -176,6 +177,10 @@ syntax (name := eleganceTactic) "elegance?" : tactic
 def evalElegance : Tactic := fun stx =>
   withTheReader Core.Context ({ · with maxHeartbeats := 0 }) do
     let goal ← getMainGoal
+    let hasSiblings := (← getUnsolvedGoals).length > 1
+    let addSuggestion (candidate : TSyntax `tactic) : TacticM Unit := do
+      let suggestion ← if hasSiblings then `(tactic| focus $candidate:tactic) else pure candidate
+      Tactic.TryThis.addSuggestion stx suggestion (origSpan? := some stx)
     let target ← instantiateMVars (← goal.getType)
     let targetStr := toString (← ppExpr target)
     let feats ← extractGoalFeatures goal
@@ -237,7 +242,7 @@ def evalElegance : Tactic := fun stx =>
       logInfo m!"[AltProof.elegance?] Speculative Closers ({sorted.size} succeeded): best = `{best.tacticSyntax}` (costX10={best.costX10}, heartbeats={best.heartbeats})"
       for (c, _) in sorted do
         logInfo m!"  + `{c.tacticSyntax}`: heartbeats={c.heartbeats}, costX10={c.costX10}"
-      Tactic.TryThis.addSuggestion stx bestStx (origSpan? := some stx)
+      addSuggestion bestStx
     else
       let bfsSorted ← withTheReader Core.Context ({ · with maxHeartbeats := 400000000 }) do
         tryBfsCandidateClosers feats
@@ -246,7 +251,7 @@ def evalElegance : Tactic := fun stx =>
         logInfo m!"[AltProof.elegance?] Depth<=3 In-Kernel BFS Closers ({bfsSorted.size} succeeded): best = `{bestBfs.tacticSyntax}` (costX10={bestBfs.costX10}, heartbeats={bestBfs.heartbeats})"
         for (c, _) in bfsSorted do
           logInfo m!"  + [BFS] `{c.tacticSyntax}`: heartbeats={c.heartbeats}, costX10={c.costX10}"
-        Tactic.TryThis.addSuggestion stx bestBfsStx (origSpan? := some stx)
+        addSuggestion bestBfsStx
       else
         logInfo m!"[AltProof.elegance?] Goal requires multi-step decomposition (0 single-step or depth<=3 BFS closers succeeded)."
 
