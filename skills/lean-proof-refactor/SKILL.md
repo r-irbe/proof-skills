@@ -40,7 +40,12 @@ concrete (`WAVE-13 G1`).
 ## Workflow
 1. **Scan & Classify** -- Run `scripts/lean/proof_quality.py --lean-dir <dir>` for long/branchy proofs and `python3 -m altproof.coupling_scanner` to
    classify `Real` statements into `abstraction-safe`, `nat-mixed`, or `real-specific`.
-2. **Kernel-Verified Auto-Slimmer (Single-Theorem Compression)** -- Before manual extraction, run the MCP tool `lean_autoslim` (`{"filePath": "<file.lean>", "apply": true, "allowAltProofImport": true}`) or CLI `python3 scripts/lean/altproof/cli.py autoslim <file.lean> --apply --allow-altproof-import`. It harvests exact `by ...` proof-span quickfixes from `lean-analyzer`, cascades each `ALTPROOF-ROUTE` tactic candidate against Lean 4 (`lean-lsp` live worker when warm, or batch `lake env lean` probe), and commits only strictly shorter, `0`-error/`0`-warning/`0`-`sorry` replacements.
+2. **Kernel-Verified Auto-Slimmer (Single-Theorem Compression)** -- Before manual extraction, run the MCP tool
+   `lean_autoslim` (`{"filePath": "<file.lean>", "apply": true, "allowAltProofImport": true}`) or CLI
+   `python3 scripts/lean/altproof/cli.py autoslim <file.lean> --apply --allow-altproof-import`.
+   It harvests exact `by ...` proof-span quickfixes from `lean-analyzer`, cascades each
+   `ALTPROOF-ROUTE` tactic candidate against Lean 4 (`lean-lsp` live worker when warm, or batch
+   `lake env lean` probe), and commits only strictly shorter, `0`-error/`0`-warning/`0`-`sorry` replacements.
 3. **Adjudicate (`CUT / CONSIDERED-NEGATIVE / DEFER`)** -- Extract (`CUT`) only when a block is reusable (`>= 2` sites or clean mathematical boundary);
    log `CONSIDERED-NEGATIVE` on single-use glue to prevent negative bundle-effect bloat.
 4. **Apply `WAVE-13 G1` Abstraction-Concrete Duality** -- Abstract in `Prop` (`[CommRing R] [LinearOrder R] [IsOrderedRing R]`, parametric step
