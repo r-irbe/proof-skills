@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
-MAX_WASM_BYTES = 131_072
+MAX_WASM_BYTES = 163_840
 
 
 def _sha256_file(path: Path) -> str:
