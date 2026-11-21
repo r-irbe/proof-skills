@@ -78,6 +78,122 @@ def extract_frontmatter(txt: str) -> dict[str, Any]:
     return meta
 
 
+VENDORED_ONTOLOGY = Path(__file__).resolve().parent.parent / "vendor" / "itp-ontology"
+
+
+def read_concordances(
+    index_roots: list[Path], *, strict: bool = False
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    concepts: list[dict[str, Any]] = []
+    concordances: list[dict[str, Any]] = []
+
+    master_idx_path = next((p / "master-authority-index.json" for p in index_roots
+                            if (p / "master-authority-index.json").is_file()), None)
+    if master_idx_path is not None:
+        try:
+            mdata = json.loads(master_idx_path.read_text(encoding="utf-8"))
+            for c in mdata.get("master_concepts", []):
+                cid = to_ascii(c.get("concept_id", ""))
+                cname = to_ascii(c.get("canonical_name", ""))
+                msc_list = c.get("msc2020", [])
+                msc_str = to_ascii(json.dumps(msc_list) if isinstance(msc_list, list) else str(msc_list))
+                dom = to_ascii(c.get("ranganathan_facet", {}).get("domain_theory", ""))
+                concepts.append({
+                    "id": cid,
+                    "name": cname,
+                    "msc2020": msc_str,
+                    "domain_theory": dom,
+                })
+                for p_name, p_val in c.get("prover_mappings", {}).items():
+                    if isinstance(p_val, dict):
+                        tacs = ";".join(p_val.get("primary_tactics", []))
+                        syn = p_val.get("syntax_pattern", "")
+                        concordances.append({
+                            "concept_id": cid,
+                            "prover": to_ascii(p_name),
+                            "tactic": to_ascii(tacs),
+                            "syntax": to_ascii(syn),
+                        })
+        except Exception as exc:
+            if strict:
+                raise
+            print("Warning: failed reading master-authority-index.json: " + str(exc))
+
+    conc_json_path = next((p / "cross-itp-concordance.v1.json" for p in index_roots
+                           if (p / "cross-itp-concordance.v1.json").is_file()), None)
+    if conc_json_path is not None:
+        try:
+            cdata = json.loads(conc_json_path.read_text(encoding="utf-8"))
+            for m in cdata.get("mechanisms", cdata.get("canonical_mechanisms", [])):
+                mid = to_ascii(m.get("id") or m.get("mechanism_id") or "")
+                mname = to_ascii(m.get("canonical_name", ""))
+                if not mid:
+                    continue
+                if not any(c["id"] == mid for c in concepts):
+                    concepts.append({
+                        "id": mid,
+                        "name": mname,
+                        "msc2020": "",
+                        "domain_theory": to_ascii(m.get("category", "cross-itp")),
+                    })
+                for p_name, p_val in m.get("provers", {}).items():
+                    if isinstance(p_val, dict):
+                        raw_tacs = p_val.get("tactics", p_val.get("primary_tactics", []))
+                        tacs = ";".join(raw_tacs) if isinstance(raw_tacs, list) else str(raw_tacs)
+                        syn = p_val.get("idiom") or p_val.get("syntax_pattern") or ""
+                        concordances.append({
+                            "concept_id": mid,
+                            "prover": to_ascii(p_name),
+                            "tactic": to_ascii(tacs),
+                            "syntax": to_ascii(syn),
+                        })
+        except Exception:
+            if strict:
+                raise
+    return concepts, concordances
+
+
+def public_archive_bytes() -> bytes:
+    # Release inputs are limited to the checked-in generic ontology. Never
+    # read the configured garden or scan the workstation's book/zettel roots.
+    for name in ("master-authority-index.json", "cross-itp-concordance.v1.json"):
+        if not (VENDORED_ONTOLOGY / name).is_file():
+            raise FileNotFoundError(VENDORED_ONTOLOGY / name)
+    concepts, concordances = read_concordances([VENDORED_ONTOLOGY], strict=True)
+    if not concepts or not concordances:
+        raise ValueError("Release ontology has no concepts or concordances")
+    tables = [
+        ("Book.csv", ("id", "title", "total_rows", "license", "format"), []),
+        ("Section.csv", ("id", "book_id", "heading", "leittext", "page"), []),
+        ("Concept.csv", ("id", "name", "msc2020", "domain_theory"), concepts),
+        ("Concordance.csv", ("concept_id", "prover", "tactic", "syntax"), concordances),
+    ]
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        for name, fields, rows in tables:
+            content = io.StringIO()
+            writer = csv.DictWriter(content, fields)
+            writer.writeheader()
+            writer.writerows(rows)
+            archive.writestr(zipfile.ZipInfo(name), content.getvalue().encode("ascii"),
+                             compress_type=zipfile.ZIP_DEFLATED)
+    return buffer.getvalue()
+
+
+def write_public_archive(path: Path) -> None:
+    content = public_archive_bytes()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(content)
+
+
+def check_public_archive(path: Path) -> None:
+    with zipfile.ZipFile(io.BytesIO(public_archive_bytes())) as expected, zipfile.ZipFile(path) as actual:
+        if actual.namelist() != expected.namelist() or any(
+            actual.read(name) != expected.read(name) for name in expected.namelist()
+        ):
+            raise ValueError("Release Kuzu archive differs from the allowlisted ontology projection")
+
+
 def build_prover_graph(garden_root: Path, out_dir: Path) -> dict[str, Any]:
     out_dir.mkdir(parents=True, exist_ok=True)
     db_path = out_dir / "prover_knowledge.kuzu"
@@ -131,76 +247,9 @@ def build_prover_graph(garden_root: Path, out_dir: Path) -> dict[str, Any]:
             except Exception as exc:
                 print("Warning: failed reading " + str(afile) + ": " + str(exc))
 
-    concepts: list[dict[str, Any]] = []
-    concordances: list[dict[str, Any]] = []
-
-    idx_candidates = [
-        garden_root / "source-materials" / "indexes" / "master-authority-index.json",
-        Path(__file__).resolve().parent.parent / "vendor" / "itp-ontology" / "master-authority-index.json",
-    ]
-    master_idx_path = next((p for p in idx_candidates if p.exists()), None)
-    if master_idx_path is not None:
-        try:
-            mdata = json.loads(master_idx_path.read_text(encoding="utf-8"))
-            for c in mdata.get("master_concepts", []):
-                cid = to_ascii(c.get("concept_id", ""))
-                cname = to_ascii(c.get("canonical_name", ""))
-                msc_list = c.get("msc2020", [])
-                msc_str = to_ascii(json.dumps(msc_list) if isinstance(msc_list, list) else str(msc_list))
-                dom = to_ascii(c.get("ranganathan_facet", {}).get("domain_theory", ""))
-                concepts.append({
-                    "id": cid,
-                    "name": cname,
-                    "msc2020": msc_str,
-                    "domain_theory": dom,
-                })
-                for p_name, p_val in c.get("prover_mappings", {}).items():
-                    if isinstance(p_val, dict):
-                        tacs = ";".join(p_val.get("primary_tactics", []))
-                        syn = p_val.get("syntax_pattern", "")
-                        concordances.append({
-                            "concept_id": cid,
-                            "prover": to_ascii(p_name),
-                            "tactic": to_ascii(tacs),
-                            "syntax": to_ascii(syn),
-                        })
-        except Exception as exc:
-            print("Warning: failed reading master-authority-index.json: " + str(exc))
-
-    conc_candidates = [
-        garden_root / "source-materials" / "indexes" / "cross-itp-concordance.v1.json",
-        Path(__file__).resolve().parent.parent / "vendor" / "itp-ontology" / "cross-itp-concordance.v1.json",
-    ]
-    conc_json_path = next((p for p in conc_candidates if p.exists()), None)
-    if conc_json_path is not None:
-        try:
-            cdata = json.loads(conc_json_path.read_text(encoding="utf-8"))
-            for m in cdata.get("mechanisms", cdata.get("canonical_mechanisms", [])):
-                mid = to_ascii(m.get("id") or m.get("mechanism_id") or "")
-                mname = to_ascii(m.get("canonical_name", ""))
-                if not mid:
-                    continue
-                if not any(c["id"] == mid for c in concepts):
-                    concepts.append({
-                        "id": mid,
-                        "name": mname,
-                        "msc2020": "",
-                        "domain_theory": to_ascii(m.get("category", "cross-itp")),
-                    })
-                for p_name, p_val in m.get("provers", {}).items():
-                    if isinstance(p_val, dict):
-                        raw_tacs = p_val.get("tactics", p_val.get("primary_tactics", []))
-                        tacs = ";".join(raw_tacs) if isinstance(raw_tacs, list) else str(raw_tacs)
-                        syn = p_val.get("idiom") or p_val.get("syntax_pattern") or ""
-                        concordances.append({
-                            "concept_id": mid,
-                            "prover": to_ascii(p_name),
-                            "tactic": to_ascii(tacs),
-                            "syntax": to_ascii(syn),
-                        })
-        except Exception:
-            pass
-
+    concepts, concordances = read_concordances(
+        [garden_root / "source-materials" / "indexes", VENDORED_ONTOLOGY]
+    )
 
     stitched_dir = garden_root / "source-materials" / "stitched"
     stitched: list[dict[str, Any]] = []
@@ -760,29 +809,37 @@ def self_test() -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Kuzu Property Graph Compiler & Exporter (TASK-LIB-07)")
-    parser.add_argument("--profile", choices=["prover", "project", "cache", "all"], default="all", help="Graph profile to build")
+    parser.add_argument("--profile", choices=["release", "prover", "project", "cache", "all"], default="release", help="Graph profile to build")
     parser.add_argument("--garden-root", default=os.environ.get("KUZU_GARDEN_ROOT", "."), help="Path to knowledge/garden root directory")
     parser.add_argument("--out-dir", default=os.environ.get("KUZU_OUT_DIR", "kuzu"), help="Output directory for databases")
     parser.add_argument("--cache-dir", default=".cache/kuzu", help="Output directory for transient cache database")
-    parser.add_argument("--export-public", help="Optional copy destination for public prover database (e.g. proof-skills/kuzu)")
+    parser.add_argument("--export-public", help="Optional output directory for the allowlisted release archive")
+    parser.add_argument("--check-public", type=Path, help="Verify a shipped release archive and exit")
     args = parser.parse_args()
+
+    if args.check_public:
+        check_public_archive(args.check_public)
+        print("Release Kuzu archive matches the allowlisted ontology projection.")
+        return
 
     garden_root = Path(args.garden_root).resolve()
     out_dir = Path(args.out_dir).resolve()
     cache_dir = Path(args.cache_dir).resolve()
+
+    public_dir = Path(args.export_public).resolve() if args.export_public else None
+    if args.profile == "release":
+        write_public_archive((public_dir or out_dir) / "prover_knowledge.kz")
+        return
+    if public_dir == out_dir and args.profile in ("prover", "all"):
+        parser.error("Choose separate directories for the local graph and the release archive")
 
     print("Building Kuzu graph databases (profile: " + args.profile + ")...")
 
     if args.profile in ("prover", "all"):
         res = build_prover_graph(garden_root, out_dir)
         print("Prover Graph: " + str(res["books"]) + " books, " + str(res["anchors"]) + " anchors, " + str(res["concepts"]) + " concepts, " + str(res["zettels"]) + " zettels (native: " + str(res["kuzu_native"]) + ")")
-        if args.export_public:
-            dest = Path(args.export_public).resolve()
-            dest.mkdir(parents=True, exist_ok=True)
-            zip_src = out_dir / "prover_knowledge.kz"
-            if zip_src.exists():
-                shutil.copy2(zip_src, dest / "prover_knowledge.kz")
-                print("  -> Exported public archive to " + str(dest / "prover_knowledge.kz"))
+    if public_dir:
+        write_public_archive(public_dir / "prover_knowledge.kz")
 
     if args.profile in ("project", "all"):
         res = build_project_graph(garden_root, out_dir)

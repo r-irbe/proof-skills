@@ -488,4 +488,19 @@ theorem sair_elegance_pin (n : Nat) : n + 0 = n := by
   sair_elegance?
   rfl
 
+open Lean Elab Tactic in
+theorem elegance_closer_focus_pin (P Q : Prop) (hp : P) (hq : Q) : P ∧ Q := by
+  constructor
+  run_tac
+    let goals ← getGoals
+    let result ← tryCandidateCloser "assumption" (← `(tactic| assumption))
+    unless result.isSome do
+      throwError "A candidate closed the active goal but was rejected with a sibling pending"
+    let incomplete ← tryCandidateCloser "skip" (← `(tactic| skip))
+    unless incomplete.isNone do
+      throwError "An incomplete candidate was reported as a closer"
+    unless (← getGoals) == goals do
+      throwError "Speculation changed the original goal queue"
+  elegance?
+  all_goals assumption
 end AltProof.Tests

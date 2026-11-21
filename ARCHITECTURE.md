@@ -4,7 +4,7 @@
 
 1. **Skill & Progressive Disclosure Layer (`skills/`, `packs/`, `references/`)**:
    - **38 Core Lean 4 Skills** (`skills/*/SKILL.md`, each `< 4,000 B` with `<= 320`-char dispatch descriptions) + **7 Opt-In Applied-Strategy Pack Skills** (`packs/applied-strategy/skills/*/SKILL.md`).
-   - **4-Layer Progressive Reference Stack**: L0 `SKILL.md` -> L1 fast lookup cards (`references/cards/*-tables.md`) -> L2 encyclopedic handbooks (`references/handbooks/*-handbook.md`) -> L3 machine-queryable `vendor/itp-ontology/handbook-tables.v1.json` (`394` compiled rows) + canonical Kuzu graph [`kuzu/prover_knowledge.kz`](kuzu/prover_knowledge.kz) (`15,481` zettels) and [`graph/procedural-graph.v1.json`](graph/procedural-graph.v1.json).
+   - **4-Layer Progressive Reference Stack**: L0 `SKILL.md` -> L1 fast lookup cards (`references/cards/*-tables.md`) -> L2 encyclopedic handbooks (`references/handbooks/*-handbook.md`) -> L3 machine-queryable `vendor/itp-ontology/handbook-tables.v1.json` (`394` compiled rows) + public prover concordance [`kuzu/prover_knowledge.kz`](kuzu/prover_knowledge.kz) and [`graph/procedural-graph.v1.json`](graph/procedural-graph.v1.json).
 
 2. **Multi-Agent Role-Actor & Soul Layer (`agents/`, `ROLES.md`, `FACETS.md`)**:
    - **5 Pure Role-Actor Containers** ([`agents/specifier.md`](agents/specifier.md), [`agents/prover.md`](agents/prover.md), [`agents/auditor.md`](agents/auditor.md), [`agents/editor.md`](agents/editor.md), [`agents/gardener.md`](agents/gardener.md)) with role-scoped allowlists spanning all **21 `lean-lsp` MCP tools**.

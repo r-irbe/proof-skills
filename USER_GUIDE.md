@@ -31,6 +31,23 @@ cd proof-skills
   - All stdlib scripts in `scripts/lean/*.py` (axiom audit, census, formalization breakdown, proof quality, blueprint sync, zettelkasten lint)
   - All **20 modules** in `scripts/lean/altproof/*.py` (AltProof tactic/route advisor & evaluator)
   - `graph/graph_query.py` (queries `vendor/itp-ontology/master-authority-index.json` and `kuzu/prover_knowledge.kz` archives via stdlib `json`, `csv`, and `zipfile`)
+
+The shipped Kuzu archive contains only concepts and tactic concordances derived
+from the two vendored Apache-2.0 ontology indexes. Its book and section tables
+contain headers for compatibility. Regenerate it with
+`python3 graph/export_kuzu.py --profile release --out-dir kuzu`.
+The `prover` and `all` profiles build local graphs. Use a separate private output
+directory for them. `--export-public` writes the same restricted release
+projection even when used alongside a local build.
+
+The project initializer sets `PROVER_KNOWLEDGE_KZ` for the embedded MCP.
+Search the release index with `lean_search` and
+`{"source":"graph","query":"induction"}`. For tactic mappings use
+`{"source":"concordance","query":"induction","target_prover":"lean4"}`.
+Section browsing requires a private archive that includes sections.
+See the [MCP graph guide](tools/lean-lsp-mcp/USER_GUIDE.md#35-search-and-explore-the-knowledge-graph)
+for configuration, result limits and examples.
+
   - `tools/lean-serve-broker/*` and `tools/visualizer/*`
   - `scripts/check-structure` and `scripts/lint/apm_validate.py` (include pure-stdlib YAML fallbacks)
 - **Optional Python packages** (declared in [`pyproject.toml`](pyproject.toml) and [`requirements.txt`](requirements.txt)):
