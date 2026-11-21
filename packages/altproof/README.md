@@ -19,6 +19,7 @@
   - **Reusable Domain Bridges**: `fin_card_filter_Ico` (`Fin N` half-open slice cardinality), `natAbs_le_div_of_cast_abs_le` (`Int.natAbs` floor-division bound from real `|.|` inequality), and `zero_sum_vecMul_l1_le_of_entry_floor` (quantitative Doeblin entry-floor $\ell^1$ contraction on zero-sum vectors).
 - **Layer 3 (`AltProof.Tactics` -- Speculative `alt_proof`, `elegance?`, & `bfs_elegance?` Explorers)**:
   - **`alt_proof`, `elegance?`, & `bfs_elegance?`**: Speculative `withoutModifyingState` closer cascade (including `grind_close`, `simp_all`, `norm_cast`, `push_cast; ring`, `field_simp; ring`, and all `AltProof.Closers`) and depth-`<= 3` Best-First Search emitting `TryThis.addSuggestion` code actions ranked by `IO.getNumHeartbeats` and `computeCostX10`.
+  - **Local hypotheses**: A cheap replay of `assumption` runs before heavier probes. When it closes the goal, the tactic emits that checked suggestion immediately.
   - **Goal scope**: `elegance?` and `bfs_elegance?` test whether a tactic closes the active goal and every subgoal it creates. The probes restore the caller's proof state. With sibling goals open, the suggested replacement uses `focus` to replay in the same scope.
   - **Continuous Tooling Rule**: During proving campaigns, harvest recurring multi-line algebraic, sum, norm, cast, or finite-domain proof patterns into `AltProof.Closers` and wire them into `elegance?` so every campaign leaves the shared closer library stronger.
 

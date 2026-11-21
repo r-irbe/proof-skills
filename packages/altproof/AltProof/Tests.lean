@@ -484,4 +484,15 @@ theorem elegance_closer_focus_pin (P Q : Prop) (hp : P) (hq : Q) : P ∧ Q := by
   elegance?
   all_goals assumption
 
+/--
+info: Try this:
+  [apply] focus assumption
+-/
+#guard_msgs in
+example (P Q : Prop) (hp : P) (hq : Q) : P ∧ Q := by
+  constructor
+  elegance?
+  · assumption
+  · assumption
+
 end AltProof.Tests
