@@ -183,6 +183,12 @@ def evalElegance : Tactic := fun stx =>
     let addSuggestion (candidate : TSyntax `tactic) : TacticM Unit := do
       let suggestion ← if hasSiblings then `(tactic| focus $candidate:tactic) else pure candidate
       Tactic.TryThis.addSuggestion stx suggestion (origSpan? := some stx)
+    -- A replayable local hypothesis needs no feature extraction or tactic search.
+    let direct ← withTheReader Core.Context ({ · with maxHeartbeats := 2000000 }) do
+      tryCandidateCloser "assumption" (← `(tactic| assumption))
+    if direct.isSome then
+      addSuggestion (← `(tactic| assumption))
+      return
     let target ← instantiateMVars (← goal.getType)
     let targetStr := toString (← ppExpr target)
     let feats ← extractGoalFeatures goal
