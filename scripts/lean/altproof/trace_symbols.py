@@ -11,7 +11,7 @@ Supports two offline trace backends without requiring `lake serve` or LeanDojo X
   2. Legacy `.ast.json` trace index (`TraceIndex`): reads `<Module>.ast.json` with
      `{"module": "...", "symbols": [...]}` for backward compatibility with existing tests.
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

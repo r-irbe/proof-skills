@@ -5,10 +5,10 @@
   "handbooks_count": 43,
   "dialects_count": 6,
   "counts": {
-    "goal_shape_templates": 174,
-    "intent_phrasebook": 154,
-    "error_to_fix": 131,
-    "total_rows": 459
+    "goal_shape_templates": 184,
+    "intent_phrasebook": 163,
+    "error_to_fix": 143,
+    "total_rows": 490
   },
   "goal_shape_templates": [
     {
@@ -562,6 +562,17 @@
       }
     },
     {
+      "handbook": "lean-dependency-management-handbook",
+      "goal_shape": "Double-blind supplement containing adapted external proofs",
+      "route_or_concordance": "`altproof tree-shake --anonymize` + root `LICENSE`",
+      "template": "Preserve third-party `Apache-2.0`/`MIT` copyright notices and `Adapted from` blocks",
+      "columns": {
+        "Goal / Term Shape": "Double-blind supplement containing adapted external proofs",
+        "Primary Tactic / Pattern": "`altproof tree-shake --anonymize` + root `LICENSE`",
+        "Canonical Recipe / Notes": "Preserve third-party `Apache-2.0`/`MIT` copyright notices and `Adapted from` blocks"
+      }
+    },
+    {
       "handbook": "lean-doc-sync-handbook",
       "goal_shape": "Informal paper theorem `\\begin{theorem}`",
       "route_or_concordance": "`requirements` mode -> 3-part spec",
@@ -592,6 +603,28 @@
         "Goal / Term Shape": "Paper appendix theorem/module table",
         "Primary Tactic / Pattern": "`scripts/lean/metric_sync.py`",
         "Canonical Recipe / Notes": "Re-derive exact counts from compiled `.olean` census"
+      }
+    },
+    {
+      "handbook": "lean-doc-sync-handbook",
+      "goal_shape": "Conference paper + Lean 4 concordance",
+      "route_or_concordance": "`Concordance.lean` + `paper_supplement_audit.py`",
+      "template": "Pair every numbered claim & walkthrough arithmetic check with `#check` + `#print axioms`",
+      "columns": {
+        "Goal / Term Shape": "Conference paper + Lean 4 concordance",
+        "Primary Tactic / Pattern": "`Concordance.lean` + `paper_supplement_audit.py`",
+        "Canonical Recipe / Notes": "Pair every numbered claim & walkthrough arithmetic check with `#check` + `#print axioms`"
+      }
+    },
+    {
+      "handbook": "lean-doc-sync-handbook",
+      "goal_shape": "Double-blind CMT/HotCRP Lean supplement",
+      "route_or_concordance": "`altproof tree-shake --anonymize --verify-build`",
+      "template": "Emit declaration-shaken slice + metadata-scrubbed `.tar.gz` + root `LICENSE`",
+      "columns": {
+        "Goal / Term Shape": "Double-blind CMT/HotCRP Lean supplement",
+        "Primary Tactic / Pattern": "`altproof tree-shake --anonymize --verify-build`",
+        "Canonical Recipe / Notes": "Emit declaration-shaken slice + metadata-scrubbed `.tar.gz` + root `LICENSE`"
       }
     },
     {
@@ -829,13 +862,13 @@
     {
       "handbook": "lean-kernel-optimization-handbook",
       "goal_shape": "Parametric hot `def step (cfg : Config)` vs concrete loop",
-      "route_or_concordance": "`KERNEL-LAW-22..25B`, `WAVE-13 G1`",
+      "route_or_concordance": "`KERNEL-LAW-22..25B`, `WAVE-13 G1`, `KERNEL-LAW-31`",
       "template": "`abstraction-concrete-duality`",
       "columns": {
         "Goal / Term Shape": "Parametric hot `def step (cfg : Config)` vs concrete loop",
-        "Primary Kernel Law(s)": "`KERNEL-LAW-22..25B`, `WAVE-13 G1`",
+        "Primary Kernel Law(s)": "`KERNEL-LAW-22..25B`, `WAVE-13 G1`, `KERNEL-LAW-31`",
         "Recommended AltProof Route": "`abstraction-concrete-duality`",
-        "Canonical Kernel Pattern / Tactic": "Specialize hot `def`s to raw unboxed `Nat` literals (`1,600x..3,345x` penalty for parametric hot steps!); state general parametric theorems separately and bridge via `rfl` (`<= 1%` cost)"
+        "Canonical Kernel Pattern / Tactic": "Specialize hot `def`s to raw unboxed `Nat` literals (`1,600x..3,345x` penalty for parametric hot steps!); isolate Section 1 (Spec), Section 2 (Impl), Section 3 (Bridge via `rfl`)"
       }
     },
     {
@@ -848,6 +881,30 @@
         "Primary Kernel Law(s)": "`PolyBitOp`, Exact-vs-Packed Lowering",
         "Recommended AltProof Route": "`proof-carrying-codegen`",
         "Canonical Kernel Pattern / Tactic": "Emit MLIR (`ctpop`/`gpu.shuffle xor`), Ada `sm_89` PTX, AVX2/AVX-512 Rust, or freestanding C++20; enforce `exact` (`GMP`/`rug`) vs `checked-small -> NeedsWide` overflow traps (`N01..N12`)"
+      }
+    },
+    {
+      "handbook": "lean-kernel-optimization-handbook",
+      "goal_shape": "Dense Kronecker packing of wide polynomial/grid states",
+      "route_or_concordance": "`KERNEL-LAW-29`, `KERNEL-LAW-29B`, `KERNEL-LAW-30`",
+      "template": "`algorithm-class-substitution`",
+      "columns": {
+        "Goal / Term Shape": "Dense Kronecker packing of wide polynomial/grid states",
+        "Primary Kernel Law(s)": "`KERNEL-LAW-29`, `KERNEL-LAW-29B`, `KERNEL-LAW-30`",
+        "Recommended AltProof Route": "`algorithm-class-substitution`",
+        "Canonical Kernel Pattern / Tactic": "Avoid artificial contest cutoffs (`KERNEL-LAW-29`) and static lookup tables (`KERNEL-LAW-30`); refute multi-hundred-limb Kronecker huge-`Nat` blowup (`polydisc`) with bounded subresultant/modular limb regimes"
+      }
+    },
+    {
+      "handbook": "lean-kernel-optimization-handbook",
+      "goal_shape": "Discovery automation (`grind`/EqSat) targeting strict `no-grind`",
+      "route_or_concordance": "`KERNEL-LAW-31` Discovery-vs-Submission Boundary",
+      "template": "`constructive-decidable-reduction`",
+      "columns": {
+        "Goal / Term Shape": "Discovery automation (`grind`/EqSat) targeting strict `no-grind`",
+        "Primary Kernel Law(s)": "`KERNEL-LAW-31` Discovery-vs-Submission Boundary",
+        "Recommended AltProof Route": "`constructive-decidable-reduction`",
+        "Canonical Kernel Pattern / Tactic": "Discover rewrites via `grind`/`egg`/CP-SAT off-path; materialize explicit 3-axiom proofs (`kernel_decide`) with zero `grind` residue on submission paths"
       }
     },
     {
@@ -1291,6 +1348,17 @@
       }
     },
     {
+      "handbook": "lean-pedagogical-exposition-handbook",
+      "goal_shape": "Pure-math conference manuscript over Lean corpus",
+      "route_or_concordance": "Halmos + Knuth Ch. 18 Pure-Math Architecture",
+      "template": "Zero `.lean` / `snake_case` in prose; bind all symbols inside theorem boxes; slash `$a/b$` inline",
+      "columns": {
+        "Goal / Term Shape": "Pure-math conference manuscript over Lean corpus",
+        "Primary Tactic / Pattern": "Halmos + Knuth Ch. 18 Pure-Math Architecture",
+        "Canonical Recipe / Notes": "Zero `.lean` / `snake_case` in prose; bind all symbols inside theorem boxes; slash `$a/b$` inline"
+      }
+    },
+    {
       "handbook": "lean-proof-handbook",
       "goal_shape": "Definitional or closed finite equality `lhs = rhs`",
       "route_or_concordance": "`rfl` / `decide` / `norm_num`",
@@ -1403,12 +1471,34 @@
     {
       "handbook": "lean-proof-refactor-handbook",
       "goal_shape": "Verbose `Finset.sum` linearity or monotonicity block",
-      "route_or_concordance": "`sum_congr_ring` / `finset_mono` / `finset_nonneg`",
-      "template": "Collapse 15-40 line `Finset.sum` proofs to 1-line AltProof combinators",
+      "route_or_concordance": "`sum_congr_ring` / `calc_ring_sum` / `finset_mono` / `finset_nonneg`",
+      "template": "Collapse 15-40 line `Finset.sum` proofs to 1-line `AltProof.Closers` combinators",
       "columns": {
         "Goal / Term Shape": "Verbose `Finset.sum` linearity or monotonicity block",
-        "Primary Tactic / Pattern": "`sum_congr_ring` / `finset_mono` / `finset_nonneg`",
-        "Canonical Recipe / Notes": "Collapse 15-40 line `Finset.sum` proofs to 1-line AltProof combinators"
+        "Primary Tactic / Pattern": "`sum_congr_ring` / `calc_ring_sum` / `finset_mono` / `finset_nonneg`",
+        "Canonical Recipe / Notes": "Collapse 15-40 line `Finset.sum` proofs to 1-line `AltProof.Closers` combinators"
+      }
+    },
+    {
+      "handbook": "lean-proof-refactor-handbook",
+      "goal_shape": "Convex / Markov row-sum / sup-norm / quotient goal",
+      "route_or_concordance": "`convex_comb` / `markov_row_sum` / `sup_norm_scale` / `deriv_quot_ring`",
+      "template": "Import lightweight `AltProof.Closers` (safe for standalone supplements)",
+      "columns": {
+        "Goal / Term Shape": "Convex / Markov row-sum / sup-norm / quotient goal",
+        "Primary Tactic / Pattern": "`convex_comb` / `markov_row_sum` / `sup_norm_scale` / `deriv_quot_ring`",
+        "Canonical Recipe / Notes": "Import lightweight `AltProof.Closers` (safe for standalone supplements)"
+      }
+    },
+    {
+      "handbook": "lean-proof-refactor-handbook",
+      "goal_shape": "Retired or misnamed module / theorem identifier",
+      "route_or_concordance": "Clean corpus rename + external Markdown ledger (`GT-66`)",
+      "template": "Delete `@[deprecated]` shims from `.lean` files; regenerate `#print axioms` scripts",
+      "columns": {
+        "Goal / Term Shape": "Retired or misnamed module / theorem identifier",
+        "Primary Tactic / Pattern": "Clean corpus rename + external Markdown ledger (`GT-66`)",
+        "Canonical Recipe / Notes": "Delete `@[deprecated]` shims from `.lean` files; regenerate `#print axioms` scripts"
       }
     },
     {
@@ -1497,6 +1587,17 @@
         "Goal / Term Shape": "Theorem over `Nat` subtraction or division",
         "Primary Tactic / Pattern": "Layer 2 Faithfulness & Truncation check",
         "Canonical Recipe / Notes": "Verify `b <= a` / `d != 0` hypotheses prevent degenerate triviality"
+      }
+    },
+    {
+      "handbook": "lean-proof-review-handbook",
+      "goal_shape": "Paper-coupled theorem or concordance entry",
+      "route_or_concordance": "Bidirectional Semantic & Terminology Audit",
+      "template": "Reject facade arithmetic stubs, existence-as-input shortcuts, and coined/spliced eponyms",
+      "columns": {
+        "Goal / Term Shape": "Paper-coupled theorem or concordance entry",
+        "Primary Tactic / Pattern": "Bidirectional Semantic & Terminology Audit",
+        "Canonical Recipe / Notes": "Reject facade arithmetic stubs, existence-as-input shortcuts, and coined/spliced eponyms"
       }
     },
     {
@@ -1794,6 +1895,17 @@
         "Goal / Term Shape": "File missing `set_option autoImplicit false`",
         "Primary Tactic / Pattern": "Static enforcement lint",
         "Canonical Recipe / Notes": "Add `set_option autoImplicit false` immediately after `import`"
+      }
+    },
+    {
+      "handbook": "lean-verification-gate-handbook",
+      "goal_shape": "Standalone paper supplement `.tar.gz`",
+      "route_or_concordance": "`scripts/lean/cold_kernel_replay.lean`",
+      "template": "Replay 100% of slice `.olean` constants via `Lean.Kernel.Environment.replay`",
+      "columns": {
+        "Goal / Term Shape": "Standalone paper supplement `.tar.gz`",
+        "Primary Tactic / Pattern": "`scripts/lean/cold_kernel_replay.lean`",
+        "Canonical Recipe / Notes": "Replay 100% of slice `.olean` constants via `Lean.Kernel.Environment.replay`"
       }
     },
     {
@@ -2481,6 +2593,17 @@
       }
     },
     {
+      "handbook": "lean-dependency-management-handbook",
+      "intent": "Prune unused git dependencies in standalone slice",
+      "tactic_or_idiom": "`altproof tree-shake` (`usedExternalRoots`)",
+      "notes": "Automatically strips unimported direct git `require`s (e.g. `LSpec`) from `lakefile` & manifest",
+      "columns": {
+        "User / Engineer Intent": "Prune unused git dependencies in standalone slice",
+        "Recommended Tool / Idiom": "`altproof tree-shake` (`usedExternalRoots`)",
+        "Actionable Recipe": "Automatically strips unimported direct git `require`s (e.g. `LSpec`) from `lakefile` & manifest"
+      }
+    },
+    {
       "handbook": "lean-doc-sync-handbook",
       "intent": "Verify every Lean name cited in LaTeX exists",
       "tactic_or_idiom": "`scripts/lean/check_citations.py`",
@@ -2500,6 +2623,28 @@
         "User / Engineer Intent": "Review documentation draft for undefined terms",
         "Recommended Tool / Idiom": "`feedback` mode readability pass",
         "Actionable Recipe": "Flag forward references, missing assumptions, and scope overclaims"
+      }
+    },
+    {
+      "handbook": "lean-doc-sync-handbook",
+      "intent": "Audit `.bib`, terminology, `INV-001` & supplement",
+      "tactic_or_idiom": "`scripts/lean/paper_supplement_audit.py --strict`",
+      "notes": "Verify `filecontents*` `.bib` parity, 0 BibTeX/Overfull warnings, 0 misnomers, and 0 `@[deprecated]` shims",
+      "columns": {
+        "User / Engineer Intent": "Audit `.bib`, terminology, `INV-001` & supplement",
+        "Recommended Tool / Idiom": "`scripts/lean/paper_supplement_audit.py --strict`",
+        "Actionable Recipe": "Verify `filecontents*` `.bib` parity, 0 BibTeX/Overfull warnings, 0 misnomers, and 0 `@[deprecated]` shims"
+      }
+    },
+    {
+      "handbook": "lean-doc-sync-handbook",
+      "intent": "Document honest proof provenance & novelty",
+      "tactic_or_idiom": "Three-Tier Provenance Section",
+      "notes": "Partition credit into Tier 1 (`Mathlib`/`Cslib`), Tier 2 (adapted/newly proved classical), and Tier 3 (novel domain results)",
+      "columns": {
+        "User / Engineer Intent": "Document honest proof provenance & novelty",
+        "Recommended Tool / Idiom": "Three-Tier Provenance Section",
+        "Actionable Recipe": "Partition credit into Tier 1 (`Mathlib`/`Cslib`), Tier 2 (adapted/newly proved classical), and Tier 3 (novel domain results)"
       }
     },
     {
@@ -2643,6 +2788,28 @@
         "User / Engineer Intent": "\"Stream verified state transitions over zero-copy IPC / NVMe\"",
         "Target Kernel Law(s)": "`alignas(128)` SPSC, `.leangrph`, `io_uring`",
         "Actionable Transformation Recipe": "Separate cache lines to `128 B` (Zen 3 L2 streamer prefetch pair), align `.leangrph` CSR headers to `128 B` (`64 B` magic/counts + `64 B` SHA-256), and register `2 MB` `HugeTLB` buffers with `io_uring`"
+      }
+    },
+    {
+      "handbook": "lean-kernel-optimization-handbook",
+      "intent": "\"Square a wide `Nat` (>= 30 limbs) vs an unboxed `< 2^63` scalar\"",
+      "tactic_or_idiom": "`KERNEL-LAW-13`, `KERNEL-LAW-13B`, `KERNEL-LAW-30`",
+      "notes": "Above ~30 GMP limbs use `Nat.pow x 2` (`0.58x` cost via `mpz_pow_ui -> mpn_sqr`) or shared `Nat.mul`; for single-limb `< 2^63` scalars use direct `Nat.mul x x`; exploit linear `O(L)` single-limb x multi-limb scaling vs `O(L^2)` multi-limb products",
+      "columns": {
+        "User / Engineer Intent": "\"Square a wide `Nat` (>= 30 limbs) vs an unboxed `< 2^63` scalar\"",
+        "Target Kernel Law(s)": "`KERNEL-LAW-13`, `KERNEL-LAW-13B`, `KERNEL-LAW-30`",
+        "Actionable Transformation Recipe": "Above ~30 GMP limbs use `Nat.pow x 2` (`0.58x` cost via `mpz_pow_ui -> mpn_sqr`) or shared `Nat.mul`; for single-limb `< 2^63` scalars use direct `Nat.mul x x`; exploit linear `O(L)` single-limb x multi-limb scaling vs `O(L^2)` multi-limb products"
+      }
+    },
+    {
+      "handbook": "lean-kernel-optimization-handbook",
+      "intent": "\"Harden a strict `no-grind` 3-axiom submission after e-graph discovery\"",
+      "tactic_or_idiom": "`KERNEL-LAW-29`, `KERNEL-LAW-30`, `KERNEL-LAW-31`",
+      "notes": "Enforce Section 1/2/3 split (`KERNEL-LAW-31`), purge lookup tables/band cutoffs (`KERNEL-LAW-29`/`30`), and replace discovery `grind`/`eqsat` traces with direct `kernel_decide` / `rw` proofs",
+      "columns": {
+        "User / Engineer Intent": "\"Harden a strict `no-grind` 3-axiom submission after e-graph discovery\"",
+        "Target Kernel Law(s)": "`KERNEL-LAW-29`, `KERNEL-LAW-30`, `KERNEL-LAW-31`",
+        "Actionable Transformation Recipe": "Enforce Section 1/2/3 split (`KERNEL-LAW-31`), purge lookup tables/band cutoffs (`KERNEL-LAW-29`/`30`), and replace discovery `grind`/`eqsat` traces with direct `kernel_decide` / `rw` proofs"
       }
     },
     {
@@ -3053,6 +3220,17 @@
       }
     },
     {
+      "handbook": "lean-pedagogical-exposition-handbook",
+      "intent": "Credit upstream, classical, and novel proofs honestly",
+      "tactic_or_idiom": "Three-Tier Proof Provenance Section",
+      "notes": "Separate Tier 1 (`Mathlib`/`Cslib`), Tier 2 (adapted/newly proved classical), and Tier 3 (novel domain)",
+      "columns": {
+        "User / Engineer Intent": "Credit upstream, classical, and novel proofs honestly",
+        "Recommended Tool / Idiom": "Three-Tier Proof Provenance Section",
+        "Actionable Recipe": "Separate Tier 1 (`Mathlib`/`Cslib`), Tier 2 (adapted/newly proved classical), and Tier 3 (novel domain)"
+      }
+    },
+    {
       "handbook": "lean-proof-handbook",
       "intent": "Inspect live tactic state without `lake build`",
       "tactic_or_idiom": "`lean_goal(filePath, line, col, target: \"tactic\")`",
@@ -3152,6 +3330,17 @@
       }
     },
     {
+      "handbook": "lean-proof-refactor-handbook",
+      "intent": "Emit minimal anonymized Lean 4 supplement slice",
+      "tactic_or_idiom": "`altproof tree-shake --anonymize --verify-build`",
+      "notes": "Prunes unreachable decls, `@[deprecated]` shims, dead `@[simp]`/instances, and unused `require`s",
+      "columns": {
+        "User / Engineer Intent": "Emit minimal anonymized Lean 4 supplement slice",
+        "Recommended Tool / Idiom": "`altproof tree-shake --anonymize --verify-build`",
+        "Actionable Recipe": "Prunes unreachable decls, `@[deprecated]` shims, dead `@[simp]`/instances, and unused `require`s"
+      }
+    },
+    {
       "handbook": "lean-proof-repair-handbook",
       "intent": "Locate replacement for deprecated/renamed lemma",
       "tactic_or_idiom": "`lean_search(query: \"...\", source: \"loogle\")`",
@@ -3232,11 +3421,22 @@
       "handbook": "lean-proof-review-handbook",
       "intent": "Check proof hygiene & maintainability",
       "tactic_or_idiom": "Inspect `simp` non-terminal calls, `maxHeartbeats` overrides, and axioms",
-      "notes": "Require `simp only [...]` on non-terminal steps",
+      "notes": "Require `simp only [...]` on non-terminal steps and `0` `@[deprecated]` shims",
       "columns": {
         "User / Engineer Intent": "Check proof hygiene & maintainability",
         "Recommended Tool / Idiom": "Inspect `simp` non-terminal calls, `maxHeartbeats` overrides, and axioms",
-        "Actionable Recipe": "Require `simp only [...]` on non-terminal steps"
+        "Actionable Recipe": "Require `simp only [...]` on non-terminal steps and `0` `@[deprecated]` shims"
+      }
+    },
+    {
+      "handbook": "lean-proof-review-handbook",
+      "intent": "Verify exact axiom footprint for paper table",
+      "tactic_or_idiom": "`lean_axiom_closure` / `Lean.collectAxioms`",
+      "notes": "Check `omega`/`decide` proofs explicitly (both often pull `propext` or `Quot.sound`)",
+      "columns": {
+        "User / Engineer Intent": "Verify exact axiom footprint for paper table",
+        "Recommended Tool / Idiom": "`lean_axiom_closure` / `Lean.collectAxioms`",
+        "Actionable Recipe": "Check `omega`/`decide` proofs explicitly (both often pull `propext` or `Quot.sound`)"
       }
     },
     {
@@ -3473,12 +3673,23 @@
     {
       "handbook": "lean-verification-gate-handbook",
       "intent": "Verify proofs survive fresh kernel check",
-      "tactic_or_idiom": "Cold replay (`lake clean` / targeted rebuild)",
-      "notes": "Quote scanned module & declaration counts in gate verdict",
+      "tactic_or_idiom": "`scripts/lean/replay_verify.sh` (`R1`--`R3`)",
+      "notes": "Cold `lake build` + `axiom_audit.py` + `Lean.Kernel.Environment.replay`",
       "columns": {
         "User / Engineer Intent": "Verify proofs survive fresh kernel check",
-        "Recommended Tool / Idiom": "Cold replay (`lake clean` / targeted rebuild)",
-        "Actionable Recipe": "Quote scanned module & declaration counts in gate verdict"
+        "Recommended Tool / Idiom": "`scripts/lean/replay_verify.sh` (`R1`--`R3`)",
+        "Actionable Recipe": "Cold `lake build` + `axiom_audit.py` + `Lean.Kernel.Environment.replay`"
+      }
+    },
+    {
+      "handbook": "lean-verification-gate-handbook",
+      "intent": "Gate joint LaTeX paper + Lean supplement",
+      "tactic_or_idiom": "`scripts/lean/paper_supplement_audit.py --strict`",
+      "notes": "Verify 0 `@[deprecated]` shims, 0 misnomers, `.bib` parity, and `INV-001` Unicode",
+      "columns": {
+        "User / Engineer Intent": "Gate joint LaTeX paper + Lean supplement",
+        "Recommended Tool / Idiom": "`scripts/lean/paper_supplement_audit.py --strict`",
+        "Actionable Recipe": "Verify 0 `@[deprecated]` shims, 0 misnomers, `.bib` parity, and `INV-001` Unicode"
       }
     },
     {
@@ -4089,25 +4300,69 @@
       }
     },
     {
+      "handbook": "lean-dependency-management-handbook",
+      "error_pattern": "Anonymizer stripped third-party `MIT`/`Apache-2.0` copyright",
+      "cause": "Over-aggressive header replacement",
+      "fix": "Whitelist upstream open-source attributions and emit composite root `LICENSE`",
+      "columns": {
+        "Symptom / Error / Bottleneck": "Anonymizer stripped third-party `MIT`/`Apache-2.0` copyright",
+        "Root Cause": "Over-aggressive header replacement",
+        "Remediating Fix": "Whitelist upstream open-source attributions and emit composite root `LICENSE`"
+      }
+    },
+    {
       "handbook": "lean-doc-sync-handbook",
-      "error_pattern": "Broken `file.lean:123` citation in docs",
+      "error_pattern": "Broken `foo.lean:123` citation in docs",
       "cause": "Line numbers shifted after refactoring",
       "fix": "Prefer declaration-anchored references and re-run `check_citations.py`",
       "columns": {
-        "Symptom / Error / Bottleneck": "Broken `file.lean:123` citation in docs",
+        "Symptom / Error / Bottleneck": "Broken `foo.lean:123` citation in docs",
         "Root Cause": "Line numbers shifted after refactoring",
         "Remediating Fix": "Prefer declaration-anchored references and re-run `check_citations.py`"
       }
     },
     {
       "handbook": "lean-doc-sync-handbook",
-      "error_pattern": "Prose claims theorem proved while `sorry` remains",
+      "error_pattern": "Prose claims theorem proved while `sorry` or facade stub remains",
       "cause": "Premature paper sync before `@lean-verification-gate`",
-      "fix": "Downgrade prose claim or block release until `0 sorry`",
+      "fix": "Strengthen upstream Lean theorem or calibrate paper statement to exact proved hypotheses",
       "columns": {
-        "Symptom / Error / Bottleneck": "Prose claims theorem proved while `sorry` remains",
+        "Symptom / Error / Bottleneck": "Prose claims theorem proved while `sorry` or facade stub remains",
         "Root Cause": "Premature paper sync before `@lean-verification-gate`",
-        "Remediating Fix": "Downgrade prose claim or block release until `0 sorry`"
+        "Remediating Fix": "Strengthen upstream Lean theorem or calibrate paper statement to exact proved hypotheses"
+      }
+    },
+    {
+      "handbook": "lean-doc-sync-handbook",
+      "error_pattern": "Coined/spliced mathematical misnomer (`Polyak-Doob`, `Presburger` on squares)",
+      "cause": "Unverified eponymous naming",
+      "fix": "Cross-check primary literature, delete `@[deprecated]` shims (`GT-66`), and run `paper_supplement_audit.py`",
+      "columns": {
+        "Symptom / Error / Bottleneck": "Coined/spliced mathematical misnomer (`Polyak-Doob`, `Presburger` on squares)",
+        "Root Cause": "Unverified eponymous naming",
+        "Remediating Fix": "Cross-check primary literature, delete `@[deprecated]` shims (`GT-66`), and run `paper_supplement_audit.py`"
+      }
+    },
+    {
+      "handbook": "lean-doc-sync-handbook",
+      "error_pattern": "Embedded `filecontents*` `.bib` drifts from standalone `.bib`",
+      "cause": "Manual edit applied to only one file",
+      "fix": "Synchronize byte-for-byte and gate with `paper_supplement_audit.py --tex ... --bib ...`",
+      "columns": {
+        "Symptom / Error / Bottleneck": "Embedded `filecontents*` `.bib` drifts from standalone `.bib`",
+        "Root Cause": "Manual edit applied to only one file",
+        "Remediating Fix": "Synchronize byte-for-byte and gate with `paper_supplement_audit.py --tex ... --bib ...`"
+      }
+    },
+    {
+      "handbook": "lean-doc-sync-handbook",
+      "error_pattern": "Paper cites external checker (`nanoda_lib`) never run on final slice",
+      "cause": "Unverified boilerplate copied from prior prose",
+      "fix": "Cite only tools physically executed (`Lean.Kernel.Environment.replay` via `cold_kernel_replay.lean`, `GT-67`)",
+      "columns": {
+        "Symptom / Error / Bottleneck": "Paper cites external checker (`nanoda_lib`) never run on final slice",
+        "Root Cause": "Unverified boilerplate copied from prior prose",
+        "Remediating Fix": "Cite only tools physically executed (`Lean.Kernel.Environment.replay` via `cold_kernel_replay.lean`, `GT-67`)"
       }
     },
     {
@@ -4240,6 +4495,28 @@
         "Symptom / Elaborator Error / Bottleneck": "Native Rust/C++ port silently overflows or corrupts aliased buffer",
         "Root Cause in `type_checker.cpp` / Lowering": "Arbitrary-precision Lean `Nat`/`Int` lowered to fixed `u64`/`i64` without width guard, or in-place `out == lhs` clobbered before read",
         "Remediating Kernel Law(s) & Fix": "Enforce `checked-small -> NeedsWide` fallback to `GMP`/`rug`, snapshot aliased inputs before mutation, and run `#eval` vs native conformance vectors `N01..N12`"
+      }
+    },
+    {
+      "handbook": "lean-kernel-optimization-handbook",
+      "error_pattern": "Kronecker polynomial packing regresses kernel time (`polydisc`)",
+      "cause": "Packing degrees into one huge `> 100`-limb `Nat` induces `O(L^2)` GMP multiplication overhead",
+      "fix": "Apply `KERNEL-LAW-29B` / `KERNEL-LAW-30`: keep coefficients in bounded limb tuples or subresultant PRS rather than monolithic Kronecker `Nat`s",
+      "columns": {
+        "Symptom / Elaborator Error / Bottleneck": "Kronecker polynomial packing regresses kernel time (`polydisc`)",
+        "Root Cause in `type_checker.cpp` / Lowering": "Packing degrees into one huge `> 100`-limb `Nat` induces `O(L^2)` GMP multiplication overhead",
+        "Remediating Kernel Law(s) & Fix": "Apply `KERNEL-LAW-29B` / `KERNEL-LAW-30`: keep coefficients in bounded limb tuples or subresultant PRS rather than monolithic Kronecker `Nat`s"
+      }
+    },
+    {
+      "handbook": "lean-kernel-optimization-handbook",
+      "error_pattern": "Wide squaring misses `0.58x` GMP speedup or scalar `x ^ 2` regresses",
+      "cause": "Wrong choice between `Nat.pow x 2` and `Nat.mul x x` across limb regimes",
+      "fix": "Use `Nat.mul x x` on `< 2^63` scalars (`KERNEL-LAW-13B`) and `Nat.pow x 2` (`mpn_sqr`, `0.58x`) on wide `>= 30`-limb `Nat`s (`KERNEL-LAW-13`/`30`)",
+      "columns": {
+        "Symptom / Elaborator Error / Bottleneck": "Wide squaring misses `0.58x` GMP speedup or scalar `x ^ 2` regresses",
+        "Root Cause in `type_checker.cpp` / Lowering": "Wrong choice between `Nat.pow x 2` and `Nat.mul x x` across limb regimes",
+        "Remediating Kernel Law(s) & Fix": "Use `Nat.mul x x` on `< 2^63` scalars (`KERNEL-LAW-13B`) and `Nat.pow x 2` (`mpn_sqr`, `0.58x`) on wide `>= 30`-limb `Nat`s (`KERNEL-LAW-13`/`30`)"
       }
     },
     {
@@ -4540,6 +4817,17 @@
       }
     },
     {
+      "handbook": "lean-pedagogical-exposition-handbook",
+      "error_pattern": "Bracketed titles stuffed onto routine propositions",
+      "cause": "Promotional naming clutter",
+      "fix": "Reserve `[...]` titles strictly for classical landmark theorems (Halmos 12)",
+      "columns": {
+        "Symptom / Error / Bottleneck": "Bracketed titles stuffed onto routine propositions",
+        "Root Cause": "Promotional naming clutter",
+        "Remediating Fix": "Reserve `[...]` titles strictly for classical landmark theorems (Halmos 12)"
+      }
+    },
+    {
       "handbook": "lean-proof-handbook",
       "error_pattern": "`unknown identifier`",
       "cause": "P1",
@@ -4639,6 +4927,17 @@
       }
     },
     {
+      "handbook": "lean-proof-refactor-handbook",
+      "error_pattern": "`@[deprecated]` shims pollute autocomplete and shaken slices",
+      "cause": "Legacy compatibility aliases left inside `.lean` files",
+      "fix": "Remove `@[deprecated]` shims completely; record `Retired -> Canonical` in `terminology-rename-ledger.md`",
+      "columns": {
+        "Symptom / Error / Bottleneck": "`@[deprecated]` shims pollute autocomplete and shaken slices",
+        "Root Cause": "Legacy compatibility aliases left inside `.lean` files",
+        "Remediating Fix": "Remove `@[deprecated]` shims completely; record `Retired -> Canonical` in `terminology-rename-ledger.md`"
+      }
+    },
+    {
       "handbook": "lean-proof-repair-handbook",
       "error_pattern": "`unknown identifier 'Foo.bar'`",
       "cause": "Mathlib rename or split module import",
@@ -4713,6 +5012,28 @@
         "Symptom / Error / Bottleneck": "Theorem has `0 sorry` but conclusion echoes hypothesis",
         "Root Cause": "`FIDELITY-01` (`HYPOTHESIS_ECHO`)",
         "Remediating Fix": "Reject in Layer 3 Non-Vacuity check and escalate to `specifier`"
+      }
+    },
+    {
+      "handbook": "lean-proof-review-handbook",
+      "error_pattern": "Uniqueness theorem takes fixed point `x*` as an input argument",
+      "cause": "Missing composition with existence theorem",
+      "fix": "Compose Brouwer/Banach existence with contraction uniqueness into `ExistsUnique`",
+      "columns": {
+        "Symptom / Error / Bottleneck": "Uniqueness theorem takes fixed point `x*` as an input argument",
+        "Root Cause": "Missing composition with existence theorem",
+        "Remediating Fix": "Compose Brouwer/Banach existence with contraction uniqueness into `ExistsUnique`"
+      }
+    },
+    {
+      "handbook": "lean-proof-review-handbook",
+      "error_pattern": "Paper table claims `(0 axioms)` on `omega` or `decide` proof",
+      "cause": "Unchecked assumption that `omega`/`decide` are axiom-free",
+      "fix": "Run `#print axioms` and report exact `{propext}` or `{propext, Quot.sound}` footprint",
+      "columns": {
+        "Symptom / Error / Bottleneck": "Paper table claims `(0 axioms)` on `omega` or `decide` proof",
+        "Root Cause": "Unchecked assumption that `omega`/`decide` are axiom-free",
+        "Remediating Fix": "Run `#print axioms` and report exact `{propext}` or `{propext, Quot.sound}` footprint"
       }
     },
     {
@@ -4950,11 +5271,33 @@
       "handbook": "lean-verification-gate-handbook",
       "error_pattern": "`depends on axiom Lean.ofReduceBool`",
       "cause": "`native_decide` or `bv_decide` used in strict kernel lane",
-      "fix": "Replace with `kernel_decide` (`rfl",
+      "fix": "Replace with `kernel_decide` (`rfl | decide +kernel | omega`)",
       "columns": {
         "Symptom / Error / Bottleneck": "`depends on axiom Lean.ofReduceBool`",
         "Root Cause": "`native_decide` or `bv_decide` used in strict kernel lane",
-        "Remediating Fix": "Replace with `kernel_decide` (`rfl"
+        "Remediating Fix": "Replace with `kernel_decide` (`rfl | decide +kernel | omega`)"
+      }
+    },
+    {
+      "handbook": "lean-verification-gate-handbook",
+      "error_pattern": "Green axiom gate missed renamed or newly added theorems",
+      "cause": "Stale generated `#print axioms` probe script (`GT-21`)",
+      "fix": "Run `python3 scripts/lean/axiom_audit.py --generate-script` and quote scanned counts",
+      "columns": {
+        "Symptom / Error / Bottleneck": "Green axiom gate missed renamed or newly added theorems",
+        "Root Cause": "Stale generated `#print axioms` probe script (`GT-21`)",
+        "Remediating Fix": "Run `python3 scripts/lean/axiom_audit.py --generate-script` and quote scanned counts"
+      }
+    },
+    {
+      "handbook": "lean-verification-gate-handbook",
+      "error_pattern": "Verdict cites external checker (`nanoda_lib`) that never ran",
+      "cause": "Unexecuted boilerplate or wrong-OS binary",
+      "fix": "Cite only tools physically executed (`Lean.Kernel.Environment.replay`) and quote coverage gaps",
+      "columns": {
+        "Symptom / Error / Bottleneck": "Verdict cites external checker (`nanoda_lib`) that never ran",
+        "Root Cause": "Unexecuted boilerplate or wrong-OS binary",
+        "Remediating Fix": "Cite only tools physically executed (`Lean.Kernel.Environment.replay`) and quote coverage gaps"
       }
     },
     {
@@ -5983,7 +6326,7 @@
     },
     "lean-asymptotic-algorithms-handbook": {
       "file": "references/handbooks/lean-asymptotic-algorithms-handbook.md",
-      "skill_ref": "skills/lean-math-discrete/SKILL.md",
+      "skill_ref": "skills/lean-asymptotic-algorithms/SKILL.md",
       "goal_shape_count": 5,
       "intent_count": 4,
       "error_count": 4,
@@ -6376,7 +6719,7 @@
     },
     "lean-computational-reflection-handbook": {
       "file": "references/handbooks/lean-computational-reflection-handbook.md",
-      "skill_ref": "skills/lean-proof-refactor/SKILL.md",
+      "skill_ref": "skills/lean-computational-reflection/SKILL.md",
       "goal_shape_count": 5,
       "intent_count": 4,
       "error_count": 4,
@@ -6713,9 +7056,9 @@
     "lean-dependency-management-handbook": {
       "file": "references/handbooks/lean-dependency-management-handbook.md",
       "skill_ref": "skills/lean-dependency-management/SKILL.md",
-      "goal_shape_count": 2,
-      "intent_count": 2,
-      "error_count": 2,
+      "goal_shape_count": 3,
+      "intent_count": 3,
+      "error_count": 3,
       "goal_shape_templates": [
         {
           "handbook": "lean-dependency-management-handbook",
@@ -6737,6 +7080,17 @@
             "Goal / Term Shape": "Small external theorem slice on incompatible pin",
             "Primary Tactic / Pattern": "Isolated `Vendor/<Pkg>/` vendoring",
             "Canonical Recipe / Notes": "Preserve SPDX header, upstream URL + SHA, and run `lean_axiom_closure`"
+          }
+        },
+        {
+          "handbook": "lean-dependency-management-handbook",
+          "goal_shape": "Double-blind supplement containing adapted external proofs",
+          "route_or_concordance": "`altproof tree-shake --anonymize` + root `LICENSE`",
+          "template": "Preserve third-party `Apache-2.0`/`MIT` copyright notices and `Adapted from` blocks",
+          "columns": {
+            "Goal / Term Shape": "Double-blind supplement containing adapted external proofs",
+            "Primary Tactic / Pattern": "`altproof tree-shake --anonymize` + root `LICENSE`",
+            "Canonical Recipe / Notes": "Preserve third-party `Apache-2.0`/`MIT` copyright notices and `Adapted from` blocks"
           }
         }
       ],
@@ -6762,6 +7116,17 @@
             "Recommended Tool / Idiom": "`@lean-verification-gate`",
             "Actionable Recipe": "Audit transitive axioms of all vendored declarations"
           }
+        },
+        {
+          "handbook": "lean-dependency-management-handbook",
+          "intent": "Prune unused git dependencies in standalone slice",
+          "tactic_or_idiom": "`altproof tree-shake` (`usedExternalRoots`)",
+          "notes": "Automatically strips unimported direct git `require`s (e.g. `LSpec`) from `lakefile` & manifest",
+          "columns": {
+            "User / Engineer Intent": "Prune unused git dependencies in standalone slice",
+            "Recommended Tool / Idiom": "`altproof tree-shake` (`usedExternalRoots`)",
+            "Actionable Recipe": "Automatically strips unimported direct git `require`s (e.g. `LSpec`) from `lakefile` & manifest"
+          }
         }
       ],
       "error_to_fix": [
@@ -6786,15 +7151,26 @@
             "Root Cause": "Unlicensed upstream code cannot be vendored",
             "Remediating Fix": "Halt vendoring and re-prove from mathematical literature"
           }
+        },
+        {
+          "handbook": "lean-dependency-management-handbook",
+          "error_pattern": "Anonymizer stripped third-party `MIT`/`Apache-2.0` copyright",
+          "cause": "Over-aggressive header replacement",
+          "fix": "Whitelist upstream open-source attributions and emit composite root `LICENSE`",
+          "columns": {
+            "Symptom / Error / Bottleneck": "Anonymizer stripped third-party `MIT`/`Apache-2.0` copyright",
+            "Root Cause": "Over-aggressive header replacement",
+            "Remediating Fix": "Whitelist upstream open-source attributions and emit composite root `LICENSE`"
+          }
         }
       ]
     },
     "lean-doc-sync-handbook": {
       "file": "references/handbooks/lean-doc-sync-handbook.md",
       "skill_ref": "skills/lean-doc-sync/SKILL.md",
-      "goal_shape_count": 3,
-      "intent_count": 2,
-      "error_count": 2,
+      "goal_shape_count": 5,
+      "intent_count": 4,
+      "error_count": 5,
       "goal_shape_templates": [
         {
           "handbook": "lean-doc-sync-handbook",
@@ -6828,6 +7204,28 @@
             "Primary Tactic / Pattern": "`scripts/lean/metric_sync.py`",
             "Canonical Recipe / Notes": "Re-derive exact counts from compiled `.olean` census"
           }
+        },
+        {
+          "handbook": "lean-doc-sync-handbook",
+          "goal_shape": "Conference paper + Lean 4 concordance",
+          "route_or_concordance": "`Concordance.lean` + `paper_supplement_audit.py`",
+          "template": "Pair every numbered claim & walkthrough arithmetic check with `#check` + `#print axioms`",
+          "columns": {
+            "Goal / Term Shape": "Conference paper + Lean 4 concordance",
+            "Primary Tactic / Pattern": "`Concordance.lean` + `paper_supplement_audit.py`",
+            "Canonical Recipe / Notes": "Pair every numbered claim & walkthrough arithmetic check with `#check` + `#print axioms`"
+          }
+        },
+        {
+          "handbook": "lean-doc-sync-handbook",
+          "goal_shape": "Double-blind CMT/HotCRP Lean supplement",
+          "route_or_concordance": "`altproof tree-shake --anonymize --verify-build`",
+          "template": "Emit declaration-shaken slice + metadata-scrubbed `.tar.gz` + root `LICENSE`",
+          "columns": {
+            "Goal / Term Shape": "Double-blind CMT/HotCRP Lean supplement",
+            "Primary Tactic / Pattern": "`altproof tree-shake --anonymize --verify-build`",
+            "Canonical Recipe / Notes": "Emit declaration-shaken slice + metadata-scrubbed `.tar.gz` + root `LICENSE`"
+          }
         }
       ],
       "intent_phrasebook": [
@@ -6852,36 +7250,91 @@
             "Recommended Tool / Idiom": "`feedback` mode readability pass",
             "Actionable Recipe": "Flag forward references, missing assumptions, and scope overclaims"
           }
+        },
+        {
+          "handbook": "lean-doc-sync-handbook",
+          "intent": "Audit `.bib`, terminology, `INV-001` & supplement",
+          "tactic_or_idiom": "`scripts/lean/paper_supplement_audit.py --strict`",
+          "notes": "Verify `filecontents*` `.bib` parity, 0 BibTeX/Overfull warnings, 0 misnomers, and 0 `@[deprecated]` shims",
+          "columns": {
+            "User / Engineer Intent": "Audit `.bib`, terminology, `INV-001` & supplement",
+            "Recommended Tool / Idiom": "`scripts/lean/paper_supplement_audit.py --strict`",
+            "Actionable Recipe": "Verify `filecontents*` `.bib` parity, 0 BibTeX/Overfull warnings, 0 misnomers, and 0 `@[deprecated]` shims"
+          }
+        },
+        {
+          "handbook": "lean-doc-sync-handbook",
+          "intent": "Document honest proof provenance & novelty",
+          "tactic_or_idiom": "Three-Tier Provenance Section",
+          "notes": "Partition credit into Tier 1 (`Mathlib`/`Cslib`), Tier 2 (adapted/newly proved classical), and Tier 3 (novel domain results)",
+          "columns": {
+            "User / Engineer Intent": "Document honest proof provenance & novelty",
+            "Recommended Tool / Idiom": "Three-Tier Provenance Section",
+            "Actionable Recipe": "Partition credit into Tier 1 (`Mathlib`/`Cslib`), Tier 2 (adapted/newly proved classical), and Tier 3 (novel domain results)"
+          }
         }
       ],
       "error_to_fix": [
         {
           "handbook": "lean-doc-sync-handbook",
-          "error_pattern": "Broken `file.lean:123` citation in docs",
+          "error_pattern": "Broken `foo.lean:123` citation in docs",
           "cause": "Line numbers shifted after refactoring",
           "fix": "Prefer declaration-anchored references and re-run `check_citations.py`",
           "columns": {
-            "Symptom / Error / Bottleneck": "Broken `file.lean:123` citation in docs",
+            "Symptom / Error / Bottleneck": "Broken `foo.lean:123` citation in docs",
             "Root Cause": "Line numbers shifted after refactoring",
             "Remediating Fix": "Prefer declaration-anchored references and re-run `check_citations.py`"
           }
         },
         {
           "handbook": "lean-doc-sync-handbook",
-          "error_pattern": "Prose claims theorem proved while `sorry` remains",
+          "error_pattern": "Prose claims theorem proved while `sorry` or facade stub remains",
           "cause": "Premature paper sync before `@lean-verification-gate`",
-          "fix": "Downgrade prose claim or block release until `0 sorry`",
+          "fix": "Strengthen upstream Lean theorem or calibrate paper statement to exact proved hypotheses",
           "columns": {
-            "Symptom / Error / Bottleneck": "Prose claims theorem proved while `sorry` remains",
+            "Symptom / Error / Bottleneck": "Prose claims theorem proved while `sorry` or facade stub remains",
             "Root Cause": "Premature paper sync before `@lean-verification-gate`",
-            "Remediating Fix": "Downgrade prose claim or block release until `0 sorry`"
+            "Remediating Fix": "Strengthen upstream Lean theorem or calibrate paper statement to exact proved hypotheses"
+          }
+        },
+        {
+          "handbook": "lean-doc-sync-handbook",
+          "error_pattern": "Coined/spliced mathematical misnomer (`Polyak-Doob`, `Presburger` on squares)",
+          "cause": "Unverified eponymous naming",
+          "fix": "Cross-check primary literature, delete `@[deprecated]` shims (`GT-66`), and run `paper_supplement_audit.py`",
+          "columns": {
+            "Symptom / Error / Bottleneck": "Coined/spliced mathematical misnomer (`Polyak-Doob`, `Presburger` on squares)",
+            "Root Cause": "Unverified eponymous naming",
+            "Remediating Fix": "Cross-check primary literature, delete `@[deprecated]` shims (`GT-66`), and run `paper_supplement_audit.py`"
+          }
+        },
+        {
+          "handbook": "lean-doc-sync-handbook",
+          "error_pattern": "Embedded `filecontents*` `.bib` drifts from standalone `.bib`",
+          "cause": "Manual edit applied to only one file",
+          "fix": "Synchronize byte-for-byte and gate with `paper_supplement_audit.py --tex ... --bib ...`",
+          "columns": {
+            "Symptom / Error / Bottleneck": "Embedded `filecontents*` `.bib` drifts from standalone `.bib`",
+            "Root Cause": "Manual edit applied to only one file",
+            "Remediating Fix": "Synchronize byte-for-byte and gate with `paper_supplement_audit.py --tex ... --bib ...`"
+          }
+        },
+        {
+          "handbook": "lean-doc-sync-handbook",
+          "error_pattern": "Paper cites external checker (`nanoda_lib`) never run on final slice",
+          "cause": "Unverified boilerplate copied from prior prose",
+          "fix": "Cite only tools physically executed (`Lean.Kernel.Environment.replay` via `cold_kernel_replay.lean`, `GT-67`)",
+          "columns": {
+            "Symptom / Error / Bottleneck": "Paper cites external checker (`nanoda_lib`) never run on final slice",
+            "Root Cause": "Unverified boilerplate copied from prior prose",
+            "Remediating Fix": "Cite only tools physically executed (`Lean.Kernel.Environment.replay` via `cold_kernel_replay.lean`, `GT-67`)"
           }
         }
       ]
     },
     "lean-egraph-cpsat-superopt-handbook": {
       "file": "references/handbooks/lean-egraph-cpsat-superopt-handbook.md",
-      "skill_ref": "skills/lean-specification/SKILL.md",
+      "skill_ref": "skills/lean-egraph-cpsat-superopt/SKILL.md",
       "goal_shape_count": 5,
       "intent_count": 4,
       "error_count": 4,
@@ -7128,9 +7581,9 @@
     "lean-kernel-optimization-handbook": {
       "file": "references/handbooks/lean-kernel-optimization-handbook.md",
       "skill_ref": "skills/lean-kernel-optimization/SKILL.md",
-      "goal_shape_count": 14,
-      "intent_count": 7,
-      "error_count": 6,
+      "goal_shape_count": 16,
+      "intent_count": 9,
+      "error_count": 8,
       "goal_shape_templates": [
         {
           "handbook": "lean-kernel-optimization-handbook",
@@ -7279,13 +7732,13 @@
         {
           "handbook": "lean-kernel-optimization-handbook",
           "goal_shape": "Parametric hot `def step (cfg : Config)` vs concrete loop",
-          "route_or_concordance": "`KERNEL-LAW-22..25B`, `WAVE-13 G1`",
+          "route_or_concordance": "`KERNEL-LAW-22..25B`, `WAVE-13 G1`, `KERNEL-LAW-31`",
           "template": "`abstraction-concrete-duality`",
           "columns": {
             "Goal / Term Shape": "Parametric hot `def step (cfg : Config)` vs concrete loop",
-            "Primary Kernel Law(s)": "`KERNEL-LAW-22..25B`, `WAVE-13 G1`",
+            "Primary Kernel Law(s)": "`KERNEL-LAW-22..25B`, `WAVE-13 G1`, `KERNEL-LAW-31`",
             "Recommended AltProof Route": "`abstraction-concrete-duality`",
-            "Canonical Kernel Pattern / Tactic": "Specialize hot `def`s to raw unboxed `Nat` literals (`1,600x..3,345x` penalty for parametric hot steps!); state general parametric theorems separately and bridge via `rfl` (`<= 1%` cost)"
+            "Canonical Kernel Pattern / Tactic": "Specialize hot `def`s to raw unboxed `Nat` literals (`1,600x..3,345x` penalty for parametric hot steps!); isolate Section 1 (Spec), Section 2 (Impl), Section 3 (Bridge via `rfl`)"
           }
         },
         {
@@ -7298,6 +7751,30 @@
             "Primary Kernel Law(s)": "`PolyBitOp`, Exact-vs-Packed Lowering",
             "Recommended AltProof Route": "`proof-carrying-codegen`",
             "Canonical Kernel Pattern / Tactic": "Emit MLIR (`ctpop`/`gpu.shuffle xor`), Ada `sm_89` PTX, AVX2/AVX-512 Rust, or freestanding C++20; enforce `exact` (`GMP`/`rug`) vs `checked-small -> NeedsWide` overflow traps (`N01..N12`)"
+          }
+        },
+        {
+          "handbook": "lean-kernel-optimization-handbook",
+          "goal_shape": "Dense Kronecker packing of wide polynomial/grid states",
+          "route_or_concordance": "`KERNEL-LAW-29`, `KERNEL-LAW-29B`, `KERNEL-LAW-30`",
+          "template": "`algorithm-class-substitution`",
+          "columns": {
+            "Goal / Term Shape": "Dense Kronecker packing of wide polynomial/grid states",
+            "Primary Kernel Law(s)": "`KERNEL-LAW-29`, `KERNEL-LAW-29B`, `KERNEL-LAW-30`",
+            "Recommended AltProof Route": "`algorithm-class-substitution`",
+            "Canonical Kernel Pattern / Tactic": "Avoid artificial contest cutoffs (`KERNEL-LAW-29`) and static lookup tables (`KERNEL-LAW-30`); refute multi-hundred-limb Kronecker huge-`Nat` blowup (`polydisc`) with bounded subresultant/modular limb regimes"
+          }
+        },
+        {
+          "handbook": "lean-kernel-optimization-handbook",
+          "goal_shape": "Discovery automation (`grind`/EqSat) targeting strict `no-grind`",
+          "route_or_concordance": "`KERNEL-LAW-31` Discovery-vs-Submission Boundary",
+          "template": "`constructive-decidable-reduction`",
+          "columns": {
+            "Goal / Term Shape": "Discovery automation (`grind`/EqSat) targeting strict `no-grind`",
+            "Primary Kernel Law(s)": "`KERNEL-LAW-31` Discovery-vs-Submission Boundary",
+            "Recommended AltProof Route": "`constructive-decidable-reduction`",
+            "Canonical Kernel Pattern / Tactic": "Discover rewrites via `grind`/`egg`/CP-SAT off-path; materialize explicit 3-axiom proofs (`kernel_decide`) with zero `grind` residue on submission paths"
           }
         }
       ],
@@ -7378,6 +7855,28 @@
             "Target Kernel Law(s)": "`alignas(128)` SPSC, `.leangrph`, `io_uring`",
             "Actionable Transformation Recipe": "Separate cache lines to `128 B` (Zen 3 L2 streamer prefetch pair), align `.leangrph` CSR headers to `128 B` (`64 B` magic/counts + `64 B` SHA-256), and register `2 MB` `HugeTLB` buffers with `io_uring`"
           }
+        },
+        {
+          "handbook": "lean-kernel-optimization-handbook",
+          "intent": "\"Square a wide `Nat` (>= 30 limbs) vs an unboxed `< 2^63` scalar\"",
+          "tactic_or_idiom": "`KERNEL-LAW-13`, `KERNEL-LAW-13B`, `KERNEL-LAW-30`",
+          "notes": "Above ~30 GMP limbs use `Nat.pow x 2` (`0.58x` cost via `mpz_pow_ui -> mpn_sqr`) or shared `Nat.mul`; for single-limb `< 2^63` scalars use direct `Nat.mul x x`; exploit linear `O(L)` single-limb x multi-limb scaling vs `O(L^2)` multi-limb products",
+          "columns": {
+            "User / Engineer Intent": "\"Square a wide `Nat` (>= 30 limbs) vs an unboxed `< 2^63` scalar\"",
+            "Target Kernel Law(s)": "`KERNEL-LAW-13`, `KERNEL-LAW-13B`, `KERNEL-LAW-30`",
+            "Actionable Transformation Recipe": "Above ~30 GMP limbs use `Nat.pow x 2` (`0.58x` cost via `mpz_pow_ui -> mpn_sqr`) or shared `Nat.mul`; for single-limb `< 2^63` scalars use direct `Nat.mul x x`; exploit linear `O(L)` single-limb x multi-limb scaling vs `O(L^2)` multi-limb products"
+          }
+        },
+        {
+          "handbook": "lean-kernel-optimization-handbook",
+          "intent": "\"Harden a strict `no-grind` 3-axiom submission after e-graph discovery\"",
+          "tactic_or_idiom": "`KERNEL-LAW-29`, `KERNEL-LAW-30`, `KERNEL-LAW-31`",
+          "notes": "Enforce Section 1/2/3 split (`KERNEL-LAW-31`), purge lookup tables/band cutoffs (`KERNEL-LAW-29`/`30`), and replace discovery `grind`/`eqsat` traces with direct `kernel_decide` / `rw` proofs",
+          "columns": {
+            "User / Engineer Intent": "\"Harden a strict `no-grind` 3-axiom submission after e-graph discovery\"",
+            "Target Kernel Law(s)": "`KERNEL-LAW-29`, `KERNEL-LAW-30`, `KERNEL-LAW-31`",
+            "Actionable Transformation Recipe": "Enforce Section 1/2/3 split (`KERNEL-LAW-31`), purge lookup tables/band cutoffs (`KERNEL-LAW-29`/`30`), and replace discovery `grind`/`eqsat` traces with direct `kernel_decide` / `rw` proofs"
+          }
         }
       ],
       "error_to_fix": [
@@ -7445,6 +7944,28 @@
             "Symptom / Elaborator Error / Bottleneck": "Native Rust/C++ port silently overflows or corrupts aliased buffer",
             "Root Cause in `type_checker.cpp` / Lowering": "Arbitrary-precision Lean `Nat`/`Int` lowered to fixed `u64`/`i64` without width guard, or in-place `out == lhs` clobbered before read",
             "Remediating Kernel Law(s) & Fix": "Enforce `checked-small -> NeedsWide` fallback to `GMP`/`rug`, snapshot aliased inputs before mutation, and run `#eval` vs native conformance vectors `N01..N12`"
+          }
+        },
+        {
+          "handbook": "lean-kernel-optimization-handbook",
+          "error_pattern": "Kronecker polynomial packing regresses kernel time (`polydisc`)",
+          "cause": "Packing degrees into one huge `> 100`-limb `Nat` induces `O(L^2)` GMP multiplication overhead",
+          "fix": "Apply `KERNEL-LAW-29B` / `KERNEL-LAW-30`: keep coefficients in bounded limb tuples or subresultant PRS rather than monolithic Kronecker `Nat`s",
+          "columns": {
+            "Symptom / Elaborator Error / Bottleneck": "Kronecker polynomial packing regresses kernel time (`polydisc`)",
+            "Root Cause in `type_checker.cpp` / Lowering": "Packing degrees into one huge `> 100`-limb `Nat` induces `O(L^2)` GMP multiplication overhead",
+            "Remediating Kernel Law(s) & Fix": "Apply `KERNEL-LAW-29B` / `KERNEL-LAW-30`: keep coefficients in bounded limb tuples or subresultant PRS rather than monolithic Kronecker `Nat`s"
+          }
+        },
+        {
+          "handbook": "lean-kernel-optimization-handbook",
+          "error_pattern": "Wide squaring misses `0.58x` GMP speedup or scalar `x ^ 2` regresses",
+          "cause": "Wrong choice between `Nat.pow x 2` and `Nat.mul x x` across limb regimes",
+          "fix": "Use `Nat.mul x x` on `< 2^63` scalars (`KERNEL-LAW-13B`) and `Nat.pow x 2` (`mpn_sqr`, `0.58x`) on wide `>= 30`-limb `Nat`s (`KERNEL-LAW-13`/`30`)",
+          "columns": {
+            "Symptom / Elaborator Error / Bottleneck": "Wide squaring misses `0.58x` GMP speedup or scalar `x ^ 2` regresses",
+            "Root Cause in `type_checker.cpp` / Lowering": "Wrong choice between `Nat.pow x 2` and `Nat.mul x x` across limb regimes",
+            "Remediating Kernel Law(s) & Fix": "Use `Nat.mul x x` on `< 2^63` scalars (`KERNEL-LAW-13B`) and `Nat.pow x 2` (`mpn_sqr`, `0.58x`) on wide `>= 30`-limb `Nat`s (`KERNEL-LAW-13`/`30`)"
           }
         }
       ]
@@ -8634,9 +9155,9 @@
     "lean-pedagogical-exposition-handbook": {
       "file": "references/handbooks/lean-pedagogical-exposition-handbook.md",
       "skill_ref": "skills/lean-pedagogical-exposition/SKILL.md",
-      "goal_shape_count": 2,
-      "intent_count": 2,
-      "error_count": 2,
+      "goal_shape_count": 3,
+      "intent_count": 3,
+      "error_count": 3,
       "goal_shape_templates": [
         {
           "handbook": "lean-pedagogical-exposition-handbook",
@@ -8658,6 +9179,17 @@
             "Goal / Term Shape": "Type-theoretic encoding (`Fin n -> `, `Subtype`)",
             "Primary Tactic / Pattern": "Standard mathematical notation translation",
             "Canonical Recipe / Notes": "Render clean LaTeX (`x \\in \\mathbb{R}^n`) with side-by-side Lean anchor"
+          }
+        },
+        {
+          "handbook": "lean-pedagogical-exposition-handbook",
+          "goal_shape": "Pure-math conference manuscript over Lean corpus",
+          "route_or_concordance": "Halmos + Knuth Ch. 18 Pure-Math Architecture",
+          "template": "Zero `.lean` / `snake_case` in prose; bind all symbols inside theorem boxes; slash `$a/b$` inline",
+          "columns": {
+            "Goal / Term Shape": "Pure-math conference manuscript over Lean corpus",
+            "Primary Tactic / Pattern": "Halmos + Knuth Ch. 18 Pure-Math Architecture",
+            "Canonical Recipe / Notes": "Zero `.lean` / `snake_case` in prose; bind all symbols inside theorem boxes; slash `$a/b$` inline"
           }
         }
       ],
@@ -8683,6 +9215,17 @@
             "Recommended Tool / Idiom": "Counterexample-driven exposition",
             "Actionable Recipe": "Show concrete failure witness when hypothesis `h` is dropped"
           }
+        },
+        {
+          "handbook": "lean-pedagogical-exposition-handbook",
+          "intent": "Credit upstream, classical, and novel proofs honestly",
+          "tactic_or_idiom": "Three-Tier Proof Provenance Section",
+          "notes": "Separate Tier 1 (`Mathlib`/`Cslib`), Tier 2 (adapted/newly proved classical), and Tier 3 (novel domain)",
+          "columns": {
+            "User / Engineer Intent": "Credit upstream, classical, and novel proofs honestly",
+            "Recommended Tool / Idiom": "Three-Tier Proof Provenance Section",
+            "Actionable Recipe": "Separate Tier 1 (`Mathlib`/`Cslib`), Tier 2 (adapted/newly proved classical), and Tier 3 (novel domain)"
+          }
         }
       ],
       "error_to_fix": [
@@ -8706,6 +9249,17 @@
             "Symptom / Error / Bottleneck": "Exposition omits key technical hypothesis present in Lean",
             "Root Cause": "Silent simplification drift",
             "Remediating Fix": "List every Lean hypothesis explicitly in the theorem statement box"
+          }
+        },
+        {
+          "handbook": "lean-pedagogical-exposition-handbook",
+          "error_pattern": "Bracketed titles stuffed onto routine propositions",
+          "cause": "Promotional naming clutter",
+          "fix": "Reserve `[...]` titles strictly for classical landmark theorems (Halmos 12)",
+          "columns": {
+            "Symptom / Error / Bottleneck": "Bracketed titles stuffed onto routine propositions",
+            "Root Cause": "Promotional naming clutter",
+            "Remediating Fix": "Reserve `[...]` titles strictly for classical landmark theorems (Halmos 12)"
           }
         }
       ]
@@ -8902,9 +9456,9 @@
     "lean-proof-refactor-handbook": {
       "file": "references/handbooks/lean-proof-refactor-handbook.md",
       "skill_ref": "skills/lean-proof-refactor/SKILL.md",
-      "goal_shape_count": 5,
-      "intent_count": 4,
-      "error_count": 4,
+      "goal_shape_count": 7,
+      "intent_count": 5,
+      "error_count": 5,
       "goal_shape_templates": [
         {
           "handbook": "lean-proof-refactor-handbook",
@@ -8953,12 +9507,34 @@
         {
           "handbook": "lean-proof-refactor-handbook",
           "goal_shape": "Verbose `Finset.sum` linearity or monotonicity block",
-          "route_or_concordance": "`sum_congr_ring` / `finset_mono` / `finset_nonneg`",
-          "template": "Collapse 15-40 line `Finset.sum` proofs to 1-line AltProof combinators",
+          "route_or_concordance": "`sum_congr_ring` / `calc_ring_sum` / `finset_mono` / `finset_nonneg`",
+          "template": "Collapse 15-40 line `Finset.sum` proofs to 1-line `AltProof.Closers` combinators",
           "columns": {
             "Goal / Term Shape": "Verbose `Finset.sum` linearity or monotonicity block",
-            "Primary Tactic / Pattern": "`sum_congr_ring` / `finset_mono` / `finset_nonneg`",
-            "Canonical Recipe / Notes": "Collapse 15-40 line `Finset.sum` proofs to 1-line AltProof combinators"
+            "Primary Tactic / Pattern": "`sum_congr_ring` / `calc_ring_sum` / `finset_mono` / `finset_nonneg`",
+            "Canonical Recipe / Notes": "Collapse 15-40 line `Finset.sum` proofs to 1-line `AltProof.Closers` combinators"
+          }
+        },
+        {
+          "handbook": "lean-proof-refactor-handbook",
+          "goal_shape": "Convex / Markov row-sum / sup-norm / quotient goal",
+          "route_or_concordance": "`convex_comb` / `markov_row_sum` / `sup_norm_scale` / `deriv_quot_ring`",
+          "template": "Import lightweight `AltProof.Closers` (safe for standalone supplements)",
+          "columns": {
+            "Goal / Term Shape": "Convex / Markov row-sum / sup-norm / quotient goal",
+            "Primary Tactic / Pattern": "`convex_comb` / `markov_row_sum` / `sup_norm_scale` / `deriv_quot_ring`",
+            "Canonical Recipe / Notes": "Import lightweight `AltProof.Closers` (safe for standalone supplements)"
+          }
+        },
+        {
+          "handbook": "lean-proof-refactor-handbook",
+          "goal_shape": "Retired or misnamed module / theorem identifier",
+          "route_or_concordance": "Clean corpus rename + external Markdown ledger (`GT-66`)",
+          "template": "Delete `@[deprecated]` shims from `.lean` files; regenerate `#print axioms` scripts",
+          "columns": {
+            "Goal / Term Shape": "Retired or misnamed module / theorem identifier",
+            "Primary Tactic / Pattern": "Clean corpus rename + external Markdown ledger (`GT-66`)",
+            "Canonical Recipe / Notes": "Delete `@[deprecated]` shims from `.lean` files; regenerate `#print axioms` scripts"
           }
         }
       ],
@@ -9006,6 +9582,17 @@
             "Recommended Tool / Idiom": "`WAVE-13 G1` Cold Parametric Theorem + `rfl` Bridge",
             "Actionable Recipe": "Prove once over `(step : State -> State)`; instantiate on concrete `fastStep` at `<= 1%` WHNF cost"
           }
+        },
+        {
+          "handbook": "lean-proof-refactor-handbook",
+          "intent": "Emit minimal anonymized Lean 4 supplement slice",
+          "tactic_or_idiom": "`altproof tree-shake --anonymize --verify-build`",
+          "notes": "Prunes unreachable decls, `@[deprecated]` shims, dead `@[simp]`/instances, and unused `require`s",
+          "columns": {
+            "User / Engineer Intent": "Emit minimal anonymized Lean 4 supplement slice",
+            "Recommended Tool / Idiom": "`altproof tree-shake --anonymize --verify-build`",
+            "Actionable Recipe": "Prunes unreachable decls, `@[deprecated]` shims, dead `@[simp]`/instances, and unused `require`s"
+          }
         }
       ],
       "error_to_fix": [
@@ -9051,6 +9638,17 @@
             "Symptom / Error / Bottleneck": "Commute-diagram lift increased total LOC on tiny state",
             "Root Cause": "Commute pattern overhead (`<= 5` state ops)",
             "Remediating Fix": "Apply Commute diagram lifts only above the `> 20` state-operation threshold"
+          }
+        },
+        {
+          "handbook": "lean-proof-refactor-handbook",
+          "error_pattern": "`@[deprecated]` shims pollute autocomplete and shaken slices",
+          "cause": "Legacy compatibility aliases left inside `.lean` files",
+          "fix": "Remove `@[deprecated]` shims completely; record `Retired -> Canonical` in `terminology-rename-ledger.md`",
+          "columns": {
+            "Symptom / Error / Bottleneck": "`@[deprecated]` shims pollute autocomplete and shaken slices",
+            "Root Cause": "Legacy compatibility aliases left inside `.lean` files",
+            "Remediating Fix": "Remove `@[deprecated]` shims completely; record `Retired -> Canonical` in `terminology-rename-ledger.md`"
           }
         }
       ]
@@ -9258,9 +9856,9 @@
     "lean-proof-review-handbook": {
       "file": "references/handbooks/lean-proof-review-handbook.md",
       "skill_ref": "skills/lean-proof-review/SKILL.md",
-      "goal_shape_count": 2,
-      "intent_count": 2,
-      "error_count": 2,
+      "goal_shape_count": 3,
+      "intent_count": 3,
+      "error_count": 4,
       "goal_shape_templates": [
         {
           "handbook": "lean-proof-review-handbook",
@@ -9283,6 +9881,17 @@
             "Primary Tactic / Pattern": "Layer 2 Faithfulness & Truncation check",
             "Canonical Recipe / Notes": "Verify `b <= a` / `d != 0` hypotheses prevent degenerate triviality"
           }
+        },
+        {
+          "handbook": "lean-proof-review-handbook",
+          "goal_shape": "Paper-coupled theorem or concordance entry",
+          "route_or_concordance": "Bidirectional Semantic & Terminology Audit",
+          "template": "Reject facade arithmetic stubs, existence-as-input shortcuts, and coined/spliced eponyms",
+          "columns": {
+            "Goal / Term Shape": "Paper-coupled theorem or concordance entry",
+            "Primary Tactic / Pattern": "Bidirectional Semantic & Terminology Audit",
+            "Canonical Recipe / Notes": "Reject facade arithmetic stubs, existence-as-input shortcuts, and coined/spliced eponyms"
+          }
         }
       ],
       "intent_phrasebook": [
@@ -9301,11 +9910,22 @@
           "handbook": "lean-proof-review-handbook",
           "intent": "Check proof hygiene & maintainability",
           "tactic_or_idiom": "Inspect `simp` non-terminal calls, `maxHeartbeats` overrides, and axioms",
-          "notes": "Require `simp only [...]` on non-terminal steps",
+          "notes": "Require `simp only [...]` on non-terminal steps and `0` `@[deprecated]` shims",
           "columns": {
             "User / Engineer Intent": "Check proof hygiene & maintainability",
             "Recommended Tool / Idiom": "Inspect `simp` non-terminal calls, `maxHeartbeats` overrides, and axioms",
-            "Actionable Recipe": "Require `simp only [...]` on non-terminal steps"
+            "Actionable Recipe": "Require `simp only [...]` on non-terminal steps and `0` `@[deprecated]` shims"
+          }
+        },
+        {
+          "handbook": "lean-proof-review-handbook",
+          "intent": "Verify exact axiom footprint for paper table",
+          "tactic_or_idiom": "`lean_axiom_closure` / `Lean.collectAxioms`",
+          "notes": "Check `omega`/`decide` proofs explicitly (both often pull `propext` or `Quot.sound`)",
+          "columns": {
+            "User / Engineer Intent": "Verify exact axiom footprint for paper table",
+            "Recommended Tool / Idiom": "`lean_axiom_closure` / `Lean.collectAxioms`",
+            "Actionable Recipe": "Check `omega`/`decide` proofs explicitly (both often pull `propext` or `Quot.sound`)"
           }
         }
       ],
@@ -9330,6 +9950,28 @@
             "Symptom / Error / Bottleneck": "Theorem has `0 sorry` but conclusion echoes hypothesis",
             "Root Cause": "`FIDELITY-01` (`HYPOTHESIS_ECHO`)",
             "Remediating Fix": "Reject in Layer 3 Non-Vacuity check and escalate to `specifier`"
+          }
+        },
+        {
+          "handbook": "lean-proof-review-handbook",
+          "error_pattern": "Uniqueness theorem takes fixed point `x*` as an input argument",
+          "cause": "Missing composition with existence theorem",
+          "fix": "Compose Brouwer/Banach existence with contraction uniqueness into `ExistsUnique`",
+          "columns": {
+            "Symptom / Error / Bottleneck": "Uniqueness theorem takes fixed point `x*` as an input argument",
+            "Root Cause": "Missing composition with existence theorem",
+            "Remediating Fix": "Compose Brouwer/Banach existence with contraction uniqueness into `ExistsUnique`"
+          }
+        },
+        {
+          "handbook": "lean-proof-review-handbook",
+          "error_pattern": "Paper table claims `(0 axioms)` on `omega` or `decide` proof",
+          "cause": "Unchecked assumption that `omega`/`decide` are axiom-free",
+          "fix": "Run `#print axioms` and report exact `{propext}` or `{propext, Quot.sound}` footprint",
+          "columns": {
+            "Symptom / Error / Bottleneck": "Paper table claims `(0 axioms)` on `omega` or `decide` proof",
+            "Root Cause": "Unchecked assumption that `omega`/`decide` are axiom-free",
+            "Remediating Fix": "Run `#print axioms` and report exact `{propext}` or `{propext, Quot.sound}` footprint"
           }
         }
       ]
@@ -9922,7 +10564,7 @@
     },
     "lean-unboxed-limbs-swar-handbook": {
       "file": "references/handbooks/lean-unboxed-limbs-swar-handbook.md",
-      "skill_ref": "skills/lean-math-discrete/SKILL.md",
+      "skill_ref": "skills/lean-unboxed-limbs-swar/SKILL.md",
       "goal_shape_count": 5,
       "intent_count": 4,
       "error_count": 4,
@@ -10158,9 +10800,9 @@
     "lean-verification-gate-handbook": {
       "file": "references/handbooks/lean-verification-gate-handbook.md",
       "skill_ref": "skills/lean-verification-gate/SKILL.md",
-      "goal_shape_count": 3,
-      "intent_count": 2,
-      "error_count": 2,
+      "goal_shape_count": 4,
+      "intent_count": 3,
+      "error_count": 4,
       "goal_shape_templates": [
         {
           "handbook": "lean-verification-gate-handbook",
@@ -10194,6 +10836,17 @@
             "Primary Tactic / Pattern": "Static enforcement lint",
             "Canonical Recipe / Notes": "Add `set_option autoImplicit false` immediately after `import`"
           }
+        },
+        {
+          "handbook": "lean-verification-gate-handbook",
+          "goal_shape": "Standalone paper supplement `.tar.gz`",
+          "route_or_concordance": "`scripts/lean/cold_kernel_replay.lean`",
+          "template": "Replay 100% of slice `.olean` constants via `Lean.Kernel.Environment.replay`",
+          "columns": {
+            "Goal / Term Shape": "Standalone paper supplement `.tar.gz`",
+            "Primary Tactic / Pattern": "`scripts/lean/cold_kernel_replay.lean`",
+            "Canonical Recipe / Notes": "Replay 100% of slice `.olean` constants via `Lean.Kernel.Environment.replay`"
+          }
         }
       ],
       "intent_phrasebook": [
@@ -10211,12 +10864,23 @@
         {
           "handbook": "lean-verification-gate-handbook",
           "intent": "Verify proofs survive fresh kernel check",
-          "tactic_or_idiom": "Cold replay (`lake clean` / targeted rebuild)",
-          "notes": "Quote scanned module & declaration counts in gate verdict",
+          "tactic_or_idiom": "`scripts/lean/replay_verify.sh` (`R1`--`R3`)",
+          "notes": "Cold `lake build` + `axiom_audit.py` + `Lean.Kernel.Environment.replay`",
           "columns": {
             "User / Engineer Intent": "Verify proofs survive fresh kernel check",
-            "Recommended Tool / Idiom": "Cold replay (`lake clean` / targeted rebuild)",
-            "Actionable Recipe": "Quote scanned module & declaration counts in gate verdict"
+            "Recommended Tool / Idiom": "`scripts/lean/replay_verify.sh` (`R1`--`R3`)",
+            "Actionable Recipe": "Cold `lake build` + `axiom_audit.py` + `Lean.Kernel.Environment.replay`"
+          }
+        },
+        {
+          "handbook": "lean-verification-gate-handbook",
+          "intent": "Gate joint LaTeX paper + Lean supplement",
+          "tactic_or_idiom": "`scripts/lean/paper_supplement_audit.py --strict`",
+          "notes": "Verify 0 `@[deprecated]` shims, 0 misnomers, `.bib` parity, and `INV-001` Unicode",
+          "columns": {
+            "User / Engineer Intent": "Gate joint LaTeX paper + Lean supplement",
+            "Recommended Tool / Idiom": "`scripts/lean/paper_supplement_audit.py --strict`",
+            "Actionable Recipe": "Verify 0 `@[deprecated]` shims, 0 misnomers, `.bib` parity, and `INV-001` Unicode"
           }
         }
       ],
@@ -10236,18 +10900,40 @@
           "handbook": "lean-verification-gate-handbook",
           "error_pattern": "`depends on axiom Lean.ofReduceBool`",
           "cause": "`native_decide` or `bv_decide` used in strict kernel lane",
-          "fix": "Replace with `kernel_decide` (`rfl",
+          "fix": "Replace with `kernel_decide` (`rfl | decide +kernel | omega`)",
           "columns": {
             "Symptom / Error / Bottleneck": "`depends on axiom Lean.ofReduceBool`",
             "Root Cause": "`native_decide` or `bv_decide` used in strict kernel lane",
-            "Remediating Fix": "Replace with `kernel_decide` (`rfl"
+            "Remediating Fix": "Replace with `kernel_decide` (`rfl | decide +kernel | omega`)"
+          }
+        },
+        {
+          "handbook": "lean-verification-gate-handbook",
+          "error_pattern": "Green axiom gate missed renamed or newly added theorems",
+          "cause": "Stale generated `#print axioms` probe script (`GT-21`)",
+          "fix": "Run `python3 scripts/lean/axiom_audit.py --generate-script` and quote scanned counts",
+          "columns": {
+            "Symptom / Error / Bottleneck": "Green axiom gate missed renamed or newly added theorems",
+            "Root Cause": "Stale generated `#print axioms` probe script (`GT-21`)",
+            "Remediating Fix": "Run `python3 scripts/lean/axiom_audit.py --generate-script` and quote scanned counts"
+          }
+        },
+        {
+          "handbook": "lean-verification-gate-handbook",
+          "error_pattern": "Verdict cites external checker (`nanoda_lib`) that never ran",
+          "cause": "Unexecuted boilerplate or wrong-OS binary",
+          "fix": "Cite only tools physically executed (`Lean.Kernel.Environment.replay`) and quote coverage gaps",
+          "columns": {
+            "Symptom / Error / Bottleneck": "Verdict cites external checker (`nanoda_lib`) that never ran",
+            "Root Cause": "Unexecuted boilerplate or wrong-OS binary",
+            "Remediating Fix": "Cite only tools physically executed (`Lean.Kernel.Environment.replay`) and quote coverage gaps"
           }
         }
       ]
     },
     "lean-worker-wrapper-cps-handbook": {
       "file": "references/handbooks/lean-worker-wrapper-cps-handbook.md",
-      "skill_ref": "skills/lean-proof-refactor/SKILL.md",
+      "skill_ref": "skills/lean-worker-wrapper-cps/SKILL.md",
       "goal_shape_count": 5,
       "intent_count": 4,
       "error_count": 4,

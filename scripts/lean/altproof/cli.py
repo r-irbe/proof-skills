@@ -11,8 +11,9 @@ Supports:
   - altproof extract <file.lean> [--theorem NAME]
   - altproof report <sandbox_dir> <out_dir>
   - altproof routes [--json | --regen]
+  - altproof coupling-scan <root_dir>
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations
@@ -127,7 +128,7 @@ def _cmd_routes(argv: list[str]) -> int:
 
     parser = argparse.ArgumentParser(
         prog="altproof routes",
-        description="Inspect or regenerate the canonical AltProof 16-route table",
+        description="Inspect or regenerate the packaged AltProof 20-route catalog",
     )
     parser.add_argument("--regen", action="store_true", help="Regenerate route-table.json")
     parser.add_argument("--json", action="store_true", help="Emit JSON route table payload")
@@ -151,13 +152,14 @@ def main(argv: list[str] | None = None) -> int:
         print("  tree-shake      Slice minimal reachable declarations/modules from .ilean graph")
         print("  detect-v4       Run .ilean / TraceIndex S2+S3 extraction detector on a Lean file")
         print("  dispatch        Run AltProof tactic advisor and two-axis legibility scorer")
-        print("  rank            Compute two-axis B1 extraction-outranks + kernel reduction cost")
+        print("  rank            Compute two-axis B1 extraction-outranks + kernel cost")
         print("  cluster         Run cross-theorem have-clustering (S5) over a Lean directory")
         print("  extract         Run v3 extraction detector on a Lean file")
         print("  report          Render whole-corpus elegance Markdown report suite")
-        print("  routes          Inspect or regenerate the 16-route AltProof table")
+        print("  routes          Inspect or regenerate the packaged AltProof 20-route catalog")
         print("  legibility      Score proof block legibility and structural golf opportunities")
         print("  axiom-profiles  Audit declaration axiom profiles")
+        print("  coupling-scan   Scan module/declaration coupling metrics across a Lean directory")
         return 0
 
     cmd = args[0]
@@ -175,6 +177,7 @@ def main(argv: list[str] | None = None) -> int:
         else:
             import tree_shake
         return tree_shake.main(rest)
+
     if cmd in ("detect-v4", "detect_v4"):
         if __package__:
             from . import detect_v4

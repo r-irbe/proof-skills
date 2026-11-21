@@ -38,14 +38,17 @@ concrete (`WAVE-13 G1`).
 - **DO NOT USE FOR:** first-time proving (`@lean-proof`), correctness review (`@lean-proof-review`), or tautology triage (`@lean-tautology-triage`).
 
 ## Workflow
-1. **Scan & Classify** -- Run `scripts/lean/proof_quality.py --lean-dir <dir>` for long/branchy proofs and `python3 -m altproof.coupling_scanner` to
-   classify `Real` statements into `abstraction-safe`, `nat-mixed`, or `real-specific`.
-2. **Kernel-Verified Auto-Slimmer (Single-Theorem Compression)** -- Before manual extraction, run the MCP tool `lean_autoslim` (`{"filePath": "<file.lean>", "apply": true, "allowAltProofImport": true}`) or CLI `python3 scripts/lean/altproof/cli.py autoslim <file.lean> --apply --allow-altproof-import`. It harvests exact `by ...` proof-span quickfixes from `lean-analyzer`, cascades each `ALTPROOF-ROUTE` tactic candidate against Lean 4 (`lean-lsp` live worker when warm, or batch `lake env lean` probe), and commits only strictly shorter, `0`-error/`0`-warning/`0`-`sorry` replacements.
-3. **Adjudicate (`CUT / CONSIDERED-NEGATIVE / DEFER`)** -- Extract (`CUT`) only when a block is reusable (`>= 2` sites or clean mathematical boundary);
-   log `CONSIDERED-NEGATIVE` on single-use glue to prevent negative bundle-effect bloat.
-4. **Apply `WAVE-13 G1` Abstraction-Concrete Duality** -- Abstract in `Prop` (`[CommRing R] [LinearOrder R] [IsOrderedRing R]`, parametric step
-   theorems) and stay concrete in hot `def`s (avoiding the `1,600x..3,345x` parametric WHNF penalty; `rfl`-bridged abstract proofs add `<= 1%` cost).
-5. **Gate** -- Preserve public signatures byte-for-byte; verify `0` errors/warnings under `lake build` and record before/after metrics.
+1. **Scan & Classify** -- Run `scripts/lean/proof_quality.py --lean-dir <dir>` and `python3 -m altproof.coupling_scanner`
+   to classify `Real` statements (`abstraction-safe`, `nat-mixed`, `real-specific`).
+2. **Auto-Slim & Harvest Closers** -- Run `lean_autoslim` or `python3 scripts/lean/altproof/cli.py autoslim <file.lean>
+   --apply --allow-altproof-import`; harvest recurring sum/matrix/norm/quotient patterns into `packages/altproof/`
+   (`AltProof.Closers` + `elegance?`, `GT-68`).
+3. **Adjudicate & Clean Renames** -- Extract (`CUT`) only when reusable (`>= 2` sites); log `CONSIDERED-NEGATIVE` on
+   single-use glue. Delete `@[deprecated]` shims from `.lean` files and log renames in a Markdown ledger (`GT-66`).
+4. **Apply `WAVE-13 G1` Duality** -- Abstract in `Prop` (`[CommRing R] [LinearOrder R] [IsOrderedRing R]`) and stay
+   concrete in hot `def`s (avoiding `1,600x..3,345x` parametric WHNF penalties; `rfl` bridges add `<= 1%` cost).
+5. **Gate & Slice** -- Verify `0` errors/warnings under `lake build`, regenerate `#print axioms` manifests after
+   renames, and use `altproof tree-shake` for standalone supplements.
 
 ## Recovery & STOP
 - If an extraction fails to compile, forces >8 awkward context parameters, or increases net complexity without reuse, revert immediately and record

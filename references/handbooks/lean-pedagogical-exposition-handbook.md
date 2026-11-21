@@ -12,6 +12,7 @@ extracted_from: skills/lean-pedagogical-exposition/SKILL.md
 | :--- | :--- | :--- |
 | Verified Lean 4 proof with inscrutable tactic script | Structured Mathematical Proof Narrative | Map `have`/`calc`/`induction` landmarks to human mathematical intuition |
 | Type-theoretic encoding (`Fin n -> ℝ`, `Subtype`) | Standard mathematical notation translation | Render clean LaTeX (`x \in \mathbb{R}^n`) with side-by-side Lean anchor |
+| Pure-math conference manuscript over Lean corpus | Halmos + Knuth Ch. 18 Pure-Math Architecture | Zero `.lean` / `snake_case` in prose; bind all symbols inside theorem boxes; slash `$a/b$` inline |
 
 ### Table 2: Intent-First (`phrasebook` Entry Point)
 
@@ -19,6 +20,7 @@ extracted_from: skills/lean-pedagogical-exposition/SKILL.md
 | :--- | :--- | :--- |
 | Turn a formal Lean module into a textbook chapter | `editor.md` + `math-pedagogy-author` overlay | Include motivation, geometric intuition, proof architecture diagram, and Lean table |
 | Explain *why* a precondition is needed | Counterexample-driven exposition | Show concrete failure witness when hypothesis `h` is dropped |
+| Credit upstream, classical, and novel proofs honestly | Three-Tier Proof Provenance Section | Separate Tier 1 (`Mathlib`/`Cslib`), Tier 2 (adapted/newly proved classical), and Tier 3 (novel domain) |
 
 ### Table 3: Error / Bottleneck-First (`errors` Entry Point)
 
@@ -26,6 +28,7 @@ extracted_from: skills/lean-pedagogical-exposition/SKILL.md
 | :--- | :--- | :--- |
 | Prose reads like line-by-line tactic transliteration ('First we `rw`...') | Tactic-level noise leaked into exposition | Summarize algebraic rewrites as conceptual equations (`calc` chain) |
 | Exposition omits key technical hypothesis present in Lean | Silent simplification drift | List every Lean hypothesis explicitly in the theorem statement box |
+| Bracketed titles stuffed onto routine propositions | Promotional naming clutter | Reserve `[...]` titles strictly for classical landmark theorems (Halmos §12) |
 
 ---
 

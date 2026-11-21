@@ -2,7 +2,7 @@
 
 Evaluates algorithm candidates against two-axis cost metrics (elegance vs kernel cost),
 calculates net improvement delta, and produces ranked suggestions for tactical replacement.
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

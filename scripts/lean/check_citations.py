@@ -96,6 +96,8 @@ def verify_markdown_citations(
                     ">",
                     "MyProject",
                     "example",
+                    "file.lean",
+                    "Module.lean",
                     "foo.lean",
                     "bar.lean",
                 )

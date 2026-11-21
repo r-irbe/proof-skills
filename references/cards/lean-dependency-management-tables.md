@@ -16,6 +16,7 @@ skill_ref: "skills/lean-dependency-management/SKILL.md"
 | :--- | :--- | :--- |
 | External package candidate on Reservoir | `lean_search(source: "reservoir")` | Check `lean-toolchain` match, license, and `0 sorry` status |
 | Small external theorem slice on incompatible pin | Isolated `Vendor/<Pkg>/` vendoring | Preserve SPDX header, upstream URL + SHA, and run `lean_axiom_closure` |
+| Double-blind supplement containing adapted external proofs | `altproof tree-shake --anonymize` + root `LICENSE` | Preserve third-party `Apache-2.0`/`MIT` copyright notices and `Adapted from` blocks |
 
 ## 2. Intent -> Recipe Phrasebook
 
@@ -23,6 +24,7 @@ skill_ref: "skills/lean-dependency-management/SKILL.md"
 | :--- | :--- | :--- |
 | Bump `lean-toolchain` and Mathlib pin safely | `lake update` + `@lean-proof-repair` | Never hand-edit `lake-manifest.json` SHA hashes |
 | Verify vendored code introduces no extra axioms | `@lean-verification-gate` | Audit transitive axioms of all vendored declarations |
+| Prune unused git dependencies in standalone slice | `altproof tree-shake` (`usedExternalRoots`) | Automatically strips unimported direct git `require`s (e.g. `LSpec`) from `lakefile` & manifest |
 
 ## 3. Error / Bottleneck -> Fix
 
@@ -30,3 +32,4 @@ skill_ref: "skills/lean-dependency-management/SKILL.md"
 | :--- | :--- | :--- |
 | `lake update` version solver conflict | Transitive packages pin incompatible `lean-toolchain` | Align `lean-toolchain` to target Mathlib release tag first |
 | Missing SPDX license on candidate repo | Unlicensed upstream code cannot be vendored | Halt vendoring and re-prove from mathematical literature |
+| Anonymizer stripped third-party `MIT`/`Apache-2.0` copyright | Over-aggressive header replacement | Whitelist upstream open-source attributions and emit composite root `LICENSE` |

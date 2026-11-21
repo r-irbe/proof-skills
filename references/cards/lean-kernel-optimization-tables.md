@@ -26,8 +26,10 @@ skill_ref: "skills/lean-kernel-optimization/SKILL.md"
 | Fixed-width array/DP recurrence or bitboard transition | `KERNEL-LAW-15`, `KERNEL-LAW-16`, `KERNEL-LAW-20` | `gmp-swar-word-packing` |
 | Finite-state graph/polyomino/automaton frontier search | `KERNEL-LAW-17`, `KERNEL-LAW-18`, `KERNEL-LAW-18B` | `algorithm-class-substitution` |
 | Branching search with lookahead constraints & symmetry | `KERNEL-LAW-19`, `KERNEL-LAW-19B`, `KERNEL-LAW-21` | `algorithm-class-substitution` |
-| Parametric hot `def step (cfg : Config)` vs concrete loop | `KERNEL-LAW-22..25B`, `WAVE-13 G1` | `abstraction-concrete-duality` |
+| Parametric hot `def step (cfg : Config)` vs concrete loop | `KERNEL-LAW-22..25B`, `WAVE-13 G1`, `KERNEL-LAW-31` | `abstraction-concrete-duality` |
 | Hardware codegen from verified Lean bit/word kernel | `PolyBitOp`, Exact-vs-Packed Lowering | `proof-carrying-codegen` |
+| Dense Kronecker packing of wide polynomial/grid states | `KERNEL-LAW-29`, `KERNEL-LAW-29B`, `KERNEL-LAW-30` | `algorithm-class-substitution` |
+| Discovery automation (`grind`/EqSat) targeting strict `no-grind` | `KERNEL-LAW-31` Discovery-vs-Submission Boundary | `constructive-decidable-reduction` |
 
 ## 2. Intent -> Recipe Phrasebook
 
@@ -40,6 +42,8 @@ skill_ref: "skills/lean-kernel-optimization/SKILL.md"
 | "Implement branch-free low-bit cut/mask on `Nat` words" | `KERNEL-LAW-14`, Nov 11-12 Cut/Mask Contract | Exploit truncating `Nat.sub`: when `k <= s`, `k - s = 0` yields `1 <<< 0 - 1 = 0` mask automatically; guard multi-limb shifts with `Nat.ble a (1 <<< (k - s) - 1)` skip-to-plain-shift when profitable |
 | "Lower a Lean SWAR/BitVec kernel to C++20, Rust SIMD, or CUDA PTX" | `PolyBitOp`, Exact-vs-Packed Lowering | Prove equivalence to spec in Lean (`Template_ProofCarryingCodegen.lean`), lower pure bitwise kernels via `PolyBitOp`, and guard multi-limb arithmetic with `checked-small -> NeedsWide` + operand snapshotting |
 | "Stream verified state transitions over zero-copy IPC / NVMe" | `alignas(128)` SPSC, `.leangrph`, `io_uring` | Separate cache lines to `128 B` (Zen 3 L2 streamer prefetch pair), align `.leangrph` CSR headers to `128 B` (`64 B` magic/counts + `64 B` SHA-256), and register `2 MB` `HugeTLB` buffers with `io_uring` |
+| "Square a wide `Nat` (>= 30 limbs) vs an unboxed `< 2^63` scalar" | `KERNEL-LAW-13`, `KERNEL-LAW-13B`, `KERNEL-LAW-30` | Above ~30 GMP limbs use `Nat.pow x 2` (`0.58x` cost via `mpz_pow_ui -> mpn_sqr`) or shared `Nat.mul`; for single-limb `< 2^63` scalars use direct `Nat.mul x x`; exploit linear `O(L)` single-limb x multi-limb scaling vs `O(L^2)` multi-limb products |
+| "Harden a strict `no-grind` 3-axiom submission after e-graph discovery" | `KERNEL-LAW-29`, `KERNEL-LAW-30`, `KERNEL-LAW-31` | Enforce Section 1/2/3 split (`KERNEL-LAW-31`), purge lookup tables/band cutoffs (`KERNEL-LAW-29`/`30`), and replace discovery `grind`/`eqsat` traces with direct `kernel_decide` / `rw` proofs |
 
 ## 3. Error / Bottleneck -> Fix
 
@@ -51,3 +55,5 @@ skill_ref: "skills/lean-kernel-optimization/SKILL.md"
 | Wrong answer `0` when isolating lowest set bit with `x &&& (0 - x)` | Truncating `Nat` subtraction evaluates `0 - x = 0` for all `x : Nat`! Two's-complement `-x` only holds on `BitVec w` / `UInt64` | Never write `0 - x` on `Nat`! On `BitVec w` use `x &&& (-x)`; on `Nat` clear lowest bit via `x &&& (x - 1)` (for `x > 0`) or compute 1-bit shift overlap `x &&& (x >>> 1)` (`KERNEL-LAW-18B`) |
 | `depends on axiom Lean.ofReduceBool` / `Lean.trustCompiler` | Proof invoked `native_decide`, `decide +native`, or `bv_decide` on a strict 3-axiom target | Switch to 3-rung `kernel_decide` (`first |
 | Native Rust/C++ port silently overflows or corrupts aliased buffer | Arbitrary-precision Lean `Nat`/`Int` lowered to fixed `u64`/`i64` without width guard, or in-place `out == lhs` clobbered before read | Enforce `checked-small -> NeedsWide` fallback to `GMP`/`rug`, snapshot aliased inputs before mutation, and run `#eval` vs native conformance vectors `N01..N12` |
+| Kronecker polynomial packing regresses kernel time (`polydisc`) | Packing degrees into one huge `> 100`-limb `Nat` induces `O(L^2)` GMP multiplication overhead | Apply `KERNEL-LAW-29B` / `KERNEL-LAW-30`: keep coefficients in bounded limb tuples or subresultant PRS rather than monolithic Kronecker `Nat`s |
+| Wide squaring misses `0.58x` GMP speedup or scalar `x ^ 2` regresses | Wrong choice between `Nat.pow x 2` and `Nat.mul x x` across limb regimes | Use `Nat.mul x x` on `< 2^63` scalars (`KERNEL-LAW-13B`) and `Nat.pow x 2` (`mpn_sqr`, `0.58x`) on wide `>= 30`-limb `Nat`s (`KERNEL-LAW-13`/`30`) |

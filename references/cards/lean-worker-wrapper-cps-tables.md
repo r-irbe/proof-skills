@@ -2,7 +2,7 @@
 name: "lean-worker-wrapper-cps-tables"
 description: "Layer-1 fast 3-table lookup card auto-extracted from references/handbooks/lean-worker-wrapper-cps-handbook.md."
 generated_from: "references/handbooks/lean-worker-wrapper-cps-handbook.md"
-skill_ref: "skills/lean-proof-refactor/SKILL.md"
+skill_ref: "skills/lean-worker-wrapper-cps/SKILL.md"
 ---
 
 # `lean-worker-wrapper-cps` -- Fast 3-Table Lookup Card (Layer 1)

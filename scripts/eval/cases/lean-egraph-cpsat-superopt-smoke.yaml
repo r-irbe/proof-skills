@@ -1,0 +1,23 @@
+id: lean-egraph-cpsat-superopt-smoke
+title: lean-egraph-cpsat-superopt dispatch smoke check
+skill: lean-egraph-cpsat-superopt
+ensemble_rubric: lean-proof-quality
+difficulty: easy
+input:
+  prompt: 'Apply the lean-egraph-cpsat-superopt skill workflow using references/cards/lean-egraph-cpsat-superopt-tables.md.
+
+    '
+  expected_output_substring: 'Follow the lean-egraph-cpsat-superopt protocol with
+    zero unproven goals and clean kernel verification.
+
+    '
+expected:
+  contains:
+  - lean-egraph-cpsat-superopt|protocol|verify
+  not_contains:
+  - sorry
+  - admit
+grader: deterministic
+tags:
+- smoke
+- lean-egraph-cpsat-superopt

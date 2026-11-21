@@ -2,7 +2,7 @@
 name: "lean-egraph-cpsat-superopt-tables"
 description: "Layer-1 fast 3-table lookup card auto-extracted from references/handbooks/lean-egraph-cpsat-superopt-handbook.md."
 generated_from: "references/handbooks/lean-egraph-cpsat-superopt-handbook.md"
-skill_ref: "skills/lean-specification/SKILL.md"
+skill_ref: "skills/lean-egraph-cpsat-superopt/SKILL.md"
 ---
 
 # `lean-egraph-cpsat-superopt` -- Fast 3-Table Lookup Card (Layer 1)

@@ -28,57 +28,39 @@ metadata:
 ---
 
 # lean-proof-review
-> ⚠️ **MANDATORY** (hot-tier): layers L1 (soundness) and L2 (statement) are
+> **MANDATORY** (hot-tier): layers L1 (soundness) and L2 (statement) are
 > hard gates -- a failure at either MUST block sign-off, regardless of L3/L4.
 > Skipping Persist = incomplete.
 ## Routing
-- **USE FOR:** auditing a single Lean 4 proof or file across the 4-layer checklist (L1 soundness, L2
-  statement, L3 non-triviality,
-  L4
-  quality);
-  cross-checking that imported tactics from the project automation stack are used correctly; spotting common
-  pitfalls (vacuous
-  truth, unused
-hypothesis,
-  broken simp set, scope drift).
-- **DO NOT USE FOR:** authoring the proof (delegate to `@lean-proof`); convening a multi-agent review
-  (delegate to
-  `@lean-review-council`);
-  running the CI
-  scripts (delegate to `@lean-verification-gate`).
+- **USE FOR:** auditing a Lean 4 proof or file across the 4-layer checklist (L1 soundness, L2 statement &
+  terminology faithfulness, L3 non-triviality, L4 quality) and spotting vacuous truth, unused hypotheses, facade
+  stubs, or scope drift.
+- **DO NOT USE FOR:** authoring proofs (`@lean-proof`), multi-agent councils (`@lean-review-council`), or CI gates
+  (`@lean-verification-gate`).
 - **TRIGGERS:** proof review, audit proof, verify Lean, 4-layer checklist, lean-pitfalls, proof quality.
 ## Workflow
-1. **Discover** [discover] -- read the target file, locate the theorem(s), find the source spec and any prior
-  review record.
-2. **L1 soundness** [validate] -- confirm no `sorry`, no `admit`, no `sorryAx`, and no unauthorized
-  `Lean.ofReduceBool` via
-   `lean_axiom_closure`
-   (`{"symbol": "...", "module": "..."}`) and `lean_diagnostics` (`{"filePath": "..."}`); defer to
-   `@lean-verification-gate` for
-   full-module axiom
-audit if
-   needed.
+1. **Discover** [discover] -- read the target file, locate theorem(s), source spec / paper claim, and concordance.
+2. **L1 soundness** [validate] -- confirm `0 sorry`, `0 admit`, `0 sorryAx`, `0` `@[deprecated]` shims, and `0`
+  unauthorized `Lean.ofReduceBool` via `lean_axiom_closure` and `lean_diagnostics`; verify exact axioms (`omega` /
+  `decide` often pull `propext` or `Quot.sound`, so never certify `(0 axioms)` unchecked).
+3. **L2 statement & terminology faithfulness** [validate] -- check quantifier order, positivity/non-emptiness,
+  `Nat` truncation, two-sided `Bool = true <-> Prop` reflection, absence of facade stubs or existence-as-input
+  shortcuts, and primary-literature terminology/provenance accuracy.
+4. **L3 non-triviality & L4 hygiene** [validate] -- confirm non-vacuity witnesses (`@lean-tautology-triage`),
+  explicit non-terminal `simp only [...]`, and clean docstrings with zero dangling references.
 ## Recovery & STOP
-- L1 fails (`sorry` / `admit` / `sorryAx`) → STOP, do NOT proceed to L2-L4; escalate to author.
-- L2 fails (statement drift) → STOP, escalate to spec owner before any proof judgement.
-- `lake build` red on containing file → STOP, ask author to fix build first.
-- Confidence < 90 % on a tactic suggestion → mark as advisory, do NOT block.
-- Scope drift (edits to non-proof files) → immediate STOP, re-anchor.
+- L1 fails (`sorry` / `admit` / `sorryAx`) -> STOP, do NOT proceed to L2-L4; escalate to author.
+- L2 fails (statement or terminology drift) -> STOP, escalate to spec owner before proof judgement.
+- `lake build` red on containing file -> STOP, ask author to fix build first.
+- Confidence < 90 % on a tactic suggestion -> mark as advisory, do NOT block.
+- Scope drift (edits to non-proof files) -> immediate STOP, re-anchor.
 ## Handoffs
 - **Predecessors / successors:** see FM `handoffs`.
 - **Source spec:** `specs/lean/proof-review/requirements.md` -- every G-rule traces to an AC there.
-- **Reference:** see
-  [`references/handbooks/lean-proof-review-handbook.md`](../../references/handbooks/lean-proof-review-handbook.md) for the full
-  project automation stack, proof-search priority table, reusable `Tactics` lemma library,
-  common Lean pitfalls, and the 4-layer verification checklist (original v1 content, preserved verbatim).
 ## Detailed reference
-- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-proof-review-tables.md`](../../references/cards/lean-proof-review-tables.md)
-Full encyclopedic reference, decision trees, and lookup tables live in
-[`references/handbooks/lean-proof-review-handbook.md`](../../references/handbooks/lean-proof-review-handbook.md) .
+- **Layer-1 Card**: [`references/cards/lean-proof-review-tables.md`](../../references/cards/lean-proof-review-tables.md)
+- **Handbook**: [`references/handbooks/lean-proof-review-handbook.md`](../../references/handbooks/lean-proof-review-handbook.md)
 ## See also
-- [`../../references/handbooks/lean-proof-review-handbook.md`](../../references/handbooks/lean-proof-review-handbook.md) --
-  Complete
-  `lean-proof-review` Handbook
 - [`../lean-gateway/SKILL.md`](../lean-gateway/SKILL.md) -- Top-level skill router
 - [`tests/route-independence.yaml`](tests/route-independence.yaml) -- Smoke test
 - [`tests/search-review.yaml`](tests/search-review.yaml) -- Smoke test

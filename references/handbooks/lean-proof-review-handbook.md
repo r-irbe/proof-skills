@@ -12,13 +12,15 @@ extracted_from: skills/lean-proof-review/SKILL.md
 | :--- | :--- | :--- |
 | Completed `sorry`-free theorem in PR | 4-Layer Checklist (Soundness, Faithfulness, Non-Vacuity, Hygiene) | Read-only `auditor` pass via `lean_diagnostics` + `lean_axiom_closure` |
 | Theorem over `Nat` subtraction or division | Layer 2 Faithfulness & Truncation check | Verify `b ≤ a` / `d ≠ 0` hypotheses prevent degenerate triviality |
+| Paper-coupled theorem or concordance entry | Bidirectional Semantic & Terminology Audit | Reject facade arithmetic stubs, existence-as-input shortcuts, and coined/spliced eponyms |
 
 ### Table 2: Intent-First (`phrasebook` Entry Point)
 
 | User / Engineer Intent | Recommended Tool / Idiom | Actionable Recipe |
 | :--- | :--- | :--- |
 | Audit whether formal statement matches paper claim | Clause-by-clause paper-to-Lean bijection table | Flag any dropped hypothesis, weakened quantifier, or one-way `Bool` implication |
-| Check proof hygiene & maintainability | Inspect `simp` non-terminal calls, `maxHeartbeats` overrides, and axioms | Require `simp only [...]` on non-terminal steps |
+| Check proof hygiene & maintainability | Inspect `simp` non-terminal calls, `maxHeartbeats` overrides, and axioms | Require `simp only [...]` on non-terminal steps and `0` `@[deprecated]` shims |
+| Verify exact axiom footprint for paper table | `lean_axiom_closure` / `Lean.collectAxioms` | Check `omega`/`decide` proofs explicitly (both often pull `propext` or `Quot.sound`) |
 
 ### Table 3: Error / Bottleneck-First (`errors` Entry Point)
 
@@ -26,6 +28,8 @@ extracted_from: skills/lean-proof-review/SKILL.md
 | :--- | :--- | :--- |
 | `#print axioms` reveals `Classical.choice` in constructive lane | `open Classical` or `by_cases` used on decidable predicate | Route to `@lean-kernel-optimization` Route 9 (`Bool.rec` / `decide`) |
 | Theorem has `0 sorry` but conclusion echoes hypothesis | `FIDELITY-01` (`HYPOTHESIS_ECHO`) | Reject in Layer 3 Non-Vacuity check and escalate to `specifier` |
+| Uniqueness theorem takes fixed point `x*` as an input argument | Missing composition with existence theorem | Compose Brouwer/Banach existence with contraction uniqueness into `ExistsUnique` |
+| Paper table claims `(0 axioms)` on `omega` or `decide` proof | Unchecked assumption that `omega`/`decide` are axiom-free | Run `#print axioms` and report exact `{propext}` or `{propext, Quot.sound}` footprint |
 
 ---
 
@@ -247,6 +251,11 @@ Note: Blue checkmarks (✓✓) appear even when a *dependency* uses `sorry`. Alw
    - Finiteness: `[Fintype α]` or `(h : Set.Finite s)`?
    - Decidability: `[DecidableEq α]`?
 4. **Instant closure red flag:** If `simp`, `trivial`, `rfl`, `omega`, `decide`, `aesop`, or `duper` closes a "hard" theorem instantly → suspect missing hypothesis or vacuous truth.
+5. **Semantic & Terminology Fidelity Checks (`GT-66`, `GT-67`):**
+   - **No facade arithmetic stubs:** Reject declarations whose name advertises a domain theorem (e.g., voting manipulation, stochastic convergence, AST cost) while the body proves only a standalone `Nat` division or deterministic constant-in-$\omega$ lift.
+   - **Composed existence + uniqueness:** If a claim asserts "admits a unique equilibrium", verify the Lean theorem proves `ExistsUnique` rather than taking the fixed point as an external parameter.
+   - **Two-sided Boolean reflection:** Executable checkers must prove `guard s = true <-> Spec s` paired with a runnable non-vacuity witness (`guard witness = true` by kernel `decide`), not merely one-way `guard s = true -> Spec s`.
+   - **Skeptical primary-literature naming:** Flag coined or spliced eponyms (`Polyak-Doob`, `Presburger` on quadratic terms, `Little's law` on closed cycle rates, `Awareness` for partition measurability) and require `0` `@[deprecated]` shims in `.lean` files.
 
 ### Layer 3: Non-Triviality
 

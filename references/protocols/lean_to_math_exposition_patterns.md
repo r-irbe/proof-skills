@@ -80,4 +80,11 @@ In pedagogical exposition, state the strategy directly:
    or domain geometry rather than hiding them in an opaque Lean constant name.
 3. **Connect to Classical Literature**: Whenever formalizing a landmark result, cite the
    original mathematical literature (e.g., Beale, Kato, and Majda, 1984; Taylor, 1991;
-   Wiles, 1995) to ground the formalization in the broader mathematical landscape.
+   Wiles, 1995) to ground the formalization in the broader mathematical environment.
+4. **Pure-Math Paper Presentation (Halmos & Knuth Ch. 18)**:
+   - Keep running prose, theorem statements, and figure captions free of `.lean` filenames, dotted module namespaces, and `snake_case` code tokens; consolidate formal mapping into a dedicated verification table and a machine-checked `Concordance.lean` module.
+   - Make every theorem environment self-contained: bind all symbols, index sets, and positivity/domain hypotheses internally, and reserve bracketed `[...]` theorem titles strictly for classical landmark theorems.
+   - Follow Knuth TeXbook Chapter 18 micro-typography: write inline fractions with slash notation (`$a/b$`, reserving `\frac` for displayed equations), avoid comma-spliced formulas (`$x = 1$, $y = 2$` -> `$x = 1$ and $y = 2$`), avoid clause-initial math after punctuation, and avoid bare parenthesized math (`($x$)`).
+5. **Skeptical Terminology & Three-Tier Proof Provenance**:
+   - Verify every eponymous term against primary literature (never splice unrelated author pairs, apply `"Presburger"` to quadratic expressions, call partition measurability $K_i(B)=B$ `"awareness"`, or replace exact quota/cycle inequalities with slogans).
+   - Explicitly partition formalization credit across three tiers: (i) upstream `Mathlib`/`Cslib` foundations, (ii) adapted third-party ports (preserving SPDX notices) and newly mechanized settled classical results, and (iii) novel domain models, sharpness counterexamples, and compositional synthesis theorems.

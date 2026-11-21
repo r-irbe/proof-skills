@@ -13,6 +13,7 @@ extracted_from: skills/lean-dependency-management/SKILL.md
 | :--- | :--- | :--- |
 | External package candidate on Reservoir | `lean_search(source: "reservoir")` | Check `lean-toolchain` match, license, and `0 sorry` status |
 | Small external theorem slice on incompatible pin | Isolated `Vendor/<Pkg>/` vendoring | Preserve SPDX header, upstream URL + SHA, and run `lean_axiom_closure` |
+| Double-blind supplement containing adapted external proofs | `altproof tree-shake --anonymize` + root `LICENSE` | Preserve third-party `Apache-2.0`/`MIT` copyright notices and `Adapted from` blocks |
 
 ### Table 2: Intent-First (`phrasebook` Entry Point)
 
@@ -20,6 +21,7 @@ extracted_from: skills/lean-dependency-management/SKILL.md
 | :--- | :--- | :--- |
 | Bump `lean-toolchain` and Mathlib pin safely | `lake update` + `@lean-proof-repair` | Never hand-edit `lake-manifest.json` SHA hashes |
 | Verify vendored code introduces no extra axioms | `@lean-verification-gate` | Audit transitive axioms of all vendored declarations |
+| Prune unused git dependencies in standalone slice | `altproof tree-shake` (`usedExternalRoots`) | Automatically strips unimported direct git `require`s (e.g. `LSpec`) from `lakefile` & manifest |
 
 ### Table 3: Error / Bottleneck-First (`errors` Entry Point)
 
@@ -27,6 +29,7 @@ extracted_from: skills/lean-dependency-management/SKILL.md
 | :--- | :--- | :--- |
 | `lake update` version solver conflict | Transitive packages pin incompatible `lean-toolchain` | Align `lean-toolchain` to target Mathlib release tag first |
 | Missing SPDX license on candidate repo | Unlicensed upstream code cannot be vendored | Halt vendoring and re-prove from mathematical literature |
+| Anonymizer stripped third-party `MIT`/`Apache-2.0` copyright | Over-aggressive header replacement | Whitelist upstream open-source attributions and emit composite root `LICENSE` |
 
 ---
 
@@ -234,8 +237,8 @@ Two meta-rules that each cost a debugging cycle in a real port:
   poisons the goal state for the rest of its declaration; downstream failures --
   even ones with an apparent independent cause -- can vanish when the earlier
   error is fixed. Do not batch-fix from the bottom of the error list.
-- **Probe goals with `trace_state`, never with `sorry` placeholders**, when a
-  rewrite fails and the goal shape is unknown; the info output is definitive
+- **Probe goals with live `lean_goal` MCP queries, never with file-polluting `trace_state` or `sorry` placeholders (`GT-11`)**, when a
+  rewrite fails and the goal shape is unknown; live LSP output is definitive
   and leaves nothing to revert.
 
 For axiom evidence after the port: a generated corpus-wide probe script can

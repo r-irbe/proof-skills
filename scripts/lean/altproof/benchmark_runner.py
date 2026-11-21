@@ -4,7 +4,7 @@ Scans a Lean 4 formalization corpus, detects algorithmic
 substitution and tactic optimization candidates, ranks them using the two-axis
 cost model, and emits structured benchmark metrics.
 
-Strict 7-bit ASCII only (INV-001).
+Scoped Unicode policy (INV-001; typographic-free by default).
 """
 
 from __future__ import annotations

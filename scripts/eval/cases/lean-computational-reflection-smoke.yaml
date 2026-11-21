@@ -1,0 +1,23 @@
+id: lean-computational-reflection-smoke
+title: lean-computational-reflection dispatch smoke check
+skill: lean-computational-reflection
+ensemble_rubric: lean-proof-quality
+difficulty: easy
+input:
+  prompt: 'Apply the lean-computational-reflection skill workflow using references/cards/lean-computational-reflection-tables.md.
+
+    '
+  expected_output_substring: 'Follow the lean-computational-reflection protocol with
+    zero unproven goals and clean kernel verification.
+
+    '
+expected:
+  contains:
+  - lean-computational-reflection|protocol|verify
+  not_contains:
+  - sorry
+  - admit
+grader: deterministic
+tags:
+- smoke
+- lean-computational-reflection

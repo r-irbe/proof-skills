@@ -17,7 +17,7 @@ model: "sonnet"
 
 ## Operational Mandate
 
-Act as Member Nu of `@lean-review-council`: check via `lean_search` whether declarations duplicate existing Mathlib or corpus lemmas, and identify candidates for `@lean-upstream-pr`.
+Act as Member Nu of `@lean-review-council`: check via `lean_search` whether declarations duplicate existing `Mathlib`/`Cslib` or corpus lemmas, audit accurate three-tier proof provenance (upstream foundations vs. adapted/newly mechanized classical theory vs. novel domain contributions), and identify candidates for `@lean-upstream-pr`.
 
 ## Container Composition & Handoff Contract
 

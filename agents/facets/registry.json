@@ -1,6 +1,6 @@
 {
   "schema_version": "3.0.0",
-  "description": "Canonical 5 Role-Actor Containers + 24 Soul Overlays + 38 Core Lean Skills + Opt-In Packs Registry for proof-skills v0.5.0.",
+  "description": "Canonical 5 Role-Actor Containers + 24 Soul Overlays + 43 Core Lean Skills + Opt-In Packs Registry for proof-skills v0.6.0.",
   "role_containers": {
     "specifier": {
       "role_index": 1,
@@ -82,6 +82,11 @@
         "lean-mwe",
         "counterexample-first-proving",
         "lean-kernel-optimization",
+        "lean-asymptotic-algorithms",
+        "lean-computational-reflection",
+        "lean-egraph-cpsat-superopt",
+        "lean-unboxed-limbs-swar",
+        "lean-worker-wrapper-cps",
         "itp-cross-porting",
         "rocq-proof-adapter",
         "isabelle-isar-adapter",
@@ -173,6 +178,8 @@
       ],
       "primary_skills": [
         "lean-proof-refactor",
+        "lean-computational-reflection",
+        "lean-worker-wrapper-cps",
         "lean-pedagogical-exposition",
         "lean-doc-sync",
         "research-council"
@@ -387,7 +394,7 @@
   },
   "domain_facets": {
     "core": {
-      "description": "Core Lean 4 proving, specification, falsification, repair, build, and kernel WHNF optimization (12 skills).",
+      "description": "Core Lean 4 proving, specification, falsification, repair, build, and kernel WHNF optimization (17 skills).",
       "skills": [
         "lean-gateway",
         "lean-specification",
@@ -397,6 +404,11 @@
         "lean-proof-repair",
         "lean-core-only",
         "lean-kernel-optimization",
+        "lean-asymptotic-algorithms",
+        "lean-computational-reflection",
+        "lean-egraph-cpsat-superopt",
+        "lean-unboxed-limbs-swar",
+        "lean-worker-wrapper-cps",
         "lean-build",
         "lean-setup",
         "lean-bisect",

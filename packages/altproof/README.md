@@ -1,4 +1,4 @@
-# AltProof -- Three-Layer Equality Saturation, Domain Closers, kernel Superoptimizers, and Elegance Meta-Tactics
+# AltProof -- Three-Layer Equality Saturation, Domain Closers, SAIR Superoptimizers, and Elegance Meta-Tactics
 
 `AltProof` is a three-layer Lean 4 meta-tactic, production proof-closer, and compile-time superoptimization library shipped inside [`proof-skills`](https://github.com/r-irbe/proof-skills) until standalone external package promotion is warranted:
 
@@ -8,8 +8,8 @@
   - **`backchain`**: Curated bounded depth-first backchaining wrapper over core Lean's `Lean.Elab.Tactic.SolveByElim` (`solve_by_elim`).
   - **`grind_close`**: Bounded e-graph congruence closure and E-matching closer backed by core Lean's `grind`.
   - **`contra_direct`**: Constructive negation, `Bool`, and `Decidable` normalizer eliminating `Classical.choice` leakage from `split`/`by_cases`.
-  - **`kernel_decide`**: Strict 3-rung kernel-clean decision macro (`rfl | decide +kernel | omega`) with zero `Lean.ofReduceBool`.
-  - **`eval_nat%`, `preunfold%`, `swar_unroll%`**: kernel elaboration-time superoptimizers folding closed `Nat`/`Bool` subterms to raw `Expr.lit (.natVal v)` (`nat_lit`), unrolling static trip-count loops, and hash-consing DAGs via `Lean.ShareCommon.shareCommon` with zero `Lean.*` constants in exported terms.
+  - **`sair_decide`**: Strict 3-rung kernel-clean decision macro (`rfl | decide +kernel | omega`) with zero `Lean.ofReduceBool`.
+  - **`eval_nat%`, `preunfold%`, `swar_unroll%`**: SAIR elaboration-time superoptimizers folding closed `Nat`/`Bool` subterms to raw `Expr.lit (.natVal v)` (`nat_lit`), unrolling static trip-count loops, and hash-consing DAGs via `Lean.ShareCommon.shareCommon` with zero `Lean.*` constants in exported terms.
 - **Layer 2 (`AltProof.Closers` -- Production-Safe Mathlib4 Closers & Bridge Lemmas)**:
   - Lightweight, self-contained proof closers safe for production formalizations and standalone paper supplements (zero interactive advisor or route-table overhead):
   - **`sum_congr_ring` & `calc_ring_sum`**: One-step `Finset.sum` linear combination, separable double-sum factorization, swapped double-sum (`Finset.sum_comm`), and pointwise ring congruence closers.
@@ -63,11 +63,12 @@ open AltProof.Core AltProof.Tactics
 
 | Tactic / Elaborator | Layer | Purpose | Primary Mechanism |
 | :--- | :--- | :--- | :--- |
-| `eqsat_rw` / `egg_rw` | `Core` | Bidirectional equational & congruence saturation where `simp` loops or stalls. | Meet-in-the-middle `MetaM` saturation (`congrArg`, `congrFun`, `Eq.trans`, `Eq.symm`) + `grind` fallback. |
+| `eqsat_rw` / `egg_rw` | `Core` | Bidirectional equational & congruence saturation where `simp` loops or stalls. | Meet-in-the-middle `MetaM` saturation (`congrArg`, `congrFun`, `Eq.trans`, `Eq.symm`) (3-axiom clean). |
+| `eqsat_rw_sair` / `eqsat_rw_kernel` | `Core` | Contest-safe (`no-grind`, 3-axiom) equational congruence closer. | Strictly pure-Lean `eqsat_rw` without invoking `grind` or `Lean.ofReduceBool`. |
 | `backchain` | `Core` | Bounded Horn-clause / implication / conjunction backchaining without `aesop`. | `Lean.Elab.Tactic.SolveByElim` (`solve_by_elim (maxDepth := 6)`). |
 | `grind_close` | `Core` | Core e-graph congruence closure & E-matching closer. | `(grind; done)` with optional `[params]`. |
 | `contra_direct` | `Core` | Constructive boolean/negation normalizer avoiding `Classical.choice`. | `Bool.and_eq_true`, `decide_eq_true_eq`, `absurd` + `decide +kernel` / `omega`. |
-| `kernel_decide` | `Core` | 3-axiom contest-clean decidable/Presburger closer (`0` `Lean.ofReduceBool`). | `first \| rfl \| decide +kernel \| omega`. |
+| `sair_decide` | `Core` | 3-axiom contest-clean decidable/Presburger closer (`0` `Lean.ofReduceBool`). | `first \| rfl \| decide +kernel \| omega`. |
 | `eval_nat% t` | `Core` | Compile-time closed `Nat` constant folding to raw `nat_lit`. | Pure `MetaM` evaluator emitting `mkRawNatLit v` (`0` `Lean.*` exports). |
 | `preunfold% [d, ...] t` | `Core` | Compile-time helper unfolding, closed-branch pruning, and DAG sharing. | Beta/zeta/proj reduction + `Bool.rec` pruning + `ShareCommon.shareCommon`. |
 | `swar_unroll% k b s` | `Core` | Compile-time static loop unrolling (`0 .. k-1`) for SWAR kernels. | Iterated `preunfoldExprWith` + `ShareCommon.shareCommon`. |
@@ -82,7 +83,8 @@ open AltProof.Core AltProof.Tactics
 | `deriv_quot_ring` | `Closers` | Clears nonzero denominators in quotient derivative and simplex-ratio goals. | `div_add_div_same`/`div_sub_div_same` + `field_simp` + `ring`. |
 | `gcongr_pos` | `Closers` | Structural monotonicity congruence closing positivity/linear side-goals. | `gcongr <;> first \| rfl \| assumption \| positivity \| linarith \| nlinarith \| omega`. |
 | `alt_proof` | `Tactics` | Automated 24-step fast reduction cascade across core and Mathlib goals. | Ordered `first` cascade from `rfl` through `AltProof.Closers`, `eqsat_rw`, `backchain`, `aesop`. |
-| `elegance?` / `bfs_elegance?` | `Tactics` | Speculative AST-guided 20-route advisor + depth-`<= 3` BFS explorer. | `withoutModifyingState` + `IO.getNumHeartbeats` + `computeCostX10` + `TryThis.addSuggestion`. |
+| `elegance?` / `bfs_elegance?` | `Tactics` | Speculative AST-guided 20-route advisor + depth-`<= 3` BFS explorer. | `withoutModifyingState` + `IO.getNumHeartbeats` + `computeCostX10` / `computeTwoAxisCostX10` + `TryThis.addSuggestion`. |
+| `sair_elegance?` / `kernel_elegance?` | `Tactics` | 3-axiom contest-safe (`no-grind`) speculative closer advisor. | Filters out `grind_close`/`bv_decide`/`native_decide`; ranks `kernel_decide`, `eqsat_rw_sair`, and `AltProof.Closers`. |
 
 ---
 

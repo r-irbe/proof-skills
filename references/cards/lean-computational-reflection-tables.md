@@ -2,7 +2,7 @@
 name: "lean-computational-reflection-tables"
 description: "Layer-1 fast 3-table lookup card auto-extracted from references/handbooks/lean-computational-reflection-handbook.md."
 generated_from: "references/handbooks/lean-computational-reflection-handbook.md"
-skill_ref: "skills/lean-proof-refactor/SKILL.md"
+skill_ref: "skills/lean-computational-reflection/SKILL.md"
 ---
 
 # `lean-computational-reflection` -- Fast 3-Table Lookup Card (Layer 1)

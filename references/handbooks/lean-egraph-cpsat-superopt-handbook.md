@@ -1,7 +1,7 @@
 ---
 name: lean-egraph-cpsat-superopt-handbook
 description: Reference handbook for exact sharing-aware DAG e-graph extraction via OR-Tools CP-SAT and Z3, dual-certified rewriting, and kernel-model-calibrated superoptimization in Lean 4.
-extracted_from: skills/lean-specification/SKILL.md
+extracted_from: skills/lean-egraph-cpsat-superopt/SKILL.md
 ---
 
 # Sharing-Aware CP-SAT / Z3 DAG E-Graph Superoptimization Handbook (Lean 4)

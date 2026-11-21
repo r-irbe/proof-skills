@@ -1,7 +1,7 @@
 ---
 name: lean-unboxed-limbs-swar-handbook
 description: Reference handbook for Fiat-Crypto unsaturated limb arithmetic, unboxed < 2^63 scalar tuples, and guarded SWAR broadword computation in Lean 4 kernel WHNF.
-extracted_from: skills/lean-math-discrete/SKILL.md
+extracted_from: skills/lean-unboxed-limbs-swar/SKILL.md
 ---
 
 # Fiat-Crypto < 2^63 Unboxed Limb Tuples & Guarded SWAR Arithmetic Handbook (Lean 4)

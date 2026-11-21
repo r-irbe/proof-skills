@@ -22,7 +22,7 @@ class Weights:
     per_line: float = 0.1  # cost per proof line
     per_shared_lemma: float = 5.0  # bonus per named shared lemma extracted
     upstream_bonus: float = 20.0  # extra bonus when Mathlib-absent (library-worthy)
-    kernel_cost_weight: float = 1.0  # weight per kernel-cost second (kernel-cost bridge A1)
+    kernel_cost_weight: float = 1.0  # weight per kernel-cost second (kernel bridge A1)
 
 
 @dataclass
@@ -83,6 +83,30 @@ def evaluate_two_axis_candidate(
     regressed = (
         after.elegance_cost > before.elegance_cost and after.kernel_cost > before.kernel_cost
     )
+    axes_inverted = (
+        (after.elegance_cost < before.elegance_cost and after.kernel_cost > before.kernel_cost)
+        or (after.elegance_cost > before.elegance_cost and after.kernel_cost < before.kernel_cost)
+    )
+    is_tradeoff = (
+        not dominates
+        and not regressed
+        and (after.elegance_cost != before.elegance_cost or after.kernel_cost != before.kernel_cost)
+    )
+    if dominates:
+        pareto_status = "dominates"
+        evidence_note = ""
+    elif regressed:
+        pareto_status = "regressed"
+        evidence_note = ""
+    elif is_tradeoff:
+        pareto_status = "tradeoff"
+        evidence_note = (
+            "Tradeoff between reader elegance and kernel cost; never collapse "
+            "after_total_cost into a single scalar optimization verdict."
+        )
+    else:
+        pareto_status = "neutral"
+        evidence_note = ""
 
     return {
         "before_total_cost": round(before_cost, 4),
@@ -90,7 +114,10 @@ def evaluate_two_axis_candidate(
         "improved": after_cost < before_cost,
         "dominates": dominates,
         "regressed": regressed,
-        "tradeoff": not dominates and not regressed and (after_cost != before_cost),
+        "tradeoff": is_tradeoff,
+        "pareto_status": pareto_status,
+        "axes_inverted": axes_inverted,
+        "evidence_note": evidence_note,
         "elegance_delta": round(after.elegance_cost - before.elegance_cost, 4),
         "kernel_delta": round(after.kernel_cost - before.kernel_cost, 4),
         "legibility": after.legibility,

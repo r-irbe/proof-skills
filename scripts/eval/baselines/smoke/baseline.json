@@ -50,6 +50,11 @@
       "passed": true,
       "score": 1.0
     },
+    "lean-asymptotic-algorithms-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
     "lean-bisect-smoke": {
       "grader": "deterministic",
       "passed": true,
@@ -61,6 +66,11 @@
       "score": 1.0
     },
     "lean-build-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-computational-reflection-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
@@ -81,6 +91,11 @@
       "score": 1.0
     },
     "lean-doc-sync-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-egraph-cpsat-superopt-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
@@ -245,12 +260,22 @@
       "passed": true,
       "score": 1.0
     },
+    "lean-unboxed-limbs-swar-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
     "lean-upstream-pr-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0
     },
     "lean-verification-gate-smoke": {
+      "grader": "deterministic",
+      "passed": true,
+      "score": 1.0
+    },
+    "lean-worker-wrapper-cps-smoke": {
       "grader": "deterministic",
       "passed": true,
       "score": 1.0

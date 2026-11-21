@@ -23,6 +23,12 @@ dispatch_targets:
 - skill:lean-research
 - skill:lean-corpus-audit
 - skill:lean-verification-gate
+- skill:lean-kernel-optimization
+- skill:lean-asymptotic-algorithms
+- skill:lean-computational-reflection
+- skill:lean-egraph-cpsat-superopt
+- skill:lean-unboxed-limbs-swar
+- skill:lean-worker-wrapper-cps
 handoffs:
   predecessors:
   - agent:user

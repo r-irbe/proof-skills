@@ -31,7 +31,7 @@ def test_all_24_souls_parse_and_bind_active_skills():
         assert fm.get("name") == sp.stem
         assert fm.get("role_container") in reg["role_containers"]
         assert fm.get("primary_skill") in active_core, (
-            f"{sp.name}: primary_skill {fm.get('primary_skill')!r} not in active 38 core skills"
+            f"{sp.name}: primary_skill {fm.get('primary_skill')!r} not in active 43 core skills"
         )
         assert fm.get("primary_skill") == reg["soul_overlays"][sp.stem]["primary_skill"]
 
@@ -78,14 +78,14 @@ def test_zero_broken_relative_markdown_links():
     assert not broken, f"Broken relative Markdown links found: {broken[:10]}"
 
 
-def test_45_smoke_cases_and_no_retired_handoffs():
+def test_50_smoke_cases_and_no_retired_handoffs():
     core_slugs = {p.parent.name for p in (ROOT / "skills").glob("*/SKILL.md")}
     pack_slugs = {p.parent.name for p in (ROOT / "packs" / "applied-strategy" / "skills").glob("*/SKILL.md")}
-    assert len(core_slugs) == 38
+    assert len(core_slugs) == 43
     assert len(pack_slugs) == 7
 
     smoke_files = sorted((ROOT / "scripts" / "eval" / "cases").glob("*-smoke.yaml"))
-    assert len(smoke_files) == 45
+    assert len(smoke_files) == 50
     smoke_slugs = {p.stem[:-6] for p in smoke_files}
     assert smoke_slugs == (core_slugs | pack_slugs)
 

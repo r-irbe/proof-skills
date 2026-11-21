@@ -2,7 +2,7 @@
 name: "lean-asymptotic-algorithms-tables"
 description: "Layer-1 fast 3-table lookup card auto-extracted from references/handbooks/lean-asymptotic-algorithms-handbook.md."
 generated_from: "references/handbooks/lean-asymptotic-algorithms-handbook.md"
-skill_ref: "skills/lean-math-discrete/SKILL.md"
+skill_ref: "skills/lean-asymptotic-algorithms/SKILL.md"
 ---
 
 # `lean-asymptotic-algorithms` -- Fast 3-Table Lookup Card (Layer 1)

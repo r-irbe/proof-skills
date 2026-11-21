@@ -1,7 +1,7 @@
 ---
 name: lean-computational-reflection-handbook
 description: Reference handbook for CPDT Proof by Computational Reflection, Section 1/2/3 Abstraction-Concrete Duality split, and proof compression in Lean 4.
-extracted_from: skills/lean-proof-refactor/SKILL.md
+extracted_from: skills/lean-computational-reflection/SKILL.md
 ---
 
 # Computational Reflection & Section 1/2/3 Proof Compression Handbook (Lean 4)

@@ -14,7 +14,7 @@ set_option autoImplicit false
 # AltProof.Tactics -- Speculative Alternative-Proof & Elegance Meta-Tactics
 
 Composes `AltProof.Core` (20-route advisor, `eqsat_rw`, `backchain`, `contra_direct`,
-`kernel_decide`, `eval_nat%`, `preunfold%`, `swar_unroll%`) and
+`kernel_decide` / `sair_decide`, `eval_nat%`, `preunfold%`, `swar_unroll%`) and
 `AltProof.Closers` (`sum_congr_ring`, `calc_ring_sum`, `gcongr_pos`, `finset_nonneg`,
 `finset_mono`, `convex_comb`, `markov_row_sum`, `matrix_pos`, `sup_norm_scale`,
 `deriv_quot_ring`, and finite/norm bridge lemmas) into:
@@ -39,6 +39,8 @@ export AltProof.Core (
   CostWeights
   computeCostX10
   TwoAxisScore
+  TwoAxisEval
+  computeTwoAxisCostX10
   routesToJson
   GoalFeatures
   exprContainsConst
@@ -250,6 +252,63 @@ def evalElegance : Tactic := fun stx =>
       else
         logInfo m!"[AltProof.elegance?] Goal requires multi-step decomposition (0 single-step or depth<=3 BFS closers succeeded)."
 
+/-- `sair_elegance?` / `kernel_elegance?`: strictly 3-axiom contest-safe variant of `elegance?`
+    (`no-grind`, zero `Lean.ofReduceBool` / `bv_decide` / `native_decide`). Probes only 3-axiom
+    clean closers including `kernel_decide` and `eqsat_rw_sair`, emitting ranked `TryThis` suggestions. -/
+syntax (name := sairEleganceTactic) ("sair_elegance?" <|> "kernel_elegance?") : tactic
+
+@[tactic sairEleganceTactic]
+def evalSairElegance : Tactic := fun stx =>
+  withTheReader Core.Context ({ · with maxHeartbeats := 0 }) do
+    let goal ← getMainGoal
+    let feats ← extractGoalFeatures goal
+    let runBoundedProbe (name : String) (tacStx : Syntax) : TacticM (Option CandidateResult) :=
+      withTheReader Core.Context ({ · with maxHeartbeats := 200000000 }) do
+        tryCandidateCloser name tacStx (steps := 1)
+    let eqCandidates : List (String × TacticM (TSyntax `tactic)) :=
+      if feats.hasEquality then [("eqsat_rw_sair", `(tactic| eqsat_rw_sair))] else []
+    let candidates : List (String × TacticM (TSyntax `tactic)) := [
+      ("rfl", `(tactic| rfl)),
+      ("assumption", `(tactic| assumption)),
+      ("kernel_decide", `(tactic| kernel_decide)),
+      ("simp_all", `(tactic| (simp_all; done))),
+      ("norm_cast", `(tactic| (norm_cast; done))),
+      ("backchain", `(tactic| backchain)),
+      ("contra_direct", `(tactic| contra_direct)),
+      ("decide", `(tactic| decide)),
+      ("omega", `(tactic| omega)),
+      ("ring", `(tactic| ring))
+    ] ++ eqCandidates ++ [
+      ("sum_congr_ring", `(tactic| sum_congr_ring)),
+      ("calc_ring_sum", `(tactic| calc_ring_sum)),
+      ("finset_nonneg", `(tactic| finset_nonneg)),
+      ("finset_mono", `(tactic| finset_mono)),
+      ("convex_comb", `(tactic| convex_comb)),
+      ("markov_row_sum", `(tactic| markov_row_sum)),
+      ("matrix_pos", `(tactic| matrix_pos)),
+      ("sup_norm_scale", `(tactic| sup_norm_scale)),
+      ("deriv_quot_ring", `(tactic| deriv_quot_ring)),
+      ("gcongr_pos", `(tactic| gcongr_pos)),
+      ("positivity", `(tactic| positivity)),
+      ("linarith", `(tactic| linarith)),
+      ("nlinarith", `(tactic| nlinarith)),
+      ("norm_num", `(tactic| norm_num)),
+      ("aesop", `(tactic| aesop))
+    ]
+    let mut successes : Array (CandidateResult × TSyntax `tactic) := #[]
+    for (name, mkStx) in candidates do
+      let tacStx ← mkStx
+      if let some res ← runBoundedProbe name tacStx then
+        successes := successes.push (res, tacStx)
+    let sorted := successes.qsort (fun (a, _) (b, _) =>
+      if a.costX10 != b.costX10 then a.costX10 < b.costX10 else a.heartbeats < b.heartbeats)
+    if h : 0 < sorted.size then
+      let (best, bestStx) := sorted[0]
+      logInfo m!"[AltProof.sair_elegance?] Contest-safe closers ({sorted.size} succeeded): best = `{best.tacticSyntax}` (costX10={best.costX10}, heartbeats={best.heartbeats})"
+      Tactic.TryThis.addSuggestion stx bestStx (origSpan? := some stx)
+    else
+      logInfo m!"[AltProof.sair_elegance?] No single-step contest-safe closer succeeded (`no-grind`, 3-axiom filter active)."
+
 end AltProof.Tactics
 
 namespace AltProof
@@ -260,6 +319,8 @@ export AltProof.Tactics (
   CostWeights
   computeCostX10
   TwoAxisScore
+  TwoAxisEval
+  computeTwoAxisCostX10
   routesToJson
   GoalFeatures
   exprContainsConst
@@ -289,6 +350,7 @@ export AltProof.Tactics (
   tryCandidateCloser
   tryBfsCandidateClosers
   evalElegance
+  evalSairElegance
 )
 
 end AltProof

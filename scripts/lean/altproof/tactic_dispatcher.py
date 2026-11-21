@@ -309,7 +309,7 @@ def recommend_tactics(
                 confidence=0.95,
             )
         )
-    if re.search(r"\b(?:kernel_decide|Lean\.ofReduceBool)\b", goal) or "kernel_decide" in proof:
+    if re.search(r"\b(?:kernel_decide|Lean\.ofReduceBool)\b", goal + " " + proof) or "decide +kernel" in proof:
         recommendations.append(
             TacticRecommendation(
                 tactic="kernel_decide",
@@ -476,8 +476,18 @@ def recommend_tactics(
             )
         )
 
+    eq_sides = target_no_arrows.split("=", 1)
+    is_reflexive_eq = len(eq_sides) == 2 and eq_sides[0].strip() == eq_sides[1].strip()
+    is_trivial_rfl = bool(re.fullmatch(r"(?:by\s+)?rfl", proof.strip()))
+    has_eq_context = (
+        any(sep in goal for sep in ("|-", "\u22a2"))
+        and "=" in re.split(r"(?:\|-|\u22a2)", goal, maxsplit=1)[0]
+    ) or bool(re.search(r"\b(?:rw|simp|congr|calc)\b", proof))
     has_pure_eq = bool(
         "=" in target_no_arrows
+        and not is_reflexive_eq
+        and not is_trivial_rfl
+        and has_eq_context
         and not re.search(r"(?:<=|>=|!=|\u2264|\u2265|\u2260)", target_no_arrows)
     )
     if (

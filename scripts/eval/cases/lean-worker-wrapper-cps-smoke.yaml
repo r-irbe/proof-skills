@@ -1,0 +1,23 @@
+id: lean-worker-wrapper-cps-smoke
+title: lean-worker-wrapper-cps dispatch smoke check
+skill: lean-worker-wrapper-cps
+ensemble_rubric: lean-proof-quality
+difficulty: easy
+input:
+  prompt: 'Apply the lean-worker-wrapper-cps skill workflow using references/cards/lean-worker-wrapper-cps-tables.md.
+
+    '
+  expected_output_substring: 'Follow the lean-worker-wrapper-cps protocol with
+    zero unproven goals and clean kernel verification.
+
+    '
+expected:
+  contains:
+  - lean-worker-wrapper-cps|protocol|verify
+  not_contains:
+  - sorry
+  - admit
+grader: deterministic
+tags:
+- smoke
+- lean-worker-wrapper-cps

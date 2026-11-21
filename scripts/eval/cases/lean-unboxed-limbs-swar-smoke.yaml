@@ -1,0 +1,23 @@
+id: lean-unboxed-limbs-swar-smoke
+title: lean-unboxed-limbs-swar dispatch smoke check
+skill: lean-unboxed-limbs-swar
+ensemble_rubric: lean-proof-quality
+difficulty: easy
+input:
+  prompt: 'Apply the lean-unboxed-limbs-swar skill workflow using references/cards/lean-unboxed-limbs-swar-tables.md.
+
+    '
+  expected_output_substring: 'Follow the lean-unboxed-limbs-swar protocol with
+    zero unproven goals and clean kernel verification.
+
+    '
+expected:
+  contains:
+  - lean-unboxed-limbs-swar|protocol|verify
+  not_contains:
+  - sorry
+  - admit
+grader: deterministic
+tags:
+- smoke
+- lean-unboxed-limbs-swar

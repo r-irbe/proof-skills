@@ -42,6 +42,16 @@ theorem cost_extraction_outranks_pin :
 theorem cost_upstream_bonus_pin :
     computeCostX10 10 1 true 0 = -240 := rfl
 
+/-- Two-axis Pareto evaluator detects both strict dominance and elegance/kernel tradeoffs. -/
+theorem two_axis_eval_pareto_pins :
+    let b : TwoAxisScore := { eleganceCostX10 := 100, kernelHeartbeats := 20000, legibility := "medium" }
+    let dom : TwoAxisScore := { eleganceCostX10 := 80, kernelHeartbeats := 15000, legibility := "high" }
+    let tr : TwoAxisScore := { eleganceCostX10 := 50, kernelHeartbeats := 25000, legibility := "low" }
+    (computeTwoAxisCostX10 b dom).paretoStatus = "dominates" ∧
+    (computeTwoAxisCostX10 b tr).paretoStatus = "tradeoff" ∧
+    (computeTwoAxisCostX10 b tr).axesInverted = true := by
+  decide
+
 /-- Relevance filter selects 8 routes when both `hasFinsetSum` and `hasAbs` hold. -/
 theorem filter_finset_abs_routes_pin :
     (filterRelevantRoutes { hasFinsetSum := true, hasAbs := true }).length = 8 := rfl
@@ -324,13 +334,13 @@ theorem elegance_bfs_intros_finset_pin
   intros
   sum_congr_ring
 
-/-- `kernel_decide` closes kernel-clean decidable and Presburger obligations without `Lean.ofReduceBool`. -/
-theorem kernel_decide_kernel_clean_pin (n : Nat) (h : n < 12) :
+/-- `sair_decide` closes kernel-clean decidable and Presburger obligations without `Lean.ofReduceBool`. -/
+theorem sair_decide_kernel_clean_pin (n : Nat) (h : n < 12) :
     (3 * 7 = 21) ∧ (n ≤ 12) := by
-  constructor <;> kernel_decide
+  constructor <;> sair_decide
 
 /-! ### 4. Equality Saturation (`eqsat_rw` / `egg_rw`), Core `backchain`, `grind_close`, `contra_direct`,
-    Kernel Compile-Time Superoptimizers (`eval_nat%`, `preunfold%`, `swar_unroll%`), & `gcongr_pos` / `calc_ring_sum` Pins -/
+    SAIR Compile-Time Superoptimizers (`eval_nat%`, `preunfold%`, `swar_unroll%`), & `gcongr_pos` / `calc_ring_sum` Pins -/
 
 /-- `eqsat_rw` (and alias `egg_rw`) performs bidirectional congruence saturation (`congrArg`, `Eq.trans`,
     `Eq.symm`) over local and supplied equational lemmas where directional `simp` would loop on commutativity. -/
@@ -467,5 +477,15 @@ theorem doeblin_zero_sum_l1_pin
     (δ : ℝ) (hM : ∀ i j, δ ≤ M i j) (d : Fin 3 → ℝ) (hd0 : ∑ i, d i = 0) :
     ∑ j, |∑ i, d i * M i j| ≤ (1 - 3 * δ) * ∑ i, |d i| := by
   simpa using zero_sum_vecMul_l1_le_of_entry_floor M hrow δ hM d hd0
+
+/-- `eqsat_rw_sair` discharges equational congruence using strictly 3 standard axioms (`no-grind`). -/
+theorem eqsat_rw_sair_pin {α : Type*} (f : α → α) (a b c : α)
+    (hab : a = b) (hbc : b = c) : f a = f c := by
+  eqsat_rw_sair
+
+/-- `sair_elegance?` probes strictly 3-axiom contest-safe closers without `grind`/`bv_decide`. -/
+theorem sair_elegance_pin (n : Nat) : n + 0 = n := by
+  sair_elegance?
+  rfl
 
 end AltProof.Tests

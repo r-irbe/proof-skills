@@ -1,0 +1,23 @@
+id: lean-asymptotic-algorithms-smoke
+title: lean-asymptotic-algorithms dispatch smoke check
+skill: lean-asymptotic-algorithms
+ensemble_rubric: lean-proof-quality
+difficulty: easy
+input:
+  prompt: 'Apply the lean-asymptotic-algorithms skill workflow using references/cards/lean-asymptotic-algorithms-tables.md.
+
+    '
+  expected_output_substring: 'Follow the lean-asymptotic-algorithms protocol with
+    zero unproven goals and clean kernel verification.
+
+    '
+expected:
+  contains:
+  - lean-asymptotic-algorithms|protocol|verify
+  not_contains:
+  - sorry
+  - admit
+grader: deterministic
+tags:
+- smoke
+- lean-asymptotic-algorithms

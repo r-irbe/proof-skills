@@ -1,7 +1,7 @@
 ---
 name: lean-worker-wrapper-cps-handbook
 description: Reference handbook for GHC Core-to-Core transformations (Worker/Wrapper unboxing, Join Points, SpecConstr call-pattern specialization, and defunctionalized CPS) in Lean 4 kernel WHNF.
-extracted_from: skills/lean-proof-refactor/SKILL.md
+extracted_from: skills/lean-worker-wrapper-cps/SKILL.md
 ---
 
 # GHC Core Worker/Wrapper, Join Points, SpecConstr & Defunctionalized CPS Handbook (Lean 4)

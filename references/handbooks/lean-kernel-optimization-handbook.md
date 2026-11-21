@@ -4,7 +4,7 @@ description: Reference handbook for @lean-kernel-optimization.
 extracted_from: skills/lean-kernel-optimization/SKILL.md
 ---
 
-# Lean 4 Kernel WHNF, ZDD, SWAR, and Proof-Carrying Hardware Codegen Handbook (`KERNEL-LAW-01..28`)
+# Lean 4 Kernel WHNF, ZDD, SWAR, and Proof-Carrying Hardware Codegen Handbook (`KERNEL-LAW-01..31`)
 
 > **Scope**: Public reference manual for Lean 4 kernel reduction cost (`type_checker.cpp` WHNF, `m_st->m_whnf` caching, `@Nat.rec` / `@Bool.rec` dispatch, GMP `mpz` big-integer arithmetic, SWAR word packing, ZDD state compression), the `WAVE-13 G1` Abstraction-Concrete Duality Cost Law, `ADR-INV-0025` step-index vs fuel mechanics, and Proof-Carrying Hardware Lowering (`PolyBitOp` MLIR/PTX/AVX2/C++20, exact vs packed arithmetic boundaries, and 128B wait-free SPSC / `.leangrph` `mmap` / `io_uring` substrates).
 > **Encoding**: Scoped Unicode policy (`typographic-free` by default) per `INV-001`.
@@ -29,8 +29,10 @@ extracted_from: skills/lean-kernel-optimization/SKILL.md
 | Fixed-width array/DP recurrence or bitboard transition | `KERNEL-LAW-15`, `KERNEL-LAW-16`, `KERNEL-LAW-20` | `gmp-swar-word-packing` | Pack `k` lanes into one GMP `Nat` word (Kronecker SWAR); unroll fixed-trip kernels via binary-doubling combinators (`t0..t6`); evaluate cellular/crypto rules in ANF (`^^^`, `&&&`, `|||`) |
 | Finite-state graph/polyomino/automaton frontier search | `KERNEL-LAW-17`, `KERNEL-LAW-18`, `KERNEL-LAW-18B` | `algorithm-class-substitution` | Canonicalize states as CBV `Nat` words (never tree-recurse over lists); compress frontiers as ZDD/bitmasks; count/test 1-bit shift overlaps (`overlap := w &&& (w >>> 1)`) without `Nat` underflow |
 | Branching search with lookahead constraints & symmetry | `KERNEL-LAW-19`, `KERNEL-LAW-19B`, `KERNEL-LAW-21` | `algorithm-class-substitution` | Fuse lookahead checks into one bitwise mask guard; short-circuit `Nat.beq avail 0` immediately; prove finite symmetry/heuristic reorderings via decoupled `List.Perm` certificates |
-| Parametric hot `def step (cfg : Config)` vs concrete loop | `KERNEL-LAW-22..25B`, `WAVE-13 G1` | `abstraction-concrete-duality` | Specialize hot `def`s to raw unboxed `Nat` literals (`1,600x..3,345x` penalty for parametric hot steps!); state general parametric theorems separately and bridge via `rfl` (`<= 1%` cost) |
+| Parametric hot `def step (cfg : Config)` vs concrete loop | `KERNEL-LAW-22..25B`, `WAVE-13 G1`, `KERNEL-LAW-31` | `abstraction-concrete-duality` | Specialize hot `def`s to raw unboxed `Nat` literals (`1,600x..3,345x` penalty for parametric hot steps!); isolate Section 1 (Spec), Section 2 (Impl), Section 3 (Bridge via `rfl`) |
 | Hardware codegen from verified Lean bit/word kernel | `PolyBitOp`, Exact-vs-Packed Lowering | `proof-carrying-codegen` | Emit MLIR (`ctpop`/`gpu.shuffle xor`), Ada `sm_89` PTX, AVX2/AVX-512 Rust, or freestanding C++20; enforce `exact` (`GMP`/`rug`) vs `checked-small -> NeedsWide` overflow traps (`N01..N12`) |
+| Dense Kronecker packing of wide polynomial/grid states | `KERNEL-LAW-29`, `KERNEL-LAW-29B`, `KERNEL-LAW-30` | `algorithm-class-substitution` | Avoid artificial contest cutoffs (`KERNEL-LAW-29`) and static lookup tables (`KERNEL-LAW-30`); refute multi-hundred-limb Kronecker huge-`Nat` blowup (`polydisc`) with bounded subresultant/modular limb regimes |
+| Discovery automation (`grind`/EqSat) targeting strict `no-grind` | `KERNEL-LAW-31` Discovery-vs-Submission Boundary | `constructive-decidable-reduction` | Discover rewrites via `grind`/`egg`/CP-SAT off-path; materialize explicit 3-axiom proofs (`kernel_decide`) with zero `grind` residue on submission paths |
 
 ---
 
@@ -45,6 +47,8 @@ extracted_from: skills/lean-kernel-optimization/SKILL.md
 | "Implement branch-free low-bit cut/mask on `Nat` words" | `KERNEL-LAW-14`, Nov 11-12 Cut/Mask Contract | Exploit truncating `Nat.sub`: when `k <= s`, `k - s = 0` yields `1 <<< 0 - 1 = 0` mask automatically; guard multi-limb shifts with `Nat.ble a (1 <<< (k - s) - 1)` skip-to-plain-shift when profitable |
 | "Lower a Lean SWAR/BitVec kernel to C++20, Rust SIMD, or CUDA PTX" | `PolyBitOp`, Exact-vs-Packed Lowering | Prove equivalence to spec in Lean (`Template_ProofCarryingCodegen.lean`), lower pure bitwise kernels via `PolyBitOp`, and guard multi-limb arithmetic with `checked-small -> NeedsWide` + operand snapshotting |
 | "Stream verified state transitions over zero-copy IPC / NVMe" | `alignas(128)` SPSC, `.leangrph`, `io_uring` | Separate cache lines to `128 B` (Zen 3 L2 streamer prefetch pair), align `.leangrph` CSR headers to `128 B` (`64 B` magic/counts + `64 B` SHA-256), and register `2 MB` `HugeTLB` buffers with `io_uring` |
+| "Square a wide `Nat` (>= 30 limbs) vs an unboxed `< 2^63` scalar" | `KERNEL-LAW-13`, `KERNEL-LAW-13B`, `KERNEL-LAW-30` | Above ~30 GMP limbs use `Nat.pow x 2` (`0.58x` cost via `mpz_pow_ui -> mpn_sqr`) or shared `Nat.mul`; for single-limb `< 2^63` scalars use direct `Nat.mul x x`; exploit linear `O(L)` single-limb x multi-limb scaling vs `O(L^2)` multi-limb products |
+| "Harden a strict `no-grind` 3-axiom submission after e-graph discovery" | `KERNEL-LAW-29`, `KERNEL-LAW-30`, `KERNEL-LAW-31` | Enforce Section 1/2/3 split (`KERNEL-LAW-31`), purge lookup tables/band cutoffs (`KERNEL-LAW-29`/`30`), and replace discovery `grind`/`eqsat` traces with direct `kernel_decide` / `rw` proofs |
 
 ---
 
@@ -58,6 +62,8 @@ extracted_from: skills/lean-kernel-optimization/SKILL.md
 | Wrong answer `0` when isolating lowest set bit with `x &&& (0 - x)` | Truncating `Nat` subtraction evaluates `0 - x = 0` for all `x : Nat`! Two's-complement `-x` only holds on `BitVec w` / `UInt64` | Never write `0 - x` on `Nat`! On `BitVec w` use `x &&& (-x)`; on `Nat` clear lowest bit via `x &&& (x - 1)` (for `x > 0`) or compute 1-bit shift overlap `x &&& (x >>> 1)` (`KERNEL-LAW-18B`) |
 | `depends on axiom Lean.ofReduceBool` / `Lean.trustCompiler` | Proof invoked `native_decide`, `decide +native`, or `bv_decide` on a strict 3-axiom target | Switch to 3-rung `kernel_decide` (`first | rfl | decide +kernel | omega`) and verify with `#print axioms` |
 | Native Rust/C++ port silently overflows or corrupts aliased buffer | Arbitrary-precision Lean `Nat`/`Int` lowered to fixed `u64`/`i64` without width guard, or in-place `out == lhs` clobbered before read | Enforce `checked-small -> NeedsWide` fallback to `GMP`/`rug`, snapshot aliased inputs before mutation, and run `#eval` vs native conformance vectors `N01..N12` |
+| Kronecker polynomial packing regresses kernel time (`polydisc`) | Packing degrees into one huge `> 100`-limb `Nat` induces `O(L^2)` GMP multiplication overhead | Apply `KERNEL-LAW-29B` / `KERNEL-LAW-30`: keep coefficients in bounded limb tuples or subresultant PRS rather than monolithic Kronecker `Nat`s |
+| Wide squaring misses `0.58x` GMP speedup or scalar `x ^ 2` regresses | Wrong choice between `Nat.pow x 2` and `Nat.mul x x` across limb regimes | Use `Nat.mul x x` on `< 2^63` scalars (`KERNEL-LAW-13B`) and `Nat.pow x 2` (`mpn_sqr`, `0.58x`) on wide `>= 30`-limb `Nat`s (`KERNEL-LAW-13`/`30`) |
 
 ---
 
@@ -74,9 +80,9 @@ extracted_from: skills/lean-kernel-optimization/SKILL.md
 
 ---
 
-## 3. Complete Catalog of the 42 Kernel Optimization Laws (`KERNEL-LAW-01..28`)
+## 3. Complete Catalog of the Kernel Optimization Laws (`KERNEL-LAW-01..31`)
 
-> **Diagnostic Mapping Note**: All 39 laws (`25` core laws `01..25` + `14` sub-laws `01B, 01C, 02B, 03B, 12B, 13B, 14B, 14C, 16B, 18B, 19B, 22B, 22C, 25B`) are documented below; `lean-analyzer` emits 37 automated static diagnostic codes (combining `06/07` structural recursion checks and pure documentation sub-checks where AST context is shared).
+> **Diagnostic Mapping Note**: `KERNEL-LAW-01..25B` (`39` base laws) plus the architectural/static laws `KERNEL-LAW-26..31` (`26`, `27/27A`, `28`, `29`, `29B`, `30`, `31`) align with `KernelLawAuditor` and `lean-analyzer`'s static diagnostic engine (`src/source_diagnostics.rs`). Note that `KERNEL-LAW-26..28` document both the auditor static checks (`26` constant derivation coverage, `27A` stale doc refs, `28` `maxRecStepLamNodes <= 30`) and the associated WHNF structural patterns (recursor shell specialization, tail-accumulator flattening, and macro AST DAG deduplication).
 
 ### Layer I: Memory, Reference Counting, and Substitution (`KERNEL-LAW-01` .. `KERNEL-LAW-05`)
 
@@ -220,7 +226,7 @@ extracted_from: skills/lean-kernel-optimization/SKILL.md
 
 ---
 
-### Layer V: Verification, Duality Cost Law, and Clean-Code (`KERNEL-LAW-21` .. `KERNEL-LAW-28`)
+### Layer V: Verification, Anti-Gating, Duality & Clean-Code (`KERNEL-LAW-21` .. `KERNEL-LAW-31`)
 
 32. **`KERNEL-LAW-21` (`KernelLaw21HeuristicListPerm`) -- Decoupled `List.Perm` / Certificate Equivalence Over Ordered Search**
     - **Kernel Mechanism**: Reordering search variables (e.g., fail-first / MRV column ordering in exact cover or SAT) dramatically shrinks the runtime search tree, while proving equivalence directly on the heuristic recursion is intricate. Bridging the reordered solver to the canonical solver via a cold `List.Perm` invariance theorem (`fold_perm` over commutative-associative state joins) costs **zero** runtime WHNF instructions.
@@ -254,17 +260,29 @@ extracted_from: skills/lean-kernel-optimization/SKILL.md
     - **Kernel Mechanism**: Referencing a `reducible` `abbrev` formula (like `abbrev mask := (1 <<< 64) - 1`) inside a hot `@Nat.rec` step **re-unfolds the formula on every step**! Conversely, bare magic numbers in specs are unreadable.
     - **Rule**: Define readable `abbrev` formulas in Section 1 (cold spec), place **pre-computed raw `nat_lit` numerals** (or closed `def` constants cached in `m_st->m_whnf`) inside Section 2 hot `def`s, and connect them in Section 3 with a zero-runtime-cost `theorem hotMask_eq_specMask : hotMask = specMask := rfl` pin!
 
-40. **`KERNEL-LAW-26` (`KernelLaw26RecursorShellSpecialization` / `K-REC-LAMBDA-SIZE`) -- Recursor Shell Specialization & Branching Step Lambda Size Bounding (`<= 30` AST nodes)**
-    - **Kernel Mechanism**: In Lean 4's C++ kernel WHNF reduction, each recursor step evaluates `f k ih`. If `f` is an inline lambda containing nested branching (`Bool.rec`, `Int.rec`) exceeding 30 AST nodes, the kernel re-evaluates the lambda body substitution on every iteration.
-    - **Rule**: Factor branching recursor step lambdas exceeding 30 AST nodes into top-level first-order helper definitions (`def stepAux ...`). Keep pure 100% branch-free arithmetic step bodies inline to exploit `m_st->m_whnf` subterm caching.
+40. **`KERNEL-LAW-26` (`KernelLaw26DerivationCoverage` / `KernelLaw26RecursorShellSpecialization`) -- Constant Derivation Coverage & Recursor Shell Specialization**
+    - **Kernel Mechanism**: Literals `>= 2^16` without derivation formulas or `CONSTANTS-GUIDE` anchors undermine auditability; simultaneously, inline branching lambdas (`Bool.rec`, `Int.rec`) inside `@Nat.rec` exceeding 30 AST nodes force repeated substitution per step.
+    - **Rule**: Supply mathematical derivation formulas (or a `CONSTANTS-GUIDE` anchor) for every literal `>= 2^16`, factor branching step bodies into first-order helper `def`s, and keep 100% branch-free arithmetic step bodies inline (`m_st->m_whnf`).
 
-41. **`KERNEL-LAW-27` (`KernelLaw27ConstantVectorFlattening` / `K-TAIL-ACC-NO-BOX` / `K-CONSTRUCTOR-ACCUMULATOR`) -- Constant Vector Flattening & Unboxed Tail-Recursive Accumulators**
-    - **Kernel Mechanism**: Unpacking and repacking multi-variable state tuples (`Prod.rec`, `WPair.rec`) inside recursive step bodies builds intermediate projection and constructor allocation thunks. Moreover, non-constructor increments (`Nat.add 1 k`) build nested application thunks re-traversed $\Theta(s^2)$ times.
-    - **Rule**: Pass accumulators in constructor-normal form (`Nat.succ k`), and flatten multi-variable state into unboxed arguments in tail position, constructing the output pair/record once at the base case.
+41. **`KERNEL-LAW-27` / `KERNEL-LAW-27A` (`KernelLaw27StaleDocRef` / `KernelLaw27ConstantVectorFlattening`) -- Docstring Hygiene & Unboxed Tail Accumulators**
+    - **Kernel Mechanism**: Stale backticked identifiers in docstrings/`#verso` notes mislead auditors; structurally, unpacking/repacking `Prod.rec`/`WPair.rec` inside recursor steps and non-constructor `Nat.add 1 k` thunks incur $\Theta(s^2)$ traversal tax.
+    - **Rule**: Eliminate stale docstring/`#verso` symbol references (`27A`), keep accumulators eliminated by `@Nat.rec` in `Nat.succ` constructor-normal form, and flatten multi-variable state into unboxed tail arguments.
 
-42. **`KERNEL-LAW-28` (`KernelLaw28TwinlitMacroDeduplication` / `K-MACRO-DUPLICATION`) -- Proof-Irrelevant Twinlit Differential Measurement & Macro AST Duplication Elimination**
-    - **Kernel Mechanism**: Elaboration-time local macros expand repeated AST subtrees into multiple call sites, causing exponential expression tree growth in the kernel's reduction cone. Furthermore, standard boundary benchmarks retain unscored literal parse overhead.
-    - **Rule**: Factor multi-use macro subtrees into named top-level closed helper definitions to preserve kernel DAG sharing; measure pure reduction via the proof-irrelevant `real - twinlit` differential: `(impl n = impl n) ∧ (v = v)` with proof `⟨rfl, rfl⟩`.
+42. **`KERNEL-LAW-28` (`KernelLaw28RecStepSize` / `KernelLaw28TwinlitMacroDeduplication`) -- `maxRecStepLamNodes <= 30`, Macro Deduplication & `twinlit` Differential**
+    - **Kernel Mechanism**: Elaboration-time macro duplication inflates kernel AST size exponentially and breaks DAG sharing; branching recursor step lambdas above 30 AST nodes degrade step substitution.
+    - **Rule**: Keep branching recursor step-lambda bodies `<= 30` AST nodes, factor repeated macro subtrees into closed helper `def`s, and measure pure kernel cost via the proof-irrelevant `real - twinlit` differential `(impl n = impl n) /\ (v = v)` (`⟨rfl, rfl⟩`).
+
+43. **`KERNEL-LAW-29` & `KERNEL-LAW-29B` (`KernelLaw29AntiGatingCutoff` / `KernelLaw29bStructuralRegime`) -- Anti-Gating Ban vs Authentic Hardware/Math Regimes & Kronecker Refutation**
+    - **Kernel Mechanism**: Artificial contest-band cutoffs (for example branching at `n <= 961` to a slow quadratic fallback) game benchmarks without genuine algorithmic improvement (`KERNEL-LAW-29`). Conversely, authentic Timsort-style transitions dictated by mathematical structure, `lean_box` `< 2^63` scalar vs multi-limb `mpz_t`, or GMP thresholds are valid (`KERNEL-LAW-29B`). Notably, empirical `polydisc` benchmarking refutes naive Kronecker substitution when packing multivariate coefficients into one multi-hundred-limb `Nat` inflates `O(L^2)` GMP multiplication beyond bounded limb arrays or subresultant PRS.
+    - **Rule**: Never insert hardcoded contest-band cutoffs with slow fallbacks (`KERNEL-LAW-29`); dispatch cleanly on intrinsic mathematical or word-width regime boundaries (`KERNEL-LAW-29B`) and reject monolithic Kronecker huge-`Nat` packing when multi-limb multiplication cost dominates.
+
+44. **`KERNEL-LAW-30` (`KernelLaw30ZeroLookupTable`) -- Dynamic Evaluation, Zero Lookup Tables, Wide `Nat.pow x 2` (`0.58x`) & Linear `O(L)` Limb Scaling**
+    - **Kernel Mechanism**: Precomputed prime/answer tables (`[11, 13, ...]`) and inline constants `> 2^64` in computational cones substitute memory lookup for algorithmic reduction. Separately, GMP exhibits a sharp crossover across operand widths: on `< 2^63` scalars `Nat.mul x x` avoids `pow` overhead, whereas on wide multi-limb `Nat`s (`>= 30` limbs) **`Nat.pow x (nat_lit 2)` dispatches `mpz_pow_ui -> mpn_sqr`, executing in `0.58x` the instructions of `Nat.mul x x`**! Moreover, single-limb (`< 2^64`) x multi-limb products scale linearly **`O(L)`** via `mpn_mul_1`, avoiding `O(L^2)` multi-limb x multi-limb convolution.
+    - **Rule**: Eliminate hardcoded lookup tables and unboxed `> 2^64` constants from Section-2 cones (`KERNEL-LAW-30`, using dynamic sieves per `@lean-asymptotic-algorithms`); use `Nat.pow x 2` on wide multi-limb `Nat`s vs `Nat.mul x x` on `< 2^63` scalars, and preserve `O(L)` single-limb multipliers wherever possible.
+
+45. **`KERNEL-LAW-31` (`KernelLaw31Section123Duality`) -- Section 1/2/3 Abstraction-Concrete Duality & Discovery `grind`/EqSat vs `no-grind` Submission Boundary**
+    - **Kernel Mechanism**: Conflating abstract specs (`Prop`, typeclasses) with concrete hot `def`s creates `1,600x..3,345x` WHNF slowdown, while leaving discovery automation (`grind`, `egg`, CP-SAT search) on strict submission paths risks `Lean.ofReduceBool`, excess axioms, or elaboration timeouts.
+    - **Rule**: Enforce strict Section 1 (`abbrev` cold specs) / Section 2 (monomorphic zero-`Prop` kernel `def`s) / Section 3 (`rfl` / `@[csimp]` proof bridge + `kernel_decide`) separation (`KERNEL-LAW-31`), and run `grind`/e-graph/CP-SAT strictly in offline discovery while materializing clean `no-grind` 3-axiom proofs (`[propext, Classical.choice, Quot.sound]`).
 
 ---
 

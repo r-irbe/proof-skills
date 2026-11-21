@@ -168,13 +168,17 @@ def test_kernel_handbook_covers_all_42_laws_and_routes():
         "KERNEL-LAW-25B",
     }
     assert len(expected_39_kernel_laws) == 39
-    expected_42_kernel_laws = expected_39_kernel_laws | {
+    expected_45_kernel_laws = expected_39_kernel_laws | {
         "KERNEL-LAW-26",
         "KERNEL-LAW-27",
         "KERNEL-LAW-28",
+        "KERNEL-LAW-29",
+        "KERNEL-LAW-29B",
+        "KERNEL-LAW-30",
+        "KERNEL-LAW-31",
     }
     found_codes = set(re.findall(r"\bKERNEL-LAW-\d{2}[A-Z]?\b", text))
-    assert expected_42_kernel_laws <= found_codes
+    assert expected_45_kernel_laws <= found_codes
     assert "KernelBrecOnTax" in text and "KernelPowerOfTwoDivMod" in text
     assert "WAVE-13 G1" in text
 

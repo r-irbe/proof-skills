@@ -31,38 +31,43 @@ metadata:
 
 # Lean 4 Paper, Requirement & Report Synchronization
 
-Maintain bidirectional fidelity between informal papers/reports and formal Lean 4 declarations across the full
-lifecycle: pre-proof requirement extraction, post-proof LaTeX report generation, theorem-count synchronization, and
-readability review.
+Maintain bidirectional fidelity between papers/reports and Lean 4 declarations across requirement extraction,
+LaTeX report compilation, theorem/metric sync, concordance checking, and anonymized supplement generation.
 
 ## Routing
-- **USE FOR:** extracting formalizable claims from papers (`requirements` mode), compiling blueprint artifacts into
-  LaTeX/PDF reports (`report` mode), updating paper theorem counts/citations (`sync` mode), and auditing draft
-  readability (`feedback` mode).
-- **DO NOT USE FOR:** authoring step-by-step pedagogical proof narratives (`@lean-pedagogical-exposition`) or
-  annotating Lean declarations with `@[blueprint]` (`@lean-blueprint`).
+- **USE FOR:** claim extraction (`requirements`), blueprint-to-LaTeX reports (`report`), paper/concordance sync
+  (`sync`), standalone tree-shaken supplements (`supplement`), and readability/terminology review (`feedback`).
+- **DO NOT USE FOR:** step-by-step pedagogical narratives (`@lean-pedagogical-exposition`) or `@[blueprint]` tags
+  (`@lean-blueprint`).
 
 ## Workflow
-1. **Select Mode** -- `requirements` (paper -> 3-part spec queue), `report` (`scripts/lean/blueprint_to_report.py`
-  -> LaTeX), `sync` (`scripts/lean/metric_sync.py` -> update appendix counts & `[T<chap>.<idx>]` anchors), or
-  `feedback` (flag undefined terms & broken citations).
-2. **Verify Identifier & Citation Parity** -- Run `scripts/lean/check_citations.py` so every Lean theorem/module
-  cited in prose physically exists and is `sorry`-free.
-3. **Enforce Honest Scope** -- Distinguish kernel-checked theorems from external hypotheses or idealized model
-  assumptions; never overclaim formal coverage.
-4. **Compile & Validate Typography** -- Enforce `INV-001` scoped Unicode and verify clean LaTeX/Markdown compilation with zero unresolved references.
+1. **Select Mode** -- `requirements` (paper -> 3-part spec), `report` (`blueprint_to_report.py`), `sync`
+  (`metric_sync.py` + `Concordance.lean`), `supplement` (`altproof tree-shake --anonymize --verify-build`), or
+  `feedback`.
+2. **Verify Concordance, `.bib` & Terminology** -- Run `scripts/lean/check_citations.py` and
+  `scripts/lean/paper_supplement_audit.py` for 1-to-1 theorem parity, `.bib`/`filecontents*` byte parity, and zero
+  coined/spliced mathematical misnomers.
+3. **Enforce Three-Tier Provenance & Scope** -- Partition credit across upstream (`Mathlib`/`Cslib`), adapted or
+  newly proved classical theory (preserving SPDX notices), and novel domain results; cite only executed checkers
+  (`Lean.Kernel.Environment.replay`).
+4. **Compile & Validate Typography** -- Enforce three-tier `INV-001` Unicode, Knuth Ch. 18 inline math, zero
+  Overfull boxes, and clean LaTeX/BibTeX compilation within the page budget.
 
 ## Recovery & STOP
-- Never cite a `sorry`-bearing or non-existent Lean declaration as "formally verified" in any paper or report; halt and route back to `@lean-proof`.
-- Re-derive module/theorem counts from a clean build census rather than copying historical numbers from prose.
+- Never cite a `sorry`-bearing, facade-stub, or missing Lean declaration as verified; strengthen the Lean proof or
+  calibrate the paper claim to match exact proved hypotheses.
+- Remove `@[deprecated]` shims from `.lean` files; log renames in an external Markdown ledger (`GT-66`).
+- Re-derive module/theorem/constant counts from a clean build + cold replay census.
 
 ## Handoffs
 - **Predecessors:** `lean-blueprint`, `lean-verification-gate`, `lean-review-council`.
 - **Successors:** `lean-specification`, `lean-pedagogical-exposition`, `lean-retro-methodology`.
 
 ## Detailed reference
-- **Layer-1 Fast Lookup Card (read first)**: [`references/cards/lean-doc-sync-tables.md`](../../references/cards/lean-doc-sync-tables.md)
-- Full handbook: [`../../references/handbooks/lean-doc-sync-handbook.md`](../../references/handbooks/lean-doc-sync-handbook.md)
+- **Layer-1 Card**: [`references/cards/lean-doc-sync-tables.md`](../../references/cards/lean-doc-sync-tables.md)
+- **Handbook**: [`../../references/handbooks/lean-doc-sync-handbook.md`](../../references/handbooks/lean-doc-sync-handbook.md)
+- **Supplement Protocol**:
+  [`../../references/protocols/double-blind-paper-and-supplement-release.md`](../../references/protocols/double-blind-paper-and-supplement-release.md)
 
 ## See also
 - [`../lean-pedagogical-exposition/SKILL.md`](../lean-pedagogical-exposition/SKILL.md) -- Textbook-grade mathematical proof narratives

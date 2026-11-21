@@ -14,6 +14,8 @@ extracted_from: skills/lean-doc-sync/SKILL.md
 | Informal paper theorem `\begin{theorem}` | `requirements` mode -> 3-part spec | Extract Preconditions, Postconditions, and Witness for `@lean-specification` |
 | Completed `@[blueprint]` graph | `scripts/lean/blueprint_to_report.py` | Compile dependency-ordered LaTeX report sections |
 | Paper appendix theorem/module table | `scripts/lean/metric_sync.py` | Re-derive exact counts from compiled `.olean` census |
+| Conference paper + Lean 4 concordance | `Concordance.lean` + `paper_supplement_audit.py` | Pair every numbered claim & walkthrough arithmetic check with `#check` + `#print axioms` |
+| Double-blind CMT/HotCRP Lean supplement | `altproof tree-shake --anonymize --verify-build` | Emit declaration-shaken slice + metadata-scrubbed `.tar.gz` + root `LICENSE` |
 
 ### Table 2: Intent-First (`phrasebook` Entry Point)
 
@@ -21,13 +23,18 @@ extracted_from: skills/lean-doc-sync/SKILL.md
 | :--- | :--- | :--- |
 | Verify every Lean name cited in LaTeX exists | `scripts/lean/check_citations.py` | Check `file:line` and identifier parity against compiled tree |
 | Review documentation draft for undefined terms | `feedback` mode readability pass | Flag forward references, missing assumptions, and scope overclaims |
+| Audit `.bib`, terminology, `INV-001` & supplement | `scripts/lean/paper_supplement_audit.py --strict` | Verify `filecontents*` `.bib` parity, 0 BibTeX/Overfull warnings, 0 misnomers, and 0 `@[deprecated]` shims |
+| Document honest proof provenance & novelty | Three-Tier Provenance Section | Partition credit into Tier 1 (`Mathlib`/`Cslib`), Tier 2 (adapted/newly proved classical), and Tier 3 (novel domain results) |
 
 ### Table 3: Error / Bottleneck-First (`errors` Entry Point)
 
 | Symptom / Error / Bottleneck | Root Cause | Remediating Fix |
 | :--- | :--- | :--- |
-| Broken `file.lean:123` citation in docs | Line numbers shifted after refactoring | Prefer declaration-anchored references and re-run `check_citations.py` |
-| Prose claims theorem proved while `sorry` remains | Premature paper sync before `@lean-verification-gate` | Downgrade prose claim or block release until `0 sorry` |
+| Broken `foo.lean:123` citation in docs | Line numbers shifted after refactoring | Prefer declaration-anchored references and re-run `check_citations.py` |
+| Prose claims theorem proved while `sorry` or facade stub remains | Premature paper sync before `@lean-verification-gate` | Strengthen upstream Lean theorem or calibrate paper statement to exact proved hypotheses |
+| Coined/spliced mathematical misnomer (`Polyak-Doob`, `Presburger` on squares) | Unverified eponymous naming | Cross-check primary literature, delete `@[deprecated]` shims (`GT-66`), and run `paper_supplement_audit.py` |
+| Embedded `filecontents*` `.bib` drifts from standalone `.bib` | Manual edit applied to only one file | Synchronize byte-for-byte and gate with `paper_supplement_audit.py --tex ... --bib ...` |
+| Paper cites external checker (`nanoda_lib`) never run on final slice | Unverified boilerplate copied from prior prose | Cite only tools physically executed (`Lean.Kernel.Environment.replay` via `cold_kernel_replay.lean`, `GT-67`) |
 
 ---
 
@@ -222,38 +229,38 @@ Front Matter:
 
 Part I -- Foundations
   Ch 1: Mathematical Preliminaries (Tactics.lean)
-  Ch 2: Quality Gate Formalization (QualityGates.lean)
-  Ch 3: Phase Classification (PhaseClassification.lean)
+  Ch 2: State Gate Formalization (StateGates.lean)
+  Ch 3: Regime Classification (RegimeClass.lean)
 
 Part II -- Core Models
-  Ch 4: Collins Category Vector (CCVGating.lean)
-  Ch 5: Cusp Catastrophe Model (CuspCatastrophe.lean)
-  Ch 6: Phase Portrait Dynamics (PhasePortrait.lean)
-  Ch 7: Provenance Chain (ProvenanceChain.lean)
+  Ch 4: Simplex Vector Gating (SimplexGating.lean)
+  Ch 5: Bifurcation Potential Model (BifurcationModel.lean)
+  Ch 6: State Portrait Dynamics (StatePortrait.lean)
+  Ch 7: Provenance DAG (ProvenanceDAG.lean)
 
 Part III -- Adaptive Infrastructure
-  Ch 8: Pipeline Adaptation (PipelineAdaptive.lean)
-  Ch 9: Stochastic CCV Core (StochasticCCV/Core.lean)
-  Ch 10: Stochastic CCV Information Theory (StochasticCCV/Information.lean)
-  Ch 11: Pipeline Bypass Semantics (PipelineBypass.lean)
+  Ch 8: Threshold Adaptation (ThresholdAdapt.lean)
+  Ch 9: Markov Kernel Core (MarkovChain/Core.lean)
+  Ch 10: Markov Information Bounds (MarkovChain/Information.lean)
+  Ch 11: Guarded Bypass Semantics (GuardedBypass.lean)
 
-Part IV -- Agent Governance
-  Ch 12: Reinforcement Learning (ReinforcementLearning.lean)
-  Ch 13: Agentic Safety Core (AgenticSafety/Core.lean)
-  Ch 14: Agentic Safety Consensus (AgenticSafety/Consensus.lean)
-  Ch 15: Agentic Safety Gaps (AgenticSafety/Gaps.lean)
+Part IV -- Multi-Agent Systems
+  Ch 12: Markov Decision Processes (MDPControl.lean)
+  Ch 13: Capability Guard Core (CapabilityGuard/Core.lean)
+  Ch 14: Quorum Consensus (CapabilityGuard/Consensus.lean)
+  Ch 15: Role Policy Extensions (CapabilityGuard/Roles.lean)
 
 Part V -- Convergence Theory
   Ch 16: Lyapunov Stability Analysis (LyapunovStability.lean)
-  Ch 17: CCVE Contraction (CCVEContraction.lean)
+  Ch 17: Contraction Mapping Bounds (ContractionBounds.lean)
 
-Part VI -- Evaluation & Feedback
-  Ch 18: Evaluation Gaps (EvaluationGaps.lean)
-  Ch 19: Feedback Semantics (FeedbackSemantics.lean)
+Part VI -- Verification & Synthesis
+  Ch 18: End-to-End Trace Soundness (TraceSoundness.lean)
+  Ch 19: Transition Graph Topology (TransitionTopology.lean)
 
-Note: Several modules have been split into subdirectories:
-  - AgenticSafety → Core/, Consensus/, Gaps/
-  - StochasticCCV → Core/, Information/
+Note: Several modules may be split into subdirectories:
+  - CapabilityGuard -> Core/, Consensus/, Roles/
+  - MarkovChain -> Core/, Information/
   The chapter outline reflects these splits as separate chapters.
 
 Back Matter:
@@ -369,7 +376,7 @@ chapters.}
 | `fun_prop` | "by function property inference (continuity, measurability)" |
 | `push_cast` | "by coercion normalization" |
 | `field_simp` | "by field-algebraic simplification" |
-| `native_decide` | "by compiled finite-domain computation" |
+| `native_decide` -> `decide` / `kernel_decide` | "by kernel-checked finite-domain evaluation (`0` `Lean.ofReduceBool`)" |
 | `ContractingWith K f` | "$f$ is a $K$-Lipschitz contraction ($K < 1$)" |
 | `NNReal` / `ℝ≥0` | "$\mathbb{R}_{\geq 0}$" |
 
@@ -396,8 +403,8 @@ chapters.}
 | `unfold` | "expanding the definition of ..." |
 | `norm_num` | "by numerical computation" |
 | `aesop` | "by automated reasoning" |
-| `grind` | "by automated SMT-based reasoning (primary tactic, 776 uses)" |
-| `native_decide` | "by compiled finite-domain computation (68 uses)" |
+| `grind` | "by automated SMT-based reasoning" |
+| `decide +kernel` | "by kernel-reduced finite-domain evaluation (`GT-30`: `native_decide` is banned)" |
 | `fun_prop` | "by function property inference" |
 | `push_cast` | "by coercion normalization" |
 | `field_simp` | "by field-algebraic simplification" |
@@ -523,9 +530,9 @@ Variants used in the codebase:
 | `@[grind norm]` | Register normalization simp lemma | (omit -- internal automation) |
 | `@[grind unfold]` | Register definition for unfolding | (omit -- internal automation) |
 
-### 5B.2 `native_decide` -- Compiled Finite Computation (68 uses)
+### 5B.2 Kernel-Reduced Finite Computation (`decide` / `kernel_decide`, `GT-30`)
 
-Used for large finite-domain decidability proofs where `decide` would timeout. Compiles the decision procedure to native code. Report prose: "by compiled finite-domain computation."
+Use kernel-reduced `decide` (`decide +kernel`) or `kernel_decide` (`first | rfl | decide +kernel | omega`) for finite-domain decidability proofs. Do NOT use `native_decide`, which introduces `Lean.ofReduceBool` / `Lean.trustCompiler` (`GT-30`). Report prose: "by Lean 4 kernel reduction."
 
 ### 5B.3 Module System Features
 
@@ -813,42 +820,27 @@ python3 scripts/blueprint_to_tikz.py \
 % report/front/abstract.tex
 \begin{abstract}
 This report presents a machine-checked formalization of the
-Project (Experience, Articulation, Structuring, Consolidation,
-Innovation) framework for knowledge phase-adaptive governance.
+ExampleProject multi-stage state-machine and stability framework.
 The formalization comprises \textbf{31} Lean~4 files across
 \textbf{17} logical modules totaling \textbf{37,693} lines of
 code, containing \textbf{2,186} theorems and lemmas,
 all verified by the Lean~4 kernel (v4.34.1) with \textbf{zero}
-uses of \texttt{sorry} and \textbf{zero} custom axioms beyond
-those in Mathlib~v4.34.1.
+uses of \texttt{sorry}, \textbf{zero} uses of \texttt{native\_decide},
+and \textbf{zero} custom axioms beyond standard classical logic
+(\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}).
 
-The framework models organizational knowledge transfer through
-seven interlocking components: (1)~quality gates controlling
-information flow, (2)~phase classification via stress-driven
-regime detection, (3)~Collins Category Vector (CCV) gating for
-domain-aware filtering, (4)~cusp catastrophe theory for modeling
-regime transitions, (5)~Doeblin contraction and stochastic CCV
-convergence to stationary distributions, (6)~an end-to-end L1
-contraction bridge (\texttt{okdStep\_L1\_contraction}) connecting
-pipeline steps to distributional convergence, and (7)~BFT
-consensus for multi-agent safety governance.
-
-Key results include: monotonicity of quality gates under CCV
-modulation, completeness of the three-regime phase classification,
-exponential convergence of the governance orbit under contraction
-mapping, Bellman operator monotonicity for the MDP-based
-governance policy, safety envelope decomposition for agentic
-trust management, and PROV-O provenance formalization ensuring
-chain-of-custody invariants for knowledge artifacts.
-
-All proofs are constructive where possible and use Mathlib~v4.34.1
-as the mathematical library. A navigable dependency graph and
-interactive web blueprint accompany this report.
+The development establishes: (1)~monotone decidable acceptance
+gates across stage transitions, (2)~approximate forward simulation
+onto bounded integer grids, (3)~stationary existence and Doeblin
+$\ell^1$ contraction for finite Markov kernels, (4)~Bellman operator
+contraction and martingale-difference partial-sum convergence, and
+(5)~Byzantine quorum intersection and two-sided Boolean reflection
+for end-to-end execution traces.
 
 \medskip\noindent
-\textbf{Keywords:} Formal verification, Lean~4, knowledge management,
-phase-adaptive governance, Lyapunov stability, cusp catastrophe,
-reinforcement learning, safety envelopes.
+\textbf{Keywords:} Formal verification, Lean~4, state-machine
+invariants, Lyapunov stability, Markov chains, proper scoring,
+Boolean reflection.
 \end{abstract}
 ```
 
@@ -1599,4 +1591,33 @@ Trigger re-extraction when:
 > AI agents commonly: rewrite instead of annotating; omit rubric anchors;
 > bundle many findings into one comment. Full registry:
 > GUARDRAILS.md §Agent failure taxonomy.
+
+---
+
+# Double-Blind Paper, Three-Tier Provenance & Shaken Supplement Synchronization
+
+For conference and journal submissions accompanied by a standalone anonymized Lean 4 supplementary archive, follow [`../protocols/double-blind-paper-and-supplement-release.md`](../protocols/double-blind-paper-and-supplement-release.md) and execute these five mandatory gates:
+
+1. **1-to-1 `Concordance.lean` Anchoring (Combined Option 1 + Option 2)**:
+   - Every numbered proposition, theorem, corollary, table row, and numerical walkthrough constant in `.tex` must map to an explicit `#check` and `#print axioms` anchor in a single `Concordance.lean` entry module.
+   - When a Lean declaration proves a weaker special case than the paper states (e.g., uniform player sets instead of heterogeneous `Fin (k i)`, or taking a fixed point as an input hypothesis instead of composing Brouwer existence + contraction uniqueness), strengthen the upstream Lean theorem first; when full generalization lies outside scope, calibrate the paper statement to match the exact proved hypotheses.
+2. **Skeptical Primary-Literature Terminology & `.bib` Verification**:
+   - Audit every DOI, volume, issue, article number, and author list against publisher records (`0` BibTeX warnings, `100%` `.bib` entries cited, embedded `filecontents*` `.bib` byte-for-byte identical to standalone `.bib`).
+   - Eliminate coined/spliced mathematical misnomers (`Presburger` on quadratic expressions, `Polyak step-size` for Robbins-Monro schedules, `Little's law` for closed renewal cycle rates, `Awareness` for Aumann partition measurability, political slogans for quota inequalities).
+3. **Zero `@[deprecated]` Shims & Standalone Rename Ledger (`GT-66`)**:
+   - Delete retired identifiers cleanly across `.lean` source files (`0` `@[deprecated]` attributes) and record historical mappings in an external Markdown ledger (`docs/tracking/terminology-rename-ledger.md`).
+4. **Three-Tier Proof Provenance & Executed-Tool Honesty (`GT-67`)**:
+   - Explicitly partition formal credit across (i) upstream foundations (`Mathlib`, `Cslib`), (ii) adapted third-party ports (preserving SPDX/`LICENSE` notices) and newly proved classical bridges, and (iii) novel domain models and synthesis theorems.
+   - Cite only verification tools physically executed on the final supplement (`Lean.Kernel.Environment.replay` via `scripts/lean/cold_kernel_replay.lean`).
+5. **Automated Pre-Submission Gate**:
+   ```bash
+   python3 scripts/lean/paper_supplement_audit.py \
+     --tex path/to/paper.tex \
+     --bib path/to/paper.bib \
+     --lean-dir path/to/lean4-supplement \
+     --supplement-mode \
+     --max-content-pages 9 \
+     --forbid-first-person \
+     --strict
+   ```
 

@@ -16,13 +16,15 @@ skill_ref: "skills/lean-proof-review/SKILL.md"
 | :--- | :--- | :--- |
 | Completed `sorry`-free theorem in PR | 4-Layer Checklist (Soundness, Faithfulness, Non-Vacuity, Hygiene) | Read-only `auditor` pass via `lean_diagnostics` + `lean_axiom_closure` |
 | Theorem over `Nat` subtraction or division | Layer 2 Faithfulness & Truncation check | Verify `b <= a` / `d != 0` hypotheses prevent degenerate triviality |
+| Paper-coupled theorem or concordance entry | Bidirectional Semantic & Terminology Audit | Reject facade arithmetic stubs, existence-as-input shortcuts, and coined/spliced eponyms |
 
 ## 2. Intent -> Recipe Phrasebook
 
 | Intent | Recommended Pattern / Tool | Recipe |
 | :--- | :--- | :--- |
 | Audit whether formal statement matches paper claim | Clause-by-clause paper-to-Lean bijection table | Flag any dropped hypothesis, weakened quantifier, or one-way `Bool` implication |
-| Check proof hygiene & maintainability | Inspect `simp` non-terminal calls, `maxHeartbeats` overrides, and axioms | Require `simp only [...]` on non-terminal steps |
+| Check proof hygiene & maintainability | Inspect `simp` non-terminal calls, `maxHeartbeats` overrides, and axioms | Require `simp only [...]` on non-terminal steps and `0` `@[deprecated]` shims |
+| Verify exact axiom footprint for paper table | `lean_axiom_closure` / `Lean.collectAxioms` | Check `omega`/`decide` proofs explicitly (both often pull `propext` or `Quot.sound`) |
 
 ## 3. Error / Bottleneck -> Fix
 
@@ -30,3 +32,5 @@ skill_ref: "skills/lean-proof-review/SKILL.md"
 | :--- | :--- | :--- |
 | `#print axioms` reveals `Classical.choice` in constructive lane | `open Classical` or `by_cases` used on decidable predicate | Route to `@lean-kernel-optimization` Route 9 (`Bool.rec` / `decide`) |
 | Theorem has `0 sorry` but conclusion echoes hypothesis | `FIDELITY-01` (`HYPOTHESIS_ECHO`) | Reject in Layer 3 Non-Vacuity check and escalate to `specifier` |
+| Uniqueness theorem takes fixed point `x*` as an input argument | Missing composition with existence theorem | Compose Brouwer/Banach existence with contraction uniqueness into `ExistsUnique` |
+| Paper table claims `(0 axioms)` on `omega` or `decide` proof | Unchecked assumption that `omega`/`decide` are axiom-free | Run `#print axioms` and report exact `{propext}` or `{propext, Quot.sound}` footprint |

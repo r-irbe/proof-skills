@@ -1,7 +1,7 @@
 ---
 name: lean-asymptotic-algorithms-handbook
 description: Reference handbook for classical mathematical and algorithmic breakthroughs (Subresultant PRS, Dulmage-Mendelsohn Permanent, Meissel-Lehmer Sieves, and Schedule Folding) in Lean 4.
-extracted_from: skills/lean-math-discrete/SKILL.md
+extracted_from: skills/lean-asymptotic-algorithms/SKILL.md
 ---
 
 # Classical Algorithmic Breakthroughs Handbook (Lean 4)
